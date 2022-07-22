@@ -1,8 +1,11 @@
+import 'package:campus_app/core/authentication/bloc/authentication_bloc.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
+import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/routes/router.gr.dart' as router;
 import 'package:campus_app/core/themes/theme.dart';
 import 'package:campus_app/core/themes/theme_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +26,10 @@ class AStA extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ThemeService()),
+        BlocProvider(
+          create: (context) =>
+              sl<AuthenticationBloc>()..add(AuthCheckRequestedEvent()),
+        ),
       ],
       child: Consumer<ThemeService>(
         builder: (context, themeService, child) {
