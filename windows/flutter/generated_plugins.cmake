@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  pdfx
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

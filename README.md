@@ -1,16 +1,99 @@
-# campus_app
+# Student App of the General Student Committee of the Ruhr University Bochum
 
-A new Flutter project.
+---
+The purpose of this app is to provide the students of the Ruhr-Universität Bochum
+a tool that simplifies, improves and facilitates everyday students life.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## Folder structure
 
-A few resources to get you started if this is your first Flutter project:
+All the source code is located inside the `lib` folder and the corresponding unit
+tests inside the `test` folder. The first level inside these folders is allways a
+main feature of the app like the moodle, flexnow or ecampus integration. Each
+of these features is struturized via the four layer modle. So the `application` layer
+holds state management and act as a view controller, the `domain` layer handles
+business logic and data entities, the `infrastructure` layer handles the communication
+with local or remote data sources and holds corresponding data models and last but
+not least the `presentation` layer holds stateless UI view.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```
+├── assets
+│   ├── documents
+│   ├── img
+│   ├── l10n
+│   ├── ...
+├── docs
+│   ├── postman
+│   ├── ...
+├── lib
+│   ├── core
+│   │   ├── routes
+│   │   ├── theme
+│   │   ├── failures
+│   │   ├── ...
+│   ├── pages
+│   │   ├── feature-xyz
+│   │   ├── ...
+│   ├── utils
+│   │   ├── apis
+│   │   ├── pages
+│   │   ├── ...
+|    ...
+├── test
+│   ├── feature-xyz
+|    ...
+├── .gitignore
+├── analysis_options.yaml
+├── l10n.yaml
+├── LICENSE
+├── pubspec.yaml
+├── README.md
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Other files of interests are the `pubspec.yaml` which defines the flutter / dart
+packages and some metadata and `analysis_options.yaml` which defines linting rules.
+
+This project is devoloped under GNU AFFERO GENERAL PUBLIC LICENSE Version 3.
+
+---
+
+## Flutter Cheat Sheet
+
+Flutter help:
+`flutter -h`
+
+Flutter Version:
+`flutter --version`
+
+​Check out flutter channel / branch:
+`flutter channel`
+
+Check DevEnv:
+`flutter doctor`
+​
+Upgrade Flutter:
+`flutter upgrade`
+
+Downgrade flutter:
+`flutter downgrade <version>`
+
+Create a new app:
+`flutter create <app name>`
+​
+
+List devices:
+`flutter emulator`
+​
+
+Start Emulator:
+`flutter emulator --launch <emulator_name>`
+
+Create Mocks: 
+`flutter packages run build_runner build --delete-conflicting-outputs`
+
+Generate language files: 
+`flutter gen-l10n`
+
+Generate Routes: 
+`flutter packages pub run build_runner build`
