@@ -1,3 +1,4 @@
+import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/routes/router.gr.dart' as router;
 import 'package:campus_app/core/themes/theme.dart';
 import 'package:campus_app/core/themes/theme_service.dart';
@@ -7,6 +8,8 @@ import 'package:provider/provider.dart';
 
 // ignore: avoid_void_async
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ic.init();
   runApp(AStA());
 }
 
