@@ -6,5 +6,18 @@
   "serverFailureMessage": "Could not load server data.",
   "generalFailureMessage": "A failure occured.",
   "errorMessage": "Error.",
-  "unexpectedError": "An unexpected error occured..."
+  "unexpectedError": "An unexpected error occured...",
+  "invalid2FATokenFailureMessage": "Your TOTP is not correct. Please try again!",
+  "invalidLoginIDAndPasswordFailureMessage": "The given credentials are incorrect!",
+
+  "welcome": "Welcome!",
+  "login_prompt": "Please login with your RUB-ID and password.",
+  "rubid": "LoginID of your RUB-Account",
+  "password": "Password",
+  "login": "LogIn",
+  "empty_input_field": "Please enter your credentials!",
+  "login_error": "Invalid input!",
+  "login_success": "Successfully authenticated!",
+  "login_already": "Allready authenticated.",
+  "enter_totp": "Please enter your TOTP."
 }
