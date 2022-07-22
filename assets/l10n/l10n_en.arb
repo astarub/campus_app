@@ -1,5 +1,10 @@
 {
   "@@locale": "en",
 
-  "helloWorld": "Hello World!"
+  "helloWorld": "Hello World!",
+
+  "serverFailureMessage": "Could not load server data.",
+  "generalFailureMessage": "A failure occured.",
+  "errorMessage": "Error.",
+  "unexpectedError": "An unexpected error occured..."
 }
