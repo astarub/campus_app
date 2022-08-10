@@ -1,0 +1,89 @@
+import 'package:flutter/material.dart';
+
+enum AppThemes { light, dark }
+
+class ThemesNotifier with ChangeNotifier {
+  // List of themes
+  static final List<ThemeData> themeData = [
+    // Light
+    ThemeData(
+      brightness: Brightness.light,
+      backgroundColor: Colors.white,
+      primaryColor: Colors.black,
+      textTheme: TextTheme(),
+    ),
+    // Dark
+    ThemeData(
+      brightness: Brightness.light,
+      backgroundColor: Colors.white,
+      primaryColor: Colors.black,
+      textTheme: TextTheme(),
+    )
+  ];
+
+  AppThemes _currentTheme = AppThemes.light;
+  ThemeData _currentThemeData = themeData[0];
+  ThemeMode _currentThemeMode = ThemeMode.system;
+
+  /// Switches the app-theme to the non-active
+  void switchTheme() {
+    if (currentTheme == AppThemes.light) {
+      currentTheme = AppThemes.dark;
+    } else {
+      currentTheme = AppThemes.light;
+    }
+  }
+
+  set currentTheme(AppThemes theme) {
+    if (theme != null) {
+      _currentTheme = theme;
+
+      if (_currentTheme == AppThemes.light) {
+        _currentThemeData = themeData[0];
+        if (_currentThemeMode != ThemeMode.system) {
+          _currentThemeMode = ThemeMode.light;
+          print('ThemeMode Änderung zu: ' + _currentTheme.toString());
+        }
+      } else {
+        _currentThemeData = themeData[1];
+        if (_currentThemeMode != ThemeMode.system) {
+          _currentThemeMode = ThemeMode.dark;
+          print('ThemeMode Änderung zu: ' + _currentTheme.toString());
+        }
+      }
+      print('Theme Änderung zu: ' + theme.toString());
+
+      notifyListeners();
+    }
+  }
+
+  set currentThemeMode(ThemeMode mode) {
+    _currentThemeMode = mode;
+
+    if (mode == ThemeMode.system) {
+      final Brightness deviceMode = WidgetsBinding.instance.window.platformBrightness;
+      if (deviceMode == Brightness.light) {
+        print('System-Theme ist: LightMode');
+        if (currentTheme == AppThemes.dark) currentTheme = AppThemes.light;
+      } else if (deviceMode == Brightness.dark) {
+        print('System-Theme ist: DarkMode');
+        if (currentTheme == AppThemes.light) currentTheme = AppThemes.dark;
+      }
+    } else if (mode == ThemeMode.light) {
+      _currentTheme = AppThemes.light;
+      _currentThemeData = themeData[0];
+      notifyListeners();
+    } else if (mode == ThemeMode.dark) {
+      _currentTheme = AppThemes.dark;
+      _currentThemeData = themeData[1];
+      notifyListeners();
+    }
+
+    print('ThemeMode Änderung zu: ' + mode.toString());
+  }
+
+  AppThemes get currentTheme => _currentTheme;
+  ThemeData get currentThemeData => _currentThemeData;
+  ThemeMode get currentThemeMode => _currentThemeMode;
+  ThemeData get darkThemeData => themeData[1];
+}

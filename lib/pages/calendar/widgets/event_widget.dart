@@ -1,7 +1,7 @@
-import 'package:campus_app/pages/calendar/calendar_event_entity.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_html/flutter_html.dart';
+
+import 'package:campus_app/pages/calendar/calendar_event_entity.dart';
 
 class CalendarEventWidget extends StatelessWidget {
   final CalendarEventEntity event;

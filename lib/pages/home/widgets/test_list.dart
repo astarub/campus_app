@@ -1,10 +1,7 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:campus_app/core/authentication/bloc/authentication_bloc.dart';
-import 'package:campus_app/core/routes/router.gr.dart';
-import 'package:campus_app/core/themes/theme_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:campus_app/core/routes/router.gr.dart';
 
 class TestWidget extends StatelessWidget {
   const TestWidget({Key? key}) : super(key: key);
@@ -13,15 +10,12 @@ class TestWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final router = AutoRouter.of(context);
-    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
 
     return Scaffold(
       backgroundColor: themeData.scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            authBloc.add(SignOutEvent());
-          },
+          onPressed: () {},
           icon: const Icon(Icons.exit_to_app),
         ),
       ),
@@ -69,16 +63,9 @@ class TestWidget extends StatelessWidget {
                   child: const Text('Home'),
                 ),
                 TextButton(
-                  onPressed: () => authBloc.add(AuthCheckRequestedEvent()),
+                  onPressed: () => {},
                   child: const Text('Login'),
                 ),
-                Switch(
-                  value: Provider.of<ThemeService>(context).isCampusNowThemeOn,
-                  onChanged: (value) {
-                    Provider.of<ThemeService>(context, listen: false)
-                        .toogleCampusNowTheme();
-                  },
-                )
               ],
             ),
           ),
