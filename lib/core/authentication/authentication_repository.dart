@@ -1,12 +1,12 @@
 import 'package:campus_app/core/authentication/authentication_datasource.dart';
+import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class AuthenticationRepository {
   /// Signin user with Login-ID of RUB and password.
-  /// Return a failure if authentification goes wrong.
-  Future<Either<Failure, Unit>> signInWithRUBLoginID({
+  Future<void> signInWithRUBLoginID({
     required String loginID,
     required String password,
   });
@@ -14,30 +14,27 @@ abstract class AuthenticationRepository {
   /// Signout user who previously signedin
   Future<void> signOut();
 
-  /// Check authentication status.
-  /// Return true if user is allready authenticated.
-  Future<bool> allreadyAuthenticated();
-
   /// Validate 2FA session.
   /// Return true if session is still valid.
-  Future<bool> valid2FASession();
+  Future<bool> validate2FASession();
 
   /// Request 2FA session.
-  /// Return a failure if authentication goes wrong.
-  Future<Either<Failure, Unit>> signInWith2FA({
+  Future<void> signInWith2FA({
     required String totp,
   });
 }
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final AuthenticationDatasource authenticationDatasource;
+  final AuthenticationHandler authenticationHandler;
 
   AuthenticationRepositoryImpl({
     required this.authenticationDatasource,
+    required this.authenticationHandler,
   });
 
   @override
-  Future<Either<Failure, Unit>> signInWithRUBLoginID({
+  Future<void> signInWithRUBLoginID({
     required String loginID,
     required String password,
   }) async {
@@ -53,54 +50,69 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       await authenticationDatasource.storeLoginID(loginID);
       await authenticationDatasource.storePassword(password);
 
-      return const Right(unit);
+      //* Notify authentication listeners about successfully login
+      authenticationHandler.changeAuthState(
+        state: AuthState.authenticated,
+      );
     } catch (e) {
+      //* Notify authentication listeners about failure at login
       switch (e.runtimeType) {
         case ServerException:
-          return Left(ServerFailure());
+          authenticationHandler.changeAuthState(
+            state: AuthState.unauthenticated,
+            failure: ServerFailure(),
+          );
+          break;
 
         case InvalidLoginIDAndPasswordException:
-          return Left(InvalidLoginIDAndPasswordFailure());
+          authenticationHandler.changeAuthState(
+            state: AuthState.unauthenticated,
+            failure: InvalidLoginIDAndPasswordFailure(),
+          );
+          break;
 
         default:
-          return Left(GeneralFailure());
+          authenticationHandler.changeAuthState(
+            state: AuthState.unauthenticated,
+            failure: GeneralFailure(),
+          );
       }
     }
   }
 
   @override
-  Future<void> signOut() => Future.wait([
-        authenticationDatasource.deleteLoginID(),
-        authenticationDatasource.deletePassword(),
-        authenticationDatasource.deleteMoodlePrivatetoken(),
-        authenticationDatasource.deleteMoodleToken(),
-        authenticationDatasource.deleteTokenId(),
-      ]);
+  Future<void> signOut() async {
+    await Future.wait([
+      authenticationDatasource.deleteLoginID(),
+      authenticationDatasource.deletePassword(),
+      authenticationDatasource.deleteMoodlePrivatetoken(),
+      authenticationDatasource.deleteMoodleToken(),
+      authenticationDatasource.deleteTokenId(),
+    ]);
 
-  @override
-  Future<bool> allreadyAuthenticated() async {
-    final loginID = await authenticationDatasource.getLoginID();
-    final password = await authenticationDatasource.getPassword();
-
-    if (loginID == null || password == null) {
-      return false;
-    } else {
-      return true;
-    }
+    //* Notify authentication listeners about logout
+    authenticationHandler.changeAuthState(
+      state: AuthState.unauthenticated,
+    );
   }
 
   @override
-  Future<bool> valid2FASession() async {
+  Future<bool> validate2FASession() async {
     try {
       final tokenId = await authenticationDatasource.getTokenId();
+      final loginID = await authenticationDatasource.getLoginID();
+      final password = await authenticationDatasource.getPassword();
 
-      if (tokenId == null) {
+      //* check if datasource know login credentials
+      if (tokenId == null || loginID == null || password == null) {
         return false;
       }
 
-      final reponse =
-          await authenticationDatasource.validate2FASession(tokenId: tokenId);
+      final reponse = await authenticationDatasource.validate2FASession(
+        tokenId: tokenId,
+      );
 
+      //* validate forerock response
       if (reponse['valid'] == null) {
         return false;
       } else if (reponse['valid']) {
@@ -109,18 +121,29 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         return false;
       }
     } catch (e) {
+      // each error should return a invalid session
       return false;
     }
   }
 
   @override
-  Future<Either<Failure, Unit>> signInWith2FA({required String totp}) async {
+  Future<void> signInWith2FA({
+    required String totp,
+  }) async {
     try {
       final loginID = await authenticationDatasource.getLoginID();
       final password = await authenticationDatasource.getPassword();
 
-      if (loginID == null || password == null) {
-        return Left(NotAuthenticatedFailure());
+      //* If currentState isn't authenticated or theire is no loginId or password
+      //* then change state to unauthenticated and notify listeners about error
+      if (authenticationHandler.currentAuthState != AuthState.authenticated ||
+          loginID == null ||
+          password == null) {
+        authenticationHandler.changeAuthState(
+          state: AuthState.unauthenticated,
+          failure: NotAuthenticatedFailure(),
+        );
+        return;
       }
 
       final tokenId =
@@ -132,20 +155,39 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       await authenticationDatasource.storeTokenId(tokenId);
 
-      return const Right(unit);
+      authenticationHandler.changeAuthState(
+        state: AuthState.authentication2FA,
+      );
     } catch (e) {
+      //* Notify authentication listeners about failure at 2FA-Login
       switch (e.runtimeType) {
         case ServerException:
-          return Left(ServerFailure());
+          authenticationHandler.changeAuthState(
+            state: AuthState.authenticated,
+            failure: ServerFailure(),
+          );
+          break;
 
         case EmptyResponseException:
-          return Left(Invalid2FATokenFailure());
+          authenticationHandler.changeAuthState(
+            state: AuthState.authenticated,
+            failure: Invalid2FATokenFailure(),
+          );
+          break;
 
         case Invalid2FATokenException:
-          return Left(Invalid2FATokenFailure());
+          authenticationHandler.changeAuthState(
+            state: AuthState.authenticated,
+            failure: Invalid2FATokenFailure(),
+          );
+          break;
 
         default:
-          return Left(GeneralFailure());
+          authenticationHandler.changeAuthState(
+            state: AuthState.authenticated,
+            failure: GeneralFailure(),
+          );
+          break;
       }
     }
   }

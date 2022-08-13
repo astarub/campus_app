@@ -1,4 +1,5 @@
 import 'package:campus_app/core/authentication/authentication_datasource.dart';
+import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/authentication/authentication_repository.dart';
 import 'package:campus_app/pages/calendar/calendar_remote_datasource.dart';
 import 'package:campus_app/pages/calendar/calendar_repository.dart';
@@ -25,6 +26,9 @@ final sl = GetIt.instance; // service locator
 Future<void> init() async {
   //sl.registerFactory(() => EcampusBloc(ticketRepository: sl()));
 
+  //! Handlers
+  sl.registerLazySingleton(AuthenticationHandler.new);
+
   //! Usecases
   sl.registerLazySingleton(() => RubnewsUsecases(rubnewsRepository: sl()));
   sl.registerLazySingleton(() => CalendarUsecases(calendarRepository: sl()));
@@ -38,7 +42,10 @@ Future<void> init() async {
     () => CalendarRepositoryImpl(calendarRemoteDatasource: sl()),
   );
   sl.registerLazySingleton<AuthenticationRepository>(
-    () => AuthenticationRepositoryImpl(authenticationDatasource: sl()),
+    () => AuthenticationRepositoryImpl(
+      authenticationDatasource: sl(),
+      authenticationHandler: sl(),
+    ),
   );
   sl.registerLazySingleton(
     () => MoodleRepository(
