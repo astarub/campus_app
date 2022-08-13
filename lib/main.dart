@@ -5,7 +5,7 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/routes/router.gr.dart' as router;
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/authentication/authentification_handler.dart';
+import 'package:campus_app/core/authentication/authentication_handler.dart';
 
 // ignore: avoid_void_async
 void main() async {
@@ -15,7 +15,8 @@ void main() async {
     providers: [
       // Initializes the provider that handles the app-theme, authentification and other things
       ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-      ChangeNotifierProvider<AuthentificationHandler>(create: (_) => AuthentificationHandler()),
+      ChangeNotifierProvider<AuthenticationHandler>(
+          create: (_) => AuthenticationHandler()),
     ],
     child: CampusApp(),
   ));

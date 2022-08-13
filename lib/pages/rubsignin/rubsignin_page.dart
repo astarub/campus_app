@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/core/authentication/authentification_handler.dart';
+import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/pages/rubsignin/widgets/signin_form.dart';
 import 'package:campus_app/pages/rubsignin/widgets/totp_form.dart';
 
@@ -12,11 +12,14 @@ class RUBSignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final router = AutoRouter.of(context);
-    AuthentificationState currentAuthState = Provider.of<AuthentificationHandler>(context).currentAuthState;
+    AuthState currentAuthState =
+        Provider.of<AuthenticationHandler>(context).currentAuthState;
     Widget form = const SignInForm();
 
     return Scaffold(
-      body: currentAuthState == AuthentificationState.unauthenticated ? Container() : Container(),
+      body: currentAuthState == AuthState.unauthenticated
+          ? Container()
+          : Container(),
     );
 
     /* return BlocBuilder<AuthenticationBloc, AuthenticationState>(

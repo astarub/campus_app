@@ -3,9 +3,7 @@
     "files.autoSave": "onFocusChange",
     "explorer.confirmDragAndDrop": false,
     "explorer.confirmDelete": false,
-
-    "[dart]": 
-    {
+    "[dart]": {
         // editor settings
         "editor.suggestSelection": "first",
         "editor.tabCompletion": "onlySnippets",
@@ -14,18 +12,15 @@
         "editor.quickSuggestions": true,
         "editor.suggest.snippetsPreventQuickSuggestions": false,
         "editor.formatOnSave": true,
-
         // colorized brackets 
         "editor.bracketPairColorization.enabled": true,
         "editor.guides.bracketPairs": true,
-        
         // formating guidline
         "editor.tabSize": 2,
         "editor.rulers": [
-            80,
-            120
+            100,
+            140
         ],
-
         // formatter: https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code
         "editor.defaultFormatter": "Dart-Code.dart-code"
     }
