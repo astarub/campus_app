@@ -10,13 +10,11 @@ class RUBSignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthentificationState currentAuthState = Provider.of<AuthentificationHandler>(context).currentAuthState;
+    AuthState currentAuthState = Provider.of<AuthenticationHandler>(context).currentAuthState;
     Widget form = const SignInForm();
 
     return Scaffold(
-      body: currentAuthState == AuthState.unauthenticated
-          ? Container()
-          : Container(),
+      body: currentAuthState == AuthState.unauthenticated ? Container() : Container(),
     );
 
     /* return BlocBuilder<AuthenticationBloc, AuthenticationState>(

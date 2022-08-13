@@ -4,7 +4,7 @@ import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/injection.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/authentication/authentification_handler.dart';
+import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:campus_app/pages/splash/splash_page.dart';
 
@@ -16,10 +16,9 @@ void main() async {
     providers: [
       // Initializes the provider that handles the app-theme, authentification and other things
       ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-      ChangeNotifierProvider<AuthenticationHandler>(
-          create: (_) => AuthenticationHandler()),
+      ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
     ],
-    child: CampusApp(),
+    child: const CampusApp(),
   ));
 }
 
@@ -37,8 +36,9 @@ class CampusApp extends StatelessWidget {
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
           return PageTransition(
-            child: const SplashPage(),
+            child: const SplashPage(), // Exchange page to your needs during development
             type: PageTransitionType.scale,
+            alignment: Alignment.center,
           );
         }
       },

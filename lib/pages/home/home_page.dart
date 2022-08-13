@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 
 class HomePage extends StatelessWidget {
