@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/authentication/authentification_handler.dart';
 import 'package:campus_app/pages/rubsignin/widgets/signin_form.dart';
@@ -11,7 +10,6 @@ class RUBSignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final router = AutoRouter.of(context);
     AuthentificationState currentAuthState = Provider.of<AuthentificationHandler>(context).currentAuthState;
     Widget form = const SignInForm();
 

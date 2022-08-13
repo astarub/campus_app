@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:campus_app/pages/rubsignin/widgets/signin_button.dart';
 import 'package:campus_app/utils/pages/presentation_functions.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -11,7 +10,6 @@ class SignInForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
-    final router = AutoRouter.of(context);
 
     final utils = Utils();
 

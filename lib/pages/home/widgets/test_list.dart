@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:campus_app/core/routes/router.gr.dart';
 
 class TestWidget extends StatelessWidget {
   const TestWidget({Key? key}) : super(key: key);
@@ -9,7 +7,6 @@ class TestWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-    final router = AutoRouter.of(context);
 
     return Scaffold(
       backgroundColor: themeData.scaffoldBackgroundColor,
@@ -27,9 +24,7 @@ class TestWidget extends StatelessWidget {
             child: Column(
               children: [
                 TextButton(
-                  onPressed: () => router.push(
-                    const MoodlePageRoute(),
-                  ),
+                  onPressed: () {},
                   child: const Text('Moodle'),
                 ),
                 /*TextButton(
@@ -45,21 +40,15 @@ class TestWidget extends StatelessWidget {
                   child: const Text('Flexnow'),
                 ),*/
                 TextButton(
-                  onPressed: () => router.push(
-                    const RubnewsPageRoute(),
-                  ),
+                  onPressed: () {},
                   child: const Text('RUB News'),
                 ),
                 TextButton(
-                  onPressed: () => router.push(
-                    const CalendarPageRoute(),
-                  ),
+                  onPressed: () {},
                   child: const Text('Calendar'),
                 ),
                 TextButton(
-                  onPressed: () => router.replace(
-                    const HomePageRoute(),
-                  ),
+                  onPressed: () {},
                   child: const Text('Home'),
                 ),
                 TextButton(
