@@ -1,9 +1,4 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:campus_app/core/authentication/bloc/authentication_bloc.dart';
-import 'package:campus_app/core/routes/router.gr.dart';
-import 'package:campus_app/core/themes/theme_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class TestWidget extends StatelessWidget {
@@ -12,16 +7,12 @@ class TestWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-    final router = AutoRouter.of(context);
-    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
 
     return Scaffold(
       backgroundColor: themeData.scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            authBloc.add(SignOutEvent());
-          },
+          onPressed: () {},
           icon: const Icon(Icons.exit_to_app),
         ),
       ),
@@ -33,9 +24,7 @@ class TestWidget extends StatelessWidget {
             child: Column(
               children: [
                 TextButton(
-                  onPressed: () => router.push(
-                    const MoodlePageRoute(),
-                  ),
+                  onPressed: () {},
                   child: const Text('Moodle'),
                 ),
                 /*TextButton(
@@ -51,34 +40,21 @@ class TestWidget extends StatelessWidget {
                   child: const Text('Flexnow'),
                 ),*/
                 TextButton(
-                  onPressed: () => router.push(
-                    const RubnewsPageRoute(),
-                  ),
+                  onPressed: () {},
                   child: const Text('RUB News'),
                 ),
                 TextButton(
-                  onPressed: () => router.push(
-                    const CalendarPageRoute(),
-                  ),
+                  onPressed: () {},
                   child: const Text('Calendar'),
                 ),
                 TextButton(
-                  onPressed: () => router.replace(
-                    const HomePageRoute(),
-                  ),
+                  onPressed: () {},
                   child: const Text('Home'),
                 ),
                 TextButton(
-                  onPressed: () => authBloc.add(AuthCheckRequestedEvent()),
+                  onPressed: () => {},
                   child: const Text('Login'),
                 ),
-                Switch(
-                  value: Provider.of<ThemeService>(context).isCampusNowThemeOn,
-                  onChanged: (value) {
-                    Provider.of<ThemeService>(context, listen: false)
-                        .toogleCampusNowTheme();
-                  },
-                )
               ],
             ),
           ),

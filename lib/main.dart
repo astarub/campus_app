@@ -1,52 +1,49 @@
-import 'package:campus_app/core/authentication/bloc/authentication_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/core/routes/router.gr.dart' as router;
-import 'package:campus_app/core/themes/theme.dart';
-import 'package:campus_app/core/themes/theme_service.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:provider/provider.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/authentication/authentication_handler.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:campus_app/pages/splash/splash_page.dart';
 
 // ignore: avoid_void_async
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ic.init();
-  runApp(AStA());
+  runApp(MultiProvider(
+    providers: [
+      // Initializes the provider that handles the app-theme, authentification and other things
+      ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+      ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
+    ],
+    child: const CampusApp(),
+  ));
 }
 
-class AStA extends StatelessWidget {
-  final _appRouter = router.AppRouter();
-
-  AStA({Key? key}) : super(key: key);
+class CampusApp extends StatelessWidget {
+  const CampusApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => ThemeService()),
-        BlocProvider(
-          create: (context) =>
-              sl<AuthenticationBloc>()..add(AuthCheckRequestedEvent()),
-        ),
-      ],
-      child: Consumer<ThemeService>(
-        builder: (context, themeService, child) {
-          return MaterialApp.router(
-            routeInformationParser: _appRouter.defaultRouteParser(),
-            routerDelegate: _appRouter.delegate(),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.campusNowTheme,
-            darkTheme: AppTheme.testTheme,
-            themeMode: themeService.isCampusNowThemeOn
-                ? ThemeMode.light
-                : ThemeMode.dark,
+    return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      theme: Provider.of<ThemesNotifier>(context).currentThemeData,
+      darkTheme: Provider.of<ThemesNotifier>(context).darkThemeData,
+      themeMode: Provider.of<ThemesNotifier>(context).currentThemeMode,
+      onGenerateRoute: (settings) {
+        if (settings.name == '/') {
+          return PageTransition(
+            child: const SplashPage(), // Exchange page to your needs during development
+            type: PageTransitionType.scale,
+            alignment: Alignment.center,
           );
-        },
-      ),
+        }
+      },
+      debugShowCheckedModeBanner: false,
+      showPerformanceOverlay: false,
     );
   }
 }

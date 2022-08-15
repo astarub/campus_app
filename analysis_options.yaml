@@ -98,7 +98,6 @@ linter:
     - control_flow_in_finally
     - curly_braces_in_flow_control_structures
     - deprecated_consistency
-    - directives_ordering
     - empty_catches
     - empty_constructor_bodies
     - empty_statements
@@ -114,7 +113,6 @@ linter:
     - library_names
     - library_prefixes
     - library_private_types_in_public_api
-    - lines_longer_than_80_chars
     - list_remove_unrelated_type
     - literal_only_boolean_expressions
     - missing_whitespace_between_adjacent_strings
