@@ -10,11 +10,10 @@ class RubnewsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final utils = RubnewsUtils();
 
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-          //children: utils.getNewsWidgetList(rubnewsState.news),
-          ),
+    return const Scaffold(
+      body: Center(
+        child: Text('News Page'),
+      ),
     );
   }
 }

@@ -10,13 +10,9 @@ class CalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final utils = CalendarUtils();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-            //children: utils.getEventWidgetList(calendarState.events),
-            ),
+    return const Scaffold(
+      body: Center(
+        child: Text('Calendar Page'),
       ),
     );
   }
