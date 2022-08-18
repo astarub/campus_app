@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:campus_app/core/settings.dart';
@@ -105,6 +106,22 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Precache images to prevent a visual glitch when they're loaded the first time
+    precacheImage(Image.asset('assets/img/icons/home-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/home-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/calendar-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/calendar-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/mensa-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/mensa-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/help-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/help-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/more.png').image, context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Timer before the app moves on to the home page to give the loading some time
     final Timer startingTimer = Timer(const Duration(seconds: 1), () {
@@ -113,10 +130,17 @@ class _SplashPageState extends State<SplashPage> {
       startApp(context);
     });
 
-    return Container(
-      color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-      child: const Center(
-        child: Text('Splash Screen'),
+    // The [AnnotatedRegion] widget allows to style system components like the status- or navigation-bar
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+      child: Container(
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+        child: const Center(
+          child: Text('Splash Screen'),
+        ),
       ),
     );
   }

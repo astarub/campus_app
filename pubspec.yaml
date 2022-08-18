@@ -14,6 +14,7 @@ dependencies:
   flutter_html: ^3.0.0-alpha.5
   flutter_secure_storage: ^4.2.1
   provider: ^6.0.3
+  flutter_svg: ^1.1.4
   page_transition: ^2.0.9
   cached_network_image: ^3.2.0
   cookie_jar: ^3.0.1
@@ -27,7 +28,6 @@ dependencies:
   intl: ^0.17.0
   path_provider: ^2.0.11
   pdfx: ^2.0.1+2
-  xml: ^5.3.1
   
 dev_dependencies:
   flutter_test:
@@ -38,12 +38,27 @@ dev_dependencies:
 
 flutter:
   assets:
-     - assets/img/
+     - assets/img/icons/home-outlined.png
+     - assets/img/icons/home-filled.png
+     - assets/img/icons/calendar-outlined.png
+     - assets/img/icons/calendar-filled.png
+     - assets/img/icons/mensa-outlined.png
+     - assets/img/icons/mensa-filled.png
+     - assets/img/icons/help-outlined.png
+     - assets/img/icons/help-filled.png
+     - assets/img/icons/more.png
      - assets/documents/
-  #fonts:
-  #  - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+
+  fonts:
+    - family: CircularStd
+      fonts:
+        - asset: assets/fonts/CircularStd-Medium.otf
+        - asset: assets/fonts/CircularStd-Book.otf
+          weight: 600
+        - asset: assets/fonts/CircularStd-Bold.otf
+          weight: 700
+        - asset: assets/fonts/CircularStd-Black.otf
+          weight: 900
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   uses-material-design: true

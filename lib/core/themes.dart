@@ -10,7 +10,13 @@ class ThemesNotifier with ChangeNotifier {
       brightness: Brightness.light,
       backgroundColor: Colors.white,
       primaryColor: Colors.black,
-      textTheme: TextTheme(),
+      fontFamily: 'Circular-Std',
+      textTheme: const TextTheme(
+        button: TextStyle(
+          color: Colors.white,
+          fontSize: 15,
+        ),
+      ),
     ),
     // Dark
     ThemeData(
@@ -51,6 +57,10 @@ class ThemesNotifier with ChangeNotifier {
           print('ThemeMode Änderung zu: ' + _currentTheme.toString());
         }
       }
+
+      /* mySystemTheme= SystemUiOverlayStyle.light.copyWith(systemNavigationBarColor: Colors.red);
+      SystemChrome.setSystemUiOverlayStyle(mySystemTheme); */
+
       print('Theme Änderung zu: ' + theme.toString());
 
       notifyListeners();
