@@ -138,8 +138,12 @@ class _SplashPageState extends State<SplashPage> {
       ),
       child: Container(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-        child: const Center(
-          child: Text('Splash Screen'),
+        child: Center(
+          child: Image.asset(
+            'assets/img/asta_logo.png',
+            color: Colors.black,
+            height: 100,
+          ),
         ),
       ),
     );

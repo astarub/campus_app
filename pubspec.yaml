@@ -38,6 +38,7 @@ dev_dependencies:
 
 flutter:
   assets:
+     - assets/img/asta_logo.png
      - assets/img/icons/home-outlined.png
      - assets/img/icons/home-filled.png
      - assets/img/icons/calendar-outlined.png

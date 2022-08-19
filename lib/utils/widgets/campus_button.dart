@@ -5,6 +5,7 @@ import 'package:campus_app/core/themes.dart';
 
 enum CampusButtonType { normal, light }
 
+/// This widget adds a custom TextButton that uses the CampusApp design language
 class CampusButton extends StatelessWidget {
   /// The displayed text inside the button
   final String text;
@@ -34,23 +35,33 @@ class CampusButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 340,
-      height: 60,
+      width: 330,
+      height: 58,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
       ),
       child: Material(
-        color: type == CampusButtonType.normal ? Colors.black : Colors.white,
+        color: type == CampusButtonType.normal ? Colors.black : const Color.fromARGB(255, 129, 129, 129),
         borderRadius: BorderRadius.circular(15),
         child: InkWell(
           onTap: onTap,
-          splashColor: const Color.fromRGBO(255, 255, 255, 0.12),
-          highlightColor: const Color.fromRGBO(255, 255, 255, 0.08),
+          splashColor: type == CampusButtonType.normal
+              ? const Color.fromRGBO(255, 255, 255, 0.12)
+              : const Color.fromRGBO(0, 0, 0, 0.06),
+          highlightColor: type == CampusButtonType.normal
+              ? const Color.fromRGBO(255, 255, 255, 0.08)
+              : const Color.fromRGBO(0, 0, 0, 0.04),
           borderRadius: BorderRadius.circular(15),
           child: Center(
             child: Text(
               text,
-              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.button,
+              style: type == CampusButtonType.normal
+                  ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium
+                  : Provider.of<ThemesNotifier>(context)
+                      .currentThemeData
+                      .textTheme
+                      .labelMedium
+                      ?.copyWith(color: const Color.fromARGB(255, 146, 146, 146)),
             ),
           ),
         ),
