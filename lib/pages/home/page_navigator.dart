@@ -44,6 +44,9 @@ class NavBarNavigator extends StatelessWidget {
       case PageItem.guide:
         rootPage = CalendarPage(); // Has to be replaced!
         break;
+      case PageItem.more:
+        rootPage = CalendarPage(); // Has to be replaced!
+        break;
     }
     return {
       PageNavigatorRoutes.root: (context) => rootPage,

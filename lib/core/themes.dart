@@ -10,11 +10,17 @@ class ThemesNotifier with ChangeNotifier {
       brightness: Brightness.light,
       backgroundColor: Colors.white,
       primaryColor: Colors.black,
-      fontFamily: 'Circular-Std',
+      fontFamily: 'SF-Pro',
       textTheme: const TextTheme(
-        button: TextStyle(
+        labelSmall: TextStyle(
+          color: Colors.black,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+        labelMedium: TextStyle(
           color: Colors.white,
           fontSize: 15,
+          fontWeight: FontWeight.w600,
         ),
       ),
     ),

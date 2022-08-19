@@ -6,7 +6,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
 
 /// Defines the different pages that can be displayed
-enum PageItem { feed, events, coupons, mensa, guide }
+enum PageItem { feed, events, coupons, mensa, guide, more }
 
 /// The [HomePage] displays all general UI elements like the bottom nav-menu and
 /// handles the switching between the different pages.

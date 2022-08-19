@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/home/widgets/bottom_nav_bar_item.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
 /// Creates the bottom navigation bar that lets the user switch between different pages.
@@ -38,83 +39,55 @@ class _BottomNavBarState extends State<BottomNavBar> {
         ),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          // News Feed
-          CustomButton(
-            tapHandler: () => widget.onSelectedPage(PageItem.feed),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              child: Image.asset(
-                widget.currentPage == PageItem.feed
-                    ? 'assets/img/icons/home-filled.png'
-                    : 'assets/img/icons/home-outlined.png',
-                height: iconHeight,
-                color: Colors.black,
-                filterQuality: FilterQuality.high,
-              ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        physics: const NeverScrollableScrollPhysics(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // News Feed
+            BottomNavBarItem(
+              title: 'Feed',
+              imagePathActive: 'assets/img/icons/home-filled.png',
+              imagePathInactive: 'assets/img/icons/home-outlined.png',
+              onTap: () => widget.onSelectedPage(PageItem.feed),
+              isActive: widget.currentPage == PageItem.feed,
             ),
-          ),
-          // Calendar
-          CustomButton(
-            tapHandler: () => widget.onSelectedPage(PageItem.events),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              child: Image.asset(
-                widget.currentPage == PageItem.events
-                    ? 'assets/img/icons/calendar-filled.png'
-                    : 'assets/img/icons/calendar-outlined.png',
-                height: iconHeight,
-                color: Colors.black,
-                filterQuality: FilterQuality.high,
-              ),
+            // Calendar
+            BottomNavBarItem(
+              title: 'Events',
+              imagePathActive: 'assets/img/icons/calendar-filled.png',
+              imagePathInactive: 'assets/img/icons/calendar-outlined.png',
+              onTap: () => widget.onSelectedPage(PageItem.events),
+              isActive: widget.currentPage == PageItem.events,
             ),
-          ),
-          // Mensa
-          CustomButton(
-            tapHandler: () => widget.onSelectedPage(PageItem.mensa),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              child: Image.asset(
-                widget.currentPage == PageItem.mensa
-                    ? 'assets/img/icons/mensa-filled.png'
-                    : 'assets/img/icons/mensa-outlined.png',
-                height: iconHeight,
-                color: Colors.black,
-                filterQuality: FilterQuality.high,
-              ),
+            // Mensa
+            BottomNavBarItem(
+              title: 'Mensa',
+              imagePathActive: 'assets/img/icons/mensa-filled.png',
+              imagePathInactive: 'assets/img/icons/mensa-outlined.png',
+              onTap: () => widget.onSelectedPage(PageItem.mensa),
+              isActive: widget.currentPage == PageItem.mensa,
             ),
-          ),
-          // Guide
-          CustomButton(
-            tapHandler: () => widget.onSelectedPage(PageItem.guide),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              child: Image.asset(
-                widget.currentPage == PageItem.guide
-                    ? 'assets/img/icons/help-filled.png'
-                    : 'assets/img/icons/help-outlined.png',
-                height: iconHeight,
-                color: Colors.black,
-                filterQuality: FilterQuality.high,
-              ),
+            // Guide
+            BottomNavBarItem(
+              title: 'Guide',
+              imagePathActive: 'assets/img/icons/help-filled.png',
+              imagePathInactive: 'assets/img/icons/help-outlined.png',
+              onTap: () => widget.onSelectedPage(PageItem.guide),
+              isActive: widget.currentPage == PageItem.guide,
             ),
-          ),
-          // More
-          CustomButton(
-            tapHandler: () {},
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              child: Image.asset(
-                widget.currentPage == PageItem.feed ? 'assets/img/icons/more.png' : 'assets/img/icons/more.png',
-                height: iconHeight,
-                color: Colors.black,
-                filterQuality: FilterQuality.high,
-              ),
+            // More
+            BottomNavBarItem(
+              title: 'Mehr',
+              imagePathActive: 'assets/img/icons/more.png',
+              imagePathInactive: 'assets/img/icons/more.png',
+              onTap: () => widget.onSelectedPage(PageItem.more),
+              isActive: widget.currentPage == PageItem.more,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

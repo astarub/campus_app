@@ -12,11 +12,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_html: ^3.0.0-alpha.5
-  flutter_secure_storage: ^4.2.1
+  flutter_secure_storage: ^6.0.0
   provider: ^6.0.3
   flutter_svg: ^1.1.4
   page_transition: ^2.0.9
-  cached_network_image: ^3.2.0
+  cached_network_image: ^3.2.1
   cookie_jar: ^3.0.1
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
@@ -50,15 +50,31 @@ flutter:
      - assets/documents/
 
   fonts:
-    - family: CircularStd
+    - family: SF-Pro
       fonts:
-        - asset: assets/fonts/CircularStd-Medium.otf
-        - asset: assets/fonts/CircularStd-Book.otf
+        - asset: assets/fonts/SF-Pro-Display-Light.otf
+          weight: 300
+        - asset: assets/fonts/SF-Pro-Display-Regular.otf
+          weight: 400
+        - asset: assets/fonts/SF-Pro-Display-Medium.otf
+          weight: 500
+        - asset: assets/fonts/SF-Pro-Display-Semibold.otf
           weight: 600
-        - asset: assets/fonts/CircularStd-Bold.otf
+        - asset: assets/fonts/SF-Pro-Display-Bold.otf
           weight: 700
-        - asset: assets/fonts/CircularStd-Black.otf
+        - asset: assets/fonts/SF-Pro-Display-Heavy.otf
+          weight: 800
+        - asset: assets/fonts/SF-Pro-Display-Black.otf
           weight: 900
+  #  - family: CircularStd
+  #    fonts:
+  #      - asset: assets/fonts/CircularStd-Medium.otf
+  #      - asset: assets/fonts/CircularStd-Book.otf
+  #        weight: 600
+  #      - asset: assets/fonts/CircularStd-Bold.otf
+  #        weight: 700
+  #      - asset: assets/fonts/CircularStd-Black.otf
+  #        weight: 900
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   uses-material-design: true
