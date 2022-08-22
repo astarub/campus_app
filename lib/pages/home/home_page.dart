@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
+import 'package:campus_app/pages/rubnews/rubnews_page.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
 /// Defines the different pages that can be displayed
 enum PageItem { feed, events, coupons, mensa, guide, more }
@@ -24,12 +26,34 @@ class _HomePageState extends State<HomePage> {
     PageItem.events: GlobalKey<NavigatorState>(),
   };
 
+  /// Creates two [GlobalKey] for each page in order to control the exit- and
+  /// entry-animation from outside the page
+  Map<PageItem, GlobalKey<AnimatedExitState>> exitAnimationKeys = {
+    PageItem.feed: GlobalKey<AnimatedExitState>(),
+    PageItem.events: GlobalKey<AnimatedExitState>(),
+  };
+  Map<PageItem, GlobalKey<AnimatedEntryState>> entryAnimationKeys = {
+    PageItem.feed: GlobalKey<AnimatedEntryState>(),
+    PageItem.events: GlobalKey<AnimatedEntryState>(),
+  };
+
   /// Holds the currently active page.
   PageItem currentPage = PageItem.feed;
 
+  GlobalKey<RubnewsPageState> feedKey = GlobalKey();
+
   /// Switches to another page when selected in the nav-menu
-  void _selectedPage(PageItem selectedPageItem) {
+  Future<bool> _selectedPage(PageItem selectedPageItem) async {
+    // Reset the exit animation of the new page to make the content visible again
+    exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
+    // Start the exit animation of the old page
+    await exitAnimationKeys[currentPage]?.currentState?.startExitAnimation();
+    // Switch to the new page
     setState(() => currentPage = selectedPageItem);
+    // Start the entry animation of the new page
+    await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
+
+    return true;
   }
 
   /// Wraps the [NavBarNavigator] that holds the displayed page in an [Offstage] widget
@@ -40,6 +64,8 @@ class _HomePageState extends State<HomePage> {
       child: NavBarNavigator(
         navigatorKey: navigatorKeys[tabItem]!,
         pageItem: tabItem,
+        pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
+        pageExitAnimationKey: exitAnimationKeys[tabItem]!,
       ),
     );
   }

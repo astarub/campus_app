@@ -7,42 +7,57 @@ import 'package:campus_app/pages/.widgets/error_message.dart';
 import 'package:campus_app/utils/pages/rubnews_utils.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_textfield.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
 class RubnewsPage extends StatefulWidget {
-  const RubnewsPage({Key? key}) : super(key: key);
+  final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
+  final GlobalKey<AnimatedExitState> pageExitAnimationKey;
+
+  const RubnewsPage({
+    Key? key,
+    required this.pageEntryAnimationKey,
+    required this.pageExitAnimationKey,
+  }) : super(key: key);
 
   @override
-  State<RubnewsPage> createState() => _RubnewsPageState();
+  State<RubnewsPage> createState() => RubnewsPageState();
 }
 
-class _RubnewsPageState extends State<RubnewsPage> {
+class RubnewsPageState extends State<RubnewsPage> {
+  //final GlobalKey<AnimatedExitState> pageExitAnimationKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
-    final utils = RubnewsUtils();
     final TextEditingController textFieldController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Text('News Page', style: TextStyle(fontFamily: 'CircularStd', fontSize: 24)),
-            CampusButton(
-              text: 'Tap me',
-              onTap: () {},
+        child: AnimatedExit(
+          key: widget.pageExitAnimationKey,
+          child: AnimatedEntry(
+            key: widget.pageEntryAnimationKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Text('News Page', style: TextStyle(fontFamily: 'CircularStd', fontSize: 24)),
+                CampusButton(
+                  text: 'Tap me',
+                  onTap: () {},
+                ),
+                CampusTextField.icon(
+                  textFieldController: textFieldController,
+                  textFieldText: 'Email',
+                  pathToIcon: 'assets/img/icons/mail.svg',
+                ),
+                CampusTextField(
+                  textFieldController: textFieldController,
+                  textFieldText: 'Put text here',
+                  obscuredInput: true,
+                ),
+              ],
             ),
-            CampusTextField.icon(
-              textFieldController: textFieldController,
-              textFieldText: 'Email',
-              pathToIcon: 'assets/img/icons/mail.svg',
-            ),
-            CampusTextField(
-              textFieldController: textFieldController,
-              textFieldText: 'Put text here',
-              obscuredInput: true,
-            ),
-          ],
+          ),
         ),
       ),
     );

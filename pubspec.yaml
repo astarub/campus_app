@@ -48,6 +48,7 @@ flutter:
      - assets/img/icons/help-outlined.png
      - assets/img/icons/help-filled.png
      - assets/img/icons/more.png
+     - assets/img/icons/mail.svg
      - assets/documents/
 
   fonts:

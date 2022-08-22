@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/pages/rubnews/rubnews_page.dart';
 import 'package:campus_app/pages/calendar/calendar_page.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
 class PageNavigatorRoutes {
   /// The root-page is shown initially when this navbar-tab is the active one.
@@ -18,11 +19,23 @@ class PageNavigatorRoutes {
 /// This also allows to constantly show the [BottomNavBar] across multiple pages, even during transitions.
 class NavBarNavigator extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
+
+  /// Determines the type of the page in order to set the navigator correctly.
   final PageItem pageItem;
+
+  /// Passes the animation key for the entry animation to the referenced page
+  /// to control the animation from outside the page.
+  final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
+
+  /// Passes the animation key for the exit animation to the referenced page
+  /// to control the animation from outside the page.
+  final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   NavBarNavigator({
     required this.navigatorKey,
     required this.pageItem,
+    required this.pageEntryAnimationKey,
+    required this.pageExitAnimationKey,
   });
 
   /// Creates a map of the root and detail page of the specific page.
@@ -30,22 +43,28 @@ class NavBarNavigator extends StatelessWidget {
     Widget rootPage;
     switch (pageItem) {
       case PageItem.feed:
-        rootPage = const RubnewsPage();
+        rootPage = RubnewsPage(
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
+        );
         break;
       case PageItem.events:
-        rootPage = const CalendarPage();
+        rootPage = CalendarPage(
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
+        );
         break;
       case PageItem.coupons:
-        rootPage = CalendarPage(); // Has to be replaced!
+        rootPage = Scaffold(); // Has to be replaced!
         break;
       case PageItem.mensa:
-        rootPage = CalendarPage(); // Has to be replaced!
+        rootPage = Scaffold(); // Has to be replaced!
         break;
       case PageItem.guide:
-        rootPage = CalendarPage(); // Has to be replaced!
+        rootPage = Scaffold(); // Has to be replaced!
         break;
       case PageItem.more:
-        rootPage = CalendarPage(); // Has to be replaced!
+        rootPage = Scaffold(); // Has to be replaced!
         break;
     }
     return {
