@@ -5,6 +5,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/pages/.widgets/error_message.dart';
 import 'package:campus_app/utils/pages/rubnews_utils.dart';
+import 'package:campus_app/pages/rubnews/widgets/feed_item.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_textfield.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
@@ -36,22 +37,38 @@ class RubnewsPageState extends State<RubnewsPage> {
           child: AnimatedEntry(
             key: widget.pageEntryAnimationKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text('Feed', style: TextStyle(fontFamily: 'CircularStd', fontSize: 24)),
-                CampusButton(
-                  text: 'Tap me',
-                  onTap: () {},
+                Padding(
+                  padding: const EdgeInsets.only(top: 40, bottom: 20),
+                  child: Text(
+                    'Feed',
+                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                  ),
                 ),
-                CampusTextField.icon(
-                  textFieldController: textFieldController,
-                  textFieldText: 'Email',
-                  pathToIcon: 'assets/img/icons/mail.svg',
-                ),
-                CampusTextField(
-                  textFieldController: textFieldController,
-                  textFieldText: 'Put text here',
-                  obscuredInput: true,
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      FeedItem(
+                        title: 'E-Sports Meet & Greet',
+                        description:
+                            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
+                        date: DateTime(2022, 6, 20, 17), // 20.06.2022, 17 Uhr
+                        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
+                        content: 'Test Content',
+                      ),
+                      FeedItem(
+                        title: 'E-Sports Meet & Greet',
+                        description:
+                            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
+                        date: DateTime(2022, 6, 20, 17), // 20.06.2022, 17 Uhr
+                        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
+                        content: 'Test Content',
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -33,14 +33,19 @@ class CalendarPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Text('Events', style: TextStyle(fontFamily: 'CircularStd', fontSize: 24)),
+                CampusButton(
+                  text: 'Tap me',
+                  onTap: () {},
+                ),
                 CampusTextField.icon(
                   textFieldController: textFieldController,
                   textFieldText: 'Email',
                   pathToIcon: 'assets/img/icons/mail.svg',
                 ),
-                CampusButton(
-                  text: 'Tap me',
-                  onTap: () {},
+                CampusTextField(
+                  textFieldController: textFieldController,
+                  textFieldText: 'Put text here',
+                  obscuredInput: true,
                 ),
               ],
             ),

@@ -1,23 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:campus_app/pages/rubnews/rubnews_news_entity.dart';
+import 'package:campus_app/pages/rubnews/news_entity.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
-class RubnewsNewsModel extends RubnewsNewsEntity {
+class RubnewsNewsModel extends NewsEntity {
   RubnewsNewsModel({
     required String content,
     required String title,
     required String link,
     required String description,
-    //required DateTime pubDate,
+    required DateTime date,
     required CachedNetworkImage image,
   }) : super(
-          content: content,
           title: title,
           link: link,
           description: description,
-          //pubDate: pubDate,
+          date: date,
           image: image,
         );
 
@@ -27,7 +26,7 @@ class RubnewsNewsModel extends RubnewsNewsEntity {
       title: 'title',
       link: 'link',
       description: 'description',
-      //pubDate: DateTime(0),
+      date: DateTime(0),
       image: CachedNetworkImage(
         placeholder: (context, url) => const CircularProgressIndicator(),
         imageUrl: astaFavicon,
@@ -46,7 +45,7 @@ class RubnewsNewsModel extends RubnewsNewsEntity {
       title: title,
       link: link,
       description: description,
-      //pubDate: DateTime(0),
+      date: DateTime(0),
       image: image,
     );
   }

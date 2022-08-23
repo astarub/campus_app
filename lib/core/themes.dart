@@ -12,6 +12,21 @@ class ThemesNotifier with ChangeNotifier {
       primaryColor: Colors.black,
       fontFamily: 'SF-Pro',
       textTheme: const TextTheme(
+        displayMedium: TextStyle(
+          color: Colors.black,
+          fontSize: 30,
+          fontWeight: FontWeight.w600,
+        ),
+        headlineSmall: TextStyle(
+          color: Colors.black,
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+        ),
+        bodyMedium: TextStyle(
+          color: Color.fromARGB(255, 129, 129, 129),
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.2,
+        ),
         labelSmall: TextStyle(
           color: Colors.black,
           fontSize: 14,
