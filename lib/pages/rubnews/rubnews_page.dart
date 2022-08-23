@@ -3,11 +3,9 @@ import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/pages/.widgets/error_message.dart';
 import 'package:campus_app/utils/pages/rubnews_utils.dart';
 import 'package:campus_app/pages/rubnews/widgets/feed_item.dart';
-import 'package:campus_app/utils/widgets/campus_button.dart';
-import 'package:campus_app/utils/widgets/campus_textfield.dart';
+import 'package:campus_app/pages/rubnews/widgets/feed_picker.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
 class RubnewsPage extends StatefulWidget {
@@ -27,8 +25,6 @@ class RubnewsPage extends StatefulWidget {
 class RubnewsPageState extends State<RubnewsPage> {
   @override
   Widget build(BuildContext context) {
-    final TextEditingController textFieldController = TextEditingController();
-
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
@@ -37,15 +33,33 @@ class RubnewsPageState extends State<RubnewsPage> {
           child: AnimatedEntry(
             key: widget.pageEntryAnimationKey,
             child: Column(
-              //mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                // Header
                 Padding(
                   padding: const EdgeInsets.only(top: 40, bottom: 20),
-                  child: Text(
-                    'Feed',
-                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Headline
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: Text(
+                          'Feed',
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                        ),
+                      ),
+                      // FeedPicker & filter
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          FeedPicker(),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
+                // News feed
                 Expanded(
                   child: ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
