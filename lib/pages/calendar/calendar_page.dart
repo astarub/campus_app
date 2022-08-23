@@ -32,7 +32,7 @@ class CalendarPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text('Events Page', style: TextStyle(fontFamily: 'CircularStd', fontSize: 24)),
+                const Text('Events', style: TextStyle(fontFamily: 'CircularStd', fontSize: 24)),
                 CampusTextField.icon(
                   textFieldController: textFieldController,
                   textFieldText: 'Email',

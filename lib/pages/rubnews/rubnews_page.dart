@@ -24,8 +24,6 @@ class RubnewsPage extends StatefulWidget {
 }
 
 class RubnewsPageState extends State<RubnewsPage> {
-  //final GlobalKey<AnimatedExitState> pageExitAnimationKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     final TextEditingController textFieldController = TextEditingController();
@@ -40,7 +38,7 @@ class RubnewsPageState extends State<RubnewsPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text('News Page', style: TextStyle(fontFamily: 'CircularStd', fontSize: 24)),
+                const Text('Feed', style: TextStyle(fontFamily: 'CircularStd', fontSize: 24)),
                 CampusButton(
                   text: 'Tap me',
                   onTap: () {},

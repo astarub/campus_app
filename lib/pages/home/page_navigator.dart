@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/pages/rubnews/rubnews_page.dart';
 import 'package:campus_app/pages/calendar/calendar_page.dart';
+import 'package:campus_app/pages/mensa/mensa_page.dart';
+import 'package:campus_app/pages/guide/guide_page.dart';
+import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
 class PageNavigatorRoutes {
@@ -58,13 +61,22 @@ class NavBarNavigator extends StatelessWidget {
         rootPage = Scaffold(); // Has to be replaced!
         break;
       case PageItem.mensa:
-        rootPage = Scaffold(); // Has to be replaced!
+        rootPage = MensaPage(
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
+        );
         break;
       case PageItem.guide:
-        rootPage = Scaffold(); // Has to be replaced!
+        rootPage = GuidePage(
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
+        );
         break;
       case PageItem.more:
-        rootPage = Scaffold(); // Has to be replaced!
+        rootPage = MorePage(
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
+        );
         break;
     }
     return {
