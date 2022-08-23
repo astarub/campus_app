@@ -55,20 +55,20 @@ class ThemesNotifier with ChangeNotifier {
         _currentThemeData = themeData[0];
         if (_currentThemeMode != ThemeMode.system) {
           _currentThemeMode = ThemeMode.light;
-          print('ThemeMode Änderung zu: ' + _currentTheme.toString());
+          debugPrint('ThemeMode Änderung zu: ' + _currentTheme.toString());
         }
       } else {
         _currentThemeData = themeData[1];
         if (_currentThemeMode != ThemeMode.system) {
           _currentThemeMode = ThemeMode.dark;
-          print('ThemeMode Änderung zu: ' + _currentTheme.toString());
+          debugPrint('ThemeMode Änderung zu: ' + _currentTheme.toString());
         }
       }
 
       /* mySystemTheme= SystemUiOverlayStyle.light.copyWith(systemNavigationBarColor: Colors.red);
       SystemChrome.setSystemUiOverlayStyle(mySystemTheme); */
 
-      print('Theme Änderung zu: ' + theme.toString());
+      debugPrint('Theme Änderung zu: ' + theme.toString());
 
       notifyListeners();
     }
@@ -80,10 +80,10 @@ class ThemesNotifier with ChangeNotifier {
     if (mode == ThemeMode.system) {
       final Brightness deviceMode = WidgetsBinding.instance.window.platformBrightness;
       if (deviceMode == Brightness.light) {
-        print('System-Theme ist: LightMode');
+        debugPrint('System-Theme ist: LightMode');
         if (currentTheme == AppThemes.dark) currentTheme = AppThemes.light;
       } else if (deviceMode == Brightness.dark) {
-        print('System-Theme ist: DarkMode');
+        debugPrint('System-Theme ist: DarkMode');
         if (currentTheme == AppThemes.light) currentTheme = AppThemes.dark;
       }
     } else if (mode == ThemeMode.light) {
@@ -96,7 +96,7 @@ class ThemesNotifier with ChangeNotifier {
       notifyListeners();
     }
 
-    print('ThemeMode Änderung zu: ' + mode.toString());
+    debugPrint('ThemeMode Änderung zu: ' + mode.toString());
   }
 
   AppThemes get currentTheme => _currentTheme;

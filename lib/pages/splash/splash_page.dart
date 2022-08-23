@@ -29,20 +29,20 @@ class _SplashPageState extends State<SplashPage> {
   void startApp(BuildContext context) {
     if (loadedSettings != null) {
       // Normal app start
-      print('Initiate normal app start.');
+      debugPrint('Initiate normal app start.');
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
     } else {
       // Onboarding
-      print('Start onboarding.');
+      debugPrint('Start onboarding.');
     }
   }
 
   /// Load the saved settings and parse it
   void loadSettings() {
-    print('LoadSettings initalized.');
+    debugPrint('LoadSettings initalized.');
     getApplicationDocumentsDirectory().then((Directory directory) {
       _directoryPath = directory.path;
-      print('Save location: ' + _directoryPath.toString());
+      debugPrint('Save location: ' + _directoryPath.toString());
 
       // Load settings async
       File settingsJsonFile = File(_directoryPath + '/settings.json');
@@ -50,14 +50,14 @@ class _SplashPageState extends State<SplashPage> {
       // Check if settings file already exists
       settingsJsonFile.exists().then((bool existing) {
         if (existing) {
-          print('Settings-file already exists. Initialize loading of settings.');
+          debugPrint('Settings-file already exists. Initialize loading of settings.');
           // Load settings and parse it
           settingsJsonFile.readAsString().then((String rawFileContent) {
             if (rawFileContent != '') {
               dynamic rawData = json.decode(rawFileContent);
               loadedSettings = Settings.fromJson(rawData);
 
-              print('Settings loaded.');
+              debugPrint('Settings loaded.');
 
               // Set theme
               setTheme(
@@ -69,7 +69,7 @@ class _SplashPageState extends State<SplashPage> {
           });
         } else {
           // Create settings file for the first time, if it doesnt exist
-          print('Settings-file created.');
+          debugPrint('Settings-file created.');
           settingsJsonFile.create();
           Map<String, dynamic> initialSettings = {'useSystemDarkmode': true, 'useDarkmode': false};
           settingsJsonFile.writeAsString(json.encode(initialSettings));
@@ -77,7 +77,7 @@ class _SplashPageState extends State<SplashPage> {
 
         // Timer for statistics
         loadingTimer.stop();
-        print('-- loading time: ' + loadingTimer.elapsedMilliseconds.toString() + ' ms');
+        debugPrint('-- loading time: ' + loadingTimer.elapsedMilliseconds.toString() + ' ms');
         idleTimer.start();
       });
     });
@@ -93,7 +93,7 @@ class _SplashPageState extends State<SplashPage> {
   // ? DEBUG ONLY
   void _debugDeleteSettings() async {
     File jsonFile = File(_directoryPath + '/settings.json');
-    jsonFile.delete().then((_) => print('DEBUG: Settings-Datei gelöscht.'));
+    jsonFile.delete().then((_) => debugPrint('DEBUG: Settings-Datei gelöscht.'));
   }
 
   @override
@@ -126,7 +126,7 @@ class _SplashPageState extends State<SplashPage> {
     // Timer before the app moves on to the home page to give the loading some time
     final Timer startingTimer = Timer(const Duration(seconds: 1), () {
       idleTimer.stop();
-      print('-- idle time: ' + idleTimer.elapsedMilliseconds.toString() + ' ms');
+      debugPrint('-- idle time: ' + idleTimer.elapsedMilliseconds.toString() + ' ms');
       startApp(context);
     });
 
