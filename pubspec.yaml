@@ -50,6 +50,8 @@ flutter:
      - assets/img/icons/help-filled.png
      - assets/img/icons/more.png
      - assets/img/icons/mail.svg
+     - assets/img/icons/search.svg
+     - assets/img/icons/filter.svg
      - assets/img/AStA-Retro-Gaming.jpg
      - assets/documents/
 

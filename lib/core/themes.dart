@@ -32,6 +32,7 @@ class ThemesNotifier with ChangeNotifier {
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
+        // Button
         labelMedium: TextStyle(
           color: Colors.white,
           fontSize: 15,
