@@ -6,14 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 
 class SplashPage extends StatefulWidget {
   static const routeName = '/splash';
+  final GlobalKey<NavigatorState> mainNavigatorKey;
 
-  const SplashPage({Key? key}) : super(key: key);
+  const SplashPage({Key? key, required this.mainNavigatorKey}) : super(key: key);
 
   @override
   State<SplashPage> createState() => _SplashPageState();
@@ -30,7 +32,9 @@ class _SplashPageState extends State<SplashPage> {
     if (loadedSettings != null) {
       // Normal app start
       debugPrint('Initiate normal app start.');
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => HomePage(mainNavigatorKey: widget.mainNavigatorKey)),
+      );
     } else {
       // Onboarding
       debugPrint('Start onboarding.');
@@ -103,6 +107,7 @@ class _SplashPageState extends State<SplashPage> {
     // load saved settings
     loadingTimer.start();
     loadSettings();
+    FlutterDisplayMode.setHighRefreshRate();
   }
 
   @override

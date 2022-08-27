@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapping_sheet/snapping_sheet.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/utils/pages/rubnews_utils.dart';
 import 'package:campus_app/pages/rubnews/widgets/feed_item.dart';
 import 'package:campus_app/pages/rubnews/widgets/feed_picker.dart';
+import 'package:campus_app/pages/rubnews/widgets/filter_popup.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
 class RubnewsPage extends StatefulWidget {
+  final GlobalKey<NavigatorState> mainNavigatorKey;
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const RubnewsPage({
     Key? key,
+    required this.mainNavigatorKey,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
   }) : super(key: key);
@@ -24,9 +28,11 @@ class RubnewsPage extends StatefulWidget {
 }
 
 class RubnewsPageState extends State<RubnewsPage> {
-  late ScrollController _scrollController;
+  late final ScrollController _scrollController;
   double _scrollControllerLastOffset = 0;
   double _headerOpacity = 1;
+
+  late final SnappingSheetController _popupController;
 
   @override
   void initState() {
@@ -41,6 +47,8 @@ class RubnewsPageState extends State<RubnewsPage> {
           _scrollControllerLastOffset = _scrollController.offset;
         }
       });
+
+    _popupController = SnappingSheetController();
   }
 
   @override
@@ -59,7 +67,7 @@ class RubnewsPageState extends State<RubnewsPage> {
                 Container(
                   margin: const EdgeInsets.only(top: 100),
                   child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     controller: _scrollController,
                     physics: const BouncingScrollPhysics(),
                     children: [
@@ -87,7 +95,7 @@ class RubnewsPageState extends State<RubnewsPage> {
                 ),
                 // Header
                 Container(
-                  padding: const EdgeInsets.only(top: 40, bottom: 20),
+                  padding: const EdgeInsets.only(top: 40, bottom: 20, left: 0, right: 0),
                   color: _headerOpacity == 1 ? Colors.white : Colors.transparent,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -107,19 +115,26 @@ class RubnewsPageState extends State<RubnewsPage> {
                         curve: Curves.easeOut,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
                           children: [
+                            // Search button
                             CampusIconButton(
                               iconPath: 'assets/img/icons/search.svg',
                               onTap: () {},
                             ),
+                            // FeedPicker
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 24),
                               child: FeedPicker(),
                             ),
+                            // Filter button
                             CampusIconButton(
                               iconPath: 'assets/img/icons/filter.svg',
-                              onTap: () {},
+                              onTap: () {
+                                widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
+                                  opaque: false,
+                                  pageBuilder: (context, _, __) => const FeedFilterPopup(),
+                                ));
+                              },
                             ),
                           ],
                         ),
