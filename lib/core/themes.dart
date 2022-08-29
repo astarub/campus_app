@@ -19,7 +19,7 @@ class ThemesNotifier with ChangeNotifier {
         ),
         headlineSmall: TextStyle(
           color: Colors.black,
-          fontSize: 16,
+          fontSize: 17,
           fontWeight: FontWeight.w700,
         ),
         bodyMedium: TextStyle(
