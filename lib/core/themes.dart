@@ -18,6 +18,12 @@ class ThemesNotifier with ChangeNotifier {
           fontSize: 30,
           fontWeight: FontWeight.w600,
         ),
+        headlineMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 1,
+        ),
         headlineSmall: TextStyle(
           color: Colors.black,
           fontSize: 17,

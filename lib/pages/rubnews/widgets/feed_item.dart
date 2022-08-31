@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:animations/animations.dart';
+import 'package:intl/intl.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/rubnews/rubnews_details_page.dart';
@@ -50,6 +51,9 @@ class FeedItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final month = DateFormat('LLL').format(date);
+    final day = DateFormat('dd').format(date);
+
     return OpenContainer(
       transitionType: ContainerTransitionType.fadeThrough,
       transitionDuration: const Duration(milliseconds: 250),
@@ -67,10 +71,44 @@ class FeedItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: image,
+                // Image & Date
+                Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    // Image
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: image,
+                    ),
+                    // Date
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      margin: const EdgeInsets.only(right: 4, bottom: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            month.toString(),
+                            style: Provider.of<ThemesNotifier>(context)
+                                .currentThemeData
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(fontSize: 14),
+                          ),
+                          Text(
+                            day.toString(),
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
+                // Title
                 Padding(
                   padding: const EdgeInsets.only(top: 12, bottom: 6),
                   child: Text(
@@ -78,6 +116,7 @@ class FeedItem extends StatelessWidget {
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                   ),
                 ),
+                // Description
                 Text(
                   description,
                   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
