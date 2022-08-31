@@ -16,6 +16,7 @@ dependencies:
   provider: ^6.0.3
   flutter_svg: ^1.1.4
   xml: ^6.1.0
+  animations: ^2.0.4
   page_transition: ^2.0.9
   cached_network_image: ^3.2.1
   cookie_jar: ^3.0.1
@@ -54,6 +55,7 @@ flutter:
      - assets/img/icons/mail.svg
      - assets/img/icons/search.svg
      - assets/img/icons/filter.svg
+     - assets/img/icons/arrow-left.svg
      - assets/img/AStA-Retro-Gaming.jpg
      - assets/documents/
 

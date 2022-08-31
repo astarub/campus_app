@@ -37,14 +37,15 @@ class RubnewsPageState extends State<RubnewsPage> {
   @override
   void initState() {
     super.initState();
+
     _scrollController = ScrollController()
       ..addListener(() {
-        if (_scrollController.offset > (_scrollControllerLastOffset + 100) && _scrollController.offset > 0) {
+        if (_scrollController.offset > (_scrollControllerLastOffset + 80) && _scrollController.offset > 0) {
+          _scrollControllerLastOffset = _scrollController.offset;
           if (_headerOpacity != 0) setState(() => _headerOpacity = 0);
+        } else if (_scrollController.offset < (_scrollControllerLastOffset - 250)) {
           _scrollControllerLastOffset = _scrollController.offset;
-        } else if (_scrollController.offset < _scrollControllerLastOffset) {
           if (_headerOpacity != 1) setState(() => _headerOpacity = 1);
-          _scrollControllerLastOffset = _scrollController.offset;
         }
       });
 

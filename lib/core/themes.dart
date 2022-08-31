@@ -7,6 +7,7 @@ class ThemesNotifier with ChangeNotifier {
   static final List<ThemeData> themeData = [
     // Light
     ThemeData(
+      useMaterial3: true,
       brightness: Brightness.light,
       backgroundColor: Colors.white,
       primaryColor: Colors.black,
@@ -43,7 +44,8 @@ class ThemesNotifier with ChangeNotifier {
     ),
     // Dark
     ThemeData(
-      brightness: Brightness.light,
+      useMaterial3: true,
+      brightness: Brightness.dark,
       backgroundColor: Colors.white,
       primaryColor: Colors.black,
       textTheme: TextTheme(),

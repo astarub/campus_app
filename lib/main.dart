@@ -44,7 +44,8 @@ class CampusApp extends StatelessWidget {
           );
         }
       },
-      navigatorKey: mainNavigatorKey,
+      navigatorKey:
+          mainNavigatorKey, // comment this out during development, otherwhise the whole app restarts on hot-reload
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: false,
     );

@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:animations/animations.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/rubnews/rubnews_details_page.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
+/// This widget displays a news item in the news feed page.
 class FeedItem extends StatelessWidget {
+  /// The title of the news feed item
   final String title;
+
+  /// The short description of the news feed item that is displayed in the feed
   final String description;
+
+  /// The date of the event that is referenced in the news feed item
   final DateTime date;
+
+  /// The image of the news feed item that is displayed in the feed and detail apge
   final Image image;
+
+  /// A link of the news feed item that links to an external website, if no content is given
   final String link;
+
+  /// The full text of the news feed item that is displayed in the detail page
   final String content;
 
   /// Creates a NewsFeed-item with an expandable content
@@ -36,35 +50,40 @@ class FeedItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
-      child: CustomButton(
-        borderRadius: BorderRadius.circular(15),
-        highlightColor: const Color.fromRGBO(0, 0, 0, 0.03),
-        splashColor: const Color.fromRGBO(0, 0, 0, 0.04),
-        tapHandler: () {},
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: image,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 6),
-                child: Text(
-                  title,
-                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+    return OpenContainer(
+      transitionType: ContainerTransitionType.fadeThrough,
+      transitionDuration: const Duration(milliseconds: 250),
+      openBuilder: (context, _) => RubnewsDetailsPage(title: title, date: date, image: image, content: content),
+      closedBuilder: (context, VoidCallback openDetailsPage) => Padding(
+        padding: const EdgeInsets.only(bottom: 14),
+        child: CustomButton(
+          borderRadius: BorderRadius.circular(15),
+          highlightColor: const Color.fromRGBO(0, 0, 0, 0.03),
+          splashColor: const Color.fromRGBO(0, 0, 0, 0.04),
+          tapHandler: openDetailsPage,
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: image,
                 ),
-              ),
-              Text(
-                description,
-                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 12, bottom: 6),
+                  child: Text(
+                    title,
+                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                  ),
+                ),
+                Text(
+                  description,
+                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                ),
+              ],
+            ),
           ),
         ),
       ),
