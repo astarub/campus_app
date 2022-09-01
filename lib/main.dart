@@ -27,6 +27,8 @@ class CampusApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey();
+
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -36,12 +38,14 @@ class CampusApp extends StatelessWidget {
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
           return PageTransition(
-            child: const SplashPage(), // Exchange page to your needs during development
+            child: SplashPage(mainNavigatorKey: mainNavigatorKey), // Exchange page to your needs during development
             type: PageTransitionType.scale,
             alignment: Alignment.center,
           );
         }
       },
+      navigatorKey:
+          mainNavigatorKey, // comment this out during development, otherwhise the whole app restarts on hot-reload
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: false,
     );

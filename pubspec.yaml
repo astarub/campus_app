@@ -16,6 +16,7 @@ dependencies:
   provider: ^6.0.3
   flutter_svg: ^1.1.4
   xml: ^6.1.0
+  animations: ^2.0.4
   page_transition: ^2.0.9
   cached_network_image: ^3.2.1
   cookie_jar: ^3.0.1
@@ -29,6 +30,8 @@ dependencies:
   intl: ^0.17.0
   path_provider: ^2.0.11
   pdfx: ^2.0.1+2
+  snapping_sheet: ^3.1.0
+  flutter_displaymode: ^0.4.0
   
 dev_dependencies:
   flutter_test:
@@ -50,6 +53,10 @@ flutter:
      - assets/img/icons/help-filled.png
      - assets/img/icons/more.png
      - assets/img/icons/mail.svg
+     - assets/img/icons/search.svg
+     - assets/img/icons/filter.svg
+     - assets/img/icons/arrow-left.svg
+     - assets/img/AStA-Retro-Gaming.jpg
      - assets/documents/
 
   fonts:

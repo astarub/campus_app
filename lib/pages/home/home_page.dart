@@ -13,7 +13,9 @@ enum PageItem { feed, events, coupons, mensa, guide, more }
 /// The [HomePage] displays all general UI elements like the bottom nav-menu and
 /// handles the switching between the different pages.
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final GlobalKey<NavigatorState> mainNavigatorKey;
+
+  const HomePage({Key? key, required this.mainNavigatorKey}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -71,6 +73,7 @@ class _HomePageState extends State<HomePage> {
     return Offstage(
       offstage: currentPage != tabItem,
       child: NavBarNavigator(
+        mainNavigatorKey: widget.mainNavigatorKey,
         navigatorKey: navigatorKeys[tabItem]!,
         pageItem: tabItem,
         pageEntryAnimationKey: entryAnimationKeys[tabItem]!,

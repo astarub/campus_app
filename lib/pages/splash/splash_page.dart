@@ -6,14 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 
 class SplashPage extends StatefulWidget {
   static const routeName = '/splash';
+  final GlobalKey<NavigatorState> mainNavigatorKey;
 
-  const SplashPage({Key? key}) : super(key: key);
+  const SplashPage({Key? key, required this.mainNavigatorKey}) : super(key: key);
 
   @override
   State<SplashPage> createState() => _SplashPageState();
@@ -30,7 +32,9 @@ class _SplashPageState extends State<SplashPage> {
     if (loadedSettings != null) {
       // Normal app start
       debugPrint('Initiate normal app start.');
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => HomePage(mainNavigatorKey: widget.mainNavigatorKey)),
+      );
     } else {
       // Onboarding
       debugPrint('Start onboarding.');
@@ -42,10 +46,10 @@ class _SplashPageState extends State<SplashPage> {
     debugPrint('LoadSettings initalized.');
     getApplicationDocumentsDirectory().then((Directory directory) {
       _directoryPath = directory.path;
-      debugPrint('Save location: ' + _directoryPath.toString());
+      debugPrint('Save location: $_directoryPath');
 
       // Load settings async
-      File settingsJsonFile = File(_directoryPath + '/settings.json');
+      final File settingsJsonFile = File('$_directoryPath/settings.json');
 
       // Check if settings file already exists
       settingsJsonFile.exists().then((bool existing) {
@@ -54,7 +58,7 @@ class _SplashPageState extends State<SplashPage> {
           // Load settings and parse it
           settingsJsonFile.readAsString().then((String rawFileContent) {
             if (rawFileContent != '') {
-              dynamic rawData = json.decode(rawFileContent);
+              final dynamic rawData = json.decode(rawFileContent);
               loadedSettings = Settings.fromJson(rawData);
 
               debugPrint('Settings loaded.');
@@ -71,13 +75,13 @@ class _SplashPageState extends State<SplashPage> {
           // Create settings file for the first time, if it doesnt exist
           debugPrint('Settings-file created.');
           settingsJsonFile.create();
-          Map<String, dynamic> initialSettings = {'useSystemDarkmode': true, 'useDarkmode': false};
+          final Map<String, dynamic> initialSettings = {'useSystemDarkmode': true, 'useDarkmode': false};
           settingsJsonFile.writeAsString(json.encode(initialSettings));
         }
 
         // Timer for statistics
         loadingTimer.stop();
-        debugPrint('-- loading time: ' + loadingTimer.elapsedMilliseconds.toString() + ' ms');
+        debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
         idleTimer.start();
       });
     });
@@ -92,7 +96,7 @@ class _SplashPageState extends State<SplashPage> {
 
   // ? DEBUG ONLY
   void _debugDeleteSettings() async {
-    File jsonFile = File(_directoryPath + '/settings.json');
+    File jsonFile = File('$_directoryPath/settings.json');
     jsonFile.delete().then((_) => debugPrint('DEBUG: Settings-Datei gelöscht.'));
   }
 
@@ -103,6 +107,7 @@ class _SplashPageState extends State<SplashPage> {
     // load saved settings
     loadingTimer.start();
     loadSettings();
+    FlutterDisplayMode.setHighRefreshRate();
   }
 
   @override
@@ -126,7 +131,7 @@ class _SplashPageState extends State<SplashPage> {
     // Timer before the app moves on to the home page to give the loading some time
     final Timer startingTimer = Timer(const Duration(seconds: 1), () {
       idleTimer.stop();
-      debugPrint('-- idle time: ' + idleTimer.elapsedMilliseconds.toString() + ' ms');
+      debugPrint('-- idle time: ${idleTimer.elapsedMilliseconds} ms');
       startApp(context);
     });
 
