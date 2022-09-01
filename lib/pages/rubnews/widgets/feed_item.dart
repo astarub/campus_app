@@ -27,6 +27,9 @@ class FeedItem extends StatelessWidget {
   /// The full text of the news feed item that is displayed in the detail page
   final String content;
 
+  /// Wether the given news is an event announcement and should display an event date
+  final bool isEvent;
+
   /// Creates a NewsFeed-item with an expandable content
   const FeedItem({
     Key? key,
@@ -36,6 +39,7 @@ class FeedItem extends StatelessWidget {
     required this.image,
     this.link = '',
     required this.content,
+    this.isEvent = false,
   }) : super(key: key);
 
   /// Creates a NewsFeed-item with an external link
@@ -47,6 +51,7 @@ class FeedItem extends StatelessWidget {
     required this.image,
     required this.link,
     this.content = '',
+    this.isEvent = false,
   }) : super(key: key);
 
   @override
@@ -57,7 +62,8 @@ class FeedItem extends StatelessWidget {
     return OpenContainer(
       transitionType: ContainerTransitionType.fadeThrough,
       transitionDuration: const Duration(milliseconds: 250),
-      openBuilder: (context, _) => RubnewsDetailsPage(title: title, date: date, image: image, content: content),
+      openBuilder: (context, _) =>
+          RubnewsDetailsPage(title: title, date: date, image: image, content: content, isEvent: isEvent),
       closedBuilder: (context, VoidCallback openDetailsPage) => Padding(
         padding: const EdgeInsets.only(bottom: 14),
         child: CustomButton(
@@ -81,31 +87,32 @@ class FeedItem extends StatelessWidget {
                       child: image,
                     ),
                     // Date
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      margin: const EdgeInsets.only(right: 4, bottom: 5),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(15),
+                    if (isEvent)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        margin: const EdgeInsets.only(right: 4, bottom: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              month.toString(),
+                              style: Provider.of<ThemesNotifier>(context)
+                                  .currentThemeData
+                                  .textTheme
+                                  .headlineMedium
+                                  ?.copyWith(fontSize: 14),
+                            ),
+                            Text(
+                              day.toString(),
+                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            month.toString(),
-                            style: Provider.of<ThemesNotifier>(context)
-                                .currentThemeData
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(fontSize: 14),
-                          ),
-                          Text(
-                            day.toString(),
-                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
                 // Title

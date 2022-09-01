@@ -54,7 +54,7 @@ class ThemesNotifier with ChangeNotifier {
       brightness: Brightness.dark,
       backgroundColor: Colors.white,
       primaryColor: Colors.black,
-      textTheme: TextTheme(),
+      textTheme: const TextTheme(),
     )
   ];
 
@@ -72,30 +72,28 @@ class ThemesNotifier with ChangeNotifier {
   }
 
   set currentTheme(AppThemes theme) {
-    if (theme != null) {
-      _currentTheme = theme;
+    _currentTheme = theme;
 
-      if (_currentTheme == AppThemes.light) {
-        _currentThemeData = themeData[0];
-        if (_currentThemeMode != ThemeMode.system) {
-          _currentThemeMode = ThemeMode.light;
-          debugPrint('ThemeMode Änderung zu: ' + _currentTheme.toString());
-        }
-      } else {
-        _currentThemeData = themeData[1];
-        if (_currentThemeMode != ThemeMode.system) {
-          _currentThemeMode = ThemeMode.dark;
-          debugPrint('ThemeMode Änderung zu: ' + _currentTheme.toString());
-        }
+    if (_currentTheme == AppThemes.light) {
+      _currentThemeData = themeData[0];
+      if (_currentThemeMode != ThemeMode.system) {
+        _currentThemeMode = ThemeMode.light;
+        debugPrint('ThemeMode Änderung zu: $_currentTheme');
       }
+    } else {
+      _currentThemeData = themeData[1];
+      if (_currentThemeMode != ThemeMode.system) {
+        _currentThemeMode = ThemeMode.dark;
+        debugPrint('ThemeMode Änderung zu: $_currentTheme');
+      }
+    }
 
-      /* mySystemTheme= SystemUiOverlayStyle.light.copyWith(systemNavigationBarColor: Colors.red);
+    /* mySystemTheme= SystemUiOverlayStyle.light.copyWith(systemNavigationBarColor: Colors.red);
       SystemChrome.setSystemUiOverlayStyle(mySystemTheme); */
 
-      debugPrint('Theme Änderung zu: ' + theme.toString());
+    debugPrint('Theme Änderung zu: $theme');
 
-      notifyListeners();
-    }
+    notifyListeners();
   }
 
   set currentThemeMode(ThemeMode mode) {
@@ -120,7 +118,7 @@ class ThemesNotifier with ChangeNotifier {
       notifyListeners();
     }
 
-    debugPrint('ThemeMode Änderung zu: ' + mode.toString());
+    debugPrint('ThemeMode Änderung zu: $mode');
   }
 
   AppThemes get currentTheme => _currentTheme;

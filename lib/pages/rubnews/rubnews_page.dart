@@ -82,6 +82,7 @@ class RubnewsPageState extends State<RubnewsPage> {
                         date: DateTime(2022, 6, 20, 17), // 20.06.2022, 17 Uhr
                         image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
                         content: 'Test Content',
+                        isEvent: true,
                       ),
                       FeedItem(
                         title: 'E-Sports Meet & Greet',

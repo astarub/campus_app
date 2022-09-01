@@ -10,6 +10,7 @@ class RubnewsDetailsPage extends StatelessWidget {
   final DateTime date;
   final Image image;
   final String content;
+  final bool isEvent;
 
   const RubnewsDetailsPage({
     Key? key,
@@ -17,6 +18,7 @@ class RubnewsDetailsPage extends StatelessWidget {
     required this.date,
     required this.image,
     required this.content,
+    this.isEvent = false,
   }) : super(key: key);
 
   @override
@@ -56,31 +58,32 @@ class RubnewsDetailsPage extends StatelessWidget {
                       child: image,
                     ),
                     // Date
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      margin: const EdgeInsets.only(right: 4, bottom: 5),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(15),
+                    if (isEvent)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        margin: const EdgeInsets.only(right: 4, bottom: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              month.toString(),
+                              style: Provider.of<ThemesNotifier>(context)
+                                  .currentThemeData
+                                  .textTheme
+                                  .headlineMedium
+                                  ?.copyWith(fontSize: 14),
+                            ),
+                            Text(
+                              day.toString(),
+                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            month.toString(),
-                            style: Provider.of<ThemesNotifier>(context)
-                                .currentThemeData
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(fontSize: 14),
-                          ),
-                          Text(
-                            day.toString(),
-                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
                 // Title
