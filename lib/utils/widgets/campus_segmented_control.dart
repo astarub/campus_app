@@ -3,32 +3,38 @@ import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 
-enum FeedFilter { personal, explore }
+/// This widget allows the user to pick between two options.
+/// It is a linear set of two segments, each of which functions as a button.
+class CampusSegmentedControl extends StatefulWidget {
+  /// The displayed text on the left button of the SegmentedControl
+  final String leftTitle;
 
-/// This widget allows the user to pick between the personal
-/// filtered feed and the "explore"-feed, which shows all postings
-class FeedPicker extends StatefulWidget {
-  /// Defined in order to be accessable from the outside and filter
-  /// the feed when the user interacts with the FeedPicker
-  FeedFilter currentFilter;
+  /// The displayed text on the right button of the SegmentedControl
+  final String rightTitle;
 
-  FeedPicker({
+  /// Defined in order to be accessable from the outside and control
+  /// the initial state
+  int selected;
+
+  CampusSegmentedControl({
     Key? key,
-    this.currentFilter = FeedFilter.personal,
+    required this.leftTitle,
+    required this.rightTitle,
+    this.selected = 0,
   }) : super(key: key);
 
   @override
-  State<FeedPicker> createState() => _FeedPickerState();
+  State<CampusSegmentedControl> createState() => _CampusSegmentedControlState();
 }
 
-class _FeedPickerState extends State<FeedPicker> {
+class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
   AlignmentGeometry _hoverAligment = Alignment.centerLeft;
   static const double _pickerWidth = 200;
 
-  void _picked(FeedFilter pickedFilter) {
+  void _picked(int newSelected) {
     setState(() {
-      widget.currentFilter = pickedFilter;
-      if (pickedFilter == FeedFilter.personal) {
+      widget.selected = newSelected;
+      if (newSelected == 0) {
         _hoverAligment = Alignment.centerLeft;
       } else {
         _hoverAligment = Alignment.centerRight;
@@ -73,7 +79,7 @@ class _FeedPickerState extends State<FeedPicker> {
             children: [
               Expanded(
                 child: Text(
-                  'Feed',
+                  widget.leftTitle,
                   textAlign: TextAlign.center,
                   style: Provider.of<ThemesNotifier>(context)
                       .currentThemeData
@@ -84,7 +90,7 @@ class _FeedPickerState extends State<FeedPicker> {
               ),
               Expanded(
                 child: Text(
-                  'Explore',
+                  widget.rightTitle,
                   textAlign: TextAlign.center,
                   style: Provider.of<ThemesNotifier>(context)
                       .currentThemeData
@@ -100,12 +106,12 @@ class _FeedPickerState extends State<FeedPicker> {
             children: [
               Expanded(
                 child: GestureDetector(
-                  onTap: () => _picked(FeedFilter.personal),
+                  onTap: () => _picked(0),
                 ),
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () => _picked(FeedFilter.explore),
+                  onTap: () => _picked(1),
                 ),
               ),
             ],
