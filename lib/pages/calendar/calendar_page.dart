@@ -45,8 +45,21 @@ class CalendarPage extends StatelessWidget {
                         event: CalendarEventEntity(
                           id: 0,
                           title: 'E-Sports Meet & Greet',
+                          description:
+                              'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
+                          image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
                           startDate: DateTime(2022, 06, 20, 17),
                           costs: 10.5,
+                          organizers: ['AStA', 'E-Sports Referat'],
+                        ),
+                      ),
+                      CalendarEventWidget(
+                        event: CalendarEventEntity(
+                          id: 0,
+                          title: 'E-Sports Meet & Greet',
+                          image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
+                          startDate: DateTime(2022, 06, 20, 17),
+                          costs: 0,
                         ),
                       ),
                     ],

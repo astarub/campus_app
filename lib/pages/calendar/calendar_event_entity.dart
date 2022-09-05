@@ -8,7 +8,7 @@ class CalendarEventEntity {
   final String description;
   final DateTime startDate;
   final DateTime? endDate;
-  final CachedNetworkImage? image;
+  final Image? image;
   final String url;
   final double costs;
   final String venue;

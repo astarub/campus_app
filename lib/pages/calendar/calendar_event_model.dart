@@ -10,7 +10,7 @@ class CalendarEventModel extends CalendarEventEntity {
     required String description,
     required DateTime startDate,
     required DateTime endDate,
-    required CachedNetworkImage image,
+    required Image image,
     required String url,
     required double costs,
     required String venue,
@@ -31,7 +31,7 @@ class CalendarEventModel extends CalendarEventEntity {
   // TODO: Handle empty json objects -> not all events have a image, venue etc.
   factory CalendarEventModel.fromJson(Map<String, dynamic> json) {
     final List<String> organizers = [];
-    CachedNetworkImage image = CachedNetworkImage(
+    /* CachedNetworkImage image = CachedNetworkImage(
       placeholder: (context, url) => const CircularProgressIndicator(),
       imageUrl: astaFavicon,
     );
@@ -47,7 +47,7 @@ class CalendarEventModel extends CalendarEventEntity {
       );
     } catch (e) {
       // TODO: handle exception - 'No image specified'
-    }
+    } */
 
     try {
       final jsonOrganizers = json['organizer'] as List<dynamic>;
@@ -65,7 +65,7 @@ class CalendarEventModel extends CalendarEventEntity {
       description: json['description'] as String,
       startDate: json['startDate'],
       endDate: json['endDate'],
-      image: image,
+      image: json['image'], // only for UI development, has to be changed
       url: json['url'] as String,
       costs: json['cost'] as double,
       venue: (json['venue'] as Map<String, dynamic>)['venue'] as String,

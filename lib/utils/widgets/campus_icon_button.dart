@@ -40,6 +40,7 @@ class CampusIconButton extends StatelessWidget {
                 : Image.asset(
                     iconPath,
                     color: Colors.black,
+                    width: 20,
                   ),
           ),
         ),
