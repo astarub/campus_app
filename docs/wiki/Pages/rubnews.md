@@ -1,6 +1,6 @@
 # Rubnews Page
 
-> Disclaimer: Not full implemented yet!
+> Not full implemented yet!
 
 This page is to provide a basic overview about the "Rubnews" feature located inside
 `lib/pages/rubnews`.
@@ -27,9 +27,9 @@ This page is to provide a basic overview about the "Rubnews" feature located ins
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<XmlDocument> | getNewsfeedAsXml() | Request news feed from [news.rub.de/newsfeed](https://news.rub.de/newsfeed). Throws a server exception if respond code is not 200.
-| Future<CachedNetworkImage> | getImageFromNewsUrl() | Request image of linked news. Throws a server excpetion if respond code is not 200. (Disclaimer: Image-handling should not part of this layer.)
-| Future<String> | getImageUrlFromNewsUrl() | Read out the image source url, based on the news url. Throws a server exception if respond code is not 200.
+| Future\<XmlDocument> | getNewsfeedAsXml() | Request news feed from [news.rub.de/newsfeed](https://news.rub.de/newsfeed). Throws a server exception if respond code is not 200.
+| Future\<CachedNetworkImage> | getImageFromNewsUrl() | Request image of linked news. Throws a server excpetion if respond code is not 200. (Disclaimer: Image-handling should not part of this layer.)
+| Future\<String> | getImageUrlFromNewsUrl() | Read out the image source url, based on the news url. Throws a server exception if respond code is not 200.
 
 ---
 
@@ -39,11 +39,9 @@ This page is to provide a basic overview about the "Rubnews" feature located ins
 
 | Type | Name | Description |
 |------|------|-------------|
-| String | content | HTML Content of News
-| String | title |
-| String | description | Short Summary
-| String | url |
-| DateTime | pubDate | Date of Publishing
-| List<String> | imageUrls | List of Urls to images source.
-
----
+| String | content | HTML Content of News |
+| String | title | |
+| String | description | Short Summary |
+| String | url | |
+| DateTime | pubDate | Date of Publishing |
+| List\<String> | imageUrls | List of Urls to images source. Usually only one image. |

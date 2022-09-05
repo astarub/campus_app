@@ -1,6 +1,6 @@
 # Calendar Page
 
-> Disclaimer: Not full implemented yet!
+> Not full implemented yet!
 
 This page is to provide a basic overview about the "Calendar" feature located inside
 `lib/pages/calendar`.
@@ -119,5 +119,3 @@ This page is to provide a basic overview about the "Calendar" feature located in
 | String | name|  |
 | String | slug| url identifier |
 | String | description|  |
-
----

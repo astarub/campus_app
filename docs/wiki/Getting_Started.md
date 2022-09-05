@@ -1,5 +1,3 @@
-# Getting Started
-
 This pages will explain how to setup your development environment and first steps to start contributing to our project.
 
 ---
@@ -50,7 +48,6 @@ Last but not least we will provide a small cheat sheet about all Flutter command
 
 `flutter doctor`
 ​
-
 ### Upgrade Flutter Version
 
 `flutter upgrade`
@@ -63,12 +60,10 @@ Last but not least we will provide a small cheat sheet about all Flutter command
 
 `flutter create <app name>`
 ​
-
 ### List virtual devices
 
 `flutter emulator`
 ​
-
 ### Start an Emulator
 
 `flutter emulator --launch <emulator_name>`

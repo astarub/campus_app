@@ -1,5 +1,3 @@
-# Basic Architecture
-
 This page provides an overview about the architecture of this project and it used
 design patterns and principles.
 

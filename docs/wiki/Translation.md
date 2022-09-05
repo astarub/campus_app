@@ -1,5 +1,3 @@
-# Translation
-
 All translation files are located inside the `assets/l10n/`-folder and use the basic
 [ARB-syntax](https://localizely.com/flutter-arb/). The file `l10n.yaml` defines some general configuration to provide multi-language support.
 
@@ -21,8 +19,9 @@ THANKS! :D
 
 ## Translation Progress
 
-||||
+| Language| Progress | Comment |
 |--------------|-----------------------------------|-|
 | English (US) | ![](https://progress-bar.dev/100) | |
 | German | ![](https://progress-bar.dev/0) | Work in Progress |
 | All Other | ![](https://progress-bar.dev/0) | |
+
