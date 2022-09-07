@@ -6,7 +6,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/utils/pages/rubnews_utils.dart';
 import 'package:campus_app/pages/rubnews/widgets/feed_item.dart';
-import 'package:campus_app/pages/rubnews/widgets/feed_picker.dart';
+import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/pages/rubnews/widgets/filter_popup.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
@@ -126,7 +126,8 @@ class RubnewsPageState extends State<RubnewsPage> {
                             // FeedPicker
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 24),
-                              child: FeedPicker(),
+                              child:
+                                  CampusSegmentedControl(leftTitle: 'Feed', rightTitle: 'Explore', onChanged: (_) {}),
                             ),
                             // Filter button
                             CampusIconButton(

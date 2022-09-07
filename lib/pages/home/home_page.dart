@@ -1,8 +1,9 @@
-import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:campus_app/core/themes.dart';
 
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
 import 'package:campus_app/pages/rubnews/rubnews_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
@@ -55,14 +56,16 @@ class _HomePageState extends State<HomePage> {
 
   /// Switches to another page when selected in the nav-menu
   Future<bool> _selectedPage(PageItem selectedPageItem) async {
-    // Reset the exit animation of the new page to make the content visible again
-    exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
-    // Start the exit animation of the old page
-    await exitAnimationKeys[currentPage]?.currentState?.startExitAnimation();
-    // Switch to the new page
-    setState(() => currentPage = selectedPageItem);
-    // Start the entry animation of the new page
-    await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
+    if (selectedPageItem != currentPage) {
+      // Reset the exit animation of the new page to make the content visible again
+      exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
+      // Start the exit animation of the old page
+      await exitAnimationKeys[currentPage]?.currentState?.startExitAnimation();
+      // Switch to the new page
+      setState(() => currentPage = selectedPageItem);
+      // Start the entry animation of the new page
+      await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
+    }
 
     return true;
   }
@@ -84,23 +87,32 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
-      child: Scaffold(
-        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-        bottomNavigationBar: BottomNavBar(
-          currentPage: currentPage,
-          onSelectedPage: _selectedPage,
-        ),
-        body: Stack(
-          // Holds all the pages that sould be accessable within the bottom nav-menu
-          children: [
-            _buildOffstateNavigator(PageItem.feed),
-            _buildOffstateNavigator(PageItem.events),
-            _buildOffstateNavigator(PageItem.mensa),
-            _buildOffstateNavigator(PageItem.guide),
-            _buildOffstateNavigator(PageItem.more),
-          ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.white,
+        statusBarBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+      child: WillPopScope(
+        onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
+        child: Scaffold(
+          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+          bottomNavigationBar: BottomNavBar(
+            currentPage: currentPage,
+            onSelectedPage: _selectedPage,
+          ),
+          body: Stack(
+            // Holds all the pages that sould be accessable within the bottom nav-menu
+            children: [
+              _buildOffstateNavigator(PageItem.feed),
+              _buildOffstateNavigator(PageItem.events),
+              _buildOffstateNavigator(PageItem.mensa),
+              _buildOffstateNavigator(PageItem.guide),
+              _buildOffstateNavigator(PageItem.more),
+            ],
+          ),
         ),
       ),
     );

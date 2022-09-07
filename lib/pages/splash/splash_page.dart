@@ -140,6 +140,9 @@ class _SplashPageState extends State<SplashPage> {
       value: const SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.white,
         systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.white,
+        statusBarBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.dark,
       ),
       child: Container(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,

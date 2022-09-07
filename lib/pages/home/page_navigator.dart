@@ -58,6 +58,7 @@ class NavBarNavigator extends StatelessWidget {
         break;
       case PageItem.events:
         rootPage = CalendarPage(
+          mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );

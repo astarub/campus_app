@@ -7,57 +7,38 @@ class CalendarEventModel extends CalendarEventEntity {
   CalendarEventModel({
     required int id,
     required String title,
-    required String costs,
     required String description,
-    //required DateTime endDate,
-    required CachedNetworkImage image,
-    required List<String> organizers,
-    //required DateTime startDate,
+    required DateTime startDate,
+    required DateTime endDate,
+    required Image image,
     required String url,
+    required double costs,
     required String venue,
+    required List<String> organizers,
   }) : super(
           id: id,
           title: title,
-          costs: costs,
           description: description,
-          //endDate: endDate,
+          startDate: startDate,
+          endDate: endDate,
           image: image,
-          organizers: organizers,
-          //startDate: startDate,
           url: url,
+          costs: costs,
           venue: venue,
+          organizers: organizers,
         );
-
-  factory CalendarEventModel.empty() {
-    return CalendarEventModel(
-      id: -1,
-      title: '',
-      url: '',
-      organizers: [''],
-      venue: '',
-      costs: '',
-      description: '',
-      //startDate: DateTime(0),
-      //endDate: DateTime(0),
-      image: CachedNetworkImage(
-        placeholder: (context, url) => const CircularProgressIndicator(),
-        imageUrl: astaFavicon,
-      ),
-    );
-  }
 
   // TODO: Handle empty json objects -> not all events have a image, venue etc.
   factory CalendarEventModel.fromJson(Map<String, dynamic> json) {
     final List<String> organizers = [];
-    CachedNetworkImage image = CachedNetworkImage(
+    /* CachedNetworkImage image = CachedNetworkImage(
       placeholder: (context, url) => const CircularProgressIndicator(),
       imageUrl: astaFavicon,
     );
 
     try {
-      final imageUrl = (((json['image'] as Map<String, dynamic>)['sizes']
-              as Map<String, dynamic>)['large'] as Map<String, dynamic>)['url']
-          as String;
+      final imageUrl = (((json['image'] as Map<String, dynamic>)['sizes'] as Map<String, dynamic>)['large']
+          as Map<String, dynamic>)['url'] as String;
 
       image = CachedNetworkImage(
         imageUrl: imageUrl,
@@ -66,14 +47,13 @@ class CalendarEventModel extends CalendarEventEntity {
       );
     } catch (e) {
       // TODO: handle exception - 'No image specified'
-    }
+    } */
 
     try {
       final jsonOrganizers = json['organizer'] as List<dynamic>;
 
       for (final organizer in jsonOrganizers) {
-        organizers
-            .add((organizer as Map<String, dynamic>)['organizer'] as String);
+        organizers.add((organizer as Map<String, dynamic>)['organizer'] as String);
       }
     } catch (e) {
       // TODO: handle exception - 'No organizer specified'
@@ -82,14 +62,14 @@ class CalendarEventModel extends CalendarEventEntity {
     return CalendarEventModel(
       id: json['id'] as int,
       title: json['title'] as String,
-      costs: json['cost'] as String,
       description: json['description'] as String,
-      //endDate: json['id'],
-      image: image,
-      organizers: organizers,
-      //startDate: json['id'],
+      startDate: json['startDate'],
+      endDate: json['endDate'],
+      image: json['image'], // only for UI development, has to be changed
       url: json['url'] as String,
+      costs: json['cost'] as double,
       venue: (json['venue'] as Map<String, dynamic>)['venue'] as String,
+      organizers: organizers,
     );
   }
 }
