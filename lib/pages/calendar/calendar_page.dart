@@ -39,6 +39,7 @@ class _CalendarPageState extends State<CalendarPage> {
         image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
         startDate: DateTime(2022, 06, 20, 17),
         costs: 10.5,
+        venue: 'Gaming Hub',
         organizers: ['AStA', 'E-Sports Referat'],
       ),
     ),
