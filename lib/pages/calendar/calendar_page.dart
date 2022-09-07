@@ -9,7 +9,7 @@ import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 
-class CalendarPage extends StatelessWidget {
+class CalendarPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
@@ -22,47 +22,91 @@ class CalendarPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CalendarPage> createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends State<CalendarPage> {
+  static List<Widget> parsedEvents = [
+    // Spacing
+    const SizedBox(height: 80),
+    CalendarEventWidget(
+      event: CalendarEventEntity(
+        id: 0,
+        title: 'E-Sports Meet & Greet',
+        description:
+            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
+        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
+        startDate: DateTime(2022, 06, 20, 17),
+        costs: 10.5,
+        organizers: ['AStA', 'E-Sports Referat'],
+      ),
+    ),
+    CalendarEventWidget(
+      event: CalendarEventEntity(
+        id: 0,
+        title: 'E-Sports Meet & Greet',
+        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
+        startDate: DateTime(2022, 06, 20, 17),
+        costs: 0,
+      ),
+    ),
+  ];
+  static List<Widget> savedEvents = [
+    // Spacing
+    const SizedBox(height: 80),
+    CalendarEventWidget(
+      event: CalendarEventEntity(
+        id: 0,
+        title: 'E-Sports Meet & Greet',
+        description:
+            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
+        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
+        startDate: DateTime(2022, 06, 20, 17),
+        costs: 10.5,
+        organizers: ['AStA', 'E-Sports Referat'],
+      ),
+    ),
+  ];
+
+  late final CampusSegmentedControl upcomingSavedSwitch;
+  bool showSavedEvents = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    upcomingSavedSwitch = CampusSegmentedControl(
+      leftTitle: 'Upcoming',
+      rightTitle: 'Saved',
+      onChanged: (int selected) {
+        if (selected == 0) {
+          setState(() => showSavedEvents = false);
+        } else {
+          setState(() => showSavedEvents = true);
+        }
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
         child: AnimatedExit(
-          key: pageExitAnimationKey,
+          key: widget.pageExitAnimationKey,
           child: AnimatedEntry(
-            key: pageEntryAnimationKey,
+            key: widget.pageEntryAnimationKey,
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
+                // Events
                 Container(
                   margin: const EdgeInsets.only(top: 100),
                   child: ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     physics: const BouncingScrollPhysics(),
-                    children: [
-                      // Spacing
-                      const SizedBox(height: 80),
-                      CalendarEventWidget(
-                        event: CalendarEventEntity(
-                          id: 0,
-                          title: 'E-Sports Meet & Greet',
-                          description:
-                              'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-                          image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-                          startDate: DateTime(2022, 06, 20, 17),
-                          costs: 10.5,
-                          organizers: ['AStA', 'E-Sports Referat'],
-                        ),
-                      ),
-                      CalendarEventWidget(
-                        event: CalendarEventEntity(
-                          id: 0,
-                          title: 'E-Sports Meet & Greet',
-                          image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-                          startDate: DateTime(2022, 06, 20, 17),
-                          costs: 0,
-                        ),
-                      ),
-                    ],
+                    children: showSavedEvents ? savedEvents : parsedEvents,
                   ),
                 ),
                 // Header
@@ -82,7 +126,7 @@ class CalendarPage extends StatelessWidget {
                         ),
                       ),
                       // SegmentedControl
-                      CampusSegmentedControl(leftTitle: 'Upcoming', rightTitle: 'Saved'),
+                      upcomingSavedSwitch,
                     ],
                   ),
                 ),

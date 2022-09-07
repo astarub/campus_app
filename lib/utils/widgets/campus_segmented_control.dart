@@ -12,6 +12,10 @@ class CampusSegmentedControl extends StatefulWidget {
   /// The displayed text on the right button of the SegmentedControl
   final String rightTitle;
 
+  /// Is executed whenever the switch changes its value.
+  /// Returns the new selected value, which can be 0 or 1.
+  final void Function(int) onChanged;
+
   /// Defined in order to be accessable from the outside and control
   /// the initial state
   int selected;
@@ -20,6 +24,7 @@ class CampusSegmentedControl extends StatefulWidget {
     Key? key,
     required this.leftTitle,
     required this.rightTitle,
+    required this.onChanged,
     this.selected = 0,
   }) : super(key: key);
 
@@ -32,14 +37,20 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
   static const double _pickerWidth = 200;
 
   void _picked(int newSelected) {
-    setState(() {
-      widget.selected = newSelected;
-      if (newSelected == 0) {
-        _hoverAligment = Alignment.centerLeft;
-      } else {
-        _hoverAligment = Alignment.centerRight;
-      }
-    });
+    if (newSelected != widget.selected) {
+      // Execute the `onChanged()` callback
+      widget.onChanged(newSelected);
+
+      // Update the visuals
+      setState(() {
+        widget.selected = newSelected;
+        if (newSelected == 0) {
+          _hoverAligment = Alignment.centerLeft;
+        } else {
+          _hoverAligment = Alignment.centerRight;
+        }
+      });
+    }
   }
 
   @override

@@ -126,7 +126,8 @@ class RubnewsPageState extends State<RubnewsPage> {
                             // FeedPicker
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 24),
-                              child: CampusSegmentedControl(leftTitle: 'Feed', rightTitle: 'Explore'),
+                              child:
+                                  CampusSegmentedControl(leftTitle: 'Feed', rightTitle: 'Explore', onChanged: (_) {}),
                             ),
                             // Filter button
                             CampusIconButton(
