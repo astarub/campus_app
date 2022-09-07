@@ -6,6 +6,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
+import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 
@@ -51,7 +52,7 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
     ),
   ];
-  static List<Widget> savedEvents = [
+  /* static List<Widget> savedEvents = [
     // Spacing
     const SizedBox(height: 80),
     CalendarEventWidget(
@@ -66,10 +67,14 @@ class _CalendarPageState extends State<CalendarPage> {
         organizers: ['AStA', 'E-Sports Referat'],
       ),
     ),
-  ];
+  ]; */
+  static List<Widget> savedEvents = [];
 
   late final CampusSegmentedControl upcomingSavedSwitch;
   bool showSavedEvents = false;
+
+  bool showUpcomingPlaceholder = false;
+  bool showSavedPlaceholder = false;
 
   @override
   void initState() {
@@ -86,6 +91,9 @@ class _CalendarPageState extends State<CalendarPage> {
         }
       },
     );
+
+    if (parsedEvents.isEmpty) showUpcomingPlaceholder = true;
+    if (savedEvents.isEmpty) showSavedPlaceholder = true;
   }
 
   @override
@@ -103,11 +111,23 @@ class _CalendarPageState extends State<CalendarPage> {
                 // Events
                 Container(
                   margin: const EdgeInsets.only(top: 100),
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    physics: const BouncingScrollPhysics(),
-                    children: showSavedEvents ? savedEvents : parsedEvents,
-                  ),
+                  child: !showSavedEvents && showUpcomingPlaceholder
+                      // Placeholder for no upcoming events
+                      ? const EmptyStatePlaceholder(
+                          title: 'No upcoming events',
+                          text: 'There are no upcoming events at the moment. Try again later.',
+                        )
+                      : showSavedEvents && showSavedPlaceholder
+                          // Placeholder for no saved events
+                          ? const EmptyStatePlaceholder(
+                              title: 'No saved events',
+                              text: 'Start saving events ontheir page to see them here.',
+                            )
+                          : ListView(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              physics: const BouncingScrollPhysics(),
+                              children: showSavedEvents ? savedEvents : parsedEvents,
+                            ),
                 ),
                 // Header
                 Container(
