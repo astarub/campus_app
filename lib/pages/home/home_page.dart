@@ -56,14 +56,16 @@ class _HomePageState extends State<HomePage> {
 
   /// Switches to another page when selected in the nav-menu
   Future<bool> _selectedPage(PageItem selectedPageItem) async {
-    // Reset the exit animation of the new page to make the content visible again
-    exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
-    // Start the exit animation of the old page
-    await exitAnimationKeys[currentPage]?.currentState?.startExitAnimation();
-    // Switch to the new page
-    setState(() => currentPage = selectedPageItem);
-    // Start the entry animation of the new page
-    await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
+    if (selectedPageItem != currentPage) {
+      // Reset the exit animation of the new page to make the content visible again
+      exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
+      // Start the exit animation of the old page
+      await exitAnimationKeys[currentPage]?.currentState?.startExitAnimation();
+      // Switch to the new page
+      setState(() => currentPage = selectedPageItem);
+      // Start the entry animation of the new page
+      await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
+    }
 
     return true;
   }
