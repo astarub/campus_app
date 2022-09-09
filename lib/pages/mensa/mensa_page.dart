@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/mensa/widgets/day_selection.dart';
+import 'package:campus_app/pages/mensa/widgets/expandable_restaurant.dart';
+import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
 
 class MensaPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -33,7 +35,7 @@ class _MensaPageState extends State<MensaPage> {
               children: [
                 // Header
                 Container(
-                  padding: const EdgeInsets.only(top: 40, bottom: 20),
+                  padding: const EdgeInsets.only(top: 40, bottom: 40),
                   color: Colors.white,
                   child: Column(
                     children: [
@@ -51,7 +53,33 @@ class _MensaPageState extends State<MensaPage> {
                   ),
                 ),
                 // Place expandables
-                //ListView(),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    physics: const BouncingScrollPhysics(),
+                    children: const [
+                      ExpandableRestaurant(
+                        name: 'Mensa der RUB',
+                        meals: [
+                          MealCategory(
+                            categoryName: 'Komponentenessen',
+                            meals: [
+                              MealItem(name: 'Paniertes Kabeljaufilet mit Dillrahmsauce', price: 2.5),
+                              MealItem(name: 'Paniertes Kabeljaufilet mit Dillrahmsauce', price: 2.5),
+                            ],
+                          ),
+                          MealCategory(
+                            categoryName: 'Döner',
+                            meals: [
+                              MealItem(name: 'Halal Hähnchendöner mit Pommes oder Reis und Salat', price: 3.9),
+                            ],
+                          ),
+                        ],
+                      ),
+                      ExpandableRestaurant(name: 'Bistro der RUB', meals: []),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

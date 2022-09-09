@@ -148,7 +148,14 @@ class MensaDaySelectionItem extends StatelessWidget {
                               color: Colors.black,
                             ),
                   ),
-                  Text(date),
+                  Text(
+                    date,
+                    style: isActive
+                        ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
+                              color: Colors.white70,
+                            )
+                        : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                  ),
                 ],
               ),
             ),

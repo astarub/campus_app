@@ -39,6 +39,12 @@ class ThemesNotifier with ChangeNotifier {
           fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
+        // Mensa Card
+        labelLarge: TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
         // Button
         labelMedium: TextStyle(
           color: Colors.white,
