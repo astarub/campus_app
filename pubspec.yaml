@@ -56,6 +56,15 @@ flutter:
      - assets/img/icons/search.svg
      - assets/img/icons/filter.svg
      - assets/img/icons/arrow-left.svg
+     - assets/img/icons/mensa-alcohol.png
+     - assets/img/icons/mensa-beef.png
+     - assets/img/icons/mensa-chicken.png
+     - assets/img/icons/mensa-fish.png
+     - assets/img/icons/mensa-halal.png
+     - assets/img/icons/mensa-lamm.png
+     - assets/img/icons/mensa-pork.png
+     - assets/img/icons/mensa-vegan.png
+     - assets/img/icons/mensa-vegetarian.png
      - assets/img/AStA-Retro-Gaming.jpg
      - assets/documents/
 

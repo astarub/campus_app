@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/mensa/widgets/meal_info_button.dart';
 
 /// This widget shows a title and the corresponding meals that
 /// are related to this category (e.g. "Komponentenessen")
@@ -45,11 +46,15 @@ class MealCategory extends StatelessWidget {
 class MealItem extends StatelessWidget {
   final String name;
   final double price;
+  final List<String> infos;
+  final List<String> allergenes;
 
   const MealItem({
     Key? key,
     required this.name,
     this.price = 0.0,
+    this.infos = const [],
+    this.allergenes = const [],
   }) : super(key: key);
 
   @override
@@ -60,18 +65,51 @@ class MealItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Name
-          Text(name),
+          Text(
+            name,
+            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+          ),
           // Price
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(color: Colors.grey),
-            ),
-            child: Text(
-              price % 2 == 0 ? '${price.toInt()} €' : '${price}0 €',
-              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(fontSize: 11),
-            ),
+          Row(
+            children: [
+              // Price
+              Container(
+                margin: const EdgeInsets.only(right: 14),
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: Text(
+                  price % 2 == 0 ? '${price.toInt()} €' : '${price}0 €',
+                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
+                        fontSize: 11,
+                      ),
+                ),
+              ),
+
+              // Infos
+              Row(
+                children: infos
+                    .map((infoElement) => MealInfoButton(
+                          info: infoElement,
+                          onTap: () {},
+                        ))
+                    .toList(),
+              ),
+              Expanded(child: Container()),
+              // Allergenes
+              Padding(
+                padding: const EdgeInsets.only(left: 14),
+                child: Text(
+                  allergenes.join(', '),
+                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
+                        fontSize: 11,
+                        color: Colors.black38,
+                      ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

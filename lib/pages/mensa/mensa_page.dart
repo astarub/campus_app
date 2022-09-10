@@ -43,7 +43,7 @@ class _MensaPageState extends State<MensaPage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 24),
                         child: Text(
-                          'Events',
+                          'Mensa',
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                         ),
                       ),
@@ -64,14 +64,35 @@ class _MensaPageState extends State<MensaPage> {
                           MealCategory(
                             categoryName: 'Komponentenessen',
                             meals: [
-                              MealItem(name: 'Paniertes Kabeljaufilet mit Dillrahmsauce', price: 2.5),
-                              MealItem(name: 'Paniertes Kabeljaufilet mit Dillrahmsauce', price: 2.5),
+                              MealItem(
+                                name: 'Seelachs mit Gurken-Senfsauce',
+                                price: 2.7,
+                                infos: ['F'],
+                                allergenes: ['d', 'g', 'j'],
+                              ),
+                              //MealItem(name: 'Paniertes Kabeljaufilet mit Dillrahmsauce', price: 2.5),
                             ],
                           ),
                           MealCategory(
                             categoryName: 'Döner',
                             meals: [
-                              MealItem(name: 'Halal Hähnchendöner mit Pommes oder Reis und Salat', price: 3.9),
+                              MealItem(
+                                name: 'Halal Hähnchendöner mit Pommes oder Reis und Salat',
+                                price: 3.9,
+                                infos: ['G', 'H'],
+                                allergenes: ['a', 'al', 'g', 'j', 'l', '1', '2', '5'],
+                              ),
+                            ],
+                          ),
+                          MealCategory(
+                            categoryName: 'Vegetarische Menükomponente',
+                            meals: [
+                              MealItem(
+                                name: 'Frühlingsrolle mit Pflaumen-Ingwer-Dip',
+                                price: 1.8,
+                                infos: ['VG'],
+                                allergenes: ['a', 'al', 'f', 'i', 'k'],
+                              ),
                             ],
                           ),
                         ],
