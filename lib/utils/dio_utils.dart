@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio/adapter.dart';
+//import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
@@ -18,13 +18,14 @@ class DioUtils {
     // Dio cookie managment (store cookies in RAM)
     client.interceptors.add(CookieManager(cookieJar));
 
-    // some RUB certificates are not valid
-    (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
+    //! some RUB certificates are not valid... This code would deactivate certificat calidation
+    //! --> DON'T DO THIS
+    // (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    //     (HttpClient client) {
+    //   client.badCertificateCallback =
+    //       (X509Certificate cert, String host, int port) => true;
+    //   return client;
+    // };
   }
 
   void configure({

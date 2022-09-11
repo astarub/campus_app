@@ -10,7 +10,7 @@ import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/moodle/moodle_datasource.dart';
 import 'package:campus_app/pages/moodle/moodle_repository.dart';
 import 'package:campus_app/pages/moodle/moodle_usecases.dart';
-import 'package:campus_app/pages/rubnews/rubnews_remote_datasource.dart';
+import 'package:campus_app/pages/rubnews/rubnews_datasource.dart';
 import 'package:campus_app/pages/rubnews/rubnews_repository.dart';
 import 'package:campus_app/pages/rubnews/rubnews_usecases.dart';
 import 'package:campus_app/utils/apis/forgerock_api.dart';
@@ -19,6 +19,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 
 final sl = GetIt.instance; // service locator
@@ -35,9 +36,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => MoodleUsecases(moodleRepository: sl()));
 
   //! Repositories
-  sl.registerLazySingleton<RubnewsRepository>(
-    () => RubnewsRepositoryImpl(rubnewsRemoteDatasource: sl()),
-  );
+  sl.registerLazySingleton(() => RubnewsRepository(rubnewsRemoteDatasource: sl()));
   sl.registerLazySingleton<CalendarRepository>(
     () => CalendarRepositoryImpl(calendarRemoteDatasource: sl()),
   );
@@ -61,8 +60,11 @@ Future<void> init() async {
   );*/
 
   //! Datasources
-  sl.registerLazySingleton<RubnewsRemoteDatasource>(
-    () => RubnewsRemoteDatasourceImpl(client: sl()),
+  sl.registerLazySingleton(
+    () async => RubnewsDatasource(
+      client: sl(),
+      rubnewsCach: await Hive.openBox('rubnewsCach'),
+    ),
   );
   sl.registerLazySingleton<CalendarRemoteDatasource>(
     () => CalendarRemoteDatasourceImpl(client: sl()),
