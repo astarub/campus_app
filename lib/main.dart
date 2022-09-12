@@ -11,11 +11,13 @@ import 'package:campus_app/pages/splash/splash_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await ic.init();
 
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
   Hive.registerAdapter(NewsEntityAdapter());
+
+  // Initialize injection container
+  await ic.init();
 
   runApp(MultiProvider(
     providers: [

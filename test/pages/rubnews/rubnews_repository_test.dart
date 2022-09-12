@@ -19,7 +19,7 @@ void main() {
 
   setUp(() {
     mockRubnewsDatasource = MockRubnewsDatasource();
-    rubnewsRepository = RubnewsRepository(rubnewsRemoteDatasource: mockRubnewsDatasource);
+    rubnewsRepository = RubnewsRepository(rubnewsDatasource: mockRubnewsDatasource);
   });
 
   group('[getRemoteNewsfeed]', () {

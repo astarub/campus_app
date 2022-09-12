@@ -15,6 +15,7 @@ import 'package:campus_app/pages/rubnews/rubnews_repository.dart';
 import 'package:campus_app/pages/rubnews/rubnews_usecases.dart';
 import 'package:campus_app/utils/apis/forgerock_api.dart';
 import 'package:campus_app/utils/dio_utils.dart';
+import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -27,40 +28,8 @@ final sl = GetIt.instance; // service locator
 Future<void> init() async {
   //sl.registerFactory(() => EcampusBloc(ticketRepository: sl()));
 
-  //! Handlers
-  sl.registerLazySingleton(AuthenticationHandler.new);
-
-  //! Usecases
-  sl.registerLazySingleton(() => RubnewsUsecases(rubnewsRepository: sl()));
-  sl.registerLazySingleton(() => CalendarUsecases(calendarRepository: sl()));
-  sl.registerLazySingleton(() => MoodleUsecases(moodleRepository: sl()));
-
-  //! Repositories
-  sl.registerLazySingleton(() => RubnewsRepository(rubnewsRemoteDatasource: sl()));
-  sl.registerLazySingleton<CalendarRepository>(
-    () => CalendarRepositoryImpl(calendarRemoteDatasource: sl()),
-  );
-  sl.registerLazySingleton<AuthenticationRepository>(
-    () => AuthenticationRepositoryImpl(
-      authenticationDatasource: sl(),
-      authenticationHandler: sl(),
-    ),
-  );
-  sl.registerLazySingleton(
-    () => MoodleRepository(
-      moodleDatasource: sl(),
-      authenticationDatasource: sl(),
-    ),
-  );
-  /*sl.registerLazySingleton(
-    () => TicketRepository(
-      authenticationDatasource: sl(),
-      ticketDatasource: sl(),
-    ),
-  );*/
-
   //! Datasources
-  sl.registerLazySingleton(
+  sl.registerSingletonAsync(
     () async => RubnewsDatasource(
       client: sl(),
       rubnewsCach: await Hive.openBox('rubnewsCach'),
@@ -88,6 +57,44 @@ Future<void> init() async {
     ),
   );*/
 
+  //! Handlers
+  sl.registerLazySingleton(AuthenticationHandler.new);
+
+  //! Repositories
+  sl.registerSingletonWithDependencies(
+    () => RubnewsRepository(rubnewsDatasource: sl()),
+    dependsOn: [RubnewsDatasource],
+  );
+  sl.registerLazySingleton<CalendarRepository>(
+    () => CalendarRepositoryImpl(calendarRemoteDatasource: sl()),
+  );
+  sl.registerLazySingleton<AuthenticationRepository>(
+    () => AuthenticationRepositoryImpl(
+      authenticationDatasource: sl(),
+      authenticationHandler: sl(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => MoodleRepository(
+      moodleDatasource: sl(),
+      authenticationDatasource: sl(),
+    ),
+  );
+  /*sl.registerLazySingleton(
+    () => TicketRepository(
+      authenticationDatasource: sl(),
+      ticketDatasource: sl(),
+    ),
+  );*/
+
+  //! Usecases
+  sl.registerSingletonWithDependencies(
+    () => RubnewsUsecases(rubnewsRepository: sl()),
+    dependsOn: [RubnewsRepository],
+  );
+  sl.registerLazySingleton(() => CalendarUsecases(calendarRepository: sl()));
+  sl.registerLazySingleton(() => MoodleUsecases(moodleRepository: sl()));
+
   //! Utils
   sl.registerLazySingleton(
     () => DioUtils(
@@ -96,10 +103,13 @@ Future<void> init() async {
     )..init(),
   );
   sl.registerLazySingleton(ForgerockAPIUtils.new);
+  sl.registerLazySingleton(FeedUtils.new);
 
   //! External
   sl.registerLazySingleton(http.Client.new);
   sl.registerLazySingleton(FlutterSecureStorage.new);
   sl.registerLazySingleton(Dio.new);
   sl.registerLazySingleton(CookieJar.new);
+
+  await GetIt.instance.allReady();
 }

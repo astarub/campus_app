@@ -43,13 +43,11 @@ class DioUtils {
     }
   }
 
-  // ignore: avoid_void_async
-  void setCookieForRequest(String uri, List<Cookie> cookies) async {
+  Future<void> setCookieForRequest(String uri, List<Cookie> cookies) async {
     await cookieJar.saveFromResponse(Uri.parse(uri), cookies);
   }
 
-  // ignore: avoid_void_async
-  void printCookies(String uri) async {
-    print(await cookieJar.loadForRequest(Uri.parse(uri)));
+  Future<void> printCookies(String uri) async {
+    await cookieJar.loadForRequest(Uri.parse(uri));
   }
 }

@@ -78,7 +78,6 @@ class RubnewsDatasource {
 
     int index = 0; // use list index as identifier
     for (final entity in entities) {
-      print(entity);
       await rubnewsCach.put(index, entity);
       index++;
     }
@@ -90,7 +89,6 @@ class RubnewsDatasource {
     final List<NewsEntity> entities = [];
 
     for (int i = 0; i < cntEntities; i++) {
-      print(rubnewsCach.get(i));
       entities.add(rubnewsCach.get(i) as NewsEntity);
     }
 

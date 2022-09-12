@@ -48,8 +48,14 @@ class NewsEntity {
     final description = xml.getElement('description')!.text;
     final pubDate = DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse(xml.getElement('pubDate')!.text);
 
+    /// Regular Expression to remove unwanted HTML-Tags
+    RegExp htmlTags = RegExp(
+      r'''(<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\>)|(<[^>]a>)|([^>]*])''',
+      multiLine: true,
+    );
+
     return NewsEntity(
-      content: content,
+      content: content.replaceAll(htmlTags, ''),
       title: title,
       url: url,
       description: description,

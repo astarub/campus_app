@@ -1,11 +1,13 @@
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/pages/rubnews/news_entity.dart';
+import 'package:campus_app/pages/rubnews/rubnews_usecases.dart';
+import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/utils/pages/rubnews_utils.dart';
-import 'package:campus_app/pages/rubnews/widgets/feed_item.dart';
+//import 'package:campus_app/pages/rubnews/widgets/feed_item.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/pages/rubnews/widgets/filter_popup.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
@@ -29,10 +31,14 @@ class RubnewsPage extends StatefulWidget {
 
 class RubnewsPageState extends State<RubnewsPage> {
   late final ScrollController _scrollController;
+  List<NewsEntity> _rubnews = [];
   double _scrollControllerLastOffset = 0;
   double _headerOpacity = 1;
 
   late final SnappingSheetController _popupController;
+
+  final RubnewsUsecases _rubnewsUsecases = sl<RubnewsUsecases>();
+  final FeedUtils _feedUtils = sl<FeedUtils>();
 
   @override
   void initState() {
@@ -46,10 +52,18 @@ class RubnewsPageState extends State<RubnewsPage> {
         } else if (_scrollController.offset < (_scrollControllerLastOffset - 250)) {
           _scrollControllerLastOffset = _scrollController.offset;
           if (_headerOpacity != 1) setState(() => _headerOpacity = 1);
+        } else if (_scrollController.offset < -200) {
+          // refresh news list when user swipe to end / beginning of list
+          _rubnewsUsecases.getFeedAndFailures().then((data) {
+            setState(() => _rubnews = data['news']! as List<NewsEntity>);
+          });
         }
       });
 
     _popupController = SnappingSheetController();
+    _rubnewsUsecases.getFeedAndFailures().then((data) {
+      setState(() => _rubnews = data['news']! as List<NewsEntity>);
+    });
   }
 
   @override
@@ -71,28 +85,7 @@ class RubnewsPageState extends State<RubnewsPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     controller: _scrollController,
                     physics: const BouncingScrollPhysics(),
-                    children: [
-                      // Spacing
-                      const SizedBox(height: 80),
-                      // Actual feed items
-                      FeedItem(
-                        title: 'E-Sports Meet & Greet',
-                        description:
-                            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-                        date: DateTime(2022, 6, 20, 17), // 20.06.2022, 17 Uhr
-                        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-                        content: 'Test Content',
-                        isEvent: true,
-                      ),
-                      FeedItem(
-                        title: 'E-Sports Meet & Greet',
-                        description:
-                            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-                        date: DateTime(2022, 6, 20, 17), // 20.06.2022, 17 Uhr
-                        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-                        content: 'Test Content',
-                      ),
-                    ],
+                    children: _feedUtils.fromNewsEntityListToFeedItemList(_rubnews),
                   ),
                 ),
                 // Header

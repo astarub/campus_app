@@ -35,8 +35,8 @@ class MockRubnewsRepository extends _i1.Mock implements _i4.RubnewsRepository {
   }
 
   @override
-  _i2.RubnewsDatasource get rubnewsRemoteDatasource =>
-      (super.noSuchMethod(Invocation.getter(#rubnewsRemoteDatasource),
+  _i2.RubnewsDatasource get rubnewsDatasource =>
+      (super.noSuchMethod(Invocation.getter(#rubnewsDatasource),
           returnValue: _FakeRubnewsDatasource_0()) as _i2.RubnewsDatasource);
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.NewsEntity>>>

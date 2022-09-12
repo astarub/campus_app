@@ -9,6 +9,8 @@ class RubnewsUsecases {
   RubnewsUsecases({required this.rubnewsRepository});
 
   /// Return a JSON object `data` that contains failures and news.
+  ///
+  /// data := { 'failures': List\<Failure>, 'news': List\<NewsEntity> }
   Future<Map<String, List<dynamic>>> getFeedAndFailures() async {
     // return data
     final Map<String, List<dynamic>> data = {

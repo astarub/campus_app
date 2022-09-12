@@ -8,26 +8,26 @@ import 'package:dartz/dartz.dart';
 import 'package:xml/xml.dart';
 
 class RubnewsRepository {
-  final RubnewsDatasource rubnewsRemoteDatasource;
+  final RubnewsDatasource rubnewsDatasource;
 
-  RubnewsRepository({required this.rubnewsRemoteDatasource});
+  RubnewsRepository({required this.rubnewsDatasource});
 
   /// Return a list of web news or a failure.
   Future<Either<Failure, List<NewsEntity>>> getRemoteNewsfeed() async {
     try {
-      final newsXml = await rubnewsRemoteDatasource.getNewsfeedAsXml();
+      final newsXml = await rubnewsDatasource.getNewsfeedAsXml();
       final newsXmlList = newsXml.findAllElements('item');
 
       final List<NewsEntity> entities = [];
 
       await Future.forEach(newsXmlList.map((news) => news), (XmlElement e) async {
         final link = e.getElement('link')!.text;
-        final imageUrls = await rubnewsRemoteDatasource.getImageUrlsFromNewsUrl(link);
+        final imageUrls = await rubnewsDatasource.getImageUrlsFromNewsUrl(link);
         entities.add(NewsEntity.fromXML(e, imageUrls));
       });
 
       // write entities to cach
-      unawaited(rubnewsRemoteDatasource.writeNewsEntitiesToCach(entities));
+      unawaited(rubnewsDatasource.writeNewsEntitiesToCach(entities));
 
       return Right(entities);
     } catch (e) {
@@ -44,7 +44,7 @@ class RubnewsRepository {
   /// Return a list of cached news or a failure.
   Either<Failure, List<NewsEntity>> getCachedNewsfeed() {
     try {
-      final cachedNewsfeed = rubnewsRemoteDatasource.readNewsEntitiesFromCach();
+      final cachedNewsfeed = rubnewsDatasource.readNewsEntitiesFromCach();
       return Right(cachedNewsfeed);
     } catch (e) {
       return Left(CachFailure());
