@@ -1,0 +1,179 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/utils/widgets/popup_sheet.dart';
+import 'package:campus_app/utils/widgets/campus_selection.dart';
+
+/// This widget displays the preference options that are available for the mensa
+/// page and is used in the [SnappingSheet] widget.
+class PreferencesPopup extends StatefulWidget {
+  /// Can be given to show saved preferences on build and also be accessed
+  /// to save the new selection.
+  List<String> preferences;
+
+  PreferencesPopup({
+    Key? key,
+    this.preferences = const [],
+  }) : super(key: key);
+
+  @override
+  State<PreferencesPopup> createState() => _PreferencesPopupState();
+}
+
+class _PreferencesPopupState extends State<PreferencesPopup> {
+  void selectItem(String selected) {
+    if (widget.preferences.contains(selected)) {
+      setState(() => widget.preferences.removeWhere((preference) => preference == selected));
+    } else {
+      setState(() => widget.preferences.add(selected));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupSheet(
+      title: 'Präferenzen',
+      onClose: () => Navigator.pop(context),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 10),
+              child: Text(
+                'Ausschließlich',
+                textAlign: TextAlign.left,
+                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+              ),
+            ),
+            SelectionItemRow(
+              selectionItemTitles: const ['Vegetarisch', 'Vegan', 'Halal'],
+              selectionItemShortcut: const ['V', 'VG', 'H'],
+              selections: [
+                widget.preferences.contains('V'),
+                widget.preferences.contains('VG'),
+                widget.preferences.contains('H'),
+              ],
+              onSelected: selectItem,
+            ),
+            // Title
+            Padding(
+              padding: const EdgeInsets.only(top: 30, bottom: 10),
+              child: Text(
+                'Vermeiden von',
+                textAlign: TextAlign.left,
+                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+              ),
+            ),
+            SelectionItemRow(
+              selectionItemTitles: const ['Alkohol', 'Fisch', 'Geflügel'],
+              selectionItemShortcut: const ['A', 'F', 'G'],
+              selections: [
+                widget.preferences.contains('A'),
+                widget.preferences.contains('F'),
+                widget.preferences.contains('G'),
+              ],
+              onSelected: selectItem,
+            ),
+            SelectionItemRow(
+              selectionItemTitles: const ['Lamm', 'Rind', 'Schwein'],
+              selectionItemShortcut: const ['L', 'R', 'S'],
+              selections: [
+                widget.preferences.contains('L'),
+                widget.preferences.contains('R'),
+                widget.preferences.contains('S'),
+              ],
+              onSelected: selectItem,
+            ),
+            SelectionItemRow(
+              selectionItemTitles: const ['Wild'],
+              selectionItemShortcut: const ['W'],
+              selections: [widget.preferences.contains('W')],
+              onSelected: selectItem,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// This widget is similar to the [CampusSelection] widget and shows 3 buttons in a Row
+/// that can be active at the same time.
+///
+/// Therefore it uses the [SelectionItem] widget of the [CampusSelection] widget.
+class SelectionItemRow extends StatelessWidget {
+  /// The titles for the 3 buttons
+  final List<String> selectionItemTitles;
+
+  /// The preference shortcuts for the 3 titles
+  final List<String> selectionItemShortcut;
+
+  /// Wether each of the selection-buttons is active or not.
+  final List<bool> selections;
+
+  /// The function that should be called whenever a button is tapped
+  final void Function(String) onSelected;
+
+  const SelectionItemRow({
+    Key? key,
+    required this.selectionItemTitles,
+    required this.selectionItemShortcut,
+    this.selections = const [false, false, false],
+    required this.onSelected,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Flex(
+        direction: Axis.horizontal,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // First selection item
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: SelectionItem(
+                text: selectionItemTitles[0],
+                onTap: () => onSelected(selectionItemShortcut[0]),
+                isActive: selections[0],
+              ),
+            ),
+          ),
+          // Second selection item
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5, right: 5),
+              child: selectionItemTitles.length >= 2
+                  ? SelectionItem(
+                      text: selectionItemTitles[1],
+                      onTap: () => onSelected(selectionItemShortcut[1]),
+                      isActive: selections[1],
+                    )
+                  : Container(),
+            ),
+          ),
+          // Third selection item
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: selectionItemTitles.length == 3
+                  ? SelectionItem(
+                      text: selectionItemTitles[2],
+                      onTap: () => onSelected(selectionItemShortcut[2]),
+                      isActive: selections[2],
+                    )
+                  : Container(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

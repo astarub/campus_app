@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapping_sheet/snapping_sheet.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/pages/mensa/widgets/day_selection.dart';
 import 'package:campus_app/pages/mensa/widgets/expandable_restaurant.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
+import 'package:campus_app/pages/mensa/widgets/preferences_popup.dart';
+import 'package:campus_app/pages/mensa/widgets/allergenes_popup.dart';
 
 class MensaPage extends StatefulWidget {
+  final GlobalKey<NavigatorState> mainNavigatorKey;
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const MensaPage({
     Key? key,
+    required this.mainNavigatorKey,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
   }) : super(key: key);
@@ -22,6 +28,15 @@ class MensaPage extends StatefulWidget {
 }
 
 class _MensaPageState extends State<MensaPage> {
+  late final SnappingSheetController _popupController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _popupController = SnappingSheetController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +72,47 @@ class _MensaPageState extends State<MensaPage> {
                   child: ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     physics: const BouncingScrollPhysics(),
-                    children: const [
-                      ExpandableRestaurant(
+                    children: [
+                      // Filter popups
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 26),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: CampusButton.light(
+                                  text: 'Präferenzen',
+                                  width: null,
+                                  onTap: () {
+                                    widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
+                                      opaque: false,
+                                      pageBuilder: (context, _, __) => PreferencesPopup(),
+                                    ));
+                                  },
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5),
+                                child: CampusButton.light(
+                                  text: 'Allergene',
+                                  width: null,
+                                  onTap: () {
+                                    widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
+                                      opaque: false,
+                                      pageBuilder: (context, _, __) => const AllergenesPopup(),
+                                    ));
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Restaurants
+                      const ExpandableRestaurant(
                         name: 'Mensa der RUB',
                         meals: [
                           MealCategory(
@@ -97,7 +151,7 @@ class _MensaPageState extends State<MensaPage> {
                           ),
                         ],
                       ),
-                      ExpandableRestaurant(name: 'Bistro der RUB', meals: []),
+                      const ExpandableRestaurant(name: 'Bistro der RUB', meals: []),
                     ],
                   ),
                 ),
