@@ -19,7 +19,7 @@ void main() {
     rubnewsUsecases = RubnewsUsecases(rubnewsRepository: mockRubnewsRepository);
   });
 
-  group('[getFeedAndFailures]', () {
+  group('[updateFeedAndFailures]', () {
     final samleNewsEntities = [
       NewsEntity(title: 'title1', pubDate: DateTime(0), imageUrls: ['']),
       NewsEntity(title: 'title2', pubDate: DateTime(1), imageUrls: ['0', '1'], description: 'description'),
@@ -37,7 +37,7 @@ void main() {
       when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Left(CachFailure()));
 
       // act: function call
-      final testReturn = await rubnewsUsecases.getFeedAndFailures();
+      final testReturn = await rubnewsUsecases.updateFeedAndFailures();
 
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
@@ -56,7 +56,7 @@ void main() {
       when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Right(samleNewsEntities));
 
       // act: function call
-      final testReturn = await rubnewsUsecases.getFeedAndFailures();
+      final testReturn = await rubnewsUsecases.updateFeedAndFailures();
 
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
@@ -76,7 +76,7 @@ void main() {
       when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Left(CachFailure()));
 
       // act: function call
-      final testReturn = await rubnewsUsecases.getFeedAndFailures();
+      final testReturn = await rubnewsUsecases.updateFeedAndFailures();
 
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
@@ -96,11 +96,57 @@ void main() {
       when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Right(samleNewsEntities));
 
       // act: function call
-      final testReturn = await rubnewsUsecases.getFeedAndFailures();
+      final testReturn = await rubnewsUsecases.updateFeedAndFailures();
 
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
       verify(mockRubnewsRepository.getRemoteNewsfeed());
+      verify(mockRubnewsRepository.getCachedNewsfeed());
+      verifyNoMoreInteractions(mockRubnewsRepository);
+    });
+  });
+
+  group('[getCachedFeedAndFailures]', () {
+    final samleNewsEntities = [
+      NewsEntity(title: 'title1', pubDate: DateTime(0), imageUrls: ['']),
+      NewsEntity(title: 'title2', pubDate: DateTime(1), imageUrls: ['0', '1'], description: 'description'),
+      NewsEntity(title: 'title', pubDate: DateTime(0), imageUrls: ['imageUrls', ''], content: 'content'),
+    ];
+
+    test('Should return a JSON object with empty list of failures and list of news', () {
+      final expectedReturn = {
+        'failure': [],
+        'news': samleNewsEntities,
+      };
+
+      // arrange: localFeed contains news entities
+      when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Right(samleNewsEntities));
+
+      // act: function call
+      final testReturn = rubnewsUsecases.getCachedFeedAndFailures();
+
+      // assert: is expected result the actual return
+      identical(testReturn, expectedReturn);
+      verifyNever(mockRubnewsRepository.getRemoteNewsfeed());
+      verify(mockRubnewsRepository.getCachedNewsfeed());
+      verifyNoMoreInteractions(mockRubnewsRepository);
+    });
+
+    test('Should return a JSON object with empty list of news and list of failures', () {
+      final expectedReturn = {
+        'failure': [CachFailure()],
+        'news': [],
+      };
+
+      // arrange: localFeed contains a CachFailure
+      when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Left(CachFailure()));
+
+      // act: function call
+      final testReturn = rubnewsUsecases.getCachedFeedAndFailures();
+
+      // assert: is expected result the actual return
+      identical(testReturn, expectedReturn);
+      verifyNever(mockRubnewsRepository.getRemoteNewsfeed());
       verify(mockRubnewsRepository.getCachedNewsfeed());
       verifyNoMoreInteractions(mockRubnewsRepository);
     });

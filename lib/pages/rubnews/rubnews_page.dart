@@ -1,3 +1,4 @@
+import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/pages/rubnews/news_entity.dart';
 import 'package:campus_app/pages/rubnews/rubnews_usecases.dart';
@@ -31,9 +32,11 @@ class RubnewsPage extends StatefulWidget {
 
 class RubnewsPageState extends State<RubnewsPage> {
   late final ScrollController _scrollController;
-  List<NewsEntity> _rubnews = [];
   double _scrollControllerLastOffset = 0;
   double _headerOpacity = 1;
+
+  late List<NewsEntity> _rubnews = [];
+  late List<Failure> _failures = [];
 
   late final SnappingSheetController _popupController;
 
@@ -53,17 +56,33 @@ class RubnewsPageState extends State<RubnewsPage> {
           _scrollControllerLastOffset = _scrollController.offset;
           if (_headerOpacity != 1) setState(() => _headerOpacity = 1);
         } else if (_scrollController.offset < -200) {
-          // refresh news list when user swipe to end / beginning of list
-          _rubnewsUsecases.getFeedAndFailures().then((data) {
-            setState(() => _rubnews = data['news']! as List<NewsEntity>);
+          // refresh data when user swipe over beginning of list
+          _rubnewsUsecases.updateFeedAndFailures().then((data) {
+            // TODO: Show loading indicator
+            setState(() {
+              _rubnews = data['news']! as List<NewsEntity>;
+              _failures = data['failures']! as List<Failure>;
+            });
           });
         }
       });
 
     _popupController = SnappingSheetController();
-    _rubnewsUsecases.getFeedAndFailures().then((data) {
-      setState(() => _rubnews = data['news']! as List<NewsEntity>);
-    });
+
+    // initial data request
+    final initData = _rubnewsUsecases.getCachedFeedAndFailures();
+    _rubnews = initData['news']! as List<NewsEntity>; // empty when no data was cached before
+    _failures = initData['failures']! as List<Failure>; // CachFailure when no data was cached before
+
+    // empty _rubnews indicate that no data was cached -> request an update
+    if (_rubnews.isEmpty) {
+      _rubnewsUsecases.updateFeedAndFailures().then((data) {
+        setState(() {
+          _rubnews = data['news']! as List<NewsEntity>;
+          _failures = data['failures']! as List<Failure>;
+        });
+      });
+    }
   }
 
   @override
@@ -85,7 +104,8 @@ class RubnewsPageState extends State<RubnewsPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     controller: _scrollController,
                     physics: const BouncingScrollPhysics(),
-                    children: _feedUtils.fromNewsEntityListToFeedItemList(_rubnews),
+                    // TODO: Show loading indicator / error if list is empty
+                    children: _feedUtils.fromNewsEntityListToWidgetList(entities: _rubnews),
                   ),
                 ),
                 // Header

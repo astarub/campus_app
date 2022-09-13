@@ -6,9 +6,11 @@ import 'package:flutter/widgets.dart';
 
 class FeedUtils extends Utils {
   /// Parse a list of NewsEntity to widget list of type FeedItem.
-  List<Widget> fromNewsEntityListToFeedItemList(List<NewsEntity> entities) {
-    final widgets = <FeedItem>[];
+  /// For Padding insert at first position a SizedBox with heigth = 80 or given heigth.
+  List<Widget> fromNewsEntityListToWidgetList({required List<NewsEntity> entities, double? heigth}) {
+    final widgets = <Widget>[];
 
+    // parse entities in widget
     for (final entity in entities) {
       widgets.add(
         FeedItem(
@@ -22,6 +24,9 @@ class FeedUtils extends Utils {
         ),
       );
     }
+
+    // add SizedBox as padding
+    widgets.insert(0, SizedBox(height: heigth ?? 80));
 
     return widgets;
   }
