@@ -3,14 +3,15 @@ import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/rubnews/news_entity.dart';
 import 'package:campus_app/pages/rubnews/rubnews_datasource.dart';
 import 'package:campus_app/pages/rubnews/rubnews_repository.dart';
-import 'package:campus_app/utils/constants.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:xml/xml.dart';
 
+import '../test_constants.dart';
 import 'rubnews_repository_test.mocks.dart';
+import 'samples/single_news_xmlitem.dart';
 
 @GenerateMocks([RubnewsDatasource])
 void main() {
@@ -24,22 +25,7 @@ void main() {
 
   group('[getRemoteNewsfeed]', () {
     /// An example XmlDocument with empty content
-    final testXmlDocument = XmlDocument.parse(
-      '''
-      <?xml version="1.0" encoding="utf-8" ?>
-      <rss version="2.0" xml:base="https://news.rub.de/" xmlns:atom="http://www.w3.org/2005/Atom">
-          <channel>
-              <item>
-                  <content>content</content>
-                  <title>title</title>
-                  <link>https://news.rub.de/wissenschaft/2022-09-09-biopsychologie-schlaue-voegel-denken-smart-und-sparsam</link>
-                  <description>description</description>
-                  <pubDate>Wed, 07 Sep 2022 09:31:00 +0200</pubDate>
-              </item>
-          </channel>
-      </rss>
-      ''',
-    );
+    final testXmlDocument = XmlDocument.parse(rubnewsSampleSingleNewsXMLItem);
 
     test('Should return news list on successfully web request', () async {
       /// List of NewsEntity with one sample entity
@@ -47,12 +33,10 @@ void main() {
         NewsEntity(
           title: 'title',
           pubDate: DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse('Wed, 07 Sep 2022 09:31:00 +0200'),
-          imageUrls: [
-            'https://news.rub.de/sites/default/files/styles/nepo_teaser/public/2021_08_16_km_biopsychologie_tauben-34-auswahl.jpg?itok=PBFSkZyP',
-          ],
+          imageUrls: [rubnewsTestNewsUrlSingleImageUrl],
           description: 'description',
           content: 'content',
-          url: rubnewsTestNewsurl1,
+          url: rubnewsTestNewsUrlSingleImage,
         )
       ];
 
@@ -66,7 +50,7 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockRubnewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verify(
-        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsurl1),
+        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
       verifyNoMoreInteractions(mockRubnewsDatasource);
     });
@@ -85,7 +69,7 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockRubnewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verifyNever(
-        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsurl1),
+        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // exception is thrown inside first funtion, so this function shouldn't called
       verifyNoMoreInteractions(mockRubnewsDatasource);
     });
@@ -96,7 +80,7 @@ void main() {
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
       when(mockRubnewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
-      when(mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsurl1)).thenThrow(ServerException());
+      when(mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(ServerException());
 
       // act: funtion call
       final testReturn = await rubnewsRepository.getRemoteNewsfeed();
@@ -105,7 +89,7 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockRubnewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verify(
-        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsurl1),
+        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
       verifyNoMoreInteractions(mockRubnewsDatasource);
     });
@@ -124,7 +108,7 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockRubnewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verifyNever(
-        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsurl1),
+        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // exception is thrown inside first funtion, so this function shouldn't called
       verifyNoMoreInteractions(mockRubnewsDatasource);
     });
@@ -135,7 +119,7 @@ void main() {
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
       when(mockRubnewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
-      when(mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsurl1)).thenThrow(Exception());
+      when(mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(Exception());
 
       // act: funtion call
       final testReturn = await rubnewsRepository.getRemoteNewsfeed();
@@ -144,7 +128,7 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockRubnewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verify(
-        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsurl1),
+        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
       verifyNoMoreInteractions(mockRubnewsDatasource);
     });
@@ -177,7 +161,7 @@ void main() {
       when(mockRubnewsDatasource.readNewsEntitiesFromCach()).thenThrow(Exception());
 
       // act: funtion call
-      final testReturn = await rubnewsRepository.getCachedNewsfeed();
+      final testReturn = rubnewsRepository.getCachedNewsfeed();
 
       // assert: is testElement expected object? -> CachFailure
       identical(testReturn, expectedReturn);

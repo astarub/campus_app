@@ -9,7 +9,10 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:xml/xml.dart';
 
+import '../test_constants.dart';
 import 'rubnews_datasource_test.mocks.dart';
+import 'samples/news_html_single_image.dart';
+import 'samples/newsfeed_response.dart';
 
 @GenerateMocks([Dio, Box])
 void main() {
@@ -26,13 +29,13 @@ void main() {
 
   group('[getNewsfeedAsXml]', () {
     /// The XmlDocumnet that is expected to be returned after succefully GET request
-    final XmlDocument expectedReturn = XmlDocument.parse(rubnewsTestsDataSuccess);
+    final XmlDocument expectedReturn = XmlDocument.parse(rubnewsSamplesNewsfeedResponse);
 
     /// A Dio response on successfully request
     final resSuccess = Response(
       requestOptions: RequestOptions(path: rubNewsfeed),
       statusCode: 200,
-      data: rubnewsTestsDataSuccess,
+      data: rubnewsSamplesNewsfeedResponse,
     );
 
     /// A Dio response on failed request thougth connection error (statuscode 404)
@@ -69,9 +72,9 @@ void main() {
     test('Should return a list with one URL to images on successfully web request', () {
       /// A Dio response on successfully request
       final resSuccess = Response(
-        requestOptions: RequestOptions(path: rubnewsTestNewsurl1),
+        requestOptions: RequestOptions(path: rubnewsTestNewsUrlSingleImage),
         statusCode: 200,
-        data: rubnewsTestsNews1DataSuccess,
+        data: rubnewsSampleNewsHTMLSingleImage,
       );
 
       final List<String> expectedReturn = [
@@ -79,61 +82,53 @@ void main() {
       ];
 
       // arrange: Dio respond with statuscode 200 and XML data
-      when(mockClient.get(rubnewsTestNewsurl1)).thenAnswer((_) async => resSuccess);
+      when(mockClient.get(rubnewsTestNewsUrlSingleImage)).thenAnswer((_) async => resSuccess);
 
       // act: function call
-      final testReturn = rubnewsRemoteDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsurl1);
+      final testReturn = rubnewsRemoteDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage);
 
       // assert: is testElement expected object? -> XmlDocument
       identical(testReturn, expectedReturn); // is the returned object the expected one?
-      verify(mockClient.get(rubnewsTestNewsurl1)); // was client function called?
+      verify(mockClient.get(rubnewsTestNewsUrlSingleImage)); // was client function called?
       verifyNoMoreInteractions(mockClient); // no more interactions with client after get()?
     });
 
     test('Should throw a ServerException on failed web request', () {
       /// A Dio response on failed request thougth connection error (statuscode 404)
       final resFailure = Response(
-        requestOptions: RequestOptions(path: rubnewsTestNewsurl1),
+        requestOptions: RequestOptions(path: rubnewsTestNewsUrlSingleImage),
         statusCode: 404,
       );
 
       // arrange: Dio respond with statuscode 404
-      when(mockClient.get(rubnewsTestNewsurl1)).thenAnswer((_) async => resFailure);
+      when(mockClient.get(rubnewsTestNewsUrlSingleImage)).thenAnswer((_) async => resFailure);
 
       // assert: is ServerException thrown?
       expect(
-        () => rubnewsRemoteDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsurl1),
+        () => rubnewsRemoteDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
         throwsA(isA<ServerException>()),
       );
-      verify(mockClient.get(rubnewsTestNewsurl1)); // was client function called?
+      verify(mockClient.get(rubnewsTestNewsUrlSingleImage)); // was client function called?
       verifyNoMoreInteractions(mockClient); // no more interactions with client after get()?
     });
 
     test('Should return a list with five URLs to images on successfully web request', () {
       /// A Dio response on successfully request
       final resSuccess = Response(
-        requestOptions: RequestOptions(path: rubnewsTestNewsurl2),
+        requestOptions: RequestOptions(path: rubnewsTestNewsUrlMultipleImages),
         statusCode: 200,
-        data: rubnewsTestsNews2DataSuccess,
+        data: rubnewsSampleNewsHTMLSingleImage,
       );
 
-      final List<String> expectedReturn = [
-        'https://news.rub.de/sites/default/files/styles/nepo_teaser/public/07_kita.jpg?itok=zFSUaTtI',
-        'https://news.rub.de/sites/default/files/styles/nepo_teaser/public/06_einkauf.jpg?itok=6xhxGfCN',
-        'https://news.rub.de/sites/default/files/styles/nepo_teaser/public/03_baeckerei.jpg?itok=9NZg0XBl',
-        'https://news.rub.de/sites/default/files/styles/nepo_teaser/public/09_schirme_0.jpg?itok=WpqghJOX',
-        'https://news.rub.de/sites/default/files/styles/nepo_teaser/public/05_geburtstag.jpg?itok=z5N_Q2rC',
-      ];
-
       // arrange: Dio respond with statuscode 200 and XML data
-      when(mockClient.get(rubnewsTestNewsurl2)).thenAnswer((_) async => resSuccess);
+      when(mockClient.get(rubnewsTestNewsUrlMultipleImages)).thenAnswer((_) async => resSuccess);
 
       // act: function call
-      final testReturn = rubnewsRemoteDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsurl2);
+      final testReturn = rubnewsRemoteDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlMultipleImages);
 
       // assert: is testElement expected object? -> XmlDocument
-      identical(testReturn, expectedReturn); // is the returned object the expected one?
-      verify(mockClient.get(rubnewsTestNewsurl2)); // was client function called?
+      identical(testReturn, rubnewsTestNewsUrlMultipleImagesUrls); // is the returned object the expected one?
+      verify(mockClient.get(rubnewsTestNewsUrlMultipleImages)); // was client function called?
       verifyNoMoreInteractions(mockClient); // no more interactions with client after get()?
     });
   });
