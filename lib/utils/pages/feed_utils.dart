@@ -5,14 +5,14 @@ import 'package:campus_app/utils/pages/presentation_functions.dart';
 import 'package:flutter/widgets.dart';
 
 class FeedUtils extends Utils {
-  /// Parse a list of NewsEntity to widget list of type FeedItem.
-  /// For Padding insert at first position a SizedBox with heigth = 80 or given heigth.
+  /// Parse a list of NewsEntity to widget list of type FeedItem sorted by date.
+  /// For Padding insert at first position a SizedBox with heigth := 80 or given heigth.
   List<Widget> fromNewsEntityListToWidgetList({required List<NewsEntity> entities, double? heigth}) {
-    final widgets = <Widget>[];
+    final feedItems = <FeedItem>[];
 
     // parse entities in widget
     for (final entity in entities) {
-      widgets.add(
+      feedItems.add(
         FeedItem(
           title: entity.title,
           date: entity.pubDate,
@@ -25,8 +25,12 @@ class FeedUtils extends Utils {
       );
     }
 
+    // sort widgets according to date: new -> old
+    feedItems.sort((a, b) => b.date.compareTo(a.date));
+
     // add SizedBox as padding
-    widgets.insert(0, SizedBox(height: heigth ?? 80));
+    final List<Widget> widgets = [SizedBox(height: heigth ?? 80)];
+    widgets.addAll(feedItems);
 
     return widgets;
   }
