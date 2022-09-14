@@ -1,0 +1,61 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - 'documentation'
+    paths: 
+      - 'docs/wiki/**.md'
+
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0 
+
+      # Generate Wiki pages by using the script inside the docs folder
+      - name: Create Wiki pages based on subfolders
+        run: |
+          chmod +x ./docs/build_wiki.sh
+          ./docs/build_wiki.sh
+        shell: bash
+
+      # Commit generated Wiki Pages
+      - name: Commit Wiki pages
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add ./docs/wiki/*
+          git diff-index --quiet HEAD || git commit -m "Add GitHub Wiki Subpages" -a
+
+      # Push new files to repository
+      - name: Push Wiki pages
+        uses: moodiest/push-to-branch-action@develop
+        env:
+          REPO: self
+          BRANCH: gh-wiki
+          FOLDER: docs/wiki
+          GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      # Check out wiki branch only
+      - uses: actions/checkout@v3
+        with:
+          ref: 'gh-wiki'
+
+      - name: Upload Documentation to Wiki
+        uses: SwiftDocOrg/github-wiki-publish-action@v1
+        with:
+          path: "."
+        env:
+          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
