@@ -17,6 +17,7 @@ void main() async {
       // Initializes the provider that handles the app-theme, authentification and other things
       ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
       ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
+      ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
     ],
     child: const CampusApp(),
   ));

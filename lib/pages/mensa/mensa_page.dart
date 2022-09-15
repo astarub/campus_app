@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/pages/mensa/widgets/day_selection.dart';
@@ -28,13 +29,25 @@ class MensaPage extends StatefulWidget {
 }
 
 class _MensaPageState extends State<MensaPage> {
-  late final SnappingSheetController _popupController;
+  late Settings settings = Provider.of<SettingsHandler>(context).currentSettings;
+
+  void saveChangedPreferences(List<String> newPreferences) {
+    final Settings newSettings = Settings(
+      useSystemDarkmode: settings.useSystemDarkmode,
+      useDarkmode: settings.useDarkmode,
+      mensaPreferences: newPreferences,
+      mensaAllergenes: settings.mensaAllergenes,
+    );
+
+    debugPrint('Saving new mensa preferences: ${newSettings.mensaPreferences}');
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    _popupController = SnappingSheetController();
+    settings = Provider.of<SettingsHandler>(context).currentSettings;
   }
 
   @override
@@ -87,7 +100,11 @@ class _MensaPageState extends State<MensaPage> {
                                   onTap: () {
                                     widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
                                       opaque: false,
-                                      pageBuilder: (context, _, __) => PreferencesPopup(),
+                                      pageBuilder: (context, _, __) => PreferencesPopup(
+                                        preferences:
+                                            Provider.of<SettingsHandler>(context).currentSettings.mensaPreferences,
+                                        onClose: saveChangedPreferences,
+                                      ),
                                     ));
                                   },
                                 ),

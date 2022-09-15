@@ -62,6 +62,7 @@ class _SplashPageState extends State<SplashPage> {
               loadedSettings = Settings.fromJson(rawData);
 
               debugPrint('Settings loaded.');
+              Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(loadedSettings!);
 
               // Set theme
               setTheme(
@@ -95,15 +96,19 @@ class _SplashPageState extends State<SplashPage> {
   }) {}
 
   // ? DEBUG ONLY
-  void _debugDeleteSettings() async {
-    File jsonFile = File('$_directoryPath/settings.json');
-    jsonFile.delete().then((_) => debugPrint('DEBUG: Settings-Datei gelöscht.'));
+  void _debugDeleteSettings() {
+    getApplicationDocumentsDirectory().then((Directory directory) {
+      final String tempDirectoryPath = directory.path;
+      final File jsonFile = File('$tempDirectoryPath/settings.json');
+      jsonFile.delete().then((_) => debugPrint('DEBUG: Settings-Datei gelöscht.'));
+    });
   }
 
   @override
   void initState() {
     super.initState();
 
+    //_debugDeleteSettings();
     // load saved settings
     loadingTimer.start();
     loadSettings();

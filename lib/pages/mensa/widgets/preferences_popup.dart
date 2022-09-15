@@ -8,13 +8,17 @@ import 'package:campus_app/utils/widgets/campus_selection.dart';
 /// This widget displays the preference options that are available for the mensa
 /// page and is used in the [SnappingSheet] widget.
 class PreferencesPopup extends StatefulWidget {
-  /// Can be given to show saved preferences on build and also be accessed
-  /// to save the new selection.
-  List<String> preferences;
+  /// Can be given to show saved preferences on build
+  final List<String> preferences;
 
-  PreferencesPopup({
+  /// The function that is called when the popup is closed by the user.
+  /// Returns a List of Strings that represent the selected preferences.
+  final void Function(List<String>) onClose;
+
+  const PreferencesPopup({
     Key? key,
     this.preferences = const [],
+    required this.onClose,
   }) : super(key: key);
 
   @override
@@ -22,19 +26,31 @@ class PreferencesPopup extends StatefulWidget {
 }
 
 class _PreferencesPopupState extends State<PreferencesPopup> {
+  late List<String> selectedPreferences;
+
   void selectItem(String selected) {
-    if (widget.preferences.contains(selected)) {
-      setState(() => widget.preferences.removeWhere((preference) => preference == selected));
+    if (selectedPreferences.contains(selected)) {
+      setState(() => selectedPreferences.removeWhere((preference) => preference == selected));
     } else {
-      setState(() => widget.preferences.add(selected));
+      setState(() => selectedPreferences.add(selected));
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    selectedPreferences = widget.preferences;
   }
 
   @override
   Widget build(BuildContext context) {
     return PopupSheet(
       title: 'Präferenzen',
-      onClose: () => Navigator.pop(context),
+      onClose: () {
+        widget.onClose(selectedPreferences);
+        Navigator.pop(context);
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         color: Colors.white,
@@ -54,9 +70,9 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
               selectionItemTitles: const ['Vegetarisch', 'Vegan', 'Halal'],
               selectionItemShortcut: const ['V', 'VG', 'H'],
               selections: [
-                widget.preferences.contains('V'),
-                widget.preferences.contains('VG'),
-                widget.preferences.contains('H'),
+                selectedPreferences.contains('V'),
+                selectedPreferences.contains('VG'),
+                selectedPreferences.contains('H'),
               ],
               onSelected: selectItem,
             ),
@@ -73,9 +89,9 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
               selectionItemTitles: const ['Alkohol', 'Fisch', 'Geflügel'],
               selectionItemShortcut: const ['A', 'F', 'G'],
               selections: [
-                widget.preferences.contains('A'),
-                widget.preferences.contains('F'),
-                widget.preferences.contains('G'),
+                selectedPreferences.contains('A'),
+                selectedPreferences.contains('F'),
+                selectedPreferences.contains('G'),
               ],
               onSelected: selectItem,
             ),
@@ -83,16 +99,16 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
               selectionItemTitles: const ['Lamm', 'Rind', 'Schwein'],
               selectionItemShortcut: const ['L', 'R', 'S'],
               selections: [
-                widget.preferences.contains('L'),
-                widget.preferences.contains('R'),
-                widget.preferences.contains('S'),
+                selectedPreferences.contains('L'),
+                selectedPreferences.contains('R'),
+                selectedPreferences.contains('S'),
               ],
               onSelected: selectItem,
             ),
             SelectionItemRow(
               selectionItemTitles: const ['Wild'],
               selectionItemShortcut: const ['W'],
-              selections: [widget.preferences.contains('W')],
+              selections: [selectedPreferences.contains('W')],
               onSelected: selectItem,
             ),
           ],
