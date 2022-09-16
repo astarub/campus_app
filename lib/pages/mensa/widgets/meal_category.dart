@@ -48,6 +48,7 @@ class MealItem extends StatelessWidget {
   final double price;
   final List<String> infos;
   final List<String> allergenes;
+  final void Function(String) onPreferenceTap;
 
   const MealItem({
     Key? key,
@@ -55,6 +56,7 @@ class MealItem extends StatelessWidget {
     this.price = 0.0,
     this.infos = const [],
     this.allergenes = const [],
+    required this.onPreferenceTap,
   }) : super(key: key);
 
   @override
@@ -93,7 +95,11 @@ class MealItem extends StatelessWidget {
                 children: infos
                     .map((infoElement) => MealInfoButton(
                           info: infoElement,
-                          onTap: () {},
+                          onTap: () {
+                            if (infoElement == 'V' || infoElement == 'VG' || infoElement == 'H') {
+                              onPreferenceTap(infoElement);
+                            }
+                          },
                         ))
                     .toList(),
               ),

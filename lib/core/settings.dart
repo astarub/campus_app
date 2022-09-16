@@ -55,9 +55,9 @@ class Settings {
       useSystemDarkmode: json['useSystemDarkmode'] ?? true,
       useDarkmode: json['useDarkmode'] ?? false,
       mensaPreferences:
-          json['mensaPreferences'] != null ? List<String>.from(json['mensaPreferences']) : [] as List<String>,
+          json['mensaPreferences'] != null ? List<String>.from(json['mensaPreferences']) : List<String>.from([]),
       mensaAllergenes:
-          json['mensaAllergenes'] != null ? List<String>.from(json['mensaAllergenes']) : [] as List<String>,
+          json['mensaAllergenes'] != null ? List<String>.from(json['mensaAllergenes']) : List<String>.from([]),
     );
   }
 

@@ -29,25 +29,53 @@ class MensaPage extends StatefulWidget {
 }
 
 class _MensaPageState extends State<MensaPage> {
-  late Settings settings = Provider.of<SettingsHandler>(context).currentSettings;
+  late Settings _settings = Provider.of<SettingsHandler>(context).currentSettings;
 
+  /// This function saves the new selected preferences with the [SettingsHandler]
   void saveChangedPreferences(List<String> newPreferences) {
     final Settings newSettings = Settings(
-      useSystemDarkmode: settings.useSystemDarkmode,
-      useDarkmode: settings.useDarkmode,
+      useSystemDarkmode: _settings.useSystemDarkmode,
+      useDarkmode: _settings.useDarkmode,
       mensaPreferences: newPreferences,
-      mensaAllergenes: settings.mensaAllergenes,
+      mensaAllergenes: _settings.mensaAllergenes,
     );
 
     debugPrint('Saving new mensa preferences: ${newSettings.mensaPreferences}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
   }
 
+  /// This function saves the new selected preferences with the [SettingsHandler]
+  void saveChangedAllergenes(List<String> newAllergenes) {
+    final Settings newSettings = Settings(
+      useSystemDarkmode: _settings.useSystemDarkmode,
+      useDarkmode: _settings.useDarkmode,
+      mensaPreferences: _settings.mensaPreferences,
+      mensaAllergenes: newAllergenes,
+    );
+
+    debugPrint('Saving new mensa allergenes: ${newSettings.mensaAllergenes}');
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
+
+  /// This function is called whenever one of the 3 preferences "vegetarian", "vegan"
+  /// or "halal" is selected. It automatically adds or removes the preference from the list.
+  void singlePreferenceSelected(String selectedPreference) {
+    List<String> newPreferences = _settings.mensaPreferences;
+
+    if (_settings.mensaPreferences.contains(selectedPreference)) {
+      newPreferences.remove(selectedPreference);
+    } else {
+      newPreferences.add(selectedPreference);
+    }
+
+    saveChangedPreferences(newPreferences);
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    settings = Provider.of<SettingsHandler>(context).currentSettings;
+    _settings = Provider.of<SettingsHandler>(context).currentSettings;
   }
 
   @override
@@ -119,7 +147,11 @@ class _MensaPageState extends State<MensaPage> {
                                   onTap: () {
                                     widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
                                       opaque: false,
-                                      pageBuilder: (context, _, __) => const AllergenesPopup(),
+                                      pageBuilder: (context, _, __) => AllergenesPopup(
+                                        allergenes:
+                                            Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
+                                        onClose: saveChangedAllergenes,
+                                      ),
                                     ));
                                   },
                                 ),
@@ -129,7 +161,7 @@ class _MensaPageState extends State<MensaPage> {
                         ),
                       ),
                       // Restaurants
-                      const ExpandableRestaurant(
+                      ExpandableRestaurant(
                         name: 'Mensa der RUB',
                         meals: [
                           MealCategory(
@@ -138,8 +170,9 @@ class _MensaPageState extends State<MensaPage> {
                               MealItem(
                                 name: 'Seelachs mit Gurken-Senfsauce',
                                 price: 2.7,
-                                infos: ['F'],
-                                allergenes: ['d', 'g', 'j'],
+                                infos: const ['F'],
+                                allergenes: const ['d', 'g', 'j'],
+                                onPreferenceTap: singlePreferenceSelected,
                               ),
                               //MealItem(name: 'Paniertes Kabeljaufilet mit Dillrahmsauce', price: 2.5),
                             ],
@@ -150,8 +183,9 @@ class _MensaPageState extends State<MensaPage> {
                               MealItem(
                                 name: 'Halal Hähnchendöner mit Pommes oder Reis und Salat',
                                 price: 3.9,
-                                infos: ['G', 'H'],
-                                allergenes: ['a', 'al', 'g', 'j', 'l', '1', '2', '5'],
+                                infos: const ['G', 'H'],
+                                allergenes: const ['a', 'al', 'g', 'j', 'l', '1', '2', '5'],
+                                onPreferenceTap: singlePreferenceSelected,
                               ),
                             ],
                           ),
@@ -161,14 +195,15 @@ class _MensaPageState extends State<MensaPage> {
                               MealItem(
                                 name: 'Frühlingsrolle mit Pflaumen-Ingwer-Dip',
                                 price: 1.8,
-                                infos: ['VG'],
-                                allergenes: ['a', 'al', 'f', 'i', 'k'],
+                                infos: const ['VG'],
+                                allergenes: const ['a', 'al', 'f', 'i', 'k'],
+                                onPreferenceTap: singlePreferenceSelected,
                               ),
                             ],
                           ),
                         ],
                       ),
-                      const ExpandableRestaurant(name: 'Bistro der RUB', meals: []),
+                      const ExpandableRestaurant(name: 'Rote Beete', meals: []),
                     ],
                   ),
                 ),

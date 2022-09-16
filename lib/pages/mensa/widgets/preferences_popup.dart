@@ -26,13 +26,13 @@ class PreferencesPopup extends StatefulWidget {
 }
 
 class _PreferencesPopupState extends State<PreferencesPopup> {
-  late List<String> selectedPreferences;
+  late List<String> _selectedPreferences;
 
   void selectItem(String selected) {
-    if (selectedPreferences.contains(selected)) {
-      setState(() => selectedPreferences.removeWhere((preference) => preference == selected));
+    if (_selectedPreferences.contains(selected)) {
+      setState(() => _selectedPreferences.removeWhere((preference) => preference == selected));
     } else {
-      setState(() => selectedPreferences.add(selected));
+      setState(() => _selectedPreferences.add(selected));
     }
   }
 
@@ -40,7 +40,7 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
   void initState() {
     super.initState();
 
-    selectedPreferences = widget.preferences;
+    _selectedPreferences = widget.preferences;
   }
 
   @override
@@ -48,7 +48,7 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
     return PopupSheet(
       title: 'Präferenzen',
       onClose: () {
-        widget.onClose(selectedPreferences);
+        widget.onClose(_selectedPreferences);
         Navigator.pop(context);
       },
       child: Container(
@@ -70,9 +70,9 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
               selectionItemTitles: const ['Vegetarisch', 'Vegan', 'Halal'],
               selectionItemShortcut: const ['V', 'VG', 'H'],
               selections: [
-                selectedPreferences.contains('V'),
-                selectedPreferences.contains('VG'),
-                selectedPreferences.contains('H'),
+                _selectedPreferences.contains('V'),
+                _selectedPreferences.contains('VG'),
+                _selectedPreferences.contains('H'),
               ],
               onSelected: selectItem,
             ),
@@ -89,9 +89,9 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
               selectionItemTitles: const ['Alkohol', 'Fisch', 'Geflügel'],
               selectionItemShortcut: const ['A', 'F', 'G'],
               selections: [
-                selectedPreferences.contains('A'),
-                selectedPreferences.contains('F'),
-                selectedPreferences.contains('G'),
+                _selectedPreferences.contains('A'),
+                _selectedPreferences.contains('F'),
+                _selectedPreferences.contains('G'),
               ],
               onSelected: selectItem,
             ),
@@ -99,16 +99,16 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
               selectionItemTitles: const ['Lamm', 'Rind', 'Schwein'],
               selectionItemShortcut: const ['L', 'R', 'S'],
               selections: [
-                selectedPreferences.contains('L'),
-                selectedPreferences.contains('R'),
-                selectedPreferences.contains('S'),
+                _selectedPreferences.contains('L'),
+                _selectedPreferences.contains('R'),
+                _selectedPreferences.contains('S'),
               ],
               onSelected: selectItem,
             ),
             SelectionItemRow(
               selectionItemTitles: const ['Wild'],
               selectionItemShortcut: const ['W'],
-              selections: [selectedPreferences.contains('W')],
+              selections: [_selectedPreferences.contains('W')],
               onSelected: selectItem,
             ),
           ],
