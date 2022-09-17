@@ -11,7 +11,11 @@
         "editor.tabCompletion": "onlySnippets",
         "editor.selectionHighlight": false,
         "editor.wordBasedSuggestions": false,
-        "editor.quickSuggestions": true,
+        "editor.quickSuggestions": {
+            "comments": "on",
+            "strings": "on",
+            "other": "on"
+        },
         "editor.suggest.snippetsPreventQuickSuggestions": false,
         "editor.formatOnSave": true,
 

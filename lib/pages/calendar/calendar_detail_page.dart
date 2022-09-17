@@ -1,15 +1,14 @@
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/calendar/calendar_event_entity.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 
 class CalendarDetailPage extends StatelessWidget {
-  final CalendarEventEntity event;
+  final Event event;
 
   const CalendarDetailPage({Key? key, required this.event}) : super(key: key);
 
@@ -31,14 +30,14 @@ class CalendarDetailPage extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  if (event.image != null)
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25),
-                      ),
-                      child: event.image,
-                    ),
+                  // if (event.image != null)
+                  //   ClipRRect(
+                  //     borderRadius: const BorderRadius.only(
+                  //       bottomLeft: Radius.circular(25),
+                  //       bottomRight: Radius.circular(25),
+                  //     ),
+                  //     child: event.image,
+                  //   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
@@ -68,17 +67,17 @@ class CalendarDetailPage extends StatelessWidget {
                             ),
                           ),
                         // Venue
-                        if (event.venue != '')
+                        if (event.venue.name != '')
                           Text(
                             'Veranstaltungsort',
                             textAlign: TextAlign.left,
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                           ),
-                        if (event.venue != '')
+                        if (event.venue.name != '')
                           Padding(
                             padding: const EdgeInsets.only(top: 5, bottom: 30),
                             child: Text(
-                              event.venue,
+                              event.venue.name,
                               style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                             ),
                           ),
@@ -96,10 +95,10 @@ class CalendarDetailPage extends StatelessWidget {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image(
-                    image: event.image!.image,
-                    color: Colors.transparent,
-                  ),
+                  // Image(
+                  //   image: event.image!.image,
+                  //   color: Colors.transparent,
+                  // ),
                   Container(
                     //color: Colors.transparent,
                     transform: Matrix4.translationValues(0, -65, 0),

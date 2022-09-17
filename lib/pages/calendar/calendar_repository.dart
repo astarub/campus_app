@@ -1,31 +1,28 @@
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/calendar/calendar_event_entity.dart';
-import 'package:campus_app/pages/calendar/calendar_event_model.dart';
-import 'package:campus_app/pages/calendar/calendar_remote_datasource.dart';
+import 'package:campus_app/pages/calendar/calendar_datasource.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class CalendarRepository {
   /// return a list of events or a failure
-  Future<Either<Failure, List<CalendarEventEntity>>> getAStAEvents();
+  Future<Either<Failure, List<Event>>> getAStAEvents();
 }
 
 class CalendarRepositoryImpl implements CalendarRepository {
-  final CalendarRemoteDatasource calendarRemoteDatasource;
+  final CalendarDatasource calendarRemoteDatasource;
 
   CalendarRepositoryImpl({required this.calendarRemoteDatasource});
 
   @override
-  Future<Either<Failure, List<CalendarEventEntity>>> getAStAEvents() async {
+  Future<Either<Failure, List<Event>>> getAStAEvents() async {
     try {
-      final astaEventsJson =
-          await calendarRemoteDatasource.getAStAEventsAsJsonArray();
+      final astaEventsJson = await calendarRemoteDatasource.getAStAEventsAsJsonArray();
 
-      final List<CalendarEventEntity> entities = [];
+      final List<Event> entities = [];
 
       for (final element in astaEventsJson) {
-        entities
-            .add(CalendarEventModel.fromJson(element as Map<String, dynamic>));
+        entities.add(Event.fromJson(element));
       }
 
       return Right(entities);

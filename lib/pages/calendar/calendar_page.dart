@@ -1,4 +1,3 @@
-import 'package:campus_app/pages/calendar/calendar_event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,28 +29,28 @@ class _CalendarPageState extends State<CalendarPage> {
   static List<Widget> parsedEvents = [
     // Spacing
     const SizedBox(height: 80),
-    CalendarEventWidget(
-      event: CalendarEventEntity(
-        id: 0,
-        title: 'E-Sports Meet & Greet',
-        description:
-            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-        startDate: DateTime(2022, 06, 20, 17),
-        costs: 10.5,
-        venue: 'Gaming Hub',
-        organizers: ['AStA', 'E-Sports Referat'],
-      ),
-    ),
-    CalendarEventWidget(
-      event: CalendarEventEntity(
-        id: 0,
-        title: 'E-Sports Meet & Greet',
-        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-        startDate: DateTime(2022, 06, 20, 17),
-        costs: 0,
-      ),
-    ),
+    // CalendarEventWidget(
+    //   event: CalendarEventEntity(
+    //     id: 0,
+    //     title: 'E-Sports Meet & Greet',
+    //     description:
+    //         'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
+    //     image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
+    //     startDate: DateTime(2022, 06, 20, 17),
+    //     costs: 10.5,
+    //     venue: 'Gaming Hub',
+    //     organizers: ['AStA', 'E-Sports Referat'],
+    //   ),
+    // ),
+    // CalendarEventWidget(
+    //   event: CalendarEventEntity(
+    //     id: 0,
+    //     title: 'E-Sports Meet & Greet',
+    //     image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
+    //     startDate: DateTime(2022, 06, 20, 17),
+    //     costs: 0,
+    //   ),
+    // ),
   ];
   /* static List<Widget> savedEvents = [
     // Spacing

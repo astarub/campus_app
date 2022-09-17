@@ -1,7 +1,8 @@
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
-import 'package:campus_app/core/injection.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/authentication/authentication_handler.dart';
@@ -11,7 +12,14 @@ import 'package:campus_app/pages/splash/splash_page.dart';
 // ignore: avoid_void_async
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initializes Hive and all used adapter for caching entities
+  await Hive.initFlutter();
+  Hive.registerAdapter(EventAdapter());
+
+  // Initialize injection container
   await ic.init();
+
   runApp(MultiProvider(
     providers: [
       // Initializes the provider that handles the app-theme, authentification and other things

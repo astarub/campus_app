@@ -1,7 +1,7 @@
 import 'package:campus_app/core/authentication/authentication_datasource.dart';
 import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/authentication/authentication_repository.dart';
-import 'package:campus_app/pages/calendar/calendar_remote_datasource.dart';
+import 'package:campus_app/pages/calendar/calendar_datasource.dart';
 import 'package:campus_app/pages/calendar/calendar_repository.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 //import 'package:campus_app/pages/ecampus/bloc/ecampus_bloc.dart';
@@ -19,6 +19,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 final sl = GetIt.instance; // service locator
@@ -64,8 +65,11 @@ Future<void> init() async {
   sl.registerLazySingleton<RubnewsRemoteDatasource>(
     () => RubnewsRemoteDatasourceImpl(client: sl()),
   );
-  sl.registerLazySingleton<CalendarRemoteDatasource>(
-    () => CalendarRemoteDatasourceImpl(client: sl()),
+  sl.registerLazySingleton(
+    () async => CalendarDatasource(
+      client: sl(),
+      eventCach: await Hive.openBox('eventCach'),
+    ),
   );
   sl.registerLazySingleton<AuthenticationDatasource>(
     () => AuthenticationDatasourceImpl(
