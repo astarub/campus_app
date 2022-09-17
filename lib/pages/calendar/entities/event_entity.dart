@@ -98,7 +98,7 @@ class Event {
         ? null
         : {
             'currency': (json['cost_details'] as Map<String, dynamic>)['currency_symbol'] as String,
-            'value': ((json['cost_details'] as Map<String, dynamic>)['values'] as List<String>)[0],
+            'value': ((json['cost_details'] as Map<String, dynamic>)['values'] as List<dynamic>)[0] as String,
           };
 
     // if json['image'] of type bool then has the event no image

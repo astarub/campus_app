@@ -1,4 +1,8 @@
+import 'package:campus_app/pages/calendar/calendar_page.dart';
+import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
+import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +20,9 @@ void main() async {
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
   Hive.registerAdapter(EventAdapter());
+  Hive.registerAdapter(VenueAdapter());
+  Hive.registerAdapter(OrganizerAdapter());
+  Hive.registerAdapter(CategoryAdapter());
 
   // Initialize injection container
   await ic.init();

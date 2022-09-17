@@ -58,4 +58,7 @@ class Organizer {
       email: email,
     );
   }
+
+  @override
+  String toString() => name;
 }

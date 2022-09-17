@@ -18,7 +18,7 @@ class CalendarRepository {
 
       final List<Event> entities = [];
 
-      for (final event in astaEventsJson) {
+      for (final Map<String, dynamic> event in astaEventsJson) {
         entities.add(Event.fromJson(event));
       }
 
@@ -27,8 +27,13 @@ class CalendarRepository {
 
       return Right(entities);
     } catch (e) {
+      print(e);
+
       switch (e.runtimeType) {
         case ServerException:
+          return Left(ServerFailure());
+
+        case JsonException:
           return Left(ServerFailure());
 
         case EmptyResponseException:

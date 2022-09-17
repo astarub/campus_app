@@ -79,4 +79,15 @@ class Venue {
       phone: phone,
     );
   }
+
+  @override
+  String toString() {
+    String venueString = name;
+
+    venueString = address == null ? venueString : '$venueString: $address';
+    venueString = zip == null ? venueString : '$venueString, $zip';
+    venueString = city == null ? venueString : '$venueString, $city';
+
+    return venueString;
+  }
 }

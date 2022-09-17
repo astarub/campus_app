@@ -1,5 +1,6 @@
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:animations/animations.dart';
@@ -88,9 +89,22 @@ class CalendarEventWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      event.title,
-                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                    // Text(
+                    //   event.title,
+                    //   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                    // ),
+                    Html(
+                      data: event.title,
+                      style: {
+                        'h4': Style(
+                          fontSize: const FontSize(17),
+                        ),
+                        '*': Style(
+                          color: const Color.fromARGB(255, 129, 129, 129),
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.2,
+                        ),
+                      },
                     ),
                     Text(startingTime),
                     // Text(event.costs != 0
@@ -98,6 +112,9 @@ class CalendarEventWidget extends StatelessWidget {
                     //         ? event.costs.toInt().toString() + ' €'
                     //         : event.costs.toString() + '0 €'
                     //     : 'kostenlos'),
+                    Text(
+                      event.cost == null ? 'kostenlos' : "${event.cost!['value']} ${event.cost!['currency']}",
+                    ),
                   ],
                 ),
               ),

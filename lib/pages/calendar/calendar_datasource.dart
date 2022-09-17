@@ -24,19 +24,12 @@ class CalendarDatasource {
   /// Request events from tribe api.
   /// Throws a server excpetion if respond code is not 200.
   Future<List<dynamic>> getAStAEventsAsJsonArray() async {
-    late Map<String, dynamic> responseBody;
     final response = await client.get(astaEvents);
 
     if (response.statusCode != 200) {
       throw ServerException();
     } else {
-      // try to read json. When it fails than throw JsonException
-      try {
-        responseBody = json.decode(response.data) as Map<String, dynamic>;
-      } catch (e) {
-        throw JsonException();
-      }
-
+      final responseBody = response.data as Map<String, dynamic>;
       if ((responseBody['events'] as List<dynamic>).isEmpty) {
         throw EmptyResponseException();
       }

@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
@@ -30,14 +32,14 @@ class CalendarDetailPage extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  // if (event.image != null)
-                  //   ClipRRect(
-                  //     borderRadius: const BorderRadius.only(
-                  //       bottomLeft: Radius.circular(25),
-                  //       bottomRight: Radius.circular(25),
-                  //     ),
-                  //     child: event.image,
-                  //   ),
+                  if (event.hasImage)
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(25),
+                        bottomRight: Radius.circular(25),
+                      ),
+                      child: CachedNetworkImage(imageUrl: event.imageUrl!),
+                    ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
@@ -46,9 +48,19 @@ class CalendarDetailPage extends StatelessWidget {
                         // Description
                         Padding(
                           padding: const EdgeInsets.only(top: 100, bottom: 40),
-                          child: Text(
-                            event.description != '' ? event.description : 'No description given.',
-                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                          // child: Text(
+                          //   event.description != '' ? event.description : 'No description given.',
+                          //   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                          // ),
+                          child: Html(
+                            data: event.description != '' ? event.description : 'No description given.',
+                            style: {
+                              '*': Style(
+                                color: const Color.fromARGB(255, 129, 129, 129),
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 0.2,
+                              ),
+                            },
                           ),
                         ),
                         // Hosts
@@ -61,9 +73,19 @@ class CalendarDetailPage extends StatelessWidget {
                         if (event.organizers.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(top: 5, bottom: 30),
-                            child: Text(
-                              event.organizers.join(', '),
-                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            // child: Text(
+                            //   event.organizers.join(', '),
+                            //   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            // ),
+                            child: Html(
+                              data: event.organizers.join(', '),
+                              style: {
+                                '*': Style(
+                                  color: const Color.fromARGB(255, 129, 129, 129),
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.2,
+                                ),
+                              },
                             ),
                           ),
                         // Venue
@@ -76,9 +98,19 @@ class CalendarDetailPage extends StatelessWidget {
                         if (event.venue.name != '')
                           Padding(
                             padding: const EdgeInsets.only(top: 5, bottom: 30),
-                            child: Text(
-                              event.venue.name,
-                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            // child: Text(
+                            //   event.venue.name,
+                            //   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            // ),
+                            child: Html(
+                              data: event.venue.toString(),
+                              style: {
+                                '*': Style(
+                                  color: const Color.fromARGB(255, 129, 129, 129),
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.2,
+                                ),
+                              },
                             ),
                           ),
                         // Notification-button

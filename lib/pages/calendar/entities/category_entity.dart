@@ -39,10 +39,13 @@ class Category {
   }) {
     return Category(
       id: json['id'],
-      url: (json['urls'] as Map<String, String>)['self']!,
+      url: (json['urls'] as Map<String, dynamic>)['self']! as String,
       name: json['name'],
       description: json['description'],
       isCategory: isCategory,
     );
   }
+
+  @override
+  String toString() => name;
 }

@@ -1,3 +1,8 @@
+import 'package:campus_app/core/failures.dart';
+import 'package:campus_app/pages/calendar/calendar_usecases.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
+import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,49 +31,80 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  static List<Widget> parsedEvents = [
-    // Spacing
-    const SizedBox(height: 80),
-    // CalendarEventWidget(
-    //   event: CalendarEventEntity(
-    //     id: 0,
-    //     title: 'E-Sports Meet & Greet',
-    //     description:
-    //         'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-    //     image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-    //     startDate: DateTime(2022, 06, 20, 17),
-    //     costs: 10.5,
-    //     venue: 'Gaming Hub',
-    //     organizers: ['AStA', 'E-Sports Referat'],
-    //   ),
-    // ),
-    // CalendarEventWidget(
-    //   event: CalendarEventEntity(
-    //     id: 0,
-    //     title: 'E-Sports Meet & Greet',
-    //     image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-    //     startDate: DateTime(2022, 06, 20, 17),
-    //     costs: 0,
-    //   ),
-    // ),
-  ];
-  /* static List<Widget> savedEvents = [
-    // Spacing
-    const SizedBox(height: 80),
-    CalendarEventWidget(
-      event: CalendarEventEntity(
-        id: 0,
-        title: 'E-Sports Meet & Greet',
-        description:
-            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-        startDate: DateTime(2022, 06, 20, 17),
-        costs: 10.5,
-        organizers: ['AStA', 'E-Sports Referat'],
-      ),
-    ),
-  ]; */
+  late List<Event> _events = [];
+  late List<Failure> _failures = [];
+
+  final _calendarUsecase = sl<CalendarUsecases>();
+  final _calendarUtils = sl<CalendarUtils>();
+
+  static List<Widget> parsedEvents = [];
+  // static List<Widget> parsedEvents = [
+  //   // Spacing
+  //   const SizedBox(height: 80),
+  //   CalendarEventWidget(
+  //     event: Event(
+  //       id: 0,
+  //       title: 'E-Sports Meet & Greet',
+  //       description:
+  //           'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
+  //       startDate: DateTime(2022, 06, 20, 17),
+  //       endDate: DateTime(2022, 06, 20, 19),
+  //       cost: {'value': '10.5', 'currency': '€'},
+  //       venue: const Venue(id: 0, url: '', name: 'Gaming Hub', slug: 'slug'),
+  //       organizers: const [
+  //         Organizer(id: 0, url: 'url', name: 'AStA', slug: 'asta'),
+  //         Organizer(id: 0, url: 'url', name: 'E-Sports Referat', slug: 'e-sport'),
+  //       ],
+  //       hasImage: false,
+  //       slug: '',
+  //       url: '',
+  //     ),
+  //   ),
+  //   CalendarEventWidget(
+  //     event: Event(
+  //       id: 0,
+  //       title: 'E-Sports Meet & Greet',
+  //       description:
+  //           'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
+  //       startDate: DateTime(2022, 06, 20, 17),
+  //       endDate: DateTime(2022, 06, 20, 19),
+  //       cost: {'value': '10.5', 'currency': '€'},
+  //       venue: const Venue(id: 0, url: '', name: 'Gaming Hub', slug: 'slug'),
+  //       organizers: const [
+  //         Organizer(id: 0, url: 'url', name: 'AStA', slug: 'asta'),
+  //         Organizer(id: 0, url: 'url', name: 'E-Sports Referat', slug: 'e-sport'),
+  //       ],
+  //       hasImage: false,
+  //       slug: '',
+  //       url: '',
+  //     ),
+  //   ),
+  // ];
+
   static List<Widget> savedEvents = [];
+  // static List<Widget> savedEvents = [
+  //   // Spacing
+  //   const SizedBox(height: 80),
+  //   CalendarEventWidget(
+  //     event: Event(
+  //       id: 0,
+  //       title: 'E-Sports Meet & Greet',
+  //       description:
+  //           'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
+  //       startDate: DateTime(2022, 06, 20, 17),
+  //       endDate: DateTime(2022, 06, 20, 19),
+  //       cost: {'value': '10.5', 'currency': '€'},
+  //       venue: const Venue(id: 0, url: '', name: 'Gaming Hub', slug: 'slug'),
+  //       organizers: const [
+  //         Organizer(id: 0, url: 'url', name: 'AStA', slug: 'asta'),
+  //         Organizer(id: 0, url: 'url', name: 'E-Sports Referat', slug: 'e-sport'),
+  //       ],
+  //       hasImage: false,
+  //       slug: '',
+  //       url: '',
+  //     ),
+  //   ),
+  // ];
 
   late final CampusSegmentedControl upcomingSavedSwitch;
   bool showSavedEvents = false;
@@ -92,8 +128,17 @@ class _CalendarPageState extends State<CalendarPage> {
       },
     );
 
-    if (parsedEvents.isEmpty) showUpcomingPlaceholder = true;
-    if (savedEvents.isEmpty) showSavedPlaceholder = true;
+    _calendarUsecase.updateEventsAndFailures().then((data) {
+      setState(() {
+        _events = data['events']! as List<Event>;
+        _failures = data['failures']! as List<Failure>;
+
+        parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
+
+        if (parsedEvents.isEmpty) showUpcomingPlaceholder = true;
+        if (savedEvents.isEmpty) showSavedPlaceholder = true;
+      });
+    });
   }
 
   @override
