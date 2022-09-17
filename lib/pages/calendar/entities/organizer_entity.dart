@@ -50,7 +50,7 @@ class Organizer {
 
     return Organizer(
       id: json['id'],
-      name: json['venue'],
+      name: json['organizer'],
       url: json['url'],
       slug: json['slug'],
       phone: phone,

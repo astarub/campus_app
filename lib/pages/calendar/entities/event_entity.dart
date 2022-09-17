@@ -90,34 +90,32 @@ class Event {
   });
 
   factory Event.fromJson(Map<String, dynamic> json) {
-    late Map<String, String>? cost;
-
     final List<Category> categories = [];
     final List<Organizer> organizers = [];
 
     // cost := null if no costs specified for event
-    if (json['cost'] != '') {
-      cost = {
-        'currency': (json['cost_details'] as Map<String, dynamic>)['currency_symbol'] as String,
-        'value': ((json['cost_details'] as Map<String, dynamic>)['values'] as List<String>)[0],
-      };
-    }
+    final Map<String, String>? cost = json['cost'] == ''
+        ? null
+        : {
+            'currency': (json['cost_details'] as Map<String, dynamic>)['currency_symbol'] as String,
+            'value': ((json['cost_details'] as Map<String, dynamic>)['values'] as List<String>)[0],
+          };
 
     // if json['image'] of type bool then has the event no image
     final bool hasImage = json['image'] is! bool;
 
     // read categories from JSON
-    for (final category in json['categories'] as List<Map<String, dynamic>>) {
+    for (final category in json['categories'] as List<dynamic>) {
       categories.add(Category.fromJson(json: category));
     }
 
     // read tags from JSON
-    for (final tag in json['tags'] as List<Map<String, dynamic>>) {
+    for (final tag in json['tags'] as List<dynamic>) {
       categories.add(Category.fromJson(json: tag, isCategory: false));
     }
 
     // read organizers from JSON
-    for (final organizer in json['organizer'] as List<Map<String, dynamic>>) {
+    for (final organizer in json['organizer'] as List<dynamic>) {
       organizers.add(Organizer.fromJson(organizer));
     }
 

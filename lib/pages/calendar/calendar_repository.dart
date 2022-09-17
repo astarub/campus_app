@@ -1,29 +1,29 @@
+import 'dart:async';
+
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/calendar/calendar_datasource.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:dartz/dartz.dart';
 
-abstract class CalendarRepository {
-  /// return a list of events or a failure
-  Future<Either<Failure, List<Event>>> getAStAEvents();
-}
+class CalendarRepository {
+  final CalendarDatasource calendarDatasource;
 
-class CalendarRepositoryImpl implements CalendarRepository {
-  final CalendarDatasource calendarRemoteDatasource;
+  CalendarRepository({required this.calendarDatasource});
 
-  CalendarRepositoryImpl({required this.calendarRemoteDatasource});
-
-  @override
+  /// Return a list of events or a failure
   Future<Either<Failure, List<Event>>> getAStAEvents() async {
     try {
-      final astaEventsJson = await calendarRemoteDatasource.getAStAEventsAsJsonArray();
+      final astaEventsJson = await calendarDatasource.getAStAEventsAsJsonArray();
 
       final List<Event> entities = [];
 
-      for (final element in astaEventsJson) {
-        entities.add(Event.fromJson(element));
+      for (final event in astaEventsJson) {
+        entities.add(Event.fromJson(event));
       }
+
+      // write entities to cach
+      unawaited(calendarDatasource.writeEventsToCach(entities));
 
       return Right(entities);
     } catch (e) {
@@ -32,11 +32,21 @@ class CalendarRepositoryImpl implements CalendarRepository {
           return Left(ServerFailure());
 
         case EmptyResponseException:
-          return Left(ServerFailure());
+          return Left(NoDataFailure());
 
         default:
           return Left(GeneralFailure());
       }
+    }
+  }
+
+  /// Return a list of cached news or a failure.
+  Either<Failure, List<Event>> getCachedEvents() {
+    try {
+      final cachedNewsfeed = calendarDatasource.readEventsFromCach();
+      return Right(cachedNewsfeed);
+    } catch (e) {
+      return Left(CachFailure());
     }
   }
 }

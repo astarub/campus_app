@@ -32,15 +32,19 @@ Future<void> init() async {
 
   //! Usecases
   sl.registerLazySingleton(() => RubnewsUsecases(rubnewsRepository: sl()));
-  sl.registerLazySingleton(() => CalendarUsecases(calendarRepository: sl()));
+  sl.registerSingletonWithDependencies(
+    () => CalendarUsecases(calendarRepository: sl()),
+    dependsOn: [CalendarRepository],
+  );
   sl.registerLazySingleton(() => MoodleUsecases(moodleRepository: sl()));
 
   //! Repositories
   sl.registerLazySingleton<RubnewsRepository>(
     () => RubnewsRepositoryImpl(rubnewsRemoteDatasource: sl()),
   );
-  sl.registerLazySingleton<CalendarRepository>(
-    () => CalendarRepositoryImpl(calendarRemoteDatasource: sl()),
+  sl.registerSingletonWithDependencies(
+    () => CalendarRepository(calendarDatasource: sl()),
+    dependsOn: [CalendarDatasource],
   );
   sl.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepositoryImpl(
