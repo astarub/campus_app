@@ -108,11 +108,19 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
 
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarColor: Colors.white.withOpacity(0.2),
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
+    FlutterDisplayMode.setHighRefreshRate();
+
     //_debugDeleteSettings();
     // load saved settings
     loadingTimer.start();
     loadSettings();
-    FlutterDisplayMode.setHighRefreshRate();
   }
 
   @override
@@ -141,22 +149,13 @@ class _SplashPageState extends State<SplashPage> {
     });
 
     // The [AnnotatedRegion] widget allows to style system components like the status- or navigation-bar
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarColor: Colors.white,
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.dark,
-      ),
-      child: Container(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-        child: Center(
-          child: Image.asset(
-            'assets/img/asta_logo.png',
-            color: Colors.black,
-            height: 100,
-          ),
+    return Container(
+      color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      child: Center(
+        child: Image.asset(
+          'assets/img/asta_logo.png',
+          color: Colors.black,
+          height: 100,
         ),
       ),
     );
