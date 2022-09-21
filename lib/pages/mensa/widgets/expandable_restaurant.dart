@@ -11,12 +11,17 @@ class ExpandableRestaurant extends StatefulWidget {
   /// The name of the restaurant
   final String name;
 
+  /// The path to the asset image that is displayed on the right side
+  /// of the restaurant widget
+  final String imagePath;
+
   /// The list of meal categories with their corresponding meals
   final List<MealCategory> meals;
 
   const ExpandableRestaurant({
     Key? key,
     required this.name,
+    required this.imagePath,
     required this.meals,
   }) : super(key: key);
 
@@ -51,21 +56,38 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
               highlightColor: const Color.fromRGBO(0, 0, 0, 0.03),
               splashColor: const Color.fromRGBO(0, 0, 0, 0.04),
               onTap: () {
-                setState(() => _isExpanded = !_isExpanded);
-                restaurantExpandableKey.currentState!.toggleExpand();
+                if (widget.meals.isNotEmpty) {
+                  setState(() => _isExpanded = !_isExpanded);
+                  restaurantExpandableKey.currentState!.toggleExpand();
+                }
               },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.name,
-                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelLarge,
+              child: Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topRight: const Radius.circular(15),
+                        bottomRight: _isExpanded ? Radius.zero : const Radius.circular(15)),
+                    child: Image.asset(
+                      widget.imagePath,
+                      height: 57,
+                      alignment: Alignment.centerRight,
                     ),
-                    Icon(_isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.name,
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelLarge,
+                        ),
+                        Icon(_isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

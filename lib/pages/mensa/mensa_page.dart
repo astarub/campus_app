@@ -163,6 +163,7 @@ class _MensaPageState extends State<MensaPage> {
                       // Restaurants
                       ExpandableRestaurant(
                         name: 'Mensa der RUB',
+                        imagePath: 'assets/img/mensa.png',
                         meals: [
                           MealCategory(
                             categoryName: 'Komponentenessen',
@@ -203,7 +204,21 @@ class _MensaPageState extends State<MensaPage> {
                           ),
                         ],
                       ),
-                      const ExpandableRestaurant(name: 'Rote Beete', meals: []),
+                      const ExpandableRestaurant(
+                        name: 'Rote Beete',
+                        imagePath: 'assets/img/rotebeete.png',
+                        meals: [],
+                      ),
+                      const ExpandableRestaurant(
+                        name: 'Q-West',
+                        imagePath: 'assets/img/qwest.png',
+                        meals: [],
+                      ),
+                      const ExpandableRestaurant(
+                        name: 'Henkelmann',
+                        imagePath: 'assets/img/henkelmann.png',
+                        meals: [],
+                      ),
                     ],
                   ),
                 ),
