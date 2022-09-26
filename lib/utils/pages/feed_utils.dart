@@ -21,6 +21,7 @@ class FeedUtils extends Utils {
           ),
           content: entity.content,
           //link: entity.url,
+          description: entity.description,
         ),
       );
     }

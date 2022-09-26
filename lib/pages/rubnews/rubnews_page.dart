@@ -55,15 +55,6 @@ class RubnewsPageState extends State<RubnewsPage> {
         } else if (_scrollController.offset < (_scrollControllerLastOffset - 250)) {
           _scrollControllerLastOffset = _scrollController.offset;
           if (_headerOpacity != 1) setState(() => _headerOpacity = 1);
-        } else if (_scrollController.offset < -200) {
-          // refresh data when user swipe over beginning of list
-          _rubnewsUsecases.updateFeedAndFailures().then((data) {
-            // TODO: Show loading indicator
-            setState(() {
-              _rubnews = data['news']! as List<NewsEntity>;
-              _failures = data['failures']! as List<Failure>;
-            });
-          });
         }
       });
 
@@ -100,12 +91,25 @@ class RubnewsPageState extends State<RubnewsPage> {
                 // News feed
                 Container(
                   margin: const EdgeInsets.only(top: 100),
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    controller: _scrollController,
-                    physics: const BouncingScrollPhysics(),
-                    // TODO: Show loading indicator / error if list is empty
-                    children: _feedUtils.fromNewsEntityListToWidgetList(entities: _rubnews),
+                  child: RefreshIndicator(
+                    displacement: 55,
+                    backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.dialogBackgroundColor,
+                    color: Provider.of<ThemesNotifier>(context).currentThemeData.focusColor,
+                    strokeWidth: 3,
+                    onRefresh: () {
+                      return _rubnewsUsecases.updateFeedAndFailures().then((data) {
+                        setState(() {
+                          _rubnews = data['news']! as List<NewsEntity>;
+                          _failures = data['failures']! as List<Failure>;
+                        });
+                      });
+                    },
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      controller: _scrollController,
+                      physics: const BouncingScrollPhysics(),
+                      children: _feedUtils.fromNewsEntityListToWidgetList(entities: _rubnews),
+                    ),
                   ),
                 ),
                 // Header
