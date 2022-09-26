@@ -1,8 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
@@ -27,8 +28,6 @@ class RubnewsDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final month = DateFormat('LLL').format(date);
     final day = DateFormat('dd').format(date);
-    //const placeholderContent =
-    //    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc pulvinar sapien et ligula. Eu non diam phasellus vestibulum lorem sed risus ultricies. Etiam erat velit scelerisque in dictum. Turpis nunc eget lorem dolor sed viverra ipsum nunc. Fermentum dui faucibus in ornare quam viverra. Diam in arcu cursus euismod quis viverra nibh. Molestie at elementum eu facilisis sed odio morbi quis. Volutpat diam ut venenatis tellus. Quam viverra orci sagittis eu volutpat.';
 
     return Padding(
       padding: const EdgeInsets.only(top: 60, left: 20, right: 20),

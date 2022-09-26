@@ -1,18 +1,18 @@
-import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/pages/rubnews/news_entity.dart';
-import 'package:campus_app/pages/rubnews/rubnews_usecases.dart';
-import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
+import 'package:campus_app/core/failures.dart';
+import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
-//import 'package:campus_app/pages/rubnews/widgets/feed_item.dart';
-import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
-import 'package:campus_app/pages/rubnews/widgets/filter_popup.dart';
-import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/rubnews/news_entity.dart';
+import 'package:campus_app/pages/rubnews/rubnews_usecases.dart';
+import 'package:campus_app/pages/rubnews/widgets/filter_popup.dart';
+import 'package:campus_app/utils/pages/feed_utils.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 
 class RubnewsPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
