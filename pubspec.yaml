@@ -1,7 +1,7 @@
 name: campus_app
 description: Simplifie, improve and facilitate everyday students life.
 publish_to: 'none'
-version: 0.0.1+1
+version: 1.0.0
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
@@ -43,6 +43,10 @@ dev_dependencies:
 flutter:
   assets:
      - assets/img/asta_logo.png
+     - assets/img/henkelmann.png
+     - assets/img/mensa.png
+     - assets/img/qwest.png
+     - assets/img/rotebeete.png
      - assets/img/icons/home-outlined.png
      - assets/img/icons/home-filled.png
      - assets/img/icons/calendar-outlined.png
@@ -56,6 +60,16 @@ flutter:
      - assets/img/icons/search.svg
      - assets/img/icons/filter.svg
      - assets/img/icons/arrow-left.svg
+     - assets/img/icons/x.svg
+     - assets/img/icons/mensa-alcohol.png
+     - assets/img/icons/mensa-beef.png
+     - assets/img/icons/mensa-chicken.png
+     - assets/img/icons/mensa-fish.png
+     - assets/img/icons/mensa-halal.png
+     - assets/img/icons/mensa-lamm.png
+     - assets/img/icons/mensa-pork.png
+     - assets/img/icons/mensa-vegan.png
+     - assets/img/icons/mensa-vegetarian.png
      - assets/img/AStA-Retro-Gaming.jpg
      - assets/documents/
 
