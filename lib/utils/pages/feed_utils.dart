@@ -14,6 +14,10 @@ class FeedUtils extends Utils {
 
     // parse entities in widget
     for (final entity in entities) {
+      // Removes empty lines and white spaces
+      final String formattedDescription =
+          entity.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
+
       feedItems.add(
         FeedItem(
           title: entity.title,
@@ -23,7 +27,7 @@ class FeedUtils extends Utils {
           ),
           content: entity.content,
           //link: entity.url,
-          description: entity.description,
+          description: formattedDescription,
         ),
       );
     }

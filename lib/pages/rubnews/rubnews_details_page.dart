@@ -30,14 +30,14 @@ class RubnewsDetailsPage extends StatelessWidget {
     final day = DateFormat('dd').format(date);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
+      padding: const EdgeInsets.only(top: 60),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Back button
           Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.only(bottom: 12, left: 20),
             child: CampusIconButton(
               iconPath: 'assets/img/icons/arrow-left.svg',
               onTap: () {
@@ -50,46 +50,49 @@ class RubnewsDetailsPage extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               children: [
                 // Image & Date
-                Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    // Image
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: image,
-                    ),
-                    // Date
-                    if (isEvent)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        margin: const EdgeInsets.only(right: 4, bottom: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              month.toString(),
-                              style: Provider.of<ThemesNotifier>(context)
-                                  .currentThemeData
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(fontSize: 14),
-                            ),
-                            Text(
-                              day.toString(),
-                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
-                            ),
-                          ],
-                        ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      // Image
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: image,
                       ),
-                  ],
+                      // Date
+                      if (isEvent)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                          margin: const EdgeInsets.only(right: 4, bottom: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                month.toString(),
+                                style: Provider.of<ThemesNotifier>(context)
+                                    .currentThemeData
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(fontSize: 14),
+                              ),
+                              Text(
+                                day.toString(),
+                                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
                 // Title
                 Padding(
-                  padding: const EdgeInsets.only(top: 12, bottom: 6),
+                  padding: const EdgeInsets.only(top: 12, bottom: 6, left: 20, right: 20),
                   child: Text(
                     title,
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
@@ -97,11 +100,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                 ),
                 // Content
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  // child: Text(
-                  //   content,
-                  //   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                  // ),
+                  padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
                   child: Html(
                     data: content,
                     style: {
