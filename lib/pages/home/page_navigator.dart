@@ -80,6 +80,7 @@ class NavBarNavigator extends StatelessWidget {
         break;
       case PageItem.more:
         rootPage = MorePage(
+          mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );

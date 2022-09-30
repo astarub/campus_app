@@ -52,10 +52,15 @@ flutter:
      - assets/img/icons/help-outlined.png
      - assets/img/icons/help-filled.png
      - assets/img/icons/more.png
+     - assets/img/icons/settings.svg
      - assets/img/icons/mail.svg
      - assets/img/icons/search.svg
      - assets/img/icons/filter.svg
      - assets/img/icons/arrow-left.svg
+     - assets/img/icons/chevron-right.svg
+     - assets/img/icons/external-link.svg
+     - assets/img/icons/mail-link.png
+     - assets/img/icons/moodle-link.png
      - assets/img/AStA-Retro-Gaming.jpg
      - assets/documents/
 
