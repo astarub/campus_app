@@ -43,6 +43,7 @@ class MorePage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     physics: const BouncingScrollPhysics(),
                     children: [
+                      // AStA links
                       ButtonGroup(
                         headline: 'AStA',
                         buttons: [
@@ -52,56 +53,38 @@ class MorePage extends StatelessWidget {
                               title: 'Fahrrad Werkstatt', leadingIconPath: 'assets/img/asta_logo.png', onTap: () {}),
                           ExternalLinkButton(
                               title: 'Repair Café', leadingIconPath: 'assets/img/asta_logo.png', onTap: () {}),
-                          Container(
-                            decoration: const BoxDecoration(
-                              //color: Colors.black,
-                              borderRadius:
-                                  BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
-                            ),
-                            child: Flex(
-                              direction: Axis.horizontal,
-                              children: [
-                                /* Padding(
-                                  padding: const EdgeInsets.only(left: 51),
-                                  child: Text(
-                                    'Social Media:',
-                                    style: Provider.of<ThemesNotifier>(context)
-                                        .currentThemeData
-                                        .textTheme
-                                        .labelMedium /* !
-                                        .copyWith(color: Colors.black) */
-                                    ,
-                                  ),
-                                ), */
-                                Expanded(
-                                  child: SocialMediaButton(
-                                    iconPath: 'assets/img/icons/website.svg',
-                                    onTap: () {},
-                                  ),
+                          Flex(
+                            direction: Axis.horizontal,
+                            children: [
+                              Expanded(
+                                child: SocialMediaButton(
+                                  iconPath: 'assets/img/icons/website.svg',
+                                  onTap: () {},
                                 ),
-                                Expanded(
-                                  child: SocialMediaButton(
-                                    iconPath: 'assets/img/icons/instagram.svg',
-                                    onTap: () {},
-                                  ),
+                              ),
+                              Expanded(
+                                child: SocialMediaButton(
+                                  iconPath: 'assets/img/icons/instagram.svg',
+                                  onTap: () {},
                                 ),
-                                Expanded(
-                                  child: SocialMediaButton(
-                                    iconPath: 'assets/img/icons/facebook.svg',
-                                    onTap: () {},
-                                  ),
+                              ),
+                              Expanded(
+                                child: SocialMediaButton(
+                                  iconPath: 'assets/img/icons/facebook.svg',
+                                  onTap: () {},
                                 ),
-                                Expanded(
-                                  child: SocialMediaButton(
-                                    iconPath: 'assets/img/icons/twitch.svg',
-                                    onTap: () {},
-                                  ),
+                              ),
+                              Expanded(
+                                child: SocialMediaButton(
+                                  iconPath: 'assets/img/icons/twitch.svg',
+                                  onTap: () {},
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
+                      // RUB links
                       ButtonGroup(
                         headline: 'Nützliche Links',
                         buttons: [
@@ -110,29 +93,36 @@ class MorePage extends StatelessWidget {
                           ExternalLinkButton(
                               title: 'Moodle', leadingIconPath: 'assets/img/icons/moodle-link.png', onTap: () {}),
                           ExternalLinkButton(
-                              title: 'eCampus', leadingIconPath: 'assets/img/icons/filter.svg', onTap: () {}),
+                              title: 'eCampus', leadingIconPath: 'assets/img/icons/rub-link.png', onTap: () {}),
                           ExternalLinkButton(
-                              title: 'FlexNow', leadingIconPath: 'assets/img/icons/filter.svg', onTap: () {}),
+                              title: 'FlexNow', leadingIconPath: 'assets/img/icons/flexnow-link.png', onTap: () {}),
                         ],
                       ),
+                      // Additional sites and links
                       ButtonGroup(
                         headline: 'Sonstiges',
                         buttons: [
                           ExternalLinkButton(
+                            title: 'Einstellungen',
+                            leadingIconPath: 'assets/img/icons/settings.svg',
+                            trailingIconPath: 'assets/img/icons/chevron-right.svg',
+                            onTap: () {},
+                          ),
+                          ExternalLinkButton(
                             title: 'Datenschutz',
-                            leadingIconPath: 'assets/img/icons/filter.svg',
+                            leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
                             onTap: () {},
                           ),
                           ExternalLinkButton(
                             title: 'Impressum',
-                            leadingIconPath: 'assets/img/icons/filter.svg',
+                            leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
                             onTap: () {},
                           ),
                           ExternalLinkButton(
                             title: 'Verwendete Ressourcen',
-                            leadingIconPath: 'assets/img/icons/filter.svg',
+                            leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
                             onTap: () {},
                           ),

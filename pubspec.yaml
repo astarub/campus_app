@@ -53,6 +53,7 @@ flutter:
      - assets/img/icons/help-filled.png
      - assets/img/icons/more.png
      - assets/img/icons/settings.svg
+     - assets/img/icons/info.svg
      - assets/img/icons/instagram.svg
      - assets/img/icons/facebook.svg
      - assets/img/icons/twitch.svg
@@ -65,6 +66,8 @@ flutter:
      - assets/img/icons/external-link.svg
      - assets/img/icons/mail-link.png
      - assets/img/icons/moodle-link.png
+     - assets/img/icons/flexnow-link.png
+     - assets/img/icons/rub-link.png
      - assets/img/AStA-Retro-Gaming.jpg
      - assets/documents/
 
