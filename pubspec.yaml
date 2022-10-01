@@ -53,6 +53,10 @@ flutter:
      - assets/img/icons/help-filled.png
      - assets/img/icons/more.png
      - assets/img/icons/settings.svg
+     - assets/img/icons/instagram.svg
+     - assets/img/icons/facebook.svg
+     - assets/img/icons/twitch.svg
+     - assets/img/icons/website.svg
      - assets/img/icons/mail.svg
      - assets/img/icons/search.svg
      - assets/img/icons/filter.svg
