@@ -10,6 +10,10 @@ class CampusButton extends StatelessWidget {
   /// The displayed text inside the button
   final String text;
 
+  final double? width;
+
+  final double height;
+
   /// The callback that should be executed when the button is tapped
   final VoidCallback onTap;
 
@@ -19,6 +23,8 @@ class CampusButton extends StatelessWidget {
   CampusButton({
     Key? key,
     required this.text,
+    this.width = 330,
+    this.height = 58,
     required this.onTap,
   }) : super(key: key) {
     type = CampusButtonType.normal;
@@ -27,6 +33,8 @@ class CampusButton extends StatelessWidget {
   CampusButton.light({
     Key? key,
     required this.text,
+    this.width = 330,
+    this.height = 58,
     required this.onTap,
   }) : super(key: key) {
     type = CampusButtonType.light;
@@ -35,13 +43,13 @@ class CampusButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 330,
-      height: 58,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
       ),
       child: Material(
-        color: type == CampusButtonType.normal ? Colors.black : const Color.fromARGB(255, 129, 129, 129),
+        color: type == CampusButtonType.normal ? Colors.black : const Color.fromRGBO(245, 246, 250, 1),
         borderRadius: BorderRadius.circular(15),
         child: InkWell(
           onTap: onTap,

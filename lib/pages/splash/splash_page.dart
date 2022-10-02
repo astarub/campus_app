@@ -62,6 +62,7 @@ class _SplashPageState extends State<SplashPage> {
               loadedSettings = Settings.fromJson(rawData);
 
               debugPrint('Settings loaded.');
+              Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(loadedSettings!);
 
               // Set theme
               setTheme(
@@ -95,19 +96,31 @@ class _SplashPageState extends State<SplashPage> {
   }) {}
 
   // ? DEBUG ONLY
-  void _debugDeleteSettings() async {
-    File jsonFile = File('$_directoryPath/settings.json');
-    jsonFile.delete().then((_) => debugPrint('DEBUG: Settings-Datei gelöscht.'));
+  void _debugDeleteSettings() {
+    getApplicationDocumentsDirectory().then((Directory directory) {
+      final String tempDirectoryPath = directory.path;
+      final File jsonFile = File('$tempDirectoryPath/settings.json');
+      jsonFile.delete().then((_) => debugPrint('DEBUG: Settings-Datei gelöscht.'));
+    });
   }
 
   @override
   void initState() {
     super.initState();
 
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarColor: Colors.white.withOpacity(0.2),
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
+    FlutterDisplayMode.setHighRefreshRate();
+
+    //_debugDeleteSettings();
     // load saved settings
     loadingTimer.start();
     loadSettings();
-    FlutterDisplayMode.setHighRefreshRate();
   }
 
   @override
@@ -136,22 +149,13 @@ class _SplashPageState extends State<SplashPage> {
     });
 
     // The [AnnotatedRegion] widget allows to style system components like the status- or navigation-bar
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarColor: Colors.white,
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.dark,
-      ),
-      child: Container(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-        child: Center(
-          child: Image.asset(
-            'assets/img/asta_logo.png',
-            color: Colors.black,
-            height: 100,
-          ),
+    return Container(
+      color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      child: Center(
+        child: Image.asset(
+          'assets/img/asta_logo.png',
+          color: Colors.black,
+          height: 100,
         ),
       ),
     );
