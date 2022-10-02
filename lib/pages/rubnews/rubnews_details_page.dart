@@ -101,19 +101,6 @@ class RubnewsDetailsPage extends StatelessWidget {
                 // Content
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
-                  // child: Html(
-                  //   data: content,
-                  //   style: {
-                  //     'h4': Style(
-                  //       fontSize: const FontSize(17),
-                  //     ),
-                  //     '*': Style(
-                  //       color: const Color.fromARGB(255, 129, 129, 129),
-                  //       fontWeight: FontWeight.w500,
-                  //       letterSpacing: 0.2,
-                  //     ),
-                  //   },
-                  // ),
                   child: StyledHTML(text: content),
                 ),
               ],
