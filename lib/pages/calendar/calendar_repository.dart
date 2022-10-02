@@ -27,8 +27,6 @@ class CalendarRepository {
 
       return Right(entities);
     } catch (e) {
-      print(e);
-
       switch (e.runtimeType) {
         case ServerException:
           return Left(ServerFailure());

@@ -50,7 +50,7 @@ void main() {
     final resSuccess = Response(
       requestOptions: RequestOptions(path: astaEvents),
       statusCode: 200,
-      data: json.encode(calendarSampleEventfeedResponse),
+      data: calendarSampleEventfeedResponse,
     );
 
     /// A Dio response on failed request thougth connection error (statuscode 404)
@@ -69,7 +69,7 @@ void main() {
     final resEmpty = Response(
       requestOptions: RequestOptions(path: astaEvents),
       statusCode: 200,
-      data: json.encode({'events': []}),
+      data: {'events': []},
     );
 
     test('Should return a list of JSON objects after successfully GET request', () {

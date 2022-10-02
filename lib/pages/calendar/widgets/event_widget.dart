@@ -84,38 +84,37 @@ class CalendarEventWidget extends StatelessWidget {
                 ),
               ),
               // Title & Times
-              Padding(
-                padding: const EdgeInsets.only(left: 6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Text(
-                    //   event.title,
-                    //   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                    // ),
-                    Html(
-                      data: event.title,
-                      style: {
-                        'h4': Style(
-                          fontSize: const FontSize(17),
-                        ),
-                        '*': Style(
-                          color: const Color.fromARGB(255, 129, 129, 129),
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.2,
-                        ),
-                      },
-                    ),
-                    Text(startingTime),
-                    // Text(event.costs != 0
-                    //     ? event.costs % 2 == 0
-                    //         ? event.costs.toInt().toString() + ' €'
-                    //         : event.costs.toString() + '0 €'
-                    //     : 'kostenlos'),
-                    Text(
-                      event.cost == null ? 'kostenlos' : "${event.cost!['value']} ${event.cost!['currency']}",
-                    ),
-                  ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Html(
+                        data: event.title,
+                        style: {
+                          '*': Style(
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                            fontSize: const FontSize(18),
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.2,
+                          ),
+                        },
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Beginn: $startingTime Uhr\t',
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                          ),
+                          Text(
+                            event.cost == null ? '' : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

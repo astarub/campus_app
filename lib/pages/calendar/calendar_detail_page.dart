@@ -48,10 +48,6 @@ class CalendarDetailPage extends StatelessWidget {
                         // Description
                         Padding(
                           padding: const EdgeInsets.only(top: 100, bottom: 40),
-                          // child: Text(
-                          //   event.description != '' ? event.description : 'No description given.',
-                          //   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                          // ),
                           child: Html(
                             data: event.description != '' ? event.description : 'No description given.',
                             style: {
@@ -73,10 +69,6 @@ class CalendarDetailPage extends StatelessWidget {
                         if (event.organizers.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(top: 5, bottom: 30),
-                            // child: Text(
-                            //   event.organizers.join(', '),
-                            //   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                            // ),
                             child: Html(
                               data: event.organizers.join(', '),
                               style: {
@@ -98,10 +90,6 @@ class CalendarDetailPage extends StatelessWidget {
                         if (event.venue.name != '')
                           Padding(
                             padding: const EdgeInsets.only(top: 5, bottom: 30),
-                            // child: Text(
-                            //   event.venue.name,
-                            //   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                            // ),
                             child: Html(
                               data: event.venue.toString(),
                               style: {
@@ -116,7 +104,7 @@ class CalendarDetailPage extends StatelessWidget {
                         // Notification-button
                         Padding(
                           padding: const EdgeInsets.only(top: 10, bottom: 30),
-                          child: Center(child: CampusButton(text: 'Remind Me', onTap: () {})),
+                          child: Center(child: CampusButton(text: 'Remind Me', onTap: event.toggleSave)),
                         ),
                       ],
                     ),

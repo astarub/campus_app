@@ -71,7 +71,11 @@ class Event {
   @HiveField(14)
   final List<Organizer> organizers;
 
-  const Event({
+  /// Indicate that the user saved this event.
+  @HiveField(15)
+  bool saved;
+
+  Event({
     required this.id,
     required this.url,
     required this.title,
@@ -87,6 +91,7 @@ class Event {
     this.categories = const <Category>[],
     required this.venue,
     this.organizers = const <Organizer>[],
+    this.saved = false,
   });
 
   factory Event.fromJson(Map<String, dynamic> json) {
@@ -94,12 +99,16 @@ class Event {
     final List<Organizer> organizers = [];
 
     // cost := null if no costs specified for event
-    final Map<String, String>? cost = json['cost'] == ''
+    Map<String, String>? cost = json['cost'] == ''
         ? null
         : {
             'currency': (json['cost_details'] as Map<String, dynamic>)['currency_symbol'] as String,
             'value': ((json['cost_details'] as Map<String, dynamic>)['values'] as List<dynamic>)[0] as String,
           };
+    // maybe someone insert as value 0 then we want the cost to be null
+    if (cost != null) {
+      cost = cost['value'] == '0' ? null : cost;
+    }
 
     // if json['image'] of type bool then has the event no image
     final bool hasImage = json['image'] is! bool;
@@ -119,6 +128,12 @@ class Event {
       organizers.add(Organizer.fromJson(organizer));
     }
 
+    // read venue from JSON
+    // ignore: avoid_dynamic_calls
+    final Venue venue = json['venue'].runtimeType == List
+        ? Venue.emptyPlaceholder()
+        : Venue.fromJson(json['venue'] as Map<String, dynamic>);
+
     return Event(
       id: json['id'],
       url: json['rest_url'],
@@ -137,8 +152,11 @@ class Event {
       cost: cost,
       website: json['website'],
       categories: categories,
-      venue: Venue.fromJson(json['venue'] as Map<String, dynamic>),
+      venue: venue,
       organizers: organizers,
     );
   }
+
+  /// Toggles saved state of event.
+  void toggleSave() => saved = !saved;
 }

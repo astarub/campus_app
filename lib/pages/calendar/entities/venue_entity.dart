@@ -58,6 +58,7 @@ class Venue {
     this.phone,
   });
 
+  /// Return a Venue object based on given JSON
   factory Venue.fromJson(Map<String, dynamic> json) {
     final address = json.containsKey('address') ? json['address'] : null;
     final city = json.containsKey('city') ? json['city'] : null;
@@ -77,6 +78,16 @@ class Venue {
       province: province,
       zip: zip,
       phone: phone,
+    );
+  }
+
+  /// Return an empty Venue object
+  factory Venue.emptyPlaceholder() {
+    return const Venue(
+      id: -1,
+      name: '',
+      url: '',
+      slug: '',
     );
   }
 

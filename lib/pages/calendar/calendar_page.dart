@@ -134,6 +134,7 @@ class _CalendarPageState extends State<CalendarPage> {
         _failures = data['failures']! as List<Failure>;
 
         parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
+        savedEvents = _calendarUtils.getEventWidgetList(events: _events.where((e) => e.saved).toList());
 
         if (parsedEvents.isEmpty) showUpcomingPlaceholder = true;
         if (savedEvents.isEmpty) showSavedPlaceholder = true;
@@ -168,10 +169,33 @@ class _CalendarPageState extends State<CalendarPage> {
                               title: 'No saved events',
                               text: 'Start saving events ontheir page to see them here.',
                             )
-                          : ListView(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              physics: const BouncingScrollPhysics(),
-                              children: showSavedEvents ? savedEvents : parsedEvents,
+                          : RefreshIndicator(
+                              displacement: 55,
+                              backgroundColor:
+                                  Provider.of<ThemesNotifier>(context).currentThemeData.dialogBackgroundColor,
+                              color: Provider.of<ThemesNotifier>(context).currentThemeData.focusColor,
+                              strokeWidth: 3,
+                              onRefresh: () {
+                                return _calendarUsecase.updateEventsAndFailures().then((data) {
+                                  setState(() {
+                                    _events = data['events']! as List<Event>;
+                                    _failures = data['failures']! as List<Failure>;
+
+                                    parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
+                                    savedEvents = _calendarUtils.getEventWidgetList(
+                                      events: _events.where((e) => e.saved).toList(),
+                                    );
+
+                                    if (parsedEvents.isEmpty) showUpcomingPlaceholder = true;
+                                    if (savedEvents.isEmpty) showSavedPlaceholder = true;
+                                  });
+                                });
+                              },
+                              child: ListView(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                children: showSavedEvents ? savedEvents : parsedEvents,
+                              ),
                             ),
                 ),
                 // Header
@@ -180,7 +204,6 @@ class _CalendarPageState extends State<CalendarPage> {
                   color: Colors.white,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Title
                       Padding(

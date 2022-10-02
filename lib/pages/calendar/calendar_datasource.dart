@@ -1,10 +1,9 @@
-import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:hive/hive.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/utils/constants.dart';
-import 'package:dio/dio.dart';
-import 'package:hive/hive.dart';
 
 class CalendarDatasource {
   /// Key to identify count of events in Hive box / Cach
@@ -25,11 +24,17 @@ class CalendarDatasource {
   /// Throws a server excpetion if respond code is not 200.
   Future<List<dynamic>> getAStAEventsAsJsonArray() async {
     final response = await client.get(astaEvents);
+    late final Map<String, dynamic> responseBody;
 
     if (response.statusCode != 200) {
       throw ServerException();
     } else {
-      final responseBody = response.data as Map<String, dynamic>;
+      try {
+        responseBody = response.data as Map<String, dynamic>;
+      } catch (e) {
+        throw JsonException();
+      }
+
       if ((responseBody['events'] as List<dynamic>).isEmpty) {
         throw EmptyResponseException();
       }
