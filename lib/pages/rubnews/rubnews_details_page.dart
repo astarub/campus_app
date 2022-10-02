@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/utils/widgets/styled_html.dart';
 
 class RubnewsDetailsPage extends StatelessWidget {
   final String title;
@@ -73,7 +73,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                month.toString(),
+                                month,
                                 style: Provider.of<ThemesNotifier>(context)
                                     .currentThemeData
                                     .textTheme
@@ -81,7 +81,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                                     ?.copyWith(fontSize: 14),
                               ),
                               Text(
-                                day.toString(),
+                                day,
                                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
                               ),
                             ],
@@ -101,19 +101,20 @@ class RubnewsDetailsPage extends StatelessWidget {
                 // Content
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
-                  child: Html(
-                    data: content,
-                    style: {
-                      'h4': Style(
-                        fontSize: const FontSize(17),
-                      ),
-                      '*': Style(
-                        color: const Color.fromARGB(255, 129, 129, 129),
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.2,
-                      ),
-                    },
-                  ),
+                  // child: Html(
+                  //   data: content,
+                  //   style: {
+                  //     'h4': Style(
+                  //       fontSize: const FontSize(17),
+                  //     ),
+                  //     '*': Style(
+                  //       color: const Color.fromARGB(255, 129, 129, 129),
+                  //       fontWeight: FontWeight.w500,
+                  //       letterSpacing: 0.2,
+                  //     ),
+                  //   },
+                  // ),
+                  child: StyledHTML(text: content),
                 ),
               ],
             ),

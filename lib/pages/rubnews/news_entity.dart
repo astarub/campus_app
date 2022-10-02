@@ -49,8 +49,9 @@ class NewsEntity {
     final pubDate = DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse(xml.getElement('pubDate')!.text);
 
     /// Regular Expression to remove unwanted HTML-Tags
-    RegExp htmlTags = RegExp(
-      r'''(<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\>)|(<[^>]a>)|([^>]*])''',
+    final RegExp htmlTags = RegExp(
+      // r'''(<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\>)|(<[^>]a>)|([^>]*])''';
+      '([^>]*])',
       multiLine: true,
     );
 
