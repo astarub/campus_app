@@ -1,18 +1,16 @@
-import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/calendar/calendar_usecases.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
-import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
-import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/calendar/calendar_usecases.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
-import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 
 class CalendarPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -32,79 +30,14 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   late List<Event> _events = [];
+  late List<Event> _savedEvents = [];
   late List<Failure> _failures = [];
 
   final _calendarUsecase = sl<CalendarUsecases>();
   final _calendarUtils = sl<CalendarUtils>();
 
-  static List<Widget> parsedEvents = [];
-  // static List<Widget> parsedEvents = [
-  //   // Spacing
-  //   const SizedBox(height: 80),
-  //   CalendarEventWidget(
-  //     event: Event(
-  //       id: 0,
-  //       title: 'E-Sports Meet & Greet',
-  //       description:
-  //           'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-  //       startDate: DateTime(2022, 06, 20, 17),
-  //       endDate: DateTime(2022, 06, 20, 19),
-  //       cost: {'value': '10.5', 'currency': '€'},
-  //       venue: const Venue(id: 0, url: '', name: 'Gaming Hub', slug: 'slug'),
-  //       organizers: const [
-  //         Organizer(id: 0, url: 'url', name: 'AStA', slug: 'asta'),
-  //         Organizer(id: 0, url: 'url', name: 'E-Sports Referat', slug: 'e-sport'),
-  //       ],
-  //       hasImage: false,
-  //       slug: '',
-  //       url: '',
-  //     ),
-  //   ),
-  //   CalendarEventWidget(
-  //     event: Event(
-  //       id: 0,
-  //       title: 'E-Sports Meet & Greet',
-  //       description:
-  //           'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-  //       startDate: DateTime(2022, 06, 20, 17),
-  //       endDate: DateTime(2022, 06, 20, 19),
-  //       cost: {'value': '10.5', 'currency': '€'},
-  //       venue: const Venue(id: 0, url: '', name: 'Gaming Hub', slug: 'slug'),
-  //       organizers: const [
-  //         Organizer(id: 0, url: 'url', name: 'AStA', slug: 'asta'),
-  //         Organizer(id: 0, url: 'url', name: 'E-Sports Referat', slug: 'e-sport'),
-  //       ],
-  //       hasImage: false,
-  //       slug: '',
-  //       url: '',
-  //     ),
-  //   ),
-  // ];
-
-  static List<Widget> savedEvents = [];
-  // static List<Widget> savedEvents = [
-  //   // Spacing
-  //   const SizedBox(height: 80),
-  //   CalendarEventWidget(
-  //     event: Event(
-  //       id: 0,
-  //       title: 'E-Sports Meet & Greet',
-  //       description:
-  //           'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-  //       startDate: DateTime(2022, 06, 20, 17),
-  //       endDate: DateTime(2022, 06, 20, 19),
-  //       cost: {'value': '10.5', 'currency': '€'},
-  //       venue: const Venue(id: 0, url: '', name: 'Gaming Hub', slug: 'slug'),
-  //       organizers: const [
-  //         Organizer(id: 0, url: 'url', name: 'AStA', slug: 'asta'),
-  //         Organizer(id: 0, url: 'url', name: 'E-Sports Referat', slug: 'e-sport'),
-  //       ],
-  //       hasImage: false,
-  //       slug: '',
-  //       url: '',
-  //     ),
-  //   ),
-  // ];
+  late List<Widget> parsedEvents = [];
+  late List<Widget> savedEvents = [];
 
   late final CampusSegmentedControl upcomingSavedSwitch;
   bool showSavedEvents = false;
@@ -131,10 +64,11 @@ class _CalendarPageState extends State<CalendarPage> {
     _calendarUsecase.updateEventsAndFailures().then((data) {
       setState(() {
         _events = data['events']! as List<Event>;
+        _savedEvents = data['saved']! as List<Event>;
         _failures = data['failures']! as List<Failure>;
 
         parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
-        savedEvents = _calendarUtils.getEventWidgetList(events: _events.where((e) => e.saved).toList());
+        savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
 
         if (parsedEvents.isEmpty) showUpcomingPlaceholder = true;
         if (savedEvents.isEmpty) showSavedPlaceholder = true;
@@ -179,12 +113,11 @@ class _CalendarPageState extends State<CalendarPage> {
                                 return _calendarUsecase.updateEventsAndFailures().then((data) {
                                   setState(() {
                                     _events = data['events']! as List<Event>;
+                                    _savedEvents = data['saved']! as List<Event>;
                                     _failures = data['failures']! as List<Failure>;
 
                                     parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
-                                    savedEvents = _calendarUtils.getEventWidgetList(
-                                      events: _events.where((e) => e.saved).toList(),
-                                    );
+                                    savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
 
                                     if (parsedEvents.isEmpty) showUpcomingPlaceholder = true;
                                     if (savedEvents.isEmpty) showSavedPlaceholder = true;

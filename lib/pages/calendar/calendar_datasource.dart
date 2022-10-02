@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 
@@ -8,6 +10,9 @@ import 'package:campus_app/utils/constants.dart';
 class CalendarDatasource {
   /// Key to identify count of events in Hive box / Cach
   static const String _keyCnt = 'cnt';
+
+  /// Key to identify saved events in Hive box / Cach
+  static const String _keySavedEvents = 'saved';
 
   /// Dio client to perfrom network operations
   final Dio client;
@@ -66,5 +71,21 @@ class CalendarDatasource {
     }
 
     return entities;
+  }
+
+  /// Return a list of event entities the user saved. If an event is given than
+  /// either add it to list of saved entities or remove it when it was already saved bevore.
+  Future<List<Event>> updateSavedEvents({Event? event}) async {
+    final List<Event> savedEvents = eventCach.get(_keySavedEvents) ?? [];
+
+    if (savedEvents.contains(event)) {
+      savedEvents.remove(event);
+    } else if (event != null) {
+      savedEvents.add(event);
+    }
+
+    await eventCach.put(_keySavedEvents, savedEvents);
+
+    return savedEvents;
   }
 }

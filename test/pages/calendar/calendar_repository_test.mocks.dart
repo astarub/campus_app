@@ -93,4 +93,14 @@ class MockCalendarDatasource extends _i1.Mock
         ),
         returnValue: <_i6.Event>[],
       ) as List<_i6.Event>);
+  @override
+  _i5.Future<List<_i6.Event>> updateSavedEvents({_i6.Event? event}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateSavedEvents,
+          [],
+          {#event: event},
+        ),
+        returnValue: _i5.Future<List<_i6.Event>>.value(<_i6.Event>[]),
+      ) as _i5.Future<List<_i6.Event>>);
 }

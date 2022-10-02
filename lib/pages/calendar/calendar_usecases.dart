@@ -16,11 +16,13 @@ class CalendarUsecases {
     final Map<String, List<dynamic>> data = {
       'failures': <Failure>[],
       'events': <Event>[],
+      'saved': <Event>[],
     };
 
     // get events from AStA API and cached events
     final Either<Failure, List<Event>> remoteEvents = await calendarRepository.getAStAEvents();
     final Either<Failure, List<Event>> cachedEvents = calendarRepository.getCachedEvents();
+    final Either<Failure, List<Event>> savedEvents = await calendarRepository.updateSavedEvents();
 
     // fold cachedEvents
     cachedEvents.fold(
@@ -34,6 +36,12 @@ class CalendarUsecases {
       (events) => data['events'] = events, // overwrite cached feed
     );
 
+    // fold savedEvents
+    savedEvents.fold(
+      (failure) => data['failures']!.add(failure),
+      (events) => data['saved'] = events,
+    );
+
     return data;
   }
 
@@ -45,6 +53,7 @@ class CalendarUsecases {
     final Map<String, List<dynamic>> data = {
       'failures': <Failure>[],
       'events': <Event>[],
+      'saved': <Event>[],
     };
 
     // get only cached events

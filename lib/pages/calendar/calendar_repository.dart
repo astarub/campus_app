@@ -43,11 +43,21 @@ class CalendarRepository {
     }
   }
 
-  /// Return a list of cached news or a failure.
+  /// Return a list of cached events or a failure.
   Either<Failure, List<Event>> getCachedEvents() {
     try {
-      final cachedNewsfeed = calendarDatasource.readEventsFromCach();
-      return Right(cachedNewsfeed);
+      final cachedEvents = calendarDatasource.readEventsFromCach();
+      return Right(cachedEvents);
+    } catch (e) {
+      return Left(CachFailure());
+    }
+  }
+
+  /// Return a list of saved events or a failure.
+  Future<Either<Failure, List<Event>>> updateSavedEvents({Event? event}) async {
+    try {
+      final savedEvents = await calendarDatasource.updateSavedEvents(event: event);
+      return Right(savedEvents);
     } catch (e) {
       return Left(CachFailure());
     }

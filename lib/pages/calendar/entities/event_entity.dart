@@ -1,11 +1,13 @@
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 part 'event_entity.g.dart';
 
+@immutable
 @HiveType(typeId: 1)
 class Event {
   /// The unique id of the event
@@ -71,11 +73,7 @@ class Event {
   @HiveField(14)
   final List<Organizer> organizers;
 
-  /// Indicate that the user saved this event.
-  @HiveField(15)
-  bool saved;
-
-  Event({
+  const Event({
     required this.id,
     required this.url,
     required this.title,
@@ -91,7 +89,6 @@ class Event {
     this.categories = const <Category>[],
     required this.venue,
     this.organizers = const <Organizer>[],
-    this.saved = false,
   });
 
   factory Event.fromJson(Map<String, dynamic> json) {
@@ -157,6 +154,10 @@ class Event {
     );
   }
 
-  /// Toggles saved state of event.
-  void toggleSave() => saved = !saved;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Event && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

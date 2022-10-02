@@ -1,4 +1,8 @@
-import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hive/hive.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/calendar/calendar_datasource.dart';
@@ -6,22 +10,17 @@ import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/utils/constants.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:hive/hive.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 
 import 'calendar_datasource_test.mocks.dart';
 import 'samples/event_list.dart';
 import 'samples/eventfeed_response.dart';
 
 /// Create an empty Event
-Event emptyEvent() {
+Event emptyEvent({String title = 'Title'}) {
   return Event(
     id: 0,
     url: 'Url',
-    title: 'Title',
+    title: title,
     description: 'Description',
     slug: 'Slug',
     hasImage: false,
@@ -130,6 +129,60 @@ void main() {
 
       // assert: is testElement expected object? -> List<Event> samleEventEntities
       identical(testReturn, samleEventEntities); // is the returned object the expected one?
+    });
+
+    test('Should return a list whith one saved events', () async {
+      when(mockCach.get('saved')).thenAnswer((_) => <Event>[]);
+
+      // act: write sample entities to cach
+      final testReturn = await calendarDatasource.updateSavedEvents(event: emptyEvent());
+
+      // assert: is testElement expected object? -> List<Event> samleEventEntities
+      identical(testReturn, <Event>[emptyEvent()]); // is the returned object the expected one?
+    });
+
+    test('Should return a list with two saved events', () async {
+      when(mockCach.get('saved')).thenAnswer((_) => <Event>[]);
+
+      // act: write sample entities to cach
+      await calendarDatasource.updateSavedEvents(event: emptyEvent(title: 'Test'));
+      final testReturn = await calendarDatasource.updateSavedEvents(event: emptyEvent());
+
+      // assert: is testElement expected object? -> List<Event> samleEventEntities
+      identical(testReturn, <Event>[
+        emptyEvent(title: 'Test'),
+        emptyEvent(),
+      ]); // is the returned object the expected one?
+    });
+
+    test('Should return a empty list of events', () async {
+      final getResponses = [
+        <Event>[],
+        <Event>[emptyEvent()]
+      ];
+      when(mockCach.get('saved')).thenAnswer((_) => getResponses.removeAt(0));
+
+      // act: write sample entities to cach
+      await calendarDatasource.updateSavedEvents(event: emptyEvent());
+      final testReturn = await calendarDatasource.updateSavedEvents(event: emptyEvent());
+
+      // assert: is testElement expected object? -> List<Event> samleEventEntities
+      expect(testReturn, <Event>[]); // is the returned object the expected one?
+    });
+
+    test('Should return a list with a single event', () async {
+      final getResponses = [
+        <Event>[],
+        <Event>[emptyEvent()]
+      ];
+      when(mockCach.get('saved')).thenAnswer((_) => getResponses.removeAt(0));
+
+      // act: write sample entities to cach
+      await calendarDatasource.updateSavedEvents(event: emptyEvent());
+      final testReturn = await calendarDatasource.updateSavedEvents();
+
+      // assert: is testElement expected object? -> List<Event> samleEventEntities
+      expect(testReturn, <Event>[emptyEvent()]); // is the returned object the expected one?
     });
   });
 }

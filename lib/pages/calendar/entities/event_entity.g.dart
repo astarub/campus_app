@@ -32,14 +32,13 @@ class EventAdapter extends TypeAdapter<Event> {
       categories: (fields[12] as List).cast<Category>(),
       venue: fields[13] as Venue,
       organizers: (fields[14] as List).cast<Organizer>(),
-      saved: fields[15] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Event obj) {
     writer
-      ..writeByte(16)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -69,9 +68,7 @@ class EventAdapter extends TypeAdapter<Event> {
       ..writeByte(13)
       ..write(obj.venue)
       ..writeByte(14)
-      ..write(obj.organizers)
-      ..writeByte(15)
-      ..write(obj.saved);
+      ..write(obj.organizers);
   }
 
   @override

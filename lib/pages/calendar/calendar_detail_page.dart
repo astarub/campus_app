@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/pages/calendar/calendar_repository.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +14,9 @@ import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 class CalendarDetailPage extends StatelessWidget {
   final Event event;
 
-  const CalendarDetailPage({Key? key, required this.event}) : super(key: key);
+  final CalendarRepository calendarRepository = sl<CalendarRepository>();
+
+  CalendarDetailPage({Key? key, required this.event}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +108,15 @@ class CalendarDetailPage extends StatelessWidget {
                         // Notification-button
                         Padding(
                           padding: const EdgeInsets.only(top: 10, bottom: 30),
-                          child: Center(child: CampusButton(text: 'Remind Me', onTap: event.toggleSave)),
+                          child: Center(
+                            child: CampusButton(
+                              text: 'Remind Me',
+                              onTap: () {
+                                // TODO: show Message / Info Alert
+                                calendarRepository.updateSavedEvents(event: event);
+                              },
+                            ),
+                          ),
                         ),
                       ],
                     ),
