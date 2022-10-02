@@ -5,6 +5,8 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/more/widgets/external_link_button.dart';
 import 'package:campus_app/pages/more/widgets/button_group.dart';
+import 'package:campus_app/pages/more/static_info_page.dart';
+import 'package:campus_app/pages/more/settings_page.dart';
 
 class MorePage extends StatelessWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -17,6 +19,9 @@ class MorePage extends StatelessWidget {
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
   }) : super(key: key);
+
+  static const String imprint = 'dfkajödslkf';
+  static const String privacy = 'dföjköaldf';
 
   @override
   Widget build(BuildContext context) {
@@ -106,19 +111,40 @@ class MorePage extends StatelessWidget {
                             title: 'Einstellungen',
                             leadingIconPath: 'assets/img/icons/settings.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SettingsPage(),
+                                ),
+                              );
+                            },
                           ),
                           ExternalLinkButton(
                             title: 'Datenschutz',
                             leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const StaticInfoPage(title: 'Datenschutz', content: privacy),
+                                ),
+                              );
+                            },
                           ),
                           ExternalLinkButton(
                             title: 'Impressum',
                             leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const StaticInfoPage(title: 'Impressum', content: imprint),
+                                ),
+                              );
+                            },
                           ),
                           ExternalLinkButton(
                             title: 'Verwendete Ressourcen',
@@ -129,14 +155,12 @@ class MorePage extends StatelessWidget {
                         ],
                       ),
                       // AStA logo at the bottom of the page
-                      Expanded(
-                        child: Image.asset(
-                          'assets/img/asta_logo.png',
-                          width: 50,
-                          height: 50,
-                          color: Colors.black.withOpacity(0.05),
-                          alignment: Alignment.bottomCenter,
-                        ),
+                      Image.asset(
+                        'assets/img/asta_logo.png',
+                        width: 50,
+                        height: 50,
+                        color: Colors.black.withOpacity(0.05),
+                        alignment: Alignment.bottomCenter,
                       ),
                     ],
                   ),
