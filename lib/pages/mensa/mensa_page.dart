@@ -29,7 +29,7 @@ class MensaPage extends StatefulWidget {
 }
 
 class _MensaPageState extends State<MensaPage> {
-  late Settings _settings = Provider.of<SettingsHandler>(context).currentSettings;
+  late Settings _settings;
 
   /// This function saves the new selected preferences with the [SettingsHandler]
   void saveChangedPreferences(List<String> newPreferences) {

@@ -24,15 +24,18 @@ class LeadingTextSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          text,
-          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-        ),
-        CampusSwitch(value: isActive, onToggle: onToggle),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+          ),
+          CampusSwitch(value: isActive, onToggle: onToggle),
+        ],
+      ),
     );
   }
 }

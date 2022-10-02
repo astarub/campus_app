@@ -50,6 +50,19 @@ class Settings {
     this.mensaAllergenes = const [],
   });
 
+  Settings copyWith({
+    bool? useSystemDarkmode,
+    bool? useDarkmode,
+    List<String>? mensaPreferences,
+    List<String>? mensaAllergenes,
+  }) =>
+      Settings(
+        useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
+        useDarkmode: useDarkmode ?? this.useDarkmode,
+        mensaPreferences: mensaPreferences ?? this.mensaPreferences,
+        mensaAllergenes: mensaAllergenes ?? this.mensaAllergenes,
+      );
+
   factory Settings.fromJson(Map<String, dynamic> json) {
     return Settings(
       useSystemDarkmode: json['useSystemDarkmode'] ?? true,

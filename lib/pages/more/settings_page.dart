@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/utils/widgets/animated_conditional.dart';
 import 'package:campus_app/pages/more/widgets/leading_text_switch.dart';
 
 /// This page displays the app settings
@@ -15,7 +16,16 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _systemDarkmode = true;
+  late Settings _settings;
+
+  final GlobalKey<AnimatedConditionalState> _darkmodeAnimationKey = GlobalKey();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _settings = Provider.of<SettingsHandler>(context).currentSettings;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +67,32 @@ class _SettingsPageState extends State<SettingsPage> {
                   // System Darkmode
                   LeadingTextSwitch(
                     text: 'System Darkmode',
-                    isActive: _systemDarkmode,
-                    onToggle: (value) {
-                      setState(() {
-                        _systemDarkmode = !_systemDarkmode;
-                      });
+                    isActive: Provider.of<SettingsHandler>(context).currentSettings.useSystemDarkmode,
+                    onToggle: (switchValue) {
+                      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                          _settings.copyWith(useSystemDarkmode: switchValue);
+
+                      if (switchValue) {
+                        _darkmodeAnimationKey.currentState?.animateOut();
+                      } else {
+                        _darkmodeAnimationKey.currentState?.animateIn();
+                      }
                     },
+                  ),
+                  // Darkmode ~  !! Still not ideal, only animates in, not out
+                  Offstage(
+                    offstage: Provider.of<SettingsHandler>(context).currentSettings.useSystemDarkmode,
+                    child: AnimatedConditional(
+                      key: _darkmodeAnimationKey,
+                      child: LeadingTextSwitch(
+                        text: 'Darkmode',
+                        isActive: Provider.of<SettingsHandler>(context).currentSettings.useDarkmode,
+                        onToggle: (switchValue) {
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                              _settings.copyWith(useDarkmode: switchValue);
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),
