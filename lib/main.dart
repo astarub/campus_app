@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:campus_app/core/injection.dart' as ic; // injection container
-import 'package:campus_app/core/injection.dart';
+
 import 'package:flutter_gen/gen_l10n/l10n.dart';
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/core/authentication/authentication_handler.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
+
+import 'package:campus_app/core/authentication/authentication_handler.dart';
+import 'package:campus_app/core/injection.dart' as ic; // injection container
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/rubnews/news_entity.dart';
 import 'package:campus_app/pages/splash/splash_page.dart';
 
-// ignore: avoid_void_async
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initializes Hive and all used adapter for caching entities
+  await Hive.initFlutter();
+  Hive.registerAdapter(NewsEntityAdapter());
+
+  // Initialize injection container
   await ic.init();
+
   runApp(MultiProvider(
     providers: [
       // Initializes the provider that handles the app-theme, authentification and other things

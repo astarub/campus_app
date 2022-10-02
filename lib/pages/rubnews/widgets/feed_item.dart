@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import 'package:animations/animations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/rubnews/rubnews_details_page.dart';
@@ -19,7 +21,7 @@ class FeedItem extends StatelessWidget {
   final DateTime date;
 
   /// The image of the news feed item that is displayed in the feed and detail apge
-  final Image image;
+  final CachedNetworkImage image;
 
   /// A link of the news feed item that links to an external website, if no content is given
   final String link;
