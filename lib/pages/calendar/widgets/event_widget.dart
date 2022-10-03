@@ -1,3 +1,4 @@
+import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:flutter/material.dart';
 
 import 'package:animations/animations.dart';
@@ -92,26 +93,26 @@ class CalendarEventWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Html(
-                        data: event.title,
-                        style: {
-                          '*': Style(
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                            fontSize: const FontSize(18),
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.2,
-                          ),
-                        },
+                      StyledHTML(
+                        text: event.title,
+                        textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                        textAlign: TextAlign.left,
                       ),
                       Row(
                         children: [
-                          Text(
-                            'Beginn: $startingTime Uhr\t',
-                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                          Expanded(
+                            child: Text(
+                              'Beginn: $startingTime Uhr\t',
+                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            ),
                           ),
-                          Text(
-                            event.cost == null ? '' : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",
-                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                          Expanded(
+                            child: StyledHTML(
+                              text: event.cost == null
+                                  ? ''
+                                  : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",
+                              textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            ),
                           ),
                         ],
                       ),
