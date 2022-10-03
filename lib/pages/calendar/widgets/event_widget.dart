@@ -1,12 +1,13 @@
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:flutter/material.dart';
+
+import 'package:animations/animations.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:animations/animations.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
 /// This widget displays an event item in the events page
@@ -43,7 +44,8 @@ class CalendarEventWidget extends StatelessWidget {
       transitionDuration: const Duration(milliseconds: 250),
       openBuilder: (context, _) => CalendarDetailPage(event: event),
       closedBuilder: (context, VoidCallback openDetailsPage) => Container(
-        margin: openable ? const EdgeInsets.only(bottom: 14, left: 7, right: 7, top: 5) : EdgeInsets.only(bottom: 10),
+        margin:
+            openable ? const EdgeInsets.only(bottom: 14, left: 7, right: 7, top: 5) : const EdgeInsets.only(bottom: 10),
         padding: padding,
         decoration: BoxDecoration(
           color: Colors.white,

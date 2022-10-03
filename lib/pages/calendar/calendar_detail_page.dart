@@ -1,15 +1,17 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/pages/calendar/calendar_repository.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
+
+import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/calendar/calendar_repository.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/utils/widgets/styled_html.dart';
 
 class CalendarDetailPage extends StatefulWidget {
   final Event event;

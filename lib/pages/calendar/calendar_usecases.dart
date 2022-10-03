@@ -1,7 +1,8 @@
+import 'package:dartz/dartz.dart';
+
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/calendar/calendar_repository.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:dartz/dartz.dart';
 
 class CalendarUsecases {
   final CalendarRepository calendarRepository;

@@ -145,9 +145,6 @@ class _CalendarPageState extends State<CalendarPage> {
         parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
         savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
 
-        print('Parsed Events: $_events, empty = ${_events.isEmpty}');
-        print('Saved Events: $_savedEvents, empty = ${_savedEvents.isEmpty}');
-
         showUpcomingPlaceholder = _events.isEmpty;
         showSavedPlaceholder = _savedEvents.isEmpty;
       });
