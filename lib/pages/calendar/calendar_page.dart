@@ -121,7 +121,10 @@ class _CalendarPageState extends State<CalendarPage> {
                         ),
                       ),
                       // SegmentedControl
-                      upcomingSavedSwitch,
+                      SizedBox(
+                        width: double.infinity,
+                        child: Center(child: upcomingSavedSwitch),
+                      ),
                     ],
                   ),
                 ),
