@@ -2,21 +2,44 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/pages/calendar/calendar_repository.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 
-class CalendarDetailPage extends StatelessWidget {
+class CalendarDetailPage extends StatefulWidget {
   final Event event;
 
+  const CalendarDetailPage({
+    Key? key,
+    required this.event,
+  }) : super(key: key);
+
+  @override
+  State<CalendarDetailPage> createState() => _CalendarDetailState();
+}
+
+class _CalendarDetailState extends State<CalendarDetailPage> {
   final CalendarRepository calendarRepository = sl<CalendarRepository>();
 
-  CalendarDetailPage({Key? key, required this.event}) : super(key: key);
+  bool savedEvent = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    calendarRepository.updateSavedEvents().then((savedEvents) {
+      savedEvents.fold((failure) => null, (list) {
+        if (list.contains(widget.event)) {
+          setState(() => savedEvent = true);
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +59,13 @@ class CalendarDetailPage extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  if (event.hasImage)
+                  if (widget.event.hasImage)
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(25),
                         bottomRight: Radius.circular(25),
                       ),
-                      child: CachedNetworkImage(imageUrl: event.imageUrl!),
+                      child: CachedNetworkImage(imageUrl: widget.event.imageUrl!),
                     ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -52,57 +75,36 @@ class CalendarDetailPage extends StatelessWidget {
                         // Description
                         Padding(
                           padding: const EdgeInsets.only(top: 100, bottom: 40),
-                          child: Html(
-                            data: event.description != '' ? event.description : 'No description given.',
-                            style: {
-                              '*': Style(
-                                color: const Color.fromARGB(255, 129, 129, 129),
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0.2,
-                              ),
-                            },
+                          child: StyledHTML(
+                            text: widget.event.description != '' ? widget.event.description : 'No description given.',
                           ),
                         ),
                         // Hosts
-                        if (event.organizers.isNotEmpty)
+                        if (widget.event.organizers.isNotEmpty)
                           Text(
                             'Host',
                             textAlign: TextAlign.left,
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                           ),
-                        if (event.organizers.isNotEmpty)
+                        if (widget.event.organizers.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(top: 5, bottom: 30),
-                            child: Html(
-                              data: event.organizers.join(', '),
-                              style: {
-                                '*': Style(
-                                  color: const Color.fromARGB(255, 129, 129, 129),
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 0.2,
-                                ),
-                              },
+                            child: StyledHTML(
+                              text: widget.event.organizers.join(', '),
                             ),
                           ),
                         // Venue
-                        if (event.venue.name != '')
+                        if (widget.event.venue.name != '')
                           Text(
                             'Veranstaltungsort',
                             textAlign: TextAlign.left,
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                           ),
-                        if (event.venue.name != '')
+                        if (widget.event.venue.name != '')
                           Padding(
                             padding: const EdgeInsets.only(top: 5, bottom: 30),
-                            child: Html(
-                              data: event.venue.toString(),
-                              style: {
-                                '*': Style(
-                                  color: const Color.fromARGB(255, 129, 129, 129),
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 0.2,
-                                ),
-                              },
+                            child: StyledHTML(
+                              text: widget.event.venue.toString(),
                             ),
                           ),
                         // Notification-button
@@ -110,11 +112,8 @@ class CalendarDetailPage extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 10, bottom: 30),
                           child: Center(
                             child: CampusButton(
-                              text: 'Remind Me',
-                              onTap: () {
-                                // TODO: show Message / Info Alert
-                                calendarRepository.updateSavedEvents(event: event);
-                              },
+                              text: savedEvent ? 'Unsave Me' : 'Save Me',
+                              onTap: saveEventAndShowMessage,
                             ),
                           ),
                         ),
@@ -127,16 +126,12 @@ class CalendarDetailPage extends StatelessWidget {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Image(
-                  //   image: event.image!.image,
-                  //   color: Colors.transparent,
-                  // ),
                   Container(
                     //color: Colors.transparent,
                     transform: Matrix4.translationValues(0, -65, 0),
                     padding: const EdgeInsets.all(10),
                     child: CalendarEventWidget(
-                      event: event,
+                      event: widget.event,
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       //boxShadow: const BoxShadow(color: Colors.transparent),
                       openable: false,
@@ -166,5 +161,42 @@ class CalendarDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Function that update the saved event state and show an info
+  /// message inside a SnackBar
+  Future<void> saveEventAndShowMessage() async {
+    await calendarRepository.updateSavedEvents(event: widget.event);
+
+    setState(() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          // Show message on top of screen:
+          // margin: EdgeInsets.only(
+          //   bottom: MediaQuery.of(context).size.height - 250,
+          // ),
+          content: Container(
+            height: 50,
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(129, 255, 255, 255),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Center(
+              child: Text(
+                savedEvent ? 'Unsaved' : 'Saved',
+                style: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.textTheme.displayMedium,
+              ),
+            ),
+          ),
+          duration: const Duration(seconds: 1),
+          behavior: SnackBarBehavior.floating,
+          elevation: 15,
+          backgroundColor: Colors.transparent,
+        ),
+      );
+
+      savedEvent = !savedEvent;
+    });
   }
 }

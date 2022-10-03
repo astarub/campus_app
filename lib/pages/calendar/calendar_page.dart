@@ -48,6 +48,7 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   void initState() {
     super.initState();
+    updateStateWithEvents();
 
     upcomingSavedSwitch = CampusSegmentedControl(
       leftTitle: 'Upcoming',
@@ -58,22 +59,9 @@ class _CalendarPageState extends State<CalendarPage> {
         } else {
           setState(() => showSavedEvents = true);
         }
+        updateStateWithEvents();
       },
     );
-
-    _calendarUsecase.updateEventsAndFailures().then((data) {
-      setState(() {
-        _events = data['events']! as List<Event>;
-        _savedEvents = data['saved']! as List<Event>;
-        _failures = data['failures']! as List<Failure>;
-
-        parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
-        savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
-
-        if (parsedEvents.isEmpty) showUpcomingPlaceholder = true;
-        if (savedEvents.isEmpty) showSavedPlaceholder = true;
-      });
-    });
   }
 
   @override
@@ -109,21 +97,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                   Provider.of<ThemesNotifier>(context).currentThemeData.dialogBackgroundColor,
                               color: Provider.of<ThemesNotifier>(context).currentThemeData.focusColor,
                               strokeWidth: 3,
-                              onRefresh: () {
-                                return _calendarUsecase.updateEventsAndFailures().then((data) {
-                                  setState(() {
-                                    _events = data['events']! as List<Event>;
-                                    _savedEvents = data['saved']! as List<Event>;
-                                    _failures = data['failures']! as List<Failure>;
-
-                                    parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
-                                    savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
-
-                                    if (parsedEvents.isEmpty) showUpcomingPlaceholder = true;
-                                    if (savedEvents.isEmpty) showSavedPlaceholder = true;
-                                  });
-                                });
-                              },
+                              onRefresh: updateStateWithEvents,
                               child: ListView(
                                 padding: const EdgeInsets.symmetric(horizontal: 20),
                                 physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -157,5 +131,26 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
       ),
     );
+  }
+
+  /// Function that call usecase and parse widgets into the corresponding
+  /// lists of events or failures.
+  Future<void> updateStateWithEvents() async {
+    await _calendarUsecase.updateEventsAndFailures().then((data) {
+      setState(() {
+        _events = data['events']! as List<Event>;
+        _savedEvents = data['saved']! as List<Event>;
+        _failures = data['failures']! as List<Failure>;
+
+        parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
+        savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
+
+        print('Parsed Events: $_events, empty = ${_events.isEmpty}');
+        print('Saved Events: $_savedEvents, empty = ${_savedEvents.isEmpty}');
+
+        showUpcomingPlaceholder = _events.isEmpty;
+        showSavedPlaceholder = _savedEvents.isEmpty;
+      });
+    });
   }
 }
