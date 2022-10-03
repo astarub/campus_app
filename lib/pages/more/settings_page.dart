@@ -94,6 +94,16 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                   ),
+                  const SectionHeadline(headline: 'Verhalten'),
+                  // External Browser
+                  LeadingTextSwitch(
+                    text: 'Verwende externen Browser für Links',
+                    isActive: Provider.of<SettingsHandler>(context).currentSettings.useExternalBrowser,
+                    onToggle: (switchValue) {
+                      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                          _settings.copyWith(useExternalBrowser: switchValue);
+                    },
+                  ),
                 ],
               ),
             ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/more/widgets/external_link_button.dart';
 import 'package:campus_app/pages/more/widgets/button_group.dart';
@@ -22,6 +24,21 @@ class MorePage extends StatelessWidget {
 
   static const String imprint = 'dfkajödslkf';
   static const String privacy = 'dföjköaldf';
+
+  void openLink(BuildContext context, String url) {
+    debugPrint('Opening external ressource: $url');
+
+    if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useExternalBrowser) {
+      // Open in external browser
+      launchUrl(
+        Uri.parse(url),
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      // Open in InAppView
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,36 +70,45 @@ class MorePage extends StatelessWidget {
                         headline: 'AStA',
                         buttons: [
                           ExternalLinkButton(
-                              title: 'Kulturcafé', leadingIconPath: 'assets/img/asta_logo.png', onTap: () {}),
+                            title: 'Kulturcafé',
+                            leadingIconPath: 'assets/img/asta_logo.png',
+                            onTap: () => openLink(context, 'https://kulturcafe.asta-bochum.de/'),
+                          ),
                           ExternalLinkButton(
-                              title: 'Fahrrad Werkstatt', leadingIconPath: 'assets/img/asta_logo.png', onTap: () {}),
+                            title: 'Fahrrad Werkstatt',
+                            leadingIconPath: 'assets/img/asta_logo.png',
+                            onTap: () => openLink(context, 'https://asta-bochum.de/fahrradwerkstatt/'),
+                          ),
                           ExternalLinkButton(
-                              title: 'Repair Café', leadingIconPath: 'assets/img/asta_logo.png', onTap: () {}),
+                            title: 'Repair Café',
+                            leadingIconPath: 'assets/img/asta_logo.png',
+                            onTap: () => openLink(context, 'https://asta-bochum.de/repair-cafe/'),
+                          ),
                           Flex(
                             direction: Axis.horizontal,
                             children: [
                               Expanded(
                                 child: SocialMediaButton(
                                   iconPath: 'assets/img/icons/website.svg',
-                                  onTap: () {},
+                                  onTap: () => openLink(context, 'https://asta-bochum.de/'),
                                 ),
                               ),
                               Expanded(
                                 child: SocialMediaButton(
                                   iconPath: 'assets/img/icons/instagram.svg',
-                                  onTap: () {},
+                                  onTap: () => openLink(context, 'https://www.instagram.com/astarub/'),
                                 ),
                               ),
                               Expanded(
                                 child: SocialMediaButton(
                                   iconPath: 'assets/img/icons/facebook.svg',
-                                  onTap: () {},
+                                  onTap: () => openLink(context, 'https://www.facebook.com/AStA.Bochum/'),
                                 ),
                               ),
                               Expanded(
                                 child: SocialMediaButton(
                                   iconPath: 'assets/img/icons/twitch.svg',
-                                  onTap: () {},
+                                  onTap: () => openLink(context, 'https://www.twitch.tv/asta_rub'),
                                 ),
                               ),
                             ],
@@ -94,13 +120,26 @@ class MorePage extends StatelessWidget {
                         headline: 'Nützliche Links',
                         buttons: [
                           ExternalLinkButton(
-                              title: 'RubMail', leadingIconPath: 'assets/img/icons/mail-link.png', onTap: () {}),
+                            title: 'RubMail',
+                            leadingIconPath: 'assets/img/icons/mail-link.png',
+                            onTap: () => openLink(context, 'https://mail.ruhr-uni-bochum.de/rubwebmail/'),
+                          ),
                           ExternalLinkButton(
-                              title: 'Moodle', leadingIconPath: 'assets/img/icons/moodle-link.png', onTap: () {}),
+                            title: 'Moodle',
+                            leadingIconPath: 'assets/img/icons/moodle-link.png',
+                            onTap: () => openLink(context, 'https://moodle.ruhr-uni-bochum.de/'),
+                          ),
                           ExternalLinkButton(
-                              title: 'eCampus', leadingIconPath: 'assets/img/icons/rub-link.png', onTap: () {}),
+                            title: 'eCampus',
+                            leadingIconPath: 'assets/img/icons/rub-link.png',
+                            onTap: () => openLink(context,
+                                'https://www.ruhr-uni-bochum.de/ecampus/ecampus-webclient/login_studierende.html'),
+                          ),
                           ExternalLinkButton(
-                              title: 'FlexNow', leadingIconPath: 'assets/img/icons/flexnow-link.png', onTap: () {}),
+                            title: 'FlexNow',
+                            leadingIconPath: 'assets/img/icons/flexnow-link.png',
+                            onTap: () => openLink(context, 'https://www.flexnow.ruhr-uni-bochum.de/'),
+                          ),
                         ],
                       ),
                       // Additional sites and links
@@ -150,7 +189,7 @@ class MorePage extends StatelessWidget {
                             title: 'Verwendete Ressourcen',
                             leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
-                            onTap: () {},
+                            onTap: () => showLicensePage(context: context),
                           ),
                         ],
                       ),
