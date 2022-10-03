@@ -68,6 +68,7 @@ class NavBarNavigator extends StatelessWidget {
         break;
       case PageItem.mensa:
         rootPage = MensaPage(
+          mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );

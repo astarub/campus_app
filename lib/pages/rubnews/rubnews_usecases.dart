@@ -8,8 +8,54 @@ class RubnewsUsecases {
 
   RubnewsUsecases({required this.rubnewsRepository});
 
-  Future<Either<Failure, List<NewsEntity>>> getNewsList() async {
-    //? Add validation of returned object
-    return rubnewsRepository.getNewsfeed();
+  /// Return a JSON object `data` that contains failures and news.
+  ///
+  /// data := { 'failures': List\<Failure>, 'news': List\<NewsEntity> }
+  Future<Map<String, List<dynamic>>> updateFeedAndFailures() async {
+    // return data
+    final Map<String, List<dynamic>> data = {
+      'failures': <Failure>[],
+      'news': <NewsEntity>[],
+    };
+
+    // get remote and cached news feed
+    final Either<Failure, List<NewsEntity>> remoteFeed = await rubnewsRepository.getRemoteNewsfeed();
+    final Either<Failure, List<NewsEntity>> cachedFeed = rubnewsRepository.getCachedNewsfeed();
+
+    // fold cachedFeed
+    cachedFeed.fold(
+      (failure) => data['failures']!.add(failure),
+      (news) => data['news'] = news,
+    );
+
+    // fold remoteFeed
+    remoteFeed.fold(
+      (failure) => data['failures']!.add(failure),
+      (news) => data['news'] = news, // overwrite cached feed
+    );
+
+    return data;
+  }
+
+  /// Return a JSON object `data` that contains failures and news.
+  ///
+  /// data := { 'failures': List\<Failure>, 'news': List\<NewsEntity> }
+  Map<String, List<dynamic>> getCachedFeedAndFailures() {
+    // return data
+    final Map<String, List<dynamic>> data = {
+      'failures': <Failure>[],
+      'news': <NewsEntity>[],
+    };
+
+    // get only cached news feed
+    final Either<Failure, List<NewsEntity>> cachedFeed = rubnewsRepository.getCachedNewsfeed();
+
+    // fold cachedFeed
+    cachedFeed.fold(
+      (failure) => data['failures']!.add(failure),
+      (news) => data['news'] = news,
+    );
+
+    return data;
   }
 }

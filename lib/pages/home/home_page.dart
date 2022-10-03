@@ -89,11 +89,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarColor: Colors.white,
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light, // iOS
+        statusBarColor: Colors.white, // Android
+        statusBarIconBrightness: Brightness.dark, // Android
+        systemNavigationBarColor: Colors.white, // Android
+        systemNavigationBarIconBrightness: Brightness.dark, // Android
       ),
       child: WillPopScope(
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),

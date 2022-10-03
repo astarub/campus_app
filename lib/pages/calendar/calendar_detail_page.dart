@@ -45,11 +45,11 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.dark,
+        statusBarColor: Colors.white.withOpacity(0.2),
+        statusBarIconBrightness: Brightness.light,
         systemNavigationBarColor: Colors.white,
         systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarColor: Colors.white.withOpacity(0.2),
-        statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
         backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,

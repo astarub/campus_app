@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
-import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/utils/pages/rubnews_utils.dart';
-import 'package:campus_app/pages/rubnews/widgets/feed_item.dart';
-import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
-import 'package:campus_app/pages/rubnews/widgets/filter_popup.dart';
-import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/rubnews/news_entity.dart';
+import 'package:campus_app/pages/rubnews/rubnews_usecases.dart';
+import 'package:campus_app/pages/rubnews/widgets/filter_popup.dart';
+import 'package:campus_app/utils/pages/feed_utils.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 
 class RubnewsPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -32,7 +35,13 @@ class RubnewsPageState extends State<RubnewsPage> {
   double _scrollControllerLastOffset = 0;
   double _headerOpacity = 1;
 
+  late List<NewsEntity> _rubnews = [];
+  late List<Failure> _failures = [];
+
   late final SnappingSheetController _popupController;
+
+  final RubnewsUsecases _rubnewsUsecases = sl<RubnewsUsecases>();
+  final FeedUtils _feedUtils = sl<FeedUtils>();
 
   @override
   void initState() {
@@ -50,6 +59,21 @@ class RubnewsPageState extends State<RubnewsPage> {
       });
 
     _popupController = SnappingSheetController();
+
+    // initial data request
+    final initData = _rubnewsUsecases.getCachedFeedAndFailures();
+    _rubnews = initData['news']! as List<NewsEntity>; // empty when no data was cached before
+    _failures = initData['failures']! as List<Failure>; // CachFailure when no data was cached before
+
+    // empty _rubnews indicate that no data was cached -> request an update
+    if (_rubnews.isEmpty) {
+      _rubnewsUsecases.updateFeedAndFailures().then((data) {
+        setState(() {
+          _rubnews = data['news']! as List<NewsEntity>;
+          _failures = data['failures']! as List<Failure>;
+        });
+      });
+    }
   }
 
   @override
@@ -67,32 +91,25 @@ class RubnewsPageState extends State<RubnewsPage> {
                 // News feed
                 Container(
                   margin: const EdgeInsets.only(top: 100),
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    controller: _scrollController,
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      // Spacing
-                      const SizedBox(height: 80),
-                      // Actual feed items
-                      FeedItem(
-                        title: 'E-Sports Meet & Greet',
-                        description:
-                            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-                        date: DateTime(2022, 6, 20, 17), // 20.06.2022, 17 Uhr
-                        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-                        content: 'Test Content',
-                        isEvent: true,
-                      ),
-                      FeedItem(
-                        title: 'E-Sports Meet & Greet',
-                        description:
-                            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-                        date: DateTime(2022, 6, 20, 17), // 20.06.2022, 17 Uhr
-                        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-                        content: 'Test Content',
-                      ),
-                    ],
+                  child: RefreshIndicator(
+                    displacement: 55,
+                    backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.dialogBackgroundColor,
+                    color: Provider.of<ThemesNotifier>(context).currentThemeData.focusColor,
+                    strokeWidth: 3,
+                    onRefresh: () {
+                      return _rubnewsUsecases.updateFeedAndFailures().then((data) {
+                        setState(() {
+                          _rubnews = data['news']! as List<NewsEntity>;
+                          _failures = data['failures']! as List<Failure>;
+                        });
+                      });
+                    },
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      controller: _scrollController,
+                      physics: const BouncingScrollPhysics(),
+                      children: _feedUtils.fromNewsEntityListToWidgetList(entities: _rubnews),
+                    ),
                   ),
                 ),
                 // Header
