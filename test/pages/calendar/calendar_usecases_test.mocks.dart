@@ -92,4 +92,23 @@ class MockCalendarRepository extends _i1.Mock
           ),
         ),
       ) as _i3.Either<_i6.Failure, List<_i7.Event>>);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>> updateSavedEvents(
+          {_i7.Event? event}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateSavedEvents,
+          [],
+          {#event: event},
+        ),
+        returnValue: _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>>.value(
+            _FakeEither_1<_i6.Failure, List<_i7.Event>>(
+          this,
+          Invocation.method(
+            #updateSavedEvents,
+            [],
+            {#event: event},
+          ),
+        )),
+      ) as _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>>);
 }

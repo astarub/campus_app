@@ -11,10 +11,14 @@ import 'package:url_launcher/url_launcher.dart';
 /// HTML, for example a mailto:<url> href.
 class StyledHTML extends Html {
   final String text;
+  final TextStyle? textStyle;
+  final TextAlign? textAlign;
 
   StyledHTML({
     Key? key,
     required this.text,
+    this.textStyle,
+    this.textAlign,
   }) : super(
           key: key,
           data: text,
@@ -23,9 +27,16 @@ class StyledHTML extends Html {
               fontSize: const FontSize(17),
             ),
             '*': Style(
-              color: const Color.fromARGB(255, 129, 129, 129),
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.2,
+              color: textStyle?.color ?? const Color.fromARGB(255, 129, 129, 129),
+              fontWeight: textStyle?.fontWeight ?? FontWeight.w500,
+              letterSpacing: textStyle?.letterSpacing,
+              backgroundColor: textStyle?.backgroundColor,
+              fontStyle: textStyle?.fontStyle,
+              fontFamily: textStyle?.fontFamily,
+              height: textStyle?.height,
+              wordSpacing: textStyle?.wordSpacing,
+              textAlign: textAlign,
+              fontSize: textStyle?.fontSize == null ? null : FontSize(textStyle?.fontSize),
             ),
           },
           onLinkTap: (url, context, attributes, element) => openURL(url.toString()),

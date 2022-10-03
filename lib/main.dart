@@ -15,7 +15,7 @@ import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/rubnews/news_entity.dart';
+import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/splash/splash_page.dart';
 
 Future<void> main() async {

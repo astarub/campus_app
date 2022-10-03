@@ -6,7 +6,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/rubnews/rubnews_details_page.dart';
+import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/rubnews/rubnews_details_page.dart';
+import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
 /// This widget displays a news item in the news feed page.
@@ -30,7 +33,7 @@ class FeedItem extends StatelessWidget {
   final String content;
 
   /// Wether the given news is an event announcement and should display an event date
-  final bool isEvent;
+  final Event? event;
 
   /// Creates a NewsFeed-item with an expandable content
   const FeedItem({
@@ -41,7 +44,7 @@ class FeedItem extends StatelessWidget {
     required this.image,
     this.link = '',
     required this.content,
-    this.isEvent = false,
+    this.event,
   }) : super(key: key);
 
   /// Creates a NewsFeed-item with an external link
@@ -53,7 +56,7 @@ class FeedItem extends StatelessWidget {
     required this.image,
     required this.link,
     this.content = '',
-    this.isEvent = false,
+    this.event,
   }) : super(key: key);
 
   @override
@@ -64,8 +67,18 @@ class FeedItem extends StatelessWidget {
     return OpenContainer(
       transitionType: ContainerTransitionType.fadeThrough,
       transitionDuration: const Duration(milliseconds: 250),
-      openBuilder: (context, _) =>
-          RubnewsDetailsPage(title: title, date: date, image: image, content: content, isEvent: isEvent),
+      openBuilder: (context, _) {
+        if (event != null) {
+          return CalendarDetailPage(event: event!);
+        } else {
+          return RubnewsDetailsPage(
+            title: title,
+            date: date,
+            image: image,
+            content: content,
+          );
+        }
+      },
       closedBuilder: (context, VoidCallback openDetailsPage) => Padding(
         padding: const EdgeInsets.only(bottom: 14),
         child: CustomButton(
@@ -89,7 +102,7 @@ class FeedItem extends StatelessWidget {
                       child: image,
                     ),
                     // Date
-                    if (isEvent)
+                    if (event != null)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         margin: const EdgeInsets.only(right: 4, bottom: 5),
@@ -101,7 +114,7 @@ class FeedItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              month.toString(),
+                              month,
                               style: Provider.of<ThemesNotifier>(context)
                                   .currentThemeData
                                   .textTheme
@@ -109,7 +122,7 @@ class FeedItem extends StatelessWidget {
                                   ?.copyWith(fontSize: 14),
                             ),
                             Text(
-                              day.toString(),
+                              day,
                               style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
                             ),
                           ],
@@ -120,15 +133,15 @@ class FeedItem extends StatelessWidget {
                 // Title
                 Padding(
                   padding: const EdgeInsets.only(top: 12, bottom: 6),
-                  child: Text(
-                    title,
-                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                  child: StyledHTML(
+                    text: title,
+                    textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                   ),
                 ),
                 // Description
-                Text(
-                  description,
-                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                StyledHTML(
+                  text: description,
+                  textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                 ),
               ],
             ),

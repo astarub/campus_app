@@ -1,7 +1,7 @@
 import 'package:campus_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_app/pages/home/home_page.dart';
-import 'package:campus_app/pages/rubnews/rubnews_page.dart';
+import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/calendar/calendar_page.dart';
 import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/guide/guide_page.dart';
@@ -50,7 +50,7 @@ class NavBarNavigator extends StatelessWidget {
     Widget rootPage;
     switch (pageItem) {
       case PageItem.feed:
-        rootPage = RubnewsPage(
+        rootPage = FeedPage(
           mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,

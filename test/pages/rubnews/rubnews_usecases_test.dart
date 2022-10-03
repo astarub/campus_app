@@ -1,7 +1,7 @@
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/rubnews/news_entity.dart';
-import 'package:campus_app/pages/rubnews/rubnews_repository.dart';
-import 'package:campus_app/pages/rubnews/rubnews_usecases.dart';
+import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
+import 'package:campus_app/pages/feed/rubnews/rubnews_repository.dart';
+import 'package:campus_app/pages/feed/rubnews/rubnews_usecases.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
