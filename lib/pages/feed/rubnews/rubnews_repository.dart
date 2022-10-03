@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:dartz/dartz.dart';
+import 'package:xml/xml.dart';
+
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_datasource.dart';
-import 'package:dartz/dartz.dart';
-import 'package:xml/xml.dart';
 
 class RubnewsRepository {
   final RubnewsDatasource rubnewsDatasource;

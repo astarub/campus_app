@@ -1,5 +1,3 @@
-import 'package:campus_app/pages/calendar/calendar_usecases.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -8,10 +6,12 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/calendar/calendar_usecases.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_usecases.dart';
 import 'package:campus_app/pages/feed/widgets/filter_popup.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';

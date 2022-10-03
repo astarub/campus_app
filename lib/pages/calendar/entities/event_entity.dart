@@ -1,9 +1,11 @@
+import 'package:flutter/widgets.dart';
+
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
+
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 
 part 'event_entity.g.dart';
 

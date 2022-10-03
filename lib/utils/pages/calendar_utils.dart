@@ -1,7 +1,8 @@
+import 'package:flutter/widgets.dart';
+
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/utils/pages/presentation_functions.dart';
-import 'package:flutter/widgets.dart';
 
 class CalendarUtils extends Utils {
   /// Parse a list of event entities to widget list of type CalendarEventWidget sorted by date.
