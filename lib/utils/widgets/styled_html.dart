@@ -29,7 +29,7 @@ class StyledHTML extends Html {
             '*': Style(
               color: textStyle?.color ?? const Color.fromARGB(255, 129, 129, 129),
               fontWeight: textStyle?.fontWeight ?? FontWeight.w500,
-              letterSpacing: textStyle?.letterSpacing,
+              letterSpacing: textStyle?.letterSpacing ?? 0.2,
               backgroundColor: textStyle?.backgroundColor,
               fontStyle: textStyle?.fontStyle,
               fontFamily: textStyle?.fontFamily,

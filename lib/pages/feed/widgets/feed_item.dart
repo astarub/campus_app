@@ -132,7 +132,7 @@ class FeedItem extends StatelessWidget {
                 ),
                 // Title
                 Padding(
-                  padding: const EdgeInsets.only(top: 12, bottom: 6),
+                  padding: const EdgeInsets.only(top: 6),
                   child: StyledHTML(
                     text: title,
                     textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,

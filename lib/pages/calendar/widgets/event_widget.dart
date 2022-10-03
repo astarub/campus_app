@@ -88,7 +88,7 @@ class CalendarEventWidget extends StatelessWidget {
               // Title & Times
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 6),
+                  padding: const EdgeInsets.only(right: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -97,23 +97,27 @@ class CalendarEventWidget extends StatelessWidget {
                         textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                         textAlign: TextAlign.left,
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Beginn: $startingTime Uhr\t',
-                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Beginn: $startingTime Uhr\t',
+                                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: StyledHTML(
-                              text: event.cost == null
-                                  ? ''
-                                  : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",
-                              textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            Expanded(
+                              child: StyledHTML(
+                                text: event.cost == null
+                                    ? ''
+                                    : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",
+                                textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),

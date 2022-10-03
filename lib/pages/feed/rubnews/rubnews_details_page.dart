@@ -90,14 +90,10 @@ class RubnewsDetailsPage extends StatelessWidget {
               ),
               // Title
               Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 20),
+                padding: const EdgeInsets.only(top: 12, bottom: 4, left: 20, right: 20),
                 child: Text(
                   title,
-                  style: Provider.of<ThemesNotifier>(context)
-                      .currentThemeData
-                      .textTheme
-                      .headlineSmall!
-                      .copyWith(fontSize: 21),
+                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                   textAlign: TextAlign.left,
                 ),
               ),
