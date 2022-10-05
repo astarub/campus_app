@@ -29,7 +29,12 @@ class MorePage extends StatelessWidget {
   void openLink(BuildContext context, String url) {
     debugPrint('Opening external ressource: $url');
 
-    if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useExternalBrowser) {
+    // Enforces to open social links in external browser to let the system handle these
+    // and open designated apps, if installed
+    if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useExternalBrowser ||
+        url.contains('instagram') ||
+        url.contains('facebook') ||
+        url.contains('twitch')) {
       // Open in external browser
       launchUrl(
         Uri.parse(url),
