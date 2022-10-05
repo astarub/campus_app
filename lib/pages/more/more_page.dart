@@ -23,8 +23,7 @@ class MorePage extends StatelessWidget {
     required this.pageExitAnimationKey,
   }) : super(key: key);
 
-  static const String imprint = 'dfkajödslkf';
-  static const String privacy = 'dföjköaldf';
+  static const String privacy = 'Tbd.';
 
   void openLink(BuildContext context, String url) {
     debugPrint('Opening external ressource: $url');

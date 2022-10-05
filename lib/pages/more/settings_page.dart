@@ -126,7 +126,7 @@ class SectionHeadline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(top: 15, bottom: 10),
       child: Text(
         headline,
         textAlign: TextAlign.left,
