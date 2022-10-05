@@ -7,6 +7,7 @@ import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/more/widgets/external_link_button.dart';
 import 'package:campus_app/pages/more/widgets/button_group.dart';
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/pages/more/static_info_page.dart';
 import 'package:campus_app/pages/more/settings_page.dart';
 
@@ -36,7 +37,7 @@ class MorePage extends StatelessWidget {
       );
     } else {
       // Open in InAppView
-
+      Navigator.push(context, MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)));
     }
   }
 
