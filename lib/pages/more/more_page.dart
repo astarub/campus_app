@@ -181,7 +181,10 @@ class MorePage extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const StaticInfoPage(title: 'Impressum', content: imprint),
+                                  builder: (context) => const StaticInfoPage.external(
+                                    title: 'Impressum',
+                                    url: 'https://asta-bochum.de/impressum/',
+                                  ),
                                 ),
                               );
                             },
