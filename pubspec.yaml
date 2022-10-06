@@ -44,6 +44,13 @@ dev_dependencies:
   flutter_lints: ^1.0.0
   mockito: ^5.1.0
   hive_generator: ^1.1.3
+  flutter_launcher_icons: ^0.10.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/img/dummy_logo.png"
+  min_sdk_android: 21
 
 flutter:
   assets:
@@ -107,16 +114,6 @@ flutter:
           weight: 800
         - asset: assets/fonts/SF-Pro-Display-Black.otf
           weight: 900
-  #  - family: CircularStd
-  #    fonts:
-  #      - asset: assets/fonts/CircularStd-Medium.otf
-  #      - asset: assets/fonts/CircularStd-Book.otf
-  #        weight: 600
-  #      - asset: assets/fonts/CircularStd-Bold.otf
-  #        weight: 700
-  #      - asset: assets/fonts/CircularStd-Black.otf
-  #        weight: 900
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+
   uses-material-design: true
   generate: true
