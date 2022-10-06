@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:campus_app/core/authentication/authentication_datasource.dart';
 import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/authentication/authentication_repository.dart';
 import 'package:campus_app/pages/calendar/calendar_remote_datasource.dart';
 import 'package:campus_app/pages/calendar/calendar_repository.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
+import 'package:campus_app/pages/mensa/mensa_datasource.dart';
 //import 'package:campus_app/pages/ecampus/bloc/ecampus_bloc.dart';
 //import 'package:campus_app/pages/ecampus/ticket_datasource.dart';
 //import 'package:campus_app/pages/ecampus/ticket_repository.dart';
@@ -16,7 +19,9 @@ import 'package:campus_app/pages/rubnews/rubnews_usecases.dart';
 import 'package:campus_app/utils/apis/forgerock_api.dart';
 import 'package:campus_app/utils/dio_utils.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
+import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -29,6 +34,19 @@ Future<void> init() async {
   //sl.registerFactory(() => EcampusBloc(ticketRepository: sl()));
 
   //! Datasources
+  sl.registerSingletonAsync(
+        () async {
+          final client = Dio();
+
+          (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+              (HttpClient client) {
+            client.badCertificateCallback =
+                (X509Certificate cert, String host, int port) => true;
+            return client;
+          };
+          return MensaDataSource(client: client,);}
+  );
+
   sl.registerSingletonAsync(
     () async => RubnewsDatasource(
       client: sl(),
@@ -104,6 +122,7 @@ Future<void> init() async {
   );
   sl.registerLazySingleton(ForgerockAPIUtils.new);
   sl.registerLazySingleton(FeedUtils.new);
+  sl.registerLazySingleton(MensaUtils.new);
 
   //! External
   sl.registerLazySingleton(http.Client.new);
