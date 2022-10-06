@@ -72,6 +72,18 @@ class _SettingsPageState extends State<SettingsPage> {
                       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
                           _settings.copyWith(useSystemDarkmode: switchValue);
 
+                      // Notify the UI that the ThemeMode has changed
+                      if (_settings.useSystemDarkmode) {
+                        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
+                      } else {
+                        if (_settings.useDarkmode) {
+                          Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
+                        } else {
+                          Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.light;
+                        }
+                      }
+
+                      // Show or hide the darkmode option
                       if (switchValue) {
                         _darkmodeAnimationKey.currentState?.animateOut();
                       } else {
@@ -90,6 +102,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         onToggle: (switchValue) {
                           Provider.of<SettingsHandler>(context, listen: false).currentSettings =
                               _settings.copyWith(useDarkmode: switchValue);
+
+                          // Notify the UI that the currentTheme has changed
+                          if (switchValue) {
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.dark;
+                          } else {
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.light;
+                          }
                         },
                       ),
                     ),

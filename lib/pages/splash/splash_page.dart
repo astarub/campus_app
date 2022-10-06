@@ -93,7 +93,17 @@ class _SplashPageState extends State<SplashPage> {
     required BuildContext contextForThemeProvider,
     bool useSystemDarkmode = true,
     bool useDarkmode = false,
-  }) {}
+  }) {
+    if (useSystemDarkmode) {
+      Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
+    } else {
+      if (useDarkmode) {
+        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
+      } else {
+        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.light;
+      }
+    }
+  }
 
   // ? DEBUG ONLY
   void _debugDeleteSettings() {

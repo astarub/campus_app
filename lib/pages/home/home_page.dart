@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
 import 'package:campus_app/pages/rubnews/rubnews_page.dart';
@@ -83,6 +84,33 @@ class _HomePageState extends State<HomePage> {
         pageExitAnimationKey: exitAnimationKeys[tabItem]!,
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Theme von System auslesen & Callback erstellen
+    var window = WidgetsBinding.instance.window;
+
+    window.onPlatformBrightnessChanged = () {
+      final brightness = window.platformBrightness;
+
+      // Callback wird ausgeführt, sofern System-Darkmode verwendet werden soll
+      if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useSystemDarkmode) {
+        if (brightness == Brightness.light) {
+          debugPrint('System ändert zu LightMode.');
+          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark) {
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.light;
+          }
+        } else if (brightness == Brightness.dark) {
+          debugPrint('System ändert zu DarkMode.');
+          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light) {
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.dark;
+          }
+        }
+      }
+    };
   }
 
   @override

@@ -43,9 +43,9 @@ class CampusApp extends StatelessWidget {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: Provider.of<ThemesNotifier>(context).currentThemeData,
-      darkTheme: Provider.of<ThemesNotifier>(context).darkThemeData,
-      themeMode: Provider.of<ThemesNotifier>(context).currentThemeMode,
+      theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,
+      darkTheme: Provider.of<ThemesNotifier>(context, listen: false).darkThemeData,
+      themeMode: Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode,
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
           return PageTransition(
@@ -55,8 +55,7 @@ class CampusApp extends StatelessWidget {
           );
         }
       },
-      navigatorKey:
-          mainNavigatorKey, // comment this out during development, otherwhise the whole app restarts on hot-reload
+      navigatorKey: mainNavigatorKey,
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: false,
     );
