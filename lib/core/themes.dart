@@ -11,6 +11,19 @@ class ThemesNotifier with ChangeNotifier {
       brightness: Brightness.light,
       backgroundColor: Colors.white,
       primaryColor: Colors.black,
+      colorScheme: const ColorScheme(
+        brightness: Brightness.light,
+        primary: Colors.black,
+        secondary: Color.fromRGBO(255, 107, 1, 1),
+        onPrimary: Colors.white,
+        onSecondary: Colors.black,
+        error: Colors.red,
+        onError: Colors.black,
+        background: Colors.white,
+        onBackground: Colors.black,
+        surface: Colors.white,
+        onSurface: Colors.black,
+      ),
       fontFamily: 'SF-Pro',
       textTheme: const TextTheme(
         displayMedium: TextStyle(
