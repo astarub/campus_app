@@ -68,7 +68,13 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
               child: Image.asset(
                 widget.isActive ? widget.imagePathActive : widget.imagePathInactive,
                 height: iconHeight,
-                color: widget.isActive ? const Color.fromRGBO(255, 107, 1, 1) : Colors.black,
+                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                    ? widget.isActive
+                        ? const Color.fromRGBO(255, 107, 1, 1)
+                        : Colors.black
+                    : widget.isActive
+                        ? const Color.fromRGBO(255, 107, 1, 1)
+                        : const Color.fromRGBO(184, 186, 191, 1),
                 filterQuality: FilterQuality.high,
               ),
             ),

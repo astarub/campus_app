@@ -50,6 +50,21 @@ class _HomePageState extends State<HomePage> {
     PageItem.more: GlobalKey<AnimatedEntryState>(),
   };
 
+  final SystemUiOverlayStyle lightSystemUiStyle = const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.light, // iOS
+    statusBarColor: Colors.white, // Android
+    statusBarIconBrightness: Brightness.dark, // Android
+    systemNavigationBarColor: Colors.white, // Android
+    systemNavigationBarIconBrightness: Brightness.dark, // Android
+  );
+  final SystemUiOverlayStyle darkSystemUiStyle = const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.dark, // iOS
+    statusBarColor: Color.fromRGBO(14, 20, 32, 1), // Android
+    statusBarIconBrightness: Brightness.light, // Android
+    systemNavigationBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
+    systemNavigationBarIconBrightness: Brightness.light, // Android
+  );
+
   /// Holds the currently active page.
   PageItem currentPage = PageItem.feed;
 
@@ -116,13 +131,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarBrightness: Brightness.light, // iOS
-        statusBarColor: Colors.white, // Android
-        statusBarIconBrightness: Brightness.dark, // Android
-        systemNavigationBarColor: Colors.white, // Android
-        systemNavigationBarIconBrightness: Brightness.dark, // Android
-      ),
+      value: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          ? lightSystemUiStyle
+          : darkSystemUiStyle,
       child: WillPopScope(
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(

@@ -93,8 +93,8 @@ class RubnewsPageState extends State<RubnewsPage> {
                   margin: const EdgeInsets.only(top: 100),
                   child: RefreshIndicator(
                     displacement: 55,
-                    backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.dialogBackgroundColor,
-                    color: Provider.of<ThemesNotifier>(context).currentThemeData.focusColor,
+                    backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                    color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                     strokeWidth: 3,
                     onRefresh: () {
                       return _rubnewsUsecases.updateFeedAndFailures().then((data) {
@@ -115,7 +115,9 @@ class RubnewsPageState extends State<RubnewsPage> {
                 // Header
                 Container(
                   padding: const EdgeInsets.only(top: 40, bottom: 20, left: 0, right: 0),
-                  color: _headerOpacity == 1 ? Colors.white : Colors.transparent,
+                  color: _headerOpacity == 1
+                      ? Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor
+                      : Colors.transparent,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

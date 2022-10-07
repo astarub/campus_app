@@ -32,7 +32,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return Container(
       height: 68,
       decoration: BoxDecoration(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(15),
           topRight: Radius.circular(15),

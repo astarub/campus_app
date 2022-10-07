@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -10,10 +12,12 @@ import 'package:url_launcher/url_launcher.dart';
 /// It also implements a redirect to other apps if there are links inside the
 /// HTML, for example a mailto:<url> href.
 class StyledHTML extends Html {
+  final BuildContext context;
   final String text;
 
   StyledHTML({
     Key? key,
+    required this.context,
     required this.text,
   }) : super(
           key: key,
@@ -23,7 +27,7 @@ class StyledHTML extends Html {
               fontSize: const FontSize(17),
             ),
             '*': Style(
-              color: const Color.fromARGB(255, 129, 129, 129),
+              color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium?.color,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.2,
             ),

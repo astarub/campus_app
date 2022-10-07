@@ -11,6 +11,7 @@ class ThemesNotifier with ChangeNotifier {
       brightness: Brightness.light,
       backgroundColor: Colors.white,
       primaryColor: Colors.black,
+      cardColor: Colors.white,
       colorScheme: const ColorScheme(
         brightness: Brightness.light,
         primary: Colors.black,
@@ -71,9 +72,52 @@ class ThemesNotifier with ChangeNotifier {
     ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      backgroundColor: Colors.white,
-      primaryColor: Colors.black,
-      textTheme: const TextTheme(),
+      backgroundColor: const Color.fromRGBO(14, 20, 32, 1),
+      primaryColor: Colors.white,
+      cardColor: const Color.fromRGBO(17, 25, 38, 1),
+      fontFamily: 'SF-Pro',
+      textTheme: const TextTheme(
+        displayMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 30,
+          fontWeight: FontWeight.w600,
+        ),
+        headlineMedium: TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 1,
+        ),
+        headlineSmall: TextStyle(
+          color: Colors.white,
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
+        ),
+        bodyMedium: TextStyle(
+          color: Color.fromRGBO(184, 186, 191, 1),
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.2,
+        ),
+        labelSmall: TextStyle(
+          //color: Color.fromRGBO(184, 186, 191, 1),
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+        // Button
+        labelMedium: TextStyle(
+          color: Color.fromRGBO(184, 186, 191, 1),
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.4,
+        ),
+        // Mensa Card
+        labelLarge: TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     )
   ];
 
