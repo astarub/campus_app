@@ -66,9 +66,7 @@ class FeedItem extends StatelessWidget {
       transitionDuration: const Duration(milliseconds: 250),
       openBuilder: (context, _) =>
           RubnewsDetailsPage(title: title, date: date, image: image, content: content, isEvent: isEvent),
-      closedColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-          ? Colors.white
-          : Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.backgroundColor,
+      closedColor: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.backgroundColor,
       closedBuilder: (context, VoidCallback openDetailsPage) => Padding(
         padding: const EdgeInsets.only(bottom: 14),
         child: CustomButton(
