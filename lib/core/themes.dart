@@ -113,7 +113,7 @@ class ThemesNotifier with ChangeNotifier {
         ),
         // Mensa Card
         labelLarge: TextStyle(
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.w600,
         ),

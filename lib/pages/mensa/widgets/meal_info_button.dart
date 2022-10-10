@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MealInfoButton extends StatelessWidget {
@@ -67,7 +69,7 @@ class MealInfoButton extends StatelessWidget {
       width: 16,
       margin: const EdgeInsets.only(right: 5),
       child: Material(
-        color: Colors.white,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: BorderRadius.circular(3),
         child: InkWell(
           onTap: onTap,
@@ -78,12 +80,18 @@ class MealInfoButton extends StatelessWidget {
             child: iconPath.substring(iconPath.length - 3) == 'svg'
                 ? SvgPicture.asset(
                     iconPath,
-                    color: iconColor != null ? iconColor : Colors.black,
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
+                            (info == 'A' || info == 'H')
+                        ? Colors.white70
+                        : iconColor,
                   )
                 : Image.asset(
                     iconPath,
-                    color: iconColor != null ? iconColor : Colors.black,
                     width: 20,
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
+                            (info == 'A' || info == 'H')
+                        ? Colors.white70
+                        : iconColor,
                   ),
           ),
         ),

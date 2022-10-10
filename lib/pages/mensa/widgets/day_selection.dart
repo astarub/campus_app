@@ -127,13 +127,40 @@ class MensaDaySelectionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: day != 'Fr' ? const EdgeInsets.only(right: 10) : EdgeInsets.zero,
+      decoration: BoxDecoration(
+        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+            ? isActive
+                ? Colors.black
+                : const Color.fromRGBO(245, 246, 250, 1)
+            : isActive
+                ? const Color.fromRGBO(34, 40, 54, 1)
+                : const Color.fromRGBO(18, 24, 38, 1),
+        borderRadius: BorderRadius.circular(15),
+        border: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark
+            ? Border.all(color: const Color.fromRGBO(34, 40, 54, 1))
+            : null,
+      ),
       child: Material(
-        color: isActive ? Colors.black : const Color.fromRGBO(245, 246, 250, 1),
+        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+            ? isActive
+                ? Colors.black
+                : const Color.fromRGBO(245, 246, 250, 1)
+            : isActive
+                ? const Color.fromRGBO(34, 40, 54, 1)
+                : const Color.fromRGBO(18, 24, 38, 1),
         borderRadius: BorderRadius.circular(15),
         child: InkWell(
           onTap: onTap,
-          splashColor: isActive ? const Color.fromRGBO(255, 255, 255, 0.12) : const Color.fromRGBO(0, 0, 0, 0.06),
-          highlightColor: isActive ? const Color.fromRGBO(255, 255, 255, 0.08) : const Color.fromRGBO(0, 0, 0, 0.04),
+          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? isActive
+                  ? const Color.fromRGBO(255, 255, 255, 0.12)
+                  : const Color.fromRGBO(0, 0, 0, 0.06)
+              : const Color.fromRGBO(255, 255, 255, 0.06),
+          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? isActive
+                  ? const Color.fromRGBO(255, 255, 255, 0.08)
+                  : const Color.fromRGBO(0, 0, 0, 0.04)
+              : const Color.fromRGBO(255, 255, 255, 0.04),
           borderRadius: BorderRadius.circular(15),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -142,19 +169,35 @@ class MensaDaySelectionItem extends StatelessWidget {
                 children: [
                   Text(
                     day,
-                    style: isActive
-                        ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium
-                        : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
-                              color: Colors.black,
-                            ),
+                    style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                        ? isActive
+                            ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium
+                            : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
+                                  color: Colors.black,
+                                )
+                        : isActive
+                            ? Provider.of<ThemesNotifier>(context)
+                                .currentThemeData
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(color: Colors.white)
+                            : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
                   ),
                   Text(
                     date,
-                    style: isActive
-                        ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
-                              color: Colors.white70,
-                            )
-                        : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                    style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                        ? isActive
+                            ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
+                                  color: Colors.white70,
+                                )
+                            : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium
+                        : isActive
+                            ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium
+                            : Provider.of<ThemesNotifier>(context)
+                                .currentThemeData
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(color: Colors.white54),
                   ),
                 ],
               ),

@@ -53,7 +53,7 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: Colors.white,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
