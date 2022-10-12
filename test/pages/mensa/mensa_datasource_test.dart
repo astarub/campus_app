@@ -17,15 +17,12 @@ void main() {
   setUp(() async {
     client = Dio();
 
-    (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+    (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
+      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
       return client;
     };
 
-    mensaDataSource =
-        MensaDataSource(client: client);
+    mensaDataSource = MensaDataSource(client: client);
   });
 
   bool isUppercase(String str) {
@@ -33,17 +30,19 @@ void main() {
   }
 
   group("[getMensaData]", () {
-    test("testing data", () async
-    {
+    test("testing data", () async {
       //print(await mensaDataSource.getMensaData(1));
 
-      final sample = {"title": 'Hähnchenschnitzel "Hawaii" mit Pommes und Salat', "price": '4,90 €  / 5,90 €', "allergies": '(G,a,a1,g,1)'};
+      final sample = {
+        "title": 'Hähnchenschnitzel "Hawaii" mit Pommes und Salat',
+        "price": '4,90 €  / 5,90 €',
+        "allergies": '(G,a,a1,g,1)'
+      };
 
-      final varr = Dish.fromJSON(DateTime(0), "Aktion", sample);
+      final varr = DishEntity.fromJSON(DateTime(0), "Aktion", sample);
 
-      print("${varr.price}, ${varr.title}, ${varr.category}, ${varr.allergenes}, ${varr.infos}, ${varr.date}, ${varr.additives}");
+      print(
+          "${varr.price}, ${varr.title}, ${varr.category}, ${varr.allergenes}, ${varr.infos}, ${varr.date}, ${varr.additives}");
     });
   });
-
-
 }

@@ -4,6 +4,10 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/core/failures.dart';
+import 'package:campus_app/pages/mensa/dish_entity.dart';
+import 'package:campus_app/pages/mensa/mensa_usecases.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/pages/mensa/widgets/day_selection.dart';
@@ -30,6 +34,11 @@ class MensaPage extends StatefulWidget {
 
 class _MensaPageState extends State<MensaPage> {
   late Settings _settings = Provider.of<SettingsHandler>(context).currentSettings;
+
+  final MensaUsecases _mensaUsecases = sl<MensaUsecases>();
+
+  late List<DishEntity> _dishes = [];
+  late List<Failure> _failures = [];
 
   /// This function saves the new selected preferences with the [SettingsHandler]
   void saveChangedPreferences(List<String> newPreferences) {
