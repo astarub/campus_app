@@ -34,18 +34,15 @@ Future<void> init() async {
   //sl.registerFactory(() => EcampusBloc(ticketRepository: sl()));
 
   //! Datasources
-  sl.registerSingletonAsync(
-        () async {
-          final client = Dio();
+  sl.registerSingletonAsync(() async {
+    final client = Dio();
 
-          (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-              (HttpClient client) {
-            client.badCertificateCallback =
-                (X509Certificate cert, String host, int port) => true;
-            return client;
-          };
-          return MensaDataSource(client: client,);}
-  );
+    (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
+      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+    return MensaDataSource(client: client, mensaCache: await Hive.openBox('mensaCach'));
+  });
 
   sl.registerSingletonAsync(
     () async => RubnewsDatasource(

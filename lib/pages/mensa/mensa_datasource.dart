@@ -1,9 +1,11 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
+import 'package:campus_app/utils/constants.dart';
 
 class MensaDataSource {
   /// Key to identify count of news in Hive box / Cach
@@ -22,9 +24,12 @@ class MensaDataSource {
 
   /// Request mensa dishes from database
   Future<Map<String, dynamic>> getMensaData(int restaurant) async {
-    final headers = {'Authorization': 'Bearer mensa_secret_api_key_1337'};
+    final headers = {'Authorization': ''};
 
-    final response = await client.get("https://80.240.25.142/get_meal/$restaurant", options: Options(headers: headers));
+    final response = await client.get(
+      '$mensaData/$restaurant',
+      options: Options(headers: headers),
+    );
 
     if (response.statusCode != 200) {
       throw ServerException();
