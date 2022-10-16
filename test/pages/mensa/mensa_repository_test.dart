@@ -63,7 +63,7 @@ void main() {
 
       identical(testReturn, samleDishEntities);
       verify(mockMensaDataSource.getRemoteData(1));
-      verify(mockMensaDataSource.writeDishEntitiesToCache(any));
+      verify(mockMensaDataSource.writeDishEntitiesToCache(any, 1));
       verifyNoMoreInteractions(mockMensaDataSource);
     });
 
@@ -96,12 +96,12 @@ void main() {
 
   group('[getCachedDishes]', () {
     test("Should return list of dish etities if datasource doesn't throw a exception", () {
-      when(mockMensaDataSource.readDishEntitiesFromCache()).thenAnswer((_) => samleDishEntities);
+      when(mockMensaDataSource.readDishEntitiesFromCache(1)).thenAnswer((_) => samleDishEntities);
 
-      final testReturn = mensaRepository.getCachedDishes();
+      final testReturn = mensaRepository.getCachedDishes(1);
 
       identical(testReturn, samleDishEntities);
-      verify(mockMensaDataSource.readDishEntitiesFromCache());
+      verify(mockMensaDataSource.readDishEntitiesFromCache(1));
       verifyNoMoreInteractions(mockMensaDataSource);
     });
 
@@ -109,12 +109,12 @@ void main() {
       /// CachFailure on unexpected Exception
       final expectedReturn = CachFailure();
 
-      when(mockMensaDataSource.readDishEntitiesFromCache()).thenThrow(Exception());
+      when(mockMensaDataSource.readDishEntitiesFromCache(1)).thenThrow(Exception());
 
-      final testReturn = mensaRepository.getCachedDishes();
+      final testReturn = mensaRepository.getCachedDishes(1);
 
       identical(testReturn, expectedReturn);
-      verify(mockMensaDataSource.readDishEntitiesFromCache());
+      verify(mockMensaDataSource.readDishEntitiesFromCache(1));
       verifyNoMoreInteractions(mockMensaDataSource);
     });
   });

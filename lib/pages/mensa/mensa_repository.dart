@@ -40,7 +40,7 @@ class MensaRepository {
       }
 
       // Write entities to cache
-      unawaited(mensaDatasource.writeDishEntitiesToCache(entities));
+      unawaited(mensaDatasource.writeDishEntitiesToCache(entities, restaurant));
 
       return Right(entities);
     } catch (e) {
@@ -58,9 +58,9 @@ class MensaRepository {
   }
 
   /// Returns a list of [DishEntity] widgets or a failure
-  Either<Failure, List<DishEntity>> getCachedDishes() {
+  Either<Failure, List<DishEntity>> getCachedDishes(int restaurant) {
     try {
-      return Right(mensaDatasource.readDishEntitiesFromCache());
+      return Right(mensaDatasource.readDishEntitiesFromCache(restaurant));
     } catch (e) {
       return Left(CachFailure());
     }

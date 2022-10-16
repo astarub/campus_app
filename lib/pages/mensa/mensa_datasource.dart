@@ -40,24 +40,24 @@ class MensaDataSource {
 
   /// Write given list of DishEntities to Hive.Box
   /// The `put()`-call is awaited to make sure that the write operations are successful.
-  Future<void> writeDishEntitiesToCache(List<DishEntity> entities) async {
+  Future<void> writeDishEntitiesToCache(List<DishEntity> entities, int restaurant) async {
     final int cntEntities = entities.length;
-    await mensaCache.put(_keyCnt, cntEntities);
+    await mensaCache.put('$_keyCnt$restaurant', cntEntities);
 
     int index = 0;
     for (final entity in entities) {
-      await mensaCache.put(index, entity);
+      await mensaCache.put('$restaurant$index', entity);
       index++;
     }
   }
 
   /// Read cache of DishEntities and return them
-  List<DishEntity> readDishEntitiesFromCache() {
-    final cntEntities = mensaCache.get(_keyCnt) as int;
+  List<DishEntity> readDishEntitiesFromCache(int restaurant) {
+    final cntEntities = mensaCache.get('$_keyCnt$restaurant') as int;
     final List<DishEntity> entities = [];
 
     for (int i = 0; i < cntEntities; i++) {
-      entities.add(mensaCache.get(i) as DishEntity);
+      entities.add(mensaCache.get('$restaurant$i') as DishEntity);
     }
 
     return entities;

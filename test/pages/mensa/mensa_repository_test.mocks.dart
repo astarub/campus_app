@@ -77,20 +77,27 @@ class MockMensaDataSource extends _i1.Mock implements _i4.MensaDataSource {
             _i5.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
       ) as _i5.Future<Map<String, dynamic>>);
   @override
-  _i5.Future<void> writeDishEntitiesToCache(List<_i6.DishEntity>? entities) =>
+  _i5.Future<void> writeDishEntitiesToCache(
+    List<_i6.DishEntity>? entities,
+    int? restaurant,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #writeDishEntitiesToCache,
-          [entities],
+          [
+            entities,
+            restaurant,
+          ],
         ),
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
   @override
-  List<_i6.DishEntity> readDishEntitiesFromCache() => (super.noSuchMethod(
+  List<_i6.DishEntity> readDishEntitiesFromCache(int? restaurant) =>
+      (super.noSuchMethod(
         Invocation.method(
           #readDishEntitiesFromCache,
-          [],
+          [restaurant],
         ),
         returnValue: <_i6.DishEntity>[],
       ) as List<_i6.DishEntity>);

@@ -71,13 +71,13 @@ void main() {
       DishEntity.fromJSON(date: DateTime(2), category: 'Falafel Teller', json: mensaSampleDish3),
     ];
     test('Should return the same entities on read as writen befor', () async {
-      when(mockCach.get('cnt')).thenAnswer((_) => 3);
-      when(mockCach.get(0)).thenAnswer((_) => samleNewsEntities[0]);
-      when(mockCach.get(1)).thenAnswer((_) => samleNewsEntities[1]);
-      when(mockCach.get(2)).thenAnswer((_) => samleNewsEntities[2]);
+      when(mockCach.get('cnt1')).thenAnswer((_) => 3);
+      when(mockCach.get('10')).thenAnswer((_) => samleNewsEntities[0]);
+      when(mockCach.get('11')).thenAnswer((_) => samleNewsEntities[1]);
+      when(mockCach.get('12')).thenAnswer((_) => samleNewsEntities[2]);
 
-      await mensaDataSource.writeDishEntitiesToCache(samleNewsEntities);
-      final testReturn = mensaDataSource.readDishEntitiesFromCache();
+      await mensaDataSource.writeDishEntitiesToCache(samleNewsEntities, 1);
+      final testReturn = mensaDataSource.readDishEntitiesFromCache(1);
 
       identical(testReturn, samleNewsEntities);
     });

@@ -13,21 +13,34 @@ class MensaUsecases {
   Future<Map<String, List<dynamic>>> updateDishesAndFailures() async {
     final Map<String, List<dynamic>> data = {
       'failures': <Failure>[],
-      'dishes': <DishEntity>[],
+      'mensa': <DishEntity>[],
+      'roteBeete': <DishEntity>[],
     };
 
     // Get remote and cached dishes
-    final Either<Failure, List<DishEntity>> remoteDishes = await mensaRepository.getRemoteDishes(1);
-    final Either<Failure, List<DishEntity>> cachedDishes = mensaRepository.getCachedDishes();
+    final Either<Failure, List<DishEntity>> mensaRemoteDishes = await mensaRepository.getRemoteDishes(1);
+    final Either<Failure, List<DishEntity>> roteBeeteRemoteDishes = await mensaRepository.getRemoteDishes(2);
+    final Either<Failure, List<DishEntity>> mensaCachedDishes = mensaRepository.getCachedDishes(1);
+    final Either<Failure, List<DishEntity>> roteBeeteCachedDishes = mensaRepository.getCachedDishes(2);
 
-    remoteDishes.fold(
+    mensaCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
-      (dishes) => data['dishes'] = dishes,
+      (dishes) => data['mensa'] = dishes,
     );
 
-    cachedDishes.fold(
+    roteBeeteCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
-      (dishes) => data['dishes'] = dishes,
+      (dishes) => data['roteBeete'] = dishes,
+    );
+
+    mensaRemoteDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['mensa'] = dishes,
+    );
+
+    roteBeeteRemoteDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['roteBeete'] = dishes,
     );
 
     return data;
@@ -36,14 +49,21 @@ class MensaUsecases {
   Map<String, List<dynamic>> getCachedDishesAndFailures() {
     final Map<String, List<dynamic>> data = {
       'failures': <Failure>[],
-      'dishes': <DishEntity>[],
+      'mensa': <DishEntity>[],
+      'roteBeete': <DishEntity>[],
     };
 
-    final Either<Failure, List<DishEntity>> cachedDishes = mensaRepository.getCachedDishes();
+    final Either<Failure, List<DishEntity>> mensaCachedDishes = mensaRepository.getCachedDishes(1);
+    final Either<Failure, List<DishEntity>> roteBeeteCachedDishes = mensaRepository.getCachedDishes(2);
 
-    cachedDishes.fold(
+    mensaCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
-      (dishes) => data['dishes'] = dishes,
+      (dishes) => data['mensa'] = dishes,
+    );
+
+    roteBeeteCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['roteBeete'] = dishes,
     );
 
     return data;
