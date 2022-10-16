@@ -101,6 +101,7 @@ class RubnewsDetailsPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
                 child: StyledHTML(
+                  buildContext: context,
                   text: content,
                   textAlign: TextAlign.justify,
                 ),

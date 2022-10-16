@@ -93,6 +93,7 @@ class CalendarEventWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       StyledHTML(
+                        buildContext: context,
                         text: event.title,
                         textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                         textAlign: TextAlign.left,
@@ -110,6 +111,7 @@ class CalendarEventWidget extends StatelessWidget {
                             ),
                             Expanded(
                               child: StyledHTML(
+                                buildContext: context,
                                 text: event.cost == null
                                     ? ''
                                     : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",

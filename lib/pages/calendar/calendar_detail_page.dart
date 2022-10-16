@@ -133,6 +133,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   StyledHTML(
+                                    buildContext: context,
                                     text: widget.event.title,
                                     textStyle: Provider.of<ThemesNotifier>(context)
                                         .currentThemeData
@@ -144,6 +145,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                   Container(
                                     transform: Matrix4.translationValues(0, -10, 0),
                                     child: StyledHTML(
+                                      buildContext: context,
                                       text: widget.event.venue.name == ''
                                           ? 'Veranstaltungsort wird noch bekannt gegeben.'
                                           : '${widget.event.venue}<br> ${DateFormat('Hm').format(widget.event.startDate)} Uhr - ${DateFormat('Hm').format(widget.event.endDate)} Uhr',
@@ -165,6 +167,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 40),
                       child: StyledHTML(
+                        buildContext: context,
                         text: widget.event.description != '' ? widget.event.description : 'No description given.',
                         textAlign: TextAlign.justify,
                       ),
@@ -180,6 +183,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 5, bottom: 30),
                         child: StyledHTML(
+                          buildContext: context,
                           text: widget.event.organizers.join(', '),
                         ),
                       ),
@@ -194,6 +198,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 5, bottom: 30),
                         child: StyledHTML(
+                          buildContext: context,
                           text: widget.event.venue.toString(),
                         ),
                       ),
