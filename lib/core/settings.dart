@@ -42,13 +42,30 @@ class Settings {
   final bool useDarkmode;
   final List<String> mensaPreferences;
   final List<String> mensaAllergenes;
+  final bool useExternalBrowser;
 
   Settings({
     this.useSystemDarkmode = true,
     this.useDarkmode = false,
     this.mensaPreferences = const [],
     this.mensaAllergenes = const [],
+    this.useExternalBrowser = false,
   });
+
+  Settings copyWith({
+    bool? useSystemDarkmode,
+    bool? useDarkmode,
+    List<String>? mensaPreferences,
+    List<String>? mensaAllergenes,
+    bool? useExternalBrowser,
+  }) =>
+      Settings(
+        useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
+        useDarkmode: useDarkmode ?? this.useDarkmode,
+        mensaPreferences: mensaPreferences ?? this.mensaPreferences,
+        mensaAllergenes: mensaAllergenes ?? this.mensaAllergenes,
+        useExternalBrowser: useExternalBrowser ?? this.useExternalBrowser,
+      );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
     return Settings(
@@ -58,6 +75,7 @@ class Settings {
           json['mensaPreferences'] != null ? List<String>.from(json['mensaPreferences']) : List<String>.from([]),
       mensaAllergenes:
           json['mensaAllergenes'] != null ? List<String>.from(json['mensaAllergenes']) : List<String>.from([]),
+      useExternalBrowser: json['useExternalBrowser'] ?? false,
     );
   }
 
@@ -67,6 +85,7 @@ class Settings {
       'useDarkmode': useDarkmode,
       'mensaPreferences': mensaPreferences,
       'mensaAllergenes': mensaAllergenes,
+      'useExternalBrowser': useExternalBrowser,
     };
   }
 }
