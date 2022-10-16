@@ -90,16 +90,19 @@ class FeedItem extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 // Image & Date
                 Stack(
                   alignment: Alignment.bottomRight,
                   children: [
                     // Image
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: image,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: image,
+                      ),
                     ),
                     // Date
                     if (event != null)

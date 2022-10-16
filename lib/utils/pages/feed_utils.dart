@@ -12,7 +12,12 @@ import 'package:campus_app/utils/pages/presentation_functions.dart';
 class FeedUtils extends Utils {
   /// Parse a list of NewsEntity and a list of Events to a widget list of type FeedItem sorted by date.
   /// For Padding insert at first position a SizedBox with heigth := 80 or given heigth.
-  List<Widget> fromEntitiesToWidgetList({required List<NewsEntity> news, required List<Event> events, double? heigth}) {
+  List<Widget> fromEntitiesToWidgetList({
+    required List<NewsEntity> news,
+    required List<Event> events,
+    double? heigth,
+    bool shuffle = false,
+  }) {
     final feedItemOrEventWidget = <dynamic>[];
     final widgets = <Widget>[];
 
@@ -57,8 +62,8 @@ class FeedUtils extends Utils {
             link: e.url,
             event: e,
             description: e.venue.name == ''
-                ? 'Von $startingTime bis $endingTime'
-                : 'Von $startingTime bis $endingTime im ${e.venue.name}',
+                ? 'Von $startingTime Uhr bis $endingTime Uhr'
+                : 'Von $startingTime Uhr bis $endingTime Uhr im ${e.venue.name}',
           ),
         );
       } else {
@@ -66,20 +71,25 @@ class FeedUtils extends Utils {
       }
     }
 
-    // sort widgets according to date
-    feedItemOrEventWidget.sort((a, b) {
-      if (a is FeedItem && b is FeedItem) {
-        return a.date.compareTo(b.date);
-      } else if (a is FeedItem && b is CalendarEventWidget) {
-        return a.date.compareTo(b.event.startDate);
-      } else if (a is CalendarEventWidget && b is FeedItem) {
-        return a.event.startDate.compareTo(b.date);
-      } else if (a is CalendarEventWidget && b is CalendarEventWidget) {
-        return a.event.startDate.compareTo(b.event.startDate);
-      } else {
-        return 0;
-      }
-    });
+    if (shuffle) {
+      // shuffle widgets random
+      feedItemOrEventWidget.shuffle();
+    } else {
+      // sort widgets according to date
+      feedItemOrEventWidget.sort((a, b) {
+        if (a is FeedItem && b is FeedItem) {
+          return a.date.compareTo(b.date);
+        } else if (a is FeedItem && b is CalendarEventWidget) {
+          return a.date.compareTo(b.event.startDate);
+        } else if (a is CalendarEventWidget && b is FeedItem) {
+          return a.event.startDate.compareTo(b.date);
+        } else if (a is CalendarEventWidget && b is CalendarEventWidget) {
+          return a.event.startDate.compareTo(b.event.startDate);
+        } else {
+          return 0;
+        }
+      });
+    }
 
     // add all FeedItems or CalendarEventWidgets to list of Widget
     for (final widget in feedItemOrEventWidget) {

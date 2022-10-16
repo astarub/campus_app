@@ -35,33 +35,6 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
     await calendarRepository.updateSavedEvents(event: widget.event);
 
     setState(() {
-      /* ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          // Show message on top of screen:
-          // margin: EdgeInsets.only(
-          //   bottom: MediaQuery.of(context).size.height - 250,
-          // ),
-          content: Container(
-            height: 50,
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(129, 255, 255, 255),
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-            child: Center(
-              child: Text(
-                savedEvent ? 'Unsaved' : 'Saved',
-                style: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.textTheme.displayMedium,
-              ),
-            ),
-          ),
-          duration: const Duration(seconds: 1),
-          behavior: SnackBarBehavior.floating,
-          elevation: 15,
-          backgroundColor: Colors.transparent,
-        ),
-      ); */
-
       savedEvent = !savedEvent;
     });
   }
@@ -128,7 +101,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                         children: [
                           // Date
                           Container(
-                            margin: const EdgeInsets.only(/* left: 10,  */ right: 10),
+                            margin: const EdgeInsets.only(right: 10),
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                             decoration: BoxDecoration(
                               color: Colors.black,
@@ -173,7 +146,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                     child: StyledHTML(
                                       text: widget.event.venue.name == ''
                                           ? 'Veranstaltungsort wird noch bekannt gegeben.'
-                                          : widget.event.venue.toString(),
+                                          : '${widget.event.venue}<br> ${DateFormat('Hm').format(widget.event.startDate)} Uhr - ${DateFormat('Hm').format(widget.event.endDate)} Uhr',
                                       textStyle: Provider.of<ThemesNotifier>(context)
                                           .currentThemeData
                                           .textTheme
