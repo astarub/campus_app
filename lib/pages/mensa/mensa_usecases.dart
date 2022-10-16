@@ -17,7 +17,7 @@ class MensaUsecases {
     };
 
     // Get remote and cached dishes
-    final Either<Failure, List<DishEntity>> remoteDishes = await mensaRepository.getRemoteDishes();
+    final Either<Failure, List<DishEntity>> remoteDishes = await mensaRepository.getRemoteDishes(1);
     final Either<Failure, List<DishEntity>> cachedDishes = mensaRepository.getCachedDishes();
 
     remoteDishes.fold(

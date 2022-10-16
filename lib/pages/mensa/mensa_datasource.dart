@@ -23,12 +23,12 @@ class MensaDataSource {
   });
 
   /// Request mensa dishes from database
-  Future<Map<String, dynamic>> getMensaData(int restaurant) async {
-    final headers = {'Authorization': ''};
-
+  Future<Map<String, dynamic>> getRemoteData(int restaurant) async {
     final response = await client.get(
       '$mensaData/$restaurant',
-      options: Options(headers: headers),
+      options: Options(
+        headers: {'Authorization': mensaApiKey},
+      ),
     );
 
     if (response.statusCode != 200) {
@@ -54,7 +54,7 @@ class MensaDataSource {
   /// Read cache of DishEntities and return them
   List<DishEntity> readDishEntitiesFromCache() {
     final cntEntities = mensaCache.get(_keyCnt) as int;
-    List<DishEntity> entities = [];
+    final List<DishEntity> entities = [];
 
     for (int i = 0; i < cntEntities; i++) {
       entities.add(mensaCache.get(i) as DishEntity);

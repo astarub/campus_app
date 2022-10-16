@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
-import 'package:xml/xml.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
@@ -13,13 +12,11 @@ class MensaRepository {
   MensaRepository({required this.mensaDatasource});
 
   /// Returns a list of [DishEntity] widgets or a failure
-  Future<Either<Failure, List<DishEntity>>> getRemoteDishes() async {
+  Future<Either<Failure, List<DishEntity>>> getRemoteDishes(int restaurant) async {
     try {
       final List<DishEntity> entities = [];
 
-      // TODO: Get and parse meals
-      final mensaDishesJson = await mensaDatasource.getMensaData(1);
-      print(mensaDishesJson);
+      final dishesJson = await mensaDatasource.getRemoteData(restaurant);
 
       // Write entities to cache
       unawaited(mensaDatasource.writeDishEntitiesToCache(entities));

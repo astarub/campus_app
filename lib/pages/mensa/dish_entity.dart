@@ -1,9 +1,6 @@
-import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
-import 'package:xml/xml.dart';
 
-import '../../core/injection.dart';
+import 'package:campus_app/utils/pages/mensa_utils.dart';
 
 @HiveType(typeId: 5)
 class DishEntity {
