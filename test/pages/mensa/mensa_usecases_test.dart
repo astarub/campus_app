@@ -27,27 +27,27 @@ void main() {
     initializeDateFormatting('de_DE').then((_) {
       samleDishEntities = [
         DishEntity.fromJSON(
-          date: DateFormat('E, d.M.', 'de_DE').parse('Mo., 10.10.'),
+          date: 0,
           category: 'Nudeltheke',
           json: mensaSampleTestData['data']['Mo, 10.10.']['Nudeltheke'][0],
         ),
         DishEntity.fromJSON(
-          date: DateFormat('E, d.M.', 'de_DE').parse('Mo., 10.10.'),
+          date: 0,
           category: 'Sprinter',
           json: mensaSampleTestData['data']['Mo, 10.10.']['Sprinter'][0],
         ),
         DishEntity.fromJSON(
-          date: DateFormat('E, d.M.', 'de_DE').parse('Di., 11.10.'),
+          date: 1,
           category: 'Komponentenessen',
           json: mensaSampleTestData['data']['Di, 11.10.']['Komponentenessen'][0],
         ),
         DishEntity.fromJSON(
-          date: DateFormat('E, d.M.', 'de_DE').parse('Di., 11.10.'),
+          date: 1,
           category: 'Dessert',
           json: mensaSampleTestData['data']['Di, 11.10.']['Dessert'][0],
         ),
         DishEntity.fromJSON(
-          date: DateFormat('E, d.M.', 'de_DE').parse('Di., 11.10.'),
+          date: 1,
           category: 'Dessert',
           json: mensaSampleTestData['data']['Di, 11.10.']['Dessert'][1],
         ),

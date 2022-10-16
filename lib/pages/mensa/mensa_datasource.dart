@@ -34,7 +34,7 @@ class MensaDataSource {
     if (response.statusCode != 200) {
       throw ServerException();
     } else {
-      return json.decode(response.data);
+      return response.data as Map<String, dynamic>;
     }
   }
 

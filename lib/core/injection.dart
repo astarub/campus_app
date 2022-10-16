@@ -7,6 +7,8 @@ import 'package:campus_app/pages/calendar/calendar_remote_datasource.dart';
 import 'package:campus_app/pages/calendar/calendar_repository.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
+import 'package:campus_app/pages/mensa/mensa_repository.dart';
+import 'package:campus_app/pages/mensa/mensa_usecases.dart';
 //import 'package:campus_app/pages/ecampus/bloc/ecampus_bloc.dart';
 //import 'package:campus_app/pages/ecampus/ticket_datasource.dart';
 //import 'package:campus_app/pages/ecampus/ticket_repository.dart';
@@ -26,7 +28,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 
 final sl = GetIt.instance; // service locator
 
@@ -89,6 +91,10 @@ Future<void> init() async {
       authenticationHandler: sl(),
     ),
   );
+  sl.registerSingletonWithDependencies(
+    () => MensaRepository(mensaDatasource: sl()),
+    dependsOn: [MensaDataSource],
+  );
   sl.registerLazySingleton(
     () => MoodleRepository(
       moodleDatasource: sl(),
@@ -107,6 +113,10 @@ Future<void> init() async {
     () => RubnewsUsecases(rubnewsRepository: sl()),
     dependsOn: [RubnewsRepository],
   );
+  sl.registerSingletonWithDependencies(
+    () => MensaUsecases(mensaRepository: sl()),
+    dependsOn: [MensaRepository],
+  );
   sl.registerLazySingleton(() => CalendarUsecases(calendarRepository: sl()));
   sl.registerLazySingleton(() => MoodleUsecases(moodleRepository: sl()));
 
@@ -122,7 +132,7 @@ Future<void> init() async {
   sl.registerLazySingleton(MensaUtils.new);
 
   //! External
-  sl.registerLazySingleton(http.Client.new);
+  //sl.registerLazySingleton(http.Client.new);
   sl.registerLazySingleton(FlutterSecureStorage.new);
   sl.registerLazySingleton(Dio.new);
   sl.registerLazySingleton(CookieJar.new);

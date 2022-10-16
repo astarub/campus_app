@@ -66,9 +66,9 @@ void main() {
 
   group('[Caching]', () {
     final samleNewsEntities = [
-      DishEntity.fromJSON(date: DateTime(0), category: 'Aktion', json: mensaSampleDish1),
-      DishEntity.fromJSON(date: DateTime(1), category: 'Beilage', json: mensaSampleDish2),
-      DishEntity.fromJSON(date: DateTime(2), category: 'Falafel Teller', json: mensaSampleDish3),
+      DishEntity.fromJSON(date: 0, category: 'Aktion', json: mensaSampleDish1),
+      DishEntity.fromJSON(date: 1, category: 'Beilage', json: mensaSampleDish2),
+      DishEntity.fromJSON(date: 2, category: 'Falafel Teller', json: mensaSampleDish3),
     ];
     test('Should return the same entities on read as writen befor', () async {
       when(mockCach.get('cnt1')).thenAnswer((_) => 3);

@@ -1,15 +1,15 @@
 // ignore_for_file: avoid_dynamic_calls
 
+import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
 import 'package:campus_app/pages/mensa/mensa_repository.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 
 import 'mensa_repository_test.mocks.dart';
 import 'samples/mensa_sample_json_response.dart';
@@ -27,27 +27,27 @@ void main() {
     initializeDateFormatting('de_DE').then((_) {
       samleDishEntities = [
         DishEntity.fromJSON(
-          date: DateFormat('E, d.M.', 'de_DE').parse('Mo., 10.10.'),
+          date: 0,
           category: 'Nudeltheke',
           json: mensaSampleTestData['data']['Mo, 10.10.']['Nudeltheke'][0],
         ),
         DishEntity.fromJSON(
-          date: DateFormat('E, d.M.', 'de_DE').parse('Mo., 10.10.'),
+          date: 0,
           category: 'Sprinter',
           json: mensaSampleTestData['data']['Mo, 10.10.']['Sprinter'][0],
         ),
         DishEntity.fromJSON(
-          date: DateFormat('E, d.M.', 'de_DE').parse('Di., 11.10.'),
+          date: 1,
           category: 'Komponentenessen',
           json: mensaSampleTestData['data']['Di, 11.10.']['Komponentenessen'][0],
         ),
         DishEntity.fromJSON(
-          date: DateFormat('E, d.M.', 'de_DE').parse('Di., 11.10.'),
+          date: 1,
           category: 'Dessert',
           json: mensaSampleTestData['data']['Di, 11.10.']['Dessert'][0],
         ),
         DishEntity.fromJSON(
-          date: DateFormat('E, d.M.', 'de_DE').parse('Di., 11.10.'),
+          date: 1,
           category: 'Dessert',
           json: mensaSampleTestData['data']['Di, 11.10.']['Dessert'][1],
         ),

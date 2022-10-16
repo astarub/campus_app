@@ -45,7 +45,7 @@ class MealCategory extends StatelessWidget {
 /// and optional properties
 class MealItem extends StatelessWidget {
   final String name;
-  final double price;
+  final String price;
   final List<String> infos;
   final List<String> allergenes;
   final void Function(String) onPreferenceTap;
@@ -53,7 +53,7 @@ class MealItem extends StatelessWidget {
   const MealItem({
     Key? key,
     required this.name,
-    this.price = 0.0,
+    this.price = '0.0',
     this.infos = const [],
     this.allergenes = const [],
     required this.onPreferenceTap,
@@ -83,7 +83,7 @@ class MealItem extends StatelessWidget {
                   border: Border.all(color: Colors.grey),
                 ),
                 child: Text(
-                  price % 2 == 0 ? '${price.toInt()} €' : '${price}0 €',
+                  price,
                   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
                         fontSize: 11,
                       ),

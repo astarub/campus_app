@@ -1,12 +1,15 @@
 import 'package:hive/hive.dart';
 
+import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+
+part 'dish_entity.g.dart';
 
 @HiveType(typeId: 5)
 class DishEntity {
-  /// Date
+  /// Date: from 0 to 4 (Monday to Friday)
   @HiveField(0)
-  final DateTime date;
+  final int date;
 
   /// Category
   @HiveField(1)
@@ -44,15 +47,14 @@ class DishEntity {
 
   /// Return a NewsEntity based on a single XML element given by the web server
   factory DishEntity.fromJSON({
-    required DateTime date,
+    required int date,
     required String category,
-    required Map<String, String> json,
+    required Map<String, dynamic> json,
   }) {
-    //final utils = sl<MensaUtils>();
-    final utils = MensaUtils();
+    final utils = sl<MensaUtils>();
 
-    final title = json['title']!;
-    final price = json['price']!;
+    final title = json['title'];
+    final price = json['price'] ?? 'pauschal';
 
     dynamic all_info = json['allergies']! as String;
 
