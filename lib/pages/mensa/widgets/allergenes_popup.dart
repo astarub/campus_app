@@ -193,7 +193,7 @@ class AllergenesListItem extends StatelessWidget {
         color: isActive
             ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                 ? const Color.fromRGBO(245, 246, 250, 1)
-                : const Color.fromRGBO(18, 24, 38, 1)
+                : const Color.fromRGBO(34, 40, 54, 1)
             : Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
         borderRadius: BorderRadius.circular(6),
         child: InkWell(
@@ -214,9 +214,7 @@ class AllergenesListItem extends StatelessWidget {
                         ? isActive
                             ? Colors.black
                             : Colors.white
-                        : isActive
-                            ? const Color.fromRGBO(34, 40, 54, 1)
-                            : const Color.fromRGBO(18, 24, 38, 1),
+                        : const Color.fromRGBO(18, 24, 38, 1),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
                       color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
