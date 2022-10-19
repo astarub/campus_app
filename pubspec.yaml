@@ -55,6 +55,7 @@ flutter_icons:
 
 flutter:
   assets:
+     - assets/img/Android-RUB_Campus_App_Logo.png
      - assets/img/asta_logo.png
      - assets/img/henkelmann.png
      - assets/img/mensa.png

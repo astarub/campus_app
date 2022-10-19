@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/home_page.dart';
@@ -37,7 +38,10 @@ class _SplashPageState extends State<SplashPage> {
       );
     } else {
       // Onboarding
-      debugPrint('Start onboarding.');
+      debugPrint('Initiate onboarding.  -- TEMPORARY REPLACED WITH NORMAL APP START');
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => HomePage(mainNavigatorKey: widget.mainNavigatorKey)),
+      );
     }
   }
 
@@ -161,12 +165,27 @@ class _SplashPageState extends State<SplashPage> {
     // The [AnnotatedRegion] widget allows to style system components like the status- or navigation-bar
     return Container(
       color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-      child: Center(
-        child: Image.asset(
-          'assets/img/asta_logo.png',
-          color: Colors.black,
-          height: 100,
-        ),
+      child: Stack(
+        children: [
+          // App Logo
+          Center(
+            child: Image.asset(
+              'assets/img/Android-RUB_Campus_App_Logo.png',
+              height: 100,
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 40),
+              child: Image.asset(
+                'assets/img/asta_logo.png',
+                color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor.withOpacity(0.1),
+                height: 70,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
