@@ -24,7 +24,7 @@ void main() {
   final sampleEntities = <Event>[];
 
   for (final json in calendarSamplesEventList) {
-    sampleEntities.add(Event.fromJson(json));
+    sampleEntities.add(Event.fromExternalJson(json));
   }
 
   group('[updateEventsAndFailures]', () {

@@ -11,8 +11,8 @@ class CalendarDatasource {
   /// Key to identify count of events in Hive box / Cach
   static const String _keyCnt = 'cnt';
 
-  /// Key to identify saved events in Hive box / Cach
-  static const String _keySavedEvents = 'saved';
+  /// Key to identify savedEvents in Hive box / Cach
+  static const String _keyCntSaved = 'cntSaved';
 
   /// Dio client to perfrom network operations
   final Dio client;
@@ -50,42 +50,45 @@ class CalendarDatasource {
 
   /// Write given list of Events to Hive.Box 'eventCach'.
   /// The put()-call is awaited to make sure that the write operations are successful.
-  Future<void> writeEventsToCach(List<Event> entities) async {
+  Future<void> writeEventsToCach(List<Event> entities, {bool saved = false}) async {
     final cntEntities = entities.length;
-    await eventCach.put(_keyCnt, cntEntities);
 
-    int index = 0; // use list index as identifier
+    if (saved) {
+      await eventCach.put(_keyCntSaved, cntEntities);
+    } else {
+      await eventCach.put(_keyCnt, cntEntities);
+    }
+
+    int i = 0; // use list index as identifier
     for (final entity in entities) {
-      await eventCach.put(index, entity);
-      index++;
+      if (saved) {
+        await eventCach.put('saved$i', entity);
+      } else {
+        await eventCach.put(i, entity);
+      }
+      i++;
     }
   }
 
   /// Read cach of event entities and return them.
-  List<Event> readEventsFromCach() {
-    final cntEntities = eventCach.get(_keyCnt) as int;
+  List<Event> readEventsFromCach({bool saved = false}) {
+    late int cntEntities;
     final List<Event> entities = [];
 
+    if (saved) {
+      cntEntities = eventCach.get(_keyCntSaved) ?? 0;
+    } else {
+      cntEntities = eventCach.get(_keyCnt) ?? 0;
+    }
+
     for (int i = 0; i < cntEntities; i++) {
-      entities.add(eventCach.get(i) as Event);
+      if (saved) {
+        entities.add(eventCach.get('saved$i') as Event);
+      } else {
+        entities.add(eventCach.get(i) as Event);
+      }
     }
 
     return entities;
-  }
-
-  /// Return a list of event entities the user saved. If an event is given than
-  /// either add it to list of saved entities or remove it when it was already saved bevore.
-  Future<List<Event>> updateSavedEvents({Event? event}) async {
-    final List<Event> savedEvents = eventCach.get(_keySavedEvents) ?? [];
-
-    if (savedEvents.contains(event)) {
-      savedEvents.remove(event);
-    } else if (event != null) {
-      savedEvents.add(event);
-    }
-
-    await eventCach.put(_keySavedEvents, savedEvents);
-
-    return savedEvents;
   }
 }

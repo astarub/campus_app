@@ -24,7 +24,7 @@ void main() {
   final sampleEntities = <Event>[];
 
   for (final json in calendarSamplesEventList) {
-    sampleEntities.add(Event.fromJson(json));
+    sampleEntities.add(Event.fromExternalJson(json));
   }
 
   group('[getAStAEvents]', () {
@@ -119,6 +119,24 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockCalendarDatasource.readEventsFromCach());
       verifyNoMoreInteractions(mockCalendarDatasource);
+    });
+  });
+
+  group('[updateSavedEvents', () {
+    test('Should return a list whith one saved events', () async {
+      // TODO
+    });
+
+    test('Should return a list with two saved events', () async {
+      // TODO
+    });
+
+    test('Should return a empty list of events', () async {
+      // TODO
+    });
+
+    test('Should return a list with a single event', () async {
+      // TODO
     });
   });
 }

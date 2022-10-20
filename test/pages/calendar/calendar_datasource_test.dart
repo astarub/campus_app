@@ -130,59 +130,5 @@ void main() {
       // assert: is testElement expected object? -> List<Event> samleEventEntities
       identical(testReturn, samleEventEntities); // is the returned object the expected one?
     });
-
-    test('Should return a list whith one saved events', () async {
-      when(mockCach.get('saved')).thenAnswer((_) => <Event>[]);
-
-      // act: write sample entities to cach
-      final testReturn = await calendarDatasource.updateSavedEvents(event: emptyEvent());
-
-      // assert: is testElement expected object? -> List<Event> samleEventEntities
-      identical(testReturn, <Event>[emptyEvent()]); // is the returned object the expected one?
-    });
-
-    test('Should return a list with two saved events', () async {
-      when(mockCach.get('saved')).thenAnswer((_) => <Event>[]);
-
-      // act: write sample entities to cach
-      await calendarDatasource.updateSavedEvents(event: emptyEvent(title: 'Test'));
-      final testReturn = await calendarDatasource.updateSavedEvents(event: emptyEvent());
-
-      // assert: is testElement expected object? -> List<Event> samleEventEntities
-      identical(testReturn, <Event>[
-        emptyEvent(title: 'Test'),
-        emptyEvent(),
-      ]); // is the returned object the expected one?
-    });
-
-    test('Should return a empty list of events', () async {
-      final getResponses = [
-        <Event>[],
-        <Event>[emptyEvent()]
-      ];
-      when(mockCach.get('saved')).thenAnswer((_) => getResponses.removeAt(0));
-
-      // act: write sample entities to cach
-      await calendarDatasource.updateSavedEvents(event: emptyEvent());
-      final testReturn = await calendarDatasource.updateSavedEvents(event: emptyEvent());
-
-      // assert: is testElement expected object? -> List<Event> samleEventEntities
-      expect(testReturn, <Event>[]); // is the returned object the expected one?
-    });
-
-    test('Should return a list with a single event', () async {
-      final getResponses = [
-        <Event>[],
-        <Event>[emptyEvent()]
-      ];
-      when(mockCach.get('saved')).thenAnswer((_) => getResponses.removeAt(0));
-
-      // act: write sample entities to cach
-      await calendarDatasource.updateSavedEvents(event: emptyEvent());
-      final testReturn = await calendarDatasource.updateSavedEvents();
-
-      // assert: is testElement expected object? -> List<Event> samleEventEntities
-      expect(testReturn, <Event>[emptyEvent()]); // is the returned object the expected one?
-    });
   });
 }

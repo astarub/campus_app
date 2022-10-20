@@ -20,7 +20,7 @@ class CalendarRepository {
       final List<Event> entities = [];
 
       for (final Map<String, dynamic> event in astaEventsJson) {
-        entities.add(Event.fromJson(event));
+        entities.add(Event.fromExternalJson(event));
       }
 
       // write entities to cach
@@ -57,7 +57,19 @@ class CalendarRepository {
   /// Return a list of saved events or a failure.
   Future<Either<Failure, List<Event>>> updateSavedEvents({Event? event}) async {
     try {
-      final savedEvents = await calendarDatasource.updateSavedEvents(event: event);
+      final savedEvents = calendarDatasource.readEventsFromCach(saved: true);
+
+      // update list of saved events
+      if (event != null) {
+        if (savedEvents.contains(event)) {
+          savedEvents.remove(event);
+        } else {
+          savedEvents.add(event);
+        }
+      }
+
+      unawaited(calendarDatasource.writeEventsToCach(savedEvents, saved: true));
+
       return Right(savedEvents);
     } catch (e) {
       return Left(CachFailure());

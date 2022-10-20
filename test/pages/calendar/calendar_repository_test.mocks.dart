@@ -76,31 +76,27 @@ class MockCalendarDatasource extends _i1.Mock
         returnValue: _i5.Future<List<dynamic>>.value(<dynamic>[]),
       ) as _i5.Future<List<dynamic>>);
   @override
-  _i5.Future<void> writeEventsToCach(List<_i6.Event>? entities) =>
+  _i5.Future<void> writeEventsToCach(
+    List<_i6.Event>? entities, {
+    bool? saved = false,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #writeEventsToCach,
           [entities],
+          {#saved: saved},
         ),
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
   @override
-  List<_i6.Event> readEventsFromCach() => (super.noSuchMethod(
+  List<_i6.Event> readEventsFromCach({bool? saved = false}) =>
+      (super.noSuchMethod(
         Invocation.method(
           #readEventsFromCach,
           [],
+          {#saved: saved},
         ),
         returnValue: <_i6.Event>[],
       ) as List<_i6.Event>);
-  @override
-  _i5.Future<List<_i6.Event>> updateSavedEvents({_i6.Event? event}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #updateSavedEvents,
-          [],
-          {#event: event},
-        ),
-        returnValue: _i5.Future<List<_i6.Event>>.value(<_i6.Event>[]),
-      ) as _i5.Future<List<_i6.Event>>);
 }

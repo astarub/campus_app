@@ -93,7 +93,7 @@ class Event {
     this.organizers = const <Organizer>[],
   });
 
-  factory Event.fromJson(Map<String, dynamic> json) {
+  factory Event.fromExternalJson(Map<String, dynamic> json) {
     final List<Category> categories = [];
     final List<Organizer> organizers = [];
 
@@ -154,6 +154,46 @@ class Event {
       venue: venue,
       organizers: organizers,
     );
+  }
+
+  factory Event.fromInternalJson(Map<String, dynamic> json) {
+    return Event(
+      id: json['id'],
+      url: json['url'],
+      title: json['title'],
+      description: json['description'],
+      slug: json['slug'],
+      hasImage: json['hasImage'],
+      imageUrl: json['imageUrl'],
+      startDate: json['startDate'],
+      endDate: json['endDate'],
+      allDay: json['allDay'],
+      cost: json['costs'],
+      website: json['website'],
+      categories: json['categories'],
+      venue: json['venue'],
+      organizers: json['organizers'],
+    );
+  }
+
+  Map<String, dynamic> toInternalJson() {
+    return {
+      'id': id,
+      'url': url,
+      'title': title,
+      'description': description,
+      'slug': slug,
+      'hasImage': hasImage,
+      'imageUrl': imageUrl,
+      'startDate': startDate,
+      'endDate': endDate,
+      'allDay': allDay,
+      'cost': cost,
+      'website': website,
+      'categories': categories,
+      'venue': venue,
+      'organizers': organizers,
+    };
   }
 
   @override
