@@ -53,20 +53,18 @@ class DishEntity {
   }) {
     final utils = sl<MensaUtils>();
 
+    late final List<String> uppercase = [];
+    late final List<String> lowercase = [];
+    late final List<String> numbers = [];
+
     final title = json['title'];
     final price = json['price'] ?? 'pauschal';
 
-    dynamic all_info = json['allergies']! as String;
+    final allInfo = (json['allergies']! as String).replaceAll('(', '').replaceAll(')', '').split(',');
 
-    List<String> uppercase = [];
-    List<String> lowercase = [];
-    List<String> numbers = [];
-
-    all_info = all_info.replaceAll("(", "").replaceAll(")", "").split(",") as List;
-
-    uppercase.addAll(all_info.where((element) => utils.isUppercase(element) && !utils.isNumeric(element)));
-    lowercase.addAll(all_info.where((element) => !utils.isUppercase(element)));
-    numbers.addAll(all_info.where((element) => utils.isNumeric(element)));
+    uppercase.addAll(allInfo.where((element) => utils.isUppercase(element) && !utils.isNumeric(element)));
+    lowercase.addAll(allInfo.where((element) => !utils.isUppercase(element)));
+    numbers.addAll(allInfo.where(utils.isNumeric));
 
     return DishEntity(
       date: date,
@@ -77,5 +75,10 @@ class DishEntity {
       allergenes: lowercase,
       additives: numbers,
     );
+  }
+
+  @override
+  String toString() {
+    return '$date: $title ($category), $price, $infos, $allergenes, $additives';
   }
 }

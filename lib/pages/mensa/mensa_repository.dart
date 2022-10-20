@@ -5,6 +5,7 @@ import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
+import 'package:dartz/dartz_unsafe.dart';
 import 'package:intl/intl.dart';
 
 class MensaRepository {
@@ -16,6 +17,8 @@ class MensaRepository {
   /// Reataurant is 1 (Mensa) by default. Theire are the following possible values:
   ///   * 1: AKAFÖ Mensa
   ///   * 2: AKAFÖ Rote Beete
+  ///   * 3: AKAFÖ Qwest
+  ///   * 4: AKAFÖ Pfannengericht
   Future<Either<Failure, List<DishEntity>>> getRemoteDishes(int restaurant) async {
     try {
       final List<DishEntity> entities = [];
@@ -35,42 +38,63 @@ class MensaRepository {
 
         if (datetime.isBefore(firstDayOfWeek) || datetime.isAfter(lastDayOfWeek)) continue;
 
-        final categories = dishesJson[day] as Map<String, dynamic>;
-        for (final String category in categories.keys) {
-          final dishes = categories[category];
-          for (final Map<String, dynamic> dish in dishes) {
-            late int date;
-            switch (datetime.weekday) {
-              case 1: // Monday
-                date = 0;
-                break;
-              case 2: // Tuesday
-                date = 1;
-                break;
-              case 3: // Wednesday
-                date = 2;
-                break;
-              case 4: // Thursday
-                date = 3;
-                break;
-              default: // Friday, Saturday or Sunday
-                date = 4;
-                break;
-            }
+        late int date;
+        switch (datetime.weekday) {
+          case 1: // Monday
+            date = 0;
+            break;
+          case 2: // Tuesday
+            date = 1;
+            break;
+          case 3: // Wednesday
+            date = 2;
+            break;
+          case 4: // Thursday
+            date = 3;
+            break;
+          default: // Friday, Saturday or Sunday
+            date = 4;
+            break;
+        }
 
+        if (restaurant == 3) {
+          // restaurant == QWEST
+
+          final dishes = dishesJson[day] as List<dynamic>;
+          for (final dish in dishes) {
             entities.add(
               DishEntity.fromJSON(
                 date: date,
-                category: category,
+                category: 'Speiseplan vom ${datetime.day}.${datetime.month}.${datetime.year}',
                 json: dish,
               ),
             );
+          }
+        } else {
+          final categories = dishesJson[day] as Map<String, dynamic>;
+          for (final String category in categories.keys) {
+            final dishes = categories[category];
+            for (final Map<String, dynamic> dish in dishes) {
+              entities.add(
+                DishEntity.fromJSON(
+                  date: date,
+                  category: category,
+                  json: dish,
+                ),
+              );
+            }
           }
         }
       }
 
       // Write entities to cache
       unawaited(mensaDatasource.writeDishEntitiesToCache(entities, restaurant));
+
+      // if (restaurant == 3) {
+      //   for (final element in entities) {
+      //     print(element);
+      //   }
+      // }
 
       return Right(entities);
     } catch (e) {

@@ -91,18 +91,19 @@ class MealItem extends StatelessWidget {
               ),
 
               // Infos
-              Row(
-                children: infos
-                    .map((infoElement) => MealInfoButton(
-                          info: infoElement,
-                          onTap: () {
-                            if (infoElement == 'V' || infoElement == 'VG' || infoElement == 'H') {
-                              onPreferenceTap(infoElement);
-                            }
-                          },
-                        ))
-                    .toList(),
-              ),
+              if (infos.isNotEmpty)
+                Row(
+                  children: infos
+                      .map((infoElement) => MealInfoButton(
+                            info: infoElement,
+                            onTap: () {
+                              if (infoElement == 'V' || infoElement == 'VG' || infoElement == 'H') {
+                                onPreferenceTap(infoElement);
+                              }
+                            },
+                          ))
+                      .toList(),
+                ),
               Expanded(child: Container()),
               // Allergenes
               Padding(

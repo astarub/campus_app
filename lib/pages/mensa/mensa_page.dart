@@ -1,7 +1,6 @@
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
@@ -13,7 +12,6 @@ import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/pages/mensa/widgets/day_selection.dart';
 import 'package:campus_app/pages/mensa/widgets/expandable_restaurant.dart';
-import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
 import 'package:campus_app/pages/mensa/widgets/preferences_popup.dart';
 import 'package:campus_app/pages/mensa/widgets/allergenes_popup.dart';
 
@@ -41,6 +39,8 @@ class _MensaPageState extends State<MensaPage> {
 
   late List<DishEntity> _mensaDishes = [];
   late List<DishEntity> _roteBeeteDishes = [];
+  late List<DishEntity> _qwestDishes = [];
+  late List<DishEntity> _henkelmannDishes = [];
   late List<Failure> _failures = [];
 
   late int selectedDay;
@@ -119,6 +119,8 @@ class _MensaPageState extends State<MensaPage> {
         _failures = data['failures']! as List<Failure>;
         _mensaDishes = data['mensa']! as List<DishEntity>;
         _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
+        _qwestDishes = data['qwest']! as List<DishEntity>;
+        _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
       });
     });
   }
@@ -214,6 +216,8 @@ class _MensaPageState extends State<MensaPage> {
                           _failures = data['failures']! as List<Failure>;
                           _mensaDishes = data['mensa']! as List<DishEntity>;
                           _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
+                          _qwestDishes = data['qwest']! as List<DishEntity>;
+                          _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
                         });
                       });
                     },
@@ -222,6 +226,17 @@ class _MensaPageState extends State<MensaPage> {
                       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                       children: [
                         // Restaurants
+                        ExpandableRestaurant(
+                          name: 'KulturCafé',
+                          imagePath: 'assets/img/qwest.png',
+                          meals: _mensaUtils.buildKulturCafeRestaurant(
+                            onPreferenceTap: singlePreferenceSelected,
+                            mensaAllergenes:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
+                            mensaPreferences:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
+                          ),
+                        ),
                         ExpandableRestaurant(
                           name: 'Mensa der RUB',
                           imagePath: 'assets/img/mensa.png',
@@ -248,15 +263,32 @@ class _MensaPageState extends State<MensaPage> {
                                 Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
                           ),
                         ),
-                        const ExpandableRestaurant(
+                        ExpandableRestaurant(
                           name: 'Q-West',
                           imagePath: 'assets/img/qwest.png',
-                          meals: [],
+                          meals: _mensaUtils.fromDishListToMealCategoryList(
+                            entities: _qwestDishes,
+                            day: selectedDay,
+                            onPreferenceTap: singlePreferenceSelected,
+                            mensaAllergenes:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
+                            mensaPreferences:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
+                          ),
+                          //meals: [],
                         ),
-                        const ExpandableRestaurant(
+                        ExpandableRestaurant(
                           name: 'Henkelmann',
                           imagePath: 'assets/img/henkelmann.png',
-                          meals: [],
+                          meals: _mensaUtils.fromDishListToMealCategoryList(
+                            entities: _henkelmannDishes,
+                            day: selectedDay,
+                            onPreferenceTap: singlePreferenceSelected,
+                            mensaAllergenes:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
+                            mensaPreferences:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
+                          ),
                         ),
                       ],
                     ),
