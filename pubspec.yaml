@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  flutter_native_splash: ^2.2.11
   flutter_html: ^3.0.0-alpha.5
   flutter_secure_storage: ^6.0.0
   provider: ^6.0.3
@@ -45,6 +46,24 @@ dev_dependencies:
   mockito: ^5.1.0
   hive_generator: ^1.1.3
   flutter_launcher_icons: ^0.10.0
+
+flutter_native_splash:
+  image: "assets/img/SplashScreen-logo.png"
+  color: "#ffffff"
+  image_dark: "assets/img/SplashScreen-logo.png"
+  color_dark: "#0e1420"
+  #branding: "assets/img/SplashScreen-AStA-logo.png"
+  #branding_dark: "assets/img/SplashScreen-AStA-logo-dark.png"
+  # Android 12 handles the splash screen differently than previous versions
+  android_12:
+    image: "assets/img/SplashScreen-logo.png"
+    color: "#ffffff"
+    image_dark: "assets/img/SplashScreen-logo.png"
+    color_dark: "#0e1420"
+    icon_background_color_dark: "#0e1420"
+    #branding: "assets/img/SplashScreen-AStA-logo.png"
+    #branding_dark: "assets/img/SplashScreen-AStA-logo-dark.png"
+  web: false
 
 flutter_icons:
   android: true
