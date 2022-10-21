@@ -29,7 +29,7 @@ class StyledHTML extends Html {
           data: text,
           style: {
             'h4': Style(
-              fontSize: const FontSize(17),
+              fontSize: FontSize(17),
             ),
             '*': Style(
               color: textStyle?.color ?? const Color.fromARGB(255, 129, 129, 129),

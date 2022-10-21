@@ -72,10 +72,10 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                   onTap: () => Navigator.pop(context),
                 ),
                 // More
-                CampusIconButton(
+                /* CampusIconButton(
                   iconPath: 'assets/img/icons/more.png',
                   onTap: () {},
-                ),
+                ), */
               ],
             ),
           ),

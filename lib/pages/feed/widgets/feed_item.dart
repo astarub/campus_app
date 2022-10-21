@@ -107,7 +107,7 @@ class FeedItem extends StatelessWidget {
                     // Date
                     if (event != null)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                         margin: const EdgeInsets.only(right: 4, bottom: 5),
                         decoration: BoxDecoration(
                           color: Colors.black,
