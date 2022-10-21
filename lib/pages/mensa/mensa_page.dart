@@ -138,7 +138,7 @@ class _MensaPageState extends State<MensaPage> {
               children: [
                 // Header
                 Container(
-                  padding: const EdgeInsets.only(top: 40, bottom: 40),
+                  padding: const EdgeInsets.only(top: 40, bottom: 30),
                   color: Colors.white,
                   child: Column(
                     children: [
@@ -152,61 +152,13 @@ class _MensaPageState extends State<MensaPage> {
                       ),
                       // Day selection
                       MensaDaySelection(onChanged: (int day) => setState(() => selectedDay = day)),
-                      // Filter popups
-                      Padding(
-                        padding: const EdgeInsets.only(top: 26),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: CampusButton.light(
-                                  text: 'Präferenzen',
-                                  width: null,
-                                  onTap: () {
-                                    widget.mainNavigatorKey.currentState?.push(
-                                      PageRouteBuilder(
-                                        opaque: false,
-                                        pageBuilder: (context, _, __) => PreferencesPopup(
-                                          preferences:
-                                              Provider.of<SettingsHandler>(context).currentSettings.mensaPreferences,
-                                          onClose: saveChangedPreferences,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 5),
-                                child: CampusButton.light(
-                                  text: 'Allergene',
-                                  width: null,
-                                  onTap: () {
-                                    widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
-                                      opaque: false,
-                                      pageBuilder: (context, _, __) => AllergenesPopup(
-                                        allergenes:
-                                            Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
-                                        onClose: saveChangedAllergenes,
-                                      ),
-                                    ));
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
                 // Place expandables
                 Expanded(
                   child: RefreshIndicator(
-                    displacement: 100,
+                    displacement: 10,
                     backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.dialogBackgroundColor,
                     color: Provider.of<ThemesNotifier>(context).currentThemeData.focusColor,
                     strokeWidth: 3,
@@ -225,6 +177,54 @@ class _MensaPageState extends State<MensaPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                       children: [
+                        // Filter popups
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 5),
+                                  child: CampusButton.light(
+                                    text: 'Präferenzen',
+                                    width: null,
+                                    onTap: () {
+                                      widget.mainNavigatorKey.currentState?.push(
+                                        PageRouteBuilder(
+                                          opaque: false,
+                                          pageBuilder: (context, _, __) => PreferencesPopup(
+                                            preferences:
+                                                Provider.of<SettingsHandler>(context).currentSettings.mensaPreferences,
+                                            onClose: saveChangedPreferences,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: CampusButton.light(
+                                    text: 'Allergene',
+                                    width: null,
+                                    onTap: () {
+                                      widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
+                                        opaque: false,
+                                        pageBuilder: (context, _, __) => AllergenesPopup(
+                                          allergenes:
+                                              Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
+                                          onClose: saveChangedAllergenes,
+                                        ),
+                                      ));
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         // Restaurants
                         ExpandableRestaurant(
                           name: 'KulturCafé',
