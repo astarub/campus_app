@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -17,9 +19,16 @@ class FeedUtils extends Utils {
     required List<Event> events,
     double? heigth,
     bool shuffle = false,
+    bool mixInto = true,
   }) {
     final feedItemOrEventWidget = <dynamic>[];
     final widgets = <Widget>[];
+
+    final _news = <FeedItem>[];
+    final _events = <dynamic>[];
+
+    // generates a new Random object
+    final _random = Random();
 
     // parse news in widget
     for (final n in news) {
@@ -27,7 +36,7 @@ class FeedUtils extends Utils {
       final String formattedDescription =
           n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
 
-      feedItemOrEventWidget.add(
+      _news.add(
         FeedItem(
           title: n.title,
           date: n.pubDate,
@@ -51,7 +60,7 @@ class FeedUtils extends Utils {
       final endingTime = DateFormat('Hm').format(e.endDate);
 
       if (e.hasImage) {
-        feedItemOrEventWidget.add(
+        _events.add(
           FeedItem(
             title: e.title,
             date: e.startDate,
@@ -67,28 +76,41 @@ class FeedUtils extends Utils {
           ),
         );
       } else {
-        feedItemOrEventWidget.add(CalendarEventWidget(event: e));
+        _events.add(CalendarEventWidget(event: e));
       }
     }
 
+    // sort news and events by date
+    _events.sort(_sortFeed);
+    _news.sort(_sortFeed);
+
     if (shuffle) {
       // shuffle widgets random
+      feedItemOrEventWidget.addAll(_events);
+      feedItemOrEventWidget.addAll(_news);
       feedItemOrEventWidget.shuffle();
+    } else if (mixInto) {
+      // mix events in feed, both are still sorted by date
+      while (_news.isNotEmpty || _events.isNotEmpty) {
+        if (_news.isNotEmpty && _events.isEmpty) {
+          feedItemOrEventWidget.addAll(_news);
+          _news.clear();
+        } else if (_news.isEmpty && _events.isNotEmpty) {
+          feedItemOrEventWidget.addAll(_events);
+          _events.clear();
+        } else if (_news.isEmpty && _events.isEmpty) {
+          break;
+        } else {
+          feedItemOrEventWidget.addAll([_news.first, _events.first]);
+          _news.removeAt(0);
+          _events.removeAt(0);
+        }
+      }
     } else {
       // sort widgets according to date
-      feedItemOrEventWidget.sort((a, b) {
-        if (a is FeedItem && b is FeedItem) {
-          return a.date.compareTo(b.date);
-        } else if (a is FeedItem && b is CalendarEventWidget) {
-          return a.date.compareTo(b.event.startDate);
-        } else if (a is CalendarEventWidget && b is FeedItem) {
-          return a.event.startDate.compareTo(b.date);
-        } else if (a is CalendarEventWidget && b is CalendarEventWidget) {
-          return a.event.startDate.compareTo(b.event.startDate);
-        } else {
-          return 0;
-        }
-      });
+      feedItemOrEventWidget.addAll(_events);
+      feedItemOrEventWidget.addAll(_news);
+      feedItemOrEventWidget.sort(_sortFeed);
     }
 
     // add all FeedItems or CalendarEventWidgets to list of Widget
@@ -100,5 +122,19 @@ class FeedUtils extends Utils {
     widgets.insert(0, SizedBox(height: heigth ?? 80));
 
     return widgets;
+  }
+
+  int _sortFeed(a, b) {
+    if (a is FeedItem && b is FeedItem) {
+      return a.date.compareTo(b.date);
+    } else if (a is FeedItem && b is CalendarEventWidget) {
+      return a.date.compareTo(b.event.startDate);
+    } else if (a is CalendarEventWidget && b is FeedItem) {
+      return a.event.startDate.compareTo(b.date);
+    } else if (a is CalendarEventWidget && b is CalendarEventWidget) {
+      return a.event.startDate.compareTo(b.event.startDate);
+    } else {
+      return 0;
+    }
   }
 }
