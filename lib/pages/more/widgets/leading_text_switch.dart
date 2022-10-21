@@ -33,7 +33,16 @@ class LeadingTextSwitch extends StatelessWidget {
             text,
             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
           ),
-          CampusSwitch(value: isActive, onToggle: onToggle),
+          CampusSwitch(
+            value: isActive,
+            onToggle: onToggle,
+            activeColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                ? const Color.fromRGBO(0, 202, 245, 1)
+                : const Color.fromRGBO(49, 113, 236, 1),
+            inactiveColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                ? const Color.fromRGBO(245, 246, 250, 1)
+                : const Color.fromRGBO(34, 40, 54, 1),
+          ),
         ],
       ),
     );
