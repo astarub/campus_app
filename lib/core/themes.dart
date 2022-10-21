@@ -15,7 +15,7 @@ class ThemesNotifier with ChangeNotifier {
       colorScheme: const ColorScheme(
         brightness: Brightness.light,
         primary: Colors.black,
-        secondary: Color.fromRGBO(255, 107, 1, 1),
+        secondary: Color.fromRGBO(21, 0, 62, 1),
         onPrimary: Colors.white,
         onSecondary: Colors.black,
         error: Colors.red,
@@ -75,6 +75,19 @@ class ThemesNotifier with ChangeNotifier {
       backgroundColor: const Color.fromRGBO(14, 20, 32, 1),
       primaryColor: Colors.white,
       cardColor: const Color.fromRGBO(17, 25, 38, 1),
+      colorScheme: const ColorScheme(
+        brightness: Brightness.dark,
+        primary: Colors.white,
+        secondary: Color.fromRGBO(49, 113, 236, 1),
+        onPrimary: Colors.black,
+        onSecondary: Colors.black,
+        error: Colors.red,
+        onError: Colors.black,
+        background: Color.fromRGBO(14, 20, 32, 1),
+        onBackground: Colors.white,
+        surface: Color.fromRGBO(17, 25, 38, 1),
+        onSurface: Colors.white,
+      ),
       fontFamily: 'SF-Pro',
       textTheme: const TextTheme(
         displayMedium: TextStyle(
