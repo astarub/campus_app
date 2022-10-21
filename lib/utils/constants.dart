@@ -1,4 +1,5 @@
 //! Uniform Resource Identifiers
+import 'package:campus_app/env/env.dart';
 
 // TODO: Write an API for Wordpress events and maybe RUB website too
 
@@ -9,5 +10,5 @@ const String rubNewsfeed = 'https://news.rub.de/newsfeed'; // there is no non-ge
 // TODO: Change IP to domain name of an asta-bocum.de server
 const String mensaData = 'https://80.240.25.142/get_meal';
 
-//* See: https://codewithandrea.com/articles/flutter-api-keys-dart-define-env-files/
-const String mensaApiKey = String.fromEnvironment('MENSA_API_KEY');
+// See: https://codewithandrea.com/articles/flutter-api-keys-dart-define-env-files/
+final String mensaApiKey = Env.mensaApiKey;

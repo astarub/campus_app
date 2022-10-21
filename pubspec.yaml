@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  envied: ^0.2.3
   flutter_html: ^3.0.0-alpha.5
   flutter_secure_storage: ^6.0.0
   provider: ^6.0.3
@@ -40,10 +41,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.1.8  
+  build_runner: ^2.3.2
   flutter_lints: ^2.0.1
   mockito: ^5.1.0
-  hive_generator: ^2.0.0
+  hive_generator: ^1.1.3
+  envied_generator: ^0.2.3
 
 flutter:
   assets:
