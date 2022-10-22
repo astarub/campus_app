@@ -1,14 +1,16 @@
-import 'package:campus_app/pages/calendar/calendar_event_entity.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
-import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/calendar/calendar_usecases.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
-import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 
 class CalendarPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -27,49 +29,15 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  static List<Widget> parsedEvents = [
-    // Spacing
-    const SizedBox(height: 80),
-    CalendarEventWidget(
-      event: CalendarEventEntity(
-        id: 0,
-        title: 'E-Sports Meet & Greet',
-        description:
-            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-        startDate: DateTime(2022, 06, 20, 17),
-        costs: 10.5,
-        venue: 'Gaming Hub',
-        organizers: ['AStA', 'E-Sports Referat'],
-      ),
-    ),
-    CalendarEventWidget(
-      event: CalendarEventEntity(
-        id: 0,
-        title: 'E-Sports Meet & Greet',
-        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-        startDate: DateTime(2022, 06, 20, 17),
-        costs: 0,
-      ),
-    ),
-  ];
-  /* static List<Widget> savedEvents = [
-    // Spacing
-    const SizedBox(height: 80),
-    CalendarEventWidget(
-      event: CalendarEventEntity(
-        id: 0,
-        title: 'E-Sports Meet & Greet',
-        description:
-            'Wir freuen uns auf euch und wollen euch bei ein paar Partien Mario Kart, Tekken, Street fighter etc. kennenlernen.',
-        image: Image.asset('assets/img/AStA-Retro-Gaming.jpg'),
-        startDate: DateTime(2022, 06, 20, 17),
-        costs: 10.5,
-        organizers: ['AStA', 'E-Sports Referat'],
-      ),
-    ),
-  ]; */
-  static List<Widget> savedEvents = [];
+  late List<Event> _events = [];
+  late List<Event> _savedEvents = [];
+  late List<Failure> _failures = [];
+
+  final _calendarUsecase = sl<CalendarUsecases>();
+  final _calendarUtils = sl<CalendarUtils>();
+
+  late List<Widget> parsedEvents = [];
+  late List<Widget> savedEvents = [];
 
   late final CampusSegmentedControl upcomingSavedSwitch;
   bool showSavedEvents = false;
@@ -80,6 +48,7 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   void initState() {
     super.initState();
+    updateStateWithEvents();
 
     upcomingSavedSwitch = CampusSegmentedControl(
       leftTitle: 'Upcoming',
@@ -90,11 +59,9 @@ class _CalendarPageState extends State<CalendarPage> {
         } else {
           setState(() => showSavedEvents = true);
         }
+        updateStateWithEvents();
       },
     );
-
-    if (parsedEvents.isEmpty) showUpcomingPlaceholder = true;
-    if (savedEvents.isEmpty) showSavedPlaceholder = true;
   }
 
   @override
@@ -124,10 +91,18 @@ class _CalendarPageState extends State<CalendarPage> {
                               title: 'No saved events',
                               text: 'Start saving events ontheir page to see them here.',
                             )
-                          : ListView(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              physics: const BouncingScrollPhysics(),
-                              children: showSavedEvents ? savedEvents : parsedEvents,
+                          : RefreshIndicator(
+                              displacement: 55,
+                              backgroundColor:
+                                  Provider.of<ThemesNotifier>(context).currentThemeData.dialogBackgroundColor,
+                              color: Provider.of<ThemesNotifier>(context).currentThemeData.focusColor,
+                              strokeWidth: 3,
+                              onRefresh: updateStateWithEvents,
+                              child: ListView(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                children: showSavedEvents ? savedEvents : parsedEvents,
+                              ),
                             ),
                 ),
                 // Header
@@ -136,7 +111,6 @@ class _CalendarPageState extends State<CalendarPage> {
                   color: Colors.white,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Title
                       Padding(
@@ -147,7 +121,10 @@ class _CalendarPageState extends State<CalendarPage> {
                         ),
                       ),
                       // SegmentedControl
-                      upcomingSavedSwitch,
+                      SizedBox(
+                        width: double.infinity,
+                        child: Center(child: upcomingSavedSwitch),
+                      ),
                     ],
                   ),
                 ),
@@ -157,5 +134,23 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
       ),
     );
+  }
+
+  /// Function that call usecase and parse widgets into the corresponding
+  /// lists of events or failures.
+  Future<void> updateStateWithEvents() async {
+    await _calendarUsecase.updateEventsAndFailures().then((data) {
+      setState(() {
+        _events = data['events']! as List<Event>;
+        _savedEvents = data['saved']! as List<Event>;
+        _failures = data['failures']! as List<Failure>;
+
+        parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
+        savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
+
+        showUpcomingPlaceholder = _events.isEmpty;
+        showSavedPlaceholder = _savedEvents.isEmpty;
+      });
+    });
   }
 }

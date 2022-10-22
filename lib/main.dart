@@ -1,15 +1,21 @@
+import 'package:campus_app/pages/calendar/calendar_page.dart';
+import 'package:campus_app/pages/calendar/entities/category_entity.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
+import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/rubnews/news_entity.dart';
+import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/splash/splash_page.dart';
 
 Future<void> main() async {
@@ -17,6 +23,10 @@ Future<void> main() async {
 
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
+  Hive.registerAdapter(EventAdapter());
+  Hive.registerAdapter(VenueAdapter());
+  Hive.registerAdapter(OrganizerAdapter());
+  Hive.registerAdapter(CategoryAdapter());
   Hive.registerAdapter(NewsEntityAdapter());
 
   // Initialize injection container
