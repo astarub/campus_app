@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -17,18 +16,16 @@ import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
-import 'package:campus_app/pages/calendar/calendar_page.dart';
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 
 Future<void> main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // Keeps the native splash screen onscreen until all loading is done
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
@@ -47,9 +44,9 @@ Future<void> main() async {
   runApp(MultiProvider(
     providers: [
       // Initializes the provider that handles the app-theme, authentification and other things
+      ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
       ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
       ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
-      ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
     ],
     child: const CampusApp(),
   ));

@@ -50,9 +50,9 @@ dev_dependencies:
   flutter_launcher_icons: ^0.10.0
 
 flutter_native_splash:
-  image: "assets/img/SplashScreen-logo.png"
+  image: "assets/img/Android-RUB_Campus_App_Logo.png"
   color: "#ffffff"
-  image_dark: "assets/img/SplashScreen-logo.png"
+  image_dark: "assets/img/Android-RUB_Campus_App_Logo.png"
   color_dark: "#0e1420"
   #branding: "assets/img/SplashScreen-AStA-logo.png"
   #branding_dark: "assets/img/SplashScreen-AStA-logo-dark.png"
