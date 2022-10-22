@@ -6,9 +6,9 @@
 import 'dart:async' as _i5;
 
 import 'package:campus_app/core/failures.dart' as _i6;
-import 'package:campus_app/pages/rubnews/news_entity.dart' as _i7;
-import 'package:campus_app/pages/rubnews/rubnews_datasource.dart' as _i2;
-import 'package:campus_app/pages/rubnews/rubnews_repository.dart' as _i4;
+import 'package:campus_app/pages/feed/rubnews/news_entity.dart' as _i7;
+import 'package:campus_app/pages/feed/rubnews/rubnews_datasource.dart' as _i2;
+import 'package:campus_app/pages/feed/rubnews/rubnews_repository.dart' as _i4;
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 

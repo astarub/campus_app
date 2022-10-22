@@ -686,13 +686,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
-  pdfx:
-    dependency: "direct main"
-    description:
-      name: pdfx
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.0"
   pedantic:
     dependency: transitive
     description:
