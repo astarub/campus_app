@@ -29,6 +29,13 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
     List<String> calculatedDates = [];
 
     DateTime today = DateTime.now();
+
+    if (today.weekday == 6) {
+      today = today.add(const Duration(days: -1));
+    } else if (today.weekday == 7) {
+      today = today.add(const Duration(days: -2));
+    }
+
     switch (today.weekday) {
       case 1: // Monday
         calculatedDates.add(DateFormat('dd.MM').format(today));
@@ -76,6 +83,7 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
 
   void selectDay(int selected) {
     setState(() => selectedDay = selected);
+    widget.onChanged(selected);
   }
 
   @override

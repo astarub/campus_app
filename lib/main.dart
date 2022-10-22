@@ -17,6 +17,7 @@ import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/splash/splash_page.dart';
+import 'package:campus_app/pages/mensa/dish_entity.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,7 @@ Future<void> main() async {
   Hive.registerAdapter(OrganizerAdapter());
   Hive.registerAdapter(CategoryAdapter());
   Hive.registerAdapter(NewsEntityAdapter());
+  Hive.registerAdapter(DishEntityAdapter());
 
   // Initialize injection container
   await ic.init();
