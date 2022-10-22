@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -11,14 +11,21 @@ import 'package:path_provider/path_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:hive_flutter/adapters.dart';
 
 import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
-import 'package:campus_app/pages/rubnews/news_entity.dart';
 import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
+import 'package:campus_app/pages/mensa/dish_entity.dart';
+import 'package:campus_app/pages/calendar/calendar_page.dart';
+import 'package:campus_app/pages/calendar/entities/category_entity.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
+import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +34,12 @@ Future<void> main() async {
 
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
+  Hive.registerAdapter(EventAdapter());
+  Hive.registerAdapter(VenueAdapter());
+  Hive.registerAdapter(OrganizerAdapter());
+  Hive.registerAdapter(CategoryAdapter());
   Hive.registerAdapter(NewsEntityAdapter());
+  Hive.registerAdapter(DishEntityAdapter());
 
   // Initialize injection container
   await ic.init();

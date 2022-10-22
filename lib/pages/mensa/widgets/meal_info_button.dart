@@ -9,9 +9,9 @@ class MealInfoButton extends StatelessWidget {
 
   final VoidCallback onTap;
 
-  late final String iconPath;
+  late final String? iconPath;
 
-  late final Color iconColor;
+  late final Color? iconColor;
 
   MealInfoButton({
     Key? key,
@@ -59,6 +59,10 @@ class MealInfoButton extends StatelessWidget {
         iconPath = 'assets/img/icons/mensa-wild.png';
         iconColor = const Color.fromARGB(255, 99, 56, 16);
         break;
+      default:
+        iconPath = null;
+        iconColor = null;
+        break;
     }
   }
 
@@ -68,34 +72,36 @@ class MealInfoButton extends StatelessWidget {
       height: 16,
       width: 16,
       margin: const EdgeInsets.only(right: 5),
-      child: Material(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-        borderRadius: BorderRadius.circular(3),
-        child: InkWell(
-          onTap: onTap,
-          splashColor: const Color.fromRGBO(0, 0, 0, 0.04),
-          highlightColor: const Color.fromRGBO(0, 0, 0, 0.02),
-          borderRadius: BorderRadius.circular(3),
-          child: Center(
-            child: iconPath.substring(iconPath.length - 3) == 'svg'
-                ? SvgPicture.asset(
-                    iconPath,
-                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
-                            (info == 'A' || info == 'H')
-                        ? Colors.white70
-                        : iconColor,
-                  )
-                : Image.asset(
-                    iconPath,
-                    width: 20,
-                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
-                            (info == 'A' || info == 'H')
-                        ? Colors.white70
-                        : iconColor,
-                  ),
-          ),
-        ),
-      ),
+      child: (iconPath == null || iconColor == null)
+          ? const SizedBox()
+          : Material(
+              color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+              borderRadius: BorderRadius.circular(3),
+              child: InkWell(
+                onTap: onTap,
+                splashColor: const Color.fromRGBO(0, 0, 0, 0.04),
+                highlightColor: const Color.fromRGBO(0, 0, 0, 0.02),
+                borderRadius: BorderRadius.circular(3),
+                child: Center(
+                  child: iconPath!.substring(iconPath!.length - 3) == 'svg'
+                      ? SvgPicture.asset(
+                          iconPath!,
+                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
+                                  (info == 'A' || info == 'H')
+                              ? Colors.white70
+                              : iconColor,
+                        )
+                      : Image.asset(
+                          iconPath!,
+                          width: 20,
+                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
+                                  (info == 'A' || info == 'H')
+                              ? Colors.white70
+                              : iconColor,
+                        ),
+                ),
+              ),
+            ),
     );
   }
 }

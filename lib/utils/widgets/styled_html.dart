@@ -1,8 +1,11 @@
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// This widget extends the default HTML widget and add a custom style.
@@ -14,17 +17,23 @@ import 'package:url_launcher/url_launcher.dart';
 class StyledHTML extends Html {
   final BuildContext context;
   final String text;
+  final TextStyle? textStyle;
+  final TextAlign? textAlign;
+  final BuildContext buildContext;
 
   StyledHTML({
     Key? key,
     required this.context,
     required this.text,
+    required this.buildContext,
+    this.textStyle,
+    this.textAlign,
   }) : super(
           key: key,
           data: text,
           style: {
             'h4': Style(
-              fontSize: const FontSize(17),
+              fontSize: FontSize(17),
             ),
             '*': Style(
               color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium?.color,
@@ -32,14 +41,14 @@ class StyledHTML extends Html {
               letterSpacing: 0.2,
             ),
           },
-          onLinkTap: (url, context, attributes, element) => openURL(url.toString()),
+          onLinkTap: (url, context, attributes, element) => openURL(buildContext, url.toString()),
         );
 
   /// Opens a url either in webview or external application e.g. mail app
-  static Future<void> openURL(
-    String url, {
-    bool webView = false,
-  }) async {
+  static void openURL(
+    BuildContext context,
+    String url,
+  ) {
     String _url = url;
 
     // If a RUB news article refers to another RUB news article, than we
@@ -50,13 +59,18 @@ class StyledHTML extends Html {
 
     final uri = Uri.parse(_url);
 
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(
-        uri,
-        // LaunchMode.platformDefault: On iOS and Android, this treats web URLs as
-        // LaunchMode.inAppWebView and all other URLs as LaunchMode.externalApplication.
-        mode: webView ? LaunchMode.platformDefault : LaunchMode.externalApplication,
-      );
+    // Enforces to open social links in external browser to let the system handle these
+    // and open designated apps, if installed
+    if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useExternalBrowser ||
+        url.contains('instagram') ||
+        url.contains('facebook') ||
+        url.contains('twitch') ||
+        url.contains('mailto:')) {
+      // Open in external browser
+      launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      // Open in InAppView
+      Navigator.push(context, MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)));
     }
   }
 }

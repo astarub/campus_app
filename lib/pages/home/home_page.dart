@@ -6,7 +6,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
-import 'package:campus_app/pages/rubnews/rubnews_page.dart';
+import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
 /// Defines the different pages that can be displayed
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
   /// Holds the currently active page.
   PageItem currentPage = PageItem.feed;
 
-  GlobalKey<RubnewsPageState> feedKey = GlobalKey();
+  GlobalKey<FeedPageState> feedKey = GlobalKey();
 
   /// Switches to another page when selected in the nav-menu
   Future<bool> _selectedPage(PageItem selectedPageItem) async {

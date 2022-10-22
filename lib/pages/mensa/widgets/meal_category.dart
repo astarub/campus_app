@@ -45,7 +45,7 @@ class MealCategory extends StatelessWidget {
 /// and optional properties
 class MealItem extends StatelessWidget {
   final String name;
-  final double price;
+  final String price;
   final List<String> infos;
   final List<String> allergenes;
   final void Function(String) onPreferenceTap;
@@ -53,7 +53,7 @@ class MealItem extends StatelessWidget {
   const MealItem({
     Key? key,
     required this.name,
-    this.price = 0.0,
+    this.price = '0.0',
     this.infos = const [],
     this.allergenes = const [],
     required this.onPreferenceTap,
@@ -95,35 +95,26 @@ class MealItem extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  price % 2 == 0 ? '${price.toInt()} €' : '${price}0 €',
-                  style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                      ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
-                            fontSize: 11,
-                          )
-                      : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
-                            fontSize: 11,
-                            color: Provider.of<ThemesNotifier>(context)
-                                .currentThemeData
-                                .textTheme
-                                .bodyMedium!
-                                .color!
-                                .withOpacity(0.4),
-                          ),
+                  price,
+                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
+                        fontSize: 11,
+                      ),
                 ),
               ),
               // Infos
-              Row(
-                children: infos
-                    .map((infoElement) => MealInfoButton(
-                          info: infoElement,
-                          onTap: () {
-                            if (infoElement == 'V' || infoElement == 'VG' || infoElement == 'H') {
-                              onPreferenceTap(infoElement);
-                            }
-                          },
-                        ))
-                    .toList(),
-              ),
+              if (infos.isNotEmpty)
+                Row(
+                  children: infos
+                      .map((infoElement) => MealInfoButton(
+                            info: infoElement,
+                            onTap: () {
+                              if (infoElement == 'V' || infoElement == 'VG' || infoElement == 'H') {
+                                onPreferenceTap(infoElement);
+                              }
+                            },
+                          ))
+                      .toList(),
+                ),
               Expanded(child: Container()),
               // Allergenes
               Padding(

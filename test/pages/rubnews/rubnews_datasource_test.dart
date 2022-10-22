@@ -1,6 +1,6 @@
 import 'package:campus_app/core/exceptions.dart';
-import 'package:campus_app/pages/rubnews/news_entity.dart';
-import 'package:campus_app/pages/rubnews/rubnews_datasource.dart';
+import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
+import 'package:campus_app/pages/feed/rubnews/rubnews_datasource.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
