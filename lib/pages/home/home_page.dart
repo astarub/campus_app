@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
 import 'package:campus_app/pages/feed/feed_page.dart';
@@ -49,6 +50,21 @@ class _HomePageState extends State<HomePage> {
     PageItem.more: GlobalKey<AnimatedEntryState>(),
   };
 
+  final SystemUiOverlayStyle lightSystemUiStyle = const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.light, // iOS
+    statusBarColor: Colors.white, // Android
+    statusBarIconBrightness: Brightness.dark, // Android
+    systemNavigationBarColor: Colors.white, // Android
+    systemNavigationBarIconBrightness: Brightness.dark, // Android
+  );
+  final SystemUiOverlayStyle darkSystemUiStyle = const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.dark, // iOS
+    statusBarColor: Color.fromRGBO(14, 20, 32, 1), // Android
+    statusBarIconBrightness: Brightness.light, // Android
+    systemNavigationBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
+    systemNavigationBarIconBrightness: Brightness.light, // Android
+  );
+
   /// Holds the currently active page.
   PageItem currentPage = PageItem.feed;
 
@@ -86,15 +102,38 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    // Theme von System auslesen & Callback erstellen
+    var window = WidgetsBinding.instance.window;
+
+    window.onPlatformBrightnessChanged = () {
+      final brightness = window.platformBrightness;
+
+      // Callback wird ausgeführt, sofern System-Darkmode verwendet werden soll
+      if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useSystemDarkmode) {
+        if (brightness == Brightness.light) {
+          debugPrint('System ändert zu LightMode.');
+          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark) {
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.light;
+          }
+        } else if (brightness == Brightness.dark) {
+          debugPrint('System ändert zu DarkMode.');
+          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light) {
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.dark;
+          }
+        }
+      }
+    };
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarBrightness: Brightness.light, // iOS
-        statusBarColor: Colors.white, // Android
-        statusBarIconBrightness: Brightness.dark, // Android
-        systemNavigationBarColor: Colors.white, // Android
-        systemNavigationBarIconBrightness: Brightness.dark, // Android
-      ),
+      value: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          ? lightSystemUiStyle
+          : darkSystemUiStyle,
       child: WillPopScope(
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(

@@ -1,7 +1,9 @@
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,15 +15,15 @@ import 'package:url_launcher/url_launcher.dart';
 /// It also implements a redirect to other apps if there are links inside the
 /// HTML, for example a mailto:<url> href.
 class StyledHTML extends Html {
+  final BuildContext context;
   final String text;
   final TextStyle? textStyle;
   final TextAlign? textAlign;
-  final BuildContext buildContext;
 
   StyledHTML({
     Key? key,
+    required this.context,
     required this.text,
-    required this.buildContext,
     this.textStyle,
     this.textAlign,
   }) : super(
@@ -32,7 +34,8 @@ class StyledHTML extends Html {
               fontSize: FontSize(17),
             ),
             '*': Style(
-              color: textStyle?.color ?? const Color.fromARGB(255, 129, 129, 129),
+              color:
+                  textStyle?.color ?? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium?.color,
               fontWeight: textStyle?.fontWeight ?? FontWeight.w500,
               letterSpacing: textStyle?.letterSpacing ?? 0.2,
               backgroundColor: textStyle?.backgroundColor,
@@ -44,7 +47,7 @@ class StyledHTML extends Html {
               fontSize: textStyle?.fontSize == null ? null : FontSize(textStyle!.fontSize!),
             ),
           },
-          onLinkTap: (url, context, attributes, element) => openURL(buildContext, url.toString()),
+          onLinkTap: (url, renderContext, attributes, element) => openURL(context, url.toString()),
         );
 
   /// Opens a url either in webview or external application e.g. mail app

@@ -21,7 +21,7 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
       title: 'Feed Filter',
       onClose: () => Navigator.pop(context),
       child: Container(
-        color: Colors.white,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: CampusSelection(selectionItemTitles: ['AStA', 'AKAFÖ', 'FSR']),

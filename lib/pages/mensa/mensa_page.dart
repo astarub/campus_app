@@ -139,7 +139,7 @@ class _MensaPageState extends State<MensaPage> {
                 // Header
                 Container(
                   padding: const EdgeInsets.only(top: 40, bottom: 30),
-                  color: Colors.white,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
                   child: Column(
                     children: [
                       // Title

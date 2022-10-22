@@ -67,9 +67,12 @@ class MealItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Name
-          Text(
-            name,
-            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 3),
+            child: Text(
+              name,
+              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+            ),
           ),
           // Price
           Row(
@@ -80,7 +83,16 @@ class MealItem extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Colors.grey),
+                  border: Border.all(
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                        ? Colors.grey
+                        : Provider.of<ThemesNotifier>(context)
+                            .currentThemeData
+                            .textTheme
+                            .bodyMedium!
+                            .color!
+                            .withOpacity(0.4),
+                  ),
                 ),
                 child: Text(
                   price,
@@ -89,7 +101,6 @@ class MealItem extends StatelessWidget {
                       ),
                 ),
               ),
-
               // Infos
               if (infos.isNotEmpty)
                 Row(
@@ -112,7 +123,14 @@ class MealItem extends StatelessWidget {
                   allergenes.join(', '),
                   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
                         fontSize: 11,
-                        color: Colors.black38,
+                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? Colors.black38
+                            : Provider.of<ThemesNotifier>(context)
+                                .currentThemeData
+                                .textTheme
+                                .bodyMedium!
+                                .color!
+                                .withOpacity(0.4),
                       ),
                 ),
               ),

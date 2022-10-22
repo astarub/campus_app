@@ -86,7 +86,9 @@ class _PopupSheetState extends State<PopupSheet> {
               margin: const EdgeInsets.only(top: 10, bottom: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
-                color: const Color.fromRGBO(245, 246, 250, 1),
+                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                    ? const Color.fromRGBO(245, 246, 250, 1)
+                    : const Color.fromRGBO(34, 40, 54, 1),
               ),
             ),
             // Headline

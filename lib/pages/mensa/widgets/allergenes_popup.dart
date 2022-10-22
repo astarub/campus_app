@@ -52,7 +52,7 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: Colors.white,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -190,7 +190,11 @@ class AllergenesListItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Material(
-        color: isActive ? const Color.fromRGBO(245, 246, 250, 1) : Colors.white,
+        color: isActive
+            ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                ? const Color.fromRGBO(245, 246, 250, 1)
+                : const Color.fromRGBO(34, 40, 54, 1)
+            : Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
         borderRadius: BorderRadius.circular(6),
         child: InkWell(
           splashColor: const Color.fromRGBO(0, 0, 0, 0.06),
@@ -206,12 +210,18 @@ class AllergenesListItem extends StatelessWidget {
                   width: 20,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: isActive ? Colors.black : Colors.white,
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                        ? isActive
+                            ? Colors.black
+                            : Colors.white
+                        : const Color.fromRGBO(18, 24, 38, 1),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
-                      color: isActive
-                          ? Colors.black
-                          : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!,
+                      color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                          ? isActive
+                              ? Colors.black
+                              : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!
+                          : const Color.fromRGBO(34, 40, 54, 1),
                     ),
                   ),
                   child: isActive
@@ -226,10 +236,15 @@ class AllergenesListItem extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 16),
                   child: Text(
                     name,
-                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
+                    style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                        ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
+                              fontSize: 15,
+                              color: Colors.black,
+                            )
+                        : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
                   ),
                 ),
                 Expanded(

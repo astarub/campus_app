@@ -93,9 +93,8 @@ class _CalendarPageState extends State<CalendarPage> {
                             )
                           : RefreshIndicator(
                               displacement: 55,
-                              backgroundColor:
-                                  Provider.of<ThemesNotifier>(context).currentThemeData.dialogBackgroundColor,
-                              color: Provider.of<ThemesNotifier>(context).currentThemeData.focusColor,
+                              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                              color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                               strokeWidth: 3,
                               onRefresh: updateStateWithEvents,
                               child: ListView(
@@ -108,7 +107,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 // Header
                 Container(
                   padding: const EdgeInsets.only(top: 40, bottom: 20),
-                  color: Colors.white,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

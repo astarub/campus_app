@@ -40,7 +40,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
     return Container(
       margin: const EdgeInsets.only(bottom: 30),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 3))],
       ),
@@ -49,12 +49,16 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
         children: [
           // Restaurant header
           Material(
-            color: Colors.white,
+            color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
             borderRadius: BorderRadius.circular(15),
             child: InkWell(
               borderRadius: BorderRadius.circular(15),
-              highlightColor: const Color.fromRGBO(0, 0, 0, 0.03),
-              splashColor: const Color.fromRGBO(0, 0, 0, 0.04),
+              splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? const Color.fromRGBO(0, 0, 0, 0.04)
+                  : const Color.fromRGBO(255, 255, 255, 0.04),
+              highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? const Color.fromRGBO(0, 0, 0, 0.03)
+                  : const Color.fromRGBO(255, 255, 255, 0.03),
               onTap: () {
                 if (widget.meals.isNotEmpty) {
                   setState(() => _isExpanded = !_isExpanded);
@@ -64,16 +68,17 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
               child: Stack(
                 alignment: Alignment.centerRight,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topRight: const Radius.circular(15),
-                        bottomRight: _isExpanded ? Radius.zero : const Radius.circular(15)),
-                    child: Image.asset(
-                      widget.imagePath,
-                      height: 57,
-                      alignment: Alignment.centerRight,
+                  if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light)
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          topRight: const Radius.circular(15),
+                          bottomRight: _isExpanded ? Radius.zero : const Radius.circular(15)),
+                      child: Image.asset(
+                        widget.imagePath,
+                        height: 57,
+                        alignment: Alignment.centerRight,
+                      ),
                     ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                     child: Row(

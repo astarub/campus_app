@@ -41,6 +41,7 @@ class CalendarEventWidget extends StatelessWidget {
     final day = DateFormat('dd').format(event.startDate);
 
     return OpenContainer(
+      closedColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       transitionDuration: const Duration(milliseconds: 250),
       openBuilder: (context, _) => CalendarDetailPage(event: event),
       closedBuilder: (context, VoidCallback openDetailsPage) => Container(
@@ -48,14 +49,18 @@ class CalendarEventWidget extends StatelessWidget {
             openable ? const EdgeInsets.only(bottom: 14, left: 7, right: 7, top: 5) : const EdgeInsets.only(bottom: 10),
         padding: padding,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
           borderRadius: BorderRadius.circular(15),
           boxShadow: [boxShadow],
         ),
         child: CustomButton(
           borderRadius: BorderRadius.circular(15),
-          highlightColor: const Color.fromRGBO(0, 0, 0, 0.03),
-          splashColor: const Color.fromRGBO(0, 0, 0, 0.04),
+          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? const Color.fromRGBO(0, 0, 0, 0.03)
+              : const Color.fromRGBO(255, 255, 255, 0.03),
+          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? const Color.fromRGBO(0, 0, 0, 0.04)
+              : const Color.fromRGBO(255, 255, 255, 0.04),
           tapHandler: openable ? openDetailsPage : () {},
           child: Row(
             children: [
@@ -93,7 +98,7 @@ class CalendarEventWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       StyledHTML(
-                        buildContext: context,
+                        context: context,
                         text: event.title,
                         textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                         textAlign: TextAlign.left,
@@ -111,7 +116,7 @@ class CalendarEventWidget extends StatelessWidget {
                             ),
                             Expanded(
                               child: StyledHTML(
-                                buildContext: context,
+                                context: context,
                                 text: event.cost == null
                                     ? ''
                                     : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",

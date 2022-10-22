@@ -30,7 +30,9 @@ class ButtonGroup extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(bottom: 30),
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(245, 246, 250, 1),
+            color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                ? const Color.fromRGBO(245, 246, 250, 1)
+                : const Color.fromRGBO(34, 40, 54, 1),
             borderRadius: BorderRadius.circular(15),
           ),
           child: Column(
