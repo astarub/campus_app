@@ -22,7 +22,6 @@ dependencies:
   page_transition: ^2.0.9
   cached_network_image: ^3.2.1
   cookie_jar: ^3.0.1
-  cupertino_icons: ^1.0.2
   dartz: ^0.10.1
   dio: ^4.0.6
   dio_cookie_manager: ^2.0.0
@@ -76,7 +75,6 @@ flutter_icons:
 
 flutter:
   assets:
-     - assets/img/Android-RUB_Campus_App_Logo.png
      - assets/img/asta_logo.png
      - assets/img/henkelmann.png
      - assets/img/mensa.png
@@ -118,8 +116,6 @@ flutter:
      - assets/img/icons/moodle-link.png
      - assets/img/icons/flexnow-link.png
      - assets/img/icons/rub-link.png
-     - assets/img/AStA-Retro-Gaming.jpg
-     - assets/documents/
 
   fonts:
     - family: SF-Pro
