@@ -79,18 +79,23 @@ class FeedItem extends StatelessWidget {
           );
         }
       },
+      closedColor: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.backgroundColor,
       closedBuilder: (context, VoidCallback openDetailsPage) => Padding(
         padding: const EdgeInsets.only(bottom: 14),
         child: CustomButton(
           borderRadius: BorderRadius.circular(15),
-          highlightColor: const Color.fromRGBO(0, 0, 0, 0.03),
-          splashColor: const Color.fromRGBO(0, 0, 0, 0.04),
+          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? const Color.fromRGBO(0, 0, 0, 0.03)
+              : const Color.fromRGBO(255, 255, 255, 0.03),
+          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? const Color.fromRGBO(0, 0, 0, 0.04)
+              : const Color.fromRGBO(255, 255, 255, 0.04),
           tapHandler: openDetailsPage,
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Image & Date
                 Stack(

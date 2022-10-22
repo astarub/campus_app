@@ -93,9 +93,8 @@ class _CalendarPageState extends State<CalendarPage> {
                             )
                           : RefreshIndicator(
                               displacement: 55,
-                              backgroundColor:
-                                  Provider.of<ThemesNotifier>(context).currentThemeData.dialogBackgroundColor,
-                              color: Provider.of<ThemesNotifier>(context).currentThemeData.focusColor,
+                              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                              color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                               strokeWidth: 3,
                               onRefresh: updateStateWithEvents,
                               child: ListView(

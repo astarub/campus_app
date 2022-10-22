@@ -19,13 +19,11 @@ class StyledHTML extends Html {
   final String text;
   final TextStyle? textStyle;
   final TextAlign? textAlign;
-  final BuildContext buildContext;
 
   StyledHTML({
     Key? key,
     required this.context,
     required this.text,
-    required this.buildContext,
     this.textStyle,
     this.textAlign,
   }) : super(
@@ -36,12 +34,20 @@ class StyledHTML extends Html {
               fontSize: FontSize(17),
             ),
             '*': Style(
-              color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium?.color,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.2,
+              color:
+                  textStyle?.color ?? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium?.color,
+              fontWeight: textStyle?.fontWeight ?? FontWeight.w500,
+              letterSpacing: textStyle?.letterSpacing ?? 0.2,
+              backgroundColor: textStyle?.backgroundColor,
+              fontStyle: textStyle?.fontStyle,
+              fontFamily: textStyle?.fontFamily,
+              height: textStyle?.height != null ? Height(textStyle!.height!) : null,
+              wordSpacing: textStyle?.wordSpacing,
+              textAlign: textAlign,
+              fontSize: textStyle?.fontSize == null ? null : FontSize(textStyle!.fontSize!),
             ),
           },
-          onLinkTap: (url, context, attributes, element) => openURL(buildContext, url.toString()),
+          onLinkTap: (url, renderContext, attributes, element) => openURL(context, url.toString()),
         );
 
   /// Opens a url either in webview or external application e.g. mail app
