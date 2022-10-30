@@ -62,7 +62,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
         children: [
           // Buttons in header
           Padding(
-            padding: const EdgeInsets.only(top: 60, left: 20, right: 20, bottom: 12),
+            padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

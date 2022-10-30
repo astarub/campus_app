@@ -47,7 +47,7 @@ class GuidePage extends StatelessWidget {
               children: [
                 // Header
                 Container(
-                  padding: const EdgeInsets.only(top: 40, bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: Text(
                     'Guide',
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,

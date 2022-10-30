@@ -58,7 +58,7 @@ class MorePage extends StatelessWidget {
               children: [
                 // Header
                 Padding(
-                  padding: const EdgeInsets.only(top: 40, bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: Text(
                     'Einstellungen & Mehr',
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,

@@ -142,14 +142,14 @@ class FeedItem extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 6),
                   child: StyledHTML(
-                    buildContext: context,
+                    context: context,
                     text: title,
                     textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                   ),
                 ),
                 // Description
                 StyledHTML(
-                  buildContext: context,
+                  context: context,
                   text: description,
                   textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                 ),

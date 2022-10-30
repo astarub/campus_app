@@ -32,7 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Padding(
-        padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         child: Column(
           children: [
             // Back button & page title
@@ -58,7 +58,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
-            // Imprint
+            // Settings
             Expanded(
               child: ListView(
                 physics: const BouncingScrollPhysics(),

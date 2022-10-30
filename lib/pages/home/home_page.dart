@@ -142,15 +142,17 @@ class _HomePageState extends State<HomePage> {
             currentPage: currentPage,
             onSelectedPage: _selectedPage,
           ),
-          body: Stack(
-            // Holds all the pages that sould be accessable within the bottom nav-menu
-            children: [
-              _buildOffstateNavigator(PageItem.feed),
-              _buildOffstateNavigator(PageItem.events),
-              _buildOffstateNavigator(PageItem.mensa),
-              _buildOffstateNavigator(PageItem.guide),
-              _buildOffstateNavigator(PageItem.more),
-            ],
+          body: SafeArea(
+            child: Stack(
+              // Holds all the pages that sould be accessable within the bottom nav-menu
+              children: [
+                _buildOffstateNavigator(PageItem.feed),
+                _buildOffstateNavigator(PageItem.events),
+                _buildOffstateNavigator(PageItem.mensa),
+                _buildOffstateNavigator(PageItem.guide),
+                _buildOffstateNavigator(PageItem.more),
+              ],
+            ),
           ),
         ),
       ),

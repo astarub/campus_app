@@ -91,7 +91,7 @@ class FeedPageState extends State<FeedPage> {
               children: [
                 // News feed
                 Container(
-                  margin: const EdgeInsets.only(top: 100),
+                  margin: const EdgeInsets.only(top: 60),
                   child: RefreshIndicator(
                     displacement: 55,
                     backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
@@ -108,7 +108,7 @@ class FeedPageState extends State<FeedPage> {
                 ),
                 // Header
                 Container(
-                  padding: const EdgeInsets.only(top: 40, bottom: 20, left: 0, right: 0),
+                  padding: const EdgeInsets.only(bottom: 20),
                   color: _headerOpacity == 1
                       ? Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor
                       : Colors.transparent,
