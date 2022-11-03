@@ -128,6 +128,9 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           settingsJsonFile.create();
           final Map<String, dynamic> initialSettings = {'useSystemDarkmode': true, 'useDarkmode': false};
           settingsJsonFile.writeAsString(json.encode(initialSettings));
+
+          // Start the app
+          FlutterNativeSplash.remove();
         }
       });
     });
