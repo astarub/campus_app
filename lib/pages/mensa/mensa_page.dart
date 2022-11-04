@@ -1,4 +1,4 @@
-import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +8,7 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_usecases.dart';
+import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/pages/mensa/widgets/day_selection.dart';
@@ -138,7 +139,7 @@ class _MensaPageState extends State<MensaPage> {
               children: [
                 // Header
                 Container(
-                  padding: const EdgeInsets.only(bottom: 30),
+                  padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 30),
                   color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
                   child: Column(
                     children: [

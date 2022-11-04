@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -58,7 +59,7 @@ class MorePage extends StatelessWidget {
               children: [
                 // Header
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 40),
+                  padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 40),
                   child: Text(
                     'Einstellungen & Mehr',
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,

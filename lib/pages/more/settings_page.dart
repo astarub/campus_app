@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20),
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0, left: 20, right: 20),
         child: Column(
           children: [
             // Back button & page title

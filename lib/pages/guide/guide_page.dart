@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -47,7 +48,7 @@ class GuidePage extends StatelessWidget {
               children: [
                 // Header
                 Container(
-                  padding: const EdgeInsets.only(bottom: 40),
+                  padding: EdgeInsets.only(top: Platform.isAndroid ? 14 : 0, bottom: 40),
                   child: Text(
                     'Guide',
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
