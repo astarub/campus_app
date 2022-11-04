@@ -32,7 +32,7 @@ class RubnewsDetailsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Padding(
-        padding: const EdgeInsets.only(top: 60),
+        padding: const EdgeInsets.only(top: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

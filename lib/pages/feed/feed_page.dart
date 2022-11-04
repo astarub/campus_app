@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -91,7 +92,7 @@ class FeedPageState extends State<FeedPage> {
               children: [
                 // News feed
                 Container(
-                  margin: const EdgeInsets.only(top: 100),
+                  margin: EdgeInsets.only(top: Platform.isAndroid ? 70 : 60),
                   child: RefreshIndicator(
                     displacement: 55,
                     backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
@@ -108,7 +109,7 @@ class FeedPageState extends State<FeedPage> {
                 ),
                 // Header
                 Container(
-                  padding: const EdgeInsets.only(top: 40, bottom: 20, left: 0, right: 0),
+                  padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
                   color: _headerOpacity == 1
                       ? Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor
                       : Colors.transparent,

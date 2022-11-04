@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -78,7 +79,7 @@ class _CalendarPageState extends State<CalendarPage> {
               children: [
                 // Events
                 Container(
-                  margin: const EdgeInsets.only(top: 100),
+                  margin: EdgeInsets.only(top: Platform.isAndroid ? 70 : 60),
                   child: !showSavedEvents && showUpcomingPlaceholder
                       // Placeholder for no upcoming events
                       ? const EmptyStatePlaceholder(
@@ -106,7 +107,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 ),
                 // Header
                 Container(
-                  padding: const EdgeInsets.only(top: 40, bottom: 20),
+                  padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
                   color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
