@@ -70,17 +70,22 @@ class _SettingsPageState extends State<SettingsPage> {
                     text: 'System Darkmode',
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.useSystemDarkmode,
                     onToggle: (switchValue) {
-                      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                          _settings.copyWith(useSystemDarkmode: switchValue);
-
                       // Notify the UI that the ThemeMode has changed
-                      if (_settings.useSystemDarkmode) {
+                      if (switchValue) {
                         Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
+                        Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                            _settings.copyWith(useSystemDarkmode: switchValue);
                       } else {
-                        if (_settings.useDarkmode) {
-                          Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
-                        } else {
+                        // Apply the system brightness to the useDarkmode setting as a default falue
+                        // in order to not change the brightness whenever the useSystemDarkmode setting is turned off
+                        if (MediaQuery.of(context).platformBrightness == Brightness.light) {
                           Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.light;
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                              _settings.copyWith(useDarkmode: false, useSystemDarkmode: switchValue);
+                        } else {
+                          Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                              _settings.copyWith(useDarkmode: true, useSystemDarkmode: switchValue);
                         }
                       }
 
