@@ -54,11 +54,10 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: ClipRRect( // Use here borderRadius
-                    borderRadius: _isExpanded ? const BorderRadius.only(bottomRight: Radius.zero, topRight: Radius.circular(15)) : BorderRadius.circular(15),
+                    borderRadius: _isExpanded ? const BorderRadius.only(topRight: Radius.circular(15)) : BorderRadius.circular(15),
                     child: Image.asset(
                       widget.imagePath,
                       height: 57,
-                      alignment: Alignment.centerRight,
                     ),
                   ),
                 ),
