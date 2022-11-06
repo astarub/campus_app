@@ -29,6 +29,10 @@ Future<void> main() async {
   // Keeps the native splash screen onscreen until all loading is done
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+  //Disable all logs in production mode
+  const bool production = bool.fromEnvironment('dart.vm.product');
+  if(production) debugPrint = (String? message, {int? wrapWidth}) => '';
+
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
   Hive.registerAdapter(EventAdapter());
