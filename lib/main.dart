@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -30,8 +31,7 @@ Future<void> main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   //Disable all logs in production mode
-  const bool production = bool.fromEnvironment('dart.vm.product');
-  if(production) debugPrint = (String? message, {int? wrapWidth}) => '';
+  if(!kDebugMode) debugPrint = (String? message, {int? wrapWidth}) => '';
 
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
