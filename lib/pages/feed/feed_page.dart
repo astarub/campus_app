@@ -100,7 +100,7 @@ class FeedPageState extends State<FeedPage> {
                     strokeWidth: 3,
                     onRefresh: updateStateWithFeed,
                     child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       controller: _scrollController,
                       physics: const BouncingScrollPhysics(),
                       children: _feedUtils.fromEntitiesToWidgetList(news: _rubnews, events: _events),
