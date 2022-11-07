@@ -31,7 +31,7 @@ Future<void> main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   //Disable all logs in production mode
-  if(!kDebugMode) debugPrint = (String? message, {int? wrapWidth}) => '';
+  if (!kDebugMode) debugPrint = (String? message, {int? wrapWidth}) => '';
 
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
@@ -130,14 +130,17 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           // Create settings file for the first time, if it doesnt exist
           debugPrint('Settings-file created.');
           settingsJsonFile.create();
-          final Map<String, dynamic> initialSettings = {'useSystemDarkmode': true, 'useDarkmode': false};
-          settingsJsonFile.writeAsString(json.encode(initialSettings));
+          final Settings initialSettings = Settings(feedFilter: ['RUB'], mensaPreferences: [], mensaAllergenes: []);
+          settingsJsonFile.writeAsString(json.encode(initialSettings.toJson()));
 
-          loadingTimer.stop();
-          debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
+          // Apply the inital settings
+          Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(initialSettings);
 
           // Set theme (defaults to current system brightness)
           setTheme(contextForThemeProvider: context);
+
+          loadingTimer.stop();
+          debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
 
           // Start the app
           FlutterNativeSplash.remove();

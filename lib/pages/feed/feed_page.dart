@@ -7,6 +7,7 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
@@ -47,6 +48,14 @@ class FeedPageState extends State<FeedPage> {
   final RubnewsUsecases _rubnewsUsecases = sl<RubnewsUsecases>();
   final CalendarUsecases _calendarUsecase = sl<CalendarUsecases>();
   final FeedUtils _feedUtils = sl<FeedUtils>();
+
+  void saveChangedFilters(List<String> newFilters) {
+    final Settings newSettings =
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(feedFilter: newFilters);
+
+    debugPrint('Saving new feed filter: ${newSettings.feedFilter}');
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
 
   @override
   void initState() {
@@ -103,7 +112,14 @@ class FeedPageState extends State<FeedPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       controller: _scrollController,
                       physics: const BouncingScrollPhysics(),
-                      children: _feedUtils.fromEntitiesToWidgetList(news: _rubnews, events: _events),
+                      children: _feedUtils.fromEntitiesToWidgetList(
+                        news: _rubnews,
+                        events: _events,
+                        mixInto: Provider.of<SettingsHandler>(context, listen: false)
+                            .currentSettings
+                            .feedFilter
+                            .contains('Events'),
+                      ),
                     ),
                   ),
                 ),
@@ -135,7 +151,10 @@ class FeedPageState extends State<FeedPage> {
                             // Search button
                             CampusIconButton(
                               iconPath: 'assets/img/icons/search.svg',
-                              onTap: () {},
+                              onTap: () {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(content: Text('Was suchst du hier denn? :D')));
+                              },
                             ),
                             // FeedPicker
                             Padding(
@@ -149,7 +168,10 @@ class FeedPageState extends State<FeedPage> {
                               onTap: () {
                                 widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
                                   opaque: false,
-                                  pageBuilder: (context, _, __) => const FeedFilterPopup(),
+                                  pageBuilder: (context, _, __) => FeedFilterPopup(
+                                    selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.feedFilter,
+                                    onClose: saveChangedFilters,
+                                  ),
                                 ));
                               },
                             ),
