@@ -135,7 +135,7 @@ class MensaDaySelectionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        margin: day != 'Fr' ? const EdgeInsets.only(right: 10) : EdgeInsets.zero,
+        margin: const EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
           color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? isActive

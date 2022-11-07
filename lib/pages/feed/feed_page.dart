@@ -153,7 +153,7 @@ class FeedPageState extends State<FeedPage> {
                               iconPath: 'assets/img/icons/search.svg',
                               onTap: () {
                                 ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(content: Text('Was suchst du hier denn? :D')));
+                                    .showSnackBar(const SnackBar(content: Text('Hier gibts noch nichts zu suchen :D')));
                               },
                             ),
                             // FeedPicker

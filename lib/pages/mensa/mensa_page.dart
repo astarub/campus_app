@@ -145,7 +145,7 @@ class _MensaPageState extends State<MensaPage> {
                       ),
                       // Day selection
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: MensaDaySelection(onChanged: (int day) => setState(() => selectedDay = day)),
                       ),
                     ],
