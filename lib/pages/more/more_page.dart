@@ -173,7 +173,10 @@ class MorePage extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const StaticInfoPage(title: 'Datenschutz', content: privacy),
+                                  builder: (context) => const StaticInfoPage.external(
+                                    title: 'Datenschutz',
+                                    url: 'https://asta-bochum.de/datenschutz/#campus-app',
+                                  ),
                                 ),
                               );
                             },
