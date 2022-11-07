@@ -172,43 +172,45 @@ class MensaDaySelectionItem extends StatelessWidget {
                 : const Color.fromRGBO(255, 255, 255, 0.04),
             borderRadius: BorderRadius.circular(15),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               child: Center(
-                child: Column(
-                  children: [
-                    Text(
-                      day,
-                      style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                          ? isActive
-                              ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium
-                              : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
-                                    color: Colors.black,
-                                  )
-                          : isActive
-                              ? Provider.of<ThemesNotifier>(context)
-                                  .currentThemeData
-                                  .textTheme
-                                  .labelMedium
-                                  ?.copyWith(color: Colors.white)
-                              : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
-                    ),
-                    Text(
-                      date,
-                      style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                          ? isActive
-                              ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
-                                    color: Colors.white70,
-                                  )
-                              : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium
-                          : isActive
-                              ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium
-                              : Provider.of<ThemesNotifier>(context)
-                                  .currentThemeData
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(color: Colors.white54),
-                    ),
-                  ],
+                child: FittedBox(
+                  child: Column(
+                    children: [
+                      Text(
+                        day,
+                        style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? isActive
+                                ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium
+                                : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
+                                      color: Colors.black,
+                                    )
+                            : isActive
+                                ? Provider.of<ThemesNotifier>(context)
+                                    .currentThemeData
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(color: Colors.white)
+                                : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
+                      ),
+                      Text(
+                        date,
+                        style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? isActive
+                                ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
+                                      color: Colors.white70,
+                                    )
+                                : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium
+                            : isActive
+                                ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium
+                                : Provider.of<ThemesNotifier>(context)
+                                    .currentThemeData
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(color: Colors.white54),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
