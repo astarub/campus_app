@@ -57,6 +57,17 @@ class FeedPageState extends State<FeedPage> {
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
   }
 
+  void saveFeedExplore(int selected) {
+    bool explore = false;
+    if (selected == 1) explore = true;
+
+    final Settings newSettings =
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(newsExplore: explore);
+
+    debugPrint('Saving newsExplore: ${newSettings.newsExplore}');
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -115,10 +126,8 @@ class FeedPageState extends State<FeedPage> {
                       children: _feedUtils.fromEntitiesToWidgetList(
                         news: _rubnews,
                         events: _events,
-                        mixInto: Provider.of<SettingsHandler>(context, listen: false)
-                            .currentSettings
-                            .feedFilter
-                            .contains('Events'),
+                        mixInto: Provider.of<SettingsHandler>(context).currentSettings.feedFilter.contains('Events') ||
+                            Provider.of<SettingsHandler>(context).currentSettings.newsExplore,
                       ),
                     ),
                   ),
@@ -159,8 +168,16 @@ class FeedPageState extends State<FeedPage> {
                             // FeedPicker
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 24),
-                              child:
-                                  CampusSegmentedControl(leftTitle: 'Feed', rightTitle: 'Explore', onChanged: (_) {}),
+                              child: CampusSegmentedControl(
+                                leftTitle: 'Feed',
+                                rightTitle: 'Explore',
+                                onChanged: saveFeedExplore,
+                                selected:
+                                    Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore ==
+                                            false
+                                        ? 0
+                                        : 1,
+                              ),
                             ),
                             // Filter button
                             CampusIconButton(

@@ -43,6 +43,7 @@ class Settings {
   final bool useSystemDarkmode;
   final bool useDarkmode;
   final List<String> feedFilter;
+  final bool newsExplore;
   final List<String> mensaPreferences;
   final List<String> mensaAllergenes;
   final bool useExternalBrowser;
@@ -51,6 +52,7 @@ class Settings {
     this.useSystemDarkmode = true,
     this.useDarkmode = false,
     this.feedFilter = const [],
+    this.newsExplore = false,
     this.mensaPreferences = const [],
     this.mensaAllergenes = const [],
     this.useExternalBrowser = false,
@@ -60,6 +62,7 @@ class Settings {
     bool? useSystemDarkmode,
     bool? useDarkmode,
     List<String>? feedFilter,
+    bool? newsExplore,
     List<String>? mensaPreferences,
     List<String>? mensaAllergenes,
     bool? useExternalBrowser,
@@ -68,6 +71,7 @@ class Settings {
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
         useDarkmode: useDarkmode ?? this.useDarkmode,
         feedFilter: feedFilter ?? this.feedFilter,
+        newsExplore: newsExplore ?? this.newsExplore,
         mensaPreferences: mensaPreferences ?? this.mensaPreferences,
         mensaAllergenes: mensaAllergenes ?? this.mensaAllergenes,
         useExternalBrowser: useExternalBrowser ?? this.useExternalBrowser,
@@ -78,6 +82,7 @@ class Settings {
       useSystemDarkmode: json['useSystemDarkmode'] ?? true,
       useDarkmode: json['useDarkmode'] ?? false,
       feedFilter: json['feedFilter'] != null ? List<String>.from(json['feedFilter']) : List<String>.from([]),
+      newsExplore: json['newsExplore'] ?? false,
       mensaPreferences:
           json['mensaPreferences'] != null ? List<String>.from(json['mensaPreferences']) : List<String>.from([]),
       mensaAllergenes:
@@ -91,6 +96,7 @@ class Settings {
       'useSystemDarkmode': useSystemDarkmode,
       'useDarkmode': useDarkmode,
       'feedFilter': feedFilter,
+      'newsExplore': newsExplore,
       'mensaPreferences': mensaPreferences,
       'mensaAllergenes': mensaAllergenes,
       'useExternalBrowser': useExternalBrowser,

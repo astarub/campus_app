@@ -33,7 +33,7 @@ class CampusSegmentedControl extends StatefulWidget {
 }
 
 class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
-  AlignmentGeometry _hoverAligment = Alignment.centerLeft;
+  late AlignmentGeometry _hoverAligment;
   static const double _pickerWidth = 200;
 
   void _picked(int newSelected) {
@@ -51,6 +51,20 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
         }
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // This does not apply the inital value from the settings correctly
+    setState(() {
+      if (widget.selected == 0) {
+        _hoverAligment = Alignment.centerLeft;
+      } else {
+        _hoverAligment = Alignment.centerRight;
+      }
+    });
   }
 
   @override

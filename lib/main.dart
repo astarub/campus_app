@@ -108,6 +108,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
             if (rawFileContent != '') {
               final dynamic rawData = json.decode(rawFileContent);
               loadedSettings = Settings.fromJson(rawData);
+              loadedSettings = loadedSettings!.copyWith(newsExplore: false); // Default Feed on every start
 
               debugPrint('Settings loaded.');
               Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(loadedSettings!);
