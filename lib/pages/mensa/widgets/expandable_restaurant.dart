@@ -48,38 +48,37 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Restaurant header
-          Material(
-            color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-            borderRadius: BorderRadius.circular(15),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(15),
-              splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                  ? const Color.fromRGBO(0, 0, 0, 0.04)
-                  : const Color.fromRGBO(255, 255, 255, 0.04),
-              highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                  ? const Color.fromRGBO(0, 0, 0, 0.03)
-                  : const Color.fromRGBO(255, 255, 255, 0.03),
-              onTap: () {
-                if (widget.meals.isNotEmpty) {
-                  setState(() => _isExpanded = !_isExpanded);
-                  restaurantExpandableKey.currentState!.toggleExpand();
-                }
-              },
-              child: Stack(
-                alignment: Alignment.centerRight,
-                children: [
-                  if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light)
-                    ClipRRect(
-                      borderRadius: BorderRadius.only(
-                          topRight: const Radius.circular(15),
-                          bottomRight: _isExpanded ? Radius.zero : const Radius.circular(15)),
-                      child: Image.asset(
-                        widget.imagePath,
-                        height: 57,
-                        alignment: Alignment.centerRight,
-                      ),
+          Stack(
+            children: [
+              if(Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ClipRRect( // Use here borderRadius
+                    borderRadius: _isExpanded ? const BorderRadius.only(topRight: Radius.circular(15)) : BorderRadius.circular(15),
+                    child: Image.asset(
+                      widget.imagePath,
+                      height: 57,
                     ),
-                  Padding(
+                  ),
+                ),
+              Material(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(15),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(15),
+                  splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromRGBO(0, 0, 0, 0.04)
+                      : const Color.fromRGBO(255, 255, 255, 0.04),
+                  highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromRGBO(0, 0, 0, 0.03)
+                      : const Color.fromRGBO(255, 255, 255, 0.7),
+                  onTap: () {
+                    if (widget.meals.isNotEmpty) {
+                      setState(() => _isExpanded = !_isExpanded);
+                      restaurantExpandableKey.currentState!.toggleExpand();
+                    }
+                  },
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,9 +91,9 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
                       ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
           // Items
           AnimatedExpandable(

@@ -30,8 +30,6 @@ class MensaUtils extends Utils {
       categories.add(dish.category);
     }
 
-    print(categories);
-
     for (final category in categories) {
       final meals = <MealItem>[];
       for (final dish in entities.where((dish) => dish.date == day && dish.category == category)) {
