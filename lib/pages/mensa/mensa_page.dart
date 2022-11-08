@@ -48,12 +48,8 @@ class _MensaPageState extends State<MensaPage> {
 
   /// This function saves the new selected preferences with the [SettingsHandler]
   void saveChangedPreferences(List<String> newPreferences) {
-    final Settings newSettings = Settings(
-      useSystemDarkmode: _settings.useSystemDarkmode,
-      useDarkmode: _settings.useDarkmode,
-      mensaPreferences: newPreferences,
-      mensaAllergenes: _settings.mensaAllergenes,
-    );
+    final Settings newSettings =
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(mensaPreferences: newPreferences);
 
     debugPrint('Saving new mensa preferences: ${newSettings.mensaPreferences}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
@@ -61,12 +57,8 @@ class _MensaPageState extends State<MensaPage> {
 
   /// This function saves the new selected preferences with the [SettingsHandler]
   void saveChangedAllergenes(List<String> newAllergenes) {
-    final Settings newSettings = Settings(
-      useSystemDarkmode: _settings.useSystemDarkmode,
-      useDarkmode: _settings.useDarkmode,
-      mensaPreferences: _settings.mensaPreferences,
-      mensaAllergenes: newAllergenes,
-    );
+    final Settings newSettings =
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(mensaAllergenes: newAllergenes);
 
     debugPrint('Saving new mensa allergenes: ${newSettings.mensaAllergenes}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
@@ -152,7 +144,10 @@ class _MensaPageState extends State<MensaPage> {
                         ),
                       ),
                       // Day selection
-                      MensaDaySelection(onChanged: (int day) => setState(() => selectedDay = day)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: MensaDaySelection(onChanged: (int day) => setState(() => selectedDay = day)),
+                      ),
                     ],
                   ),
                 ),

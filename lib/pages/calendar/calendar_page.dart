@@ -99,7 +99,7 @@ class _CalendarPageState extends State<CalendarPage> {
                               strokeWidth: 3,
                               onRefresh: updateStateWithEvents,
                               child: ListView(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
                                 physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                                 children: showSavedEvents ? savedEvents : parsedEvents,
                               ),

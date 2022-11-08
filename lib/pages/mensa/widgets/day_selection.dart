@@ -95,8 +95,8 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Flex(
+      direction: Axis.horizontal,
       children: [
         MensaDaySelectionItem(day: 'Mo', date: weekDates[0], onTap: () => selectDay(0), isActive: selectedDay == 0),
         MensaDaySelectionItem(day: 'Di', date: weekDates[1], onTap: () => selectDay(1), isActive: selectedDay == 1),
@@ -133,81 +133,85 @@ class MensaDaySelectionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: day != 'Fr' ? const EdgeInsets.only(right: 10) : EdgeInsets.zero,
-      decoration: BoxDecoration(
-        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-            ? isActive
-                ? Colors.black
-                : const Color.fromRGBO(245, 246, 250, 1)
-            : isActive
-                ? const Color.fromRGBO(34, 40, 54, 1)
-                : const Color.fromRGBO(18, 24, 38, 1),
-        borderRadius: BorderRadius.circular(15),
-        border: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark
-            ? Border.all(color: const Color.fromRGBO(34, 40, 54, 1))
-            : null,
-      ),
-      child: Material(
-        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-            ? isActive
-                ? Colors.black
-                : const Color.fromRGBO(245, 246, 250, 1)
-            : isActive
-                ? const Color.fromRGBO(34, 40, 54, 1)
-                : const Color.fromRGBO(18, 24, 38, 1),
-        borderRadius: BorderRadius.circular(15),
-        child: InkWell(
-          onTap: onTap,
-          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5),
+        decoration: BoxDecoration(
+          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? isActive
-                  ? const Color.fromRGBO(255, 255, 255, 0.12)
-                  : const Color.fromRGBO(0, 0, 0, 0.06)
-              : const Color.fromRGBO(255, 255, 255, 0.06),
-          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-              ? isActive
-                  ? const Color.fromRGBO(255, 255, 255, 0.08)
-                  : const Color.fromRGBO(0, 0, 0, 0.04)
-              : const Color.fromRGBO(255, 255, 255, 0.04),
+                  ? Colors.black
+                  : const Color.fromRGBO(245, 246, 250, 1)
+              : isActive
+                  ? const Color.fromRGBO(34, 40, 54, 1)
+                  : const Color.fromRGBO(18, 24, 38, 1),
           borderRadius: BorderRadius.circular(15),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            child: Center(
-              child: Column(
-                children: [
-                  Text(
-                    day,
-                    style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? isActive
-                            ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium
-                            : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
-                                  color: Colors.black,
-                                )
-                        : isActive
-                            ? Provider.of<ThemesNotifier>(context)
-                                .currentThemeData
-                                .textTheme
-                                .labelMedium
-                                ?.copyWith(color: Colors.white)
-                            : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
+          border: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark
+              ? Border.all(color: const Color.fromRGBO(34, 40, 54, 1))
+              : null,
+        ),
+        child: Material(
+          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? isActive
+                  ? Colors.black
+                  : const Color.fromRGBO(245, 246, 250, 1)
+              : isActive
+                  ? const Color.fromRGBO(34, 40, 54, 1)
+                  : const Color.fromRGBO(18, 24, 38, 1),
+          borderRadius: BorderRadius.circular(15),
+          child: InkWell(
+            onTap: onTap,
+            splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                ? isActive
+                    ? const Color.fromRGBO(255, 255, 255, 0.12)
+                    : const Color.fromRGBO(0, 0, 0, 0.06)
+                : const Color.fromRGBO(255, 255, 255, 0.06),
+            highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                ? isActive
+                    ? const Color.fromRGBO(255, 255, 255, 0.08)
+                    : const Color.fromRGBO(0, 0, 0, 0.04)
+                : const Color.fromRGBO(255, 255, 255, 0.04),
+            borderRadius: BorderRadius.circular(15),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+              child: Center(
+                child: FittedBox(
+                  child: Column(
+                    children: [
+                      Text(
+                        day,
+                        style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? isActive
+                                ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium
+                                : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
+                                      color: Colors.black,
+                                    )
+                            : isActive
+                                ? Provider.of<ThemesNotifier>(context)
+                                    .currentThemeData
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(color: Colors.white)
+                                : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
+                      ),
+                      Text(
+                        date,
+                        style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? isActive
+                                ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
+                                      color: Colors.white70,
+                                    )
+                                : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium
+                            : isActive
+                                ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium
+                                : Provider.of<ThemesNotifier>(context)
+                                    .currentThemeData
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(color: Colors.white54),
+                      ),
+                    ],
                   ),
-                  Text(
-                    date,
-                    style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? isActive
-                            ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
-                                  color: Colors.white70,
-                                )
-                            : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium
-                        : isActive
-                            ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium
-                            : Provider.of<ThemesNotifier>(context)
-                                .currentThemeData
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(color: Colors.white54),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
