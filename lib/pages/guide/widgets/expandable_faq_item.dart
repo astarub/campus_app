@@ -34,7 +34,7 @@ class _ExpandableFaqItemState extends State<ExpandableFaqItem> {
     return Container(
       margin: const EdgeInsets.only(bottom: 30),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 3))],
       ),
@@ -42,12 +42,16 @@ class _ExpandableFaqItemState extends State<ExpandableFaqItem> {
         children: [
           // FaqItem header
           Material(
-            color: Colors.white,
+            color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
             borderRadius: BorderRadius.circular(15),
             child: InkWell(
               borderRadius: BorderRadius.circular(15),
-              highlightColor: const Color.fromRGBO(0, 0, 0, 0.03),
-              splashColor: const Color.fromRGBO(0, 0, 0, 0.04),
+              splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? const Color.fromRGBO(0, 0, 0, 0.04)
+                  : const Color.fromRGBO(255, 255, 255, 0.04),
+              highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? const Color.fromRGBO(0, 0, 0, 0.03)
+                  : const Color.fromRGBO(255, 255, 255, 0.03),
               onTap: () {
                 setState(() => _isExpanded = !_isExpanded);
                 faqItemExpandableKey.currentState!.toggleExpand();

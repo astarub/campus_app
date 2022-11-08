@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+
+import 'package:animations/animations.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:animations/animations.dart';
 
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/calendar/calendar_event_entity.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+import 'package:campus_app/utils/widgets/styled_html.dart';
 
 /// This widget displays an event item in the events page
 class CalendarEventWidget extends StatelessWidget {
   /// The referenced event data
-  final CalendarEventEntity event;
+  final Event event;
 
   /// The additional padding that should be applied around the
   /// content of the card
@@ -39,20 +41,26 @@ class CalendarEventWidget extends StatelessWidget {
     final day = DateFormat('dd').format(event.startDate);
 
     return OpenContainer(
+      closedColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       transitionDuration: const Duration(milliseconds: 250),
       openBuilder: (context, _) => CalendarDetailPage(event: event),
       closedBuilder: (context, VoidCallback openDetailsPage) => Container(
-        margin: openable ? const EdgeInsets.only(bottom: 14, left: 7, right: 7, top: 5) : EdgeInsets.only(bottom: 10),
+        margin:
+            openable ? const EdgeInsets.only(bottom: 14, left: 7, right: 7, top: 5) : const EdgeInsets.only(bottom: 10),
         padding: padding,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
           borderRadius: BorderRadius.circular(15),
           boxShadow: [boxShadow],
         ),
         child: CustomButton(
           borderRadius: BorderRadius.circular(15),
-          highlightColor: const Color.fromRGBO(0, 0, 0, 0.03),
-          splashColor: const Color.fromRGBO(0, 0, 0, 0.04),
+          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? const Color.fromRGBO(0, 0, 0, 0.03)
+              : const Color.fromRGBO(255, 255, 255, 0.03),
+          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? const Color.fromRGBO(0, 0, 0, 0.04)
+              : const Color.fromRGBO(255, 255, 255, 0.04),
           tapHandler: openable ? openDetailsPage : () {},
           child: Row(
             children: [
@@ -83,22 +91,43 @@ class CalendarEventWidget extends StatelessWidget {
                 ),
               ),
               // Title & Times
-              Padding(
-                padding: const EdgeInsets.only(left: 6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      event.title,
-                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                    ),
-                    Text(startingTime),
-                    Text(event.costs != 0
-                        ? event.costs % 2 == 0
-                            ? event.costs.toInt().toString() + ' €'
-                            : event.costs.toString() + '0 €'
-                        : 'kostenlos'),
-                  ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      StyledHTML(
+                        context: context,
+                        text: event.title,
+                        textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                        textAlign: TextAlign.left,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Beginn: $startingTime Uhr\t',
+                                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                              ),
+                            ),
+                            Expanded(
+                              child: StyledHTML(
+                                context: context,
+                                text: event.cost == null
+                                    ? ''
+                                    : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",
+                                textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

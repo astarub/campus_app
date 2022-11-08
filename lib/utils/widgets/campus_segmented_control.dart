@@ -33,7 +33,7 @@ class CampusSegmentedControl extends StatefulWidget {
 }
 
 class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
-  AlignmentGeometry _hoverAligment = Alignment.centerLeft;
+  late AlignmentGeometry _hoverAligment;
   static const double _pickerWidth = 200;
 
   void _picked(int newSelected) {
@@ -54,6 +54,20 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    // This does not apply the inital value from the settings correctly
+    setState(() {
+      if (widget.selected == 0) {
+        _hoverAligment = Alignment.centerLeft;
+      } else {
+        _hoverAligment = Alignment.centerRight;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 42,
@@ -64,8 +78,18 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
           // Background
           Container(
             decoration: BoxDecoration(
-              color: const Color.fromRGBO(245, 246, 250, 1),
-              borderRadius: BorderRadius.circular(6),
+              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? const Color.fromRGBO(245, 246, 250, 1)
+                  : Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+              borderRadius: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? BorderRadius.circular(6)
+                  : BorderRadius.circular(10),
+              border: Border.all(
+                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                    ? const Color.fromRGBO(245, 246, 250, 1)
+                    : const Color.fromRGBO(34, 40, 54, 1),
+                width: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark ? 2 : 0,
+              ),
             ),
           ),
           // Selection
@@ -78,7 +102,9 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
               height: 32,
               margin: const EdgeInsets.symmetric(horizontal: 5),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                    ? Colors.white
+                    : const Color.fromRGBO(34, 40, 54, 1),
                 borderRadius: BorderRadius.circular(6),
                 boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 0))],
               ),
@@ -92,22 +118,26 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
                 child: Text(
                   widget.leftTitle,
                   textAlign: TextAlign.center,
-                  style: Provider.of<ThemesNotifier>(context)
-                      .currentThemeData
-                      .textTheme
-                      .labelMedium
-                      ?.copyWith(color: Colors.black),
+                  style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? Provider.of<ThemesNotifier>(context)
+                          .currentThemeData
+                          .textTheme
+                          .labelMedium
+                          ?.copyWith(color: Colors.black)
+                      : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
                 ),
               ),
               Expanded(
                 child: Text(
                   widget.rightTitle,
                   textAlign: TextAlign.center,
-                  style: Provider.of<ThemesNotifier>(context)
-                      .currentThemeData
-                      .textTheme
-                      .labelMedium
-                      ?.copyWith(color: Colors.black),
+                  style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? Provider.of<ThemesNotifier>(context)
+                          .currentThemeData
+                          .textTheme
+                          .labelMedium
+                          ?.copyWith(color: Colors.black)
+                      : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
                 ),
               ),
             ],

@@ -11,7 +11,6 @@
         "editor.tabCompletion": "onlySnippets",
         "editor.selectionHighlight": false,
         "editor.wordBasedSuggestions": false,
-        "editor.quickSuggestions": true,
         "editor.suggest.snippetsPreventQuickSuggestions": false,
         "editor.formatOnSave": true,
 
@@ -22,13 +21,13 @@
         // formating guidline
         "editor.tabSize": 2,
         "editor.rulers": [
-            80,
-            120
+            120,
+            140
         ],
 
         // formatter: https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code
         "editor.defaultFormatter": "Dart-Code.dart-code"
     },
-    
+
     "dart.lineLength": 120
 }

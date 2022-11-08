@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -47,8 +48,7 @@ class GuidePage extends StatelessWidget {
               children: [
                 // Header
                 Container(
-                  padding: const EdgeInsets.only(top: 40, bottom: 40),
-                  color: Colors.white,
+                  padding: EdgeInsets.only(top: Platform.isAndroid ? 14 : 0, bottom: 40),
                   child: Text(
                     'Guide',
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
@@ -67,7 +67,7 @@ class GuidePage extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: Text(
-                            'Dieser Bereich wird in Zukunft stetig ergänzt und um nützliche Hilfen wie bspw. einen Raumfinder erweitert werden.',
+                            'Dieser Bereich wird in Zukunft stetig ergänzt und um nützliche Hilfen wie bspw. einen interaktiven Raumfinder erweitert werden.',
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                             overflow: TextOverflow.visible,
                           ),

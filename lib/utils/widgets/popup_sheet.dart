@@ -13,6 +13,9 @@ class PopupSheet extends StatefulWidget {
   /// The title that should be displayed at the top of the popup
   final String title;
 
+  /// The position factor that is used for the open state of the PopupSheet
+  final double openPositionFactor;
+
   /// The function that should be executed when the popup is closed by the user.
   ///
   /// Must call at least `Navigator.pop(context)` to remove the popup from the
@@ -26,6 +29,7 @@ class PopupSheet extends StatefulWidget {
   const PopupSheet({
     Key? key,
     this.title = 'Popup',
+    this.openPositionFactor = 0.5,
     required this.onClose,
     required this.child,
   }) : super(key: key);
@@ -50,10 +54,10 @@ class _PopupSheetState extends State<PopupSheet> {
     // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
     Timer(
       const Duration(milliseconds: 50),
-      () => _popupController.snapToPosition(const SnappingPosition.factor(
-        positionFactor: 0.5,
+      () => _popupController.snapToPosition(SnappingPosition.factor(
+        positionFactor: widget.openPositionFactor,
         snappingCurve: Curves.easeOutExpo,
-        snappingDuration: Duration(milliseconds: 350),
+        snappingDuration: const Duration(milliseconds: 350),
       )),
     );
   }
@@ -82,7 +86,9 @@ class _PopupSheetState extends State<PopupSheet> {
               margin: const EdgeInsets.only(top: 10, bottom: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
-                color: const Color.fromRGBO(245, 246, 250, 1),
+                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                    ? const Color.fromRGBO(245, 246, 250, 1)
+                    : const Color.fromRGBO(34, 40, 54, 1),
               ),
             ),
             // Headline
@@ -94,13 +100,13 @@ class _PopupSheetState extends State<PopupSheet> {
         ),
       ),
       initialSnappingPosition: const SnappingPosition.pixels(positionPixels: -60),
-      snappingPositions: const [
+      snappingPositions: [
         SnappingPosition.factor(
-          positionFactor: 0.5,
+          positionFactor: widget.openPositionFactor,
           snappingCurve: Curves.easeOutExpo,
-          snappingDuration: Duration(milliseconds: 350),
+          snappingDuration: const Duration(milliseconds: 350),
         ),
-        SnappingPosition.pixels(
+        const SnappingPosition.pixels(
           positionPixels: -60,
           snappingCurve: Curves.easeOutExpo,
           snappingDuration: Duration(milliseconds: 350),

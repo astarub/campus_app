@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
-import 'package:campus_app/pages/rubnews/rubnews_page.dart';
+import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
 /// Defines the different pages that can be displayed
@@ -49,10 +50,25 @@ class _HomePageState extends State<HomePage> {
     PageItem.more: GlobalKey<AnimatedEntryState>(),
   };
 
+  final SystemUiOverlayStyle lightSystemUiStyle = const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.light, // iOS
+    statusBarColor: Colors.white, // Android
+    statusBarIconBrightness: Brightness.dark, // Android
+    systemNavigationBarColor: Colors.white, // Android
+    systemNavigationBarIconBrightness: Brightness.dark, // Android
+  );
+  final SystemUiOverlayStyle darkSystemUiStyle = const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.dark, // iOS
+    statusBarColor: Color.fromRGBO(14, 20, 32, 1), // Android
+    statusBarIconBrightness: Brightness.light, // Android
+    systemNavigationBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
+    systemNavigationBarIconBrightness: Brightness.light, // Android
+  );
+
   /// Holds the currently active page.
   PageItem currentPage = PageItem.feed;
 
-  GlobalKey<RubnewsPageState> feedKey = GlobalKey();
+  GlobalKey<FeedPageState> feedKey = GlobalKey();
 
   /// Switches to another page when selected in the nav-menu
   Future<bool> _selectedPage(PageItem selectedPageItem) async {
@@ -86,15 +102,38 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    // Theme von System auslesen & Callback erstellen
+    var window = WidgetsBinding.instance.window;
+
+    window.onPlatformBrightnessChanged = () {
+      final brightness = window.platformBrightness;
+
+      // Callback wird ausgeführt, sofern System-Darkmode verwendet werden soll
+      if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useSystemDarkmode) {
+        if (brightness == Brightness.light) {
+          debugPrint('System ändert zu LightMode.');
+          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark) {
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.light;
+          }
+        } else if (brightness == Brightness.dark) {
+          debugPrint('System ändert zu DarkMode.');
+          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light) {
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.dark;
+          }
+        }
+      }
+    };
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarColor: Colors.white,
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.dark,
-      ),
+      value: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          ? lightSystemUiStyle
+          : darkSystemUiStyle,
       child: WillPopScope(
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(
@@ -103,15 +142,17 @@ class _HomePageState extends State<HomePage> {
             currentPage: currentPage,
             onSelectedPage: _selectedPage,
           ),
-          body: Stack(
-            // Holds all the pages that sould be accessable within the bottom nav-menu
-            children: [
-              _buildOffstateNavigator(PageItem.feed),
-              _buildOffstateNavigator(PageItem.events),
-              _buildOffstateNavigator(PageItem.mensa),
-              _buildOffstateNavigator(PageItem.guide),
-              _buildOffstateNavigator(PageItem.more),
-            ],
+          body: SafeArea(
+            child: Stack(
+              // Holds all the pages that sould be accessable within the bottom nav-menu
+              children: [
+                _buildOffstateNavigator(PageItem.feed),
+                _buildOffstateNavigator(PageItem.events),
+                _buildOffstateNavigator(PageItem.mensa),
+                _buildOffstateNavigator(PageItem.guide),
+                _buildOffstateNavigator(PageItem.more),
+              ],
+            ),
           ),
         ),
       ),
