@@ -138,10 +138,6 @@ class _HomePageState extends State<HomePage> {
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(
           backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-          bottomNavigationBar: BottomNavBar(
-            currentPage: currentPage,
-            onSelectedPage: _selectedPage,
-          ),
           body: SafeArea(
             child: Stack(
               // Holds all the pages that sould be accessable within the bottom nav-menu
@@ -151,6 +147,14 @@ class _HomePageState extends State<HomePage> {
                 _buildOffstateNavigator(PageItem.mensa),
                 _buildOffstateNavigator(PageItem.guide),
                 _buildOffstateNavigator(PageItem.more),
+                // BottomNavigationBar
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BottomNavBar(
+                    currentPage: currentPage,
+                    onSelectedPage: _selectedPage,
+                  ),
+                ),
               ],
             ),
           ),

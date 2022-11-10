@@ -155,8 +155,8 @@ class _MensaPageState extends State<MensaPage> {
                 Expanded(
                   child: RefreshIndicator(
                     displacement: 10,
-                    backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.dialogBackgroundColor,
-                    color: Provider.of<ThemesNotifier>(context).currentThemeData.focusColor,
+                    backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                    color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                     strokeWidth: 3,
                     onRefresh: () async {
                       await _mensaUsecases.updateDishesAndFailures().then((data) {
