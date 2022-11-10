@@ -54,8 +54,9 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          physics: const BouncingScrollPhysics(),
           children: [
             // Title
             Padding(

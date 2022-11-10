@@ -1,3 +1,5 @@
+// ignore_for_file: require_trailing_commas
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -67,6 +69,7 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
             ),
             Expanded(
               child: ListView(
+                padding: EdgeInsets.zero,
                 physics: const BouncingScrollPhysics(),
                 children: [
                   AllergenesListItem(
