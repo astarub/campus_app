@@ -139,6 +139,7 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
           backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
           body: SafeArea(
+            bottom: false,
             child: Stack(
               // Holds all the pages that sould be accessable within the bottom nav-menu
               children: [
