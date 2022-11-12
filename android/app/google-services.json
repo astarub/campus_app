@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "330477020905",
+    "project_id": "campus-app-asta-rub",
+    "storage_bucket": "campus-app-asta-rub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330477020905:android:1ee464b1393089d8527278",
+        "android_client_info": {
+          "package_name": "de.asta_bochum.campus_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330477020905-qgeoqm2agg3fumsksgiaimlmhobf8q1c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwCGF8PnsQ5zTJKu-h517bk5XFCyFuelg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330477020905-qgeoqm2agg3fumsksgiaimlmhobf8q1c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

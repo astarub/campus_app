@@ -12,6 +12,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:campus_app/firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
@@ -25,13 +28,25 @@ import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 
-Future<void> main() async {
-  final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // Keeps the native splash screen onscreen until all loading is done
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
 
-  //Disable all logs in production mode
+  print("Handling a background message: ${message.messageId}");
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  print(fcmToken);
+
+  // Disable all logs in production mode
   if (!kDebugMode) debugPrint = (String? message, {int? wrapWidth}) => '';
+
 
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();

@@ -37,6 +37,8 @@ dependencies:
   hive_flutter: ^1.1.0
   url_launcher: ^6.1.6
   flutter_inappwebview: ^5.4.3+8
+  firebase_core: ^2.2.0
+  firebase_messaging: ^14.1.0
   
 dev_dependencies:
   flutter_test:
