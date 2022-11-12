@@ -44,6 +44,8 @@ Future<void> main() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   print(fcmToken);
 
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   // Disable all logs in production mode
   if (!kDebugMode) debugPrint = (String? message, {int? wrapWidth}) => '';
 
