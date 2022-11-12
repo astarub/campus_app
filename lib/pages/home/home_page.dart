@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -143,11 +144,20 @@ class _HomePageState extends State<HomePage> {
             child: Stack(
               // Holds all the pages that sould be accessable within the bottom nav-menu
               children: [
-                _buildOffstateNavigator(PageItem.feed),
-                _buildOffstateNavigator(PageItem.events),
-                _buildOffstateNavigator(PageItem.mensa),
-                _buildOffstateNavigator(PageItem.guide),
-                _buildOffstateNavigator(PageItem.more),
+                // Padding to prevent content from "sliding" under the navigation menu
+                Padding(
+                  padding: EdgeInsets.only(bottom: Platform.isIOS ? 100 : 60),
+                  child: Stack(
+                    children: [
+                      // Pages
+                      _buildOffstateNavigator(PageItem.feed),
+                      _buildOffstateNavigator(PageItem.events),
+                      _buildOffstateNavigator(PageItem.mensa),
+                      _buildOffstateNavigator(PageItem.guide),
+                      _buildOffstateNavigator(PageItem.more),
+                    ],
+                  ),
+                ),
                 // BottomNavigationBar
                 Align(
                   alignment: Alignment.bottomCenter,
