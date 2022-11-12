@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -28,27 +29,14 @@ import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
-
-  print("Handling a background message: ${message.messageId}");
-}
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  print(fcmToken);
-
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // Disable all logs in production mode
   if (!kDebugMode) debugPrint = (String? message, {int? wrapWidth}) => '';
 
+  //Initialize Firebase and FCM
+  await initializeFirebase();
 
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
@@ -71,6 +59,72 @@ Future<void> main() async {
     ],
     child: const CampusApp(),
   ));
+}
+
+Future<void> initializeFirebase()async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Initialize Firebase
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Get the FCM Token
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+
+  debugPrint(fcmToken);
+
+  // Request notifications permissions on iOs
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    badge: true,
+    provisional: false,
+    sound: true,
+  );
+
+  // Enable foreground notifications on iOs
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true, // Required to display a heads up notification
+    badge: true,
+    sound: true,
+  );
+
+  // Local notifications on Android
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  const AndroidInitializationSettings initializationSettingsAndroid =  AndroidInitializationSettings('launch_background');
+  const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  // Create another notifications channel on Android
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'notifications',
+    'Notification Channel',
+    description: 'This channel is used to display notifications.',
+    importance: Importance.max,
+  );
+  await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
+
+  // Display foreground notifications on Android
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    final RemoteNotification? notification = message.notification;
+
+    if(notification != null && message.notification?.android != null){
+      flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              icon: 'notification_logo',
+            ),
+          ),);
+    }
+  });
 }
 
 class CampusApp extends StatefulWidget {
