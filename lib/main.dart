@@ -193,7 +193,9 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    FlutterDisplayMode.setHighRefreshRate();
+    if (!Platform.isIOS) {
+      FlutterDisplayMode.setHighRefreshRate();
+    }
 
     // Add observer in order to listen to `didChangeAppLifecycleState`
     WidgetsBinding.instance.addObserver(this);

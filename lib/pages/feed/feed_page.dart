@@ -161,8 +161,13 @@ class FeedPageState extends State<FeedPage> {
                             CampusIconButton(
                               iconPath: 'assets/img/icons/search.svg',
                               onTap: () {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(content: Text('Hier gibts noch nichts zu suchen :D')));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: EdgeInsets.only(bottom: 80, left: 20, right: 20),
+                                    content: Text('Hier gibts noch nichts zu suchen :D'),
+                                  ),
+                                );
                               },
                             ),
                             // FeedPicker

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/animated_expandable.dart';
+import 'package:campus_app/utils/widgets/styled_html.dart';
 
 /// This widget displays one faq entry with its title and content
 /// in the guide page.
@@ -76,10 +77,11 @@ class _ExpandableFaqItemState extends State<ExpandableFaqItem> {
             key: faqItemExpandableKey,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                child: Text(
-                  widget.content,
-                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                padding: const EdgeInsets.only(left: 12, right: 12, top: 6, bottom: 14),
+                child: StyledHTML(
+                  context: context,
+                  text: widget.content,
+                  textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                 ),
               ),
             ],
