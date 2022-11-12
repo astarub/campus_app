@@ -71,7 +71,8 @@ class StyledHTML extends Html {
         url.contains('instagram') ||
         url.contains('facebook') ||
         url.contains('twitch') ||
-        url.contains('mailto:')) {
+        url.contains('mailto:') ||
+        url.contains('tel:')) {
       // Open in external browser
       launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
