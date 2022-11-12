@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 // Padding to prevent content from "sliding" under the navigation menu
                 Padding(
-                  padding: EdgeInsets.only(bottom: Platform.isIOS ? 100 : 60),
+                  padding: EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
                   child: Stack(
                     children: [
                       // Pages

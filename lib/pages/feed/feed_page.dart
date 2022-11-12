@@ -162,10 +162,10 @@ class FeedPageState extends State<FeedPage> {
                               iconPath: 'assets/img/icons/search.svg',
                               onTap: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                     behavior: SnackBarBehavior.floating,
-                                    margin: EdgeInsets.only(bottom: Platform.isIOS ? 120 : 80, left: 20, right: 20),
-                                    content: const Text('Hier gibts noch nichts zu suchen :D'),
+                                    margin: EdgeInsets.only(bottom: 80, left: 20, right: 20),
+                                    content: Text('Hier gibts noch nichts zu suchen :D'),
                                   ),
                                 );
                               },
