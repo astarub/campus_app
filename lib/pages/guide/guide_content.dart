@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 const List<Map<String, String>> faqEntries = [
   {
     'title': 'Anwesenheitspflicht',
@@ -9,7 +7,7 @@ const List<Map<String, String>> faqEntries = [
   {
     'title': 'AStA-Messenger',
     'content':
-        'Ab sofort sind wir unter der Mobilfunknummer +49 (0)152 22614240 für allgemeine Fragen bei Whatsapp erreichbar.',
+        'Ab sofort sind wir unter der Mobilfunknummer <a href="https://wa.me/4915222614240">+49 (0)152 22614240</a>  für allgemeine Fragen bei Whatsapp erreichbar.',
   },
   {
     'title': 'Barrierefreiheit',
