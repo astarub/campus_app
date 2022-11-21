@@ -247,7 +247,7 @@ class _MensaPageState extends State<MensaPage> {
                           ),
                         ),
                         ExpandableRestaurant(
-                          name: 'Rote Beete',
+                          name: 'Rote Bete',
                           imagePath: 'assets/img/rotebeete.png',
                           meals: _mensaUtils.fromDishListToMealCategoryList(
                             entities: _roteBeeteDishes,
