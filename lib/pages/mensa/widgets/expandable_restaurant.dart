@@ -50,11 +50,14 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
           // Restaurant header
           Stack(
             children: [
-              if(Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light)
+              if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light)
                 Align(
                   alignment: Alignment.centerRight,
-                  child: ClipRRect( // Use here borderRadius
-                    borderRadius: _isExpanded ? const BorderRadius.only(topRight: Radius.circular(15)) : BorderRadius.circular(15),
+                  child: ClipRRect(
+                    // Use here borderRadius
+                    borderRadius: _isExpanded
+                        ? const BorderRadius.only(topRight: Radius.circular(15))
+                        : BorderRadius.circular(15),
                     child: Image.asset(
                       widget.imagePath,
                       height: 57,
@@ -71,7 +74,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
                       : const Color.fromRGBO(255, 255, 255, 0.04),
                   highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                       ? const Color.fromRGBO(0, 0, 0, 0.03)
-                      : const Color.fromRGBO(255, 255, 255, 0.7),
+                      : const Color.fromRGBO(255, 255, 255, 0.03),
                   onTap: () {
                     if (widget.meals.isNotEmpty) {
                       setState(() => _isExpanded = !_isExpanded);
@@ -87,8 +90,11 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
                           widget.name,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelLarge,
                         ),
-                        Icon(_isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                            color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light ? Colors.black : Colors.white,
+                        Icon(
+                          _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                              ? Colors.black
+                              : Colors.white,
                         ),
                       ],
                     ),
