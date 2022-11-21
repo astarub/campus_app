@@ -49,7 +49,6 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   void initState() {
     super.initState();
-    updateStateWithEvents();
 
     upcomingSavedSwitch = CampusSegmentedControl(
       leftTitle: 'Upcoming',
@@ -63,6 +62,8 @@ class _CalendarPageState extends State<CalendarPage> {
         updateStateWithEvents();
       },
     );
+
+    updateStateWithEvents();
   }
 
   @override

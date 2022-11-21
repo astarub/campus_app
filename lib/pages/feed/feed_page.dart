@@ -94,8 +94,8 @@ class FeedPageState extends State<FeedPage> {
     _events = eventData['events']! as List<Event>; // empty when no data was cached before
     _failures.addAll(eventData['failures']! as List<Failure>); // CachFailure when no data was cached before
 
-    // empty _rubnews or _events indicate that no data was cached -> request an update
-    if (_rubnews.isEmpty || _events.isEmpty) updateStateWithFeed();
+    // Rrequest an update for the feed
+    updateStateWithFeed();
   }
 
   @override
