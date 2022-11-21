@@ -53,8 +53,8 @@ flutter_native_splash:
   color: "#ffffff"
   image_dark: "assets/img/Android-RUB_Campus_App_Logo.png"
   color_dark: "#0e1420"
-  #branding: "assets/img/SplashScreen-AStA-logo.png"
-  #branding_dark: "assets/img/SplashScreen-AStA-logo-dark.png"
+  branding: "assets/img/SplashScreen-AStA-branding.png"
+  branding_dark: "assets/img/SplashScreen-AStA-branding-dark.png"
   # Android 12 handles the splash screen differently than previous versions
   android_12:
     image: "assets/img/SplashScreen-logo.png"
@@ -62,8 +62,8 @@ flutter_native_splash:
     image_dark: "assets/img/SplashScreen-logo.png"
     color_dark: "#0e1420"
     icon_background_color_dark: "#0e1420"
-    #branding: "assets/img/SplashScreen-AStA-logo.png"
-    #branding_dark: "assets/img/SplashScreen-AStA-logo-dark.png"
+    branding: "assets/img/SplashScreen-AStA-branding-android12.png"
+    branding_dark: "assets/img/SplashScreen-AStA-branding-dark-android12.png"
   web: false
 
 flutter_icons:
