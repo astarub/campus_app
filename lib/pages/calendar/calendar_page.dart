@@ -46,6 +46,24 @@ class _CalendarPageState extends State<CalendarPage> {
   bool showUpcomingPlaceholder = false;
   bool showSavedPlaceholder = false;
 
+  /// Function that call usecase and parse widgets into the corresponding
+  /// lists of events or failures.
+  Future<void> updateStateWithEvents() async {
+    await _calendarUsecase.updateEventsAndFailures().then((data) {
+      setState(() {
+        _events = data['events']! as List<Event>;
+        _savedEvents = data['saved']! as List<Event>;
+        _failures = data['failures']! as List<Failure>;
+
+        parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
+        savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
+
+        showUpcomingPlaceholder = _events.isEmpty;
+        showSavedPlaceholder = _savedEvents.isEmpty;
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -135,23 +153,5 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
       ),
     );
-  }
-
-  /// Function that call usecase and parse widgets into the corresponding
-  /// lists of events or failures.
-  Future<void> updateStateWithEvents() async {
-    await _calendarUsecase.updateEventsAndFailures().then((data) {
-      setState(() {
-        _events = data['events']! as List<Event>;
-        _savedEvents = data['saved']! as List<Event>;
-        _failures = data['failures']! as List<Failure>;
-
-        parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
-        savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
-
-        showUpcomingPlaceholder = _events.isEmpty;
-        showSavedPlaceholder = _savedEvents.isEmpty;
-      });
-    });
   }
 }

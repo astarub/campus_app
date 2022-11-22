@@ -32,7 +32,7 @@ class MensaPage extends StatefulWidget {
   State<MensaPage> createState() => _MensaPageState();
 }
 
-class _MensaPageState extends State<MensaPage> {
+class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
   late Settings _settings;
 
   final MensaUsecases _mensaUsecases = sl<MensaUsecases>();
@@ -45,6 +45,21 @@ class _MensaPageState extends State<MensaPage> {
   late List<Failure> _failures = [];
 
   late int selectedDay;
+
+  /// This function initiates the loading of the mensa data (and caching)
+  Future<void> loadData() async {
+    final Future<Map<String, List<dynamic>>> updatedDishes = _mensaUsecases.updateDishesAndFailures();
+
+    await updatedDishes.then((data) => setState(() {
+          _mensaDishes = data['mensa']! as List<DishEntity>;
+          _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
+          _qwestDishes = data['qwest']! as List<DishEntity>;
+          _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
+          _failures = data['failures']! as List<Failure>;
+        }));
+
+    debugPrint('Mensa Daten aktualisiert.');
+  }
 
   /// This function saves the new selected preferences with the [SettingsHandler]
   void saveChangedPreferences(List<String> newPreferences) {
@@ -89,6 +104,9 @@ class _MensaPageState extends State<MensaPage> {
   void initState() {
     super.initState();
 
+    // Add observer in order to listen to `didChangeAppLifecycleState`
+    WidgetsBinding.instance.addObserver(this);
+
     switch (DateTime.now().weekday) {
       case 1: // Monday
         selectedDay = 0;
@@ -107,15 +125,17 @@ class _MensaPageState extends State<MensaPage> {
         break;
     }
 
-    _mensaUsecases.updateDishesAndFailures().then((data) {
-      setState(() {
-        _failures = data['failures']! as List<Failure>;
-        _mensaDishes = data['mensa']! as List<DishEntity>;
-        _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
-        _qwestDishes = data['qwest']! as List<DishEntity>;
-        _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
-      });
-    });
+    loadData();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // Refresh mensa data when app gets back into foreground
+    if (state == AppLifecycleState.resumed) {
+      loadData();
+    }
   }
 
   @override
@@ -159,15 +179,7 @@ class _MensaPageState extends State<MensaPage> {
                     color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                     strokeWidth: 3,
                     onRefresh: () async {
-                      await _mensaUsecases.updateDishesAndFailures().then((data) {
-                        setState(() {
-                          _failures = data['failures']! as List<Failure>;
-                          _mensaDishes = data['mensa']! as List<DishEntity>;
-                          _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
-                          _qwestDishes = data['qwest']! as List<DishEntity>;
-                          _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
-                        });
-                      });
+                      loadData();
                     },
                     child: ListView(
                       padding: const EdgeInsets.symmetric(horizontal: 20),

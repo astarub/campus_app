@@ -34,7 +34,7 @@ class FeedPage extends StatefulWidget {
   State<FeedPage> createState() => FeedPageState();
 }
 
-class FeedPageState extends State<FeedPage> {
+class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
   late final ScrollController _scrollController;
   double _scrollControllerLastOffset = 0;
   double _headerOpacity = 1;
@@ -48,6 +48,21 @@ class FeedPageState extends State<FeedPage> {
   final RubnewsUsecases _rubnewsUsecases = sl<RubnewsUsecases>();
   final CalendarUsecases _calendarUsecase = sl<CalendarUsecases>();
   final FeedUtils _feedUtils = sl<FeedUtils>();
+
+  /// Function that call usecase and parse widgets into the corresponding
+  /// lists of events, news and failures.
+  Future<void> updateStateWithFeed() async {
+    final newsData = await _rubnewsUsecases.updateFeedAndFailures();
+    final eventData = await _calendarUsecase.updateEventsAndFailures();
+
+    setState(() {
+      _rubnews = newsData['news']! as List<NewsEntity>;
+      _events = eventData['events']! as List<Event>;
+      _failures = (newsData['failures']! as List<Failure>)..addAll(eventData['failures']! as List<Failure>);
+    });
+
+    debugPrint('Feed aktualisiert.');
+  }
 
   void saveChangedFilters(List<String> newFilters) {
     final Settings newSettings =
@@ -71,6 +86,9 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
+
+    // Add observer in order to listen to `didChangeAppLifecycleState`
+    WidgetsBinding.instance.addObserver(this);
 
     _scrollController = ScrollController()
       ..addListener(() {
@@ -96,6 +114,16 @@ class FeedPageState extends State<FeedPage> {
 
     // Rrequest an update for the feed
     updateStateWithFeed();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // Refresh feed data when app gets back into foreground
+    if (state == AppLifecycleState.resumed) {
+      updateStateWithFeed();
+    }
   }
 
   @override
@@ -209,18 +237,5 @@ class FeedPageState extends State<FeedPage> {
         ),
       ),
     );
-  }
-
-  /// Function that call usecase and parse widgets into the corresponding
-  /// lists of events, news and failures.
-  Future<void> updateStateWithFeed() async {
-    final newsData = await _rubnewsUsecases.updateFeedAndFailures();
-    final eventData = await _calendarUsecase.updateEventsAndFailures();
-
-    setState(() {
-      _rubnews = newsData['news']! as List<NewsEntity>;
-      _events = eventData['events']! as List<Event>;
-      _failures = (newsData['failures']! as List<Failure>)..addAll(eventData['failures']! as List<Failure>);
-    });
   }
 }
