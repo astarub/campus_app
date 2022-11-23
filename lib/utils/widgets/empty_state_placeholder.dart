@@ -29,27 +29,34 @@ class EmptyStatePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (illustrationPath != '')
-          illustrationPath.substring(illustrationPath.length - 3) == 'svg'
-              ? SvgPicture.asset(illustrationPath)
-              : Image.asset(illustrationPath),
-        Text(
-          title,
-          style: Provider.of<ThemesNotifier>(context)
-              .currentThemeData
-              .textTheme
-              .headlineSmall!
-              .copyWith(color: Colors.grey),
-        ),
-        Text(
-          text,
-          style:
-              Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(color: Colors.grey),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (illustrationPath != '')
+            illustrationPath.substring(illustrationPath.length - 3) == 'svg'
+                ? SvgPicture.asset(illustrationPath)
+                : Image.asset(illustrationPath),
+          Text(
+            title,
+            style: Provider.of<ThemesNotifier>(context)
+                .currentThemeData
+                .textTheme
+                .headlineSmall!
+                .copyWith(color: Colors.grey),
+          ),
+          Text(
+            text,
+            style: Provider.of<ThemesNotifier>(context)
+                .currentThemeData
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: Colors.grey),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }

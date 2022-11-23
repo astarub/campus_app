@@ -102,14 +102,14 @@ class _CalendarPageState extends State<CalendarPage> {
                   child: !showSavedEvents && showUpcomingPlaceholder
                       // Placeholder for no upcoming events
                       ? const EmptyStatePlaceholder(
-                          title: 'No upcoming events',
-                          text: 'There are no upcoming events at the moment. Try again later.',
+                          title: 'Keine Events in Sicht',
+                          text: 'Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.',
                         )
                       : showSavedEvents && showSavedPlaceholder
                           // Placeholder for no saved events
                           ? const EmptyStatePlaceholder(
-                              title: 'No saved events',
-                              text: 'Start saving events ontheir page to see them here.',
+                              title: 'Keine gemerkten Events',
+                              text: 'Merke dir Events, um sie hier zu sehen.',
                             )
                           : RefreshIndicator(
                               displacement: 55,
