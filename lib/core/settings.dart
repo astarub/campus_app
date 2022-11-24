@@ -70,7 +70,7 @@ class Settings {
     List<String>? mensaPreferences,
     List<String>? mensaAllergenes,
     bool? useExternalBrowser,
-    FirebaseStatus? useFirebase
+    FirebaseStatus? useFirebase,
   }) =>
       Settings(
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
