@@ -209,7 +209,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       padding: const EdgeInsets.only(top: 10, bottom: 30),
                       child: Center(
                         child: CampusButton(
-                          text: savedEvent ? 'Unsave Me' : 'Save Me',
+                          text: savedEvent ? 'Nicht mehr merken' : 'Merken',
                           onTap: saveEventAndShowMessage,
                         ),
                       ),
