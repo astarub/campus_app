@@ -236,6 +236,11 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,
       darkTheme: Provider.of<ThemesNotifier>(context, listen: false).darkThemeData,
       themeMode: Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode,
+      builder: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling
+          ? null
+          : (context, child) {
+              return MediaQuery(data: MediaQuery.of(context).copyWith(textScaleFactor: 1), child: child!);
+            },
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
           return PageTransition(
