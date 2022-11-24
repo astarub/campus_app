@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
+enum FirebaseStatus { permitted, forbidden, uncofigured }
+
 class SettingsHandler with ChangeNotifier {
   /// The save location for the settings
   String _directoryPath = '';
@@ -47,6 +49,7 @@ class Settings {
   final List<String> mensaPreferences;
   final List<String> mensaAllergenes;
   final bool useExternalBrowser;
+  final FirebaseStatus useFirebase;
 
   Settings({
     this.useSystemDarkmode = true,
@@ -56,6 +59,7 @@ class Settings {
     this.mensaPreferences = const [],
     this.mensaAllergenes = const [],
     this.useExternalBrowser = false,
+    this.useFirebase = FirebaseStatus.uncofigured,
   });
 
   Settings copyWith({
@@ -66,6 +70,7 @@ class Settings {
     List<String>? mensaPreferences,
     List<String>? mensaAllergenes,
     bool? useExternalBrowser,
+    FirebaseStatus? useFirebase
   }) =>
       Settings(
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
@@ -75,6 +80,7 @@ class Settings {
         mensaPreferences: mensaPreferences ?? this.mensaPreferences,
         mensaAllergenes: mensaAllergenes ?? this.mensaAllergenes,
         useExternalBrowser: useExternalBrowser ?? this.useExternalBrowser,
+        useFirebase: useFirebase ?? this.useFirebase,
       );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
@@ -88,6 +94,7 @@ class Settings {
       mensaAllergenes:
           json['mensaAllergenes'] != null ? List<String>.from(json['mensaAllergenes']) : List<String>.from([]),
       useExternalBrowser: json['useExternalBrowser'] ?? false,
+      useFirebase: json['useFirebase'] == 2 ? FirebaseStatus.permitted : json['useFirebase'] == 1 ? FirebaseStatus.forbidden : FirebaseStatus.uncofigured,
     );
   }
 
@@ -100,6 +107,7 @@ class Settings {
       'mensaPreferences': mensaPreferences,
       'mensaAllergenes': mensaAllergenes,
       'useExternalBrowser': useExternalBrowser,
+      'useFirebase': useFirebase == FirebaseStatus.permitted ? 2 : useFirebase == FirebaseStatus.forbidden ? 1 : 0,
     };
   }
 }

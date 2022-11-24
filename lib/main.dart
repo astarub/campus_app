@@ -36,7 +36,7 @@ Future<void> main() async {
   if (!kDebugMode) debugPrint = (String? message, {int? wrapWidth}) => '';
 
   //Initialize Firebase and FCM
-  await initializeFirebase();
+  //await initializeFirebase();
 
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
@@ -49,6 +49,7 @@ Future<void> main() async {
 
   // Initialize injection container
   await ic.init();
+
 
   runApp(MultiProvider(
     providers: [
