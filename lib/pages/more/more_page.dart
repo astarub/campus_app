@@ -76,7 +76,7 @@ class MorePage extends StatelessWidget {
                         headline: 'AStA',
                         buttons: [
                           ExternalLinkButton(
-                            title: 'Kulturcafé',
+                            title: 'KulturCafé',
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://kulturcafe.asta-bochum.de/'),
                           ),

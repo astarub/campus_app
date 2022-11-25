@@ -129,6 +129,15 @@ class _SettingsPageState extends State<SettingsPage> {
                           _settings.copyWith(useExternalBrowser: switchValue);
                     },
                   ),
+                  // Apply app to system text scaling
+                  LeadingTextSwitch(
+                    text: 'Verwende Textgröße vom System',
+                    isActive: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling,
+                    onToggle: (switchValue) {
+                      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                          _settings.copyWith(useSystemTextScaling: switchValue);
+                    },
+                  ),
                 ],
               ),
             ),

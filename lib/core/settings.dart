@@ -50,6 +50,7 @@ class Settings {
   final List<String> mensaAllergenes;
   final bool useExternalBrowser;
   final FirebaseStatus useFirebase;
+  final bool useSystemTextScaling;
 
   Settings({
     this.useSystemDarkmode = true,
@@ -60,6 +61,7 @@ class Settings {
     this.mensaAllergenes = const [],
     this.useExternalBrowser = false,
     this.useFirebase = FirebaseStatus.uncofigured,
+    this.useSystemTextScaling = false,
   });
 
   Settings copyWith({
@@ -71,6 +73,7 @@ class Settings {
     List<String>? mensaAllergenes,
     bool? useExternalBrowser,
     FirebaseStatus? useFirebase,
+    bool? useSystemTextScaling,
   }) =>
       Settings(
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
@@ -81,6 +84,7 @@ class Settings {
         mensaAllergenes: mensaAllergenes ?? this.mensaAllergenes,
         useExternalBrowser: useExternalBrowser ?? this.useExternalBrowser,
         useFirebase: useFirebase ?? this.useFirebase,
+        useSystemTextScaling: useSystemTextScaling ?? this.useSystemTextScaling,
       );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
@@ -95,6 +99,8 @@ class Settings {
           json['mensaAllergenes'] != null ? List<String>.from(json['mensaAllergenes']) : List<String>.from([]),
       useExternalBrowser: json['useExternalBrowser'] ?? false,
       useFirebase: json['useFirebase'] == 2 ? FirebaseStatus.permitted : json['useFirebase'] == 1 ? FirebaseStatus.forbidden : FirebaseStatus.uncofigured,
+      useSystemTextScaling: json['useSystemTextScaling'] ?? false,
+
     );
   }
 
@@ -108,6 +114,8 @@ class Settings {
       'mensaAllergenes': mensaAllergenes,
       'useExternalBrowser': useExternalBrowser,
       'useFirebase': useFirebase == FirebaseStatus.permitted ? 2 : useFirebase == FirebaseStatus.forbidden ? 1 : 0,
+
+      'useSystemTextScaling': useSystemTextScaling,
     };
   }
 }
