@@ -22,8 +22,8 @@ class MensaUtils extends Utils {
     List<String> mensaPreferences = const [],
     List<String> mensaAllergenes = const [],
   }) {
-    // Create a seperate list to not edit the one of the SettingsHandler
-    List<String> filteredMensaPreferences = [];
+    // Create a separate list to not edit the one of the SettingsHandler
+    final List<String> filteredMensaPreferences = [];
     filteredMensaPreferences.addAll(mensaPreferences);
 
     // Also show vegan meals, when vegetarian preference is selected
