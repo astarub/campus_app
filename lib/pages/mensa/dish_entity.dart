@@ -66,6 +66,8 @@ class DishEntity {
     lowercase.addAll(allInfo.where((element) => !utils.isUppercase(element)));
     numbers.addAll(allInfo.where(utils.isNumeric));
 
+    if(uppercase.contains('VG')) uppercase.add('V');
+
     return DishEntity(
       date: date,
       category: category,
