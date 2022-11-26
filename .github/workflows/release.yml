@@ -1,0 +1,61 @@
+name: Create Release
+
+on: 
+  push:
+     branches:
+      - 'deploy'
+
+jobs:
+
+  version:
+      name: Create version number
+      runs-on: ubuntu-latest
+      outputs:
+        version: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
+        date: ${{ steps.gitversion.outputs.commitDate }}
+      
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Install GitVersion
+          uses: gittools/actions/gitversion/setup@v0.9.7
+            
+        - name: Determine Version
+          id: gitversion
+          uses: gittools/actions/gitversion/execute@v0.9.7
+
+  release:
+    name: Create archives of source code and upload them as release
+    runs-on: ubuntu-latest
+    needs: version
+    env:
+      VTAG: ${{ needs.calc_version.outputs.date }}-${{ needs.calc_version.outputs.version }}
+      DATE: ${{ needs.calc_version.outputs.date }}
+      VER: ${{ needs.calc_version.outputs.version }}
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Create ZIP archive
+      uses: thedoctor0/zip-release@main
+      with:
+        type: zip
+        filename: "campus_app-$VTAG.zip"
+        
+    - name: Create TAR archive
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'tar'
+        filename: "campus_app-$VTAG.tar.gz"
+    
+    - name: Create release and upload archives
+      uses: ncipollo/release-action@v1
+      with:
+        name: "Release $VER ($DATE)"
+        artifacts: "campus_app-$VTAG.tar.gz,campus_app-$VTAG.zip"
+        body: ${{ github.event.head_commit.message }}
+        generateReleaseNotes: true
+        token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+        
+        
+
