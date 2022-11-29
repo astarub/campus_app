@@ -22,6 +22,15 @@ class MensaUtils extends Utils {
     List<String> mensaPreferences = const [],
     List<String> mensaAllergenes = const [],
   }) {
+    // Create a separate list to not edit the one of the SettingsHandler
+    final List<String> filteredMensaPreferences = [];
+    filteredMensaPreferences.addAll(mensaPreferences);
+
+    // Also show vegan meals, when vegetarian preference is selected
+    if (filteredMensaPreferences.contains('V')) {
+      filteredMensaPreferences.add('VG');
+    }
+
     final mealCategories = <MealCategory>[];
 
     // create a set for unique categories
@@ -35,10 +44,11 @@ class MensaUtils extends Utils {
       for (final dish in entities.where((dish) => dish.date == day && dish.category == category)) {
         // Do not show meal if user doesn't want this
         if (mensaAllergenes.any(dish.allergenes.contains)) continue;
-        if (mensaPreferences.any((e) => dish.infos.contains(e) && !['V', 'VG', 'H'].contains(e))) continue;
+        if (filteredMensaPreferences.any((e) => dish.infos.contains(e) && !['V', 'VG', 'H'].contains(e))) continue;
 
-        if (!(['V', 'VG', 'H'].any(mensaPreferences.contains) && mensaPreferences.any(dish.infos.contains)) &&
-            mensaPreferences.where((e) => e == 'V' || e == 'VG' || e == 'H').isNotEmpty) continue;
+        if (!(['V', 'VG', 'H'].any(filteredMensaPreferences.contains) &&
+                filteredMensaPreferences.any(dish.infos.contains)) &&
+            filteredMensaPreferences.where((e) => e == 'V' || e == 'VG' || e == 'H').isNotEmpty) continue;
 
         meals.add(
           MealItem(
