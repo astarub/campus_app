@@ -272,13 +272,34 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   /// This function checks if the firebase permission is FirebaseStatus.unconfigured.
   /// If so, it shows a popup to ask wether or not the user wants to use Firebase.
   void checkFirebasePermission() {
-    Timer(
-      Duration(seconds: 2),
-      () => mainNavigatorKey.currentState?.push(PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (context, _, __) => FirebasePopup(onClose: (_) {}),
-      )),
-    );
+    if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
+        FirebaseStatus.uncofigured) {
+      Timer(
+          const Duration(seconds: 2),
+          () => mainNavigatorKey.currentState?.push(
+                PageRouteBuilder(
+                  opaque: false,
+                  pageBuilder: (context, _, __) => FirebasePopup(onClose: (permissionGranted) {
+                    final Settings newSettings;
+
+                    if (permissionGranted) {
+                      // User accepted to use Google services
+                      newSettings = Provider.of<SettingsHandler>(context, listen: false)
+                          .currentSettings
+                          .copyWith(useFirebase: FirebaseStatus.permitted);
+                    } else {
+                      // User denied to use Google services
+                      newSettings = Provider.of<SettingsHandler>(context, listen: false)
+                          .currentSettings
+                          .copyWith(useFirebase: FirebaseStatus.forbidden);
+                    }
+
+                    debugPrint('Set Firebase permission: ${newSettings.useFirebase}');
+                    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+                  }),
+                ),
+              ));
+    }
   }
 
   @override
@@ -292,7 +313,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     // Add observer in order to listen to `didChangeAppLifecycleState`
     WidgetsBinding.instance.addObserver(this);
 
-    //_debugDeleteSettings();
+    _debugDeleteSettings();
 
     // load saved settings
     loadingTimer.start();
