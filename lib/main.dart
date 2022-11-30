@@ -36,9 +36,6 @@ Future<void> main() async {
   // Disable all logs in production mode
   if (!kDebugMode) debugPrint = (String? message, {int? wrapWidth}) => '';
 
-  //Initialize Firebase and FCM
-  await initializeFirebase();
-
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
   Hive.registerAdapter(EventAdapter());
@@ -62,6 +59,7 @@ Future<void> main() async {
   ));
 }
 
+/// This function initializes the Google Firebase services and FCM
 Future<void> initializeFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -269,8 +267,11 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     });
   }
 
-  /// This function checks if the firebase permission is FirebaseStatus.unconfigured.
+  /// This function checks if the firebase permission is `FirebaseStatus.unconfigured`.
   /// If so, it shows a popup to ask wether or not the user wants to use Firebase.
+  ///
+  /// If the _useFirebase_ setting is already set to `permitted`,
+  /// the function [initializeFirebase] is called.
   void checkFirebasePermission() {
     if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
         FirebaseStatus.uncofigured) {
@@ -287,6 +288,8 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
                       newSettings = Provider.of<SettingsHandler>(context, listen: false)
                           .currentSettings
                           .copyWith(useFirebase: FirebaseStatus.permitted);
+
+                      initializeFirebase();
                     } else {
                       // User denied to use Google services
                       newSettings = Provider.of<SettingsHandler>(context, listen: false)
@@ -299,6 +302,9 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
                   }),
                 ),
               ));
+    } else if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
+        FirebaseStatus.permitted) {
+      initializeFirebase();
     }
   }
 
@@ -313,7 +319,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     // Add observer in order to listen to `didChangeAppLifecycleState`
     WidgetsBinding.instance.addObserver(this);
 
-    _debugDeleteSettings();
+    //_debugDeleteSettings();
 
     // load saved settings
     loadingTimer.start();
