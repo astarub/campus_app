@@ -5,7 +5,7 @@ import 'package:campus_app/core/themes.dart';
 
 enum CampusButtonType { normal, light }
 
-/// This widget adds a custom TextButton that uses the CampusApp design language
+/// This widget adds a custom Button that uses the CampusApp design language
 class CampusButton extends StatelessWidget {
   /// The displayed text inside the button
   final String text;

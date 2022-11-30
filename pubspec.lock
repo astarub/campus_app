@@ -845,13 +845,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  snapping_sheet:
+  snapping_sheet_2:
     dependency: "direct main"
     description:
-      name: snapping_sheet
+      name: snapping_sheet_2
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.4"
   source_gen:
     dependency: transitive
     description:

@@ -14,7 +14,6 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:campus_app/firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:campus_app/core/authentication/authentication_handler.dart';
@@ -28,6 +27,8 @@ import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
+import 'package:campus_app/firebase_options.dart';
+import 'package:campus_app/pages/home/widgets/firebase_popup.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +51,6 @@ Future<void> main() async {
   // Initialize injection container
   await ic.init();
 
-
   runApp(MultiProvider(
     providers: [
       // Initializes the provider that handles the app-theme, authentification and other things
@@ -62,7 +62,7 @@ Future<void> main() async {
   ));
 }
 
-Future<void> initializeFirebase()async {
+Future<void> initializeFirebase() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -92,9 +92,10 @@ Future<void> initializeFirebase()async {
 
   // Local notifications on Android
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  const AndroidInitializationSettings initializationSettingsAndroid =  AndroidInitializationSettings('launch_background');
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('launch_background');
   const InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
+    android: initializationSettingsAndroid,
   );
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
@@ -105,25 +106,28 @@ Future<void> initializeFirebase()async {
     description: 'This channel is used to display notifications.',
     importance: Importance.max,
   );
-  await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
 
   // Display foreground notifications on Android
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     final RemoteNotification? notification = message.notification;
 
-    if(notification != null && message.notification?.android != null){
+    if (notification != null && message.notification?.android != null) {
       flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              channelDescription: channel.description,
-              icon: 'notification_logo',
-            ),
-          ),);
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            channelDescription: channel.description,
+            icon: 'notification_logo',
+          ),
+        ),
+      );
     }
   });
 }
@@ -197,6 +201,8 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
               // Start the app
               FlutterNativeSplash.remove();
+
+              checkFirebasePermission();
             }
           });
         } else {
@@ -217,6 +223,8 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
           // Start the app
           FlutterNativeSplash.remove();
+
+          checkFirebasePermission();
         }
       });
     });
@@ -259,6 +267,18 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       final File jsonFile = File('$tempDirectoryPath/settings.json');
       jsonFile.delete().then((_) => debugPrint('DEBUG: Settings-Datei gelöscht.'));
     });
+  }
+
+  /// This function checks if the firebase permission is FirebaseStatus.unconfigured.
+  /// If so, it shows a popup to ask wether or not the user wants to use Firebase.
+  void checkFirebasePermission() {
+    Timer(
+      Duration(seconds: 2),
+      () => mainNavigatorKey.currentState?.push(PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (context, _, __) => FirebasePopup(onClose: (_) {}),
+      )),
+    );
   }
 
   @override

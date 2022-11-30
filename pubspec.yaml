@@ -31,7 +31,8 @@ dependencies:
   intl: ^0.17.0
   path_provider: ^2.0.11
   #pdfx: ^2.3.0
-  snapping_sheet: ^3.1.0
+  snapping_sheet_2: ^3.1.4
+  #snapping_sheet: ^3.1.0
   flutter_displaymode: ^0.4.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
