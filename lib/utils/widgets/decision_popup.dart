@@ -51,7 +51,7 @@ class DecisionPopup extends StatefulWidget {
     required this.content,
     this.acceptButtonText = 'Annehmen',
     this.declineButtonText = 'Ablehnen',
-    this.height = 400,
+    this.height = 420,
     required this.onAccept,
     required this.onDecline,
   }) : super(key: key);
@@ -67,7 +67,7 @@ class _DecisionPopupState extends State<DecisionPopup> {
   /// Changed during widget lifetime in order to make the popup non-draggable
   List<SnappingPosition> snapPositions = [
     const SnappingPosition.pixels(
-      positionPixels: 420,
+      positionPixels: 450,
     ),
     const SnappingPosition.pixels(
       positionPixels: -60,

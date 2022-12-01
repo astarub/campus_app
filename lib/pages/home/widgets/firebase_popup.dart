@@ -28,7 +28,7 @@ class FirebasePopup extends StatelessWidget {
         Im Januar werden wir dafür eine Google-freie Alternative einführen. ''',
       acceptButtonText: 'Ja, kein Problem',
       declineButtonText: 'Nein, möchte ich nicht.',
-      height: 420,
+      height: 450,
       onAccept: () {
         onClose(true);
         Navigator.pop(context);
