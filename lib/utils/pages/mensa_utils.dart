@@ -95,7 +95,7 @@ class MensaUtils extends Utils {
               name: 'Putenbrust, Butter, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
           MealItem(name: 'Tofu, Butter, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
           MealItem(
-              name: 'veganem Brotaufstrich, Butter, Salat, Gurke und Tomate',
+              name: 'veganem Brotaufstrich, Salat, Gurke und Tomate',
               price: '2,20€',
               onPreferenceTap: onPreferenceTap),
         ],
