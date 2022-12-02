@@ -40,7 +40,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           topLeft: Radius.circular(15),
           topRight: Radius.circular(15),
         ),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,

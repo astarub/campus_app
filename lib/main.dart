@@ -31,7 +31,9 @@ import 'package:campus_app/firebase_options.dart';
 import 'package:campus_app/pages/home/widgets/firebase_popup.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // Keeps the native splash screen onscreen until all loading is done
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   // Disable all logs in production mode
   if (!kDebugMode) debugPrint = (String? message, {int? wrapWidth}) => '';
@@ -91,7 +93,7 @@ Future<void> initializeFirebase() async {
   // Local notifications on Android
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('launch_background');
+      AndroidInitializationSettings('@drawable/ic_notification');
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
   );
@@ -122,7 +124,8 @@ Future<void> initializeFirebase() async {
             channel.id,
             channel.name,
             channelDescription: channel.description,
-            icon: 'notification_logo',
+            icon: '@drawable/ic_notification',
+            color: const Color.fromRGBO(0, 202, 245, 1),
           ),
         ),
       );
