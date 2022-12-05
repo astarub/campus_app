@@ -34,7 +34,9 @@ class MorePage extends StatelessWidget {
     if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useExternalBrowser ||
         url.contains('instagram') ||
         url.contains('facebook') ||
-        url.contains('twitch')) {
+        url.contains('twitch') ||
+        url.contains('mailto:') ||
+        url.contains('tel:')) {
       // Open in external browser
       launchUrl(
         Uri.parse(url),
@@ -165,6 +167,7 @@ class MorePage extends StatelessWidget {
                               );
                             },
                           ),
+                          // Privacy
                           ExternalLinkButton(
                             title: 'Datenschutz',
                             leadingIconPath: 'assets/img/icons/info.svg',
@@ -181,6 +184,7 @@ class MorePage extends StatelessWidget {
                               );
                             },
                           ),
+                          // Imprint
                           ExternalLinkButton(
                             title: 'Impressum',
                             leadingIconPath: 'assets/img/icons/info.svg',
@@ -202,6 +206,13 @@ class MorePage extends StatelessWidget {
                             leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
                             onTap: () => showLicensePage(context: context),
+                          ),
+                          // Feedback
+                          ExternalLinkButton(
+                            title: 'Feedback',
+                            leadingIconPath: 'assets/img/icons/message-square.svg',
+                            onTap: () =>
+                                openLink(context, 'https://next.asta-bochum.de/index.php/apps/forms/jb2Z4mge9yj2z56E'),
                           ),
                         ],
                       ),
