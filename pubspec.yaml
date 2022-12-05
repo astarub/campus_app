@@ -31,12 +31,16 @@ dependencies:
   intl: ^0.17.0
   path_provider: ^2.0.11
   #pdfx: ^2.3.0
-  snapping_sheet: ^3.1.0
+  snapping_sheet_2: ^3.1.4
+  #snapping_sheet: ^3.1.0
   flutter_displaymode: ^0.4.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   url_launcher: ^6.1.6
   flutter_inappwebview: ^5.4.3+8
+  firebase_core: ^2.2.0
+  firebase_messaging: ^14.1.0
+  flutter_local_notifications: ^12.0.3
   
 dev_dependencies:
   flutter_test:

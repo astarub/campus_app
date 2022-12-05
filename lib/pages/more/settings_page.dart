@@ -138,6 +138,22 @@ class _SettingsPageState extends State<SettingsPage> {
                           _settings.copyWith(useSystemTextScaling: switchValue);
                     },
                   ),
+                  const SectionHeadline(headline: 'Datenschutz'),
+                  // Use Google services
+                  LeadingTextSwitch(
+                    text: 'Google Services für Benachrichtigungen',
+                    isActive:
+                        Provider.of<SettingsHandler>(context).currentSettings.useFirebase == FirebaseStatus.permitted,
+                    onToggle: (switchValue) {
+                      if (switchValue) {
+                        Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                            _settings.copyWith(useFirebase: FirebaseStatus.permitted);
+                      } else {
+                        Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                            _settings.copyWith(useFirebase: FirebaseStatus.forbidden);
+                      }
+                    },
+                  ),
                 ],
               ),
             ),

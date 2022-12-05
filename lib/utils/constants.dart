@@ -12,3 +12,6 @@ const String mensaData = 'https://80.240.25.142/get_meal';
 
 // See: https://codewithandrea.com/articles/flutter-api-keys-dart-define-env-files/
 final String mensaApiKey = Env.mensaApiKey;
+
+final String firebaseAndroidApiKey = Env.firebaseAndroidApiKey;
+final String firebaseIosApiKey = Env.firebaseIosApiKey;
