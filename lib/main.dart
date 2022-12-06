@@ -27,9 +27,6 @@ import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/pages/home/widgets/firebase_popup.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 
-
-final GlobalKey<HomePageState> homeKey = GlobalKey();
-
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // Keeps the native splash screen onscreen until all loading is done
@@ -58,8 +55,10 @@ Future<void> main() async {
       ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
     ],
     child: const CampusApp(),
-  ),);
+  ));
 }
+
+final GlobalKey<HomePageState> homeKey = GlobalKey();
 
 class CampusApp extends StatefulWidget {
   const CampusApp({Key? key}) : super(key: key);
@@ -70,6 +69,7 @@ class CampusApp extends StatefulWidget {
 
 class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   final GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey();
+
   String _directoryPath = '';
   Settings? loadedSettings;
 
@@ -229,9 +229,9 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
                     debugPrint('Set Firebase permission: ${newSettings.useFirebase}');
                     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-                  },),
+                  }),
                 ),
-              ),);
+              ));
     } else if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
         FirebaseStatus.permitted) {
       initializeFirebase();
