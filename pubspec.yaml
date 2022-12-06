@@ -1,7 +1,7 @@
 name: campus_app
 description: Simplifie, improve and facilitate everyday students life.
 publish_to: 'none'
-version: 1.0.2
+version: 1.0.3
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
@@ -122,6 +122,8 @@ flutter:
      - assets/img/icons/moodle-link.png
      - assets/img/icons/flexnow-link.png
      - assets/img/icons/rub-link.png
+     - assets/img/icons/siren.svg
+     - assets/img/icons/message-square.svg
 
   fonts:
     - family: SF-Pro

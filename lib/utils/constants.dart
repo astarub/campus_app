@@ -8,7 +8,7 @@ const String astaFavicon = 'https://asta-bochum.de/wp-content/themes/rt_notio/cu
 const String rubNewsfeed = 'https://news.rub.de/newsfeed'; // there is no non-german
 
 // TODO: Change IP to domain name of an asta-bocum.de server
-const String mensaData = 'https://80.240.25.142/get_meal';
+const String mensaData = 'https://85.214.40.154/get_meal';
 
 // See: https://codewithandrea.com/articles/flutter-api-keys-dart-define-env-files/
 final String mensaApiKey = Env.mensaApiKey;
