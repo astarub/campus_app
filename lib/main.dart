@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -13,8 +12,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
@@ -27,8 +24,11 @@ import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
-import 'package:campus_app/firebase_options.dart';
 import 'package:campus_app/pages/home/widgets/firebase_popup.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
+
+
+final GlobalKey<HomePageState> homeKey = GlobalKey();
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -52,85 +52,13 @@ Future<void> main() async {
 
   runApp(MultiProvider(
     providers: [
-      // Initializes the provider that handles the app-theme, authentification and other things
+      // Initializes the provider that handles the app-theme, authentication and other things
       ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
       ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
       ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
     ],
     child: const CampusApp(),
-  ));
-}
-
-/// This function initializes the Google Firebase services and FCM
-Future<void> initializeFirebase() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  // Initialize Firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  // Get the FCM Token
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-
-  debugPrint(fcmToken);
-
-  // Request notifications permissions on iOs
-  await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    badge: true,
-    provisional: false,
-    sound: true,
-  );
-
-  // Enable foreground notifications on iOs
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true, // Required to display a heads up notification
-    badge: true,
-    sound: true,
-  );
-
-  // Local notifications on Android
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@drawable/ic_notification');
-  const InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-  );
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-  // Create another notifications channel on Android
-  const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'notifications',
-    'Notification Channel',
-    description: 'This channel is used to display notifications.',
-    importance: Importance.max,
-  );
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-
-  // Display foreground notifications on Android
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    final RemoteNotification? notification = message.notification;
-
-    if (notification != null && message.notification?.android != null) {
-      flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            channelDescription: channel.description,
-            icon: '@drawable/ic_notification',
-            color: const Color.fromRGBO(0, 202, 245, 1),
-          ),
-        ),
-      );
-    }
-  });
+  ),);
 }
 
 class CampusApp extends StatefulWidget {
@@ -142,7 +70,6 @@ class CampusApp extends StatefulWidget {
 
 class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   final GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey();
-
   String _directoryPath = '';
   Settings? loadedSettings;
 
@@ -302,9 +229,9 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
                     debugPrint('Set Firebase permission: ${newSettings.useFirebase}');
                     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-                  }),
+                  },),
                 ),
-              ));
+              ),);
     } else if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
         FirebaseStatus.permitted) {
       initializeFirebase();
@@ -366,7 +293,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
           return PageTransition(
-            child: HomePage(mainNavigatorKey: mainNavigatorKey),
+            child: HomePage(key: homeKey, mainNavigatorKey: mainNavigatorKey),
             type: PageTransitionType.scale,
             alignment: Alignment.center,
           );
