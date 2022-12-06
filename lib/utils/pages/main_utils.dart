@@ -136,10 +136,10 @@ Future<void> initializeFirebase() async {
           }
 
           if (homeKey.currentState == null) return;
-
+          // Change page
+          await homeKey.currentState!.selectedPage(PageItem.events);
           // Push the CalendarDetailPage onto the navigator of the current page
           await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!.push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
-          await homeKey.currentState!.selectedPage(PageItem.events);
 
           break;
         }
@@ -258,9 +258,10 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
 
       if (homeKey.currentState == null) return;
 
+      // Change page
+      await homeKey.currentState!.selectedPage(PageItem.events);
       // Push the CalendarDetailPage onto the navigator of the current page
       await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!.push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
-      await homeKey.currentState!.selectedPage(PageItem.events);
 
       break;
     }
