@@ -87,8 +87,7 @@ class HomePageState extends State<HomePage> {
     return true;
   }
 
-  /// Wraps the [NavBarNavigator] that holds the displayed page in an [Offstage] widget
-  /// in order to stack them and show only the active page.
+  /// Returns the [NavBarNavigator] for the specified PageItem
   Widget _buildPage(PageItem tabItem) {
     return NavBarNavigator(
       mainNavigatorKey: widget.mainNavigatorKey,
@@ -151,14 +150,14 @@ class HomePageState extends State<HomePage> {
                 PageItem newPage = currentPage;
 
                 // Find the new PageItem
-                for(int i=0; i < pages.length; i++){
+                for (int i=0; i < pages.length; i++) {
                   if(i == page){
                     newPage = pages[i];
                   }
                 }
 
                 // Return if nothing has changed
-                if(newPage == currentPage) return;
+                if (newPage == currentPage) return;
 
                 // Set newPage as the currentPage
                 setState(() {
