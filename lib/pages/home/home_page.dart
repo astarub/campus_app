@@ -71,17 +71,16 @@ class HomePageState extends State<HomePage> {
 
   GlobalKey<FeedPageState> feedKey = GlobalKey();
 
+  final PageController _pageController = PageController();
+
   /// Switches to another page when selected in the nav-menu
   Future<bool> selectedPage(PageItem selectedPageItem) async {
     if (selectedPageItem != currentPage) {
-      // Reset the exit animation of the new page to make the content visible again
-      exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
-      // Start the exit animation of the old page
-      await exitAnimationKeys[currentPage]?.currentState?.startExitAnimation();
-      // Switch to the new page
-      setState(() => currentPage = selectedPageItem);
-      // Start the entry animation of the new page
-      await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
+      final List<PageItem> pages = navigatorKeys.keys.toList();
+      final int indexNewPage = pages.indexWhere((element) => element == selectedPageItem);
+
+      _pageController.jumpToPage(indexNewPage);
+      currentPage = selectedPageItem;
     }
 
     return true;
@@ -89,16 +88,13 @@ class HomePageState extends State<HomePage> {
 
   /// Wraps the [NavBarNavigator] that holds the displayed page in an [Offstage] widget
   /// in order to stack them and show only the active page.
-  Widget _buildOffstateNavigator(PageItem tabItem) {
-    return Offstage(
-      offstage: currentPage != tabItem,
-      child: NavBarNavigator(
-        mainNavigatorKey: widget.mainNavigatorKey,
-        navigatorKey: navigatorKeys[tabItem]!,
-        pageItem: tabItem,
-        pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
-        pageExitAnimationKey: exitAnimationKeys[tabItem]!,
-      ),
+  Widget _buildPage(PageItem tabItem) {
+    return NavBarNavigator(
+      mainNavigatorKey: widget.mainNavigatorKey,
+      navigatorKey: navigatorKeys[tabItem]!,
+      pageItem: tabItem,
+      pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
+      pageExitAnimationKey: exitAnimationKeys[tabItem]!,
     );
   }
 
@@ -139,33 +135,33 @@ class HomePageState extends State<HomePage> {
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(
           backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+          bottomNavigationBar: BottomNavBar(
+            currentPage: currentPage,
+            onSelectedPage: selectedPage,
+          ),
           body: SafeArea(
             bottom: false,
-            child: Stack(
-              // Holds all the pages that sould be accessable within the bottom nav-menu
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (page) {
+                final List<PageItem> pages = navigatorKeys.keys.toList();
+                PageItem newPage;
+                try{
+                  newPage = pages.firstWhere((element) => element.index == page);
+                } catch(e) {
+                  return;
+                }
+
+                setState(() {
+                  currentPage = newPage;
+                });
+              },
               children: [
-                // Padding to prevent content from "sliding" under the navigation menu
-                Padding(
-                  padding: EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
-                  child: Stack(
-                    children: [
-                      // Pages
-                      _buildOffstateNavigator(PageItem.feed),
-                      _buildOffstateNavigator(PageItem.events),
-                      _buildOffstateNavigator(PageItem.mensa),
-                      _buildOffstateNavigator(PageItem.guide),
-                      _buildOffstateNavigator(PageItem.more),
-                    ],
-                  ),
-                ),
-                // BottomNavigationBar
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: BottomNavBar(
-                    currentPage: currentPage,
-                    onSelectedPage: selectedPage,
-                  ),
-                ),
+                _buildPage(PageItem.feed),
+                _buildPage(PageItem.events),
+                _buildPage(PageItem.mensa),
+                _buildPage(PageItem.guide),
+                _buildPage(PageItem.more),
               ],
             ),
           ),

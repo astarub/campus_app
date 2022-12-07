@@ -32,7 +32,7 @@ class MensaPage extends StatefulWidget {
   State<MensaPage> createState() => _MensaPageState();
 }
 
-class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
+class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<MensaPage> {
   late Settings _settings;
 
   final MensaUsecases _mensaUsecases = sl<MensaUsecases>();
@@ -140,6 +140,8 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
@@ -309,4 +311,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

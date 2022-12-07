@@ -34,7 +34,7 @@ class FeedPage extends StatefulWidget {
   State<FeedPage> createState() => FeedPageState();
 }
 
-class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
+class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<FeedPage> {
   late final ScrollController _scrollController;
   double _scrollControllerLastOffset = 0;
   double _headerOpacity = 1;
@@ -128,6 +128,8 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+
+    super.build(context);
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
@@ -238,4 +240,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

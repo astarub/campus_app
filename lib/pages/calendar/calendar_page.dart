@@ -29,7 +29,7 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> {
+class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClientMixin<CalendarPage> {
   late List<Event> _events = [];
   late List<Event> _savedEvents = [];
   late List<Failure> _failures = [];
@@ -86,6 +86,8 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
@@ -154,4 +156,7 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
