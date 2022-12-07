@@ -241,6 +241,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     );
   }
 
+  // Keep state alive
   @override
   bool get wantKeepAlive => true;
 }

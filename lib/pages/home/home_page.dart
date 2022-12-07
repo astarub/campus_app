@@ -76,11 +76,12 @@ class HomePageState extends State<HomePage> {
   /// Switches to another page when selected in the nav-menu
   Future<bool> selectedPage(PageItem selectedPageItem) async {
     if (selectedPageItem != currentPage) {
+      // Get all pages as list and find the corresponding element
       final List<PageItem> pages = navigatorKeys.keys.toList();
       final int indexNewPage = pages.indexWhere((element) => element == selectedPageItem);
 
+      // Switch to the clicked page
       _pageController.jumpToPage(indexNewPage);
-      currentPage = selectedPageItem;
     }
 
     return true;
@@ -145,13 +146,21 @@ class HomePageState extends State<HomePage> {
               controller: _pageController,
               onPageChanged: (page) {
                 final List<PageItem> pages = navigatorKeys.keys.toList();
-                PageItem newPage;
-                try{
-                  newPage = pages.firstWhere((element) => element.index == page);
-                } catch(e) {
-                  return;
+
+                // Assign newPage the old value in case no element is found
+                PageItem newPage = currentPage;
+
+                // Find the new PageItem
+                for(int i=0; i < pages.length; i++){
+                  if(i == page){
+                    newPage = pages[i];
+                  }
                 }
 
+                // Return if nothing has changed
+                if(newPage == currentPage) return;
+
+                // Set newPage as the currentPage
                 setState(() {
                   currentPage = newPage;
                 });

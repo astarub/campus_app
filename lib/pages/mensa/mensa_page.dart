@@ -312,6 +312,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
     );
   }
 
+  // Keep state alive
   @override
   bool get wantKeepAlive => true;
 }

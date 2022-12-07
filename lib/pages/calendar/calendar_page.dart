@@ -157,6 +157,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     );
   }
 
+  // Keep state alive
   @override
   bool get wantKeepAlive => true;
 }
