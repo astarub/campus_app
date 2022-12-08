@@ -8,21 +8,16 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
 
 class CalendarPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
-  final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
-  final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const CalendarPage({
     Key? key,
     required this.mainNavigatorKey,
-    required this.pageEntryAnimationKey,
-    required this.pageExitAnimationKey,
   }) : super(key: key);
 
   @override
@@ -91,67 +86,61 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
-        child: AnimatedExit(
-          key: widget.pageExitAnimationKey,
-          child: AnimatedEntry(
-            key: widget.pageEntryAnimationKey,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                // Events
-                Container(
-                  margin: EdgeInsets.only(top: Platform.isAndroid ? 70 : 60),
-                  child: !showSavedEvents && showUpcomingPlaceholder
-                      // Placeholder for no upcoming events
-                      ? const EmptyStatePlaceholder(
-                          title: 'Keine Events in Sicht',
-                          text: 'Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.',
-                        )
-                      : showSavedEvents && showSavedPlaceholder
-                          // Placeholder for no saved events
-                          ? const EmptyStatePlaceholder(
-                              title: 'Keine gemerkten Events',
-                              text: 'Merke dir Events, um sie hier zu sehen.',
-                            )
-                          : RefreshIndicator(
-                              displacement: 55,
-                              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-                              color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
-                              strokeWidth: 3,
-                              onRefresh: updateStateWithEvents,
-                              child: ListView(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                children: showSavedEvents ? savedEvents : parsedEvents,
-                              ),
-                            ),
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            // Events
+            Container(
+              margin: EdgeInsets.only(top: Platform.isAndroid ? 70 : 60),
+              child: !showSavedEvents && showUpcomingPlaceholder
+              // Placeholder for no upcoming events
+                  ? const EmptyStatePlaceholder(
+                title: 'Keine Events in Sicht',
+                text: 'Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.',
+              )
+                  : showSavedEvents && showSavedPlaceholder
+              // Placeholder for no saved events
+                  ? const EmptyStatePlaceholder(
+                title: 'Keine gemerkten Events',
+                text: 'Merke dir Events, um sie hier zu sehen.',
+              )
+                  : RefreshIndicator(
+                displacement: 55,
+                backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
+                strokeWidth: 3,
+                onRefresh: updateStateWithEvents,
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  children: showSavedEvents ? savedEvents : parsedEvents,
                 ),
-                // Header
-                Container(
-                  padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Title
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 24),
-                        child: Text(
-                          'Events',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
-                        ),
-                      ),
-                      // SegmentedControl
-                      SizedBox(
-                        width: double.infinity,
-                        child: Center(child: upcomingSavedSwitch),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            // Header
+            Container(
+              padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
+              color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Title
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: Text(
+                      'Events',
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                    ),
+                  ),
+                  // SegmentedControl
+                  SizedBox(
+                    width: double.infinity,
+                    child: Center(child: upcomingSavedSwitch),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

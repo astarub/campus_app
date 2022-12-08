@@ -8,7 +8,6 @@ import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
 import 'package:campus_app/pages/feed/feed_page.dart';
-import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
 /// Defines the different pages that can be displayed
 enum PageItem { feed, events, coupons, mensa, guide, more }
@@ -34,22 +33,6 @@ class HomePageState extends State<HomePage> {
     PageItem.more: GlobalKey<NavigatorState>(),
   };
 
-  /// Creates two [GlobalKey] for each page in order to control the exit- and
-  /// entry-animation from outside the page
-  Map<PageItem, GlobalKey<AnimatedExitState>> exitAnimationKeys = {
-    PageItem.feed: GlobalKey<AnimatedExitState>(),
-    PageItem.events: GlobalKey<AnimatedExitState>(),
-    PageItem.mensa: GlobalKey<AnimatedExitState>(),
-    PageItem.guide: GlobalKey<AnimatedExitState>(),
-    PageItem.more: GlobalKey<AnimatedExitState>(),
-  };
-  Map<PageItem, GlobalKey<AnimatedEntryState>> entryAnimationKeys = {
-    PageItem.feed: GlobalKey<AnimatedEntryState>(),
-    PageItem.events: GlobalKey<AnimatedEntryState>(),
-    PageItem.mensa: GlobalKey<AnimatedEntryState>(),
-    PageItem.guide: GlobalKey<AnimatedEntryState>(),
-    PageItem.more: GlobalKey<AnimatedEntryState>(),
-  };
 
   final SystemUiOverlayStyle lightSystemUiStyle = const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.light, // iOS
@@ -82,6 +65,11 @@ class HomePageState extends State<HomePage> {
 
       // Switch to the clicked page
       _pageController.jumpToPage(indexNewPage);
+      await _pageController.animateToPage(
+        indexNewPage,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
     }
 
     return true;
@@ -93,8 +81,6 @@ class HomePageState extends State<HomePage> {
       mainNavigatorKey: widget.mainNavigatorKey,
       navigatorKey: navigatorKeys[tabItem]!,
       pageItem: tabItem,
-      pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
-      pageExitAnimationKey: exitAnimationKeys[tabItem]!,
     );
   }
 
