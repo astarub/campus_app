@@ -1,12 +1,13 @@
-import 'package:campus_app/main.dart';
 import 'package:flutter/material.dart';
-import 'package:campus_app/pages/home/home_page.dart';
+
 import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/calendar/calendar_page.dart';
 import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/guide/guide_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+
+enum PageItem { feed, events, coupons, mensa, guide, more }
 
 class PageNavigatorRoutes {
   /// The root-page is shown initially when this navbar-tab is the active one.

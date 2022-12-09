@@ -7,11 +7,9 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
+import 'package:campus_app/pages/home/widgets/side_nav_bar.dart';
 import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-
-/// Defines the different pages that can be displayed
-enum PageItem { feed, events, coupons, mensa, guide, more }
 
 /// The [HomePage] displays all general UI elements like the bottom nav-menu and
 /// handles the switching between the different pages.
@@ -139,36 +137,88 @@ class _HomePageState extends State<HomePage> {
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(
           backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-          body: SafeArea(
-            bottom: false,
-            child: Stack(
-              // Holds all the pages that sould be accessable within the bottom nav-menu
-              children: [
-                // Padding to prevent content from "sliding" under the navigation menu
-                Padding(
-                  padding: EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
+          body: MediaQuery.of(context).size.shortestSide < 600
+              ? SafeArea(
+                  bottom: false,
                   child: Stack(
+                    // Holds all the pages that sould be accessable within the bottom nav-menu
                     children: [
-                      // Pages
-                      _buildOffstateNavigator(PageItem.feed),
-                      _buildOffstateNavigator(PageItem.events),
-                      _buildOffstateNavigator(PageItem.mensa),
-                      _buildOffstateNavigator(PageItem.guide),
-                      _buildOffstateNavigator(PageItem.more),
+                      // Padding to prevent content from "sliding" under the navigation menu
+                      Padding(
+                        padding: EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
+                        child: Stack(
+                          children: [
+                            // Pages
+                            _buildOffstateNavigator(PageItem.feed),
+                            _buildOffstateNavigator(PageItem.events),
+                            _buildOffstateNavigator(PageItem.mensa),
+                            _buildOffstateNavigator(PageItem.guide),
+                            _buildOffstateNavigator(PageItem.more),
+                          ],
+                        ),
+                      ),
+                      // BottomNavigationBar
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: BottomNavBar(
+                          currentPage: currentPage,
+                          onSelectedPage: _selectedPage,
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                // BottomNavigationBar
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: BottomNavBar(
-                    currentPage: currentPage,
-                    onSelectedPage: _selectedPage,
+                )
+              : SafeArea(
+                  child: Container(
+                  color: const Color.fromRGBO(245, 246, 250, 1),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: 20,
+                        color: const Color.fromRGBO(245, 246, 250, 1),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            SideNavBar(
+                              currentPage: currentPage,
+                              onSelectedPage: _selectedPage,
+                            ),
+                            // Pages
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    _buildOffstateNavigator(PageItem.feed),
+                                    _buildOffstateNavigator(PageItem.events),
+                                    _buildOffstateNavigator(PageItem.mensa),
+                                    _buildOffstateNavigator(PageItem.guide),
+                                    _buildOffstateNavigator(PageItem.more),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // Detail space
+                            Container(
+                              width: 20,
+                              color: const Color.fromRGBO(245, 246, 250, 1),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 20,
+                        color: const Color.fromRGBO(245, 246, 250, 1),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ),
+                )),
         ),
       ),
     );
