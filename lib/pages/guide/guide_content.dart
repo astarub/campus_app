@@ -102,7 +102,7 @@ const List<Map<String, String>> faqEntries = [
   {
     'title': 'Zoom',
     'content':
-        'Zoom stellt eine visuelle Möglichkeit dar an Veranstaltungen teilzunehmen. Welche Plattformen eure Dozierenden präferieren, erfahrt ihr von eurer Fakultät. Informationen zur Teilnahme und Erstellung einer Zoom Videokonferenz findet ihr unter <a href="https://it-services.ruhr-uni-bochum.de/bk/zoom.html.de">it-services.ruhr-uni-bochum.de/bk/zoom.html.de</a>',
+        'Zoom stellt eine Möglichkeit dar, virtuell an Veranstaltungen teilzunehmen. Welche Plattformen eure Dozierenden präferieren, erfahrt ihr von eurer Fakultät. Informationen zur Teilnahme und Erstellung einer Zoom Videokonferenz findet ihr unter <a href="https://it-services.ruhr-uni-bochum.de/bk/zoom.html.de">it-services.ruhr-uni-bochum.de/bk/zoom.html.de</a>',
   },
   {
     'title': 'Zentrale Notrufnummer RUB',
