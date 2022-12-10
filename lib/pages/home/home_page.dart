@@ -63,6 +63,13 @@ class _HomePageState extends State<HomePage> {
     systemNavigationBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
     systemNavigationBarIconBrightness: Brightness.light, // Android
   );
+  final SystemUiOverlayStyle lightTabletSystemUiStyle = const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.light, // iOS
+    statusBarColor: Color.fromRGBO(245, 246, 250, 1), // Android
+    statusBarIconBrightness: Brightness.dark, // Android
+    systemNavigationBarColor: Color.fromRGBO(245, 246, 250, 1), // Android
+    systemNavigationBarIconBrightness: Brightness.dark, // Android
+  );
 
   /// Holds the currently active page.
   PageItem currentPage = PageItem.feed;
@@ -128,11 +135,28 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Check if device is not a phone and save this in the settings
+    /* if (MediaQuery.of(context).size.shortestSide >= 600) {
+      Settings settings = Provider.of<SettingsHandler>(context).currentSettings;
+
+      Provider.of<SettingsHandler>(context, listen: false).currentSettings = settings.copyWith(isNotPhone: true);
+
+      debugPrint(
+          'Because this device seems to not be a phone, changed isNotPhone property in settings to: ${Provider.of<SettingsHandler>(context, listen: false).currentSettings.isNotPhone.toString()}');
+    } */
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-          ? lightSystemUiStyle
-          : darkSystemUiStyle,
+      value: MediaQuery.of(context).size.shortestSide < 600
+          ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? lightSystemUiStyle
+              : darkSystemUiStyle
+          : lightTabletSystemUiStyle,
       child: WillPopScope(
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(
@@ -193,14 +217,19 @@ class _HomePageState extends State<HomePage> {
                                   color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
                                   borderRadius: BorderRadius.circular(15),
                                 ),
-                                child: Stack(
-                                  children: [
-                                    _buildOffstateNavigator(PageItem.feed),
-                                    _buildOffstateNavigator(PageItem.events),
-                                    _buildOffstateNavigator(PageItem.mensa),
-                                    _buildOffstateNavigator(PageItem.guide),
-                                    _buildOffstateNavigator(PageItem.more),
-                                  ],
+                                child: Center(
+                                  child: SizedBox(
+                                    width: 550,
+                                    child: Stack(
+                                      children: [
+                                        _buildOffstateNavigator(PageItem.feed),
+                                        _buildOffstateNavigator(PageItem.events),
+                                        _buildOffstateNavigator(PageItem.mensa),
+                                        _buildOffstateNavigator(PageItem.guide),
+                                        _buildOffstateNavigator(PageItem.more),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

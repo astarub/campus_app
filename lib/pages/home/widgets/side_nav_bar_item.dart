@@ -49,43 +49,44 @@ class _SideNavBarItemState extends State<SideNavBarItem> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedPadding(
-      padding: widget.isActive ? EdgeInsets.only(top: 2) : const EdgeInsets.only(top: 11),
-      duration: animationDuration,
-      curve: animationCurve,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child:
           // Icon-button
           CustomButton(
-            tapHandler: () => widget.onTap(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              child: Image.asset(
-                widget.isActive ? widget.imagePathActive : widget.imagePathInactive,
-                height: iconHeight,
-                color: widget.isActive
-                    ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary
-                    : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? Colors.black
-                        : const Color.fromRGBO(184, 186, 191, 1),
-                filterQuality: FilterQuality.high,
+        tapHandler: () => widget.onTap(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 14, right: 14, bottom: 5),
+                child: Image.asset(
+                  widget.isActive ? widget.imagePathActive : widget.imagePathInactive,
+                  height: iconHeight,
+                  color: widget.isActive
+                      ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary
+                      : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                          ? Colors.black
+                          : const Color.fromRGBO(184, 186, 191, 1),
+                  filterQuality: FilterQuality.high,
+                ),
               ),
-            ),
+              // Text
+              Text(
+                widget.title,
+                style: widget.isActive
+                    ? Provider.of<ThemesNotifier>(context)
+                        .currentThemeData
+                        .textTheme
+                        .labelSmall
+                        ?.copyWith(fontWeight: FontWeight.w700)
+                    : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
+              ),
+            ],
           ),
-          // Text
-          AnimatedPadding(
-            padding: widget.isActive ? EdgeInsets.zero : const EdgeInsets.only(top: 10),
-            duration: animationDuration,
-            curve: animationCurve,
-            child: AnimatedOpacity(
-              opacity: widget.isActive ? 1 : 0,
-              duration: animationDuration,
-              child:
-                  Text(widget.title, style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
