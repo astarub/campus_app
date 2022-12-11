@@ -1,6 +1,7 @@
+import 'package:campus_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_app/pages/home/home_page.dart';
-import 'package:campus_app/pages/rubnews/rubnews_page.dart';
+import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/calendar/calendar_page.dart';
 import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/guide/guide_page.dart';
@@ -21,6 +22,8 @@ class PageNavigatorRoutes {
 ///
 /// This also allows to constantly show the [BottomNavBar] across multiple pages, even during transitions.
 class NavBarNavigator extends StatelessWidget {
+  final GlobalKey<NavigatorState> mainNavigatorKey;
+
   final GlobalKey<NavigatorState> navigatorKey;
 
   /// Determines the type of the page in order to set the navigator correctly.
@@ -35,6 +38,7 @@ class NavBarNavigator extends StatelessWidget {
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   NavBarNavigator({
+    required this.mainNavigatorKey,
     required this.navigatorKey,
     required this.pageItem,
     required this.pageEntryAnimationKey,
@@ -46,13 +50,15 @@ class NavBarNavigator extends StatelessWidget {
     Widget rootPage;
     switch (pageItem) {
       case PageItem.feed:
-        rootPage = RubnewsPage(
+        rootPage = FeedPage(
+          mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );
         break;
       case PageItem.events:
         rootPage = CalendarPage(
+          mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );
@@ -62,6 +68,7 @@ class NavBarNavigator extends StatelessWidget {
         break;
       case PageItem.mensa:
         rootPage = MensaPage(
+          mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );
@@ -74,6 +81,7 @@ class NavBarNavigator extends StatelessWidget {
         break;
       case PageItem.more:
         rootPage = MorePage(
+          mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );

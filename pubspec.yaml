@@ -1,7 +1,7 @@
 name: campus_app
 description: Simplifie, improve and facilitate everyday students life.
 publish_to: 'none'
-version: 0.0.1+1
+version: 1.0.3
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
@@ -11,15 +11,17 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  envied: ^0.2.3
+  flutter_native_splash: ^2.2.11
   flutter_html: ^3.0.0-alpha.5
   flutter_secure_storage: ^6.0.0
   provider: ^6.0.3
   flutter_svg: ^1.1.4
   xml: ^6.1.0
+  animations: ^2.0.4
   page_transition: ^2.0.9
   cached_network_image: ^3.2.1
   cookie_jar: ^3.0.1
-  cupertino_icons: ^1.0.2
   dartz: ^0.10.1
   dio: ^4.0.6
   dio_cookie_manager: ^2.0.0
@@ -28,18 +30,62 @@ dependencies:
   http: ^0.13.4
   intl: ^0.17.0
   path_provider: ^2.0.11
-  pdfx: ^2.0.1+2
+  #pdfx: ^2.3.0
+  snapping_sheet_2: ^3.1.4
+  #snapping_sheet: ^3.1.0
+  flutter_displaymode: ^0.4.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  url_launcher: ^6.1.6
+  flutter_inappwebview: ^5.4.3+8
+  firebase_core: ^2.2.0
+  firebase_messaging: ^14.1.0
+  flutter_local_notifications: ^12.0.3
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.1.8  
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
   mockito: ^5.1.0
+  hive_generator: ^1.1.3
+  envied_generator: ^0.2.3
+  flutter_launcher_icons: ^0.10.0
+
+flutter_native_splash:
+  image: "assets/img/Android-RUB_Campus_App_Logo.png"
+  color: "#ffffff"
+  image_dark: "assets/img/Android-RUB_Campus_App_Logo.png"
+  color_dark: "#0e1420"
+  branding_android: "assets/img/SplashScreen-AStA-branding.png"
+  branding_dark_android: "assets/img/SplashScreen-AStA-branding-dark.png"
+  branding_ios: "assets/img/SplashScreen-AStA-branding-ios.png"
+  branding_dark_ios: "assets/img/SplashScreen-AStA-branding-dark-ios.png"
+  # Android 12 handles the splash screen differently than previous versions
+  android_12:
+    image: "assets/img/SplashScreen-logo.png"
+    color: "#ffffff"
+    image_dark: "assets/img/SplashScreen-logo.png"
+    color_dark: "#0e1420"
+    icon_background_color_dark: "#0e1420"
+    branding: "assets/img/SplashScreen-AStA-branding-android12.png"
+    branding_dark: "assets/img/SplashScreen-AStA-branding-dark-android12.png"
+  web: false
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/img/Android-RUB_Campus_App_Logo.png"
+  image_path_ios: "assets/img/IOS-RUB_Campus_App_Logo.png"
+  min_sdk_android: 21
 
 flutter:
   assets:
      - assets/img/asta_logo.png
+     - assets/img/henkelmann.png
+     - assets/img/mensa.png
+     - assets/img/qwest.png
+     - assets/img/rotebeete.png
      - assets/img/icons/home-outlined.png
      - assets/img/icons/home-filled.png
      - assets/img/icons/calendar-outlined.png
@@ -49,8 +95,35 @@ flutter:
      - assets/img/icons/help-outlined.png
      - assets/img/icons/help-filled.png
      - assets/img/icons/more.png
+     - assets/img/icons/settings.svg
+     - assets/img/icons/info.svg
+     - assets/img/icons/instagram.svg
+     - assets/img/icons/facebook.svg
+     - assets/img/icons/twitch.svg
+     - assets/img/icons/website.svg
      - assets/img/icons/mail.svg
-     - assets/documents/
+     - assets/img/icons/search.svg
+     - assets/img/icons/filter.svg
+     - assets/img/icons/arrow-left.svg
+     - assets/img/icons/info-message.svg
+     - assets/img/icons/x.svg
+     - assets/img/icons/mensa-alcohol.png
+     - assets/img/icons/mensa-beef.png
+     - assets/img/icons/mensa-chicken.png
+     - assets/img/icons/mensa-fish.png
+     - assets/img/icons/mensa-halal.png
+     - assets/img/icons/mensa-lamm.png
+     - assets/img/icons/mensa-pork.png
+     - assets/img/icons/mensa-vegan.png
+     - assets/img/icons/mensa-vegetarian.png
+     - assets/img/icons/chevron-right.svg
+     - assets/img/icons/external-link.svg
+     - assets/img/icons/mail-link.png
+     - assets/img/icons/moodle-link.png
+     - assets/img/icons/flexnow-link.png
+     - assets/img/icons/rub-link.png
+     - assets/img/icons/siren.svg
+     - assets/img/icons/message-square.svg
 
   fonts:
     - family: SF-Pro
@@ -69,16 +142,6 @@ flutter:
           weight: 800
         - asset: assets/fonts/SF-Pro-Display-Black.otf
           weight: 900
-  #  - family: CircularStd
-  #    fonts:
-  #      - asset: assets/fonts/CircularStd-Medium.otf
-  #      - asset: assets/fonts/CircularStd-Book.otf
-  #        weight: 600
-  #      - asset: assets/fonts/CircularStd-Bold.otf
-  #        weight: 700
-  #      - asset: assets/fonts/CircularStd-Black.otf
-  #        weight: 900
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+
   uses-material-design: true
   generate: true
