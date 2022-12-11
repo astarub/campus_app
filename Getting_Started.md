@@ -28,6 +28,19 @@ Now you can open VS Code with the command `code ./campus_app` and start developm
 
 ---
 
+## Start development
+
+After opening VS Code you should open a terminal and update all flutter dependencies. For this, run the following command: `flutter pub get`.
+
+Meanwhile you can start your emulator created privously. For that you can run: `flutter emulator --launch <emulator_name>`. 
+
+In the end execute `flutter run` to start the app. Now, evertime you updated the source you can use the key `r` or `R` to update the running app.
+You can quite quit `q`.
+
+Happy coding. :)
+
+---
+
 ## Flutter Cheat Sheet
 
 Last but not least we will provide a small cheat sheet about all Flutter commands you will need to develop.
@@ -47,7 +60,16 @@ Last but not least we will provide a small cheat sheet about all Flutter command
 ### Check your Development Environment
 
 `flutter doctor`
+
+### Start App
+
+`flutter run`
 ​
+### Update Dependencies
+
+`flutter pub get` // Download dependencies <br>
+`flutter pub upgrade` // Update dependencies
+
 ### Upgrade Flutter Version
 
 `flutter upgrade`
