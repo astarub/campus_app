@@ -30,10 +30,17 @@ class _GuidePageState extends State<GuidePage> {
   void initState() {
     super.initState();
 
+    // Sort the Entries Alphabetically before Adding them
+
+    List<Map<String, String>> tmpList;
+    tmpList = List.from(faqEntries);
+
+    tmpList.sort((a, b) {
+      return a['title']!.toLowerCase().compareTo(b['title']!.toLowerCase());
+    });
+
     faqExpandables.addAll(
-      faqEntries
-          .map((faqEntry) => ExpandableFaqItem(title: faqEntry['title']!, content: faqEntry['content']!))
-          .toList(),
+      tmpList.map((faqEntry) => ExpandableFaqItem(title: faqEntry['title']!, content: faqEntry['content']!)).toList(),
     );
   }
 
@@ -69,7 +76,10 @@ class _GuidePageState extends State<GuidePage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: Text(
-                            'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen wie bspw. einen interaktiven Raumfinder erweitert werden.',
+                            '''
+                              Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen wie 
+                              bspw. einen interaktiven Raumfinder erweitert werden.
+                            ''',
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                             overflow: TextOverflow.visible,
                           ),
