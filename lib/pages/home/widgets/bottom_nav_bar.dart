@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar_item.dart';
-import 'package:campus_app/utils/widgets/custom_button.dart';
 
 /// Creates the bottom navigation bar that lets the user switch between different pages.
 class BottomNavBar extends StatefulWidget {
@@ -17,9 +16,10 @@ class BottomNavBar extends StatefulWidget {
   final Function onSelectedPage;
 
   BottomNavBar({
+    Key? key,
     required this.currentPage,
     required this.onSelectedPage,
-  });
+  }) : super(key: key);
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
