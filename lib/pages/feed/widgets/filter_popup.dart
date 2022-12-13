@@ -6,6 +6,7 @@ import 'package:campus_app/utils/widgets/popup_sheet.dart';
 import 'package:campus_app/utils/widgets/campus_multiple_selection.dart';
 
 /// This widget displays the filter options that are available for the
+// ignore: comment_references
 /// personal news feed and is used in the [SnappingSheet] widget
 class FeedFilterPopup extends StatefulWidget {
   /// Can be given to show saved filters on build
@@ -58,7 +59,7 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
           child: Column(
             children: [
               CampusMultiSelection(
-                selectionItemTitles: ['RUB', 'Events'],
+                selectionItemTitles: const ['RUB', 'Events'],
                 onSelected: onFilterSelected,
                 selections: [
                   //_selectedFilters.contains('RUB'),

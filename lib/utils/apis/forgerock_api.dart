@@ -3,6 +3,7 @@
 //*                     https://backstage.forgerock.com/docs/openam/13/admin-guide/index.html#authn-2sv
 //* Postman Collection: https://backstage.forgerock.com/docs/idcloud/latest/_attachments/ForgeRock_Identity_Cloud.postman_collection.20210804.json
 //* OpenAM API Summary: https://gist.github.com/burck1/e9c0d48118fbe61a9c13
+// ignore_for_file: unnecessary_string_escapes
 
 class ForgerockAPIConstants {
   static const String baseUrl = 'https://sso-ecampus.ruhr-uni-bochum.de/';
@@ -10,15 +11,12 @@ class ForgerockAPIConstants {
   static const String realm = 'realms/root/realms/ecampus';
   static const String methodPOST = 'POST';
   static const String methodGET = 'GET';
-  static const Map<String, String> jsonHeader = {
-    'Content-Type': 'application/json'
-  };
+  static const Map<String, String> jsonHeader = {'Content-Type': 'application/json'};
   static const String cookieName = 'iPlanetDirectoryPro';
 }
 
 class ForgerockAPIOperations {
-  static const String authenticate =
-      '${ForgerockAPIConstants.openamPath}${ForgerockAPIConstants.realm}/authenticate';
+  static const String authenticate = '${ForgerockAPIConstants.openamPath}${ForgerockAPIConstants.realm}/authenticate';
   static const String validateSession =
       '${ForgerockAPIConstants.openamPath}${ForgerockAPIConstants.realm}/sessions?_prettyPrint=true&_action=validate';
 }

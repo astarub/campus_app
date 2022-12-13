@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:campus_app/core/failures.dart';
+//import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
@@ -32,7 +32,7 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage> {
   late List<Event> _events = [];
   late List<Event> _savedEvents = [];
-  late List<Failure> _failures = [];
+  //late List<Failure> _failures = [];
 
   final _calendarUsecase = sl<CalendarUsecases>();
   final _calendarUtils = sl<CalendarUtils>();
@@ -53,7 +53,7 @@ class _CalendarPageState extends State<CalendarPage> {
       setState(() {
         _events = data['events']! as List<Event>;
         _savedEvents = data['saved']! as List<Event>;
-        _failures = data['failures']! as List<Failure>;
+        //_failures = data['failures']! as List<Failure>;
 
         parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
         savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);

@@ -1,4 +1,4 @@
-import 'dart:math';
+// import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 
@@ -24,11 +24,11 @@ class FeedUtils extends Utils {
     final feedItemOrEventWidget = <dynamic>[];
     final widgets = <Widget>[];
 
-    final _news = <FeedItem>[];
-    final _events = <dynamic>[];
+    final tmpNews = <FeedItem>[];
+    final tmpEvents = <dynamic>[];
 
     // generates a new Random object
-    final _random = Random();
+    // final _random = Random();
 
     // parse news in widget
     for (final n in news) {
@@ -36,7 +36,7 @@ class FeedUtils extends Utils {
       final String formattedDescription =
           n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
 
-      _news.add(
+      tmpNews.add(
         FeedItem(
           title: n.title,
           date: n.pubDate,
@@ -60,7 +60,7 @@ class FeedUtils extends Utils {
       final endingTime = DateFormat('Hm').format(e.endDate);
 
       if (e.hasImage) {
-        _events.add(
+        tmpEvents.add(
           FeedItem(
             title: e.title,
             date: e.startDate,
@@ -76,40 +76,40 @@ class FeedUtils extends Utils {
           ),
         );
       } else {
-        _events.add(CalendarEventWidget(event: e));
+        tmpEvents.add(CalendarEventWidget(event: e));
       }
     }
 
     // sort news and events by date
-    _events.sort(_sortFeed);
-    _news.sort(_sortFeed);
+    tmpEvents.sort(_sortFeed);
+    tmpNews.sort(_sortFeed);
 
     if (shuffle) {
       // shuffle widgets random
-      feedItemOrEventWidget.addAll(_events);
-      feedItemOrEventWidget.addAll(_news);
+      feedItemOrEventWidget.addAll(tmpEvents);
+      feedItemOrEventWidget.addAll(tmpNews);
       feedItemOrEventWidget.shuffle();
     } else if (mixInto) {
       // mix events in feed, both are still sorted by date
-      while (_news.isNotEmpty || _events.isNotEmpty) {
-        if (_news.isNotEmpty && _events.isEmpty) {
-          feedItemOrEventWidget.addAll(_news);
-          _news.clear();
-        } else if (_news.isEmpty && _events.isNotEmpty) {
-          feedItemOrEventWidget.addAll(_events);
-          _events.clear();
-        } else if (_news.isEmpty && _events.isEmpty) {
+      while (tmpNews.isNotEmpty || tmpEvents.isNotEmpty) {
+        if (tmpNews.isNotEmpty && tmpEvents.isEmpty) {
+          feedItemOrEventWidget.addAll(tmpNews);
+          tmpNews.clear();
+        } else if (tmpNews.isEmpty && tmpEvents.isNotEmpty) {
+          feedItemOrEventWidget.addAll(tmpEvents);
+          tmpEvents.clear();
+        } else if (tmpNews.isEmpty && tmpEvents.isEmpty) {
           break;
         } else {
-          feedItemOrEventWidget.addAll([_news.first, _events.first]);
-          _news.removeAt(0);
-          _events.removeAt(0);
+          feedItemOrEventWidget.addAll([tmpNews.first, tmpEvents.first]);
+          tmpNews.removeAt(0);
+          tmpEvents.removeAt(0);
         }
       }
     } else {
       // sort widgets according to date
-      feedItemOrEventWidget.addAll(_events);
-      feedItemOrEventWidget.addAll(_news);
+      feedItemOrEventWidget.addAll(tmpEvents);
+      feedItemOrEventWidget.addAll(tmpNews);
       feedItemOrEventWidget.sort(_sortFeed);
     }
 

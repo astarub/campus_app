@@ -8,6 +8,7 @@ class CampusSwitch extends StatefulWidget {
   /// Called when the user toggles the switch.
   ///
   /// [onToggle] should update the state of the parent [StatefulWidget]
+  // ignore: comment_references
   /// using the [setState] method, so that the parent gets rebuilt; for example:
   ///
   /// ```dart

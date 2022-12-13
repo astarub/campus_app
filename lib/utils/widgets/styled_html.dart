@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// This widget extends the default HTML widget and add a custom style.
@@ -55,15 +54,15 @@ class StyledHTML extends Html {
     BuildContext context,
     String url,
   ) {
-    String _url = url;
+    String tmpUrl = url;
 
     // If a RUB news article refers to another RUB news article, than we
     // have to add a leading https://news.rub.de/
     if (url.startsWith(RegExp('/'))) {
-      _url = url.replaceFirst(RegExp('/'), 'https://news.rub.de/');
+      tmpUrl = url.replaceFirst(RegExp('/'), 'https://news.rub.de/');
     }
 
-    final uri = Uri.parse(_url);
+    final uri = Uri.parse(tmpUrl);
 
     // Enforces to open social links in external browser to let the system handle these
     // and open designated apps, if installed

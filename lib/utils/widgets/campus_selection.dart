@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/utils/widgets/custom_button.dart';
 
 /// This widget adds 3 [SelectionItem] buttons and only one can be active at the same time.
 /// Therefore this can be used to let the user decide between three different options.

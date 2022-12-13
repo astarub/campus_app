@@ -26,13 +26,13 @@ class MoodleRepository {
         return Left(NotAuthenticatedFailure());
       }
 
-      final jsonCourses =
-          await moodleDatasource.getUsersCoursesAsJson(token, userid);
+      final jsonCourses = await moodleDatasource.getUsersCoursesAsJson(token, userid);
 
       final List<MoodleCourseEntity> courses = [];
 
       for (final Map<String, dynamic> json in jsonCourses) {
-        courses.add(MoodleCourseModel.fromJson(json, token));
+        //courses.add(MoodleCourseModel.fromJson(json, token));
+        courses.add(MoodleCourseModel.fromJson(json));
       }
 
       return Right(courses);
