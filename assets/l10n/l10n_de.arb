@@ -3,21 +3,21 @@
 
   "helloWorld": "Hallo Welt!",
 
-  "serverFailureMessage": "Server-Daten konnten nicht geladen werden.",
+  "serverFailureMessage": "Serverdaten konnten nicht geladen werden.",
   "generalFailureMessage": "Es ist ein Fehler aufgetreten.",
   "errorMessage": "Fehler.",
   "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten...",
-  "invalid2FATokenFailureMessage": "Dein Einmalcode (TOTP) is nicht korrekt. Bitte versuche es noch einmal!",
-  "invalidLoginIDAndPasswordFailureMessage": "Die eingegebenen Anmeldedaten sind ungültig!",
+  "invalid2FATokenFailureMessage": "Dein Einmalcode (TOTP) is ungültig. Bitte versuche es erneut!",
+  "invalidLoginIDAndPasswordFailureMessage": "Die angegebenen Anmeldedaten sind ungültig!",
 
   "welcome": "Willkommen!",
-  "login_prompt": "Bitte logge dich mit deiner RUB-ID und Passwort ein.",
-  "rubid": "LoginID von deinem RUB-Account",
+  "login_prompt": "Bitte melde dich mit deiner RUB-ID und deinem Passwort an.",
+  "rubid": "Login-ID von deinem RUB-Account",
   "password": "Passwort",
-  "login": "LogIn",
+  "login": "Anmelden",
   "empty_input_field": "Bitte gib deine Anmeldedaten ein!",
   "login_error": "Ungültige Eingabe!",
-  "login_success": "Erfolgreich authentifiziert!",
-  "login_already": "Du bist bereits eingeloggt.",
+  "login_success": "Erfolgreich angemeldet!",
+  "login_already": "Du bist bereits angemeldet.",
   "enter_totp": "Bitte gib deinen Einmalcode (TOTP) ein."
 }
