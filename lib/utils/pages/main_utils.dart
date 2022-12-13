@@ -58,12 +58,7 @@ Future<void> initializeFirebase() async {
   debugPrint(fcmToken);
 
   // Request notifications permissions on iOs
-  await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    badge: true,
-    provisional: false,
-    sound: true,
-  );
+  await FirebaseMessaging.instance.requestPermission();
 
   // Enable foreground notifications on iOs
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -214,7 +209,7 @@ Future<void> setupFirebaseInteraction() async {
 
   // Checks whether the notification caused the app to start and then processes that notification
   if (initialMessage != null) {
-    _handleFirebaseInteraction(initialMessage);
+    await _handleFirebaseInteraction(initialMessage);
   }
 
   // Registers the event listener in case a notification is received while the app is running
@@ -222,7 +217,7 @@ Future<void> setupFirebaseInteraction() async {
 }
 
 /// Handles notification interactions
-void _handleFirebaseInteraction(RemoteMessage message) async {
+Future<void> _handleFirebaseInteraction(RemoteMessage message) async {
   Map<String, dynamic> interaction = {};
 
   // Decode JSON payload from the message data

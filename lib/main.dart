@@ -303,6 +303,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
             alignment: Alignment.center,
           );
         }
+        return null;
       },
       navigatorKey: mainNavigatorKey,
       debugShowCheckedModeBanner: false,

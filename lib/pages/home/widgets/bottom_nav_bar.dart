@@ -27,7 +27,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   // Adjust this value in order to change the icon height of each navbar-element
-  static const double iconHeight = 26;
+  // static const double iconHeight = 26;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
       ),
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
         physics: const NeverScrollableScrollPhysics(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
