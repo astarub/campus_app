@@ -80,7 +80,7 @@ class MensaUtils extends Utils {
     final List<DishEntity> entities = [
       // Belegte Brötchen
       const DishEntity(date: 0, title: 'Käse, Butter, Salat, Gurke und Tomate', category: 'Belegte Brötchen', price: '2,20€', infos: ['V']),
-      const DishEntity(date: 0, title: 'Salami, Butter, Salat, Gurke und Tomate', category: 'Belegte Brötchen', price: '2,20€', infos: ['S']),
+      const DishEntity(date: 0, title: 'Salami, Butter, Salat, Gurke und Tomate', category: 'Belegte Brötchen', price: '2,20€', infos: ['G']),
       const DishEntity(date: 0, title: 'gekochtem Schinken, Butter, Salat, Gurke und Tomate', category: 'Belegte Brötchen', price: '2,20€', infos: ['S']),
       const DishEntity(date: 0, title: 'rohem Schinken, Butter, Salat, Gurke und Tomate', category: 'Belegte Brötchen', price: '2,20€', infos: ['S']),
       const DishEntity(date: 0, title: 'Putenbrust, Butter, Salat, Gurke und Tomate', category: 'Belegte Brötchen', price: '2,20€', infos: ['G']),
@@ -90,7 +90,7 @@ class MensaUtils extends Utils {
       const DishEntity(date: 0, title: 'Käse (Gouda), Salat, Tomate, Gurke, Ei, Remulade und Butter', category: 'Belegte Baguettes', price: '3,80€', infos: ['V']),
       const DishEntity(date: 0, title: 'Brie, Salat, Tomate, Gurke, Ei, Remulade und Butter', category: 'Belegte Baguettes', price: '3,80€', infos: ['V']),
       const DishEntity(date: 0, title: 'Hirtenkäse, Salat, Tomate, Gurke, Ei, Remulade und Butter', category: 'Belegte Baguettes', price: '3,80€', infos: ['V']),
-      const DishEntity(date: 0, title: 'Salami, Salat, Tomate, Gurke, Ei, Remulade und Butter', category: 'Belegte Baguettes', price: '3,80€', infos: ['S']),
+      const DishEntity(date: 0, title: 'Salami, Salat, Tomate, Gurke, Ei, Remulade und Butter', category: 'Belegte Baguettes', price: '3,80€', infos: ['G']),
       const DishEntity(date: 0, title: 'gekochtem Schinken, Salat, Tomate, Gurke, Ei, Remulade und Butter', category: 'Belegte Baguettes', price: '3,80€', infos: ['S']),
       const DishEntity(date: 0, title: 'rohem Schinken, Salat, Tomate, Gurke, Ei, Remulade und Butter', category: 'Belegte Baguettes', price: '3,80€', infos: ['S']),
       const DishEntity(date: 0, title: 'Putenbrust, Salat, Tomate, Gurke, Ei, Remulade und Butter', category: 'Belegte Baguettes', price: '3,80€', infos: ['G']),
@@ -99,13 +99,13 @@ class MensaUtils extends Utils {
       // Überbackene Baguettes
       const DishEntity(date: 0, title: 'Tomaten und Mozzarella', category: 'Überbackene Baguettes', price: '4,40€', infos: ['V']),
       const DishEntity(date: 0, title: 'Schinken und Mozzarella', category: 'Überbackene Baguettes', price: '4,40€', infos: ['S']),
-      const DishEntity(date: 0, title: 'Salami und Mozzarella', category: 'Überbackene Baguettes', price: '4,40€', infos: ['S']),
+      const DishEntity(date: 0, title: 'Salami und Mozzarella', category: 'Überbackene Baguettes', price: '4,40€', infos: ['G']),
       const DishEntity(date: 0, title: 'Thunfisch und Mozzarella', category: 'Überbackene Baguettes', price: '4,40€', infos: ['F']),
       const DishEntity(date: 0, title: 'Ofenfrische Laugenbrezel', category: 'Überbackene Baguettes', price: '1,20€', infos: ['V']),
       const DishEntity(date: 0, title: 'Sesamring', category: 'Überbackene Baguettes', price: '1,20€' , infos: ['V']),
       // Sandwich-Toasties
       const DishEntity(date: 0, title: 'Tomate, Ei, Käse und Remoulade', category: 'Sandwich-Toasties', price: '3,80€', infos: ['V']),
-      const DishEntity(date: 0, title: 'Salami, Tomate, Käse und Remoulade', category: 'Sandwich-Toasties', price: '3,80€', infos: ['S']),
+      const DishEntity(date: 0, title: 'Salami, Tomate, Käse und Remoulade', category: 'Sandwich-Toasties', price: '3,80€', infos: ['G']),
       const DishEntity(date: 0, title: 'gekochten Schinken, Tomate, Käse und Remoulade', category: 'Sandwich-Toasties', price: '3,80€', infos: ['S']),
       const DishEntity(date: 0, title: 'gekochten Schinken, Ananas, Käse und Remoulade', category: 'Sandwich-Toasties', price: '3,80€', infos: ['S']),
       const DishEntity(date: 0, title: 'rohen Schinken, Ananas, Käse und Remoulade', category: 'Sandwich-Toasties', price: '3,80€', infos: ['S']),
@@ -116,7 +116,7 @@ class MensaUtils extends Utils {
       const DishEntity(date: 0, title: 'Fruchtige Tomatensuppe mit Sahne und geschälten Tomaten', category: 'Suppen', price: '3,80€', infos: ['V']),
       const DishEntity(date: 0, title: 'Ravensberger Champignon-Cremesuppe 	mit Sahne', category: 'Suppen', price: '3,80€', infos: ['V']),
       const DishEntity(date: 0, title: 'Holländische Lauch-Cremesuppe 	mit Sauerrahm', category: 'Suppen', price: '3,80€', infos: ['V']),
-      const DishEntity(date: 0, title: 'Ungarische Gulaschsuppe 	mit Rindfleisch und Paprika', category: 'Suppen', price: '3,80€', infos: ['S']),
+      const DishEntity(date: 0, title: 'Ungarische Gulaschsuppe mit Rindfleisch und Paprika', category: 'Suppen', price: '3,80€', infos: ['R']),
       const DishEntity(date: 0, title: 'Zwiebelsuppe mit Brot und Käse überbacken', category: 'Suppen', price: '3,80€', infos: ['V']),
       // Salate
       const DishEntity(date: 0, title: 'Kleiner gemischter Salat: Blattsalat, Tomaten, Gurken', category: 'Salate', price: '4,00€', infos: ['VG']),
