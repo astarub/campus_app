@@ -127,10 +127,10 @@ class MensaUtils extends Utils {
       const DishEntity(date: 0, title: 'Extras: Hähnchenbruststreifen', category: 'Salate', price: '1,00€', infos: ['G']),
       const DishEntity(date: 0, title: 'Extras: Schinken', category: 'Salate', price: '1,00€', infos: ['S']),
       // Kleine Snacks
-      const DishEntity(date: 0, title: 'Portion schwarze Oliven (Als Beilage wird Brot gereicht)', category: 'Kleine Snacks', price: '3,40€', infos: ['VG']),
-      const DishEntity(date: 0, title: 'Portion grüne Oliven (Als Beilage wird Brot gereicht)', category: 'Kleine Snacks', price: '3,40€', infos: ['VG']),
-      const DishEntity(date: 0, title: 'Portion Pepperonis (Als Beilage wird Brot gereicht)', category: 'Kleine Snacks', price: '3,40€', infos: ['VG']),
-      const DishEntity(date: 0, title: 'Portion Hirtenkäse (Als Beilage wird Brot gereicht)', category: 'Kleine Snacks', price: '3,40€', infos: ['V']),
+      const DishEntity(date: 0, title: 'Portion schwarze Oliven', category: 'Kleine Snacks (mit Brot)', price: '3,40€', infos: ['VG']),
+      const DishEntity(date: 0, title: 'Portion grüne Oliven', category: 'Kleine Snacks (mit Brot)', price: '3,40€', infos: ['VG']),
+      const DishEntity(date: 0, title: 'Portion Pepperonis', category: 'Kleine Snacks (mit Brot)', price: '3,40€', infos: ['VG']),
+      const DishEntity(date: 0, title: 'Portion Hirtenkäse', category: 'Kleine Snacks (mit Brot)', price: '3,40€', infos: ['V']),
       // Kuchen
       const DishEntity(date: 0, title: 'Regelmäßig wechselnde Kuchenauswahl ohne Sahne', category: 'Kuchen', price: '2,20€'),
       const DishEntity(date: 0, title: 'Regelmäßig wechselnde Kuchenauswahl mit Sahne', category: 'Kuchen', price: '3,20€'),
