@@ -101,7 +101,9 @@ class Event {
     Map<String, String>? cost = json['cost'] == ''
         ? null
         : {
-            'currency': (json['cost_details'] as Map<String, dynamic>)['currency_symbol'] as String,
+            'currency': ((json['cost_details'] as Map<String, dynamic>)['currency_symbol'] as String) != ''
+                ? (json['cost_details'] as Map<String, dynamic>)['currency_symbol'] as String
+                : '€',
             'value': ((json['cost_details'] as Map<String, dynamic>)['values'] as List<dynamic>)[0] as String,
           };
     // maybe someone insert as value 0 then we want the cost to be null
