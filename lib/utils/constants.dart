@@ -9,6 +9,7 @@ const String rubNewsfeed = 'https://news.rub.de/newsfeed'; // there is no non-ge
 
 // TODO: Change IP to domain name of an asta-bocum.de server
 const String mensaData = 'https://85.214.40.154/get_meal';
+const String mensaDataXML = 'https://app.asta-bochum.de/xml';
 
 // See: https://codewithandrea.com/articles/flutter-api-keys-dart-define-env-files/
 final String mensaApiKey = Env.mensaApiKey;

@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/utils/constants.dart';
+import 'package:xml/xml.dart';
 
 class MensaDataSource {
   /// Key to identify count of news in Hive box / Cach
@@ -34,7 +35,19 @@ class MensaDataSource {
     if (response.statusCode != 200) {
       throw ServerException();
     } else {
-      return response.data as Map<String, dynamic>;
+      return json.decode(response.data) as Map<String, dynamic>;
+    }
+  }
+
+  /// Request mensa dishes from XML file
+  Future<XmlDocument> getRemoteXML(int restaurant) async {
+    const filename = 'PLACEHOLDER';
+    final response = await client.get('$mensaDataXML/$filename');
+
+    if (response.statusCode != 200) {
+      throw ServerException();
+    } else {
+      return XmlDocument.parse(response.data);
     }
   }
 
