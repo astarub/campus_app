@@ -33,14 +33,10 @@ class _SideNavBarState extends State<SideNavBar> {
     return Container(
       width: 80,
       padding: const EdgeInsets.only(top: 40, bottom: 10, left: 15, right: 15),
-      decoration: const BoxDecoration(
-        //color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-        color: Color.fromRGBO(245, 246, 250, 1),
-        /* borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(15),
-          bottomRight: Radius.circular(15),
-        ), 
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(1, 0))], */
+      decoration: BoxDecoration(
+        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+            ? const Color.fromRGBO(245, 246, 250, 1)
+            : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
       ),
       child: Column(
         children: [

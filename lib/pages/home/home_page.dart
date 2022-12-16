@@ -70,6 +70,13 @@ class _HomePageState extends State<HomePage> {
     systemNavigationBarColor: Color.fromRGBO(245, 246, 250, 1), // Android
     systemNavigationBarIconBrightness: Brightness.dark, // Android
   );
+  final SystemUiOverlayStyle darkTabletSystemUiStyle = const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.dark, // iOS
+    statusBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
+    statusBarIconBrightness: Brightness.light, // Android
+    systemNavigationBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
+    systemNavigationBarIconBrightness: Brightness.light, // Android
+  );
 
   /// Holds the currently active page.
   PageItem currentPage = PageItem.feed;
@@ -156,7 +163,9 @@ class _HomePageState extends State<HomePage> {
           ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? lightSystemUiStyle
               : darkSystemUiStyle
-          : lightTabletSystemUiStyle,
+          : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? lightTabletSystemUiStyle
+              : darkTabletSystemUiStyle,
       child: WillPopScope(
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(
@@ -194,13 +203,17 @@ class _HomePageState extends State<HomePage> {
                 )
               : SafeArea(
                   child: Container(
-                  color: const Color.fromRGBO(245, 246, 250, 1),
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromRGBO(245, 246, 250, 1)
+                      : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
                         height: 20,
-                        color: const Color.fromRGBO(245, 246, 250, 1),
+                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? const Color.fromRGBO(245, 246, 250, 1)
+                            : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                       ),
                       Expanded(
                         child: Row(
@@ -236,14 +249,18 @@ class _HomePageState extends State<HomePage> {
                             // Detail space
                             Container(
                               width: 20,
-                              color: const Color.fromRGBO(245, 246, 250, 1),
+                              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                  ? const Color.fromRGBO(245, 246, 250, 1)
+                                  : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                             ),
                           ],
                         ),
                       ),
                       Container(
                         height: 20,
-                        color: const Color.fromRGBO(245, 246, 250, 1),
+                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? const Color.fromRGBO(245, 246, 250, 1)
+                            : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                       ),
                     ],
                   ),
