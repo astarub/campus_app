@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
+import 'package:xml/xml.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
 
@@ -92,11 +91,44 @@ class MensaRepository {
       // Write entities to cache
       unawaited(mensaDatasource.writeDishEntitiesToCache(entities, restaurant));
 
-      // if (restaurant == 3) {
-      //   for (final element in entities) {
-      //     print(element);
-      //   }
-      // }
+      return Right(entities);
+    } catch (e) {
+      switch (e.runtimeType) {
+        case ServerException:
+          return Left(ServerFailure());
+
+        case JsonException:
+          return Left(ServerFailure());
+
+        default:
+          return Left(GeneralFailure());
+      }
+    }
+  }
+
+  /// Returns a list of [DishEntity] widgets or a failure.
+  /// Reataurant is 1 (Mensa) by default. Theire are the following possible values:
+  ///   * 1: AKAFÖ Mensa
+  ///   * 2: AKAFÖ Rote Beete (not implemented yet)
+  ///   * 3: AKAFÖ Qwest (not implemented yet)
+  ///   * 4: AKAFÖ Pfannengericht (not implemented yet)
+  Future<Either<Failure, List<DishEntity>>> getRemoteDishesXML(int restaurant) async {
+    try {
+      final List<DishEntity> entities = [];
+
+      final dishesXml = await mensaDatasource.getRemoteXML(restaurant);
+      final dishesXmlList = dishesXml.findAllElements('WeekDay');
+
+      print(dishesXmlList);
+
+      final DateTime lastDayOfWeek = DateTime.now().add(Duration(days: DateTime.daysPerWeek - DateTime.now().weekday));
+      final DateTime firstDayOfWeek = DateTime.now().subtract(Duration(days: DateTime.now().weekday));
+
+      // Take a look at 'test/pages/mensa/samples/mensa_server_xml_response.dart' to understand remote data structure
+      // TODO: Parse XML to Entities
+
+      // Write entities to cache
+      //unawaited(mensaDatasource.writeDishEntitiesToCache(entities, restaurant));
 
       return Right(entities);
     } catch (e) {

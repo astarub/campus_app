@@ -3,13 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i6;
 
-import 'package:campus_app/pages/mensa/dish_entity.dart' as _i6;
-import 'package:campus_app/pages/mensa/mensa_datasource.dart' as _i4;
+import 'package:campus_app/pages/mensa/dish_entity.dart' as _i7;
+import 'package:campus_app/pages/mensa/mensa_datasource.dart' as _i5;
 import 'package:dio/dio.dart' as _i2;
 import 'package:hive/hive.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:xml/xml.dart' as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -42,10 +43,20 @@ class _FakeBox_1<E> extends _i1.SmartFake implements _i3.Box<E> {
         );
 }
 
+class _FakeXmlDocument_2 extends _i1.SmartFake implements _i4.XmlDocument {
+  _FakeXmlDocument_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [MensaDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMensaDataSource extends _i1.Mock implements _i4.MensaDataSource {
+class MockMensaDataSource extends _i1.Mock implements _i5.MensaDataSource {
   MockMensaDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -67,18 +78,33 @@ class MockMensaDataSource extends _i1.Mock implements _i4.MensaDataSource {
         ),
       ) as _i3.Box<dynamic>);
   @override
-  _i5.Future<Map<String, dynamic>> getRemoteData(int? restaurant) =>
+  _i6.Future<Map<String, dynamic>> getRemoteData(int? restaurant) =>
       (super.noSuchMethod(
         Invocation.method(
           #getRemoteData,
           [restaurant],
         ),
         returnValue:
-            _i5.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
-      ) as _i5.Future<Map<String, dynamic>>);
+            _i6.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i6.Future<Map<String, dynamic>>);
   @override
-  _i5.Future<void> writeDishEntitiesToCache(
-    List<_i6.DishEntity>? entities,
+  _i6.Future<_i4.XmlDocument> getRemoteXML(int? restaurant) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRemoteXML,
+          [restaurant],
+        ),
+        returnValue: _i6.Future<_i4.XmlDocument>.value(_FakeXmlDocument_2(
+          this,
+          Invocation.method(
+            #getRemoteXML,
+            [restaurant],
+          ),
+        )),
+      ) as _i6.Future<_i4.XmlDocument>);
+  @override
+  _i6.Future<void> writeDishEntitiesToCache(
+    List<_i7.DishEntity>? entities,
     int? restaurant,
   ) =>
       (super.noSuchMethod(
@@ -89,16 +115,16 @@ class MockMensaDataSource extends _i1.Mock implements _i4.MensaDataSource {
             restaurant,
           ],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
   @override
-  List<_i6.DishEntity> readDishEntitiesFromCache(int? restaurant) =>
+  List<_i7.DishEntity> readDishEntitiesFromCache(int? restaurant) =>
       (super.noSuchMethod(
         Invocation.method(
           #readDishEntitiesFromCache,
           [restaurant],
         ),
-        returnValue: <_i6.DishEntity>[],
-      ) as List<_i6.DishEntity>);
+        returnValue: <_i7.DishEntity>[],
+      ) as List<_i7.DishEntity>);
 }

@@ -79,6 +79,24 @@ class MockMensaRepository extends _i1.Mock implements _i4.MensaRepository {
         )),
       ) as _i5.Future<_i3.Either<_i6.Failure, List<_i7.DishEntity>>>);
   @override
+  _i5.Future<_i3.Either<_i6.Failure, List<_i7.DishEntity>>> getRemoteDishesXML(
+          int? restaurant) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getRemoteDishesXML,
+          [restaurant],
+        ),
+        returnValue:
+            _i5.Future<_i3.Either<_i6.Failure, List<_i7.DishEntity>>>.value(
+                _FakeEither_1<_i6.Failure, List<_i7.DishEntity>>(
+          this,
+          Invocation.method(
+            #getRemoteDishesXML,
+            [restaurant],
+          ),
+        )),
+      ) as _i5.Future<_i3.Either<_i6.Failure, List<_i7.DishEntity>>>);
+  @override
   _i3.Either<_i6.Failure, List<_i7.DishEntity>> getCachedDishes(
           int? restaurant) =>
       (super.noSuchMethod(

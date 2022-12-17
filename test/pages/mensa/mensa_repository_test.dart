@@ -13,12 +13,14 @@ import 'package:campus_app/pages/mensa/mensa_repository.dart';
 
 import 'mensa_repository_test.mocks.dart';
 import 'samples/mensa_sample_json_response.dart';
+import 'samples/mensa_sample_xml_response.dart';
 
 @GenerateMocks([MensaDataSource])
 void main() {
   late MensaRepository mensaRepository;
   late MockMensaDataSource mockMensaDataSource;
   late List<DishEntity> samleDishEntities;
+  late List<DishEntity> samleDishEntitiesFromXML;
 
   setUp(() {
     mockMensaDataSource = MockMensaDataSource();
@@ -52,10 +54,12 @@ void main() {
           json: mensaSampleTestData['data']['Di, 11.10.']['Dessert'][1],
         ),
       ];
+
+      samleDishEntitiesFromXML = [];
     });
   });
 
-  group('[getRemoteData]', () {
+  group('[getRemoteDishes]', () {
     test('Should return a list of [DishEntity] on successfully web reuest', () async {
       when(mockMensaDataSource.getRemoteData(1)).thenAnswer((_) async => mensaSampleTestData);
 
@@ -90,6 +94,45 @@ void main() {
 
       identical(testReturn, expectedReturn);
       verify(mockMensaDataSource.getRemoteData(1));
+      verifyNoMoreInteractions(mockMensaDataSource);
+    });
+  });
+
+  group('[getRemoteDishesXML]', () {
+    test('Should return a list of [DishEntity] on successfully web reuest', () async {
+      when(mockMensaDataSource.getRemoteXML(1)).thenAnswer((_) async => mensaSampleTestDataXML);
+
+      final testReturn = await mensaRepository.getRemoteDishesXML(1);
+
+      identical(testReturn, samleDishEntitiesFromXML);
+      verify(mockMensaDataSource.getRemoteXML(1));
+      verify(mockMensaDataSource.writeDishEntitiesToCache(any, 1));
+      verifyNoMoreInteractions(mockMensaDataSource);
+    });
+
+    test('Should return a [ServerFailure] on failed web request', () async {
+      /// ServerFailure on ServerException
+      final expectedReturn = ServerFailure();
+
+      when(mockMensaDataSource.getRemoteXML(1)).thenThrow(ServerException());
+
+      final testReturn = await mensaRepository.getRemoteDishesXML(1);
+
+      identical(testReturn, expectedReturn);
+      verify(mockMensaDataSource.getRemoteXML(1));
+      verifyNoMoreInteractions(mockMensaDataSource);
+    });
+
+    test('Should return a [GeneralFailure] on unexpected Exception', () async {
+      /// GeneralFailure on any Exception
+      final expectedReturn = GeneralFailure();
+
+      when(mockMensaDataSource.getRemoteXML(1)).thenThrow(Exception());
+
+      final testReturn = await mensaRepository.getRemoteDishesXML(1);
+
+      identical(testReturn, expectedReturn);
+      verify(mockMensaDataSource.getRemoteXML(1));
       verifyNoMoreInteractions(mockMensaDataSource);
     });
   });
