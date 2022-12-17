@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -9,7 +8,6 @@ import 'package:mockito/mockito.dart';
 import 'package:xml/xml.dart';
 
 import 'package:campus_app/core/exceptions.dart';
-import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
 import 'package:campus_app/utils/constants.dart';
@@ -106,7 +104,6 @@ void main() {
     });
   });
 
-  // TODO: GetIt initializing isn't working - type MensaUtils is not registered inside GetIt.
   group('[Caching]', () {
     final samleNewsEntities = [
       DishEntity.fromJSON(date: 0, category: 'Aktion', json: mensaSampleDish1),

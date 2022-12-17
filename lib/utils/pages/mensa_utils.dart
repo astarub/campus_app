@@ -3,17 +3,6 @@ import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
 import 'package:campus_app/utils/pages/presentation_functions.dart';
 
 class MensaUtils extends Utils {
-  bool isUppercase(String str) {
-    return str == str.toUpperCase();
-  }
-
-  bool isNumeric(String s) {
-    if (s == null) {
-      return false;
-    }
-    return double.tryParse(s) != null;
-  }
-
   /// Parse a list of DishEntity to widget list of type MealCategory.
   List<MealCategory> fromDishListToMealCategoryList({
     required List<DishEntity> entities,
@@ -95,9 +84,7 @@ class MensaUtils extends Utils {
               name: 'Putenbrust, Butter, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
           MealItem(name: 'Tofu, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
           MealItem(
-              name: 'veganem Brotaufstrich, Salat, Gurke und Tomate',
-              price: '2,20€',
-              onPreferenceTap: onPreferenceTap),
+              name: 'veganem Brotaufstrich, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
         ],
       ),
       MealCategory(

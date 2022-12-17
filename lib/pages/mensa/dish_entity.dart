@@ -51,8 +51,6 @@ class DishEntity {
     required String category,
     required Map<String, dynamic> json,
   }) {
-    final utils = sl<MensaUtils>();
-
     late final List<String> uppercase = [];
     late final List<String> lowercase = [];
     late final List<String> numbers = [];
@@ -62,9 +60,9 @@ class DishEntity {
 
     final allInfo = (json['allergies']! as String).replaceAll('(', '').replaceAll(')', '').split(',');
 
-    uppercase.addAll(allInfo.where((element) => utils.isUppercase(element) && !utils.isNumeric(element)));
-    lowercase.addAll(allInfo.where((element) => !utils.isUppercase(element)));
-    numbers.addAll(allInfo.where(utils.isNumeric));
+    uppercase.addAll(allInfo.where((element) => _isUppercase(element) && !_isNumeric(element)));
+    lowercase.addAll(allInfo.where((element) => !_isUppercase(element)));
+    numbers.addAll(allInfo.where(_isNumeric));
 
     return DishEntity(
       date: date,
@@ -80,5 +78,16 @@ class DishEntity {
   @override
   String toString() {
     return '$date: $title ($category), $price, $infos, $allergenes, $additives';
+  }
+
+  static bool _isUppercase(String str) {
+    return str == str.toUpperCase();
+  }
+
+  static bool _isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
   }
 }

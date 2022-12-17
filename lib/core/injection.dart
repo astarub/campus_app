@@ -39,7 +39,6 @@ Future<void> init() async {
   //! Datasources
   //!
 
-  //! Datasources
   sl.registerSingletonAsync(() async {
     final client = Dio();
 
