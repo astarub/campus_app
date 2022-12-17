@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 
@@ -140,86 +141,89 @@ class _DecisionPopupState extends State<DecisionPopup> {
       initialSnappingPosition: const SnappingPosition.pixels(positionPixels: -100),
       snappingPositions: snapPositions,
       sheetBelow: SnappingSheetContent(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
+        child: Align(
+          child: Container(
+            width: 500,
+            decoration: BoxDecoration(
+              color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              ),
+              boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
             ),
-            boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
-          ),
-          //padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Grabber
-              Container(
-                height: 5,
-                width: 40,
-                margin: const EdgeInsets.only(top: 10, bottom: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3),
-                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                      ? const Color.fromRGBO(245, 246, 250, 1)
-                      : const Color.fromRGBO(34, 40, 54, 1),
-                ),
-              ),
-              // Leading Title
-              Text(
-                widget.leadingTitle,
-                style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? Provider.of<ThemesNotifier>(context)
-                        .currentThemeData
-                        .textTheme
-                        .labelMedium
-                        ?.copyWith(color: Colors.black)
-                    : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
-              ),
-              // Title
-              Text(
-                widget.title,
-                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
-              ),
-              // Content
-              Padding(
-                padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-                child: SingleChildScrollView(
-                  child: Text(
-                    widget.content,
-                    textAlign: TextAlign.center,
-                    style: Provider.of<ThemesNotifier>(context)
-                        .currentThemeData
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontSize: 15),
+            //padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Grabber
+                Container(
+                  height: 5,
+                  width: 40,
+                  margin: const EdgeInsets.only(top: 10, bottom: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                        ? const Color.fromRGBO(245, 246, 250, 1)
+                        : const Color.fromRGBO(34, 40, 54, 1),
                   ),
                 ),
-              ),
-              Expanded(child: Container()),
-              // No button
-              Padding(
-                padding: const EdgeInsets.only(top: 0, bottom: 16),
-                child: CampusTextButton(
-                  buttonText: widget.declineButtonText,
-                  onTap: () {
-                    widget.onDecline();
-                    closePopup();
-                  },
+                // Leading Title
+                Text(
+                  widget.leadingTitle,
+                  style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? Provider.of<ThemesNotifier>(context)
+                      .currentThemeData
+                      .textTheme
+                      .labelMedium
+                      ?.copyWith(color: Colors.black)
+                      : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
                 ),
-              ),
-              // Yes button
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: CampusButton(
-                  text: widget.acceptButtonText,
-                  onTap: () {
-                    widget.onAccept();
-                    closePopup();
-                  },
+                // Title
+                Text(
+                  widget.title,
+                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                 ),
-              ),
-            ],
+                // Content
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+                  child: SingleChildScrollView(
+                    child: Text(
+                      widget.content,
+                      textAlign: TextAlign.center,
+                      style: Provider.of<ThemesNotifier>(context)
+                          .currentThemeData
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(fontSize: 15),
+                    ),
+                  ),
+                ),
+                Expanded(child: Container()),
+                // No button
+                Padding(
+                  padding: const EdgeInsets.only(top: 0, bottom: 16),
+                  child: CampusTextButton(
+                    buttonText: widget.declineButtonText,
+                    onTap: () {
+                      widget.onDecline();
+                      closePopup();
+                    },
+                  ),
+                ),
+                // Yes button
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: CampusButton(
+                    text: widget.acceptButtonText,
+                    onTap: () {
+                      widget.onAccept();
+                      closePopup();
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
