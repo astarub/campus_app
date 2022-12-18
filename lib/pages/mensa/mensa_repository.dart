@@ -36,36 +36,16 @@ class MensaRepository {
 
         // Correct DateFormat is e.g. "Mo., 10.10." instead of "Mo, 10.10."
         final datetime = DateFormat('E, y.d.M.', 'de_DE').parse(day.replaceRange(2, 4, '., ${firstDayOfWeek.year}.'));
-
+        // Skip if date is not in current week
         if (datetime.isBefore(firstDayOfWeek) || datetime.isAfter(lastDayOfWeek)) continue;
-
-        late int date;
-        switch (datetime.weekday) {
-          case 1: // Monday
-            date = 0;
-            break;
-          case 2: // Tuesday
-            date = 1;
-            break;
-          case 3: // Wednesday
-            date = 2;
-            break;
-          case 4: // Thursday
-            date = 3;
-            break;
-          default: // Friday, Saturday or Sunday
-            date = 4;
-            break;
-        }
 
         if (restaurant == 3) {
           // restaurant == QWEST
-
           final dishes = dishesJson[day] as List<dynamic>;
           for (final dish in dishes) {
             entities.add(
               DishEntity.fromJSON(
-                date: date,
+                date: _getDate(datetime),
                 category: 'Speiseplan vom ${datetime.day}.${datetime.month}.${datetime.year}',
                 json: dish,
               ),
@@ -78,7 +58,7 @@ class MensaRepository {
             for (final Map<String, dynamic> dish in dishes) {
               entities.add(
                 DishEntity.fromJSON(
-                  date: date,
+                  date: _getDate(datetime),
                   category: category,
                   json: dish,
                 ),
@@ -117,18 +97,34 @@ class MensaRepository {
       final List<DishEntity> entities = [];
 
       final dishesXml = await mensaDatasource.getRemoteXML(restaurant);
-      final dishesXmlList = dishesXml.findAllElements('WeekDay');
-
-      print(dishesXmlList);
+      final daysXmlList = dishesXml.findAllElements('WeekDay');
 
       final DateTime lastDayOfWeek = DateTime.now().add(Duration(days: DateTime.daysPerWeek - DateTime.now().weekday));
       final DateTime firstDayOfWeek = DateTime.now().subtract(Duration(days: DateTime.now().weekday));
 
       // Take a look at 'test/pages/mensa/samples/mensa_server_xml_response.dart' to understand remote data structure
-      // TODO: Parse XML to Entities
+      for (final day in daysXmlList) {
+        // skip if dish is not in current week
+        final datetime = DateFormat('y-M-d', 'de_DE').parse(day.getAttribute('Date')!);
+        if (datetime.isBefore(firstDayOfWeek) || datetime.isAfter(lastDayOfWeek)) continue;
+
+        for (final menuLine in day.findAllElements('MenuLine')) {
+          final category = menuLine.getAttribute('Name')!;
+
+          for (final dish in menuLine.findAllElements('Component')) {
+            entities.add(
+              DishEntity.fromXML(
+                date: _getDate(datetime),
+                category: category,
+                xml: dish,
+              ),
+            );
+          }
+        }
+      }
 
       // Write entities to cache
-      //unawaited(mensaDatasource.writeDishEntitiesToCache(entities, restaurant));
+      unawaited(mensaDatasource.writeDishEntitiesToCache(entities, restaurant));
 
       return Right(entities);
     } catch (e) {
@@ -152,5 +148,28 @@ class MensaRepository {
     } catch (e) {
       return Left(CachFailure());
     }
+  }
+
+  /// Determine weekday number
+  static int _getDate(DateTime datetime) {
+    late int date;
+    switch (datetime.weekday) {
+      case 1: // Monday
+        date = 0;
+        break;
+      case 2: // Tuesday
+        date = 1;
+        break;
+      case 3: // Wednesday
+        date = 2;
+        break;
+      case 4: // Thursday
+        date = 3;
+        break;
+      default: // Friday, Saturday or Sunday
+        date = 4;
+        break;
+    }
+    return date;
   }
 }

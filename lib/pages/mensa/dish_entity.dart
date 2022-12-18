@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:xml/xml.dart';
 
 part 'dish_entity.g.dart';
 
+@immutable
 @HiveType(typeId: 5)
 class DishEntity {
   /// Date: from 0 to 4 (Monday to Friday)
@@ -79,31 +81,36 @@ class DishEntity {
     required String category,
     required XmlElement xml,
   }) {
-    late List<String>? adds;
-    late List<String>? infos;
-    late List<String>? allergenes;
+    final List<String> adds = [];
+    final List<String> infos = [];
+    final List<String> allergenes = [];
 
     final title = xml.getAttribute('Name')!;
-    final price =
-        xml.getElement('ComponentDetails')!.getElement('ProductInfo')!.getElement('Product')!.getAttribute('Product')!;
+
+    final price = xml
+        .getElement('ComponentDetails')!
+        .getElement('ProductInfo')!
+        .getElement('Product')!
+        .getAttribute('ProductPrice')!;
 
     // Foodlabels
-    final foodLabelGroups = xml.getElement('FoodLabelInfo')!.findAllElements('FoodLabelGroup');
+    final foodLabelGroups =
+        xml.getElement('ComponentDetails')!.getElement('FoodLabelInfo')!.findAllElements('FoodLabelGroup');
     Future.forEach(foodLabelGroups.map((_) => _), (XmlElement group) {
       // Additives
       if (group.getAttribute('name')! == 'Zusatzstoff') {
         final labels = group.getElement('Additives')!.findAllElements('FoodLabel');
-        adds = _parseLabelsToList(labels);
+        adds.addAll(_parseLabelsToList(labels));
       }
       // Allergenes
       else if (group.getAttribute('name')! == 'Allergene') {
         final labels = group.getElement('Allergens')!.findAllElements('FoodLabel');
-        allergenes = _parseLabelsToList(labels);
+        allergenes.addAll(_parseLabelsToList(labels));
       }
       // Infos
       else if (group.getAttribute('name')! == 'Information') {
         final labels = group.getElement('Information')!.findAllElements('FoodLabel');
-        infos = _parseLabelsToList(labels);
+        infos.addAll(_parseLabelsToList(labels));
       }
     });
 
@@ -112,27 +119,29 @@ class DishEntity {
       category: category,
       title: title,
       price: price,
-      infos: infos ?? [],
-      allergenes: allergenes ?? [],
-      additives: adds ?? [],
+      infos: infos,
+      allergenes: allergenes,
+      additives: adds,
     );
   }
 
   @override
-  String toString() {
-    return '$date: $title ($category), $price, $infos, $allergenes, $additives';
+  String toString() => '$date: $title ($category), $price, $infos, $allergenes, $additives';
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! DishEntity || hashCode != other.hashCode) return false;
+    return true;
   }
 
-  static bool _isUppercase(String str) {
-    return str == str.toUpperCase();
-  }
+  @override
+  int get hashCode => Object.hash(date, category, title, price, infos, allergenes, additives);
 
-  static bool _isNumeric(String s) {
-    if (s == null) {
-      return false;
-    }
-    return double.tryParse(s) != null;
-  }
+  /// Test if a given String is uppercase
+  static bool _isUppercase(String str) => str == str.toUpperCase();
+
+  /// Test if a given string represents a number
+  static bool _isNumeric(String s) => double.tryParse(s) != null;
 
   /// Resolve given names from XML
   static List<String> _parseLabelsToList(Iterable<XmlElement> xml) {
@@ -149,7 +158,7 @@ class DishEntity {
       } else if (n == 'mit Geflügel') {
         list.add('G');
       } else if (n == 'Halal') {
-        list.add('´H');
+        list.add('H');
       } else if (n == 'mit Lamm') {
         list.add('L');
       } else if (n == 'mit Rind') {

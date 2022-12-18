@@ -1,9 +1,11 @@
 // ignore_for_file: avoid_dynamic_calls
 
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:xml/xml.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
@@ -27,6 +29,7 @@ void main() {
     mensaRepository = MensaRepository(mensaDatasource: mockMensaDataSource);
 
     initializeDateFormatting('de_DE').then((_) {
+      // Parse sample JSON response to entities by hand
       samleDishEntities = [
         DishEntity.fromJSON(
           date: 0,
@@ -54,8 +57,6 @@ void main() {
           json: mensaSampleTestData['data']['Di, 11.10.']['Dessert'][1],
         ),
       ];
-
-      samleDishEntitiesFromXML = [];
     });
   });
 
@@ -65,7 +66,7 @@ void main() {
 
       final testReturn = await mensaRepository.getRemoteDishes(1);
 
-      identical(testReturn, samleDishEntities);
+      identical(testReturn, Right(samleDishEntities));
       verify(mockMensaDataSource.getRemoteData(1));
       verify(mockMensaDataSource.writeDishEntitiesToCache(any, 1));
       verifyNoMoreInteractions(mockMensaDataSource);
@@ -99,12 +100,23 @@ void main() {
   });
 
   group('[getRemoteDishesXML]', () {
+    // Parse sample XML response to entities by hand
+    final components = mensaSampleTestDataXML.findAllElements('Component').toList();
+    samleDishEntitiesFromXML = [
+      DishEntity.fromXML(date: 0, category: 'Beilagen RUB', xml: components[0]),
+      DishEntity.fromXML(date: 0, category: 'Nudeltheke', xml: components[1]),
+      DishEntity.fromXML(date: 0, category: 'Nudeltheke', xml: components[2]),
+      DishEntity.fromXML(date: 1, category: 'Schulessen 1', xml: components[3]),
+      DishEntity.fromXML(date: 1, category: 'Schulessen 1', xml: components[4]),
+      DishEntity.fromXML(date: 1, category: 'Cafeteria ID', xml: components[5]),
+    ];
+
     test('Should return a list of [DishEntity] on successfully web reuest', () async {
       when(mockMensaDataSource.getRemoteXML(1)).thenAnswer((_) async => mensaSampleTestDataXML);
 
       final testReturn = await mensaRepository.getRemoteDishesXML(1);
 
-      identical(testReturn, samleDishEntitiesFromXML);
+      identical(testReturn, Right(samleDishEntitiesFromXML));
       verify(mockMensaDataSource.getRemoteXML(1));
       verify(mockMensaDataSource.writeDishEntitiesToCache(any, 1));
       verifyNoMoreInteractions(mockMensaDataSource);
