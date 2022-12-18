@@ -22,6 +22,7 @@ THANKS! :D
 | Language| Progress | Comment |
 |--------------|-----------------------------------|-|
 | English (US) | ![](https://progress-bar.dev/100) | |
-| German | ![](https://progress-bar.dev/0) | Work in Progress |
+| German (DE) | ![](https://progress-bar.dev/100) | |
+| Portuguese (BR) | ![](https://progress-bar.dev/0) | Work in Progress (by BizarrePenguin) |
 | All Other | ![](https://progress-bar.dev/0) | |
 
