@@ -54,7 +54,7 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
   @override
   Widget build(BuildContext context) {
     return AnimatedPadding(
-      padding: widget.isActive ? EdgeInsets.only(top: 2) : const EdgeInsets.only(top: 11),
+      padding: widget.isActive ? const EdgeInsets.only(top: 2) : const EdgeInsets.only(top: 11),
       duration: animationDuration,
       curve: animationCurve,
       child: Column(

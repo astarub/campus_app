@@ -106,7 +106,7 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
                     ? Colors.white
                     : const Color.fromRGBO(34, 40, 54, 1),
                 borderRadius: BorderRadius.circular(6),
-                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 0))],
+                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
               ),
             ),
           ),

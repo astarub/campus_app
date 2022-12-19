@@ -6,7 +6,6 @@ import 'package:campus_app/pages/mensa/mensa_repository.dart';
 import 'package:campus_app/pages/mensa/mensa_usecases.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:dartz/dartz.dart';

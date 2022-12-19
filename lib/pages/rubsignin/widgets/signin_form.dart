@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:campus_app/pages/rubsignin/widgets/signin_button.dart';
-import 'package:campus_app/utils/pages/presentation_functions.dart';
+// import 'package:campus_app/utils/pages/presentation_functions.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 class SignInForm extends StatelessWidget {
@@ -11,10 +11,10 @@ class SignInForm extends StatelessWidget {
     final themeData = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
 
-    final utils = Utils();
+    // final utils = Utils();
 
-    late String _loginId;
-    late String _password;
+    // late String _loginId;
+    // late String _password;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -23,7 +23,7 @@ class SignInForm extends StatelessWidget {
       if (input == null || input.isEmpty) {
         return localization.empty_input_field;
       } else {
-        _loginId = input;
+        // _loginId = input;
         return null;
       }
     }
@@ -32,7 +32,7 @@ class SignInForm extends StatelessWidget {
       if (input == null || input.isEmpty) {
         return localization.empty_input_field;
       } else {
-        _password = input;
+        // _password = input;
         return null;
       }
     }

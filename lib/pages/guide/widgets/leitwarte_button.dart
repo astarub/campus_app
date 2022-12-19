@@ -49,17 +49,20 @@ class LeitwarteButton extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 10),
-                      child: SvgPicture.asset('assets/img/icons/siren.svg',
-                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                              ? const Color.fromRGBO(207, 0, 0, 1)
-                              : const Color.fromRGBO(255, 72, 72, 1)),
+                      child: SvgPicture.asset(
+                        'assets/img/icons/siren.svg',
+                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? const Color.fromRGBO(207, 0, 0, 1)
+                            : const Color.fromRGBO(255, 72, 72, 1),
+                      ),
                     ),
                     Text(
                       'Leitwarte der RUB',
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
-                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                              ? const Color.fromRGBO(207, 0, 0, 1)
-                              : const Color.fromRGBO(255, 72, 72, 1)),
+                            color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                ? const Color.fromRGBO(207, 0, 0, 1)
+                                : const Color.fromRGBO(255, 72, 72, 1),
+                          ),
                     ),
                   ],
                 ),

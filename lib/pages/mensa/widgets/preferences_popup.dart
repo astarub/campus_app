@@ -6,6 +6,7 @@ import 'package:campus_app/utils/widgets/popup_sheet.dart';
 import 'package:campus_app/utils/widgets/campus_selection.dart';
 
 /// This widget displays the preference options that are available for the mensa
+// ignore: comment_references
 /// page and is used in the [SnappingSheet] widget.
 class PreferencesPopup extends StatefulWidget {
   /// Can be given to show saved preferences on build

@@ -26,7 +26,7 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
   /// This function calculates the dates depending on the current day `DateTime.now()`
   /// to show the dates of this week in the [MensaDaySelection] widget
   List<String> _generateDays() {
-    List<String> calculatedDates = [];
+    final List<String> calculatedDates = [];
 
     DateTime today = DateTime.now();
 

@@ -1,4 +1,3 @@
-import 'package:campus_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/pages/feed/feed_page.dart';
@@ -20,6 +19,7 @@ class PageNavigatorRoutes {
 /// Wraps the displayed page into a seperate [Navigator] in order to push new detail-pages
 /// (like opening a news-article) to a specific navigator-stack instead of the app-wide navigator-stack.
 ///
+// ignore: comment_references
 /// This also allows to constantly show the [BottomNavBar] across multiple pages, even during transitions.
 class NavBarNavigator extends StatelessWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -37,13 +37,14 @@ class NavBarNavigator extends StatelessWidget {
   /// to control the animation from outside the page.
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
-  NavBarNavigator({
+  const NavBarNavigator({
+    Key? key,
     required this.mainNavigatorKey,
     required this.navigatorKey,
     required this.pageItem,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
-  });
+  }) : super(key: key);
 
   /// Creates a map of the root and detail page of the specific page.
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context) {
@@ -64,7 +65,7 @@ class NavBarNavigator extends StatelessWidget {
         );
         break;
       case PageItem.coupons:
-        rootPage = Scaffold(); // Has to be replaced!
+        rootPage = const Scaffold(); // Has to be replaced!
         break;
       case PageItem.mensa:
         rootPage = MensaPage(
@@ -96,7 +97,7 @@ class NavBarNavigator extends StatelessWidget {
   /// Pushes the detail page onto the navigation-stack of the specific page
   ///
   /// HAS TO BE IMPLEMENTED!
-  void _push(BuildContext context) {}
+  // void _push(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {

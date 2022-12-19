@@ -2,6 +2,8 @@
 /// The JSOn object returned by https://asta-bochum.de/wp-json/tribe/events/v1/events/
 /// at 16.09.2022. ~06:30 p.m.
 ///
+// ignore_for_file: unnecessary_string_escapes
+
 const Map<String, dynamic> calendarSampleEventfeedResponse = {
   'events': [
     {

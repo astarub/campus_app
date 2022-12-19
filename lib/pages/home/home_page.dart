@@ -107,7 +107,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
 
     // Theme von System auslesen & Callback erstellen
-    var window = WidgetsBinding.instance.window;
+    final window = WidgetsBinding.instance.window;
 
     window.onPlatformBrightnessChanged = () {
       final brightness = window.platformBrightness;

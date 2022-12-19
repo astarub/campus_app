@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar_item.dart';
-import 'package:campus_app/utils/widgets/custom_button.dart';
 
 /// Creates the bottom navigation bar that lets the user switch between different pages.
 class BottomNavBar extends StatefulWidget {
@@ -17,9 +16,10 @@ class BottomNavBar extends StatefulWidget {
   final Function onSelectedPage;
 
   BottomNavBar({
+    Key? key,
     required this.currentPage,
     required this.onSelectedPage,
-  });
+  }) : super(key: key);
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -27,7 +27,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   // Adjust this value in order to change the icon height of each navbar-element
-  static const double iconHeight = 26;
+  // static const double iconHeight = 26;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
       ),
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
         physics: const NeverScrollableScrollPhysics(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

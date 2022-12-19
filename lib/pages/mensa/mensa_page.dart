@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/core/failures.dart';
+// import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_usecases.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
@@ -42,7 +42,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
   late List<DishEntity> _roteBeeteDishes = [];
   late List<DishEntity> _qwestDishes = [];
   late List<DishEntity> _henkelmannDishes = [];
-  late List<Failure> _failures = [];
+  // late List<Failure> _failures = [];
 
   late int selectedDay;
 
@@ -50,13 +50,15 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
   Future<void> loadData() async {
     final Future<Map<String, List<dynamic>>> updatedDishes = _mensaUsecases.updateDishesAndFailures();
 
-    await updatedDishes.then((data) => setState(() {
-          _mensaDishes = data['mensa']! as List<DishEntity>;
-          _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
-          _qwestDishes = data['qwest']! as List<DishEntity>;
-          _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
-          _failures = data['failures']! as List<Failure>;
-        }));
+    await updatedDishes.then(
+      (data) => setState(() {
+        _mensaDishes = data['mensa']! as List<DishEntity>;
+        _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
+        _qwestDishes = data['qwest']! as List<DishEntity>;
+        _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
+        // _failures = data['failures']! as List<Failure>;
+      }),
+    );
 
     debugPrint('Mensa Daten aktualisiert.');
   }
@@ -82,7 +84,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
   /// This function is called whenever one of the 3 preferences "vegetarian", "vegan"
   /// or "halal" is selected. It automatically adds or removes the preference from the list.
   void singlePreferenceSelected(String selectedPreference) {
-    List<String> newPreferences = _settings.mensaPreferences;
+    final List<String> newPreferences = _settings.mensaPreferences;
 
     if (_settings.mensaPreferences.contains(selectedPreference)) {
       newPreferences.remove(selectedPreference);
@@ -179,7 +181,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
                     color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                     strokeWidth: 3,
                     onRefresh: () async {
-                      loadData();
+                      await loadData();
                     },
                     child: ListView(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -218,14 +220,16 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
                                     text: 'Allergene',
                                     width: null,
                                     onTap: () {
-                                      widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
-                                        opaque: false,
-                                        pageBuilder: (context, _, __) => AllergenesPopup(
-                                          allergenes:
-                                              Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
-                                          onClose: saveChangedAllergenes,
+                                      widget.mainNavigatorKey.currentState?.push(
+                                        PageRouteBuilder(
+                                          opaque: false,
+                                          pageBuilder: (context, _, __) => AllergenesPopup(
+                                            allergenes:
+                                                Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
+                                            onClose: saveChangedAllergenes,
+                                          ),
                                         ),
-                                      ));
+                                      );
                                     },
                                   ),
                                 ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:campus_app/pages/rubsignin/widgets/signin_button.dart';
-import 'package:campus_app/utils/pages/presentation_functions.dart';
+// import 'package:campus_app/utils/pages/presentation_functions.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 class TOTPForm extends StatelessWidget {
@@ -11,9 +11,9 @@ class TOTPForm extends StatelessWidget {
     final themeData = Theme.of(context);
     final localization = AppLocalizations.of(context)!;
 
-    final utils = Utils();
+    //final utils = Utils();
 
-    late String _totp;
+    // late String _totp;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -23,7 +23,7 @@ class TOTPForm extends StatelessWidget {
       } else if (input.length != 6) {
         return localization.login_error;
       } else {
-        _totp = input;
+        // _totp = input;
         return null;
       }
     }

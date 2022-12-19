@@ -2,7 +2,6 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:snapping_sheet_2/snapping_sheet.dart';
 
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
@@ -42,8 +41,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
   late List<NewsEntity> _rubnews = [];
   late List<Event> _events = [];
   late List<Failure> _failures = [];
-
-  late final SnappingSheetController _popupController;
 
   final RubnewsUsecases _rubnewsUsecases = sl<RubnewsUsecases>();
   final CalendarUsecases _calendarUsecase = sl<CalendarUsecases>();
@@ -100,8 +97,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
           if (_headerOpacity != 1) setState(() => _headerOpacity = 1);
         }
       });
-
-    _popupController = SnappingSheetController();
 
     // initial data request
     final newsData = _rubnewsUsecases.getCachedFeedAndFailures();
@@ -216,13 +211,15 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
                             CampusIconButton(
                               iconPath: 'assets/img/icons/filter.svg',
                               onTap: () {
-                                widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
-                                  opaque: false,
-                                  pageBuilder: (context, _, __) => FeedFilterPopup(
-                                    selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.feedFilter,
-                                    onClose: saveChangedFilters,
+                                widget.mainNavigatorKey.currentState?.push(
+                                  PageRouteBuilder(
+                                    opaque: false,
+                                    pageBuilder: (context, _, __) => FeedFilterPopup(
+                                      selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.feedFilter,
+                                      onClose: saveChangedFilters,
+                                    ),
                                   ),
-                                ));
+                                );
                               },
                             ),
                           ],

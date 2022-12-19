@@ -8,6 +8,7 @@ class CampusSwitch extends StatefulWidget {
   /// Called when the user toggles the switch.
   ///
   /// [onToggle] should update the state of the parent [StatefulWidget]
+  // ignore: comment_references
   /// using the [setState] method, so that the parent gets rebuilt; for example:
   ///
   /// ```dart
@@ -242,24 +243,24 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    Color _toggleColor = Colors.white;
-    Color _switchColor = Colors.white;
-    Border? _switchBorder;
-    Border? _toggleBorder;
+    Color localToggleColor = Colors.white;
+    Color localSwitchColor = Colors.white;
+    Border? localSwitchBorder;
+    Border? localToggleBorder;
 
     if (widget.value) {
-      _toggleColor = widget.activeToggleColor ?? widget.toggleColor;
-      _switchColor = widget.activeColor;
-      _switchBorder = widget.activeSwitchBorder as Border? ?? widget.switchBorder as Border?;
-      _toggleBorder = widget.activeToggleBorder as Border? ?? widget.toggleBorder as Border?;
+      localToggleColor = widget.activeToggleColor ?? widget.toggleColor;
+      localSwitchColor = widget.activeColor;
+      localSwitchBorder = widget.activeSwitchBorder as Border? ?? widget.switchBorder as Border?;
+      localToggleBorder = widget.activeToggleBorder as Border? ?? widget.toggleBorder as Border?;
     } else {
-      _toggleColor = widget.inactiveToggleColor ?? widget.toggleColor;
-      _switchColor = widget.inactiveColor;
-      _switchBorder = widget.inactiveSwitchBorder as Border? ?? widget.switchBorder as Border?;
-      _toggleBorder = widget.inactiveToggleBorder as Border? ?? widget.toggleBorder as Border?;
+      localToggleColor = widget.inactiveToggleColor ?? widget.toggleColor;
+      localSwitchColor = widget.inactiveColor;
+      localSwitchBorder = widget.inactiveSwitchBorder as Border? ?? widget.switchBorder as Border?;
+      localToggleBorder = widget.inactiveToggleBorder as Border? ?? widget.toggleBorder as Border?;
     }
 
-    final double _textSpace = widget.width - widget.toggleSize;
+    final double localTextSpace = widget.width - widget.toggleSize;
 
     return AnimatedBuilder(
       animation: _animationController,
@@ -287,8 +288,8 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
                   padding: EdgeInsets.all(widget.padding),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(widget.borderRadius),
-                    color: _switchColor,
-                    border: _switchBorder,
+                    color: localSwitchColor,
+                    border: localSwitchBorder,
                   ),
                   child: Stack(
                     children: <Widget>[
@@ -296,7 +297,7 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
                         opacity: widget.value ? 1.0 : 0.0,
                         duration: widget.duration,
                         child: Container(
-                          width: _textSpace,
+                          width: localTextSpace,
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           alignment: Alignment.centerLeft,
                           child: _activeText,
@@ -308,7 +309,7 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
                           opacity: !widget.value ? 1.0 : 0.0,
                           duration: widget.duration,
                           child: Container(
-                            width: _textSpace,
+                            width: localTextSpace,
                             padding: const EdgeInsets.symmetric(horizontal: 4),
                             alignment: Alignment.centerRight,
                             child: _inactiveText,
@@ -320,34 +321,31 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
                         child: Container(
                           width: widget.toggleSize,
                           height: widget.toggleSize,
-                          padding: const EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: _toggleColor,
-                            border: _toggleBorder,
+                            color: localToggleColor,
+                            border: localToggleBorder,
                             boxShadow: [widget.toggleShadow],
                           ),
                           child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: Container(
-                              child: Stack(
-                                children: [
-                                  Center(
-                                    child: AnimatedOpacity(
-                                      opacity: widget.value ? 1.0 : 0.0,
-                                      duration: widget.duration,
-                                      child: widget.activeIcon,
-                                    ),
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: AnimatedOpacity(
+                                    opacity: widget.value ? 1.0 : 0.0,
+                                    duration: widget.duration,
+                                    child: widget.activeIcon,
                                   ),
-                                  Center(
-                                    child: AnimatedOpacity(
-                                      opacity: !widget.value ? 1.0 : 0.0,
-                                      duration: widget.duration,
-                                      child: widget.inactiveIcon,
-                                    ),
+                                ),
+                                Center(
+                                  child: AnimatedOpacity(
+                                    opacity: !widget.value ? 1.0 : 0.0,
+                                    duration: widget.duration,
+                                    child: widget.inactiveIcon,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
