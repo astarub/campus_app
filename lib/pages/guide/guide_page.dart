@@ -94,10 +94,8 @@ class _GuidePageState extends State<GuidePage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: Text(
-                            '''
-                              Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen wie 
-                              bspw. einen interaktiven Raumfinder erweitert werden.
-                            ''',
+                            'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen wie '
+                            'bspw. einen interaktiven Raumfinder erweitert werden.',
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                             overflow: TextOverflow.visible,
                           ),
