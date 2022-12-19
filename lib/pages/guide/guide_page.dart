@@ -33,15 +33,33 @@ class _GuidePageState extends State<GuidePage> {
     // Sort the Entries Alphabetically before Adding them
 
     List<Map<String, String>> tmpList;
-    tmpList = List.from(faqEntries);
-
-    tmpList.sort((a, b) {
-      return a['title']!.toLowerCase().compareTo(b['title']!.toLowerCase());
-    });
+    tmpList = sortListOfStringString(List.from(faqEntries), 'title');
 
     faqExpandables.addAll(
       tmpList.map((faqEntry) => ExpandableFaqItem(title: faqEntry['title']!, content: faqEntry['content']!)).toList(),
     );
+  }
+
+  List<Map<String, String>> sortListOfStringString(
+    List<Map<String, String>> sortList,
+    String byPara, {
+    bool reverse = false,
+  }) {
+    if (!reverse) {
+      sortList.sort(
+        (a, b) {
+          return a[byPara]!.toLowerCase().compareTo(b[byPara]!.toLowerCase());
+        },
+      );
+    } else {
+      sortList.sort(
+        (a, b) {
+          return b[byPara]!.toLowerCase().compareTo(a[byPara]!.toLowerCase());
+        },
+      );
+    }
+
+    return sortList;
   }
 
   @override
