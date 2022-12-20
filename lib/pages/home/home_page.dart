@@ -19,10 +19,10 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.mainNavigatorKey}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   /// Creates a [GlobalKey] for each page that should be accessable within the bottom nav-menu
   Map<PageItem, GlobalKey<NavigatorState>> navigatorKeys = {
     PageItem.feed: GlobalKey<NavigatorState>(),
@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
   GlobalKey<FeedPageState> feedKey = GlobalKey();
 
   /// Switches to another page when selected in the nav-menu
-  Future<bool> _selectedPage(PageItem selectedPageItem) async {
+  Future<bool> selectedPage(PageItem selectedPageItem) async {
     if (selectedPageItem != currentPage) {
       // Reset the exit animation of the new page to make the content visible again
       exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();

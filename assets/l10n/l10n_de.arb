@@ -1,0 +1,23 @@
+{
+  "@@locale": "de",
+
+  "helloWorld": "Hallo Welt!",
+
+  "serverFailureMessage": "Serverdaten konnten nicht geladen werden.",
+  "generalFailureMessage": "Es ist ein Fehler aufgetreten.",
+  "errorMessage": "Fehler.",
+  "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten...",
+  "invalid2FATokenFailureMessage": "Dein Einmalcode (TOTP) is ungültig. Bitte versuche es erneut!",
+  "invalidLoginIDAndPasswordFailureMessage": "Die angegebenen Anmeldedaten sind ungültig!",
+
+  "welcome": "Willkommen!",
+  "login_prompt": "Bitte melde dich mit deiner RUB-ID und deinem Passwort an.",
+  "rubid": "Login-ID von deinem RUB-Account",
+  "password": "Passwort",
+  "login": "Anmelden",
+  "empty_input_field": "Bitte gib deine Anmeldedaten ein!",
+  "login_error": "Ungültige Eingabe!",
+  "login_success": "Erfolgreich angemeldet!",
+  "login_already": "Du bist bereits angemeldet.",
+  "enter_totp": "Bitte gib deinen Einmalcode (TOTP) ein."
+}
