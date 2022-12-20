@@ -143,7 +143,7 @@ class _DecisionPopupState extends State<DecisionPopup> {
       sheetBelow: SnappingSheetContent(
         child: Align(
           child: Container(
-            width: 500,
+            width: MediaQuery.of(context).size.shortestSide < 600 ? double.infinity : 700,
             decoration: BoxDecoration(
               color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
               borderRadius: const BorderRadius.only(
@@ -173,10 +173,10 @@ class _DecisionPopupState extends State<DecisionPopup> {
                   widget.leadingTitle,
                   style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                       ? Provider.of<ThemesNotifier>(context)
-                      .currentThemeData
-                      .textTheme
-                      .labelMedium
-                      ?.copyWith(color: Colors.black)
+                          .currentThemeData
+                          .textTheme
+                          .labelMedium
+                          ?.copyWith(color: Colors.black)
                       : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
                 ),
                 // Title
