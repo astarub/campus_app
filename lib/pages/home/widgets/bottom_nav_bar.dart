@@ -3,10 +3,9 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar_item.dart';
-import 'package:campus_app/utils/widgets/custom_button.dart';
 
 /// Creates the bottom navigation bar that lets the user switch between different pages.
 class BottomNavBar extends StatefulWidget {

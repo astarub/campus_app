@@ -66,37 +66,46 @@ class _PopupSheetState extends State<PopupSheet> {
   Widget build(BuildContext context) {
     return SnappingSheet(
       controller: _popupController,
-      sheetBelow: SnappingSheetContent(child: widget.child),
-      grabbingHeight: 80,
-      grabbing: Container(
-        decoration: BoxDecoration(
-          color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-          ),
-          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
-        ),
-        child: Column(
-          children: [
-            // Grabber
-            Container(
-              height: 5,
-              width: 40,
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3),
-                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? const Color.fromRGBO(245, 246, 250, 1)
-                    : const Color.fromRGBO(34, 40, 54, 1),
+      sheetBelow: SnappingSheetContent(
+        child: MediaQuery.of(context).size.shortestSide < 600
+            ? widget.child
+            : Align(
+                child: SizedBox(width: 700, child: widget.child),
               ),
+      ),
+      grabbingHeight: 80,
+      grabbing: Align(
+        child: Container(
+          width: MediaQuery.of(context).size.shortestSide < 600 ? double.infinity : 700,
+          decoration: BoxDecoration(
+            color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
             ),
-            // Headline
-            Text(
-              widget.title,
-              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
-            ),
-          ],
+            boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
+          ),
+          child: Column(
+            children: [
+              // Grabber
+              Container(
+                height: 5,
+                width: 40,
+                margin: const EdgeInsets.only(top: 10, bottom: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromRGBO(245, 246, 250, 1)
+                      : const Color.fromRGBO(34, 40, 54, 1),
+                ),
+              ),
+              // Headline
+              Text(
+                widget.title,
+                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+              ),
+            ],
+          ),
         ),
       ),
       initialSnappingPosition: const SnappingPosition.pixels(positionPixels: -60),
