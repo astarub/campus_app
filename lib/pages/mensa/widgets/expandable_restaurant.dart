@@ -5,6 +5,8 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/animated_expandable.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
 
+enum RestaurantStatus { open, closed, unknown }
+
 /// This widget displays one restaurant and its meals, which can be
 /// expanded and collapsed
 class ExpandableRestaurant extends StatefulWidget {
@@ -18,11 +20,15 @@ class ExpandableRestaurant extends StatefulWidget {
   /// The list of meal categories with their corresponding meals
   final List<MealCategory> meals;
 
+  /// Opening hours in the format hh:mm-hh:mm
+  final Map<String, String> openingHours;
+
   const ExpandableRestaurant({
     Key? key,
     required this.name,
     required this.imagePath,
     required this.meals,
+    required this.openingHours,
   }) : super(key: key);
 
   @override
@@ -34,9 +40,102 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
   final GlobalKey<AnimatedExpandableState> restaurantExpandableKey = GlobalKey();
 
   bool _isExpanded = false;
+  DateTime now = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    // Get all opening/closed days
+    final List<String> days = widget.openingHours.keys.toList();
+    String openingHours = '';
+
+    // Choose the right opening hours in accordance to the current weekday
+    for(final String weekday in days) {
+      final int weekdayInt = int.tryParse(weekday) != null ? int.tryParse(weekday)! : 0;
+
+      if(!weekday.contains('-') && weekdayInt == now.weekday){
+        openingHours = widget.openingHours[weekday] != null ? widget.openingHours[weekday]! : '';
+        continue;
+      }
+      if(weekday.split('-').length < 2) continue;
+
+      final int lower = int.tryParse(weekday.split('-')[0]) != null ? int.tryParse(weekday.split('-')[0])! : 0;
+      final int upper = int.tryParse(weekday.split('-')[1]) != null ? int.tryParse(weekday.split('-')[1])! : 0;
+
+      if(now.weekday >= lower && now.weekday <= upper) {
+        openingHours = widget.openingHours[weekday] != null ? widget.openingHours[weekday]! : '';
+      }
+    }
+
+    RestaurantStatus status = RestaurantStatus.closed;
+
+    // Checks if any openingHours exist for the current weekday, otherwise the status will be closed
+    if(openingHours.isNotEmpty){
+      if(openingHours != 'unkown') {
+        // Pick the individual number out of the hh:mm-hh:mm String
+        final String openingHour = openingHours
+            .split(':')
+            .isNotEmpty && int.tryParse(openingHours.substring(0, 2)) != null
+            ? openingHours.substring(0, 2)
+            : '0';
+        final String openingMinute = openingHours
+            .split(':')
+            .isNotEmpty && int.tryParse(openingHours.substring(3, 5)) != null
+            ? openingHours.substring(3, 5)
+            : '0';
+
+        final String closingHour = openingHours
+            .split(':')
+            .isNotEmpty && int.tryParse(openingHours.substring(6, 8)) != null
+            ? openingHours.substring(6, 8)
+            : '0';
+        final String closingMinute = openingHours
+            .split(':')
+            .isNotEmpty && int.tryParse(openingHours.substring(9)) != null
+            ? openingHours.substring(9)
+            : '0';
+
+        // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
+        final int openComb = int.tryParse(openingHour + openingMinute)!;
+        final int closeComb = int.tryParse(closingHour + closingMinute)!;
+
+        // Add a zero before the actual minute if it's lower than 10
+        final String nowMinuteString = now.minute < 10 ? '0${now.minute}' : now.minute.toString();
+
+        // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
+        final int nowComb = int.tryParse(now.hour.toString() + nowMinuteString)!;
+
+        // Checks if the weekday is lower than Saturday and if the current time is in the span of the opening and closing hours
+        if (now.weekday <= 6 && nowComb >= openComb && nowComb <= closeComb) {
+          status = RestaurantStatus.open;
+        }
+      }else{
+        status = RestaurantStatus.unknown;
+      }
+    }
+
+    // Adds an opening status text
+    final List<Widget> items = [];
+    items.add(
+      Container(
+        margin: const EdgeInsets.only(left:20, right: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: status == RestaurantStatus.open ? Colors.green : status == RestaurantStatus.unknown ? Colors.orange : Colors.red,
+          ),
+        ),
+        child: Text(
+          status == RestaurantStatus.open ? 'Geöffnet' : status == RestaurantStatus.unknown ? 'Unbekannt' : 'Geschlossen',
+          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
+            color: status == RestaurantStatus.open ? Colors.green : status == RestaurantStatus.unknown ? Colors.orange : Colors.red,
+            fontSize: 13,
+          ),
+        ),
+      ),
+    );
+    items.addAll(widget.meals);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 30),
       decoration: BoxDecoration(
@@ -81,23 +180,42 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
                       restaurantExpandableKey.currentState!.toggleExpand();
                     }
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.name,
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelLarge,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20, top: 14, bottom: 14),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: status == RestaurantStatus.open ? Colors.green : status == RestaurantStatus.unknown ? Colors.orange : Colors.red,
+                                  ),
+                                  height: 25,
+                                  width: 8,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 7),
+                                  child: Text(
+                                    widget.name,
+                                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelLarge,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                  ? Colors.black
+                                  : Colors.white,
+                            ),
+                          ],
                         ),
-                        Icon(
-                          _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                              ? Colors.black
-                              : Colors.white,
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -106,7 +224,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
           // Items
           AnimatedExpandable(
             key: restaurantExpandableKey,
-            children: widget.meals,
+            children: items,
           ),
         ],
       ),

@@ -236,6 +236,12 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
                         // Restaurants
                         ExpandableRestaurant(
                           name: 'KulturCafé',
+                          openingHours: const {
+                            '1-4': '10:00-20:00',
+                            '5': '11:00-16:00',
+                            '6': '',
+                            '7': '',
+                          },
                           imagePath: 'assets/img/qwest.png',
                           meals: _mensaUtils.buildKulturCafeRestaurant(
                             onPreferenceTap: singlePreferenceSelected,
@@ -247,6 +253,11 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
                         ),
                         ExpandableRestaurant(
                           name: 'Mensa der RUB',
+                          openingHours: const {
+                            '1-5': '11:00-14:30',
+                            '6': '',
+                            '7': '',
+                          },
                           imagePath: 'assets/img/mensa.png',
                           meals: _mensaUtils.fromDishListToMealCategoryList(
                             entities: _mensaDishes,
@@ -260,6 +271,11 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
                         ),
                         ExpandableRestaurant(
                           name: 'Rote Bete',
+                          openingHours: const {
+                            '1-5': '11:00-14:30',
+                            '6': '',
+                            '7': '',
+                          },
                           imagePath: 'assets/img/rotebeete.png',
                           meals: _mensaUtils.fromDishListToMealCategoryList(
                             entities: _roteBeeteDishes,
@@ -273,6 +289,11 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
                         ),
                         ExpandableRestaurant(
                           name: 'Q-West',
+                          openingHours: const {
+                            '1-5': '11:15-22:00',
+                            '6': '',
+                            '7': '',
+                          },
                           imagePath: 'assets/img/qwest.png',
                           meals: _mensaUtils.fromDishListToMealCategoryList(
                             entities: _qwestDishes,
@@ -287,6 +308,9 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
                         ),
                         ExpandableRestaurant(
                           name: 'Henkelmann',
+                          openingHours: const {
+                            '1-7': 'unkown',
+                          },
                           imagePath: 'assets/img/henkelmann.png',
                           meals: _mensaUtils.fromDishListToMealCategoryList(
                             entities: _henkelmannDishes,
