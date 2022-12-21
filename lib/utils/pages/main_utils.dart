@@ -12,7 +12,7 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/firebase_options.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
-import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 
 enum FGBGType { foreground, background }

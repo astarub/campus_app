@@ -195,7 +195,7 @@ class HomePageState extends State<HomePage> {
                         alignment: Alignment.bottomCenter,
                         child: BottomNavBar(
                           currentPage: currentPage,
-                          onSelectedPage: _selectedPage,
+                          onSelectedPage: selectedPage,
                         ),
                       ),
                     ],
@@ -220,7 +220,7 @@ class HomePageState extends State<HomePage> {
                           children: [
                             SideNavBar(
                               currentPage: currentPage,
-                              onSelectedPage: _selectedPage,
+                              onSelectedPage: selectedPage,
                             ),
                             // Pages
                             Expanded(
