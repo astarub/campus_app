@@ -20,12 +20,19 @@ class FirebasePopup extends StatelessWidget {
     return DecisionPopup(
       leadingTitle: 'Datenschutz',
       title: 'Google Services',
-      content: '''
+      content: MediaQuery.of(context).size.shortestSide < 600
+          ? '''
         Um dir Benachrichtigungen über spontane Events und Termine rund um die Uni schicken zu können,
         verwenden wir derzeit Firebase, einen Service von Google.
         
         Solltest du dies nicht wollen, respektieren wir das.
-        Im Januar werden wir dafür eine Google-freie Alternative einführen. ''',
+        Im Januar werden wir dafür eine Google-freie Alternative einführen.'''
+          : '''
+        Um dir Benachrichtigungen über spontane Events und Termine rund um die Uni
+        schicken zu können, verwenden wir derzeit Firebase, einen Service von Google.
+        
+        Solltest du dies nicht wollen, respektieren wir das.
+        Im Januar werden wir dafür eine Google-freie Alternative einführen.''',
       acceptButtonText: 'Ja, kein Problem',
       declineButtonText: 'Nein, möchte ich nicht.',
       height: 450,
