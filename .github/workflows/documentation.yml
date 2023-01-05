@@ -3,9 +3,10 @@ name: Documentation
 on:
   push:
     branches:
-      - 'documentation'
+      - 'master'
     paths: 
       - 'docs/wiki/**.md'
+      - 'README.md'
 
 
 jobs:

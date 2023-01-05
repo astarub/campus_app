@@ -7,11 +7,9 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
+import 'package:campus_app/pages/home/widgets/side_nav_bar.dart';
 import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-
-/// Defines the different pages that can be displayed
-enum PageItem { feed, events, coupons, mensa, guide, more }
 
 /// The [HomePage] displays all general UI elements like the bottom nav-menu and
 /// handles the switching between the different pages.
@@ -61,6 +59,20 @@ class HomePageState extends State<HomePage> {
   final SystemUiOverlayStyle darkSystemUiStyle = const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.dark, // iOS
     statusBarColor: Color.fromRGBO(14, 20, 32, 1), // Android
+    statusBarIconBrightness: Brightness.light, // Android
+    systemNavigationBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
+    systemNavigationBarIconBrightness: Brightness.light, // Android
+  );
+  final SystemUiOverlayStyle lightTabletSystemUiStyle = const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.light, // iOS
+    statusBarColor: Color.fromRGBO(245, 246, 250, 1), // Android
+    statusBarIconBrightness: Brightness.dark, // Android
+    systemNavigationBarColor: Color.fromRGBO(245, 246, 250, 1), // Android
+    systemNavigationBarIconBrightness: Brightness.dark, // Android
+  );
+  final SystemUiOverlayStyle darkTabletSystemUiStyle = const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.dark, // iOS
+    statusBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
     statusBarIconBrightness: Brightness.light, // Android
     systemNavigationBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
     systemNavigationBarIconBrightness: Brightness.light, // Android
@@ -130,45 +142,129 @@ class HomePageState extends State<HomePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Check if device is not a phone and save this in the settings
+    /* if (MediaQuery.of(context).size.shortestSide >= 600) {
+      Settings settings = Provider.of<SettingsHandler>(context).currentSettings;
+
+      Provider.of<SettingsHandler>(context, listen: false).currentSettings = settings.copyWith(isNotPhone: true);
+
+      debugPrint(
+          'Because this device seems to not be a phone, changed isNotPhone property in settings to: ${Provider.of<SettingsHandler>(context, listen: false).currentSettings.isNotPhone.toString()}');
+    } */
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-          ? lightSystemUiStyle
-          : darkSystemUiStyle,
+      value: MediaQuery.of(context).size.shortestSide < 600
+          ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? lightSystemUiStyle
+              : darkSystemUiStyle
+          : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              ? lightTabletSystemUiStyle
+              : darkTabletSystemUiStyle,
       child: WillPopScope(
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(
           backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-          body: SafeArea(
-            bottom: false,
-            child: Stack(
-              // Holds all the pages that sould be accessable within the bottom nav-menu
-              children: [
-                // Padding to prevent content from "sliding" under the navigation menu
-                Padding(
-                  padding: EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
+          body: MediaQuery.of(context).size.shortestSide < 600
+              ? SafeArea(
+                  bottom: false,
                   child: Stack(
+                    // Holds all the pages that sould be accessable within the bottom nav-menu
                     children: [
-                      // Pages
-                      _buildOffstateNavigator(PageItem.feed),
-                      _buildOffstateNavigator(PageItem.events),
-                      _buildOffstateNavigator(PageItem.mensa),
-                      _buildOffstateNavigator(PageItem.guide),
-                      _buildOffstateNavigator(PageItem.more),
+                      // Padding to prevent content from "sliding" under the navigation menu
+                      Padding(
+                        padding: EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
+                        child: Stack(
+                          children: [
+                            // Pages
+                            _buildOffstateNavigator(PageItem.feed),
+                            _buildOffstateNavigator(PageItem.events),
+                            _buildOffstateNavigator(PageItem.mensa),
+                            _buildOffstateNavigator(PageItem.guide),
+                            _buildOffstateNavigator(PageItem.more),
+                          ],
+                        ),
+                      ),
+                      // BottomNavigationBar
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: BottomNavBar(
+                          currentPage: currentPage,
+                          onSelectedPage: selectedPage,
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                // BottomNavigationBar
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: BottomNavBar(
-                    currentPage: currentPage,
-                    onSelectedPage: selectedPage,
+                )
+              : SafeArea(
+                  child: Container(
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromRGBO(245, 246, 250, 1)
+                      : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: 20,
+                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? const Color.fromRGBO(245, 246, 250, 1)
+                            : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            SideNavBar(
+                              currentPage: currentPage,
+                              onSelectedPage: selectedPage,
+                            ),
+                            // Pages
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Center(
+                                  child: SizedBox(
+                                    width: 550,
+                                    child: Stack(
+                                      children: [
+                                        _buildOffstateNavigator(PageItem.feed),
+                                        _buildOffstateNavigator(PageItem.events),
+                                        _buildOffstateNavigator(PageItem.mensa),
+                                        _buildOffstateNavigator(PageItem.guide),
+                                        _buildOffstateNavigator(PageItem.more),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Detail space
+                            Container(
+                              width: 20,
+                              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                  ? const Color.fromRGBO(245, 246, 250, 1)
+                                  : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 20,
+                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? const Color.fromRGBO(245, 246, 250, 1)
+                            : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ),
+                )),
         ),
       ),
     );
