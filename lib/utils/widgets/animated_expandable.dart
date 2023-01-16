@@ -5,7 +5,7 @@ class AnimatedExpandable extends StatefulWidget {
   /// The children that are hidden when the widget is collapsed
   final List<Widget> children;
 
-  /// Wether the widget should be expanded on first build or not
+  /// Whether the widget should be expanded on first build or not
   final bool expandedAtStart;
 
   /// The duration that is used for the animation
