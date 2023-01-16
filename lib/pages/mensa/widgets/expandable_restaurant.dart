@@ -42,6 +42,75 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
   bool _isExpanded = false;
   DateTime now = DateTime.now();
 
+  /// Retrieves the opening hours for the current day based on either a range of weekday Integers or a single Integer
+  RestaurantStatus getOpeningStatus(Map<String, String> openingHoursMap) {
+    // Get all opening/closed days
+    final List<String> days = openingHoursMap.keys.toList();
+    String openingHours = '';
+
+    // Choose the right opening hours in accordance to the current weekday
+    for (final String weekday in days) {
+      final int weekdayInt = int.tryParse(weekday) != null ? int.tryParse(weekday)! : 0;
+
+      if (!weekday.contains('-') && weekdayInt == now.weekday) {
+        openingHours = openingHoursMap[weekday] != null ? openingHoursMap[weekday]! : '';
+        continue;
+      }
+      if (weekday.split('-').length < 2) continue;
+
+      final int lower = int.tryParse(weekday.split('-')[0]) != null ? int.tryParse(weekday.split('-')[0])! : 0;
+      final int upper = int.tryParse(weekday.split('-')[1]) != null ? int.tryParse(weekday.split('-')[1])! : 0;
+
+      if (now.weekday >= lower && now.weekday <= upper) {
+        openingHours = openingHoursMap[weekday] != null ? widget.openingHours[weekday]! : '';
+      }
+    }
+
+    RestaurantStatus status = RestaurantStatus.closed;
+
+    // Checks if any openingHours exist for the current weekday, otherwise the status will be closed
+    if (openingHours.isNotEmpty) {
+      if (openingHours != 'unkown') {
+        // Pick the individual number out of the hh:mm-hh:mm String
+        final String openingHour =
+            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(0, 2)) != null
+                ? openingHours.substring(0, 2)
+                : '0';
+        final String openingMinute =
+            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(3, 5)) != null
+                ? openingHours.substring(3, 5)
+                : '0';
+
+        final String closingHour =
+            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(6, 8)) != null
+                ? openingHours.substring(6, 8)
+                : '0';
+        final String closingMinute =
+            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(9)) != null
+                ? openingHours.substring(9)
+                : '0';
+
+        // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
+        final int openComb = int.tryParse(openingHour + openingMinute)!;
+        final int closeComb = int.tryParse(closingHour + closingMinute)!;
+
+        // Add a zero before the actual minute if it's lower than 10
+        final String nowMinuteString = now.minute < 10 ? '0${now.minute}' : now.minute.toString();
+
+        // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
+        final int nowComb = int.tryParse(now.hour.toString() + nowMinuteString)!;
+
+        // Checks if the weekday is lower than Saturday and if the current time is in the span of the opening and closing hours
+        if (now.weekday <= 6 && nowComb >= openComb && nowComb <= closeComb) {
+          status = RestaurantStatus.open;
+        }
+      } else {
+        status = RestaurantStatus.unknown;
+      }
+    }
+    return status;
+  }
+
   @override
   Widget build(BuildContext context) {
     // Get the current restaurant status
@@ -100,14 +169,27 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
                           children: [
                             Row(
                               children: [
+                                // Open/Closed
                                 Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: status == RestaurantStatus.open ? const Color.fromARGB(255, 94, 187, 76) : status == RestaurantStatus.unknown ? Colors.orange : Colors.red,
+                                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                            AppThemes.light
+                                        ? status == RestaurantStatus.open
+                                            ? const Color.fromRGBO(0, 207, 55, 1)
+                                            : status == RestaurantStatus.unknown
+                                                ? Colors.orange
+                                                : const Color.fromRGBO(207, 0, 0, 1)
+                                        : status == RestaurantStatus.open
+                                            ? const Color.fromRGBO(94, 255, 83, 0.9)
+                                            : status == RestaurantStatus.unknown
+                                                ? Colors.orange
+                                                : const Color.fromRGBO(255, 72, 72, 1),
                                   ),
                                   height: 25,
                                   width: 8,
                                 ),
+                                // Name
                                 Padding(
                                   padding: const EdgeInsets.only(left: 7),
                                   child: Text(
@@ -140,78 +222,5 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
         ],
       ),
     );
-  }
-
-  // Retrieves the right opening hours for the current day based on either a range of weekday Integers or a single Integer
-  RestaurantStatus getOpeningStatus(Map<String, String> openingHoursMap){
-    // Get all opening/closed days
-    final List<String> days = openingHoursMap.keys.toList();
-    String openingHours = '';
-
-    // Choose the right opening hours in accordance to the current weekday
-    for(final String weekday in days) {
-      final int weekdayInt = int.tryParse(weekday) != null ? int.tryParse(weekday)! : 0;
-
-      if(!weekday.contains('-') && weekdayInt == now.weekday){
-        openingHours = openingHoursMap[weekday] != null ? openingHoursMap[weekday]! : '';
-        continue;
-      }
-      if(weekday.split('-').length < 2) continue;
-
-      final int lower = int.tryParse(weekday.split('-')[0]) != null ? int.tryParse(weekday.split('-')[0])! : 0;
-      final int upper = int.tryParse(weekday.split('-')[1]) != null ? int.tryParse(weekday.split('-')[1])! : 0;
-
-      if(now.weekday >= lower && now.weekday <= upper) {
-        openingHours = openingHoursMap[weekday] != null ? widget.openingHours[weekday]! : '';
-      }
-    }
-
-    RestaurantStatus status = RestaurantStatus.closed;
-
-    // Checks if any openingHours exist for the current weekday, otherwise the status will be closed
-    if(openingHours.isNotEmpty){
-      if(openingHours != 'unkown') {
-        // Pick the individual number out of the hh:mm-hh:mm String
-        final String openingHour = openingHours
-            .split(':')
-            .isNotEmpty && int.tryParse(openingHours.substring(0, 2)) != null
-            ? openingHours.substring(0, 2)
-            : '0';
-        final String openingMinute = openingHours
-            .split(':')
-            .isNotEmpty && int.tryParse(openingHours.substring(3, 5)) != null
-            ? openingHours.substring(3, 5)
-            : '0';
-
-        final String closingHour = openingHours
-            .split(':')
-            .isNotEmpty && int.tryParse(openingHours.substring(6, 8)) != null
-            ? openingHours.substring(6, 8)
-            : '0';
-        final String closingMinute = openingHours
-            .split(':')
-            .isNotEmpty && int.tryParse(openingHours.substring(9)) != null
-            ? openingHours.substring(9)
-            : '0';
-
-        // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
-        final int openComb = int.tryParse(openingHour + openingMinute)!;
-        final int closeComb = int.tryParse(closingHour + closingMinute)!;
-
-        // Add a zero before the actual minute if it's lower than 10
-        final String nowMinuteString = now.minute < 10 ? '0${now.minute}' : now.minute.toString();
-
-        // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
-        final int nowComb = int.tryParse(now.hour.toString() + nowMinuteString)!;
-
-        // Checks if the weekday is lower than Saturday and if the current time is in the span of the opening and closing hours
-        if (now.weekday <= 6 && nowComb >= openComb && nowComb <= closeComb) {
-          status = RestaurantStatus.open;
-        }
-      }else{
-        status = RestaurantStatus.unknown;
-      }
-    }
-    return status;
   }
 }

@@ -309,7 +309,9 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver {
                         ExpandableRestaurant(
                           name: 'Henkelmann',
                           openingHours: const {
-                            '1-7': 'unkown',
+                            '1-5': '11:00-14:00',
+                            '6': '',
+                            '7': '',
                           },
                           imagePath: 'assets/img/henkelmann.png',
                           meals: _mensaUtils.fromDishListToMealCategoryList(
