@@ -70,7 +70,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
 
     // Checks if any openingHours exist for the current weekday, otherwise the status will be closed
     if (openingHours.isNotEmpty) {
-      if (openingHours != 'unkown') {
+      if (openingHours != 'unknown') {
         // Pick the individual number out of the hh:mm-hh:mm String
         final String openingHour =
             openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(0, 2)) != null
@@ -171,6 +171,9 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
                               children: [
                                 // Open/Closed
                                 Container(
+                                  height: 25,
+                                  width: 8,
+                                  margin: const EdgeInsets.only(right: 3),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
@@ -186,8 +189,6 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
                                                 ? Colors.orange
                                                 : const Color.fromRGBO(255, 72, 72, 1),
                                   ),
-                                  height: 25,
-                                  width: 8,
                                 ),
                                 // Name
                                 Padding(
