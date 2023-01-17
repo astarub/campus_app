@@ -41,6 +41,10 @@ dependencies:
   firebase_core: ^2.2.0
   firebase_messaging: ^14.1.0
   flutter_local_notifications: ^12.0.3
+  flutter_onboarding:
+    git:
+      url: https://github.com/C4s4r/flutter_onboarding
+      ref: 59a3198
   
 dev_dependencies:
   flutter_test:
@@ -81,6 +85,7 @@ flutter_icons:
 
 flutter:
   assets:
+     - assets/img/SplashScreen-logo.png
      - assets/img/asta_logo.png
      - assets/img/henkelmann.png
      - assets/img/mensa.png
@@ -105,6 +110,7 @@ flutter:
      - assets/img/icons/search.svg
      - assets/img/icons/filter.svg
      - assets/img/icons/arrow-left.svg
+     - assets/img/icons/arrow-right.svg
      - assets/img/icons/info-message.svg
      - assets/img/icons/x.svg
      - assets/img/icons/mensa-alcohol.png

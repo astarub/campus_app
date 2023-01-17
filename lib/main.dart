@@ -18,6 +18,7 @@ import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/pages/home/onboarding.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
@@ -88,7 +89,8 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       // Onboarding
       debugPrint('Initiate onboarding.  -- TEMPORARY REPLACED WITH NORMAL APP START');
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage(mainNavigatorKey: mainNavigatorKey)),
+        MaterialPageRoute(
+            builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey)),
       );
     }
   }
@@ -130,7 +132,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
               // Start the app
               FlutterNativeSplash.remove();
 
-              checkFirebasePermission();
+              //checkFirebasePermission();
             }
           });
         } else {
@@ -152,7 +154,11 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           // Start the app
           FlutterNativeSplash.remove();
 
-          checkFirebasePermission();
+          //checkFirebasePermission();
+          Navigator.of(mainNavigatorKey.currentState!.context).push(
+            MaterialPageRoute(
+                builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey)),
+          );
         }
       });
     });
@@ -249,7 +255,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     // Add observer in order to listen to `didChangeAppLifecycleState`
     WidgetsBinding.instance.addObserver(this);
 
-    //_debugDeleteSettings();
+    _debugDeleteSettings();
 
     // load saved settings
     loadingTimer.start();
