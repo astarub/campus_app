@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
@@ -14,12 +15,14 @@ class RubnewsDetailsPage extends StatelessWidget {
   final CachedNetworkImage image;
   final String content;
   final bool isEvent;
+  final String link;
 
   const RubnewsDetailsPage({
     Key? key,
     required this.title,
     required this.date,
     required this.image,
+    required this.link,
     required this.content,
     this.isEvent = false,
   }) : super(key: key);
@@ -39,12 +42,30 @@ class RubnewsDetailsPage extends StatelessWidget {
           children: [
             // Back button
             Padding(
-              padding: const EdgeInsets.only(bottom: 12, left: 20),
-              child: CampusIconButton(
-                iconPath: 'assets/img/icons/arrow-left.svg',
-                onTap: () {
-                  Navigator.pop(context);
-                },
+              padding: const EdgeInsets.only(bottom: 12, left: 20, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CampusIconButton(
+                    iconPath: 'assets/img/icons/arrow-left.svg',
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  CampusIconButton(
+                    iconPath: 'assets/img/icons/share.svg',
+                    onTap: () {
+                      // Required for iPad, otherwise the Ui crashes
+                      final box = context.findRenderObject() as RenderBox?;
+
+                      Share.share(
+                        'RUB News Article shared via Campus App: $link',
+                        subject: 'RUB News Article shared via Campus App',
+                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
             Expanded(

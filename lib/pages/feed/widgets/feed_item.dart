@@ -75,6 +75,7 @@ class FeedItem extends StatelessWidget {
             title: title,
             date: date,
             image: image,
+            link: link,
             content: content,
           );
         }

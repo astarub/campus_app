@@ -41,6 +41,7 @@ dependencies:
   firebase_core: ^2.2.0
   firebase_messaging: ^14.1.0
   flutter_local_notifications: ^12.0.3
+  share_plus: ^6.3.0
   
 dev_dependencies:
   flutter_test:
@@ -124,6 +125,7 @@ flutter:
      - assets/img/icons/rub-link.png
      - assets/img/icons/siren.svg
      - assets/img/icons/message-square.svg
+     - assets/img/icons/share.svg
 
   fonts:
     - family: SF-Pro

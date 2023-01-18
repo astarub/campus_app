@@ -137,7 +137,7 @@ class Event {
 
     return Event(
       id: json['id'],
-      url: json['rest_url'],
+      url: json['url'],
       title: json['title'],
       description: json['description'],
       slug: json['slug'],
