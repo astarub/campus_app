@@ -1,15 +1,3 @@
-# Moodle API
-
-> If we plan to implement the Moodle connection, we will write this wiki page.
-
----
-
-# Forgerock API
- 
-> If we plan to implement the eCampus / Flexnow connection, we will write this wiki page.
-
----
-
 # Internet Connection: Dio
 
 > Dio is a powerful Http client for Dart, which supports Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
@@ -24,6 +12,18 @@ why we switched to Dio.
 The Dio client is initialized inside the injection Container located inside `lib/core/injection.dart`. The `DioUtils` class takes the Dio client a `CookieJar` to initialize
 both correctly and DISABLE CERTIFICATE VALIDATION. For security reasons, this has to be
 fixed before we release the first version. But in some scenarios we recognized abnormal  behavior of some RUB servers. So future research is needed!
+
+---
+
+# Forgerock API
+ 
+> If we plan to implement the eCampus / Flexnow connection, we will write this wiki page.
+
+---
+
+# Moodle API
+
+> If we plan to implement the Moodle connection, we will write this wiki page.
 
 ---
 
