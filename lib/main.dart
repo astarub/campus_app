@@ -254,6 +254,10 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     // load saved settings
     loadingTimer.start();
     loadSettings();
+
+    // Handle deep links
+    handleIncomingLink();
+    handleInitialUri();
   }
 
   @override

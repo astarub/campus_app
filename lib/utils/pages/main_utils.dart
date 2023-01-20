@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:uni_links/uni_links.dart';
 
 import 'package:campus_app/main.dart';
 import 'package:campus_app/core/exceptions.dart';
@@ -14,6 +17,9 @@ import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/rubnews/rubnews_usecases.dart';
+import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
+import 'package:campus_app/pages/feed/rubnews/rubnews_details_page.dart';
 
 enum FGBGType { foreground, background }
 
@@ -41,6 +47,88 @@ class FGBGEvents {
         .receiveBroadcastStream()
         .map((event) => event == 'foreground' ? FGBGType.foreground : FGBGType.background);
   }
+}
+
+// Deep link handling
+bool initialUriHandled = false;
+StreamSubscription? subscription;
+
+final CalendarUsecases calendarUsecases = sl<CalendarUsecases>();
+
+/// Handle deep links when the app is terminated. Uri scheme: app://campus_app/event/13860
+Future<void> handleInitialUri() async {
+  if (initialUriHandled) return;
+  initialUriHandled = true;
+
+  try {
+    final uri = await getInitialUri();
+
+    if (uri == null) return;
+    // Distinguish between news and potentially other categories
+    switch (uri.pathSegments[0]) {
+      case 'event': {
+        // Fetch all events from the AStA event calendar
+        final eventData = await calendarUsecases.updateEventsAndFailures();
+        final events = eventData['events']! as List<Event>;
+
+        // Get the event object by the specified event id
+        Event event;
+        try {
+          event = events.firstWhere((element) => element.id == int.parse(uri.pathSegments[1]));
+        } catch (e) {
+          return;
+        }
+
+        if (homeKey.currentState == null) return;
+        // Navigate to the calendar page
+        await homeKey.currentState!.selectedPage(PageItem.events);
+        // Push the CalendarDetailPage onto the navigator of the current page
+        await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+            .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
+
+        break;
+      }
+      default: return;
+    }
+  } catch(e) {
+    debugPrint('Cannot get initial uri.');
+  }
+}
+
+/// Handle incoming deep links
+void handleIncomingLink() {
+  // Subscribe to the link stream
+  subscription = uriLinkStream.listen((Uri? uri) async {
+    if (uri == null) return;
+    // Distinguish between news and potentially other categories
+    switch (uri.pathSegments[0]) {
+      case 'event': {
+        // Fetch all events from the AStA event calendar
+        final eventData = await calendarUsecases.updateEventsAndFailures();
+        final events = eventData['events']! as List<Event>;
+
+        // Get the event object by the specified event id
+        Event event;
+        try {
+          event = events.firstWhere((element) => element.id == int.parse(uri.pathSegments[1]));
+        } catch (e) {
+          return;
+        }
+
+        if (homeKey.currentState == null) return;
+        // Navigate to the calendar page
+        await homeKey.currentState!.selectedPage(PageItem.events);
+        // Push the CalendarDetailPage onto the navigator of the current page
+        await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+            .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
+
+        break;
+      }
+      default: return;
+    }
+  }, onError: (err) {
+    debugPrint(err);
+  },);
 }
 
 /// This function initializes the Google Firebase services and FCM
@@ -118,8 +206,7 @@ Future<void> initializeFirebase() async {
             final List<dynamic> interactionData = interaction['data'];
 
             // Retrieves all events from the calendar
-            final calendarUsecase = sl<CalendarUsecases>();
-            final Map<String, List<dynamic>> eventsAndFailures = await calendarUsecase.updateEventsAndFailures();
+            final Map<String, List<dynamic>> eventsAndFailures = await calendarUsecases.updateEventsAndFailures();
             final List<Event> events = eventsAndFailures['events'] as List<Event>;
 
             if (interactionData[0] == null || interactionData[0]['event'] == null) return;
