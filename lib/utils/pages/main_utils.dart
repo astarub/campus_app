@@ -55,7 +55,7 @@ StreamSubscription? subscription;
 
 final CalendarUsecases calendarUsecases = sl<CalendarUsecases>();
 
-/// Handle deep links when the app is terminated. Uri scheme: app://campus_app/event/13860
+/// Handle app/universal links when the app is terminated
 Future<void> handleInitialUri() async {
   if (initialUriHandled) return;
   initialUriHandled = true;
@@ -66,7 +66,7 @@ Future<void> handleInitialUri() async {
     if (uri == null) return;
     // Distinguish between news and potentially other categories
     switch (uri.pathSegments[0]) {
-      case 'event': {
+      case 'termin': {
         // Fetch all events from the AStA event calendar
         final eventData = await calendarUsecases.updateEventsAndFailures();
         final events = eventData['events']! as List<Event>;
@@ -74,7 +74,7 @@ Future<void> handleInitialUri() async {
         // Get the event object by the specified event id
         Event event;
         try {
-          event = events.firstWhere((element) => element.id == int.parse(uri.pathSegments[1]));
+          event = events.firstWhere((element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/');
         } catch (e) {
           return;
         }
@@ -95,22 +95,22 @@ Future<void> handleInitialUri() async {
   }
 }
 
-/// Handle incoming deep links
+/// Handle incoming app/universal link
 void handleIncomingLink() {
   // Subscribe to the link stream
   subscription = uriLinkStream.listen((Uri? uri) async {
     if (uri == null) return;
     // Distinguish between news and potentially other categories
     switch (uri.pathSegments[0]) {
-      case 'event': {
+      case 'termin': {
         // Fetch all events from the AStA event calendar
         final eventData = await calendarUsecases.updateEventsAndFailures();
         final events = eventData['events']! as List<Event>;
 
-        // Get the event object by the specified event id
+        // Get the event object by the speciefied url
         Event event;
         try {
-          event = events.firstWhere((element) => element.id == int.parse(uri.pathSegments[1]));
+          event = events.firstWhere((element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/');
         } catch (e) {
           return;
         }
@@ -120,7 +120,7 @@ void handleIncomingLink() {
         await homeKey.currentState!.selectedPage(PageItem.events);
         // Push the CalendarDetailPage onto the navigator of the current page
         await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
-            .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
+            .pushReplacement(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
 
         break;
       }
