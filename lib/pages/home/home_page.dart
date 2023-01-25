@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +56,6 @@ class HomePageState extends State<HomePage> {
 
   final PageController _pageController = PageController();
 
-  late double screenWidth;
   double pagePosition = 0;
 
   /// Switches to another page when selected in the nav-menu
@@ -113,20 +113,8 @@ class HomePageState extends State<HomePage> {
     };
 
     _pageController.addListener(() {
-      setState(() {
-        pagePosition = _pageController.page ?? 0;
-      });
-
-      //double offset = _pageController.offset / screenWidth;
-      print(pagePosition);
+      setState(() => pagePosition = _pageController.page ?? 0);
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    screenWidth = MediaQuery.of(context).size.width;
   }
 
   @override
@@ -148,11 +136,12 @@ class HomePageState extends State<HomePage> {
             child: PageView.builder(
               controller: _pageController,
               itemCount: navigatorKeys.length,
+              //scrollBehavior: CupertinoScrollBehavior(),
               onPageChanged: (page) {
                 final List<PageItem> pages = navigatorKeys.keys.toList();
 
                 // Find new PageItem and assign newPage the old value in case no element is found
-                final PageItem newPage = pages[page] ?? currentPage;
+                final PageItem newPage = pages[page];
 
                 // Set newPage as the currentPage
                 if (newPage != currentPage) {
@@ -161,11 +150,19 @@ class HomePageState extends State<HomePage> {
               },
               itemBuilder: (context, index) {
                 return AnimatedOpacity(
-                  opacity: (1 - (pagePosition - index)) >= 0.9
-                      ? 1
-                      : 1 - (pagePosition - index) <= 0.1
-                          ? 0
-                          : 1 - (pagePosition - index),
+                  opacity: pagePosition - index < 0
+                      // Navigate left -> blend out the right page
+                      ? pagePosition - index + 1 >= 0.9
+                          ? 1
+                          : pagePosition - index + 1 <= 0.1
+                              ? 0
+                              : pagePosition - index + 1
+                      // Navigate right -> blend out the left page
+                      : (1 - (pagePosition - index)) >= 0.9
+                          ? 1
+                          : 1 - (pagePosition - index) <= 0.1
+                              ? 0
+                              : 1 - (pagePosition - index),
                   duration: const Duration(milliseconds: 100),
                   child: _buildNavigator(navigatorKeys.keys.toList()[index]),
                 );
