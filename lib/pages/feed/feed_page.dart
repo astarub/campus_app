@@ -123,8 +123,8 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
   @override
   Widget build(BuildContext context) {
-
     super.build(context);
+
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
@@ -199,10 +199,10 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                             rightTitle: 'Explore',
                             onChanged: saveFeedExplore,
                             selected:
-                            Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore ==
-                                false
-                                ? 0
-                                : 1,
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore ==
+                                        false
+                                    ? 0
+                                    : 1,
                           ),
                         ),
                         // Filter button

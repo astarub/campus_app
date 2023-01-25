@@ -33,7 +33,6 @@ class HomePageState extends State<HomePage> {
     PageItem.more: GlobalKey<NavigatorState>(),
   };
 
-
   final SystemUiOverlayStyle lightSystemUiStyle = const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.light, // iOS
     statusBarColor: Colors.white, // Android
@@ -56,6 +55,9 @@ class HomePageState extends State<HomePage> {
 
   final PageController _pageController = PageController();
 
+  late double screenWidth;
+  double pagePosition = 0;
+
   /// Switches to another page when selected in the nav-menu
   Future<bool> selectedPage(PageItem selectedPageItem) async {
     if (selectedPageItem != currentPage) {
@@ -76,7 +78,7 @@ class HomePageState extends State<HomePage> {
   }
 
   /// Returns the [NavBarNavigator] for the specified PageItem
-  Widget _buildPage(PageItem tabItem) {
+  Widget _buildNavigator(PageItem tabItem) {
     return NavBarNavigator(
       mainNavigatorKey: widget.mainNavigatorKey,
       navigatorKey: navigatorKeys[tabItem]!,
@@ -109,6 +111,22 @@ class HomePageState extends State<HomePage> {
         }
       }
     };
+
+    _pageController.addListener(() {
+      setState(() {
+        pagePosition = _pageController.page ?? 0;
+      });
+
+      //double offset = _pageController.offset / screenWidth;
+      print(pagePosition);
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    screenWidth = MediaQuery.of(context).size.width;
   }
 
   @override
@@ -127,36 +145,38 @@ class HomePageState extends State<HomePage> {
           ),
           body: SafeArea(
             bottom: false,
-            child: PageView(
+            child: PageView.builder(
               controller: _pageController,
+              itemCount: navigatorKeys.length,
               onPageChanged: (page) {
                 final List<PageItem> pages = navigatorKeys.keys.toList();
 
-                // Assign newPage the old value in case no element is found
-                PageItem newPage = currentPage;
-
-                // Find the new PageItem
-                for (int i=0; i < pages.length; i++) {
-                  if(i == page){
-                    newPage = pages[i];
-                  }
-                }
-
-                // Return if nothing has changed
-                if (newPage == currentPage) return;
+                // Find new PageItem and assign newPage the old value in case no element is found
+                final PageItem newPage = pages[page] ?? currentPage;
 
                 // Set newPage as the currentPage
-                setState(() {
-                  currentPage = newPage;
-                });
+                if (newPage != currentPage) {
+                  setState(() => currentPage = newPage);
+                }
               },
-              children: [
-                _buildPage(PageItem.feed),
-                _buildPage(PageItem.events),
-                _buildPage(PageItem.mensa),
-                _buildPage(PageItem.guide),
-                _buildPage(PageItem.more),
-              ],
+              itemBuilder: (context, index) {
+                return AnimatedOpacity(
+                  opacity: (1 - (pagePosition - index)) >= 0.9
+                      ? 1
+                      : 1 - (pagePosition - index) <= 0.1
+                          ? 0
+                          : 1 - (pagePosition - index),
+                  duration: const Duration(milliseconds: 100),
+                  child: _buildNavigator(navigatorKeys.keys.toList()[index]),
+                );
+              },
+              /* children: [
+                _buildNavigator(PageItem.feed),
+                _buildNavigator(PageItem.events),
+                _buildNavigator(PageItem.mensa),
+                _buildNavigator(PageItem.guide),
+                _buildNavigator(PageItem.more),
+              ], */
             ),
           ),
         ),
