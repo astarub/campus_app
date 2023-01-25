@@ -92,6 +92,11 @@ class MorePage extends StatelessWidget {
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/repair-cafe/'),
                           ),
+                          ExternalLinkButton(
+                            title: 'Tanzkreis',
+                            leadingIconPath: 'assets/img/asta_logo.png',
+                            onTap: () => openLink(context, 'https://asta-bochum.de/tanzkreis/'),
+                          ),
                           Flex(
                             direction: Axis.horizontal,
                             children: [
