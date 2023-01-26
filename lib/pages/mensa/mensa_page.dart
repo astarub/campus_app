@@ -9,6 +9,7 @@ import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_usecases.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/pages/mensa/widgets/day_selection.dart';
 import 'package:campus_app/pages/mensa/widgets/expandable_restaurant.dart';
@@ -17,10 +18,14 @@ import 'package:campus_app/pages/mensa/widgets/allergenes_popup.dart';
 
 class MensaPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
+  final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
+  final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const MensaPage({
     Key? key,
     required this.mainNavigatorKey,
+    required this.pageEntryAnimationKey,
+    required this.pageExitAnimationKey,
   }) : super(key: key);
 
   @override
@@ -140,162 +145,194 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
-        child: Column(
-          children: [
-            // Header
-            Container(
-              padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 30),
-              color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-              child: Column(
-                children: [
-                  // Title
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: Text(
-                      'Mensa',
-                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
-                    ),
+        child: AnimatedExit(
+          key: widget.pageExitAnimationKey,
+          child: AnimatedEntry(
+            key: widget.pageEntryAnimationKey,
+            child: Column(
+              children: [
+                // Header
+                Container(
+                  padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 30),
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                  child: Column(
+                    children: [
+                      // Title
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: Text(
+                          'Mensa',
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                        ),
+                      ),
+                      // Day selection
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: MensaDaySelection(onChanged: (int day) => setState(() => selectedDay = day)),
+                      ),
+                    ],
                   ),
-                  // Day selection
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: MensaDaySelection(onChanged: (int day) => setState(() => selectedDay = day)),
-                  ),
-                ],
-              ),
-            ),
-            // Place expandables
-            Expanded(
-              child: RefreshIndicator(
-                displacement: 10,
-                backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-                color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
-                strokeWidth: 3,
-                onRefresh: () async {
-                  loadData();
-                },
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                  children: [
-                    // Filter popups
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: CampusButton.light(
-                                text: 'Präferenzen',
-                                width: null,
-                                onTap: () {
-                                  widget.mainNavigatorKey.currentState?.push(
-                                    PageRouteBuilder(
-                                      opaque: false,
-                                      pageBuilder: (context, _, __) => PreferencesPopup(
-                                        preferences:
-                                        Provider.of<SettingsHandler>(context).currentSettings.mensaPreferences,
-                                        onClose: saveChangedPreferences,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: CampusButton.light(
-                                text: 'Allergene',
-                                width: null,
-                                onTap: () {
-                                  widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
-                                    opaque: false,
-                                    pageBuilder: (context, _, __) => AllergenesPopup(
-                                      allergenes:
-                                      Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
-                                      onClose: saveChangedAllergenes,
-                                    ),
-                                  ));
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Restaurants
-                    ExpandableRestaurant(
-                      name: 'KulturCafé',
-                      imagePath: 'assets/img/qwest.png',
-                      meals: _mensaUtils.buildKulturCafeRestaurant(
-                        onPreferenceTap: singlePreferenceSelected,
-                        mensaAllergenes:
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
-                        mensaPreferences:
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
-                      ),
-                    ),
-                    ExpandableRestaurant(
-                      name: 'Mensa der RUB',
-                      imagePath: 'assets/img/mensa.png',
-                      meals: _mensaUtils.fromDishListToMealCategoryList(
-                        entities: _mensaDishes,
-                        day: selectedDay,
-                        onPreferenceTap: singlePreferenceSelected,
-                        mensaAllergenes:
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
-                        mensaPreferences:
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
-                      ),
-                    ),
-                    ExpandableRestaurant(
-                      name: 'Rote Bete',
-                      imagePath: 'assets/img/rotebeete.png',
-                      meals: _mensaUtils.fromDishListToMealCategoryList(
-                        entities: _roteBeeteDishes,
-                        day: selectedDay,
-                        onPreferenceTap: singlePreferenceSelected,
-                        mensaAllergenes:
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
-                        mensaPreferences:
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
-                      ),
-                    ),
-                    ExpandableRestaurant(
-                      name: 'Q-West',
-                      imagePath: 'assets/img/qwest.png',
-                      meals: _mensaUtils.fromDishListToMealCategoryList(
-                        entities: _qwestDishes,
-                        day: selectedDay,
-                        onPreferenceTap: singlePreferenceSelected,
-                        mensaAllergenes:
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
-                        mensaPreferences:
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
-                      ),
-                      //meals: [],
-                    ),
-                    ExpandableRestaurant(
-                      name: 'Henkelmann',
-                      imagePath: 'assets/img/henkelmann.png',
-                      meals: _mensaUtils.fromDishListToMealCategoryList(
-                        entities: _henkelmannDishes,
-                        day: selectedDay,
-                        onPreferenceTap: singlePreferenceSelected,
-                        mensaAllergenes:
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
-                        mensaPreferences:
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
-                      ),
-                    ),
-                  ],
                 ),
-              ),
+                // Place expandables
+                Expanded(
+                  child: RefreshIndicator(
+                    displacement: 10,
+                    backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                    color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
+                    strokeWidth: 3,
+                    onRefresh: () async {
+                      loadData();
+                    },
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                      children: [
+                        // Filter popups
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 5),
+                                  child: CampusButton.light(
+                                    text: 'Präferenzen',
+                                    width: null,
+                                    onTap: () {
+                                      widget.mainNavigatorKey.currentState?.push(
+                                        PageRouteBuilder(
+                                          opaque: false,
+                                          pageBuilder: (context, _, __) => PreferencesPopup(
+                                            preferences:
+                                                Provider.of<SettingsHandler>(context).currentSettings.mensaPreferences,
+                                            onClose: saveChangedPreferences,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: CampusButton.light(
+                                    text: 'Allergene',
+                                    width: null,
+                                    onTap: () {
+                                      widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
+                                        opaque: false,
+                                        pageBuilder: (context, _, __) => AllergenesPopup(
+                                          allergenes:
+                                              Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
+                                          onClose: saveChangedAllergenes,
+                                        ),
+                                      ));
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Restaurants
+                        ExpandableRestaurant(
+                          name: 'KulturCafé',
+                          openingHours: const {
+                            '1-4': '10:00-20:00',
+                            '5': '11:00-16:00',
+                            '6': '',
+                            '7': '',
+                          },
+                          imagePath: 'assets/img/qwest.png',
+                          meals: _mensaUtils.buildKulturCafeRestaurant(
+                            onPreferenceTap: singlePreferenceSelected,
+                            mensaAllergenes:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
+                            mensaPreferences:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
+                          ),
+                        ),
+                        ExpandableRestaurant(
+                          name: 'Mensa der RUB',
+                          openingHours: const {
+                            '1-5': '11:00-14:30',
+                            '6': '',
+                            '7': '',
+                          },
+                          imagePath: 'assets/img/mensa.png',
+                          meals: _mensaUtils.fromDishListToMealCategoryList(
+                            entities: _mensaDishes,
+                            day: selectedDay,
+                            onPreferenceTap: singlePreferenceSelected,
+                            mensaAllergenes:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
+                            mensaPreferences:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
+                          ),
+                        ),
+                        ExpandableRestaurant(
+                          name: 'Rote Bete',
+                          openingHours: const {
+                            '1-5': '11:00-14:30',
+                            '6': '',
+                            '7': '',
+                          },
+                          imagePath: 'assets/img/rotebeete.png',
+                          meals: _mensaUtils.fromDishListToMealCategoryList(
+                            entities: _roteBeeteDishes,
+                            day: selectedDay,
+                            onPreferenceTap: singlePreferenceSelected,
+                            mensaAllergenes:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
+                            mensaPreferences:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
+                          ),
+                        ),
+                        ExpandableRestaurant(
+                          name: 'Q-West',
+                          openingHours: const {
+                            '1-5': '11:15-22:00',
+                            '6': '',
+                            '7': '',
+                          },
+                          imagePath: 'assets/img/qwest.png',
+                          meals: _mensaUtils.fromDishListToMealCategoryList(
+                            entities: _qwestDishes,
+                            day: selectedDay,
+                            onPreferenceTap: singlePreferenceSelected,
+                            mensaAllergenes:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
+                            mensaPreferences:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
+                          ),
+                          //meals: [],
+                        ),
+                        ExpandableRestaurant(
+                          name: 'Henkelmann',
+                          openingHours: const {
+                            '1-5': '11:00-14:00',
+                            '6': '',
+                            '7': '',
+                          },
+                          imagePath: 'assets/img/henkelmann.png',
+                          meals: _mensaUtils.fromDishListToMealCategoryList(
+                            entities: _henkelmannDishes,
+                            day: selectedDay,
+                            onPreferenceTap: singlePreferenceSelected,
+                            mensaAllergenes:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaAllergenes,
+                            mensaPreferences:
+                                Provider.of<SettingsHandler>(context, listen: false).currentSettings.mensaPreferences,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

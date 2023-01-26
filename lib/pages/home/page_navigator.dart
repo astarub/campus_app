@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:campus_app/pages/home/home_page.dart';
+
 import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/calendar/calendar_page.dart';
 import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/guide/guide_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+
+enum PageItem { feed, events, coupons, mensa, guide, more }
 
 class PageNavigatorRoutes {
   /// The root-page is shown initially when this navbar-tab is the active one.
@@ -27,11 +30,20 @@ class NavBarNavigator extends StatelessWidget {
   /// Determines the type of the page in order to set the navigator correctly.
   final PageItem pageItem;
 
+  /// Passes the animation key for the entry animation to the referenced page
+  /// to control the animation from outside the page.
+  final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
+
+  /// Passes the animation key for the exit animation to the referenced page
+  /// to control the animation from outside the page.
+  final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   NavBarNavigator({
     required this.mainNavigatorKey,
     required this.navigatorKey,
     required this.pageItem,
+    required this.pageEntryAnimationKey,
+    required this.pageExitAnimationKey,
   });
 
   /// Creates a map of the root and detail page of the specific page.
@@ -41,11 +53,15 @@ class NavBarNavigator extends StatelessWidget {
       case PageItem.feed:
         rootPage = FeedPage(
           mainNavigatorKey: mainNavigatorKey,
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
         );
         break;
       case PageItem.events:
         rootPage = CalendarPage(
           mainNavigatorKey: mainNavigatorKey,
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
         );
         break;
       case PageItem.coupons:
@@ -54,14 +70,21 @@ class NavBarNavigator extends StatelessWidget {
       case PageItem.mensa:
         rootPage = MensaPage(
           mainNavigatorKey: mainNavigatorKey,
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
         );
         break;
       case PageItem.guide:
-        rootPage = GuidePage();
+        rootPage = GuidePage(
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
+        );
         break;
       case PageItem.more:
         rootPage = MorePage(
           mainNavigatorKey: mainNavigatorKey,
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
         );
         break;
     }

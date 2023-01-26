@@ -1,21 +1,19 @@
 import 'dart:convert';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:campus_app/main.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'package:campus_app/main.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/firebase_options.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
-import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-
-class MainUtils {}
 
 enum FGBGType { foreground, background }
 
@@ -83,7 +81,7 @@ Future<void> initializeFirebase() async {
   // Local notifications on Android
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('@drawable/ic_notification');
+      AndroidInitializationSettings('@drawable/ic_notification');
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
   );
@@ -105,65 +103,70 @@ Future<void> initializeFirebase() async {
         if (data['interaction'] == null) return;
 
         interaction = jsonDecode(data['interaction']);
-      } catch(e) {
+      } catch (e) {
         throw JsonException();
       }
 
       if (interaction['destination'] == null) return;
 
-      //Deal with different actions specified in the message data
+      // Deal with different actions specified in the message data
       switch (interaction['destination']) {
-        case 'calendar': {
-          if (interaction['data'] == null) return;
+        case 'calendar':
+          {
+            if (interaction['data'] == null) return;
 
-          final List<dynamic> interactionData = interaction['data'];
+            final List<dynamic> interactionData = interaction['data'];
 
-          // Retrieves all events from the calendar
-          final calendarUsecase = sl<CalendarUsecases>();
-          final Map<String, List<dynamic>> eventsAndFailures = await calendarUsecase.updateEventsAndFailures();
-          final List<Event> events = eventsAndFailures['events'] as List<Event>;
+            // Retrieves all events from the calendar
+            final calendarUsecase = sl<CalendarUsecases>();
+            final Map<String, List<dynamic>> eventsAndFailures = await calendarUsecase.updateEventsAndFailures();
+            final List<Event> events = eventsAndFailures['events'] as List<Event>;
 
-          if (interactionData[0] == null || interactionData[0]['event'] == null) return;
+            if (interactionData[0] == null || interactionData[0]['event'] == null) return;
 
-          final Map<String, dynamic> eventJson = interactionData[0]['event'] ;
+            final Map<String, dynamic> eventJson = interactionData[0]['event'];
 
-          // Get the event according to the id in the message payload
-          Event event;
-          try {
-            event = events.firstWhere((element) => element.id == eventJson['id']);
-          } catch(e){
-            return;
+            // Get the event according to the id in the message payload
+            Event event;
+            try {
+              event = events.firstWhere((element) => element.id == eventJson['id']);
+            } catch (e) {
+              return;
+            }
+
+            if (homeKey.currentState == null) return;
+            // Change page
+            await homeKey.currentState!.selectedPage(PageItem.events);
+            // Push the CalendarDetailPage onto the navigator of the current page
+            await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+                .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
+
+            break;
           }
+        case 'mensa':
+          {
+            if (homeKey.currentState == null) return;
 
-          if (homeKey.currentState == null) return;
-          // Change page
-          await homeKey.currentState!.selectedPage(PageItem.events);
-          // Push the CalendarDetailPage onto the navigator of the current page
-          await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!.push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
+            await homeKey.currentState!.selectedPage(PageItem.mensa);
 
-          break;
-        }
-        case 'mensa': {
-          if (homeKey.currentState == null) return;
+            break;
+          }
+        case 'guide':
+          {
+            if (homeKey.currentState == null) return;
 
-          await homeKey.currentState!.selectedPage(PageItem.mensa);
+            await homeKey.currentState!.selectedPage(PageItem.guide);
 
-          break;
-        }
-        case 'guide': {
-          if (homeKey.currentState == null) return;
+            break;
+          }
+        case 'more':
+          {
+            if (homeKey.currentState == null) return;
 
-          await homeKey.currentState!.selectedPage(PageItem.guide);
+            await homeKey.currentState!.selectedPage(PageItem.more);
 
-          break;
-        }
-        case 'more': {
-          if (homeKey.currentState == null) return;
-
-          await homeKey.currentState!.selectedPage(PageItem.more);
-
-          break;
-        }
+            break;
+          }
       }
     },
   );
@@ -207,8 +210,7 @@ Future<void> initializeFirebase() async {
 /// This function registers the event handler for notification interactions (user clicking on a notification)
 Future<void> setupFirebaseInteraction() async {
   // Get the message that caused the app to start
-  final RemoteMessage? initialMessage =
-  await FirebaseMessaging.instance.getInitialMessage();
+  final RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
 
   // Checks whether the notification caused the app to start and then processes that notification
   if (initialMessage != null) {
@@ -223,68 +225,73 @@ Future<void> setupFirebaseInteraction() async {
 void _handleFirebaseInteraction(RemoteMessage message) async {
   Map<String, dynamic> interaction = {};
 
-  //Decode JSON payload from the message data
+  // Decode JSON payload from the message data
   try {
     interaction = jsonDecode(message.data['interaction']);
-  } catch(e) {
+  } catch (e) {
     throw JsonException();
   }
 
   if (interaction['destination'] == null) return;
 
-  //Deal with different actions specified in the message data
+  // Deal with different actions specified in the message data
   switch (interaction['destination']) {
-    case 'calendar': {
-      if (interaction['data'] == null) return;
+    case 'calendar':
+      {
+        if (interaction['data'] == null) return;
 
-      final List<dynamic> interactionData = interaction['data'];
+        final List<dynamic> interactionData = interaction['data'];
 
-      // Retrieves all events from the calendar
-      final calendarUsecase = sl<CalendarUsecases>();
-      final Map<String, List<dynamic>> eventsAndFailures = await calendarUsecase.updateEventsAndFailures();
-      final List<Event> events = eventsAndFailures['events'] as List<Event>;
+        // Retrieves all events from the calendar
+        final calendarUsecase = sl<CalendarUsecases>();
+        final Map<String, List<dynamic>> eventsAndFailures = await calendarUsecase.updateEventsAndFailures();
+        final List<Event> events = eventsAndFailures['events'] as List<Event>;
 
-      if (interactionData[0] == null || interactionData[0]['event'] == null) return;
+        if (interactionData[0] == null || interactionData[0]['event'] == null) return;
 
-      final Map<String, dynamic> eventJson = interactionData[0]['event'] ;
+        final Map<String, dynamic> eventJson = interactionData[0]['event'];
 
-      // Get the event according to the id in the message payload
-      Event event;
-      try {
-        event = events.firstWhere((element) => element.id == eventJson['id']);
-      } catch(e){
-        return;
+        // Get the event according to the id in the message payload
+        Event event;
+        try {
+          event = events.firstWhere((element) => element.id == eventJson['id']);
+        } catch (e) {
+          return;
+        }
+
+        if (homeKey.currentState == null) return;
+
+        // Change page
+        await homeKey.currentState!.selectedPage(PageItem.events);
+        // Push the CalendarDetailPage onto the navigator of the current page
+        await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+            .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
+
+        break;
       }
+    case 'mensa':
+      {
+        if (homeKey.currentState == null) return;
 
-      if (homeKey.currentState == null) return;
+        await homeKey.currentState!.selectedPage(PageItem.mensa);
 
-      // Change page
-      await homeKey.currentState!.selectedPage(PageItem.events);
-      // Push the CalendarDetailPage onto the navigator of the current page
-      await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!.push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
+        break;
+      }
+    case 'guide':
+      {
+        if (homeKey.currentState == null) return;
 
-      break;
-    }
-    case 'mensa': {
-      if (homeKey.currentState == null) return;
+        await homeKey.currentState!.selectedPage(PageItem.guide);
 
-      await homeKey.currentState!.selectedPage(PageItem.mensa);
+        break;
+      }
+    case 'more':
+      {
+        if (homeKey.currentState == null) return;
 
-      break;
-    }
-    case 'guide': {
-      if (homeKey.currentState == null) return;
+        await homeKey.currentState!.selectedPage(PageItem.more);
 
-      await homeKey.currentState!.selectedPage(PageItem.guide);
-
-      break;
-    }
-    case 'more': {
-      if (homeKey.currentState == null) return;
-
-      await homeKey.currentState!.selectedPage(PageItem.more);
-
-      break;
-    }
+        break;
+      }
   }
 }
