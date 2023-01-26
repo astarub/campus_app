@@ -69,7 +69,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
         Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(feedFilter: newFilters);
 
     debugPrint('Saving new feed filter: ${newSettings.feedFilter}');
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
   }
 
   void saveFeedExplore(int selected) {
@@ -80,7 +80,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
         Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(newsExplore: explore);
 
     debugPrint('Saving newsExplore: ${newSettings.newsExplore}');
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
   }
 
   @override
@@ -154,8 +154,8 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
                       children: _feedUtils.fromEntitiesToWidgetList(
                         news: _rubnews,
                         events: _events,
-                        mixInto: Provider.of<SettingsHandler>(context).currentSettings.feedFilter.contains('Events') ||
-                            Provider.of<SettingsHandler>(context).currentSettings.newsExplore,
+                        shuffle: Provider.of<SettingsHandler>(context).currentSettings.newsExplore,
+                        mixInto: Provider.of<SettingsHandler>(context).currentSettings.feedFilter.contains('Events'),
                       ),
                     ),
                   ),
@@ -207,7 +207,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
                                 onChanged: saveFeedExplore,
                                 selected:
                                     Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore ==
-                                            false
+                                        false
                                         ? 0
                                         : 1,
                               ),
