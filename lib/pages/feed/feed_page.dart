@@ -33,10 +33,12 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   late final ScrollController _scrollController;
   double _scrollControllerLastOffset = 0;
   double _headerOpacity = 1;
+  double _newsWidgetOpacity = 1;
 
-  late List<NewsEntity> _rubnews = [];
-  late List<Event> _events = [];
-  late List<Failure> _failures = [];
+  List<NewsEntity> _rubnews = [];
+  List<Event> _events = [];
+  List<Failure> _failures = [];
+  List<Widget> _parsedNewsWidgets = [];
 
   late final SnappingSheetController _popupController;
 
@@ -47,6 +49,8 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   /// Function that call usecase and parse widgets into the corresponding
   /// lists of events, news and failures.
   Future<void> updateStateWithFeed() async {
+    setState(() => _newsWidgetOpacity = 0);
+
     final newsData = await _rubnewsUsecases.updateFeedAndFailures();
     final eventData = await _calendarUsecase.updateEventsAndFailures();
 
@@ -54,9 +58,22 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
       _rubnews = newsData['news']! as List<NewsEntity>;
       _events = eventData['events']! as List<Event>;
       _failures = (newsData['failures']! as List<Failure>)..addAll(eventData['failures']! as List<Failure>);
+      _parsedNewsWidgets = parseUpdateToWidgets();
     });
 
     debugPrint('Feed aktualisiert.');
+  }
+
+  /// Parse the updated news data into widgets and mix them with events if needed
+  List<Widget> parseUpdateToWidgets() {
+    setState(() => _newsWidgetOpacity = 1);
+
+    return _feedUtils.fromEntitiesToWidgetList(
+      news: _rubnews,
+      events: _events,
+      mixInto: Provider.of<SettingsHandler>(context, listen: false).currentSettings.feedFilter.contains('Events') ||
+          Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore,
+    );
   }
 
   void saveChangedFilters(List<String> newFilters) {
@@ -140,15 +157,15 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                 color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                 strokeWidth: 3,
                 onRefresh: updateStateWithFeed,
-                child: ListView(
+                child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   controller: _scrollController,
                   physics: const BouncingScrollPhysics(),
-                  children: _feedUtils.fromEntitiesToWidgetList(
-                    news: _rubnews,
-                    events: _events,
-                    mixInto: Provider.of<SettingsHandler>(context).currentSettings.feedFilter.contains('Events') ||
-                        Provider.of<SettingsHandler>(context).currentSettings.newsExplore,
+                  itemCount: _parsedNewsWidgets.length,
+                  itemBuilder: (context, index) => AnimatedOpacity(
+                    opacity: _newsWidgetOpacity,
+                    duration: Duration(milliseconds: 100 + (index * 200)),
+                    child: _parsedNewsWidgets[index],
                   ),
                 ),
               ),
