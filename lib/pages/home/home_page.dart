@@ -65,11 +65,10 @@ class HomePageState extends State<HomePage> {
       final List<PageItem> pages = navigatorKeys.keys.toList();
       final int indexNewPage = pages.indexWhere((element) => element == selectedPageItem);
 
-      // Switch to the clicked page
-      _pageController.jumpToPage(indexNewPage);
+      // Switch to the selected page
       await _pageController.animateToPage(
         indexNewPage,
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
       );
     }
@@ -167,13 +166,6 @@ class HomePageState extends State<HomePage> {
                   child: _buildNavigator(navigatorKeys.keys.toList()[index]),
                 );
               },
-              /* children: [
-                _buildNavigator(PageItem.feed),
-                _buildNavigator(PageItem.events),
-                _buildNavigator(PageItem.mensa),
-                _buildNavigator(PageItem.guide),
-                _buildNavigator(PageItem.more),
-              ], */
             ),
           ),
         ),
