@@ -56,7 +56,7 @@ class MealInfoButton extends StatelessWidget {
         iconColor = const Color.fromARGB(255, 94, 187, 76);
         break;
       case 'W':
-        iconPath = 'assets/img/icons/mensa-wild.png';
+        iconPath = 'assets/img/icons/mensa-venison.png';
         iconColor = const Color.fromARGB(255, 99, 56, 16);
         break;
       default:
