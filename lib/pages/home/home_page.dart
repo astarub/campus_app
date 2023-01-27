@@ -90,7 +90,10 @@ class HomePageState extends State<HomePage> {
 
   /// Switches to another page when selected in the nav-menu on phones
   Future<bool> selectedPage(PageItem selectedPageItem) async {
-    if (selectedPageItem != currentPage) {
+    if (selectedPageItem == currentPage) return true;
+
+    // Phone Layout
+    if (MediaQuery.of(context).size.shortestSide < 600) {
       // Get all pages as list and find the corresponding element
       final List<PageItem> pages = navigatorKeys.keys.toList();
       final int indexNewPage = pages.indexWhere((element) => element == selectedPageItem);
@@ -101,14 +104,9 @@ class HomePageState extends State<HomePage> {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
       );
-    }
 
-    return true;
-  }
-
-  /// Switches to another page when selected in the nav-menu on tablets
-  Future<bool> selectedPageTablet(PageItem selectedPageItem) async {
-    if (selectedPageItem != currentPage) {
+    // Tablet Layout
+    } else {
       // Reset the exit animation of the new page to make the content visible again
       exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
       // Start the exit animation of the old page
