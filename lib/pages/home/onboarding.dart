@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/pages/home/widgets/animated_onboarding_entry.dart';
 
 class OnboardingPage extends StatelessWidget {
   final GlobalKey<HomePageState> homePageKey;
@@ -33,26 +34,58 @@ class OnboardingPage extends StatelessWidget {
           SafeArea(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 80),
-                  child: Image.asset('assets/img/SplashScreen-logo.png', height: 300),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50, bottom: 10),
-                  child: Text(
-                    'Campus App',
-                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                AnimatedOnboardingLogo(
+                  offsetDuration: const Duration(milliseconds: 600),
+                  logo: Container(
+                    height: 300,
+                    width: 300,
+                    margin: const EdgeInsets.only(top: 80, bottom: 50),
+                    child: Image.asset('assets/img/SplashScreen-logo.png', height: 300),
                   ),
                 ),
-                Text(
-                  'Präsentiert von deinem AStA',
-                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
-                )
+                AnimatedOnboardingEntry(
+                  offsetDuration: const Duration(milliseconds: 2000),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      'Campus App',
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                    ),
+                  ),
+                ),
+                AnimatedOnboardingEntry(
+                  offsetDuration: const Duration(milliseconds: 2000),
+                  interval: const Interval(0.08, 1.0, curve: Curves.easeOutCubic),
+                  child: Text(
+                    'Präsentiert von deinem AStA',
+                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
+                  ),
+                ),
               ],
             ),
           ),
           // Choose study area
-          Center(child: Text('tbd')),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 50, bottom: 10),
+                    child: Text(
+                      'Studiengang',
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                    ),
+                  ),
+                  Text(
+                    'Wähle deinen aktuellen Studiengang, um bspw. für dich passende Events anzuzeigen.',
+                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+            ),
+          ),
           // Accept or decline use of Firebase
           Center(child: Text('tbd')),
           // Choose theme
