@@ -6,8 +6,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/pages/home/widgets/animated_onboarding_entry.dart';
+import 'package:campus_app/pages/home/widgets/study_selection.dart';
+import 'package:campus_app/utils/onboarding_data.dart';
+import 'package:campus_app/utils/widgets/campus_button.dart';
+import 'package:campus_app/utils/widgets/campus_text_button.dart';
 
-class OnboardingPage extends StatelessWidget {
+class OnboardingPage extends StatefulWidget {
   final GlobalKey<HomePageState> homePageKey;
 
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -19,11 +23,26 @@ class OnboardingPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<OnboardingPage> createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
+  late StudySelection studySelection;
+  List<String> selectedStudies = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    studySelection = StudySelection(selectedStudies: selectedStudies);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: OnboardingSlider(
-        donePage: HomePage(key: homePageKey, mainNavigatorKey: mainNavigatorKey),
+        donePage: HomePage(key: widget.homePageKey, mainNavigatorKey: widget.mainNavigatorKey),
         doneButtonText: 'Abschließen',
         nextButtonIcon: SvgPicture.asset(
           'assets/img/icons/arrow-right.svg',
@@ -55,7 +74,7 @@ class OnboardingPage extends StatelessWidget {
                 ),
                 AnimatedOnboardingEntry(
                   offsetDuration: const Duration(milliseconds: 2000),
-                  interval: const Interval(0.08, 1.0, curve: Curves.easeOutCubic),
+                  interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                   child: Text(
                     'Präsentiert von deinem AStA',
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
@@ -67,27 +86,115 @@ class OnboardingPage extends StatelessWidget {
           // Choose study area
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50, bottom: 10),
-                    child: Text(
-                      'Studiengang',
-                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                  AnimatedOnboardingEntry(
+                    offsetDuration: const Duration(milliseconds: 500),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50, bottom: 10),
+                      child: Text(
+                        'Studiengang',
+                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                      ),
                     ),
                   ),
-                  Text(
-                    'Wähle deinen aktuellen Studiengang, um bspw. für dich passende Events anzuzeigen.',
-                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
-                  )
+                  AnimatedOnboardingEntry(
+                    offsetDuration: const Duration(milliseconds: 500),
+                    interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                    child: Text(
+                      'Wähle deinen aktuellen Studiengang, um bspw. für dich passende Events anzuzeigen.',
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: AnimatedOnboardingEntry(
+                      offsetDuration: const Duration(milliseconds: 500),
+                      interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 50),
+                        child: studySelection,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
           // Accept or decline use of Firebase
-          Center(child: Text('tbd')),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
+              child: Column(
+                children: [
+                  AnimatedOnboardingEntry(
+                    offsetDuration: const Duration(milliseconds: 500),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50, bottom: 10),
+                      child: Text(
+                        'Datenschutz',
+                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                      ),
+                    ),
+                  ),
+                  AnimatedOnboardingEntry(
+                    offsetDuration: const Duration(milliseconds: 500),
+                    interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                    child: Text(
+                      firebaseDescription,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  AnimatedOnboardingEntry(
+                    offsetDuration: const Duration(milliseconds: 500),
+                    interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 40, bottom: 20),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Push-Benachrichtigungen aktivieren',
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Expanded(
+                    child: AnimatedOnboardingEntry(
+                      offsetDuration: Duration(milliseconds: 500),
+                      interval: Interval(0.24, 1, curve: Curves.easeOutCubic),
+                      child: SingleChildScrollView(
+                        child: Text(privacyText, textAlign: TextAlign.justify),
+                      ),
+                    ),
+                  ),
+                  // No button
+                  AnimatedOnboardingEntry(
+                    offsetDuration: const Duration(milliseconds: 500),
+                    interval: const Interval(0.32, 1, curve: Curves.easeOutCubic),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: CampusTextButton(
+                        buttonText: 'Nein, möchte ich nicht.',
+                        onTap: () {},
+                      ),
+                    ),
+                  ),
+                  // Yes button
+                  AnimatedOnboardingEntry(
+                    offsetDuration: const Duration(milliseconds: 500),
+                    interval: const Interval(0.40, 1, curve: Curves.easeOutCubic),
+                    child: CampusButton(
+                      text: 'Ja, kein Problem',
+                      onTap: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           // Choose theme
           Center(child: Text('tbd')),
           // Done
