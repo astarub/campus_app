@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:flutter_onboarding/flutter_onboarding.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/pages/home/widgets/animated_onboarding_entry.dart';
 import 'package:campus_app/pages/home/widgets/study_selection.dart';
 import 'package:campus_app/utils/onboarding_data.dart';
@@ -27,8 +29,27 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
+  final GlobalKey<OnboardingSliderState> onboardingSliderKey = GlobalKey();
+  final GlobalKey<HomePageState> homeKey = GlobalKey();
+
   late StudySelection studySelection;
+
+  // Selected options during onboarding
   List<String> selectedStudies = [];
+  bool firebaseAccepted = true;
+
+  void saveSelections() {
+    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
+          studyCourses: selectedStudies,
+          useFirebase: firebaseAccepted ? FirebaseStatus.permitted : FirebaseStatus.forbidden,
+        );
+
+    if (firebaseAccepted) initializeFirebase();
+
+    debugPrint('Onboarding completed. Selected study-courses: ${newSettings.studyCourses}');
+
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
 
   @override
   void initState() {
@@ -42,7 +63,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: OnboardingSlider(
-        donePage: HomePage(key: widget.homePageKey, mainNavigatorKey: widget.mainNavigatorKey),
+        key: onboardingSliderKey,
+        donePage: HomePage(key: homeKey, mainNavigatorKey: widget.mainNavigatorKey),
+        onDone: saveSelections,
         doneButtonText: 'Abschließen',
         nextButtonIcon: SvgPicture.asset(
           'assets/img/icons/arrow-right.svg',
@@ -178,7 +201,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       padding: const EdgeInsets.only(bottom: 16),
                       child: CampusTextButton(
                         buttonText: 'Nein, möchte ich nicht.',
-                        onTap: () {},
+                        onTap: () {
+                          firebaseAccepted = false;
+                          onboardingSliderKey.currentState?.nextPage();
+                        },
                       ),
                     ),
                   ),
@@ -188,7 +214,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     interval: const Interval(0.40, 1, curve: Curves.easeOutCubic),
                     child: CampusButton(
                       text: 'Ja, kein Problem',
-                      onTap: () {},
+                      onTap: () {
+                        firebaseAccepted = true;
+                        onboardingSliderKey.currentState?.nextPage();
+                      },
                     ),
                   ),
                 ],

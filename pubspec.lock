@@ -435,8 +435,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "59a3198"
-      resolved-ref: "59a3198fcb43a8ac6cfc2f4b322e9b76913140df"
+      ref: "42cfe48"
+      resolved-ref: "42cfe484e0c309bebf9f41938830ff4e61b6ee07"
       url: "https://github.com/C4s4r/flutter_onboarding"
     source: git
     version: "1.0.0"
