@@ -66,12 +66,22 @@ Future<void> handleInitialUri() async {
     if (uri == null) return;
     // Distinguish between news and potentially other categories
     switch (uri.pathSegments[0]) {
+      case 'termine': {
+        if (homeKey.currentState == null) return;
+        // Navigate to the calendar page
+        await homeKey.currentState!.selectedPage(PageItem.events);
+        break;
+      }
       case 'termin': {
         // Fetch all events from the AStA event calendar
         final eventData = await calendarUsecases.updateEventsAndFailures();
         final events = eventData['events']! as List<Event>;
 
-        // Get the event object by the specified event id
+        if (homeKey.currentState == null) return;
+        // Navigate to the calendar page
+        await homeKey.currentState!.selectedPage(PageItem.events);
+
+        // Get the event object by the specified url if a specific event is passed as an argument. Otherwise only the events page will be displayed.
         Event event;
         try {
           event = events.firstWhere((element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/');
@@ -79,9 +89,6 @@ Future<void> handleInitialUri() async {
           return;
         }
 
-        if (homeKey.currentState == null) return;
-        // Navigate to the calendar page
-        await homeKey.currentState!.selectedPage(PageItem.events);
         // Push the CalendarDetailPage onto the navigator of the current page
         await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
             .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
@@ -102,12 +109,18 @@ void handleIncomingLink() {
     if (uri == null) return;
     // Distinguish between news and potentially other categories
     switch (uri.pathSegments[0]) {
+      case 'termine': {
+        if (homeKey.currentState == null) return;
+        // Navigate to the calendar page
+        await homeKey.currentState!.selectedPage(PageItem.events);
+        break;
+      }
       case 'termin': {
         // Fetch all events from the AStA event calendar
         final eventData = await calendarUsecases.updateEventsAndFailures();
         final events = eventData['events']! as List<Event>;
 
-        // Get the event object by the speciefied url
+        // Get the event object by the specified url if a specific event is passed as an argument. Otherwise only the events page will be displayed.
         Event event;
         try {
           event = events.firstWhere((element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/');
@@ -118,9 +131,10 @@ void handleIncomingLink() {
         if (homeKey.currentState == null) return;
         // Navigate to the calendar page
         await homeKey.currentState!.selectedPage(PageItem.events);
+
         // Push the CalendarDetailPage onto the navigator of the current page
         await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
-            .pushReplacement(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
+            .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
 
         break;
       }
