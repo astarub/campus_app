@@ -130,6 +130,8 @@ flutter:
      - assets/img/icons/rub-link.png
      - assets/img/icons/siren.svg
      - assets/img/icons/message-square.svg
+     - assets/img/icons/discord-filled.svg
+     - assets/img/icons/github.svg
 
   fonts:
     - family: SF-Pro

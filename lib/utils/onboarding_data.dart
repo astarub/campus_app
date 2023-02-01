@@ -121,3 +121,11 @@ gewährleistet ist und es sein kann, dass amerikanische Behörden auf diese Date
 Weitere Informationen findet ihr in unserer Datenschutzerklärung.
 Diese Einwilligung kann jederzeit unter „Einstellungen“ widerrufen werden.
 ''';
+
+const String feedbackDescription = '''
+Gestalte deine Campus App mit, ob durch
+Feedback & Vorschläge, oder gar durch aktive Mitarbeit in der Entwicklung.
+
+Folgende Kanäle stehen dir zur Verfügung,
+um uns zu erreichen:
+''';

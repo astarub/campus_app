@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_onboarding/flutter_onboarding.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
@@ -12,6 +13,7 @@ import 'package:campus_app/pages/home/widgets/study_selection.dart';
 import 'package:campus_app/utils/onboarding_data.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_text_button.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 
 class OnboardingPage extends StatefulWidget {
   final GlobalKey<HomePageState> homePageKey;
@@ -49,6 +51,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
     debugPrint('Onboarding completed. Selected study-courses: ${newSettings.studyCourses}');
 
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
+
+  void openLink(BuildContext context, String url) {
+    debugPrint('Opening external ressource: $url');
+
+    // Open in external browser
+    launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   @override
@@ -126,7 +138,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     offsetDuration: const Duration(milliseconds: 500),
                     interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                     child: Text(
-                      'Wähle deinen aktuellen Studiengang, um bspw. für dich passende Events anzuzeigen.',
+                      'Wähle deinen aktuellen Studiengang, um für dich passende Events und News anzuzeigen.',
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
@@ -225,7 +237,67 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
           ),
           // Choose theme
-          Center(child: Text('tbd')),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
+            ),
+          ),
+          // Feedback
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
+              child: Column(
+                children: [
+                  AnimatedOnboardingEntry(
+                    offsetDuration: const Duration(milliseconds: 500),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50, bottom: 10),
+                      child: Text(
+                        'Feedback',
+                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                      ),
+                    ),
+                  ),
+                  AnimatedOnboardingEntry(
+                    offsetDuration: const Duration(milliseconds: 500),
+                    interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                    child: Text(
+                      feedbackDescription,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  AnimatedOnboardingEntry(
+                    offsetDuration: const Duration(milliseconds: 500),
+                    interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CampusIconButton(
+                            iconPath: 'assets/img/icons/github.svg',
+                            onTap: () => openLink(context, 'https://github.com/astarub/campus_app/discussions'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: CampusIconButton(
+                              iconPath: 'assets/img/icons/discord-filled.svg',
+                              onTap: () => openLink(context, 'https://discord.gg/BYdg3pXjab'),
+                            ),
+                          ),
+                          CampusIconButton(
+                            iconPath: 'assets/img/icons/mail.svg',
+                            onTap: () => openLink(context, 'mailto:dev@asta-bochum.de'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           // Done
           Center(child: Text('tbd')),
         ],
