@@ -123,8 +123,11 @@ Diese Einwilligung kann jederzeit unter „Einstellungen“ widerrufen werden.
 ''';
 
 const String feedbackDescription = '''
-Gestalte deine Campus App mit, ob durch
-Feedback & Vorschläge, oder gar durch aktive Mitarbeit in der Entwicklung.
+Du hast eine Idee, wie wir etwas besser machen können?
+Dir fehlt etwas in der App? Dann schreib uns einfach!
+
+Gestalte deine Campus App mit, ob durch Feedback,
+Vorschläge, oder gar durch aktive Mitarbeit in der Entwicklung.
 
 Folgende Kanäle stehen dir zur Verfügung,
 um uns zu erreichen:

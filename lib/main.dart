@@ -255,7 +255,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     // Add observer in order to listen to `didChangeAppLifecycleState`
     WidgetsBinding.instance.addObserver(this);
 
-    _debugDeleteSettings();
+    //_debugDeleteSettings();
 
     // load saved settings
     loadingTimer.start();

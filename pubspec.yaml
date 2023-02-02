@@ -86,6 +86,7 @@ flutter_icons:
 flutter:
   assets:
      - assets/img/SplashScreen-logo.png
+     - assets/img/SplashScreen-AStA-branding.png
      - assets/img/asta_logo.png
      - assets/img/henkelmann.png
      - assets/img/mensa.png
