@@ -132,7 +132,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
               // Start the app
               FlutterNativeSplash.remove();
 
-              //checkFirebasePermission();
+              checkFirebasePermission();
             }
           });
         } else {
@@ -151,14 +151,10 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           loadingTimer.stop();
           debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
 
-          // Start the app
+          // Start the app and show the onboarding experience
           FlutterNativeSplash.remove();
-
-          //checkFirebasePermission();
-          Navigator.of(mainNavigatorKey.currentState!.context).push(
-            MaterialPageRoute(
-                builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey)),
-          );
+          Navigator.of(mainNavigatorKey.currentState!.context).push(MaterialPageRoute(
+              builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey)));
         }
       });
     });
