@@ -262,12 +262,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             ),
                           ),
                         ),
-                        const Expanded(
+                        Expanded(
                           child: AnimatedOnboardingEntry(
-                            offsetDuration: Duration(milliseconds: 500),
-                            interval: Interval(0.24, 1, curve: Curves.easeOutCubic),
+                            offsetDuration: const Duration(milliseconds: 500),
+                            interval: const Interval(0.24, 1, curve: Curves.easeOutCubic),
                             child: SingleChildScrollView(
-                              child: Text(privacyText, textAlign: TextAlign.justify),
+                              child: Text(
+                                privacyText,
+                                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                                textAlign: TextAlign.justify,
+                              ),
                             ),
                           ),
                         ),
