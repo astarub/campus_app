@@ -276,7 +276,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.32, 1, curve: Curves.easeOutCubic),
                           child: Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
+                            padding: const EdgeInsets.only(top: 30, bottom: 16),
                             child: CampusTextButton(
                               buttonText: 'Nein, möchte ich nicht.',
                               onTap: () {
