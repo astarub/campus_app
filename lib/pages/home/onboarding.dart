@@ -123,308 +123,314 @@ class _OnboardingPageState extends State<OnboardingPage> {
               : darkTabletSystemUiStyle,
       child: Scaffold(
         backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-        body: OnboardingSlider(
-          key: onboardingSliderKey,
-          donePage: HomePage(key: homeKey, mainNavigatorKey: widget.mainNavigatorKey),
-          onDone: saveSelections,
-          doneButtonText: 'Abschließen',
-          buttonTextStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
-          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-          buttonColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-              ? Colors.black
-              : const Color.fromRGBO(34, 40, 54, 1),
-          pageIndicatorColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-              ? Colors.black
-              : const Color.fromRGBO(184, 186, 191, 1),
-          inactivePageIndicatorColor:
-              Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                  ? const Color.fromARGB(255, 228, 228, 228)
+        body: Center(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.shortestSide >= 600 ? 550 : null,
+            child: OnboardingSlider(
+              key: onboardingSliderKey,
+              donePage: HomePage(key: homeKey, mainNavigatorKey: widget.mainNavigatorKey),
+              onDone: saveSelections,
+              doneButtonText: 'Abschließen',
+              buttonTextStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
+              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+              buttonColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? Colors.black
                   : const Color.fromRGBO(34, 40, 54, 1),
-          nextButtonIcon: SvgPicture.asset(
-            'assets/img/icons/arrow-right.svg',
-            color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                ? Colors.white
-                : const Color.fromRGBO(184, 186, 191, 1),
-          ),
-          items: [
-            // Welcome screen with logo
-            SafeArea(
-              child: Column(
-                children: [
-                  AnimatedOnboardingLogo(
-                    offsetDuration: const Duration(milliseconds: 600),
-                    logo: Container(
-                      height: 300,
-                      width: 300,
-                      margin: const EdgeInsets.only(top: 80, bottom: 50),
-                      child: Image.asset('assets/img/SplashScreen-logo.png', height: 300),
-                    ),
-                  ),
-                  AnimatedOnboardingEntry(
-                    offsetDuration: const Duration(milliseconds: 2000),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        'Campus App',
-                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
-                      ),
-                    ),
-                  ),
-                  AnimatedOnboardingEntry(
-                    offsetDuration: const Duration(milliseconds: 2000),
-                    interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
-                    child: Text(
-                      'Präsentiert von deinem AStA',
-                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
-                    ),
-                  ),
-                ],
+              pageIndicatorColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? Colors.black
+                  : const Color.fromRGBO(184, 186, 191, 1),
+              inactivePageIndicatorColor:
+                  Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromARGB(255, 228, 228, 228)
+                      : const Color.fromRGBO(34, 40, 54, 1),
+              nextButtonIcon: SvgPicture.asset(
+                'assets/img/icons/arrow-right.svg',
+                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                    ? Colors.white
+                    : const Color.fromRGBO(184, 186, 191, 1),
               ),
-            ),
-            // Choose study area
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
-                child: Column(
-                  children: [
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 50, bottom: 10),
-                        child: Text(
-                          'Studiengang',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+              items: [
+                // Welcome screen with logo
+                SafeArea(
+                  child: Column(
+                    children: [
+                      AnimatedOnboardingLogo(
+                        offsetDuration: const Duration(milliseconds: 600),
+                        logo: Container(
+                          height: 300,
+                          width: 300,
+                          margin: const EdgeInsets.only(top: 80, bottom: 50),
+                          child: Image.asset('assets/img/SplashScreen-logo.png', height: 300),
                         ),
                       ),
-                    ),
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
-                      child: Text(
-                        'Wähle deinen aktuellen Studiengang, um für dich passende Events und News anzuzeigen.',
-                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Expanded(
-                      child: AnimatedOnboardingEntry(
-                        offsetDuration: const Duration(milliseconds: 500),
-                        interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
+                      AnimatedOnboardingEntry(
+                        offsetDuration: const Duration(milliseconds: 2000),
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 50),
-                          child: studySelection,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Accept or decline use of Firebase
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
-                child: Column(
-                  children: [
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 50, bottom: 10),
-                        child: Text(
-                          'Datenschutz',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
-                        ),
-                      ),
-                    ),
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
-                      child: Text(
-                        firebaseDescription,
-                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 40, bottom: 20),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(bottom: 10),
                           child: Text(
-                            'Push-Benachrichtigungen aktivieren',
-                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                            'Campus App',
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                           ),
                         ),
                       ),
-                    ),
-                    const Expanded(
-                      child: AnimatedOnboardingEntry(
-                        offsetDuration: Duration(milliseconds: 500),
-                        interval: Interval(0.24, 1, curve: Curves.easeOutCubic),
-                        child: SingleChildScrollView(
-                          child: Text(privacyText, textAlign: TextAlign.justify),
-                        ),
-                      ),
-                    ),
-                    // No button
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      interval: const Interval(0.32, 1, curve: Curves.easeOutCubic),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: CampusTextButton(
-                          buttonText: 'Nein, möchte ich nicht.',
-                          onTap: () {
-                            firebaseAccepted = false;
-                            onboardingSliderKey.currentState?.nextPage();
-                          },
-                        ),
-                      ),
-                    ),
-                    // Yes button
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      interval: const Interval(0.40, 1, curve: Curves.easeOutCubic),
-                      child: CampusButton(
-                        text: 'Ja, kein Problem',
-                        onTap: () {
-                          firebaseAccepted = true;
-                          onboardingSliderKey.currentState?.nextPage();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Choose theme
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
-                child: Column(
-                  children: [
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 100, bottom: 80),
-                        child: ThemeSelection(key: themeSelectionKey),
-                      ),
-                    ),
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
+                      AnimatedOnboardingEntry(
+                        offsetDuration: const Duration(milliseconds: 2000),
+                        interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                         child: Text(
-                          'Theme',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                          'Präsentiert von deinem AStA',
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
                         ),
                       ),
-                    ),
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
-                      child: Text(
-                        'Kontrastreich oder unauffällig. Tag oder Nacht.\nWähle dein Design.',
-                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    // Toggle
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      interval: const Interval(0.24, 1, curve: Curves.easeOutCubic),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 80),
-                        child: CampusSegmentedTripleControl(
-                          leftTitle: 'System',
-                          centerTitle: 'Hell',
-                          rightTitle: 'Dunkel',
-                          onChanged: changeTheme,
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ),
-            // Feedback
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
-                child: Column(
-                  children: [
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 50, bottom: 10),
-                        child: Text(
-                          'Feedback',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
-                        ),
-                      ),
-                    ),
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
-                      child: Text(
-                        feedbackDescription,
-                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    AnimatedOnboardingEntry(
-                      offsetDuration: const Duration(milliseconds: 500),
-                      interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 50),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CampusIconButton(
-                              iconPath: 'assets/img/icons/github.svg',
-                              onTap: () => openLink(context, 'https://github.com/astarub/campus_app/discussions'),
+                // Choose study area
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
+                    child: Column(
+                      children: [
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 50, bottom: 10),
+                            child: Text(
+                              'Studiengang',
+                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 30),
-                              child: CampusIconButton(
-                                iconPath: 'assets/img/icons/discord-filled.svg',
-                                onTap: () => openLink(context, 'https://discord.gg/BYdg3pXjab'),
+                          ),
+                        ),
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                          child: Text(
+                            'Wähle deinen aktuellen Studiengang, um für dich passende Events und News anzuzeigen.',
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Expanded(
+                          child: AnimatedOnboardingEntry(
+                            offsetDuration: const Duration(milliseconds: 500),
+                            interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 50),
+                              child: studySelection,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Accept or decline use of Firebase
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
+                    child: Column(
+                      children: [
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 50, bottom: 10),
+                            child: Text(
+                              'Datenschutz',
+                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                            ),
+                          ),
+                        ),
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                          child: Text(
+                            firebaseDescription,
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 40, bottom: 20),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Push-Benachrichtigungen aktivieren',
+                                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                               ),
                             ),
-                            CampusIconButton(
-                              iconPath: 'assets/img/icons/mail.svg',
-                              onTap: () => openLink(context, 'mailto:dev@asta-bochum.de'),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: AnimatedOnboardingEntry(
-                          offsetDuration: const Duration(milliseconds: 500),
-                          interval: const Interval(0.24, 1, curve: Curves.easeOutCubic),
-                          child: SizedBox(
-                            height: 80,
-                            child: Image.asset(
-                              'assets/img/SplashScreen-AStA-branding.png',
-                              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark
-                                  ? const Color.fromRGBO(37, 49, 71, 1)
-                                  : null,
+                        const Expanded(
+                          child: AnimatedOnboardingEntry(
+                            offsetDuration: Duration(milliseconds: 500),
+                            interval: Interval(0.24, 1, curve: Curves.easeOutCubic),
+                            child: SingleChildScrollView(
+                              child: Text(privacyText, textAlign: TextAlign.justify),
                             ),
                           ),
                         ),
-                      ),
+                        // No button
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.32, 1, curve: Curves.easeOutCubic),
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: CampusTextButton(
+                              buttonText: 'Nein, möchte ich nicht.',
+                              onTap: () {
+                                firebaseAccepted = false;
+                                onboardingSliderKey.currentState?.nextPage();
+                              },
+                            ),
+                          ),
+                        ),
+                        // Yes button
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.40, 1, curve: Curves.easeOutCubic),
+                          child: CampusButton(
+                            text: 'Ja, kein Problem',
+                            onTap: () {
+                              firebaseAccepted = true;
+                              onboardingSliderKey.currentState?.nextPage();
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                // Choose theme
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
+                    child: Column(
+                      children: [
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 100, bottom: 80),
+                            child: ThemeSelection(key: themeSelectionKey),
+                          ),
+                        ),
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Text(
+                              'Theme',
+                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                            ),
+                          ),
+                        ),
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
+                          child: Text(
+                            'Kontrastreich oder unauffällig. Tag oder Nacht.\nWähle dein Design.',
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        // Toggle
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.24, 1, curve: Curves.easeOutCubic),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 80),
+                            child: CampusSegmentedTripleControl(
+                              leftTitle: 'System',
+                              centerTitle: 'Hell',
+                              rightTitle: 'Dunkel',
+                              onChanged: changeTheme,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Feedback
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
+                    child: Column(
+                      children: [
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 50, bottom: 10),
+                            child: Text(
+                              'Feedback',
+                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                            ),
+                          ),
+                        ),
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                          child: Text(
+                            feedbackDescription,
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 50),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CampusIconButton(
+                                  iconPath: 'assets/img/icons/github.svg',
+                                  onTap: () => openLink(context, 'https://github.com/astarub/campus_app/discussions'),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                                  child: CampusIconButton(
+                                    iconPath: 'assets/img/icons/discord-filled.svg',
+                                    onTap: () => openLink(context, 'https://discord.gg/BYdg3pXjab'),
+                                  ),
+                                ),
+                                CampusIconButton(
+                                  iconPath: 'assets/img/icons/mail.svg',
+                                  onTap: () => openLink(context, 'mailto:dev@asta-bochum.de'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: AnimatedOnboardingEntry(
+                              offsetDuration: const Duration(milliseconds: 500),
+                              interval: const Interval(0.24, 1, curve: Curves.easeOutCubic),
+                              child: SizedBox(
+                                height: 80,
+                                child: Image.asset(
+                                  'assets/img/SplashScreen-AStA-branding.png',
+                                  color:
+                                      Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark
+                                          ? const Color.fromRGBO(37, 49, 71, 1)
+                                          : null,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
