@@ -76,25 +76,6 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
   Stopwatch loadingTimer = Stopwatch();
 
-  /// Starts the app if a settings file already exists.
-  /// If not, the user starts the app for the first time, which initiates onboarding.
-  void startApp(BuildContext context) {
-    if (loadedSettings != null) {
-      // Normal app start
-      debugPrint('Initiate normal app start.');
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage(mainNavigatorKey: mainNavigatorKey)),
-      );
-    } else {
-      // Onboarding
-      debugPrint('Initiate onboarding.  -- TEMPORARY REPLACED WITH NORMAL APP START');
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-            builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey)),
-      );
-    }
-  }
-
   /// Load the saved settings and parse them to the [SettingsHandler]
   void loadSettings() {
     debugPrint('LoadSettings initalized.');
