@@ -51,6 +51,7 @@ class Settings {
   final bool useExternalBrowser;
   final bool useSystemTextScaling;
   final FirebaseStatus useFirebase;
+  final List<String> studyCourses;
 
   Settings({
     this.useSystemDarkmode = true,
@@ -62,6 +63,7 @@ class Settings {
     this.useExternalBrowser = false,
     this.useSystemTextScaling = false,
     this.useFirebase = FirebaseStatus.uncofigured,
+    this.studyCourses = const [],
   });
 
   Settings copyWith({
@@ -74,6 +76,7 @@ class Settings {
     bool? useExternalBrowser,
     bool? useSystemTextScaling,
     FirebaseStatus? useFirebase,
+    List<String>? studyCourses,
   }) =>
       Settings(
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
@@ -85,6 +88,7 @@ class Settings {
         useExternalBrowser: useExternalBrowser ?? this.useExternalBrowser,
         useSystemTextScaling: useSystemTextScaling ?? this.useSystemTextScaling,
         useFirebase: useFirebase ?? this.useFirebase,
+        studyCourses: studyCourses ?? this.studyCourses,
       );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
@@ -104,6 +108,7 @@ class Settings {
           : json['useFirebase'] == 1
               ? FirebaseStatus.forbidden
               : FirebaseStatus.uncofigured,
+      studyCourses: json['studyCourses'] != null ? List<String>.from(json['studyCourses']) : List<String>.from([]),
     );
   }
 
@@ -122,6 +127,7 @@ class Settings {
           : useFirebase == FirebaseStatus.forbidden
               ? 1
               : 0,
+      'studyCourses': studyCourses,
     };
   }
 }
