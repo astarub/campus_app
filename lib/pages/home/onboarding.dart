@@ -252,7 +252,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 40, bottom: 20),
+                            padding: const EdgeInsets.only(top: 30, bottom: 15),
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
