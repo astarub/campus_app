@@ -252,7 +252,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 40, bottom: 20),
+                            padding: const EdgeInsets.only(top: 30, bottom: 15),
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
@@ -262,12 +262,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             ),
                           ),
                         ),
-                        const Expanded(
+                        Expanded(
                           child: AnimatedOnboardingEntry(
-                            offsetDuration: Duration(milliseconds: 500),
-                            interval: Interval(0.24, 1, curve: Curves.easeOutCubic),
+                            offsetDuration: const Duration(milliseconds: 500),
+                            interval: const Interval(0.24, 1, curve: Curves.easeOutCubic),
                             child: SingleChildScrollView(
-                              child: Text(privacyText, textAlign: TextAlign.justify),
+                              child: Text(
+                                privacyText,
+                                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                                textAlign: TextAlign.justify,
+                              ),
                             ),
                           ),
                         ),
@@ -276,7 +280,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.32, 1, curve: Curves.easeOutCubic),
                           child: Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
+                            padding: const EdgeInsets.only(top: 30, bottom: 16),
                             child: CampusTextButton(
                               buttonText: 'Nein, möchte ich nicht.',
                               onTap: () {
