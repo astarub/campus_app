@@ -53,8 +53,8 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
   /// Function that call usecase and parse widgets into the corresponding
   /// lists of events, news and failures.
-  Future<void> updateStateWithFeed() async {
-    setState(() => _newsWidgetOpacity = 0);
+  Future<void> updateStateWithFeed({bool withAnimation = false}) async {
+    if (withAnimation) setState(() => _newsWidgetOpacity = 0);
 
     final newsData = await _rubnewsUsecases.updateFeedAndFailures();
     final eventData = await _calendarUsecase.updateEventsAndFailures();
@@ -86,7 +86,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
         Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(feedFilter: newFilters);
 
     debugPrint('Saving new feed filter: ${newSettings.feedFilter}');
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
   }
 
   void saveFeedExplore(int selected) {
@@ -97,7 +97,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
         Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(newsExplore: explore);
 
     debugPrint('Saving newsExplore: ${newSettings.newsExplore}');
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
   }
 
   @override
@@ -165,7 +165,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                     backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                     color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                     strokeWidth: 3,
-                    onRefresh: updateStateWithFeed,
+                    onRefresh: () => updateStateWithFeed(withAnimation: true),
                     child: ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       controller: _scrollController,
@@ -226,7 +226,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                                 onChanged: saveFeedExplore,
                                 selected:
                                     Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore ==
-                                        false
+                                            false
                                         ? 0
                                         : 1,
                               ),
