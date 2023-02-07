@@ -217,6 +217,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  cross_file:
+    dependency: transitive
+    description:
+      name: cross_file
+      sha256: "0b0036e8cccbfbe0555fd83c1d31a6f30b77a96b598b35a5d36dd41f718695e9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3+4"
   crypto:
     dependency: transitive
     description:
@@ -934,6 +942,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  share_plus:
+    dependency: "direct main"
+    description:
+      name: share_plus
+      sha256: e387077716f80609bb979cd199331033326033ecd1c8f200a90c5f57b1c9f55e
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.3.0"
+  share_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: share_plus_platform_interface
+      sha256: "82ddd4ab9260c295e6e39612d4ff00390b9a7a21f1bb1da771e2f232d80ab8a1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.0"
   shelf:
     dependency: transitive
     description:
@@ -1091,6 +1115,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  uni_links:
+    dependency: "direct main"
+    description:
+      name: uni_links
+      sha256: "051098acfc9e26a9fde03b487bef5d3d228ca8f67693480c6f33fd4fbb8e2b6e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.1"
+  uni_links_platform_interface:
+    dependency: transitive
+    description:
+      name: uni_links_platform_interface
+      sha256: "929cf1a71b59e3b7c2d8a2605a9cf7e0b125b13bc858e55083d88c62722d4507"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  uni_links_web:
+    dependency: transitive
+    description:
+      name: uni_links_web
+      sha256: "7539db908e25f67de2438e33cc1020b30ab94e66720b5677ba6763b25f6394df"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   universal_io:
     dependency: transitive
     description:
@@ -1103,10 +1151,10 @@ packages:
     dependency: "direct main"
     description:
       name: url_launcher
-      sha256: "698fa0b4392effdc73e9e184403b627362eb5fbf904483ac9defbb1c2191d809"
+      sha256: e8f2efc804810c0f2f5b485f49e7942179f56eabcfe81dce3387fec4bb55876b
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.8"
+    version: "6.1.9"
   url_launcher_android:
     dependency: transitive
     description:
@@ -1119,10 +1167,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_ios
-      sha256: bb328b24d3bccc20bdf1024a0990ac4f869d57663660de9c936fb8c043edefe3
+      sha256: "0a5af0aefdd8cf820dd739886efb1637f1f24489900204f50984634c07a54815"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.18"
+    version: "6.1.0"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -1228,5 +1276,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.19.0 <4.0.0"
+  dart: ">=2.19.0 <3.0.0"
   flutter: ">=3.3.0"

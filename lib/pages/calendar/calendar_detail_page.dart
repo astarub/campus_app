@@ -11,6 +11,7 @@ import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CalendarDetailPage extends StatefulWidget {
   final Event event;
@@ -70,6 +71,19 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                 CampusIconButton(
                   iconPath: 'assets/img/icons/arrow-left.svg',
                   onTap: () => Navigator.pop(context),
+                ),
+                CampusIconButton(
+                  iconPath: 'assets/img/icons/share.svg',
+                  onTap: () {
+                    // Required for iPad, otherwise the Ui crashes
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    Share.share(
+                      'RUB AStA Event shared via Campus App: ${widget.event.url}',
+                      subject: 'RUB AStA Event shared via Campus App',
+                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                    );
+                  },
                 ),
                 // More
                 /* CampusIconButton(
