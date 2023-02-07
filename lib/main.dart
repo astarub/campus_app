@@ -18,6 +18,7 @@ import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/pages/home/onboarding.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
@@ -75,24 +76,6 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
   Stopwatch loadingTimer = Stopwatch();
 
-  /// Starts the app if a settings file already exists.
-  /// If not, the user starts the app for the first time, which initiates onboarding.
-  void startApp(BuildContext context) {
-    if (loadedSettings != null) {
-      // Normal app start
-      debugPrint('Initiate normal app start.');
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage(mainNavigatorKey: mainNavigatorKey)),
-      );
-    } else {
-      // Onboarding
-      debugPrint('Initiate onboarding.  -- TEMPORARY REPLACED WITH NORMAL APP START');
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage(mainNavigatorKey: mainNavigatorKey)),
-      );
-    }
-  }
-
   /// Load the saved settings and parse them to the [SettingsHandler]
   void loadSettings() {
     debugPrint('LoadSettings initalized.');
@@ -149,10 +132,10 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           loadingTimer.stop();
           debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
 
-          // Start the app
+          // Start the app and show the onboarding experience
           FlutterNativeSplash.remove();
-
-          checkFirebasePermission();
+          Navigator.of(mainNavigatorKey.currentState!.context).push(MaterialPageRoute(
+              builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey)));
         }
       });
     });

@@ -43,6 +43,10 @@ dependencies:
   flutter_local_notifications: ^12.0.3
   share_plus: ^6.3.0
   uni_links: ^0.5.1
+  flutter_onboarding:
+    git:
+      url: https://github.com/C4s4r/flutter_onboarding
+      ref: 42cfe48
   
 dev_dependencies:
   flutter_test:
@@ -83,6 +87,8 @@ flutter_icons:
 
 flutter:
   assets:
+     - assets/img/SplashScreen-logo.png
+     - assets/img/SplashScreen-AStA-branding.png
      - assets/img/asta_logo.png
      - assets/img/henkelmann.png
      - assets/img/mensa.png
@@ -107,6 +113,7 @@ flutter:
      - assets/img/icons/search.svg
      - assets/img/icons/filter.svg
      - assets/img/icons/arrow-left.svg
+     - assets/img/icons/arrow-right.svg
      - assets/img/icons/info-message.svg
      - assets/img/icons/x.svg
      - assets/img/icons/mensa-alcohol.png
@@ -118,6 +125,7 @@ flutter:
      - assets/img/icons/mensa-pork.png
      - assets/img/icons/mensa-vegan.png
      - assets/img/icons/mensa-vegetarian.png
+     - assets/img/icons/mensa-venison.png
      - assets/img/icons/chevron-right.svg
      - assets/img/icons/external-link.svg
      - assets/img/icons/mail-link.png
@@ -127,6 +135,8 @@ flutter:
      - assets/img/icons/siren.svg
      - assets/img/icons/message-square.svg
      - assets/img/icons/share.svg
+     - assets/img/icons/discord-filled.svg
+     - assets/img/icons/github.svg
 
   fonts:
     - family: SF-Pro

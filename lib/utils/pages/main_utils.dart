@@ -366,7 +366,7 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
         await homeKey.currentState!.selectedPage(PageItem.events);
         // Push the CalendarDetailPage onto the navigator of the current page
         await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
-            .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
+            .pushReplacement(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
 
         break;
       }

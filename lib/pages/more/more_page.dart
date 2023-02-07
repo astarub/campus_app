@@ -12,7 +12,7 @@ import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/pages/more/static_info_page.dart';
 import 'package:campus_app/pages/more/settings_page.dart';
 
-class MorePage extends StatelessWidget {
+class MorePage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
@@ -26,6 +26,11 @@ class MorePage extends StatelessWidget {
 
   static const String privacy = 'Tbd.';
 
+  @override
+  State<MorePage> createState() => _MorePageState();
+}
+
+class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<MorePage> {
   void openLink(BuildContext context, String url) {
     debugPrint('Opening external ressource: $url');
 
@@ -54,9 +59,9 @@ class MorePage extends StatelessWidget {
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
         child: AnimatedExit(
-          key: pageExitAnimationKey,
+          key: widget.pageExitAnimationKey,
           child: AnimatedEntry(
-            key: pageEntryAnimationKey,
+            key: widget.pageEntryAnimationKey,
             child: Column(
               children: [
                 // Header
@@ -239,4 +244,8 @@ class MorePage extends StatelessWidget {
       ),
     );
   }
+
+  // Keep state alive
+  @override
+  bool get wantKeepAlive => true;
 }
