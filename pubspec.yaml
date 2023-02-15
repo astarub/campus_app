@@ -46,7 +46,7 @@ dependencies:
   flutter_onboarding:
     git:
       url: https://github.com/C4s4r/flutter_onboarding
-      ref: 42cfe48
+      ref: 9d74464
   
 dev_dependencies:
   flutter_test:
