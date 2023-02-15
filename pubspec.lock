@@ -487,8 +487,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "42cfe48"
-      resolved-ref: "42cfe484e0c309bebf9f41938830ff4e61b6ee07"
+      ref: "9d74464"
+      resolved-ref: "9d74464318db64177e88f44a279fc88b9b542018"
       url: "https://github.com/C4s4r/flutter_onboarding"
     source: git
     version: "1.0.0"
@@ -1276,5 +1276,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.19.0 <3.0.0"
+  dart: ">=2.19.0 <4.0.0"
   flutter: ">=3.3.0"
