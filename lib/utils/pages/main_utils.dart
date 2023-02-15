@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:campus_app/main.dart';
 import 'package:campus_app/core/exceptions.dart';
@@ -17,9 +18,8 @@ import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_usecases.dart';
-import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_details_page.dart';
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 
 enum FGBGType { foreground, background }
 
@@ -191,7 +191,9 @@ Future<void> initializeFirebase() async {
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
     onDidReceiveNotificationResponse: (NotificationResponse response) async {
+
       if (response.payload == null) return;
+      if (homeKey.currentState == null) return;
 
       final String payload = response.payload!;
 
@@ -235,7 +237,6 @@ Future<void> initializeFirebase() async {
               return;
             }
 
-            if (homeKey.currentState == null) return;
             // Change page
             await homeKey.currentState!.selectedPage(PageItem.events);
             // Push the CalendarDetailPage onto the navigator of the current page
@@ -246,27 +247,51 @@ Future<void> initializeFirebase() async {
           }
         case 'mensa':
           {
-            if (homeKey.currentState == null) return;
-
             await homeKey.currentState!.selectedPage(PageItem.mensa);
 
             break;
           }
         case 'guide':
           {
-            if (homeKey.currentState == null) return;
-
             await homeKey.currentState!.selectedPage(PageItem.guide);
 
             break;
           }
         case 'more':
           {
-            if (homeKey.currentState == null) return;
 
             await homeKey.currentState!.selectedPage(PageItem.more);
 
             break;
+          }
+        case 'link':
+          {
+            // Checks if a notification payload is present
+            if (interaction['data'] == null) return;
+
+            final List<dynamic> interactionData = interaction['data'];
+
+            if (interactionData[0] == null) return;
+
+            final String url = interactionData[0];
+
+            // Decides whether the link should be opened in the app or in an external browser
+            if (Provider.of<SettingsHandler>(homeKey.currentState!.context, listen: false).currentSettings.useExternalBrowser ||
+                url.contains('instagram') ||
+                url.contains('facebook') ||
+                url.contains('twitch') ||
+                url.contains('mailto:') ||
+                url.contains('tel:')) {
+              // Open in external browser
+              await launchUrl(
+                Uri.parse(url),
+                mode: LaunchMode.externalApplication,
+              );
+            } else {
+              // Open in InAppView
+              await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+                  .push(MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)));
+            }
           }
       }
     },
@@ -324,6 +349,9 @@ Future<void> setupFirebaseInteraction() async {
 
 /// Handles notification interactions
 void _handleFirebaseInteraction(RemoteMessage message) async {
+
+  if (homeKey.currentState == null) return;
+
   Map<String, dynamic> interaction = {};
 
   // Decode JSON payload from the message data
@@ -360,8 +388,6 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
           return;
         }
 
-        if (homeKey.currentState == null) return;
-
         // Change page
         await homeKey.currentState!.selectedPage(PageItem.events);
         // Push the CalendarDetailPage onto the navigator of the current page
@@ -372,27 +398,48 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
       }
     case 'mensa':
       {
-        if (homeKey.currentState == null) return;
-
         await homeKey.currentState!.selectedPage(PageItem.mensa);
 
         break;
       }
     case 'guide':
       {
-        if (homeKey.currentState == null) return;
-
         await homeKey.currentState!.selectedPage(PageItem.guide);
 
         break;
       }
     case 'more':
       {
-        if (homeKey.currentState == null) return;
-
         await homeKey.currentState!.selectedPage(PageItem.more);
 
         break;
+      }
+    case 'link':
+      {
+        if (interaction['data'] == null) return;
+
+        final List<dynamic> interactionData = interaction['data'];
+
+        if (interactionData[0] == null) return;
+
+        final String url = interactionData[0];
+
+        if (Provider.of<SettingsHandler>(homeKey.currentState!.context, listen: false).currentSettings.useExternalBrowser ||
+            url.contains('instagram') ||
+            url.contains('facebook') ||
+            url.contains('twitch') ||
+            url.contains('mailto:') ||
+            url.contains('tel:')) {
+          // Open in external browser
+          await launchUrl(
+            Uri.parse(url),
+            mode: LaunchMode.externalApplication,
+          );
+        } else {
+          // Open in InAppView
+          await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+              .push(MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)));
+        }
       }
   }
 }
