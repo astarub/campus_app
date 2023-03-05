@@ -88,9 +88,13 @@ class AnimatedExpandableState extends State<AnimatedExpandable> with SingleTicke
     return SizeTransition(
       //axisAlignment: 1, // looks like moving to top instead of collapsing
       sizeFactor: _animation,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: widget.children,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const ScrollPhysics(),
+        itemCount: widget.children.length,
+        itemBuilder: (context, index) {
+          return widget.children[index];
+        },
       ),
     );
   }
