@@ -79,12 +79,12 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
     final Future<Map<String, List<dynamic>>> updatedDishes = _mensaUsecases.updateDishesAndFailures();
 
     await updatedDishes.then((data) => setState(() {
-      _mensaDishes = data['mensa']! as List<DishEntity>;
-      _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
-      _qwestDishes = data['qwest']! as List<DishEntity>;
-      _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
-      _failures = data['failures']! as List<Failure>;
-    }));
+          _mensaDishes = data['mensa']! as List<DishEntity>;
+          _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
+          _qwestDishes = data['qwest']! as List<DishEntity>;
+          _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
+          _failures = data['failures']! as List<Failure>;
+        }));
 
     debugPrint('Mensa Daten aktualisiert.');
   }
@@ -92,7 +92,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
   /// This function saves the new selected preferences with the [SettingsHandler]
   void saveChangedPreferences(List<String> newPreferences) {
     final Settings newSettings =
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(mensaPreferences: newPreferences);
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(mensaPreferences: newPreferences);
 
     debugPrint('Saving new mensa preferences: ${newSettings.mensaPreferences}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
@@ -101,7 +101,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
   /// This function saves the new selected preferences with the [SettingsHandler]
   void saveChangedAllergenes(List<String> newAllergenes) {
     final Settings newSettings =
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(mensaAllergenes: newAllergenes);
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(mensaAllergenes: newAllergenes);
 
     debugPrint('Saving new mensa allergenes: ${newSettings.mensaAllergenes}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
@@ -255,7 +255,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                                           opaque: false,
                                           pageBuilder: (context, _, __) => AllergenesPopup(
                                             allergenes:
-                                            Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
+                                                Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
                                             onClose: saveChangedAllergenes,
                                           ),
                                         ));
@@ -273,31 +273,31 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                             imagePath: restaurantConfig[index - 1]['imagePath'],
                             meals: index == 1
                                 ? _mensaUtils.buildKulturCafeRestaurant(
-                              onPreferenceTap: singlePreferenceSelected,
-                              mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
-                                  .currentSettings
-                                  .mensaAllergenes,
-                              mensaPreferences: Provider.of<SettingsHandler>(context, listen: false)
-                                  .currentSettings
-                                  .mensaPreferences,
-                            )
+                                    onPreferenceTap: singlePreferenceSelected,
+                                    mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
+                                        .currentSettings
+                                        .mensaAllergenes,
+                                    mensaPreferences: Provider.of<SettingsHandler>(context, listen: false)
+                                        .currentSettings
+                                        .mensaPreferences,
+                                  )
                                 : _mensaUtils.fromDishListToMealCategoryList(
-                              entities: index == 2
-                                  ? _mensaDishes
-                                  : index == 3
-                                  ? _roteBeeteDishes
-                                  : index == 4
-                                  ? _qwestDishes
-                                  : _henkelmannDishes,
-                              day: selectedDay,
-                              onPreferenceTap: singlePreferenceSelected,
-                              mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
-                                  .currentSettings
-                                  .mensaAllergenes,
-                              mensaPreferences: Provider.of<SettingsHandler>(context, listen: false)
-                                  .currentSettings
-                                  .mensaPreferences,
-                            ),
+                                    entities: index == 2
+                                        ? _mensaDishes
+                                        : index == 3
+                                            ? _roteBeeteDishes
+                                            : index == 4
+                                                ? _qwestDishes
+                                                : _henkelmannDishes,
+                                    day: selectedDay,
+                                    onPreferenceTap: singlePreferenceSelected,
+                                    mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
+                                        .currentSettings
+                                        .mensaAllergenes,
+                                    mensaPreferences: Provider.of<SettingsHandler>(context, listen: false)
+                                        .currentSettings
+                                        .mensaPreferences,
+                                  ),
                             openingHours: restaurantConfig[index - 1]['openingHours'],
                           );
                         }
