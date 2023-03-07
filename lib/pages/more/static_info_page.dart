@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'package:campus_app/core/themes.dart';
@@ -95,6 +97,7 @@ class _StaticInfoPageState extends State<StaticInfoPage> {
                         style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                       )
                     : InAppWebView(
+                        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}..add(const Factory<VerticalDragGestureRecognizer>(VerticalDragGestureRecognizer.new)),
                         initialOptions: options,
                         initialUrlRequest: URLRequest(url: Uri.parse(widget.url!)),
                         onWebViewCreated: (controller) {
