@@ -5,9 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/guide/widgets/expandable_faq_item.dart';
-import 'package:campus_app/pages/guide/guide_content.dart';
+import 'package:campus_app/pages/guide/faq_page.dart';
+import 'package:campus_app/pages/guide/mensa_balance_page.dart';
+import 'package:campus_app/pages/more/widgets/external_link_button.dart';
+import 'package:campus_app/utils/widgets/subpage_button.dart';
 import 'package:campus_app/pages/guide/widgets/leitwarte_button.dart';
+import 'package:campus_app/pages/guide/widgets/wallet.dart';
 
 class GuidePage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -29,37 +32,6 @@ class _GuidePageState extends State<GuidePage> {
   @override
   void initState() {
     super.initState();
-
-    // Sort the Entries Alphabetically before Adding them
-
-    List<Map<String, String>> tmpList;
-    tmpList = sortListOfStringString(List.from(faqEntries), 'title');
-
-    faqExpandables.addAll(
-      tmpList.map((faqEntry) => ExpandableFaqItem(title: faqEntry['title']!, content: faqEntry['content']!)).toList(),
-    );
-  }
-
-  List<Map<String, String>> sortListOfStringString(
-    List<Map<String, String>> sortList,
-    String byPara, {
-    bool reverse = false,
-  }) {
-    if (!reverse) {
-      sortList.sort(
-        (a, b) {
-          return a[byPara]!.toLowerCase().compareTo(b[byPara]!.toLowerCase());
-        },
-      );
-    } else {
-      sortList.sort(
-        (a, b) {
-          return b[byPara]!.toLowerCase().compareTo(a[byPara]!.toLowerCase());
-        },
-      );
-    }
-
-    return sortList;
   }
 
   @override
@@ -81,33 +53,81 @@ class _GuidePageState extends State<GuidePage> {
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-                  child: Row(
+                CampusWallet(),
+                Expanded(
+                  child: ListView(
                     children: [
-                      SvgPicture.asset(
-                        'assets/img/icons/info-message.svg',
-                        height: 24,
-                        color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color,
+                      // Future features info
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40, bottom: 30, left: 20, right: 20),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              'assets/img/icons/info-message.svg',
+                              height: 24,
+                              color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color,
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 16),
+                                child: Text(
+                                  'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen wie bspw. einen interaktiven Raumfinder erweitert werden.',
+                                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                                  overflow: TextOverflow.visible,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 16),
-                          child: Text(
-                            'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen wie bspw. einen interaktiven Raumfinder erweitert werden.',
-                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                            overflow: TextOverflow.visible,
-                          ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: LeitwarteButton(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Column(
+                          children: [
+                            // AKAFÖ card balance
+                            SubPageButton(
+                              title: 'Mensa Guthaben',
+                              leadingIconPath: 'assets/img/icons/euro.svg',
+                              trailingIconPath: 'assets/img/icons/chevron-right.svg',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MensaBalancePage(),
+                                  ),
+                                );
+                              },
+                            ),
+                            // Room finder
+                            SubPageButton(
+                              title: 'Raumfinder',
+                              leadingIconPath: 'assets/img/icons/map.svg',
+                              trailingIconPath: 'assets/img/icons/chevron-right.svg',
+                              onTap: () {},
+                              disabled: true,
+                            ),
+                            // FAQ
+                            SubPageButton(
+                              title: 'FAQ',
+                              leadingIconPath: 'assets/img/icons/help-circle.svg',
+                              trailingIconPath: 'assets/img/icons/chevron-right.svg',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FaqPage(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ],
-                  ),
-                ),
-                Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 5),
-                    physics: const BouncingScrollPhysics(),
-                    children: faqExpandables,
                   ),
                 ),
               ],

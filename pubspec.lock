@@ -483,6 +483,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.16"
+  flutter_nfc_kit:
+    dependency: "direct main"
+    description:
+      name: flutter_nfc_kit
+      sha256: "47f0f5cda9343489ae729c3eedaae3b69d63564af8fe9c78496d6715f6a2e899"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.1"
   flutter_onboarding:
     dependency: "direct main"
     description:
@@ -742,6 +750,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.3.2"
+  ndef:
+    dependency: transitive
+    description:
+      name: ndef
+      sha256: e40ece11d1cac52cba2b7d0211228c1b5c278032cce3f5bf3e2eefe3762fde6b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   nested:
     dependency: transitive
     description:

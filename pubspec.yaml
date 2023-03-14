@@ -47,6 +47,7 @@ dependencies:
     git:
       url: https://github.com/C4s4r/flutter_onboarding
       ref: 9d74464
+  flutter_nfc_kit: ^3.3.1
   
 dev_dependencies:
   flutter_test:
@@ -137,6 +138,9 @@ flutter:
      - assets/img/icons/share.svg
      - assets/img/icons/discord-filled.svg
      - assets/img/icons/github.svg
+     - assets/img/icons/map.svg
+     - assets/img/icons/help-circle.svg
+     - assets/img/icons/euro.svg
 
   fonts:
     - family: SF-Pro
