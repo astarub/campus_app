@@ -1,9 +1,11 @@
 import 'dart:io' show Platform;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:ndef/ndef.dart' as ndef;
+import 'dart:typed_data';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
@@ -19,6 +21,14 @@ class MensaBalancePage extends StatefulWidget {
 class _MensaBalancePageState extends State<MensaBalancePage> {
   bool nfcAvailable = true;
 
+  double byteArrayToDouble(Uint8List b, int offset, int length) {
+    double value = 0;
+    for (int i = 0; i < length; i++) {
+      final int shift = (length - 1 - i) * 8;
+      value += (b[i + offset] & 0x000000FF) << shift;
+    }
+    return value;
+  }
   /// Initialises the NFC session and starts scanning for a tag, if NFC is activated on the device.
   void initialiseNFC() async {
     final NFCAvailability availability = await FlutterNfcKit.nfcAvailability;
@@ -27,31 +37,41 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
       setState(() => nfcAvailable = false);
     } else {
       debugPrint('NFC is activated on device. Start scanning for a card...');
+
       // Start scanning for a NFC tag
-      final NFCTag scannedTag = await FlutterNfcKit.poll(
-          timeout: const Duration(seconds: 10),
-          iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
-          iosAlertMessage: 'Scanne deine Karte.');
+      NFCTag scannedTag;
+      try {
+        scannedTag = await FlutterNfcKit.poll(
+            timeout: const Duration(seconds: 10),
+            iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
+            iosAlertMessage: 'Scanne deine Karte.');
+
+      } catch (e) {
+        switch (e.runtimeType) {
+          case PlatformException: {
+            debugPrint('Timeout');
+          }
+        }
+        return;
+      }
 
       debugPrint('Scanned mensa card: ${jsonEncode(scannedTag)}');
-      parseNFCTag(scannedTag);
-    }
-  }
 
-  /// Parses the scanned NFC tag from the mensa card
-  void parseNFCTag(NFCTag tag) async {
-    if (tag.ndefAvailable != null && tag.ndefAvailable!) {
-      /// decoded NDEF records (see [ndef.NDEFRecord] for details)
-      /// `UriRecord: id=(empty) typeNameFormat=TypeNameFormat.nfcWellKnown type=U uri=https://github.com/nfcim/ndef`
-      for (var record in await FlutterNfcKit.readNDEFRecords(cached: false)) {
-        debugPrint(record.toString());
-      }
+      // Select application
+      await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0x5A, 0x00, 0x00, 3, (0x5F8415 & 0xFF0000) >> 16, (0x5F8415 & 0xFF00) >> 8, 0x5F8415 & 0xFF, 0x00]));
 
-      /// raw NDEF records (data in hex string)
-      /// `{identifier: "", payload: "00010203", type: "0001", typeNameFormat: "nfcWellKnown"}`
-      for (var record in await FlutterNfcKit.readNDEFRawRecords(cached: false)) {
-        debugPrint(jsonEncode(record).toString());
-      }
+      // Get file settings
+      await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0xF5, 0x00, 0x00, 1, 1, 0x00]));
+
+      // Read value
+      final result = Uint8List.fromList(await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0x6C, 0x00, 0x00, 1, 1, 0x00]))).toReverse();
+      // Get all bytes after the status and placeholder bytes
+      final resultBytes = Uint8List.fromList(result.getRange(4, 6).toList());
+
+      // Mensa card balance
+      final balance = byteArrayToDouble(Uint8List.fromList(result.getRange(4, 6).toList()), 0, resultBytes.length).toInt() / 1000;
+      debugPrint(balance.toString());
+
     }
   }
 
