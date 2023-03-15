@@ -53,6 +53,7 @@ class Settings {
   final FirebaseStatus useFirebase;
   final List<String> studyCourses;
   final double? lastMensaBalance;
+  final double? lastMensaTransaction;
 
   Settings({
     this.useSystemDarkmode = true,
@@ -66,6 +67,7 @@ class Settings {
     this.useFirebase = FirebaseStatus.uncofigured,
     this.studyCourses = const [],
     this.lastMensaBalance,
+    this.lastMensaTransaction,
   });
 
   Settings copyWith({
@@ -80,6 +82,7 @@ class Settings {
     FirebaseStatus? useFirebase,
     List<String>? studyCourses,
     double? lastMensaBalance,
+    double? lastMensaTransaction,
   }) =>
       Settings(
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
@@ -93,6 +96,7 @@ class Settings {
         useFirebase: useFirebase ?? this.useFirebase,
         studyCourses: studyCourses ?? this.studyCourses,
         lastMensaBalance: lastMensaBalance ?? this.lastMensaBalance,
+        lastMensaTransaction: lastMensaTransaction ?? this.lastMensaTransaction,
       );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
@@ -114,6 +118,7 @@ class Settings {
               : FirebaseStatus.uncofigured,
       studyCourses: json['studyCourses'] != null ? List<String>.from(json['studyCourses']) : List<String>.from([]),
       lastMensaBalance: json['lastMensaBalance'],
+      lastMensaTransaction: json['lastMensaTransaction'],
     );
   }
 
@@ -134,6 +139,7 @@ class Settings {
               : 0,
       'studyCourses': studyCourses,
       'lastMensaBalance': lastMensaBalance,
+      'lastMensaTransaction': lastMensaTransaction,
     };
   }
 }
