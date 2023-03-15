@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
-import 'package:ndef/ndef.dart' as ndef;
-import 'dart:typed_data';
+import 'package:ndef/ndef.dart';
 
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
+import 'package:campus_app/utils/widgets/animated_number.dart';
 
 class MensaBalancePage extends StatefulWidget {
   const MensaBalancePage({Key? key}) : super(key: key);
@@ -20,6 +21,16 @@ class MensaBalancePage extends StatefulWidget {
 
 class _MensaBalancePageState extends State<MensaBalancePage> {
   bool nfcAvailable = true;
+  bool tagScanned = false;
+  double cardBalance = 0;
+
+  void saveScannedBalance(double scannedBalance) {
+    final Settings newSettings =
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(lastMensaBalance: scannedBalance);
+
+    debugPrint('Saving scanned card balance: ${newSettings.lastMensaBalance}');
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
 
   double byteArrayToDouble(Uint8List b, int offset, int length) {
     double value = 0;
@@ -29,8 +40,10 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
     }
     return value;
   }
+
   /// Initialises the NFC session and starts scanning for a tag, if NFC is activated on the device.
-  void initialiseNFC() async {
+  /// If a tag was scanned, it's parsed to display the current card balance.
+  Future<void> initialiseNFC() async {
     final NFCAvailability availability = await FlutterNfcKit.nfcAvailability;
     if (availability != NFCAvailability.available) {
       debugPrint('NFC not activated on device.');
@@ -45,12 +58,12 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
             timeout: const Duration(seconds: 10),
             iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
             iosAlertMessage: 'Scanne deine Karte.');
-
       } catch (e) {
         switch (e.runtimeType) {
-          case PlatformException: {
-            debugPrint('Timeout');
-          }
+          case PlatformException:
+            {
+              debugPrint('Timeout while waiting for a nfc scan.');
+            }
         }
         return;
       }
@@ -58,20 +71,28 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
       debugPrint('Scanned mensa card: ${jsonEncode(scannedTag)}');
 
       // Select application
-      await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0x5A, 0x00, 0x00, 3, (0x5F8415 & 0xFF0000) >> 16, (0x5F8415 & 0xFF00) >> 8, 0x5F8415 & 0xFF, 0x00]));
+      await FlutterNfcKit.transceive(Uint8List.fromList(
+          [0x90, 0x5A, 0x00, 0x00, 3, (0x5F8415 & 0xFF0000) >> 16, (0x5F8415 & 0xFF00) >> 8, 0x5F8415 & 0xFF, 0x00]));
 
       // Get file settings
       await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0xF5, 0x00, 0x00, 1, 1, 0x00]));
 
       // Read value
-      final result = Uint8List.fromList(await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0x6C, 0x00, 0x00, 1, 1, 0x00]))).toReverse();
+      final result =
+          Uint8List.fromList(await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0x6C, 0x00, 0x00, 1, 1, 0x00])))
+              .toReverse();
       // Get all bytes after the status and placeholder bytes
       final resultBytes = Uint8List.fromList(result.getRange(4, 6).toList());
 
       // Mensa card balance
-      final balance = byteArrayToDouble(Uint8List.fromList(result.getRange(4, 6).toList()), 0, resultBytes.length).toInt() / 1000;
-      debugPrint(balance.toString());
+      setState(() {
+        tagScanned = true;
+        cardBalance =
+            byteArrayToDouble(Uint8List.fromList(result.getRange(4, 6).toList()), 0, resultBytes.length).toInt() / 1000;
+      });
+      debugPrint('Scanned mensa card nfc tag parsed: $cardBalance');
 
+      saveScannedBalance(cardBalance!);
     }
   }
 
@@ -120,12 +141,49 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
             ),
             Expanded(
               child: nfcAvailable
-                  ? Placeholder()
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: AnimatedOpacity(
+                            opacity: tagScanned ? 1 : 0,
+                            duration: const Duration(milliseconds: 1000),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AnimatedNumberText<double>(
+                                  cardBalance != null ? cardBalance! : 0,
+                                  duration: const Duration(seconds: 1),
+                                  curve: Curves.easeIn,
+                                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                                ),
+                                Text(
+                                  ' €',
+                                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (!tagScanned)
+                          const EmptyStatePlaceholder(
+                            title: 'Karte scannen',
+                            text: 'Halte deinen Studierendenausweis an dein Smartphone, um ihn zu scannen.',
+                          )
+                      ],
+                    )
                   : const EmptyStatePlaceholder(
                       title: 'NFC deaktiviert',
-                      text: 'Um das Guthaben deiner Mensa Karte auslesen zu können, muss NFC aktiviert sein.',
+                      text: 'Um dein AKAFÖ Guthaben auslesen zu können, muss NFC aktiviert sein.',
                     ),
             ),
+            if (Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null && !tagScanned)
+              Padding(
+                padding: const EdgeInsets.only(top: 40, bottom: 60),
+                child: Text(
+                  'Letztes gescanntes Guthaben: ${Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance} €',
+                ),
+              ),
           ],
         ),
       ),
