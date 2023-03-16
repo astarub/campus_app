@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
-import 'package:ndef/ndef.dart';
 import 'package:lottie/lottie.dart';
 
 import 'package:campus_app/core/settings.dart';
@@ -99,7 +98,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
           // Read value from mensa card
           final result = Uint8List.fromList(
             await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0x6C, 0x00, 0x00, 1, 1, 0x00])),
-          ).toReverse();
+          ).reversed.toList();
 
           // Mensa card data
           setState(() {
