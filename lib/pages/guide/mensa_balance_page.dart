@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:ndef/ndef.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
@@ -19,17 +20,21 @@ class MensaBalancePage extends StatefulWidget {
   State<MensaBalancePage> createState() => _MensaBalancePageState();
 }
 
-class _MensaBalancePageState extends State<MensaBalancePage> {
+class _MensaBalancePageState extends State<MensaBalancePage> with TickerProviderStateMixin {
   bool nfcAvailable = true;
   bool tagScanned = false;
   double cardBalance = 0;
   double lastTransaction = 0;
 
-  void saveMensaCardData(double scannedBalance, double lastTransaction) {
-    final Settings newSettings =
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(lastMensaBalance: scannedBalance, lastMensaTransaction: lastTransaction);
+  late AnimationController successAnimationController;
 
-    debugPrint('Saving scanned mensa card data Balance: ${newSettings.lastMensaBalance}, Last Transaction: ${newSettings.lastMensaTransaction}');
+  void saveMensaCardData(double scannedBalance, double lastTransaction) {
+    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false)
+        .currentSettings
+        .copyWith(lastMensaBalance: scannedBalance, lastMensaTransaction: lastTransaction);
+
+    debugPrint(
+        'Saving scanned mensa card data: Balance=${newSettings.lastMensaBalance}, Last Transaction: ${newSettings.lastMensaTransaction}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
   }
 
@@ -48,12 +53,12 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
     final NFCAvailability availability = await FlutterNfcKit.nfcAvailability;
     if (availability != NFCAvailability.available) {
       debugPrint('NFC not activated on device.');
-      setState(() => nfcAvailable = false);
+      //setState(() => nfcAvailable = false);
     } else {
       debugPrint('NFC is activated on device. Start scanning for a card...');
 
-      // Continuously scan for a mensa card
-      while (true) {
+      // Continuously scan for a mensa card while this page is open
+      while (mounted) {
         // Start scanning for a NFC tag
         NFCTag scannedTag;
         try {
@@ -75,20 +80,25 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
 
         try {
           // Select application
-          await FlutterNfcKit.transceive(
-              Uint8List.fromList([0x90, 0x5A, 0x00, 0x00, 3, (0x5F8415 & 0xFF0000) >> 16, (0x5F8415 & 0xFF00) >> 8, 0x5F8415 & 0xFF, 0x00]),
-          );
+          await FlutterNfcKit.transceive(Uint8List.fromList([
+            0x90,
+            0x5A,
+            0x00,
+            0x00,
+            3,
+            (0x5F8415 & 0xFF0000) >> 16,
+            (0x5F8415 & 0xFF00) >> 8,
+            0x5F8415 & 0xFF,
+            0x00
+          ]));
 
           // Get the transaction history file
-          final transactionFile = await FlutterNfcKit.transceive(
-              Uint8List.fromList([0x90, 0xF5, 0x00, 0x00, 1, 1, 0x00]),
-          );
+          final transactionFile =
+              await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0xF5, 0x00, 0x00, 1, 1, 0x00]));
 
           // Read value from mensa card
           final result = Uint8List.fromList(
-              await FlutterNfcKit.transceive(
-                  Uint8List.fromList([0x90, 0x6C, 0x00, 0x00, 1, 1, 0x00]),
-              ),
+            await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0x6C, 0x00, 0x00, 1, 1, 0x00])),
           ).toReverse();
 
           // Mensa card data
@@ -97,17 +107,19 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
 
             // Get all bytes that represent the mensa card value
             cardBalance = byteArrayToDouble(
-                Uint8List.fromList(result.getRange(4, result.length).toList()),
-                0,
-                result.length - 4,
-            ).toInt() / 1000;
+                  Uint8List.fromList(result.getRange(4, result.length).toList()),
+                  0,
+                  result.length - 4,
+                ).toInt() /
+                1000;
 
             // Get the last transaction from the scanned mensa card
             lastTransaction = byteArrayToDouble(
-              Uint8List.fromList(transactionFile.getRange(12, 16).toList().reversed.toList()),
-              0,
-              4,
-            ).toInt() / 1000;
+                  Uint8List.fromList(transactionFile.getRange(12, 16).toList().reversed.toList()),
+                  0,
+                  4,
+                ).toInt() /
+                1000;
           });
           debugPrint('Scanned mensa card nfc tag parsed: $cardBalance');
 
@@ -124,6 +136,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
   void initState() {
     super.initState();
 
+    successAnimationController = AnimationController(vsync: this);
+
     initialiseNFC();
   }
 
@@ -131,6 +145,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
   void dispose() {
     super.dispose();
 
+    successAnimationController.dispose();
     FlutterNfcKit.finish();
   }
 
@@ -168,58 +183,82 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Center(
+                        Padding(
+                          padding: EdgeInsets.only(bottom: tagScanned ? 100 : 0),
                           child: AnimatedOpacity(
                             opacity: tagScanned ? 1 : 0,
-                            duration: const Duration(milliseconds: 1000),
+                            duration: const Duration(milliseconds: 600),
+                            curve: Curves.easeIn,
                             child: Column(
                               children: [
+                                // Coin Illustration
+                                Lottie.asset(
+                                  'assets/animations/coin-flip.json',
+                                  height: 80,
+                                  controller: successAnimationController,
+                                  onLoaded: (composition) {
+                                    successAnimationController.duration = composition.duration;
+                                  },
+                                ),
+                                // Current balance
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Mensa Guthaben: ',
-                                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                                      'Guthaben: ',
+                                      style:
+                                          Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                                     ),
                                     AnimatedNumberText<double>(
                                       cardBalance,
                                       duration: const Duration(seconds: 1),
                                       curve: Curves.easeIn,
-                                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                                      style:
+                                          Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                                      formatter: (value) => value.toStringAsFixed(2),
+                                      onEnd: () {
+                                        successAnimationController.forward();
+                                      },
                                     ),
                                     Text(
                                       ' €',
-                                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                                      style:
+                                          Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Letzte Abbuchung: ',
-                                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                                    ),
-                                    AnimatedNumberText<double>(
-                                      lastTransaction,
-                                      duration: const Duration(seconds: 1),
-                                      curve: Curves.easeIn,
-                                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                                    ),
-                                    Text(
-                                      ' €',
-                                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                                    ),
-                                  ],
+                                // Last transaction
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text('Letzte Abbuchung: -${lastTransaction.toStringAsFixed(2)} €'),
                                 ),
                               ],
                             ),
                           ),
                         ),
+                        // Scan card notification
                         if (!tagScanned)
-                          const EmptyStatePlaceholder(
-                            title: 'Karte scannen',
-                            text: 'Halte deinen Studierendenausweis an dein Smartphone, um ihn zu scannen.',
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null
+                                  ? 100
+                                  : 180,
+                            ),
+                            child: Column(
+                              children: [
+                                if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light)
+                                  Lottie.asset(
+                                    'assets/animations/nfc-light.json',
+                                    height: 180,
+                                  )
+                                else
+                                  Lottie.asset('assets/animations/nfc-dark.json'),
+                                const EmptyStatePlaceholder(
+                                  title: 'Karte scannen',
+                                  text: 'Halte deinen Studierendenausweis an dein Smartphone, um ihn zu scannen.',
+                                ),
+                              ],
+                            ),
                           )
                       ],
                     )
@@ -228,16 +267,18 @@ class _MensaBalancePageState extends State<MensaBalancePage> {
                       text: 'Um dein AKAFÖ Guthaben auslesen zu können, muss NFC aktiviert sein.',
                     ),
             ),
-            if (Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null && Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction != null && !tagScanned)
+            if (Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null &&
+                Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction != null &&
+                !tagScanned)
               Padding(
                 padding: const EdgeInsets.only(top: 40, bottom: 60),
                 child: Column(
                   children: [
                     Text(
-                      'Letztes gescanntes Guthaben: ${Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance} €',
+                      'Letztes Guthaben: ${Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance} €',
                     ),
                     Text(
-                      'Letzte gescannte Abbuchung: ${Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction} €',
+                      'Letzte gescannte Abbuchung: -${Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction} €',
                     ),
                   ],
                 ),
