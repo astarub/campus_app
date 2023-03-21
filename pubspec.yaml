@@ -49,6 +49,9 @@ dependencies:
       ref: 9d74464
   flutter_nfc_kit: ^3.3.1
   lottie: ^2.3.0
+  file_picker: ^5.2.6
+  pdfx: any
+  pdf_image_renderer: ^0.7.0
   
 dev_dependencies:
   flutter_test:
