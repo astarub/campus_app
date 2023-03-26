@@ -52,6 +52,7 @@ dependencies:
   file_picker: ^5.2.6
   pdfx: any
   pdf_image_renderer: ^0.7.0
+  syncfusion_flutter_pdf: ^21.1.35
   
 dev_dependencies:
   flutter_test:
