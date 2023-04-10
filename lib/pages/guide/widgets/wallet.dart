@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:pdf_image_renderer/pdf_image_renderer.dart';
 import 'package:pdfx/pdfx.dart';
@@ -10,6 +11,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart' as sync_pdf;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/guide/widgets/stacked_card_carousel.dart';
@@ -73,6 +75,8 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
 
   late Image semesterTicketImage;
   late Image qrCodeImage;
+
+  bool showQrCode = false;
 
   /// Loads the previously saved image of the semester ticket and
   /// the corresponding aztec-code
@@ -198,6 +202,8 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -206,8 +212,16 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))],
       ),
       child: scanned
-          ? Container(
-              child: semesterTicketImage,
+          ? GestureDetector(
+              onTap: () {
+                setState(() => showQrCode = !showQrCode);
+                if (showQrCode) {
+                  setBrightness(1);
+                } else {
+                  resetBrightness();
+                }
+              },
+              child: showQrCode ? qrCodeImage : semesterTicketImage,
             )
           : CustomButton(
               tapHandler: addTicket,
@@ -231,5 +245,23 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
               ),
             ),
     );
+  }
+}
+
+Future<void> setBrightness(double brightness) async {
+  try {
+    await ScreenBrightness().setScreenBrightness(brightness);
+  } catch (e) {
+    print(e);
+    throw 'Failed to set brightness';
+  }
+}
+
+Future<void> resetBrightness() async {
+  try {
+    await ScreenBrightness().resetScreenBrightness();
+  } catch (e) {
+    print(e);
+    throw 'Failed to reset brightness';
   }
 }

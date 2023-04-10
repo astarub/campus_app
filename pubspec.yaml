@@ -55,6 +55,7 @@ dependencies:
   syncfusion_flutter_pdf: ^21.1.35
   mobile_scanner: ^3.2.0
   barcode_widget: ^2.0.3
+  screen_brightness: ^0.2.2
   
 dev_dependencies:
   flutter_test:
