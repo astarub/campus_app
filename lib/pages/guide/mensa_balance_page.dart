@@ -239,10 +239,9 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                         if (!tagScanned)
                           Padding(
                             padding: EdgeInsets.only(
-                              bottom: Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null
-                                  ? 100
-                                  : 180,
-                            ),
+                                bottom: Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null
+                                    ? 100
+                                    : 180),
                             child: Column(
                               children: [
                                 if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light)

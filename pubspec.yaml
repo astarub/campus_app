@@ -151,6 +151,8 @@ flutter:
      - assets/animations/nfc-light.json
      - assets/animations/nfc-dark.json
      - assets/animations/coin-flip.json
+     - assets/img/bogestra-logo.svg
+     - assets/img/icons/file-plus.svg
 
   fonts:
     - family: SF-Pro
