@@ -1,4 +1,8 @@
 import 'dart:io' show Platform;
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/pages/calendar/widgets/calendar_filter_popup.dart';
+import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -77,6 +81,14 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     return parsedEvents;
   }
 
+  void saveChangedFilters(List<String> newFilters) {
+    final Settings newSettings =
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(eventsFilter: newFilters);
+
+    debugPrint('Saving new event filters: ${newSettings.eventsFilter}');
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -100,6 +112,9 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    final filters = Provider.of<SettingsHandler>(context, listen: false).currentSettings.eventsFilter;
+    final List<Widget> filteredEvents = _calendarUtils.filterEventWidgets(filters, parsedEvents);
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
@@ -146,11 +161,11 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                                   : ListView.builder(
                                       padding: const EdgeInsets.symmetric(horizontal: 10),
                                       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                      itemCount: parsedEvents.length,
+                                      itemCount: filteredEvents.length,
                                       itemBuilder: (context, index) => AnimatedOpacity(
                                         opacity: eventWidgetOpacity,
                                         duration: Duration(milliseconds: 75 + (index * 40)),
-                                        child: parsedEvents[index],
+                                        child: filteredEvents[index],
                                       ),
                                     ),
                             ),
@@ -170,10 +185,40 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                         ),
                       ),
-                      // SegmentedControl
-                      SizedBox(
-                        width: double.infinity,
-                        child: Center(child: upcomingSavedSwitch),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Search button
+                          CampusIconButton(
+                            iconPath: 'assets/img/icons/search.svg',
+                            onTap: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  margin: EdgeInsets.only(bottom: 80, left: 20, right: 20),
+                                  content: Text('Hier gibts noch nichts zu suchen :D'),
+                                ),
+                              );
+                            },
+                          ),
+                          // FeedPicker
+                          Padding(padding: const EdgeInsets.symmetric(horizontal: 24), child: upcomingSavedSwitch),
+                          // Filter button
+                          CampusIconButton(
+                            iconPath: 'assets/img/icons/filter.svg',
+                            onTap: () {
+                              widget.mainNavigatorKey.currentState?.push(
+                                PageRouteBuilder(
+                                  opaque: false,
+                                  pageBuilder: (context, _, __) => CalendarFilterPopup(
+                                    selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.feedFilter,
+                                    onClose: saveChangedFilters,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),

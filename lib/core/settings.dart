@@ -46,6 +46,7 @@ class Settings {
   final bool useDarkmode;
   final List<String> feedFilter;
   final bool newsExplore;
+  final List<String> eventsFilter;
   final List<String> mensaPreferences;
   final List<String> mensaAllergenes;
   final bool useExternalBrowser;
@@ -58,6 +59,7 @@ class Settings {
     this.useDarkmode = false,
     this.feedFilter = const [],
     this.newsExplore = false,
+    this.eventsFilter = const [],
     this.mensaPreferences = const [],
     this.mensaAllergenes = const [],
     this.useExternalBrowser = false,
@@ -71,6 +73,7 @@ class Settings {
     bool? useDarkmode,
     List<String>? feedFilter,
     bool? newsExplore,
+    List<String>? eventsFilter,
     List<String>? mensaPreferences,
     List<String>? mensaAllergenes,
     bool? useExternalBrowser,
@@ -83,6 +86,7 @@ class Settings {
         useDarkmode: useDarkmode ?? this.useDarkmode,
         feedFilter: feedFilter ?? this.feedFilter,
         newsExplore: newsExplore ?? this.newsExplore,
+        eventsFilter: eventsFilter ?? this.eventsFilter,
         mensaPreferences: mensaPreferences ?? this.mensaPreferences,
         mensaAllergenes: mensaAllergenes ?? this.mensaAllergenes,
         useExternalBrowser: useExternalBrowser ?? this.useExternalBrowser,
@@ -97,6 +101,7 @@ class Settings {
       useDarkmode: json['useDarkmode'] ?? false,
       feedFilter: json['feedFilter'] != null ? List<String>.from(json['feedFilter']) : List<String>.from([]),
       newsExplore: json['newsExplore'] ?? false,
+      eventsFilter: json['eventsFilter'] != null ? List<String>.from(json['eventsFilter']) : List<String>.from([]),
       mensaPreferences:
           json['mensaPreferences'] != null ? List<String>.from(json['mensaPreferences']) : List<String>.from([]),
       mensaAllergenes:
@@ -118,6 +123,7 @@ class Settings {
       'useDarkmode': useDarkmode,
       'feedFilter': feedFilter,
       'newsExplore': newsExplore,
+      'eventsFilter': eventsFilter,
       'mensaPreferences': mensaPreferences,
       'mensaAllergenes': mensaAllergenes,
       'useExternalBrowser': useExternalBrowser,

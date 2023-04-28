@@ -23,4 +23,22 @@ class CalendarUtils extends Utils {
 
     return widgets;
   }
+
+  List<Widget> filterEventWidgets(List<String> filters, List<Widget> parsedEvents) {
+    final List<Widget> filteredEvents = [];
+
+    for (Widget e in parsedEvents) {
+      if (e is CalendarEventWidget) {
+        final categoryNames = e.event.categories.map((e) => e.name);
+
+        if (e.event.url.startsWith('https://asta-bochum.de') ||
+            filters.any((element) => categoryNames.contains(element))) {
+          filteredEvents.add(e);
+        }
+      } else {
+        filteredEvents.add(e);
+      }
+    }
+    return filteredEvents;
+  }
 }
