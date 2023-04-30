@@ -15,11 +15,11 @@ class RubnewsDatasource {
   final Dio client;
 
   /// Hive.Box to store news entities inside
-  final Box rubnewsCach;
+  final Box rubnewsCache;
 
   RubnewsDatasource({
     required this.client,
-    required this.rubnewsCach,
+    required this.rubnewsCache,
   });
 
   /// Request news feed from news.rub.de/newsfeed.
@@ -73,24 +73,24 @@ class RubnewsDatasource {
 
   /// Write given list of NewsEntity to Hive.Box 'rubnewsCach'.
   /// The put()-call is awaited to make sure that the write operations are successful.
-  Future<void> writeNewsEntitiesToCach(List<NewsEntity> entities) async {
+  Future<void> writeNewsEntitiesToCache(List<NewsEntity> entities) async {
     final cntEntities = entities.length;
-    await rubnewsCach.put(_keyCnt, cntEntities);
+    await rubnewsCache.put(_keyCnt, cntEntities);
 
     int index = 0; // use list index as identifier
     for (final entity in entities) {
-      await rubnewsCach.put(index, entity);
+      await rubnewsCache.put(index, entity);
       index++;
     }
   }
 
   /// Read cach of news entities and return them.
   List<NewsEntity> readNewsEntitiesFromCach() {
-    final cntEntities = rubnewsCach.get(_keyCnt) as int;
+    final cntEntities = rubnewsCache.get(_keyCnt) as int;
     final List<NewsEntity> entities = [];
 
     for (int i = 0; i < cntEntities; i++) {
-      entities.add(rubnewsCach.get(i) as NewsEntity);
+      entities.add(rubnewsCache.get(i) as NewsEntity);
     }
 
     return entities;

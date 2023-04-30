@@ -47,20 +47,20 @@ Future<void> init() async {
       client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
       return client;
     };
-    return MensaDataSource(client: client, mensaCache: await Hive.openBox('mensaCach'));
+    return MensaDataSource(client: client, mensaCache: await Hive.openBox('mensaCache'));
   });
 
   sl.registerSingletonAsync(
     () async => RubnewsDatasource(
       client: sl(),
-      rubnewsCach: await Hive.openBox('rubnewsCach'),
+      rubnewsCache: await Hive.openBox('rubnewsCache'),
     ),
   );
 
   sl.registerSingletonAsync(
     () async => CalendarDatasource(
       client: sl(),
-      eventCach: await Hive.openBox('eventCach'),
+      eventCache: await Hive.openBox('eventCache'),
     ),
   );
 

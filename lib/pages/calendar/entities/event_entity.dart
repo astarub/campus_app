@@ -135,6 +135,8 @@ class Event {
         ? Venue.emptyPlaceholder()
         : Venue.fromJson(json['venue'] as Map<String, dynamic>);
 
+    print(json['author']);
+
     return Event(
       id: json['id'],
       url: json['url'],

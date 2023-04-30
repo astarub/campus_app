@@ -4,20 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_selection.dart';
 
-extension _IterableExtensions<T> on Iterable<T> {
-  Iterable<List<T>> chunks(int chunkSize) sync* {
-    final chunk = <T>[];
-    for (T item in this) {
-      chunk.add(item);
-      if (chunk.length == chunkSize) {
-        yield chunk;
-        chunk.clear();
-      }
-    }
-    if (chunk.isNotEmpty) yield chunk;
-  }
-}
-
 /// This widget is similar to the [CampusSelection] widget and shows 3 buttons in a Row
 /// that can be active at the same time.
 ///
@@ -39,50 +25,53 @@ class CampusMultiSelection extends StatelessWidget {
     required this.onSelected,
   }) : super(key: key);
 
-  List<Widget> buildOptions() {
-    final parts = selectionItemTitles.chunks(3);
-    final List<Widget> rows = [];
-    int select = 0;
-
-    for (final chunk in parts) {
-      final List<Widget> expanded = [];
-
-      for (final selection in chunk) {
-        expanded.add(
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: SelectionItem(
-                text: selection,
-                onTap: () => onSelected(selection),
-                isActive: selections[select],
-              ),
-            ),
-          ),
-        );
-        select++;
-      }
-      rows.add(
-        Padding(
-          padding: const EdgeInsets.only(bottom: 7),
-          child: Flex(
-            direction: Axis.horizontal,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: expanded,
-          ),
-        ),
-      );
-    }
-    return rows;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-      child: Column(
-        children: buildOptions(),
+      child: Flex(
+        direction: Axis.horizontal,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // First selection item
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: SelectionItem(
+                text: selectionItemTitles[0],
+                onTap: () => onSelected(selectionItemTitles[0]),
+                isActive: selections[0],
+              ),
+            ),
+          ),
+          // Second selection item
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5, right: 5),
+              child: selectionItemTitles.length >= 2
+                  ? SelectionItem(
+                      text: selectionItemTitles[1],
+                      onTap: () => onSelected(selectionItemTitles[1]),
+                      isActive: selections[1],
+                    )
+                  : Container(),
+            ),
+          ),
+          // Third selection item
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: selectionItemTitles.length == 3
+                  ? SelectionItem(
+                      text: selectionItemTitles[2],
+                      onTap: () => onSelected(selectionItemTitles[2]),
+                      isActive: selections[2],
+                    )
+                  : Container(),
+            ),
+          ),
+        ],
       ),
     );
   }

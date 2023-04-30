@@ -24,7 +24,7 @@ class CalendarRepository {
       }
 
       // write entities to cach
-      unawaited(calendarDatasource.writeEventsToCach(entities));
+      unawaited(calendarDatasource.writeEventsToCache(entities));
 
       return Right(entities);
     } catch (e) {
@@ -47,7 +47,7 @@ class CalendarRepository {
   /// Return a list of cached events or a failure.
   Either<Failure, List<Event>> getCachedEvents() {
     try {
-      final cachedEvents = calendarDatasource.readEventsFromCach();
+      final cachedEvents = calendarDatasource.readEventsFromCache();
       return Right(cachedEvents);
     } catch (e) {
       return Left(CachFailure());
@@ -57,7 +57,7 @@ class CalendarRepository {
   /// Return a list of saved events or a failure.
   Future<Either<Failure, List<Event>>> updateSavedEvents({Event? event}) async {
     try {
-      final savedEvents = calendarDatasource.readEventsFromCach(saved: true);
+      final savedEvents = calendarDatasource.readEventsFromCache(saved: true);
 
       // update list of saved events
       if (event != null) {
@@ -68,7 +68,7 @@ class CalendarRepository {
         }
       }
 
-      unawaited(calendarDatasource.writeEventsToCach(savedEvents, saved: true));
+      unawaited(calendarDatasource.writeEventsToCache(savedEvents, saved: true));
 
       return Right(savedEvents);
     } catch (e) {

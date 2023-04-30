@@ -1,10 +1,9 @@
-import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/pages/calendar/widgets/calendar_filter_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/popup_sheet.dart';
-import 'package:campus_app/utils/widgets/campus_multiple_selection.dart';
 
 /// This widget displays the filter options that are available for the
 /// personal news feed and is used in the [SnappingSheet] widget
@@ -46,7 +45,7 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> options = Provider.of<SettingsHandler>(context).currentSettings.studyCourses + ['Andere'];
+    final List<String> options = ['FSR Wirtschaftsingenieurswesen', 'Andere'];
     final List<bool> selections = [];
 
     for (int i = 0; i < options.length; i++) {
@@ -54,7 +53,7 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
     }
 
     return PopupSheet(
-      title: 'Calendar Filter',
+      title: 'Event Filter',
       onClose: () {
         widget.onClose(_selectedFilters);
         Navigator.pop(context);
@@ -65,10 +64,12 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
           padding: const EdgeInsets.only(top: 20),
           child: Column(
             children: [
-              CampusMultiSelection(
-                selectionItemTitles: ['AStA'] + options,
-                onSelected: onFilterSelected,
-                selections: [true] + selections,
+              Expanded(
+                child: CalendarFilterSelection(
+                  filters: ['AStA'] + options,
+                  onSelected: onFilterSelected,
+                  selections: [true] + selections,
+                ),
               ),
             ],
           ),

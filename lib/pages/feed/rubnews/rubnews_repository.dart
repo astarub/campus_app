@@ -28,7 +28,7 @@ class RubnewsRepository {
       });
 
       // write entities to cach
-      unawaited(rubnewsDatasource.writeNewsEntitiesToCach(entities));
+      unawaited(rubnewsDatasource.writeNewsEntitiesToCache(entities));
 
       return Right(entities);
     } catch (e) {
