@@ -1,8 +1,5 @@
 import 'dart:io' show Platform;
 import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/pages/calendar/widgets/calendar_filter_popup.dart';
-import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
-import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -12,10 +9,12 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/calendar/widgets/calendar_filter_popup.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 
 class CalendarPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -117,7 +116,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     final List<Widget> filteredEvents = _calendarUtils.filterEventWidgets(filters, parsedEvents);
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -211,7 +210,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                                 PageRouteBuilder(
                                   opaque: false,
                                   pageBuilder: (context, _, __) => CalendarFilterPopup(
-                                    selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.feedFilter,
+                                    selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.eventsFilter,
                                     onClose: saveChangedFilters,
                                   ),
                                 ),

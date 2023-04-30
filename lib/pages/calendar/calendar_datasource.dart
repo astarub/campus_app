@@ -18,11 +18,11 @@ class CalendarDatasource {
   final Dio client;
 
   /// Hive.Box to store news entities inside
-  final Box eventCach;
+  final Box eventCache;
 
   CalendarDatasource({
     required this.client,
-    required this.eventCach,
+    required this.eventCache,
   });
 
   /// Request events from tribe api.
@@ -48,44 +48,67 @@ class CalendarDatasource {
     }
   }
 
-  /// Write given list of Events to Hive.Box 'eventCach'.
+  /// Request events from the app's wordpress instance using the tribe api.
+  /// Throws a server excpetion if respond code is not 200.
+  Future<List<dynamic>> getAppEventsAsJsonArray() async {
+    final response = await client.get(appEvents);
+    late final Map<String, dynamic> responseBody;
+
+    if (response.statusCode != 200) {
+      throw ServerException();
+    } else {
+      try {
+        responseBody = response.data as Map<String, dynamic>;
+      } catch (e) {
+        throw JsonException();
+      }
+
+      if ((responseBody['events'] as List<dynamic>).isEmpty) {
+        throw EmptyResponseException();
+      }
+
+      return responseBody['events'] as List<dynamic>;
+    }
+  }
+
+  /// Write given list of Events to Hive.Box 'eventCache'.
   /// The put()-call is awaited to make sure that the write operations are successful.
-  Future<void> writeEventsToCach(List<Event> entities, {bool saved = false}) async {
+  Future<void> writeEventsToCache(List<Event> entities, {bool saved = false}) async {
     final cntEntities = entities.length;
 
     if (saved) {
-      await eventCach.put(_keyCntSaved, cntEntities);
+      await eventCache.put(_keyCntSaved, cntEntities);
     } else {
-      await eventCach.put(_keyCnt, cntEntities);
+      await eventCache.put(_keyCnt, cntEntities);
     }
 
     int i = 0; // use list index as identifier
     for (final entity in entities) {
       if (saved) {
-        await eventCach.put('saved$i', entity);
+        await eventCache.put('saved$i', entity);
       } else {
-        await eventCach.put(i, entity);
+        await eventCache.put(i, entity);
       }
       i++;
     }
   }
 
-  /// Read cach of event entities and return them.
-  List<Event> readEventsFromCach({bool saved = false}) {
+  /// Read cache of event entities and return them.
+  List<Event> readEventsFromCache({bool saved = false}) {
     late int cntEntities;
     final List<Event> entities = [];
 
     if (saved) {
-      cntEntities = eventCach.get(_keyCntSaved) ?? 0;
+      cntEntities = eventCache.get(_keyCntSaved) ?? 0;
     } else {
-      cntEntities = eventCach.get(_keyCnt) ?? 0;
+      cntEntities = eventCache.get(_keyCnt) ?? 0;
     }
 
     for (int i = 0; i < cntEntities; i++) {
       if (saved) {
-        entities.add(eventCach.get('saved$i') as Event);
+        entities.add(eventCache.get('saved$i') as Event);
       } else {
-        entities.add(eventCach.get(i) as Event);
+        entities.add(eventCache.get(i) as Event);
       }
     }
 

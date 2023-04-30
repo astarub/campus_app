@@ -24,7 +24,7 @@ void main() {
     mockClient = MockDio();
     mockCach = MockBox();
 
-    rubnewsRemoteDatasource = RubnewsDatasource(client: mockClient, rubnewsCach: mockCach);
+    rubnewsRemoteDatasource = RubnewsDatasource(client: mockClient, rubnewsCache: mockCach);
   });
 
   group('[getNewsfeedAsXml]', () {
@@ -146,7 +146,7 @@ void main() {
       when(mockCach.get(2)).thenAnswer((_) => samleNewsEntities[2]);
 
       // act: write sample entities to cach
-      await rubnewsRemoteDatasource.writeNewsEntitiesToCach(samleNewsEntities);
+      await rubnewsRemoteDatasource.writeNewsEntitiesToCache(samleNewsEntities);
       final testReturn = rubnewsRemoteDatasource.readNewsEntitiesFromCach();
 
       // assert: is testElement expected object? -> List<NewsEntity> samleNewsEntities
