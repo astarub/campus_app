@@ -22,6 +22,7 @@ class CalendarUsecases {
 
     // get events from AStA API and cached events
     final Either<Failure, List<Event>> remoteEvents = await calendarRepository.getAStAEvents();
+    final Either<Failure, List<Event>> remoteAppEvents = await calendarRepository.getAppEvents();
     final Either<Failure, List<Event>> cachedEvents = calendarRepository.getCachedEvents();
     final Either<Failure, List<Event>> savedEvents = await calendarRepository.updateSavedEvents();
 
@@ -37,11 +38,25 @@ class CalendarUsecases {
       (events) => data['events'] = events, // overwrite cached feed
     );
 
+    // fold remoteAppEvents
+    remoteAppEvents.fold(
+          (failure) => data['failures']!.add(failure),
+          (events) => data['events'] = events, // overwrite cached feed
+    );
+
     // fold savedEvents
     savedEvents.fold(
       (failure) => data['failures']!.add(failure),
       (events) => data['saved'] = events,
     );
+
+    List<Event>.from(data['events']!).sort((a, b) {
+      return a.startDate.compareTo(b.startDate);
+    });
+
+    List<Event>.from(data['saved']!).sort((a, b) {
+      return a.startDate.compareTo(b.startDate);
+    });
 
     return data;
   }
@@ -65,6 +80,14 @@ class CalendarUsecases {
       (failure) => data['failures']!.add(failure),
       (events) => data['events'] = events,
     );
+
+    List<Event>.from(data['events']!).sort((a, b) {
+      return a.startDate.compareTo(b.startDate);
+    });
+
+    List<Event>.from(data['saved']!).sort((a, b) {
+      return a.startDate.compareTo(b.startDate);
+    });
 
     return data;
   }

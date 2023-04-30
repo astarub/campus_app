@@ -232,7 +232,7 @@ Future<void> initializeFirebase() async {
             // Get the event according to the id in the message payload
             Event event;
             try {
-              event = events.firstWhere((element) => element.id == eventJson['id']);
+              event = events.firstWhere((element) => element.url == eventJson['url']);
             } catch (e) {
               return;
             }
@@ -383,7 +383,7 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
         // Get the event according to the id in the message payload
         Event event;
         try {
-          event = events.firstWhere((element) => element.id == eventJson['id']);
+          event = events.firstWhere((element) => element.url == eventJson['url']);
         } catch (e) {
           return;
         }

@@ -14,6 +14,9 @@ class CalendarDatasource {
   /// Key to identify savedEvents in Hive box / Cach
   static const String _keyCntSaved = 'cntSaved';
 
+  /// Key to identify events of our own WP instance in Hive box / Cach
+  static const String _keyCntApp = 'cntApp';
+
   /// Dio client to perfrom network operations
   final Dio client;
 
@@ -73,11 +76,13 @@ class CalendarDatasource {
 
   /// Write given list of Events to Hive.Box 'eventCache'.
   /// The put()-call is awaited to make sure that the write operations are successful.
-  Future<void> writeEventsToCache(List<Event> entities, {bool saved = false}) async {
+  Future<void> writeEventsToCache(List<Event> entities, {bool saved = false, bool app = false}) async {
     final cntEntities = entities.length;
 
     if (saved) {
       await eventCache.put(_keyCntSaved, cntEntities);
+    } else if (app) {
+      await eventCache.put(_keyCntApp, cntEntities);
     } else {
       await eventCache.put(_keyCnt, cntEntities);
     }
@@ -86,6 +91,8 @@ class CalendarDatasource {
     for (final entity in entities) {
       if (saved) {
         await eventCache.put('saved$i', entity);
+      } else if (app) {
+        await eventCache.put('app$i', entity);
       } else {
         await eventCache.put(i, entity);
       }
@@ -94,12 +101,14 @@ class CalendarDatasource {
   }
 
   /// Read cache of event entities and return them.
-  List<Event> readEventsFromCache({bool saved = false}) {
+  List<Event> readEventsFromCache({bool saved = false, bool app = false}) {
     late int cntEntities;
     final List<Event> entities = [];
 
     if (saved) {
       cntEntities = eventCache.get(_keyCntSaved) ?? 0;
+    } else if (app) {
+      cntEntities = eventCache.get(_keyCntApp) ?? 0;
     } else {
       cntEntities = eventCache.get(_keyCnt) ?? 0;
     }
@@ -107,6 +116,8 @@ class CalendarDatasource {
     for (int i = 0; i < cntEntities; i++) {
       if (saved) {
         entities.add(eventCache.get('saved$i') as Event);
+      } else if (app) {
+        entities.add(eventCache.get('app$i') as Event);
       } else {
         entities.add(eventCache.get(i) as Event);
       }

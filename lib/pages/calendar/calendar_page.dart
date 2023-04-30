@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/utils/widgets/campus_search_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/widgets/calendar_filter_popup.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
@@ -32,7 +34,8 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClientMixin<CalendarPage> {
+class _CalendarPageState extends State<CalendarPage>
+    with AutomaticKeepAliveClientMixin<CalendarPage> {
   late List<Event> _events = [];
   late List<Event> _savedEvents = [];
   late List<Failure> _failures = [];
@@ -42,6 +45,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
   late List<Widget> parsedEvents = [];
   late List<Widget> savedEvents = [];
+  late List<Widget> searchEvents = [];
 
   late final CampusSegmentedControl upcomingSavedSwitch;
   bool showSavedEvents = false;
@@ -50,6 +54,8 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   double savedWidgetOpacity = 0;
   bool showUpcomingPlaceholder = false;
   bool showSavedPlaceholder = false;
+
+  bool showSearchBar = false;
 
   /// Function that calls usecase and parses widgets into the corresponding
   /// lists of events or failures.
@@ -82,10 +88,13 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
   void saveChangedFilters(List<String> newFilters) {
     final Settings newSettings =
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(eventsFilter: newFilters);
+        Provider.of<SettingsHandler>(context, listen: false)
+            .currentSettings
+            .copyWith(eventsFilter: newFilters);
 
     debugPrint('Saving new event filters: ${newSettings.eventsFilter}');
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+        newSettings;
   }
 
   @override
@@ -106,17 +115,50 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     );
 
     updateStateWithEvents();
+
+    searchEvents = parsedEvents;
+  }
+
+  /// Filters the events based on the search input of the user
+  void onSearch(String search) {
+    if(search.isEmpty) {
+      searchEvents = parsedEvents;
+      return;
+    }
+
+    final List<Widget> filteredWidgets = [];
+
+    for (final Widget e in parsedEvents) {
+      if (e is CalendarEventWidget) {
+        if(e.event.title.contains(search)) {
+          filteredWidgets.add(e);
+        }
+      } else {
+        filteredWidgets.add(e);
+      }
+    }
+
+    setState(() {
+      searchEvents = filteredWidgets;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    final filters = Provider.of<SettingsHandler>(context, listen: false).currentSettings.eventsFilter;
-    final List<Widget> filteredEvents = _calendarUtils.filterEventWidgets(filters, parsedEvents);
+    // Filter the events based on the selected sources
+    final filters = Provider.of<SettingsHandler>(context, listen: false)
+        .currentSettings
+        .eventsFilter;
+    final List<Widget> filteredEvents =
+        _calendarUtils.filterEventWidgets(filters, searchEvents);
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context)
+          .currentThemeData
+          .colorScheme
+          .background,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -132,7 +174,8 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                       // Placeholder for no upcoming events
                       ? const EmptyStatePlaceholder(
                           title: 'Keine Events in Sicht',
-                          text: 'Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.',
+                          text:
+                              'Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.',
                         )
                       : showSavedEvents && showSavedPlaceholder
                           // Placeholder for no saved events
@@ -142,28 +185,43 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                             )
                           : RefreshIndicator(
                               displacement: 55,
-                              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-                              color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
+                              backgroundColor:
+                                  Provider.of<ThemesNotifier>(context)
+                                      .currentThemeData
+                                      .cardColor,
+                              color: Provider.of<ThemesNotifier>(context)
+                                  .currentThemeData
+                                  .primaryColor,
                               strokeWidth: 3,
                               onRefresh: updateStateWithEvents,
                               child: showSavedEvents
                                   ? ListView.builder(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      physics: const BouncingScrollPhysics(
+                                          parent:
+                                              AlwaysScrollableScrollPhysics()),
                                       itemCount: savedEvents.length,
-                                      itemBuilder: (context, index) => AnimatedOpacity(
+                                      itemBuilder: (context, index) =>
+                                          AnimatedOpacity(
                                         opacity: savedWidgetOpacity,
-                                        duration: Duration(milliseconds: 50 + (index * 35)),
+                                        duration: Duration(
+                                            milliseconds: 50 + (index * 35)),
                                         child: savedEvents[index],
                                       ),
                                     )
                                   : ListView.builder(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      physics: const BouncingScrollPhysics(
+                                          parent:
+                                              AlwaysScrollableScrollPhysics()),
                                       itemCount: filteredEvents.length,
-                                      itemBuilder: (context, index) => AnimatedOpacity(
+                                      itemBuilder: (context, index) =>
+                                          AnimatedOpacity(
                                         opacity: eventWidgetOpacity,
-                                        duration: Duration(milliseconds: 75 + (index * 40)),
+                                        duration: Duration(
+                                            milliseconds: 75 + (index * 40)),
                                         child: filteredEvents[index],
                                       ),
                                     ),
@@ -171,54 +229,77 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                 ),
                 // Header
                 Container(
-                  padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                  padding: EdgeInsets.only(
+                      top: Platform.isAndroid ? 10 : 0, bottom: 20),
+                  color: Provider.of<ThemesNotifier>(context)
+                      .currentThemeData
+                      .colorScheme.background,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Title
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 24),
+                        padding: const EdgeInsets.only(bottom: 14.3),
                         child: Text(
                           'Events',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                          style: Provider.of<ThemesNotifier>(context)
+                              .currentThemeData
+                              .textTheme
+                              .displayMedium,
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Search button
-                          CampusIconButton(
-                            iconPath: 'assets/img/icons/search.svg',
-                            onTap: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  behavior: SnackBarBehavior.floating,
-                                  margin: EdgeInsets.only(bottom: 80, left: 20, right: 20),
-                                  content: Text('Hier gibts noch nichts zu suchen :D'),
-                                ),
-                              );
-                            },
+                      if (showSearchBar)
+                        CampusSearchBar(
+                          onChange: onSearch,
+                          onBack: () {
+                            setState(() {
+                              searchEvents = parsedEvents;
+                              showSearchBar = false;
+                            });
+                          },
+                        )
+                      else
+                        Container(
+                          padding: EdgeInsets.only(top: 7.3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Search button
+                              CampusIconButton(
+                                iconPath: 'assets/img/icons/search.svg',
+                                onTap: () {
+                                  setState(() {
+                                    showSearchBar = true;
+                                  });
+                                },
+                              ),
+                              // FeedPicker
+                              Padding(
+                                  padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                                  child: upcomingSavedSwitch),
+                              // Filter button
+                              CampusIconButton(
+                                iconPath: 'assets/img/icons/filter.svg',
+                                onTap: () {
+                                  widget.mainNavigatorKey.currentState?.push(
+                                    PageRouteBuilder(
+                                      opaque: false,
+                                      pageBuilder: (context, _, __) =>
+                                          CalendarFilterPopup(
+                                            selectedFilters:
+                                            Provider.of<SettingsHandler>(context)
+                                                .currentSettings
+                                                .eventsFilter,
+                                            onClose: saveChangedFilters,
+                                          ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
-                          // FeedPicker
-                          Padding(padding: const EdgeInsets.symmetric(horizontal: 24), child: upcomingSavedSwitch),
-                          // Filter button
-                          CampusIconButton(
-                            iconPath: 'assets/img/icons/filter.svg',
-                            onTap: () {
-                              widget.mainNavigatorKey.currentState?.push(
-                                PageRouteBuilder(
-                                  opaque: false,
-                                  pageBuilder: (context, _, __) => CalendarFilterPopup(
-                                    selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.eventsFilter,
-                                    onClose: saveChangedFilters,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                        ),
                     ],
                   ),
                 ),

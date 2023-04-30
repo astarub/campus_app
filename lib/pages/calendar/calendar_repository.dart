@@ -15,7 +15,8 @@ class CalendarRepository {
   /// Return a list of events or a failure
   Future<Either<Failure, List<Event>>> getAStAEvents() async {
     try {
-      final astaEventsJson = await calendarDatasource.getAStAEventsAsJsonArray();
+      final astaEventsJson =
+          await calendarDatasource.getAStAEventsAsJsonArray();
 
       final List<Event> entities = [];
 
@@ -44,11 +45,48 @@ class CalendarRepository {
     }
   }
 
+  /// Return a list of events or a failure
+  Future<Either<Failure, List<Event>>> getAppEvents() async {
+    try {
+      final astaEventsJson = await calendarDatasource.getAppEventsAsJsonArray();
+
+      final List<Event> entities = [];
+
+      for (final Map<String, dynamic> event in astaEventsJson) {
+        entities.add(Event.fromExternalJson(event));
+      }
+
+      // write entities to cache
+      unawaited(calendarDatasource.writeEventsToCache(entities, app: true));
+
+      return Right(entities);
+    } catch (e) {
+      switch (e.runtimeType) {
+        case ServerException:
+          return Left(ServerFailure());
+
+        case JsonException:
+          return Left(ServerFailure());
+
+        case EmptyResponseException:
+          return Left(NoDataFailure());
+
+        default:
+          return Left(GeneralFailure());
+      }
+    }
+  }
+
   /// Return a list of cached events or a failure.
   Either<Failure, List<Event>> getCachedEvents() {
     try {
       final cachedEvents = calendarDatasource.readEventsFromCache();
-      return Right(cachedEvents);
+      final cachedAppEvents = calendarDatasource.readEventsFromCache(app: true);
+
+      return Right(
+        List<Event>.from(Right(cachedEvents).toIterable()) +
+            List<Event>.from(Right(cachedAppEvents).toIterable()),
+      );
     } catch (e) {
       return Left(CachFailure());
     }
@@ -68,7 +106,8 @@ class CalendarRepository {
         }
       }
 
-      unawaited(calendarDatasource.writeEventsToCache(savedEvents, saved: true));
+      unawaited(
+          calendarDatasource.writeEventsToCache(savedEvents, saved: true));
 
       return Right(savedEvents);
     } catch (e) {

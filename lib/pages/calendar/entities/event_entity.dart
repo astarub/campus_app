@@ -75,6 +75,10 @@ class Event {
   @HiveField(14)
   final List<Organizer> organizers;
 
+  /// Id of the author of the event
+  @HiveField(15)
+  final String author;
+
   const Event({
     required this.id,
     required this.url,
@@ -91,6 +95,7 @@ class Event {
     this.categories = const <Category>[],
     required this.venue,
     this.organizers = const <Organizer>[],
+    this.author = "",
   });
 
   factory Event.fromExternalJson(Map<String, dynamic> json) {
@@ -135,8 +140,6 @@ class Event {
         ? Venue.emptyPlaceholder()
         : Venue.fromJson(json['venue'] as Map<String, dynamic>);
 
-    print(json['author']);
-
     return Event(
       id: json['id'],
       url: json['url'],
@@ -157,6 +160,7 @@ class Event {
       categories: categories,
       venue: venue,
       organizers: organizers,
+      author: json['author'],
     );
   }
 
@@ -177,6 +181,7 @@ class Event {
       categories: json['categories'],
       venue: json['venue'],
       organizers: json['organizers'],
+      author: json['author'],
     );
   }
 
@@ -197,6 +202,7 @@ class Event {
       'categories': categories,
       'venue': venue,
       'organizers': organizers,
+      'author': author,
     };
   }
 
