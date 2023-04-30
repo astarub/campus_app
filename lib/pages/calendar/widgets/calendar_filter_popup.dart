@@ -46,7 +46,7 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> options = Provider.of<SettingsHandler>(context).currentSettings.studyCourses + ['Andere'];
+    final List<String> options = ['FSR Wirtschaftsingenieurswesen', 'Andere'];
     final List<bool> selections = [];
 
     for (int i = 0; i < options.length; i++) {

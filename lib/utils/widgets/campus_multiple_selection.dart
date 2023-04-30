@@ -46,21 +46,71 @@ class CampusMultiSelection extends StatelessWidget {
 
     for (final chunk in parts) {
       final List<Widget> expanded = [];
+      int i = 0;
 
       for (final selection in chunk) {
+        switch(i) {
+          case 0: {
+            expanded.add(
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: SelectionItem(
+                    text: selection,
+                    onTap: () => onSelected(selection),
+                    isActive: selections[select],
+                    paddingVertical: 25,
+                  ),
+                ),
+              ),
+            );
+            break;
+          }
+          case 1: {
+            expanded.add(
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: SelectionItem(
+                    text: selection,
+                    onTap: () => onSelected(selection),
+                    isActive: selections[select],
+                    paddingVertical: 25,
+                  ),
+                ),
+              ),
+            );
+            break;
+          }
+          case 2: {
+            expanded.add(
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: SelectionItem(
+                    text: selection,
+                    onTap: () => onSelected(selection),
+                    isActive: selections[select],
+                    paddingVertical: 25,
+                  ),
+                ),
+              ),
+            );
+            break;
+          }
+        }
+        select++;
+        i++;
+      }
+      for(int j = 1; chunk.length+j <= 3; j++) {
         expanded.add(
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: SelectionItem(
-                text: selection,
-                onTap: () => onSelected(selection),
-                isActive: selections[select],
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Container(),
             ),
           ),
         );
-        select++;
       }
       rows.add(
         Padding(
