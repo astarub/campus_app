@@ -121,8 +121,10 @@ class _CalendarPageState extends State<CalendarPage>
 
   /// Filters the events based on the search input of the user
   void onSearch(String search) {
-    if(search.isEmpty) {
-      searchEvents = parsedEvents;
+    if (search.isEmpty) {
+      setState(() {
+        searchEvents = parsedEvents;
+      });
       return;
     }
 
@@ -130,7 +132,7 @@ class _CalendarPageState extends State<CalendarPage>
 
     for (final Widget e in parsedEvents) {
       if (e is CalendarEventWidget) {
-        if(e.event.title.contains(search)) {
+        if (e.event.title.toUpperCase().contains(search.toUpperCase())) {
           filteredWidgets.add(e);
         }
       } else {
@@ -151,8 +153,8 @@ class _CalendarPageState extends State<CalendarPage>
     final filters = Provider.of<SettingsHandler>(context, listen: false)
         .currentSettings
         .eventsFilter;
-    final List<Widget> filteredEvents =
-        _calendarUtils.filterEventWidgets(filters, searchEvents);
+    final List<Widget> filteredEvents = _calendarUtils.filterEventWidgets(
+        filters, searchEvents.isNotEmpty ? searchEvents : parsedEvents);
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context)
@@ -233,7 +235,8 @@ class _CalendarPageState extends State<CalendarPage>
                       top: Platform.isAndroid ? 10 : 0, bottom: 20),
                   color: Provider.of<ThemesNotifier>(context)
                       .currentThemeData
-                      .colorScheme.background,
+                      .colorScheme
+                      .background,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -248,58 +251,62 @@ class _CalendarPageState extends State<CalendarPage>
                               .displayMedium,
                         ),
                       ),
-                      if (showSearchBar)
-                        CampusSearchBar(
-                          onChange: onSearch,
-                          onBack: () {
-                            setState(() {
-                              searchEvents = parsedEvents;
-                              showSearchBar = false;
-                            });
-                          },
-                        )
-                      else
-                        Container(
-                          padding: EdgeInsets.only(top: 7.3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Search button
-                              CampusIconButton(
-                                iconPath: 'assets/img/icons/search.svg',
-                                onTap: () {
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 400),
+                        child: showSearchBar
+                            ? CampusSearchBar(
+                                onChange: onSearch,
+                                onBack: () {
                                   setState(() {
-                                    showSearchBar = true;
+                                    searchEvents = parsedEvents;
+                                    showSearchBar = false;
                                   });
                                 },
-                              ),
-                              // FeedPicker
-                              Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(horizontal: 24),
-                                  child: upcomingSavedSwitch),
-                              // Filter button
-                              CampusIconButton(
-                                iconPath: 'assets/img/icons/filter.svg',
-                                onTap: () {
-                                  widget.mainNavigatorKey.currentState?.push(
-                                    PageRouteBuilder(
-                                      opaque: false,
-                                      pageBuilder: (context, _, __) =>
-                                          CalendarFilterPopup(
-                                            selectedFilters:
-                                            Provider.of<SettingsHandler>(context)
-                                                .currentSettings
-                                                .eventsFilter,
-                                            onClose: saveChangedFilters,
-                                          ),
+                              )
+                            : Container(
+                                padding: const EdgeInsets.only(top: 7.3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // Search button
+                                    CampusIconButton(
+                                      iconPath: 'assets/img/icons/search.svg',
+                                      onTap: () {
+                                        setState(() {
+                                          showSearchBar = true;
+                                        });
+                                      },
                                     ),
-                                  );
-                                },
+                                    // FeedPicker
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24),
+                                        child: upcomingSavedSwitch),
+                                    // Filter button
+                                    CampusIconButton(
+                                      iconPath: 'assets/img/icons/filter.svg',
+                                      onTap: () {
+                                        widget.mainNavigatorKey.currentState
+                                            ?.push(
+                                          PageRouteBuilder(
+                                            opaque: false,
+                                            pageBuilder: (context, _, __) =>
+                                                CalendarFilterPopup(
+                                              selectedFilters:
+                                                  Provider.of<SettingsHandler>(
+                                                          context)
+                                                      .currentSettings
+                                                      .eventsFilter,
+                                              onClose: saveChangedFilters,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
+                      ),
                     ],
                   ),
                 ),
