@@ -31,10 +31,11 @@ class CalendarUtils extends Utils {
       if (e is CalendarEventWidget) {
         final categoryNames = e.event.categories.map((e) => e.name);
 
-        if (e.event.url.startsWith('https://asta-bochum.de') ||
+        /*if (e.event.url.startsWith('https://asta-bochum.de') ||
             filters.any((element) => categoryNames.contains(element))) {
           filteredEvents.add(e);
-        }
+        }*/
+        filteredEvents.add(e);
       } else {
         filteredEvents.add(e);
       }

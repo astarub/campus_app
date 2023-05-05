@@ -50,6 +50,7 @@ class FeedPageState extends State<FeedPage>
   List<Widget> _searchNewsWidgets = [];
 
   bool showSearchBar = false;
+  String search = '';
 
   late final SnappingSheetController _popupController;
 
@@ -72,6 +73,9 @@ class FeedPageState extends State<FeedPage>
         ..addAll(eventData['failures']! as List<Failure>);
       _parsedNewsWidgets = parseUpdateToWidgets();
     });
+
+    // Updates the list of searched news articles with potential new events
+    onSearch(search);
 
     debugPrint('Feed aktualisiert.');
   }
@@ -122,6 +126,7 @@ class FeedPageState extends State<FeedPage>
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
+        this.search = '';
         _searchNewsWidgets = _parsedNewsWidgets;
       });
       return;
@@ -141,6 +146,7 @@ class FeedPageState extends State<FeedPage>
 
     setState(() {
       _searchNewsWidgets = filteredWidgets;
+      this.search = search;
     });
   }
 
@@ -228,11 +234,11 @@ class FeedPageState extends State<FeedPage>
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       controller: _scrollController,
                       physics: const BouncingScrollPhysics(),
-                      itemCount: _searchNewsWidgets.length,
+                      itemCount: _searchNewsWidgets.isNotEmpty ? _searchNewsWidgets.length : _parsedNewsWidgets.length,
                       itemBuilder: (context, index) => AnimatedOpacity(
                         opacity: _newsWidgetOpacity,
                         duration: Duration(milliseconds: 100 + (index * 200)),
-                        child: _searchNewsWidgets[index],
+                        child: _searchNewsWidgets.isNotEmpty ? _searchNewsWidgets[index] : _parsedNewsWidgets[index],
                       ),
                     ),
                   ),

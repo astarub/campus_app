@@ -56,6 +56,7 @@ class _CalendarPageState extends State<CalendarPage>
   bool showSavedPlaceholder = false;
 
   bool showSearchBar = false;
+  String search = '';
 
   /// Function that calls usecase and parses widgets into the corresponding
   /// lists of events or failures.
@@ -65,23 +66,28 @@ class _CalendarPageState extends State<CalendarPage>
       savedWidgetOpacity = 0;
     });
 
-    await _calendarUsecase.updateEventsAndFailures().then((data) {
-      setState(() {
-        _events = data['events']! as List<Event>;
-        _savedEvents = data['saved']! as List<Event>;
-        _failures = data['failures']! as List<Failure>;
+    await _calendarUsecase.updateEventsAndFailures().then(
+      (data) {
+        setState(() {
+          _events = data['events']! as List<Event>;
+          _savedEvents = data['saved']! as List<Event>;
+          _failures = data['failures']! as List<Failure>;
 
-        parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
-        savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
+          parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
+          savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
 
-        showUpcomingPlaceholder = _events.isEmpty;
-        showSavedPlaceholder = _savedEvents.isEmpty;
-        eventWidgetOpacity = 1;
-        savedWidgetOpacity = 1;
-      });
-    }, onError: (e) {
-      throw Exception('Failed to load parsed Events: $e');
-    });
+          showUpcomingPlaceholder = _events.isEmpty;
+          showSavedPlaceholder = _savedEvents.isEmpty;
+          eventWidgetOpacity = 1;
+          savedWidgetOpacity = 1;
+        });
+        // Updates the list of searched events with potential new events
+        onSearch(search);
+      },
+      onError: (e) {
+        throw Exception('Failed to load parsed Events: $e');
+      },
+    );
 
     return parsedEvents;
   }
@@ -115,14 +121,13 @@ class _CalendarPageState extends State<CalendarPage>
     );
 
     updateStateWithEvents();
-
-    searchEvents = parsedEvents;
   }
 
   /// Filters the events based on the search input of the user
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
+        this.search = '';
         searchEvents = parsedEvents;
       });
       return;
@@ -142,6 +147,7 @@ class _CalendarPageState extends State<CalendarPage>
 
     setState(() {
       searchEvents = filteredWidgets;
+      this.search = search;
     });
   }
 
@@ -154,7 +160,9 @@ class _CalendarPageState extends State<CalendarPage>
         .currentSettings
         .eventsFilter;
     final List<Widget> filteredEvents = _calendarUtils.filterEventWidgets(
-        filters, searchEvents.isNotEmpty ? searchEvents : parsedEvents);
+      filters,
+      searchEvents.isNotEmpty ? searchEvents : parsedEvents,
+    );
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context)

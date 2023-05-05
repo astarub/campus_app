@@ -21,10 +21,14 @@ class CalendarUsecases {
     };
 
     // get events from AStA API and cached events
-    final Either<Failure, List<Event>> remoteEvents = await calendarRepository.getAStAEvents();
-    final Either<Failure, List<Event>> remoteAppEvents = await calendarRepository.getAppEvents();
-    final Either<Failure, List<Event>> cachedEvents = calendarRepository.getCachedEvents();
-    final Either<Failure, List<Event>> savedEvents = await calendarRepository.updateSavedEvents();
+    final Either<Failure, List<Event>> remoteEvents =
+        await calendarRepository.getAStAEvents();
+    final Either<Failure, List<Event>> remoteAppEvents =
+        await calendarRepository.getAppEvents();
+    final Either<Failure, List<Event>> cachedEvents =
+        calendarRepository.getCachedEvents();
+    final Either<Failure, List<Event>> savedEvents =
+        await calendarRepository.updateSavedEvents();
 
     // fold cachedEvents
     cachedEvents.fold(
@@ -37,11 +41,9 @@ class CalendarUsecases {
       (failure) => data['failures']!.add(failure),
       (events) => data['events'] = events, // overwrite cached feed
     );
-
-    // fold remoteAppEvents
     remoteAppEvents.fold(
-          (failure) => data['failures']!.add(failure),
-          (events) => data['events'] = events, // overwrite cached feed
+      (failure) => data['failures']!.add(failure),
+      (events) => data['events'] = List<Event>.from(data['events']!) + List<Event>.from(events),
     );
 
     // fold savedEvents
@@ -73,7 +75,8 @@ class CalendarUsecases {
     };
 
     // get only cached events
-    final Either<Failure, List<Event>> cachedEvents = calendarRepository.getCachedEvents();
+    final Either<Failure, List<Event>> cachedEvents =
+        calendarRepository.getCachedEvents();
 
     // fold cachedEvents
     cachedEvents.fold(
