@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:pdf_image_renderer/pdf_image_renderer.dart';
 import 'package:pdfx/pdfx.dart';
@@ -12,10 +11,13 @@ import 'package:syncfusion_flutter_pdf/pdf.dart' as sync_pdf;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:barcode_widget/barcode_widget.dart' as bw;
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/guide/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+import 'package:campus_app/pages/guide/widgets/barcode_scanner.dart';
 
 class CampusWallet extends StatelessWidget {
   const CampusWallet({Key? key}) : super(key: key);
@@ -24,45 +26,15 @@ class CampusWallet extends StatelessWidget {
   Widget build(BuildContext context) {
     return StackedCardCarousel(
       scrollDirection: Axis.horizontal,
-      items: [
-        Container(
-          width: 300,
-          height: 200,
-          child: const BogestraTicket(),
-        ),
-        Container(
-          width: 300,
-          height: 200,
-          decoration: BoxDecoration(
-            color: Colors.orange,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))],
-          ),
-          child: Center(
-            child: Text('2'),
-          ),
-        ),
-        Container(
-          width: 300,
-          height: 200,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))],
-          ),
-          child: Center(
-            child: Text('3'),
-          ),
-        ),
+      items: const [
+        SizedBox(width: 300, height: 200, child: BogestraTicket()),
+        SizedBox(width: 300, height: 200, child: UbCard()),
       ],
     );
   }
 }
 
 class BogestraTicket extends StatefulWidget {
-  /* Image? semesterTicketImage;
-  Image? qrCodeImage; */
-
   const BogestraTicket({Key? key}) : super(key: key);
 
   @override
@@ -244,6 +216,162 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                 ],
               ),
             ),
+    );
+  }
+}
+
+class UbCard extends StatefulWidget {
+  const UbCard({Key? key}) : super(key: key);
+
+  @override
+  State<UbCard> createState() => _UbCardState();
+}
+
+class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCard> {
+  bool scanned = false;
+  String scannedValue = '';
+  bool error = false;
+
+  bool showScanner = false;
+  bool showCode = false;
+
+  /// Scans the UB barcode
+  void addBarcode(BarcodeCapture capture) {
+    final List<Barcode> barcodes = capture.barcodes;
+
+    if (barcodes[0].type == BarcodeType.text || barcodes[0].rawValue != null) {
+      if (barcodes[0].rawValue!.startsWith('1080')) {
+        setState(() {
+          scannedValue = barcodes[0].rawValue!;
+          scanned = true;
+          showScanner = false;
+        });
+        safeBarcode();
+      } else {
+        setState(() => error = true);
+      }
+    } else {
+      setState(() => error = true);
+    }
+  }
+
+  /// Save the given barcode to the apps directory
+  Future<void> safeBarcode() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    final File barcodeFile = File('$directoryPath/settings.txt');
+    barcodeFile.writeAsString(scannedValue);
+
+    debugPrint('Saved UB barcode.');
+  }
+
+  /// Load the previsouly scanned barcode
+  Future<void> loadBarcode() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    final File barcodeFile = File('$directoryPath/settings.txt');
+
+    await barcodeFile.exists().then((bool existing) {
+      if (existing) {
+        debugPrint('Loading UB barcode');
+
+        barcodeFile.readAsString().then((String loadedValue) {
+          if (loadedValue != '') {
+            setState(() {
+              scannedValue = loadedValue;
+              scanned = true;
+            });
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    loadBarcode();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.black12),
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))],
+      ),
+      child: showScanner
+          ? BarcodeScanner(
+              onBarcodeDetected: addBarcode,
+              onBack: () {
+                setState(() => showScanner = false);
+              },
+            )
+          : scanned
+              ? GestureDetector(
+                  onTap: () {
+                    setState(() => showCode = !showCode);
+                    if (showCode) {
+                      setBrightness(1);
+                    } else {
+                      resetBrightness();
+                    }
+                  },
+                  child: SizedBox(
+                    height: 95,
+                    width: 320,
+                    child: Center(
+                      child: bw.BarcodeWidget(
+                        data: scannedValue,
+                        barcode: bw.Barcode.code128(),
+                        height: 95,
+                        width: 320,
+                        backgroundColor: Colors.white,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                        ),
+                        padding: const EdgeInsets.only(
+                          top: 15,
+                          bottom: 3,
+                          left: 12,
+                          right: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : CustomButton(
+                  tapHandler: () {
+                    setState(() => showScanner = true);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/img/icons/file-plus.svg',
+                        height: 20,
+                        width: 20,
+                        color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          'Füge deinen UB Ausweis hinzu',
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
     );
   }
 }
