@@ -10,6 +10,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_usecases.dart';
 import 'package:campus_app/pages/feed/widgets/filter_popup.dart';
@@ -50,7 +51,7 @@ class FeedPageState extends State<FeedPage>
   List<Widget> _searchNewsWidgets = [];
 
   bool showSearchBar = false;
-  String search = '';
+  String searchWord = '';
 
   late final SnappingSheetController _popupController;
 
@@ -74,9 +75,6 @@ class FeedPageState extends State<FeedPage>
       _parsedNewsWidgets = parseUpdateToWidgets();
     });
 
-    // Updates the list of searched news articles with potential new events
-    onSearch(search);
-
     debugPrint('Feed aktualisiert.');
   }
 
@@ -88,12 +86,11 @@ class FeedPageState extends State<FeedPage>
       news: _rubnews,
       events: _events,
       mixInto: Provider.of<SettingsHandler>(context, listen: false)
-              .currentSettings
-              .feedFilter
-              .contains('Events') ||
-          Provider.of<SettingsHandler>(context, listen: false)
-              .currentSettings
-              .newsExplore,
+          .currentSettings
+          .newsExplore,
+      shuffle: Provider.of<SettingsHandler>(context, listen: false)
+          .currentSettings
+          .newsExplore,
     );
   }
 
@@ -106,11 +103,14 @@ class FeedPageState extends State<FeedPage>
     debugPrint('Saving new feed filter: ${newSettings.feedFilter}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings =
         newSettings;
+
+    // Update the feed with updated filters
+    updateStateWithFeed();
   }
 
   void saveFeedExplore(int selected) {
-    bool explore = false;
-    if (selected == 1) explore = true;
+    bool explore = true;
+    if (selected == 1) explore = false;
 
     final Settings newSettings =
         Provider.of<SettingsHandler>(context, listen: false)
@@ -120,23 +120,25 @@ class FeedPageState extends State<FeedPage>
     debugPrint('Saving newsExplore: ${newSettings.newsExplore}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings =
         newSettings;
+
+    // Mix in widget when changed to the explore section and vice versa
+    setState(() {
+      _parsedNewsWidgets = parseUpdateToWidgets();
+      onSearch(searchWord);
+    });
   }
 
   /// Filters the feed based on the search input of the user
   void onSearch(String search) {
-    if (search.isEmpty) {
-      setState(() {
-        this.search = '';
-        _searchNewsWidgets = _parsedNewsWidgets;
-      });
-      return;
-    }
-
     final List<Widget> filteredWidgets = [];
 
     for (final Widget e in _parsedNewsWidgets) {
       if (e is FeedItem) {
         if (e.title.toUpperCase().contains(search.toUpperCase())) {
+          filteredWidgets.add(e);
+        }
+      } else if (e is CalendarEventWidget) {
+        if (e.event.title.toUpperCase().contains(search.toUpperCase())) {
           filteredWidgets.add(e);
         }
       } else {
@@ -146,7 +148,7 @@ class FeedPageState extends State<FeedPage>
 
     setState(() {
       _searchNewsWidgets = filteredWidgets;
-      this.search = search;
+      searchWord = search;
     });
   }
 
@@ -187,9 +189,6 @@ class FeedPageState extends State<FeedPage>
 
     // Request an update for the feed
     updateStateWithFeed();
-
-    // Fill the searched widgets list with all feed items by default
-    _searchNewsWidgets = _parsedNewsWidgets;
   }
 
   @override
@@ -205,6 +204,16 @@ class FeedPageState extends State<FeedPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    // Filter the feed items based on the selected filters
+    final filters = Provider.of<SettingsHandler>(context, listen: false)
+        .currentSettings
+        .feedFilter;
+
+    final List<Widget> filteredFeedItems = _feedUtils.filterFeedWidgets(
+      filters,
+      searchWord != '' ? _searchNewsWidgets : _parsedNewsWidgets,
+    );
 
     return Scaffold(
       backgroundColor:
@@ -234,11 +243,11 @@ class FeedPageState extends State<FeedPage>
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       controller: _scrollController,
                       physics: const BouncingScrollPhysics(),
-                      itemCount: _searchNewsWidgets.isNotEmpty ? _searchNewsWidgets.length : _parsedNewsWidgets.length,
+                      itemCount: filteredFeedItems.length,
                       itemBuilder: (context, index) => AnimatedOpacity(
                         opacity: _newsWidgetOpacity,
                         duration: Duration(milliseconds: 100 + (index * 200)),
-                        child: _searchNewsWidgets.isNotEmpty ? _searchNewsWidgets[index] : _parsedNewsWidgets[index],
+                        child: filteredFeedItems[index],
                       ),
                     ),
                   ),
@@ -258,7 +267,7 @@ class FeedPageState extends State<FeedPage>
                     children: [
                       // Headline
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 24),
+                        padding: const EdgeInsets.only(bottom: 20),
                         child: Text(
                           'Feed',
                           style: Provider.of<ThemesNotifier>(context)
@@ -281,59 +290,64 @@ class FeedPageState extends State<FeedPage>
                                     setState(() {
                                       _searchNewsWidgets = _parsedNewsWidgets;
                                       showSearchBar = false;
+                                      searchWord = '';
                                     });
                                   },
                                 )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    // Search button
-                                    CampusIconButton(
-                                      iconPath: 'assets/img/icons/search.svg',
-                                      onTap: () {
-                                        setState(() {
-                                          showSearchBar = true;
-                                        });
-                                      },
-                                    ),
-                                    // FeedPicker
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 24),
-                                      child: CampusSegmentedControl(
-                                        leftTitle: 'Feed',
-                                        rightTitle: 'Explore',
-                                        onChanged: saveFeedExplore,
-                                        selected: Provider.of<SettingsHandler>(
-                                                        context,
-                                                        listen: false)
-                                                    .currentSettings
-                                                    .newsExplore ==
-                                                false
-                                            ? 0
-                                            : 1,
+                              : Padding(
+                                  padding: const EdgeInsets.only(top: 8.5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Search button
+                                      CampusIconButton(
+                                        iconPath: 'assets/img/icons/search.svg',
+                                        onTap: () {
+                                          setState(() {
+                                            showSearchBar = true;
+                                          });
+                                        },
                                       ),
-                                    ),
-                                    // Filter button
-                                    CampusIconButton(
-                                      iconPath: 'assets/img/icons/filter.svg',
-                                      onTap: () {
-                                        widget.mainNavigatorKey.currentState
-                                            ?.push(PageRouteBuilder(
-                                          opaque: false,
-                                          pageBuilder: (context, _, __) =>
-                                              FeedFilterPopup(
-                                            selectedFilters:
-                                                Provider.of<SettingsHandler>(
-                                                        context)
-                                                    .currentSettings
-                                                    .feedFilter,
-                                            onClose: saveChangedFilters,
-                                          ),
-                                        ));
-                                      },
-                                    ),
-                                  ],
+                                      // FeedPicker
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24),
+                                        child: CampusSegmentedControl(
+                                          leftTitle: 'Explore',
+                                          rightTitle: 'Feed',
+                                          onChanged: saveFeedExplore,
+                                          selected:
+                                              Provider.of<SettingsHandler>(
+                                                              context,
+                                                              listen: false)
+                                                          .currentSettings
+                                                          .newsExplore ==
+                                                      false
+                                                  ? 1
+                                                  : 0,
+                                        ),
+                                      ),
+                                      // Filter button
+                                      CampusIconButton(
+                                        iconPath: 'assets/img/icons/filter.svg',
+                                        onTap: () {
+                                          widget.mainNavigatorKey.currentState
+                                              ?.push(PageRouteBuilder(
+                                            opaque: false,
+                                            pageBuilder: (context, _, __) =>
+                                                FeedFilterPopup(
+                                              selectedFilters:
+                                                  Provider.of<SettingsHandler>(
+                                                          context)
+                                                      .currentSettings
+                                                      .feedFilter,
+                                              onClose: saveChangedFilters,
+                                            ),
+                                          ));
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                         ),
                       ),

@@ -1,14 +1,18 @@
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
+import 'package:campus_app/pages/feed/astafeed/astafeed_datasource.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_datasource.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_repository.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/testing.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:xml/xml.dart';
 
+import '../calendar/calendar_datasource_test.mocks.dart';
 import '../test_constants.dart';
 import 'rubnews_repository_test.mocks.dart';
 import 'samples/single_news_xmlitem.dart';
@@ -17,10 +21,14 @@ import 'samples/single_news_xmlitem.dart';
 void main() {
   late RubnewsRepository rubnewsRepository;
   late MockRubnewsDatasource mockRubnewsDatasource;
+  late AstaFeedDatasource astaFeedDatasource;
+  late Dio mockClient;
 
   setUp(() {
     mockRubnewsDatasource = MockRubnewsDatasource();
-    rubnewsRepository = RubnewsRepository(rubnewsDatasource: mockRubnewsDatasource);
+    mockClient = MockDio();
+    astaFeedDatasource = AstaFeedDatasource(client: mockClient);
+    rubnewsRepository = RubnewsRepository(rubnewsDatasource: mockRubnewsDatasource, astaFeedDatasource: astaFeedDatasource);
   });
 
   group('[getRemoteNewsfeed]', () {

@@ -56,14 +56,16 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor:
+          Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Buttons in header
           Padding(
-            padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 12),
+            padding:
+                const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -79,9 +81,10 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     Share.share(
-                      'RUB AStA Event shared via Campus App: ${widget.event.url}',
-                      subject: 'RUB AStA Event shared via Campus App',
-                      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                      'Event shared via Campus App: ${widget.event.url}',
+                      subject: 'Event shared via Campus App',
+                      sharePositionOrigin:
+                          box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },
                 ),
@@ -96,7 +99,8 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
           // Event content
           Expanded(
             child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -105,8 +109,10 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                     // Image
                     if (widget.event.hasImage)
                       ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(15)),
-                        child: CachedNetworkImage(imageUrl: widget.event.imageUrl!),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                        child: CachedNetworkImage(
+                            imageUrl: widget.event.imageUrl!),
                       ),
                     // Info section
                     Padding(
@@ -116,9 +122,13 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                           // Date
                           Container(
                             margin: const EdgeInsets.only(right: 10),
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                              color: Provider.of<ThemesNotifier>(context,
+                                              listen: false)
+                                          .currentTheme ==
+                                      AppThemes.light
                                   ? Colors.black
                                   : const Color.fromRGBO(34, 40, 54, 1),
                               borderRadius: BorderRadius.circular(15),
@@ -127,7 +137,8 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  DateFormat('LLL').format(widget.event.startDate),
+                                  DateFormat('LLL')
+                                      .format(widget.event.startDate),
                                   style: Provider.of<ThemesNotifier>(context)
                                       .currentThemeData
                                       .textTheme
@@ -135,8 +146,12 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                       ?.copyWith(fontSize: 14),
                                 ),
                                 Text(
-                                  DateFormat('dd').format(widget.event.startDate),
-                                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                                  DateFormat('dd')
+                                      .format(widget.event.startDate),
+                                  style: Provider.of<ThemesNotifier>(context)
+                                      .currentThemeData
+                                      .textTheme
+                                      .headlineMedium,
                                 ),
                               ],
                             ),
@@ -151,25 +166,28 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                   StyledHTML(
                                     context: context,
                                     text: widget.event.title,
-                                    textStyle: Provider.of<ThemesNotifier>(context)
-                                        .currentThemeData
-                                        .textTheme
-                                        .headlineSmall!
-                                        .copyWith(fontSize: 20),
+                                    textStyle:
+                                        Provider.of<ThemesNotifier>(context)
+                                            .currentThemeData
+                                            .textTheme
+                                            .headlineSmall!
+                                            .copyWith(fontSize: 20),
                                     textAlign: TextAlign.left,
                                   ),
                                   Container(
-                                    transform: Matrix4.translationValues(0, -10, 0),
+                                    transform:
+                                        Matrix4.translationValues(0, -10, 0),
                                     child: StyledHTML(
                                       context: context,
                                       text: widget.event.venue.name == ''
                                           ? 'Veranstaltungsort wird noch bekannt gegeben.'
                                           : '${widget.event.venue}<br> ${DateFormat('Hm').format(widget.event.startDate)} Uhr - ${DateFormat('Hm').format(widget.event.endDate)} Uhr',
-                                      textStyle: Provider.of<ThemesNotifier>(context)
-                                          .currentThemeData
-                                          .textTheme
-                                          .headlineSmall!
-                                          .copyWith(fontSize: 12),
+                                      textStyle:
+                                          Provider.of<ThemesNotifier>(context)
+                                              .currentThemeData
+                                              .textTheme
+                                              .headlineSmall!
+                                              .copyWith(fontSize: 12),
                                     ),
                                   ),
                                 ],
@@ -184,7 +202,9 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       padding: const EdgeInsets.only(top: 10, bottom: 40),
                       child: StyledHTML(
                         context: context,
-                        text: widget.event.description != '' ? widget.event.description : 'No description given.',
+                        text: widget.event.description != ''
+                            ? widget.event.description
+                            : 'No description given.',
                         textAlign: TextAlign.justify,
                       ),
                     ),
@@ -193,7 +213,10 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       Text(
                         'Host',
                         textAlign: TextAlign.left,
-                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                        style: Provider.of<ThemesNotifier>(context)
+                            .currentThemeData
+                            .textTheme
+                            .headlineSmall,
                       ),
                     if (widget.event.organizers.isNotEmpty)
                       Padding(
@@ -208,7 +231,10 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       Text(
                         'Veranstaltungsort',
                         textAlign: TextAlign.left,
-                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                        style: Provider.of<ThemesNotifier>(context)
+                            .currentThemeData
+                            .textTheme
+                            .headlineSmall,
                       ),
                     if (widget.event.venue.name != '')
                       Padding(

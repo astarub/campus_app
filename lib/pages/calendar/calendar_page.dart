@@ -125,14 +125,6 @@ class _CalendarPageState extends State<CalendarPage>
 
   /// Filters the events based on the search input of the user
   void onSearch(String search) {
-    if (search.isEmpty) {
-      setState(() {
-        this.search = '';
-        searchEvents = parsedEvents;
-      });
-      return;
-    }
-
     final List<Widget> filteredWidgets = [];
 
     for (final Widget e in parsedEvents) {
@@ -240,7 +232,9 @@ class _CalendarPageState extends State<CalendarPage>
                 // Header
                 Container(
                   padding: EdgeInsets.only(
-                      top: Platform.isAndroid ? 10 : 0, bottom: 20),
+                    top: Platform.isAndroid ? 10 : 0,
+                    bottom: 18,
+                  ),
                   color: Provider.of<ThemesNotifier>(context)
                       .currentThemeData
                       .colorScheme
@@ -250,7 +244,7 @@ class _CalendarPageState extends State<CalendarPage>
                     children: [
                       // Title
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 14.3),
+                        padding: const EdgeInsets.only(bottom: 20),
                         child: Text(
                           'Events',
                           style: Provider.of<ThemesNotifier>(context)
@@ -268,11 +262,12 @@ class _CalendarPageState extends State<CalendarPage>
                                   setState(() {
                                     searchEvents = parsedEvents;
                                     showSearchBar = false;
+                                    search = '';
                                   });
                                 },
                               )
                             : Container(
-                                padding: const EdgeInsets.only(top: 7.3),
+                                padding: const EdgeInsets.only(top: 8.2),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

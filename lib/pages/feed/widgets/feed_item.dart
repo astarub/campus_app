@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:animations/animations.dart';
@@ -24,7 +26,7 @@ class FeedItem extends StatelessWidget {
   final DateTime date;
 
   /// The image of the news feed item that is displayed in the feed and detail apge
-  final CachedNetworkImage image;
+  CachedNetworkImage? image;
 
   /// A link of the news feed item that links to an external website, if no content is given
   final String link;
@@ -36,24 +38,24 @@ class FeedItem extends StatelessWidget {
   final Event? event;
 
   /// Creates a NewsFeed-item with an expandable content
-  const FeedItem({
+  FeedItem({
     Key? key,
     required this.title,
     this.description = '',
     required this.date,
-    required this.image,
+    this.image,
     this.link = '',
     required this.content,
     this.event,
   }) : super(key: key);
 
   /// Creates a NewsFeed-item with an external link
-  const FeedItem.link({
+  FeedItem.link({
     Key? key,
     required this.title,
     this.description = '',
     required this.date,
-    required this.image,
+    this.image,
     required this.link,
     this.content = '',
     this.event,
@@ -80,17 +82,25 @@ class FeedItem extends StatelessWidget {
           );
         }
       },
-      middleColor: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.backgroundColor,
-      closedColor: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.backgroundColor,
+      middleColor: Provider.of<ThemesNotifier>(context, listen: false)
+          .currentThemeData
+          .backgroundColor,
+      closedColor: Provider.of<ThemesNotifier>(context, listen: false)
+          .currentThemeData
+          .backgroundColor,
       closedElevation: 0,
       closedBuilder: (context, VoidCallback openDetailsPage) => Padding(
         padding: const EdgeInsets.only(bottom: 14),
         child: CustomButton(
           borderRadius: BorderRadius.circular(15),
-          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          highlightColor: Provider.of<ThemesNotifier>(context, listen: false)
+                      .currentTheme ==
+                  AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.03)
               : const Color.fromRGBO(255, 255, 255, 0.03),
-          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          splashColor: Provider.of<ThemesNotifier>(context, listen: false)
+                      .currentTheme ==
+                  AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.04)
               : const Color.fromRGBO(255, 255, 255, 0.04),
           tapHandler: openDetailsPage,
@@ -104,18 +114,20 @@ class FeedItem extends StatelessWidget {
                 Stack(
                   alignment: Alignment.bottomRight,
                   children: [
-                    // Image
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: image,
+                    if (image != null)
+                      // Image
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: image,
+                        ),
                       ),
-                    ),
                     // Date
                     if (event != null)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 4),
                         margin: const EdgeInsets.only(right: 4, bottom: 5),
                         decoration: BoxDecoration(
                           color: Colors.black,
@@ -134,7 +146,10 @@ class FeedItem extends StatelessWidget {
                             ),
                             Text(
                               day,
-                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                              style: Provider.of<ThemesNotifier>(context)
+                                  .currentThemeData
+                                  .textTheme
+                                  .headlineMedium,
                             ),
                           ],
                         ),
@@ -147,14 +162,20 @@ class FeedItem extends StatelessWidget {
                   child: StyledHTML(
                     context: context,
                     text: title,
-                    textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                    textStyle: Provider.of<ThemesNotifier>(context)
+                        .currentThemeData
+                        .textTheme
+                        .headlineSmall,
                   ),
                 ),
                 // Description
                 StyledHTML(
                   context: context,
                   text: description,
-                  textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                  textStyle: Provider.of<ThemesNotifier>(context)
+                      .currentThemeData
+                      .textTheme
+                      .bodyMedium,
                 ),
               ],
             ),

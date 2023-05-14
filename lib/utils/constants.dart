@@ -7,6 +7,8 @@ const String astaEvents = 'https://asta-bochum.de/wp-json/tribe/events/v1/events
 const String appEvents = 'https://app.asta-bochum.de/wp-json/tribe/events/v1/events/';
 const String astaFavicon = 'https://asta-bochum.de/wp-content/themes/rt_notio/custom/images/favicon.ico';
 const String rubNewsfeed = 'https://news.rub.de/newsfeed'; // there is no non-german
+const String astaFeed = 'https://asta-bochum.de/wp-json/wp/v2/posts';
+const String appFeed = 'https://app.asta-bochum.de/wp-json/wp/v2/posts';
 
 // TODO: Change IP to domain name of an asta-bocum.de server
 const String mensaData = 'https://85.214.40.154/get_meal';

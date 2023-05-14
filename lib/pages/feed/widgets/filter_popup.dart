@@ -30,7 +30,8 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
 
   void onFilterSelected(String selectedFilter) {
     if (_selectedFilters.contains(selectedFilter)) {
-      setState(() => _selectedFilters.removeWhere((filter) => filter == selectedFilter));
+      setState(() =>
+          _selectedFilters.removeWhere((filter) => filter == selectedFilter));
     } else {
       setState(() => _selectedFilters.add(selectedFilter));
     }
@@ -52,18 +53,22 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
         Navigator.pop(context);
       },
       child: Container(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+        color: Provider.of<ThemesNotifier>(context)
+            .currentThemeData
+            .colorScheme
+            .background,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Column(
             children: [
               CampusMultiSelection(
-                selectionItemTitles: ['RUB', 'Events'],
+                selectionItemTitles: const ['RUB', 'AStA'],
                 onSelected: onFilterSelected,
                 selections: [
                   //_selectedFilters.contains('RUB'),
-                  true, // hardcoded, as the rub news-feed should not be deactivateable at this moment
-                  _selectedFilters.contains('Events'),
+                  true,
+                  // hardcoded, as the rub news-feed should not be deactivateable at this moment
+                  _selectedFilters.contains('AStA'),
                 ],
               ),
             ],

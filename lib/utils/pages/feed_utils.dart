@@ -36,16 +36,19 @@ class FeedUtils extends Utils {
     // parse news in widget
     for (final n in news) {
       // Removes empty lines and white spaces
-      final String formattedDescription =
-          n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
+      final String formattedDescription = n.description
+          .replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '')
+          .replaceAll(RegExp(' {2,}'), '');
 
       _news.add(
         FeedItem(
           title: n.title,
           date: n.pubDate,
-          image: CachedNetworkImage(
-            imageUrl: n.imageUrls[0],
-          ),
+          image: n.imageUrls[0] != 'false'
+              ? CachedNetworkImage(
+                  imageUrl: n.imageUrls[0],
+                )
+              : null,
           content: n.content,
           link: n.url,
           description: formattedDescription,
@@ -56,8 +59,9 @@ class FeedUtils extends Utils {
     // parse events in widget
     for (final e in events) {
       // Removes empty lines and white spaces
-      final String formattedDescription =
-          e.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
+      final String formattedDescription = e.description
+          .replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '')
+          .replaceAll(RegExp(' {2,}'), '');
 
       final startingTime = DateFormat('Hm').format(e.startDate);
       final endingTime = DateFormat('Hm').format(e.endDate);
@@ -130,6 +134,26 @@ class FeedUtils extends Utils {
     widgets.insert(0, SizedBox(height: heigth ?? 80));
 
     return widgets;
+  }
+
+  List<Widget> filterFeedWidgets(List<String> filters, List<Widget> parsedFeedItems) {
+    final List<Widget> filteredFeedItems = [];
+
+    for (final Widget f in parsedFeedItems) {
+      if (f is FeedItem) {
+        if (f.link.startsWith('https://news.rub.de')) {
+          filteredFeedItems.add(f);
+        }
+        if (f.link.startsWith('https://asta-bochum.de') &&
+            filters.contains('AStA')) filteredFeedItems.add(f);
+      }else if (f is CalendarEventWidget) {
+        if (f.event.url.startsWith('https://asta-bochum.de') &&
+            filters.contains('AStA')) filteredFeedItems.add(f);
+      } else {
+        filteredFeedItems.add(f);
+      }
+    }
+    return filteredFeedItems;
   }
 
   int _sortFeed(a, b) {

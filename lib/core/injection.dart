@@ -17,12 +17,14 @@ import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
 import 'package:campus_app/pages/mensa/mensa_repository.dart';
 import 'package:campus_app/pages/mensa/mensa_usecases.dart';
+
 //import 'package:campus_app/pages/ecampus/bloc/ecampus_bloc.dart';
 //import 'package:campus_app/pages/ecampus/ticket_datasource.dart';
 //import 'package:campus_app/pages/ecampus/ticket_repository.dart';
 import 'package:campus_app/pages/moodle/moodle_datasource.dart';
 import 'package:campus_app/pages/moodle/moodle_repository.dart';
 import 'package:campus_app/pages/moodle/moodle_usecases.dart';
+import 'package:campus_app/pages/feed/astafeed/astafeed_datasource.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_datasource.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_repository.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_usecases.dart';
@@ -43,17 +45,26 @@ Future<void> init() async {
   sl.registerSingletonAsync(() async {
     final client = Dio();
 
-    (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
-      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
       return client;
     };
-    return MensaDataSource(client: client, mensaCache: await Hive.openBox('mensaCache'));
+    return MensaDataSource(
+        client: client, mensaCache: await Hive.openBox('mensaCache'));
   });
 
   sl.registerSingletonAsync(
     () async => RubnewsDatasource(
       client: sl(),
       rubnewsCache: await Hive.openBox('rubnewsCache'),
+    ),
+  );
+
+  sl.registerSingletonAsync(
+    () async => AstaFeedDatasource(
+      client: sl(),
     ),
   );
 
@@ -82,7 +93,7 @@ Future<void> init() async {
   //!
 
   sl.registerSingletonWithDependencies(
-    () => RubnewsRepository(rubnewsDatasource: sl()),
+    () => RubnewsRepository(rubnewsDatasource: sl(), astaFeedDatasource: sl()),
     dependsOn: [RubnewsDatasource],
   );
 

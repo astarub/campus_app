@@ -95,7 +95,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
             if (rawFileContent != '') {
               final dynamic rawData = json.decode(rawFileContent);
               loadedSettings = Settings.fromJson(rawData);
-              loadedSettings = loadedSettings!.copyWith(newsExplore: false); // Default Feed on every start
+              loadedSettings = loadedSettings!.copyWith(newsExplore: true); // Default Feed on every start
 
               debugPrint('Settings loaded.');
               Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(loadedSettings!);
@@ -120,7 +120,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           // Create settings file for the first time, if it doesnt exist
           debugPrint('Settings-file created.');
           settingsJsonFile.create();
-          final Settings initialSettings = Settings(feedFilter: ['RUB'], mensaPreferences: [], mensaAllergenes: []);
+          final Settings initialSettings = Settings(feedFilter: ['RUB', 'AStA'], mensaPreferences: [], mensaAllergenes: []);
           settingsJsonFile.writeAsString(json.encode(initialSettings.toJson()));
 
           // Apply the inital settings

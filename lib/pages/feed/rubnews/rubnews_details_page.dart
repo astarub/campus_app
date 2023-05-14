@@ -12,7 +12,7 @@ import 'package:campus_app/utils/widgets/styled_html.dart';
 class RubnewsDetailsPage extends StatelessWidget {
   final String title;
   final DateTime date;
-  final CachedNetworkImage image;
+  final CachedNetworkImage? image;
   final String content;
   final bool isEvent;
   final String link;
@@ -21,7 +21,7 @@ class RubnewsDetailsPage extends StatelessWidget {
     Key? key,
     required this.title,
     required this.date,
-    required this.image,
+    this.image,
     required this.link,
     required this.content,
     this.isEvent = false,
@@ -33,7 +33,8 @@ class RubnewsDetailsPage extends StatelessWidget {
     final day = DateFormat('dd').format(date);
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor:
+          Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
@@ -59,9 +60,10 @@ class RubnewsDetailsPage extends StatelessWidget {
                       final box = context.findRenderObject() as RenderBox?;
 
                       Share.share(
-                        'RUB News Article shared via Campus App: $link',
-                        subject: 'RUB News Article shared via Campus App',
-                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                        'Article shared via Campus App: $link',
+                        subject: 'Article shared via Campus App',
+                        sharePositionOrigin:
+                            box!.localToGlobal(Offset.zero) & box.size,
                       );
                     },
                   ),
@@ -79,14 +81,16 @@ class RubnewsDetailsPage extends StatelessWidget {
                       alignment: Alignment.bottomRight,
                       children: [
                         // Image
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: image,
-                        ),
+                        if (image != null)
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: image,
+                          ),
                         // Date
                         if (isEvent)
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
                             margin: const EdgeInsets.only(right: 4, bottom: 5),
                             decoration: BoxDecoration(
                               color: Colors.black,
@@ -105,7 +109,10 @@ class RubnewsDetailsPage extends StatelessWidget {
                                 ),
                                 Text(
                                   day,
-                                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                                  style: Provider.of<ThemesNotifier>(context)
+                                      .currentThemeData
+                                      .textTheme
+                                      .headlineMedium,
                                 ),
                               ],
                             ),
@@ -115,16 +122,21 @@ class RubnewsDetailsPage extends StatelessWidget {
                   ),
                   // Title
                   Padding(
-                    padding: const EdgeInsets.only(top: 12, bottom: 6, left: 20, right: 20),
+                    padding: const EdgeInsets.only(
+                        top: 12, bottom: 6, left: 20, right: 20),
                     child: Text(
                       title,
-                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                      style: Provider.of<ThemesNotifier>(context)
+                          .currentThemeData
+                          .textTheme
+                          .headlineSmall,
                       textAlign: TextAlign.left,
                     ),
                   ),
                   // Content
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
+                    padding:
+                        const EdgeInsets.only(bottom: 20, left: 12, right: 12),
                     child: StyledHTML(
                       context: context,
                       text: content,

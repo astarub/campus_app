@@ -7,21 +7,45 @@ import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_datasource.dart';
+import 'package:campus_app/pages/feed/astafeed/astafeed_datasource.dart';
 
 class RubnewsRepository {
   final RubnewsDatasource rubnewsDatasource;
+  final AstaFeedDatasource astaFeedDatasource;
 
-  RubnewsRepository({required this.rubnewsDatasource});
+  RubnewsRepository(
+      {required this.rubnewsDatasource, required this.astaFeedDatasource});
 
   /// Return a list of web news or a failure.
   Future<Either<Failure, List<NewsEntity>>> getRemoteNewsfeed() async {
     try {
       final newsXml = await rubnewsDatasource.getNewsfeedAsXml();
+      final astaFeed = await astaFeedDatasource.getAStAFeedAsJson();
+      final appFeed = await astaFeedDatasource.getAppFeedAsJson();
       final newsXmlList = newsXml.findAllElements('item');
 
       final List<NewsEntity> entities = [];
 
-      await Future.forEach(newsXmlList.map((news) => news), (XmlElement e) async {
+      for (final e in astaFeed) {
+        final entity = NewsEntity.fromJSON(e);
+        final past = DateTime.now().subtract(const Duration(days: 7));
+
+        if (entity.pubDate.compareTo(past) > 0) {
+          entities.add(entity);
+        }
+      }
+
+      for (final e in appFeed) {
+        final entity = NewsEntity.fromJSON(e);
+        final past = DateTime.now().subtract(const Duration(days: 7));
+
+        if (entity.pubDate.compareTo(past) > 0) {
+          entities.add(entity);
+        }
+      }
+
+      await Future.forEach(newsXmlList.map((news) => news),
+          (XmlElement e) async {
         final link = e.getElement('link')!.text;
         final imageUrls = await rubnewsDatasource.getImageUrlsFromNewsUrl(link);
         entities.add(NewsEntity.fromXML(e, imageUrls));

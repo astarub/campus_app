@@ -58,7 +58,7 @@ class Settings {
     this.useSystemDarkmode = true,
     this.useDarkmode = false,
     this.feedFilter = const [],
-    this.newsExplore = false,
+    this.newsExplore = true,
     this.eventsFilter = const [],
     this.mensaPreferences = const [],
     this.mensaAllergenes = const [],
@@ -99,13 +99,19 @@ class Settings {
     return Settings(
       useSystemDarkmode: json['useSystemDarkmode'] ?? true,
       useDarkmode: json['useDarkmode'] ?? false,
-      feedFilter: json['feedFilter'] != null ? List<String>.from(json['feedFilter']) : List<String>.from([]),
+      feedFilter: json['feedFilter'] != null
+          ? List<String>.from(json['feedFilter'])
+          : List<String>.from([]),
       newsExplore: json['newsExplore'] ?? false,
-      eventsFilter: json['eventsFilter'] != null ? List<String>.from(json['eventsFilter']) : List<String>.from([]),
-      mensaPreferences:
-          json['mensaPreferences'] != null ? List<String>.from(json['mensaPreferences']) : List<String>.from([]),
-      mensaAllergenes:
-          json['mensaAllergenes'] != null ? List<String>.from(json['mensaAllergenes']) : List<String>.from([]),
+      eventsFilter: json['eventsFilter'] != null
+          ? List<String>.from(json['eventsFilter'])
+          : List<String>.from([]),
+      mensaPreferences: json['mensaPreferences'] != null
+          ? List<String>.from(json['mensaPreferences'])
+          : List<String>.from([]),
+      mensaAllergenes: json['mensaAllergenes'] != null
+          ? List<String>.from(json['mensaAllergenes'])
+          : List<String>.from([]),
       useExternalBrowser: json['useExternalBrowser'] ?? false,
       useSystemTextScaling: json['useSystemTextScaling'] ?? false,
       useFirebase: json['useFirebase'] == 2
@@ -113,7 +119,9 @@ class Settings {
           : json['useFirebase'] == 1
               ? FirebaseStatus.forbidden
               : FirebaseStatus.uncofigured,
-      studyCourses: json['studyCourses'] != null ? List<String>.from(json['studyCourses']) : List<String>.from([]),
+      studyCourses: json['studyCourses'] != null
+          ? List<String>.from(json['studyCourses'])
+          : List<String>.from([]),
     );
   }
 
