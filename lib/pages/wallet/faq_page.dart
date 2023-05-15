@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
-import 'package:campus_app/pages/guide/widgets/expandable_faq_item.dart';
-import 'package:campus_app/pages/guide/guide_content.dart';
+import 'package:campus_app/pages/wallet/widgets/expandable_faq_item.dart';
+import 'package:campus_app/pages/wallet/guide_content.dart';
 
 class FaqPage extends StatelessWidget {
   List<Widget> faqExpandables = [];
