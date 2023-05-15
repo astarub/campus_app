@@ -75,8 +75,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             // Guide
             BottomNavBarItem(
               title: 'Guide',
-              imagePathActive: 'assets/img/icons/help-filled.png',
-              imagePathInactive: 'assets/img/icons/help-outlined.png',
+              imagePathActive: 'assets/img/icons/wallet-filled.png',
+              imagePathInactive: 'assets/img/icons/wallet-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.guide),
               isActive: widget.currentPage == PageItem.guide,
             ),

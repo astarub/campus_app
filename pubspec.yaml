@@ -111,6 +111,8 @@ flutter:
      - assets/img/icons/mensa-filled.png
      - assets/img/icons/help-outlined.png
      - assets/img/icons/help-filled.png
+     - assets/img/icons/wallet-outlined.png
+     - assets/img/icons/wallet-filled.png
      - assets/img/icons/more.png
      - assets/img/icons/settings.svg
      - assets/img/icons/info.svg
