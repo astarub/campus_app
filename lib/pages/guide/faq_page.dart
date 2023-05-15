@@ -54,7 +54,7 @@ class FaqPage extends StatelessWidget {
                     ),
                     Align(
                       child: Text(
-                        'FAQ',
+                        'Campus ABC',
                         style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       ),
                     ),

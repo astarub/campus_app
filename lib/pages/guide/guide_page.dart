@@ -60,33 +60,12 @@ class _GuidePageState extends State<GuidePage> {
                 Expanded(
                   child: ListView(
                     children: [
-                      // Future features info
-                      Padding(
-                        padding: const EdgeInsets.only(top: 40, bottom: 30, left: 20, right: 20),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              'assets/img/icons/info-message.svg',
-                              height: 24,
-                              color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color,
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 16),
-                                child: Text(
-                                  'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen wie bspw. einen interaktiven Raumfinder erweitert werden.',
-                                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Leitwarte button
                       const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.only(top: 40, left: 20, right: 20),
                         child: LeitwarteButton(),
                       ),
+                      // Other useful features
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: Column(
@@ -105,7 +84,7 @@ class _GuidePageState extends State<GuidePage> {
                                 );
                               },
                             ),
-                            // Room finder
+                            // Room finder (WIP)
                             SubPageButton(
                               title: 'Raumfinder',
                               leadingIconPath: 'assets/img/icons/map.svg',
@@ -115,7 +94,7 @@ class _GuidePageState extends State<GuidePage> {
                             ),
                             // FAQ
                             SubPageButton(
-                              title: 'FAQ',
+                              title: 'Campus ABC',
                               leadingIconPath: 'assets/img/icons/help-circle.svg',
                               trailingIconPath: 'assets/img/icons/chevron-right.svg',
                               onTap: () {
@@ -126,6 +105,29 @@ class _GuidePageState extends State<GuidePage> {
                                   ),
                                 );
                               },
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Future features info
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40, bottom: 60, left: 20, right: 20),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              'assets/img/icons/info-message.svg',
+                              height: 24,
+                              color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color,
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 16),
+                                child: Text(
+                                  'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen wie bspw. einen interaktiven Raumfinder erweitert werden.',
+                                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                                  overflow: TextOverflow.visible,
+                                ),
+                              ),
                             ),
                           ],
                         ),

@@ -24,8 +24,11 @@ class CampusWallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double initialWalletOffset = (MediaQuery.of(context).size.width - 300) / 2;
+
     return StackedCardCarousel(
       scrollDirection: Axis.horizontal,
+      initialOffset: initialWalletOffset,
       items: const [
         SizedBox(width: 300, height: 200, child: BogestraTicket()),
         SizedBox(width: 300, height: 200, child: UbCard()),
@@ -197,6 +200,12 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
             )
           : CustomButton(
               tapHandler: addTicket,
+              splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? const Color.fromRGBO(0, 0, 0, 0.04)
+                  : const Color.fromRGBO(255, 255, 255, 0.06),
+              highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? const Color.fromRGBO(0, 0, 0, 0.02)
+                  : const Color.fromRGBO(255, 255, 255, 0.04),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -303,7 +312,7 @@ class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCa
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.black12),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))],
@@ -334,7 +343,10 @@ class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCa
                         barcode: bw.Barcode.code128(),
                         height: 95,
                         width: 320,
-                        backgroundColor: Colors.white,
+                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? Colors.black
+                            : Colors.white,
+                        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -353,6 +365,12 @@ class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCa
                   tapHandler: () {
                     setState(() => showScanner = true);
                   },
+                  splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromRGBO(0, 0, 0, 0.04)
+                      : const Color.fromRGBO(255, 255, 255, 0.06),
+                  highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromRGBO(0, 0, 0, 0.02)
+                      : const Color.fromRGBO(255, 255, 255, 0.04),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
