@@ -181,7 +181,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.black12),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))],
@@ -310,6 +310,8 @@ class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCa
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
@@ -347,8 +349,8 @@ class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCa
                             ? Colors.black
                             : Colors.white,
                         backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-                        style: const TextStyle(
-                          color: Colors.black,
+                        style: TextStyle(
+                          color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color,
                           fontSize: 15,
                         ),
                         padding: const EdgeInsets.only(
