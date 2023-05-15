@@ -53,7 +53,7 @@ class _GuidePageState extends State<GuidePage> {
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 250,
                   child: CampusWallet(),
                 ),

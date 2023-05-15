@@ -24,14 +24,14 @@ class CampusWallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double initialWalletOffset = (MediaQuery.of(context).size.width - 300) / 2;
+    final double initialWalletOffset = (MediaQuery.of(context).size.width - 325) / 2;
 
     return StackedCardCarousel(
       scrollDirection: Axis.horizontal,
       initialOffset: initialWalletOffset,
       items: const [
-        SizedBox(width: 300, height: 200, child: BogestraTicket()),
-        SizedBox(width: 300, height: 200, child: UbCard()),
+        SizedBox(width: 325, height: 217, child: BogestraTicket()),
+        SizedBox(width: 325, height: 217, child: UbCard()),
       ],
     );
   }
@@ -181,7 +181,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
 
     return Container(
       decoration: BoxDecoration(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+        color: scanned ? Colors.white : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.black12),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))],
