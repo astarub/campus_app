@@ -5,28 +5,27 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/guide/faq_page.dart';
-import 'package:campus_app/pages/guide/mensa_balance_page.dart';
-import 'package:campus_app/pages/more/widgets/external_link_button.dart';
+import 'package:campus_app/pages/wallet/faq_page.dart';
+import 'package:campus_app/pages/wallet/mensa_balance_page.dart';
 import 'package:campus_app/utils/widgets/subpage_button.dart';
-import 'package:campus_app/pages/guide/widgets/leitwarte_button.dart';
-import 'package:campus_app/pages/guide/widgets/wallet.dart';
+import 'package:campus_app/pages/wallet/widgets/leitwarte_button.dart';
+import 'package:campus_app/pages/wallet/widgets/wallet.dart';
 
-class GuidePage extends StatefulWidget {
+class WalletPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
-  const GuidePage({
+  const WalletPage({
     Key? key,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
   }) : super(key: key);
 
   @override
-  State<GuidePage> createState() => _GuidePageState();
+  State<WalletPage> createState() => _WalletPageState();
 }
 
-class _GuidePageState extends State<GuidePage> {
+class _WalletPageState extends State<WalletPage> {
   List<Widget> faqExpandables = [const LeitwarteButton()];
 
   @override

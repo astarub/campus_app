@@ -15,9 +15,9 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:barcode_widget/barcode_widget.dart' as bw;
 
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/guide/widgets/stacked_card_carousel.dart';
+import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
-import 'package:campus_app/pages/guide/widgets/barcode_scanner.dart';
+import 'package:campus_app/pages/wallet/widgets/barcode_scanner.dart';
 
 class CampusWallet extends StatelessWidget {
   const CampusWallet({Key? key}) : super(key: key);
