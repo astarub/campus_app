@@ -4,9 +4,7 @@ import 'package:campus_app/pages/feed/astafeed/astafeed_datasource.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_datasource.dart';
 import 'package:campus_app/pages/feed/rubnews/rubnews_repository.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/testing.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -22,12 +20,10 @@ void main() {
   late RubnewsRepository rubnewsRepository;
   late MockRubnewsDatasource mockRubnewsDatasource;
   late AstaFeedDatasource astaFeedDatasource;
-  late Dio mockClient;
 
   setUp(() {
     mockRubnewsDatasource = MockRubnewsDatasource();
-    mockClient = MockDio();
-    astaFeedDatasource = AstaFeedDatasource(client: mockClient);
+    astaFeedDatasource = AstaFeedDatasource(client: MockDio());
     rubnewsRepository = RubnewsRepository(rubnewsDatasource: mockRubnewsDatasource, astaFeedDatasource: astaFeedDatasource);
   });
 

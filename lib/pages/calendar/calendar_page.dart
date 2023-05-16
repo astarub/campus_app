@@ -50,6 +50,8 @@ class _CalendarPageState extends State<CalendarPage>
   late final CampusSegmentedControl upcomingSavedSwitch;
   bool showSavedEvents = false;
 
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
   double eventWidgetOpacity = 0;
   double savedWidgetOpacity = 0;
   bool showUpcomingPlaceholder = false;
@@ -120,7 +122,10 @@ class _CalendarPageState extends State<CalendarPage>
       },
     );
 
-    updateStateWithEvents();
+    // Request an update for the calendar and show the refresh indicator
+    Future.delayed(const Duration(milliseconds: 200)).then((_) {
+      refreshIndicatorKey.currentState?.show();
+    });
   }
 
   /// Filters the events based on the search input of the user
@@ -186,7 +191,8 @@ class _CalendarPageState extends State<CalendarPage>
                               text: 'Merke dir Events, um sie hier zu sehen.',
                             )
                           : RefreshIndicator(
-                              displacement: 55,
+                              key: refreshIndicatorKey,
+                              displacement: 67,
                               backgroundColor:
                                   Provider.of<ThemesNotifier>(context)
                                       .currentThemeData

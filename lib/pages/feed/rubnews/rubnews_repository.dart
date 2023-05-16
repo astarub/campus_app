@@ -28,7 +28,7 @@ class RubnewsRepository {
 
       for (final e in astaFeed) {
         final entity = NewsEntity.fromJSON(e);
-        final past = DateTime.now().subtract(const Duration(days: 7));
+        final past = DateTime.now().subtract(const Duration(days: 21));
 
         if (entity.pubDate.compareTo(past) > 0) {
           entities.add(entity);
@@ -37,7 +37,7 @@ class RubnewsRepository {
 
       for (final e in appFeed) {
         final entity = NewsEntity.fromJSON(e);
-        final past = DateTime.now().subtract(const Duration(days: 7));
+        final past = DateTime.now().subtract(const Duration(days: 21));
 
         if (entity.pubDate.compareTo(past) > 0) {
           entities.add(entity);

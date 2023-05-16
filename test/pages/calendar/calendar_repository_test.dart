@@ -38,7 +38,7 @@ void main() {
       // assert: is actuall return equals expected return? -> List<Event>
       identical(testReturn, sampleEntities);
       verify(mockCalendarDatasource.getAStAEventsAsJsonArray());
-      verify(mockCalendarDatasource.writeEventsToCache(any));
+      verify(mockCalendarDatasource.writeEventsToCach(any));
       verifyNoMoreInteractions(mockCalendarDatasource);
     });
 
@@ -94,14 +94,14 @@ void main() {
   group('[getCachedEvents]', () {
     test("Should return list of event etities if datasource doesn't throw a exception", () {
       // arrange: datasource return a news entity list
-      when(mockCalendarDatasource.readEventsFromCache()).thenAnswer((_) => sampleEntities);
+      when(mockCalendarDatasource.readEventsFromCach()).thenAnswer((_) => sampleEntities);
 
       // act: function call
       final testReturn = calendarRepository.getCachedEvents();
 
       // assert: is testElement expected object? -> ServerFailure
       identical(testReturn, sampleEntities);
-      verify(mockCalendarDatasource.readEventsFromCache());
+      verify(mockCalendarDatasource.readEventsFromCach());
       verifyNoMoreInteractions(mockCalendarDatasource);
     });
 
@@ -110,14 +110,14 @@ void main() {
       final expectedReturn = CachFailure();
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
-      when(mockCalendarDatasource.readEventsFromCache()).thenThrow(Exception());
+      when(mockCalendarDatasource.readEventsFromCach()).thenThrow(Exception());
 
       // act: funtion call
       final testReturn = calendarRepository.getCachedEvents();
 
       // assert: is testElement expected object? -> CachFailure
       identical(testReturn, expectedReturn);
-      verify(mockCalendarDatasource.readEventsFromCache());
+      verify(mockCalendarDatasource.readEventsFromCach());
       verifyNoMoreInteractions(mockCalendarDatasource);
     });
   });

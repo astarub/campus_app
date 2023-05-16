@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio/adapter.dart';
-//import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
 class DioUtils {
@@ -31,7 +30,7 @@ class DioUtils {
 
   void configureAsyncInsecure()
   {
-    (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    (client.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
@@ -45,8 +44,8 @@ class DioUtils {
     String? baseUrl,
   }) {
     // Dio timeout options
-    client.options.connectTimeout = connectTimeout;
-    client.options.receiveTimeout = receiveTimeout;
+    client.options.connectTimeout = Duration(milliseconds: connectTimeout);
+    client.options.receiveTimeout = Duration(milliseconds: receiveTimeout);
 
     // set baseUrl when given
     if (baseUrl != null) {

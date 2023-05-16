@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:dartz/dartz.dart';
-
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/calendar/calendar_datasource.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:dartz/dartz.dart';
 
 class CalendarRepository {
   final CalendarDatasource calendarDatasource;
@@ -83,9 +82,24 @@ class CalendarRepository {
       final cachedEvents = calendarDatasource.readEventsFromCache();
       final cachedAppEvents = calendarDatasource.readEventsFromCache(app: true);
 
+      // Cache contains both app and asta events
+      if (cachedAppEvents.isNotEmpty && cachedEvents.isNotEmpty) {
+        return Right(
+          List<Event>.from(cachedEvents) +
+              List<Event>.from(cachedAppEvents),
+        );
+      }
+
+      // Cache only contains app events
+      if (cachedAppEvents.isNotEmpty && cachedEvents.isEmpty) {
+        return Right(
+          List<Event>.from(cachedAppEvents),
+        );
+      }
+
+      // Cache only contains asta events
       return Right(
-        List<Event>.from(Right(cachedEvents).toIterable()) +
-            List<Event>.from(Right(cachedAppEvents).toIterable()),
+        List<Event>.from(cachedEvents),
       );
     } catch (e) {
       return Left(CachFailure());

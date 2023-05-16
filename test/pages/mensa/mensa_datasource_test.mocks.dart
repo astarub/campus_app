@@ -93,6 +93,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           Invocation.getter(#options),
         ),
       ) as _i2.BaseOptions);
+
   @override
   set options(_i2.BaseOptions? _options) => super.noSuchMethod(
         Invocation.setter(
@@ -101,6 +102,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   _i3.HttpClientAdapter get httpClientAdapter => (super.noSuchMethod(
         Invocation.getter(#httpClientAdapter),
@@ -109,6 +111,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           Invocation.getter(#httpClientAdapter),
         ),
       ) as _i3.HttpClientAdapter);
+
   @override
   set httpClientAdapter(_i3.HttpClientAdapter? _httpClientAdapter) =>
       super.noSuchMethod(
@@ -118,6 +121,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   _i4.Transformer get transformer => (super.noSuchMethod(
         Invocation.getter(#transformer),
@@ -126,6 +130,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           Invocation.getter(#transformer),
         ),
       ) as _i4.Transformer);
+
   @override
   set transformer(_i4.Transformer? _transformer) => super.noSuchMethod(
         Invocation.setter(
@@ -134,6 +139,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   _i5.Interceptors get interceptors => (super.noSuchMethod(
         Invocation.getter(#interceptors),
@@ -142,6 +148,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           Invocation.getter(#interceptors),
         ),
       ) as _i5.Interceptors);
+
   @override
   void close({bool? force = false}) => super.noSuchMethod(
         Invocation.method(
@@ -151,13 +158,15 @@ class MockDio extends _i1.Mock implements _i7.Dio {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   _i8.Future<_i6.Response<T>> get<T>(
-    String? path, {
+    String path, {
     Map<String, dynamic>? queryParameters,
-    _i2.Options? options,
     _i9.CancelToken? cancelToken,
+    Object? data,
     _i2.ProgressCallback? onReceiveProgress,
+    _i2.Options? options,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -184,11 +193,13 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> getUri<T>(
     Uri? uri, {
-    _i2.Options? options,
     _i9.CancelToken? cancelToken,
+    _i2.Options? options,
+    Object? data,
     _i2.ProgressCallback? onReceiveProgress,
   }) =>
       (super.noSuchMethod(
@@ -214,6 +225,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> post<T>(
     String? path, {
@@ -253,6 +265,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> postUri<T>(
     Uri? uri, {
@@ -289,6 +302,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> put<T>(
     String? path, {
@@ -328,6 +342,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> putUri<T>(
     Uri? uri, {
@@ -364,6 +379,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> head<T>(
     String? path, {
@@ -397,6 +413,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> headUri<T>(
     Uri? uri, {
@@ -427,6 +444,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> delete<T>(
     String? path, {
@@ -460,6 +478,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> deleteUri<T>(
     Uri? uri, {
@@ -490,6 +509,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> patch<T>(
     String? path, {
@@ -529,6 +549,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> patchUri<T>(
     Uri? uri, {
@@ -565,6 +586,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   void lock() => super.noSuchMethod(
         Invocation.method(
@@ -573,6 +595,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void unlock() => super.noSuchMethod(
         Invocation.method(
@@ -581,6 +604,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   void clear() => super.noSuchMethod(
         Invocation.method(
@@ -589,6 +613,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
         ),
         returnValueForMissingStub: null,
       );
+
   @override
   _i8.Future<_i6.Response<dynamic>> download(
     String? urlPath,
@@ -639,6 +664,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<dynamic>>);
+
   @override
   _i8.Future<_i6.Response<dynamic>> downloadUri(
     Uri? uri,
@@ -686,6 +712,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<dynamic>>);
+
   @override
   _i8.Future<_i6.Response<T>> request<T>(
     String? path, {
@@ -725,6 +752,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> requestUri<T>(
     Uri? uri, {
@@ -761,6 +789,7 @@ class MockDio extends _i1.Mock implements _i7.Dio {
           ),
         )),
       ) as _i8.Future<_i6.Response<T>>);
+
   @override
   _i8.Future<_i6.Response<T>> fetch<T>(_i2.RequestOptions? requestOptions) =>
       (super.noSuchMethod(
@@ -791,41 +820,49 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         Invocation.getter(#values),
         returnValue: <E>[],
       ) as Iterable<E>);
+
   @override
   String get name => (super.noSuchMethod(
         Invocation.getter(#name),
         returnValue: '',
       ) as String);
+
   @override
   bool get isOpen => (super.noSuchMethod(
         Invocation.getter(#isOpen),
         returnValue: false,
       ) as bool);
+
   @override
   bool get lazy => (super.noSuchMethod(
         Invocation.getter(#lazy),
         returnValue: false,
       ) as bool);
+
   @override
   Iterable<dynamic> get keys => (super.noSuchMethod(
         Invocation.getter(#keys),
         returnValue: <dynamic>[],
       ) as Iterable<dynamic>);
+
   @override
   int get length => (super.noSuchMethod(
         Invocation.getter(#length),
         returnValue: 0,
       ) as int);
+
   @override
   bool get isEmpty => (super.noSuchMethod(
         Invocation.getter(#isEmpty),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isNotEmpty => (super.noSuchMethod(
         Invocation.getter(#isNotEmpty),
         returnValue: false,
       ) as bool);
+
   @override
   Iterable<E> valuesBetween({
     dynamic startKey,
@@ -842,11 +879,13 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         ),
         returnValue: <E>[],
       ) as Iterable<E>);
+
   @override
   E? getAt(int? index) => (super.noSuchMethod(Invocation.method(
         #getAt,
         [index],
       )) as E?);
+
   @override
   Map<dynamic, E> toMap() => (super.noSuchMethod(
         Invocation.method(
@@ -855,11 +894,13 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         ),
         returnValue: <dynamic, E>{},
       ) as Map<dynamic, E>);
+
   @override
   dynamic keyAt(int? index) => super.noSuchMethod(Invocation.method(
         #keyAt,
         [index],
       ));
+
   @override
   _i8.Stream<_i10.BoxEvent> watch({dynamic key}) => (super.noSuchMethod(
         Invocation.method(
@@ -869,6 +910,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         ),
         returnValue: _i8.Stream<_i10.BoxEvent>.empty(),
       ) as _i8.Stream<_i10.BoxEvent>);
+
   @override
   bool containsKey(dynamic key) => (super.noSuchMethod(
         Invocation.method(
@@ -877,6 +919,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         ),
         returnValue: false,
       ) as bool);
+
   @override
   _i8.Future<void> put(
     dynamic key,
@@ -893,6 +936,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
       ) as _i8.Future<void>);
+
   @override
   _i8.Future<void> putAt(
     int? index,
@@ -909,6 +953,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
       ) as _i8.Future<void>);
+
   @override
   _i8.Future<void> putAll(Map<dynamic, E>? entries) => (super.noSuchMethod(
         Invocation.method(
@@ -918,6 +963,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
       ) as _i8.Future<void>);
+
   @override
   _i8.Future<int> add(E? value) => (super.noSuchMethod(
         Invocation.method(
@@ -926,6 +972,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         ),
         returnValue: _i8.Future<int>.value(0),
       ) as _i8.Future<int>);
+
   @override
   _i8.Future<Iterable<int>> addAll(Iterable<E>? values) => (super.noSuchMethod(
         Invocation.method(
@@ -934,6 +981,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         ),
         returnValue: _i8.Future<Iterable<int>>.value(<int>[]),
       ) as _i8.Future<Iterable<int>>);
+
   @override
   _i8.Future<void> delete(dynamic key) => (super.noSuchMethod(
         Invocation.method(
@@ -943,6 +991,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
       ) as _i8.Future<void>);
+
   @override
   _i8.Future<void> deleteAt(int? index) => (super.noSuchMethod(
         Invocation.method(
@@ -952,6 +1001,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
       ) as _i8.Future<void>);
+
   @override
   _i8.Future<void> deleteAll(Iterable<dynamic>? keys) => (super.noSuchMethod(
         Invocation.method(
@@ -961,6 +1011,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
       ) as _i8.Future<void>);
+
   @override
   _i8.Future<void> compact() => (super.noSuchMethod(
         Invocation.method(
@@ -970,6 +1021,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
       ) as _i8.Future<void>);
+
   @override
   _i8.Future<int> clear() => (super.noSuchMethod(
         Invocation.method(
@@ -978,6 +1030,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         ),
         returnValue: _i8.Future<int>.value(0),
       ) as _i8.Future<int>);
+
   @override
   _i8.Future<void> close() => (super.noSuchMethod(
         Invocation.method(
@@ -987,6 +1040,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
       ) as _i8.Future<void>);
+
   @override
   _i8.Future<void> deleteFromDisk() => (super.noSuchMethod(
         Invocation.method(
@@ -996,6 +1050,7 @@ class MockBox<E> extends _i1.Mock implements _i10.Box<E> {
         returnValue: _i8.Future<void>.value(),
         returnValueForMissingStub: _i8.Future<void>.value(),
       ) as _i8.Future<void>);
+
   @override
   _i8.Future<void> flush() => (super.noSuchMethod(
         Invocation.method(

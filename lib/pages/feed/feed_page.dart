@@ -39,6 +39,8 @@ class FeedPage extends StatefulWidget {
 
 class FeedPageState extends State<FeedPage>
     with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<FeedPage> {
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
   late final ScrollController _scrollController;
   double _scrollControllerLastOffset = 0;
   double _headerOpacity = 1;
@@ -74,6 +76,9 @@ class FeedPageState extends State<FeedPage>
         ..addAll(eventData['failures']! as List<Failure>);
       _parsedNewsWidgets = parseUpdateToWidgets();
     });
+
+    // Apply search to newly parsed feed items
+    onSearch(searchWord);
 
     debugPrint('Feed aktualisiert.');
   }
@@ -187,8 +192,10 @@ class FeedPageState extends State<FeedPage>
     _failures.addAll(eventData['failures']!
         as List<Failure>); // CachFailure when no data was cached before
 
-    // Request an update for the feed
-    updateStateWithFeed();
+    // Request an update for the feed and show the refresh indicator
+    Future.delayed(const Duration(milliseconds: 200)).then((_) {
+      refreshIndicatorKey.currentState?.show();
+    });
   }
 
   @override
@@ -217,7 +224,7 @@ class FeedPageState extends State<FeedPage>
 
     return Scaffold(
       backgroundColor:
-          Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+          Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -230,7 +237,8 @@ class FeedPageState extends State<FeedPage>
                 Container(
                   margin: EdgeInsets.only(top: Platform.isAndroid ? 70 : 60),
                   child: RefreshIndicator(
-                    displacement: 55,
+                    key: refreshIndicatorKey,
+                    displacement: 63,
                     backgroundColor: Provider.of<ThemesNotifier>(context)
                         .currentThemeData
                         .cardColor,
@@ -255,7 +263,8 @@ class FeedPageState extends State<FeedPage>
                 // Header
                 Container(
                   padding: EdgeInsets.only(
-                      top: Platform.isAndroid ? 10 : 0, bottom: 20),
+                    top: Platform.isAndroid ? 10 : 0,
+                  ),
                   color: _headerOpacity == 1
                       ? Provider.of<ThemesNotifier>(context)
                           .currentThemeData

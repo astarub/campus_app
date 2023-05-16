@@ -47,7 +47,7 @@ class StyledHTML extends Html {
               fontSize: textStyle?.fontSize == null ? null : FontSize(textStyle!.fontSize!),
             ),
           },
-          onLinkTap: (url, renderContext, attributes, element) => openURL(context, url.toString()),
+          onLinkTap: (url, renderContext, element) => openURL(context, url.toString()),
         );
 
   /// Opens a url either in webview or external application e.g. mail app

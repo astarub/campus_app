@@ -70,11 +70,11 @@ class MockRubnewsDatasource extends _i1.Mock implements _i5.RubnewsDatasource {
         ),
       ) as _i2.Dio);
   @override
-  _i3.Box<dynamic> get rubnewsCache => (super.noSuchMethod(
-        Invocation.getter(#rubnewsCache),
+  _i3.Box<dynamic> get rubnewsCach => (super.noSuchMethod(
+        Invocation.getter(#rubnewsCach),
         returnValue: _FakeBox_1<dynamic>(
           this,
-          Invocation.getter(#rubnewsCache),
+          Invocation.getter(#rubnewsCach),
         ),
       ) as _i3.Box<dynamic>);
   @override
@@ -101,10 +101,10 @@ class MockRubnewsDatasource extends _i1.Mock implements _i5.RubnewsDatasource {
         returnValue: _i6.Future<List<String>>.value(<String>[]),
       ) as _i6.Future<List<String>>);
   @override
-  _i6.Future<void> writeNewsEntitiesToCache(List<_i7.NewsEntity>? entities) =>
+  _i6.Future<void> writeNewsEntitiesToCach(List<_i7.NewsEntity>? entities) =>
       (super.noSuchMethod(
         Invocation.method(
-          #writeNewsEntitiesToCache,
+          #writeNewsEntitiesToCach,
           [entities],
         ),
         returnValue: _i6.Future<void>.value(),
