@@ -5,6 +5,7 @@ class CustomButton extends StatelessWidget {
   final Color highlightColor;
   final BorderRadius borderRadius;
   final VoidCallback tapHandler;
+  final VoidCallback? longPressHandler;
   final Widget child;
 
   const CustomButton({
@@ -17,6 +18,7 @@ class CustomButton extends StatelessWidget {
         bottomLeft: Radius.circular(10),
         bottomRight: Radius.circular(10)),
     required this.tapHandler,
+    this.longPressHandler,
     required this.child,
   }) : super(key: key);
 
@@ -26,6 +28,7 @@ class CustomButton extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: tapHandler,
+        onLongPress: longPressHandler,
         splashColor: splashColor,
         highlightColor: highlightColor,
         borderRadius: borderRadius,

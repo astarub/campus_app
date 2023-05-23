@@ -196,6 +196,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                   resetBrightness();
                 }
               },
+              onLongPress: addTicket,
               child: showQrCode ? qrCodeImage : semesterTicketImage,
             )
           : CustomButton(
@@ -336,6 +337,7 @@ class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCa
                       resetBrightness();
                     }
                   },
+                  onLongPress: () => setState(() => showScanner = true),
                   child: SizedBox(
                     height: 95,
                     width: 320,
