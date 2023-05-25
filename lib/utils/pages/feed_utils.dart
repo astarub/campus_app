@@ -147,8 +147,10 @@ class FeedUtils extends Utils {
         if (f.link.startsWith('https://asta-bochum.de') &&
             filters.contains('AStA')) filteredFeedItems.add(f);
       }else if (f is CalendarEventWidget) {
+        final past = DateTime.now().add(const Duration(days: 60));
+
         if (f.event.url.startsWith('https://asta-bochum.de') &&
-            filters.contains('AStA')) filteredFeedItems.add(f);
+            filters.contains('AStA') && f.event.startDate.compareTo(past) < 0) filteredFeedItems.add(f);
       } else {
         filteredFeedItems.add(f);
       }
@@ -158,13 +160,13 @@ class FeedUtils extends Utils {
 
   int _sortFeed(a, b) {
     if (a is FeedItem && b is FeedItem) {
-      return b.date.compareTo(a.date);
+      return a.date.compareTo(b.date);
     } else if (a is FeedItem && b is CalendarEventWidget) {
-      return b.event.startDate.compareTo(a.date);
+      return a.date.compareTo(b.event.startDate);
     } else if (a is CalendarEventWidget && b is FeedItem) {
-      return b.date.compareTo(a.event.startDate);
+      return a.event.startDate.compareTo(b.date);
     } else if (a is CalendarEventWidget && b is CalendarEventWidget) {
-      return b.event.startDate.compareTo(a.event.startDate);
+      return a.event.startDate.compareTo(b.event.startDate);
     } else {
       return 0;
     }

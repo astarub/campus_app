@@ -50,7 +50,8 @@ class _CalendarPageState extends State<CalendarPage>
   late final CampusSegmentedControl upcomingSavedSwitch;
   bool showSavedEvents = false;
 
-  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   double eventWidgetOpacity = 0;
   double savedWidgetOpacity = 0;
@@ -273,7 +274,7 @@ class _CalendarPageState extends State<CalendarPage>
                                 },
                               )
                             : Container(
-                                padding: const EdgeInsets.only(top: 8.2),
+                                padding: const EdgeInsets.only(top: 8),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -301,11 +302,11 @@ class _CalendarPageState extends State<CalendarPage>
                                             opaque: false,
                                             pageBuilder: (context, _, __) =>
                                                 CalendarFilterPopup(
-                                              selectedFilters:
-                                                  Provider.of<SettingsHandler>(
-                                                          context)
-                                                      .currentSettings
-                                                      .eventsFilter,
+                                              selectedFilters: List.from(
+                                                Provider.of<SettingsHandler>(
+                                                  context,
+                                                ).currentSettings.eventsFilter,
+                                              ),
                                               onClose: saveChangedFilters,
                                             ),
                                           ),

@@ -51,7 +51,7 @@ class RubnewsRepository {
         entities.add(NewsEntity.fromXML(e, imageUrls));
       });
 
-      // write entities to cach
+      // write entities to cache
       unawaited(rubnewsDatasource.writeNewsEntitiesToCache(entities));
 
       return Right(entities);

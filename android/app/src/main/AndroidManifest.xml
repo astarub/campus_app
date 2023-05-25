@@ -48,6 +48,9 @@
                     <data
                         android:host="asta-bochum.de"
                         android:pathPrefix="/termin" />
+                    <data
+                        android:host="app.asta-bochum.de"
+                        android:pathPrefix="/termin" />
                 </intent-filter>
             </activity>
             <!-- Don't delete the meta-data below.

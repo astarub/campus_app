@@ -5,6 +5,7 @@
   <key>com.apple.developer.associated-domains</key>
   <array>
     <string>applinks:asta-bochum.de</string>
+    <string>applinks:app.asta-bochum.de</string>
   </array>
 </dict>
 </plist>

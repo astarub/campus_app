@@ -81,10 +81,12 @@ Future<void> handleInitialUri() async {
         // Navigate to the calendar page
         await homeKey.currentState!.selectedPage(PageItem.events);
 
+        final url = 'https://${uri.host}${uri.path}';
+
         // Get the event object by the specified url if a specific event is passed as an argument. Otherwise only the events page will be displayed.
         Event event;
         try {
-          event = events.firstWhere((element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/');
+          event = events.firstWhere((element) => element.url == url);
         } catch (e) {
           return;
         }
@@ -120,10 +122,12 @@ void handleIncomingLink() {
         final eventData = await calendarUsecases.updateEventsAndFailures();
         final events = eventData['events']! as List<Event>;
 
+        final url = 'https://${uri.host}${uri.path}';
+
         // Get the event object by the specified url if a specific event is passed as an argument. Otherwise only the events page will be displayed.
         Event event;
         try {
-          event = events.firstWhere((element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/');
+          event = events.firstWhere((element) => element.url == url);
         } catch (e) {
           return;
         }

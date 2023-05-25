@@ -39,7 +39,8 @@ class FeedPage extends StatefulWidget {
 
 class FeedPageState extends State<FeedPage>
     with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<FeedPage> {
-  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   late final ScrollController _scrollController;
   double _scrollControllerLastOffset = 0;
@@ -91,9 +92,6 @@ class FeedPageState extends State<FeedPage>
       news: _rubnews,
       events: _events,
       mixInto: Provider.of<SettingsHandler>(context, listen: false)
-          .currentSettings
-          .newsExplore,
-      shuffle: Provider.of<SettingsHandler>(context, listen: false)
           .currentSettings
           .newsExplore,
     );
@@ -223,8 +221,10 @@ class FeedPageState extends State<FeedPage>
     );
 
     return Scaffold(
-      backgroundColor:
-          Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context)
+          .currentThemeData
+          .colorScheme
+          .background,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -341,18 +341,20 @@ class FeedPageState extends State<FeedPage>
                                         iconPath: 'assets/img/icons/filter.svg',
                                         onTap: () {
                                           widget.mainNavigatorKey.currentState
-                                              ?.push(PageRouteBuilder(
-                                            opaque: false,
-                                            pageBuilder: (context, _, __) =>
-                                                FeedFilterPopup(
-                                              selectedFilters:
+                                              ?.push(
+                                            PageRouteBuilder(
+                                              opaque: false,
+                                              pageBuilder: (context, _, __) =>
+                                                  FeedFilterPopup(
+                                                selectedFilters: List.from(
                                                   Provider.of<SettingsHandler>(
-                                                          context)
-                                                      .currentSettings
-                                                      .feedFilter,
-                                              onClose: saveChangedFilters,
+                                                    context,
+                                                  ).currentSettings.feedFilter,
+                                                ),
+                                                onClose: saveChangedFilters,
+                                              ),
                                             ),
-                                          ));
+                                          );
                                         },
                                       ),
                                     ],
