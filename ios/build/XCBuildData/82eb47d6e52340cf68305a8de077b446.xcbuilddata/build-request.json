@@ -1,0 +1,112 @@
+{
+  "buildCommand" : {
+    "command" : "prepareForIndexing",
+    "enableIndexBuildArena" : false,
+    "targets" : null
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98e5199a3f70555689be7018ee7f9f878d"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98d57b8bce60a0f11113f4cff532db68d3"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98a408a4c1f668e62161cdeba76f57d50c"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98020791fd2e7b7ddc8fb2658339c42e16"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98566ec9a1d71c4629f4f85ecb735ce614"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e983da17a3564c774dfaa331fa07754d2bc"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e989da425bb6d6d5d8dbb95e4afffb82217"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98d3c8dfff2c580c352f83d3850ad17775"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98718890dfdac589615663a02d43d9af3e"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e985f0ec3a68eeed5241cb87afb05bcc380"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98312b4bc59bbbe2c06c205bf4da6737f5"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98f10882e1684b8a3dfdec597bc0a47af3"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e987f74324bfc5c78140e34d510e26e00c1"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98e2ca95742fe9145d6e85576b86908ca0"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98c7ebed9850410f0ecfa73453f68494d7"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98f49b18868e69e442795477541dae1d9f"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e9822a19f6c224a402387a233be75a6e268"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e987cb9c58d33d05677fb576674bac57313"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e980062393f91a1d2d94e3e5ed3a5aa5da9"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e9830037b09fee48cfce1f8562d753688c8"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98848ff9cf74c635f5324731538a1c853f"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e983786431ce548989b846bbf1a7384f58e"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e987b2c943ca8f06482a1660ce33301a7a5"
+    },
+    {
+      "guid" : "bfdfe7dc352907fc980b868725387e98903e66fa03d6d27edaa18126a82c20fd"
+    }
+  ],
+  "containerPath" : "/Users/henryherrmann/Documents/Campus App/campus_app/ios/Pods/Pods.xcodeproj",
+  "continueBuildingAfterErrors" : true,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "",
+      "buildProductsPath" : "",
+      "derivedDataPath" : "/Users/henryherrmann/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/henryherrmann/Library/Developer/Xcode/DerivedData/Pods-gpuvinmjgbrvvrdcjdzcfxduvuls/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/henryherrmann/Library/Developer/Xcode/DerivedData/Pods-gpuvinmjgbrvvrdcjdzcfxduvuls/Index.noindex/PrecompiledHeaders",
+      "pchPath" : ""
+    },
+    "configurationName" : "Release",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO"
+        }
+      }
+    }
+  },
+  "qos" : "default",
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : true,
+  "useImplicitDependencies" : false,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : false
+}

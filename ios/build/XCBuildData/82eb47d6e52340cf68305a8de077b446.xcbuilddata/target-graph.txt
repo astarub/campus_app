@@ -1,0 +1,81 @@
+Target dependency graph (24 targets)
+FMDB in Pods, no dependencies
+PromisesObjC in Pods, no dependencies
+GoogleUtilities in Pods, depends on:
+PromisesObjC in Pods (explicit)
+FirebaseCoreInternal in Pods, depends on:
+GoogleUtilities in Pods (explicit)
+FirebaseCore in Pods, depends on:
+FirebaseCoreInternal in Pods (explicit)
+GoogleUtilities in Pods (explicit)
+FirebaseInstallations in Pods, depends on:
+FirebaseCore in Pods (explicit)
+GoogleUtilities in Pods (explicit)
+PromisesObjC in Pods (explicit)
+nanopb in Pods, no dependencies
+GoogleDataTransport in Pods, depends on:
+GoogleUtilities in Pods (explicit)
+PromisesObjC in Pods (explicit)
+nanopb in Pods (explicit)
+FirebaseMessaging in Pods, depends on:
+FirebaseCore in Pods (explicit)
+FirebaseInstallations in Pods (explicit)
+GoogleDataTransport in Pods (explicit)
+GoogleUtilities in Pods (explicit)
+nanopb in Pods (explicit)
+Firebase in Pods, depends on:
+FirebaseCore in Pods (explicit)
+FirebaseMessaging in Pods (explicit)
+Flutter in Pods, no dependencies
+OrderedSet in Pods, no dependencies
+firebase_core in Pods, depends on:
+Firebase in Pods (explicit)
+Flutter in Pods (explicit)
+firebase_messaging in Pods, depends on:
+Firebase in Pods (explicit)
+Flutter in Pods (explicit)
+firebase_core in Pods (explicit)
+flutter_inappwebview in Pods, depends on:
+Flutter in Pods (explicit)
+OrderedSet in Pods (explicit)
+flutter_local_notifications in Pods, depends on:
+Flutter in Pods (explicit)
+flutter_native_splash in Pods, depends on:
+Flutter in Pods (explicit)
+flutter_secure_storage in Pods, depends on:
+Flutter in Pods (explicit)
+path_provider_foundation in Pods, depends on:
+Flutter in Pods (explicit)
+share_plus in Pods, depends on:
+Flutter in Pods (explicit)
+sqflite in Pods, depends on:
+FMDB in Pods (explicit)
+Flutter in Pods (explicit)
+uni_links in Pods, depends on:
+Flutter in Pods (explicit)
+url_launcher_ios in Pods, depends on:
+Flutter in Pods (explicit)
+Pods-Runner in Pods, depends on:
+FMDB in Pods (explicit)
+Firebase in Pods (explicit)
+FirebaseCore in Pods (explicit)
+FirebaseCoreInternal in Pods (explicit)
+FirebaseInstallations in Pods (explicit)
+FirebaseMessaging in Pods (explicit)
+Flutter in Pods (explicit)
+GoogleDataTransport in Pods (explicit)
+GoogleUtilities in Pods (explicit)
+OrderedSet in Pods (explicit)
+PromisesObjC in Pods (explicit)
+firebase_core in Pods (explicit)
+firebase_messaging in Pods (explicit)
+flutter_inappwebview in Pods (explicit)
+flutter_local_notifications in Pods (explicit)
+flutter_native_splash in Pods (explicit)
+flutter_secure_storage in Pods (explicit)
+nanopb in Pods (explicit)
+path_provider_foundation in Pods (explicit)
+share_plus in Pods (explicit)
+sqflite in Pods (explicit)
+uni_links in Pods (explicit)
+url_launcher_ios in Pods (explicit)
