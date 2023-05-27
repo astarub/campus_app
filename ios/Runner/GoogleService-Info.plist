@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>377045725399-t6c7bmm06ckunm98pdlkbtbl8iovn5cp.apps.googleusercontent.com</string>
+	<string>330477020905-ie1vqe43juhpr8tiid6tfhtn44k6s8s2.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.377045725399-t6c7bmm06ckunm98pdlkbtbl8iovn5cp</string>
+	<string>com.googleusercontent.apps.330477020905-ie1vqe43juhpr8tiid6tfhtn44k6s8s2</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCWaDWUKIkqQdvCDrKu2Jox7eappuPBcsM</string>
+	<string>AIzaSyA_KKAxrvRTedY8wf7NkWT5_0wZTfxjsow</string>
 	<key>GCM_SENDER_ID</key>
-	<string>377045725399</string>
+	<string>330477020905</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>de.astaBochum.campusApp</string>
 	<key>PROJECT_ID</key>
-	<string>campusapp-14f9f</string>
+	<string>campus-app-asta-rub</string>
 	<key>STORAGE_BUCKET</key>
-	<string>campusapp-14f9f.appspot.com</string>
+	<string>campus-app-asta-rub.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:377045725399:ios:ee9a2c8e815769e387c092</string>
+	<string>1:330477020905:ios:bbf2276d2c84380d527278</string>
 </dict>
 </plist>
