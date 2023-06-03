@@ -19,7 +19,8 @@ class MensaBalancePage extends StatefulWidget {
   State<MensaBalancePage> createState() => _MensaBalancePageState();
 }
 
-class _MensaBalancePageState extends State<MensaBalancePage> with TickerProviderStateMixin {
+class _MensaBalancePageState extends State<MensaBalancePage>
+    with TickerProviderStateMixin {
   bool nfcAvailable = true;
   bool tagScanned = false;
   double cardBalance = 0;
@@ -28,13 +29,17 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
   late AnimationController successAnimationController;
 
   void saveMensaCardData(double scannedBalance, double lastTransaction) {
-    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false)
-        .currentSettings
-        .copyWith(lastMensaBalance: scannedBalance, lastMensaTransaction: lastTransaction);
+    final Settings newSettings =
+        Provider.of<SettingsHandler>(context, listen: false)
+            .currentSettings
+            .copyWith(
+                lastMensaBalance: scannedBalance,
+                lastMensaTransaction: lastTransaction);
 
     debugPrint(
         'Saving scanned mensa card data: Balance=${newSettings.lastMensaBalance}, Last Transaction: ${newSettings.lastMensaTransaction}');
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+        newSettings;
   }
 
   double byteArrayToDouble(Uint8List b, int offset, int length) {
@@ -50,16 +55,29 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
     try {
       // Select application
       await FlutterNfcKit.transceive(
-        Uint8List.fromList(
-            [0x90, 0x5A, 0x00, 0x00, 3, (0x5F8415 & 0xFF0000) >> 16, (0x5F8415 & 0xFF00) >> 8, 0x5F8415 & 0xFF, 0x00]),
+        Uint8List.fromList([
+          0x90,
+          0x5A,
+          0x00,
+          0x00,
+          3,
+          (0x5F8415 & 0xFF0000) >> 16,
+          (0x5F8415 & 0xFF00) >> 8,
+          0x5F8415 & 0xFF,
+          0x00
+        ]),
       );
 
       // Get the transaction history file
-      final transactionFile = await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0xF5, 0x00, 0x00, 1, 1, 0x00]));
+      final transactionFile = await FlutterNfcKit.transceive(
+        Uint8List.fromList([0x90, 0xF5, 0x00, 0x00, 1, 1, 0x00]),
+      );
 
       // Read value from mensa card
       final result = Uint8List.fromList(
-        await FlutterNfcKit.transceive(Uint8List.fromList([0x90, 0x6C, 0x00, 0x00, 1, 1, 0x00])),
+        await FlutterNfcKit.transceive(
+          Uint8List.fromList([0x90, 0x6C, 0x00, 0x00, 1, 1, 0x00]),
+        ),
       ).reversed.toList();
 
       // Mensa card data
@@ -76,7 +94,9 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
 
         // Get the last transaction from the scanned mensa card
         lastTransaction = byteArrayToDouble(
-              Uint8List.fromList(transactionFile.getRange(12, 16).toList().reversed.toList()),
+              Uint8List.fromList(
+                transactionFile.getRange(12, 16).toList().reversed.toList(),
+              ),
               0,
               4,
             ).toInt() /
@@ -85,8 +105,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
       debugPrint('Scanned mensa card nfc tag parsed: $cardBalance');
 
       saveMensaCardData(cardBalance, lastTransaction);
-      // iOS only: show alert/error message on finish
-      await FlutterNfcKit.finish(iosAlertMessage: 'Mensakarte erkannt!');
+
+      if(Platform.isIOS) await FlutterNfcKit.finish(iosAlertMessage: 'Mensakarte erkannt!');
     } catch (e) {
       debugPrint('Error while scanning mensa card. Trying again...');
     }
@@ -110,7 +130,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
           scannedTag = await FlutterNfcKit.poll(
               timeout: const Duration(seconds: 10),
               readIso15693: false,
-              iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
+              iosMultipleTagMessage:
+                  'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
               iosAlertMessage: 'Scanne deine Karte.');
         } catch (e) {
           switch (e.runtimeType) {
@@ -133,7 +154,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
             scannedTag = await FlutterNfcKit.poll(
                 timeout: const Duration(seconds: 10),
                 readIso15693: false,
-                iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
+                iosMultipleTagMessage:
+                    'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
                 iosAlertMessage: 'Scanne deine Karte.');
           } catch (e) {
             switch (e.runtimeType) {
@@ -173,7 +195,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor:
+          Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Padding(
         padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0),
         child: Column(
@@ -192,7 +215,10 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                     Align(
                       child: Text(
                         'Mensa Guthaben',
-                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                        style: Provider.of<ThemesNotifier>(context)
+                            .currentThemeData
+                            .textTheme
+                            .displayMedium,
                       ),
                     ),
                   ],
@@ -205,7 +231,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(bottom: tagScanned ? 100 : 0),
+                          padding:
+                              EdgeInsets.only(bottom: tagScanned ? 100 : 0),
                           child: AnimatedOpacity(
                             opacity: tagScanned ? 1 : 0,
                             duration: const Duration(milliseconds: 600),
@@ -218,7 +245,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                   height: 80,
                                   controller: successAnimationController,
                                   onLoaded: (composition) {
-                                    successAnimationController.duration = composition.duration;
+                                    successAnimationController.duration =
+                                        composition.duration;
                                   },
                                 ),
                                 // Current balance
@@ -228,15 +256,22 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                     Text(
                                       'Guthaben: ',
                                       style:
-                                          Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                                          Provider.of<ThemesNotifier>(context)
+                                              .currentThemeData
+                                              .textTheme
+                                              .headlineSmall,
                                     ),
                                     AnimatedNumberText<double>(
                                       cardBalance,
                                       duration: const Duration(seconds: 1),
                                       curve: Curves.easeIn,
                                       style:
-                                          Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                                      formatter: (value) => value.toStringAsFixed(2),
+                                          Provider.of<ThemesNotifier>(context)
+                                              .currentThemeData
+                                              .textTheme
+                                              .headlineSmall,
+                                      formatter: (value) =>
+                                          value.toStringAsFixed(2),
                                       onEnd: () {
                                         successAnimationController.forward();
                                       },
@@ -244,14 +279,18 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                     Text(
                                       ' €',
                                       style:
-                                          Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                                          Provider.of<ThemesNotifier>(context)
+                                              .currentThemeData
+                                              .textTheme
+                                              .headlineSmall,
                                     ),
                                   ],
                                 ),
                                 // Last transaction
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10),
-                                  child: Text('Letzte Abbuchung: -${lastTransaction.toStringAsFixed(2)} €'),
+                                  child: Text(
+                                      'Letzte Abbuchung: -${lastTransaction.toStringAsFixed(2)} €'),
                                 ),
                               ],
                             ),
@@ -261,21 +300,29 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                         if (!tagScanned)
                           Padding(
                             padding: EdgeInsets.only(
-                                bottom: Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null
+                                bottom: Provider.of<SettingsHandler>(context)
+                                            .currentSettings
+                                            .lastMensaBalance !=
+                                        null
                                     ? 100
                                     : 180),
                             child: Column(
                               children: [
-                                if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light)
+                                if (Provider.of<ThemesNotifier>(context,
+                                            listen: false)
+                                        .currentTheme ==
+                                    AppThemes.light)
                                   Lottie.asset(
                                     'assets/animations/nfc-light.json',
                                     height: 180,
                                   )
                                 else
-                                  Lottie.asset('assets/animations/nfc-dark.json'),
+                                  Lottie.asset(
+                                      'assets/animations/nfc-dark.json'),
                                 const EmptyStatePlaceholder(
                                   title: 'Karte scannen',
-                                  text: 'Halte deinen Studierendenausweis an dein Smartphone, um ihn zu scannen.',
+                                  text:
+                                      'Halte deinen Studierendenausweis an dein Smartphone, um ihn zu scannen.',
                                 ),
                               ],
                             ),
@@ -284,11 +331,18 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                     )
                   : const EmptyStatePlaceholder(
                       title: 'NFC deaktiviert',
-                      text: 'Um dein AKAFÖ Guthaben auslesen zu können, muss NFC aktiviert sein.',
+                      text:
+                          'Um dein AKAFÖ Guthaben auslesen zu können, muss NFC aktiviert sein.',
                     ),
             ),
-            if (Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null &&
-                Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction != null &&
+            if (Provider.of<SettingsHandler>(context)
+                        .currentSettings
+                        .lastMensaBalance !=
+                    null &&
+                Provider.of<SettingsHandler>(context)
+                        .currentSettings
+                        .lastMensaTransaction !=
+                    null &&
                 !tagScanned)
               Padding(
                 padding: const EdgeInsets.only(top: 40, bottom: 60),
