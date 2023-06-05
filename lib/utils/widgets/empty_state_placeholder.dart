@@ -40,19 +40,19 @@ class EmptyStatePlaceholder extends StatelessWidget {
                 : Image.asset(illustrationPath),
           Text(
             title,
-            style: Provider.of<ThemesNotifier>(context)
-                .currentThemeData
-                .textTheme
-                .headlineSmall!
-                .copyWith(color: Colors.grey),
+            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall!.copyWith(
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? Colors.grey
+                      : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color,
+                ),
           ),
           Text(
             text,
-            style: Provider.of<ThemesNotifier>(context)
-                .currentThemeData
-                .textTheme
-                .bodyMedium!
-                .copyWith(color: Colors.grey),
+            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.copyWith(
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? Colors.grey
+                      : null,
+                ),
             textAlign: TextAlign.center,
           ),
         ],

@@ -6,7 +6,7 @@ import 'package:campus_app/core/themes.dart';
 
 /// This widget displays a button with a title, leading and trailing icon
 /// in order to open external websites or services
-class ExternalLinkButton extends StatelessWidget {
+class SubPageButton extends StatelessWidget {
   /// The title that is displayed after the leading icon
   final String title;
 
@@ -21,19 +21,24 @@ class ExternalLinkButton extends StatelessWidget {
   /// The funciton that is called on button tap
   final VoidCallback onTap;
 
-  const ExternalLinkButton({
+  /// Wether or not the button should be disabled.
+  /// Can be used (for example) to display a future feature.
+  final bool disabled;
+
+  const SubPageButton({
     Key? key,
     required this.title,
     required this.leadingIconPath,
     this.trailingIconPath = 'assets/img/icons/external-link.svg',
     required this.onTap,
+    this.disabled = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor = Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+    /* final Color backgroundColor = Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
         ? const Color.fromRGBO(245, 246, 250, 1)
-        : const Color.fromRGBO(34, 40, 54, 1);
+        : const Color.fromRGBO(34, 40, 54, 1); */
     final Color buttonContentColor = Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
         ? Colors.black
         : Colors.white;
@@ -42,14 +47,14 @@ class ExternalLinkButton extends StatelessWidget {
       //width: 330,
       height: 58,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Material(
-        color: backgroundColor,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
         borderRadius: BorderRadius.circular(15),
         child: InkWell(
-          onTap: onTap,
+          onTap: disabled ? null : onTap,
           splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.04)
               : const Color.fromRGBO(255, 255, 255, 0.06),
@@ -65,13 +70,13 @@ class ExternalLinkButton extends StatelessWidget {
                 if (leadingIconPath.substring(leadingIconPath.length - 3) == 'svg')
                   SvgPicture.asset(
                     leadingIconPath,
-                    color: buttonContentColor,
+                    color: disabled ? buttonContentColor.withOpacity(0.5) : buttonContentColor,
                     width: 22,
                   )
                 else
                   Image.asset(
                     leadingIconPath,
-                    color: buttonContentColor,
+                    color: disabled ? buttonContentColor.withOpacity(0.5) : buttonContentColor,
                     width: 20,
                     filterQuality: FilterQuality.high,
                   ),
@@ -84,7 +89,7 @@ class ExternalLinkButton extends StatelessWidget {
                         .currentThemeData
                         .textTheme
                         .labelMedium!
-                        .copyWith(color: buttonContentColor),
+                        .copyWith(color: disabled ? buttonContentColor.withOpacity(0.5) : buttonContentColor),
                   ),
                 ),
                 // Link icon
@@ -92,74 +97,22 @@ class ExternalLinkButton extends StatelessWidget {
                   child: SvgPicture.asset(
                     trailingIconPath,
                     color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? Colors.black
-                        : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium?.color,
+                        ? disabled
+                            ? Colors.black.withOpacity(0.5)
+                            : Colors.black
+                        : disabled
+                            ? Provider.of<ThemesNotifier>(context)
+                                .currentThemeData
+                                .textTheme
+                                .bodyMedium
+                                ?.color
+                                ?.withOpacity(0.5)
+                            : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium?.color,
                     height: 20,
                     alignment: Alignment.centerRight,
                   ),
                 )
               ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// This widget displays a button with only one centered icon.
-/// It is usually used in a [Row] with multiple instances.
-class SocialMediaButton extends StatelessWidget {
-  /// The icon that should be displayed.
-  ///
-  /// ATTENTION: Must be a .svg-file.
-  final String iconPath;
-
-  /// The funciton that is called on button tap
-  final VoidCallback onTap;
-
-  const SocialMediaButton({
-    Key? key,
-    required this.iconPath,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final Color backgroundColor = Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-        ? const Color.fromRGBO(245, 246, 250, 1)
-        : const Color.fromRGBO(34, 40, 54, 1);
-
-    return Container(
-      height: 58,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Material(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(15),
-        child: InkWell(
-          onTap: onTap,
-          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-              ? const Color.fromRGBO(0, 0, 0, 0.04)
-              : const Color.fromRGBO(255, 255, 255, 0.06),
-          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-              ? const Color.fromRGBO(0, 0, 0, 0.02)
-              : const Color.fromRGBO(255, 255, 255, 0.04),
-          borderRadius: BorderRadius.circular(15),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-            child: Padding(
-              padding: const EdgeInsets.all(9),
-              child: SvgPicture.asset(
-                iconPath,
-                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? Colors.black
-                    : Colors.white,
-                height: 22,
-                width: 22,
-              ),
             ),
           ),
         ),

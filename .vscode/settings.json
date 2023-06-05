@@ -29,5 +29,6 @@
         "editor.defaultFormatter": "Dart-Code.dart-code"
     },
 
-    "dart.lineLength": 120
+    "dart.lineLength": 120,
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
