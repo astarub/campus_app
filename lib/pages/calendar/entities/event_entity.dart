@@ -143,10 +143,10 @@ class Event {
       slug: json['slug'],
       hasImage: hasImage,
       imageUrl: hasImage ? (json['image'] as Map<String, dynamic>)['url'] : null,
-      startDate: DateFormat('yyyy-MM-dd hh:mm:ss Z', 'en_US').parse(
+      startDate: DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').parse(
         "${json['start_date']} ${json['timezone']}",
       ),
-      endDate: DateFormat('yyyy-MM-dd hh:mm:ss Z', 'en_US').parse(
+      endDate: DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').parse(
         "${json['end_date']} ${json['timezone']}",
       ),
       allDay: json['all_day'],
