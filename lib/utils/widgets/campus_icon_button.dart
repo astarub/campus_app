@@ -33,7 +33,7 @@ class CampusIconButton extends StatelessWidget {
       width: 42,
       height: 42,
       decoration: BoxDecoration(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
           color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light

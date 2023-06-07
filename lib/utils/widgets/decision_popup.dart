@@ -145,7 +145,7 @@ class _DecisionPopupState extends State<DecisionPopup> {
           child: Container(
             width: MediaQuery.of(context).size.shortestSide < 600 ? double.infinity : 700,
             decoration: BoxDecoration(
-              color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+              color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15),
                 topRight: Radius.circular(15),

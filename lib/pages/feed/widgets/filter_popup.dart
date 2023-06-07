@@ -52,7 +52,7 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
         Navigator.pop(context);
       },
       child: Container(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Column(

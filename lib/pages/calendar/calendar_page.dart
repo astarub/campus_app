@@ -102,7 +102,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     super.build(context);
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -158,7 +158,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                 // Header
                 Container(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
