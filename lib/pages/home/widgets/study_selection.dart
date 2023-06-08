@@ -74,7 +74,7 @@ class StudySelectionItem extends StatelessWidget {
             ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                 ? const Color.fromRGBO(245, 246, 250, 1)
                 : const Color.fromRGBO(34, 40, 54, 1)
-            : Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         borderRadius: BorderRadius.circular(6),
         child: InkWell(
           splashColor: const Color.fromRGBO(0, 0, 0, 0.06),

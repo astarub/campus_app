@@ -105,7 +105,7 @@ class HomePageState extends State<HomePage> {
         curve: Curves.easeInOut,
       );
 
-    // Tablet Layout
+      // Tablet Layout
     } else {
       // Reset the exit animation of the new page to make the content visible again
       exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
@@ -191,7 +191,7 @@ class HomePageState extends State<HomePage> {
       child: WillPopScope(
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(
-          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
           body: MediaQuery.of(context).size.shortestSide < 600
               // Phone layout
               ? SafeArea(
@@ -273,7 +273,7 @@ class HomePageState extends State<HomePage> {
                                 child: Container(
                                   padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
-                                    color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                                    color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   child: Center(

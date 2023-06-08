@@ -58,7 +58,7 @@ class _StaticInfoPageState extends State<StaticInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Padding(
         padding: const EdgeInsets.only(top: 40),
         child: Column(
@@ -97,7 +97,8 @@ class _StaticInfoPageState extends State<StaticInfoPage> {
                         style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                       )
                     : InAppWebView(
-                        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}..add(const Factory<VerticalDragGestureRecognizer>(VerticalDragGestureRecognizer.new)),
+                        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}
+                          ..add(const Factory<VerticalDragGestureRecognizer>(VerticalDragGestureRecognizer.new)),
                         initialOptions: options,
                         initialUrlRequest: URLRequest(url: Uri.parse(widget.url!)),
                         onWebViewCreated: (controller) {

@@ -47,11 +47,11 @@ class SubPageButton extends StatelessWidget {
       //width: 330,
       height: 58,
       decoration: BoxDecoration(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Material(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         borderRadius: BorderRadius.circular(15),
         child: InkWell(
           onTap: disabled ? null : onTap,
