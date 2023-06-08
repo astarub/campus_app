@@ -164,7 +164,7 @@ class _MensaBalancePageState extends State<MensaBalancePage>
                   debugPrint('Timeout while waiting for a nfc scan.');
                 }
             }
-            return;
+            continue;
           }
 
           debugPrint('Scanned mensa card: ${jsonEncode(scannedTag)}');
