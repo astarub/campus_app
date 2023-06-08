@@ -1,23 +1,22 @@
 {
   "@@locale": "en",
-
+  
   "helloWorld": "Hello World!",
-
+  
   "serverFailureMessage": "Could not load server data.",
-  "generalFailureMessage": "A failure occured.",
+  "generalFailureMessage": "An error has occurred.",
   "errorMessage": "Error.",
   "unexpectedError": "An unexpected error occured...",
   "invalid2FATokenFailureMessage": "Your TOTP is incorrect. Please try again!",
-  "invalidLoginIDAndPasswordFailureMessage": "The given credentials are incorrect!",
-
+  "invalidLoginIDAndPasswordFailureMessage": "The credentials are invalid!",
   "welcome": "Welcome!",
   "login_prompt": "Please login with your RUB-ID and password.",
   "rubid": "Login-ID of your RUB-Account",
-  "password": "Password",
-  "login": "Login",
+  "password": "password",
+  "login": "login",
   "empty_input_field": "Please enter your credentials!",
   "login_error": "Invalid input!",
-  "login_success": "Successfully authenticated!",
-  "login_already": "Allready authenticated.",
+  "login_success": "Successfully logged in!",
+  "login_already": "Allready logged in.",
   "enter_totp": "Please enter your TOTP."
 }
