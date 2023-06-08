@@ -33,7 +33,7 @@ class RubnewsDetailsPage extends StatelessWidget {
     final day = DateFormat('dd').format(date);
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
