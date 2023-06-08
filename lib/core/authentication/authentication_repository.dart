@@ -2,7 +2,6 @@ import 'package:campus_app/core/authentication/authentication_datasource.dart';
 import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
-import 'package:dartz/dartz.dart';
 
 abstract class AuthenticationRepository {
   /// Signin user with Login-ID of RUB and password.
@@ -136,9 +135,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       //* If currentState isn't authenticated or theire is no loginId or password
       //* then change state to unauthenticated and notify listeners about error
-      if (authenticationHandler.currentAuthState != AuthState.authenticated ||
-          loginID == null ||
-          password == null) {
+      if (authenticationHandler.currentAuthState != AuthState.authenticated || loginID == null || password == null) {
         authenticationHandler.changeAuthState(
           state: AuthState.unauthenticated,
           failure: NotAuthenticatedFailure(),
@@ -146,8 +143,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         return;
       }
 
-      final tokenId =
-          await authenticationDatasource.authenticateWithTOTPAndGetToken(
+      final tokenId = await authenticationDatasource.authenticateWithTOTPAndGetToken(
         username: loginID,
         password: password,
         totp: totp,

@@ -31,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Padding(
         padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0, left: 20, right: 20),
         child: Column(

@@ -196,7 +196,7 @@ class _MensaBalancePageState extends State<MensaBalancePage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+          Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Padding(
         padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0),
         child: Column(

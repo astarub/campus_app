@@ -171,7 +171,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
     super.build(context);
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -182,7 +182,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                 // Header
                 Container(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 30),
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
                   child: Column(
                     children: [
                       // Title
