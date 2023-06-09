@@ -80,7 +80,7 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
             decoration: BoxDecoration(
               color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? const Color.fromRGBO(245, 246, 250, 1)
-                  : Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                  : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
               borderRadius: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? BorderRadius.circular(6)
                   : BorderRadius.circular(10),

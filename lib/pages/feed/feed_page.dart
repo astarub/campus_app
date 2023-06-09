@@ -148,7 +148,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     super.build(context);
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -183,7 +183,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                 Container(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
                   color: _headerOpacity == 1
-                      ? Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor
+                      ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background
                       : Colors.transparent,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -235,13 +235,15 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                             CampusIconButton(
                               iconPath: 'assets/img/icons/filter.svg',
                               onTap: () {
-                                widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
-                                  opaque: false,
-                                  pageBuilder: (context, _, __) => FeedFilterPopup(
-                                    selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.feedFilter,
-                                    onClose: saveChangedFilters,
+                                widget.mainNavigatorKey.currentState?.push(
+                                  PageRouteBuilder(
+                                    opaque: false,
+                                    pageBuilder: (context, _, __) => FeedFilterPopup(
+                                      selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.feedFilter,
+                                      onClose: saveChangedFilters,
+                                    ),
                                   ),
-                                ));
+                                );
                               },
                             ),
                           ],

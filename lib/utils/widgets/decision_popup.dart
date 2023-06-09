@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 
@@ -82,22 +81,26 @@ class _DecisionPopupState extends State<DecisionPopup> {
 
   /// Starts the closing animation for the popup.
   void closePopup() {
-    setState(() => snapPositions = [
-          const SnappingPosition.pixels(
-            positionPixels: 420,
-          ),
-          const SnappingPosition.pixels(
-            positionPixels: -60,
-            snappingCurve: Curves.easeOutExpo,
-            snappingDuration: Duration(milliseconds: 350),
-          ),
-        ]);
+    setState(
+      () => snapPositions = [
+        const SnappingPosition.pixels(
+          positionPixels: 420,
+        ),
+        const SnappingPosition.pixels(
+          positionPixels: -60,
+          snappingCurve: Curves.easeOutExpo,
+          snappingDuration: Duration(milliseconds: 350),
+        ),
+      ],
+    );
 
-    _popupController.snapToPosition(const SnappingPosition.pixels(
-      positionPixels: -60,
-      snappingCurve: Curves.easeOutExpo,
-      snappingDuration: Duration(milliseconds: 350),
-    ));
+    _popupController.snapToPosition(
+      const SnappingPosition.pixels(
+        positionPixels: -60,
+        snappingCurve: Curves.easeOutExpo,
+        snappingDuration: Duration(milliseconds: 350),
+      ),
+    );
   }
 
   @override
@@ -109,21 +112,25 @@ class _DecisionPopupState extends State<DecisionPopup> {
     // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
     Timer(
       const Duration(milliseconds: 50),
-      () => _popupController.snapToPosition(SnappingPosition.pixels(
-        positionPixels: widget.height,
-        snappingCurve: Curves.easeOutExpo,
-        snappingDuration: const Duration(milliseconds: 350),
-      )),
+      () => _popupController.snapToPosition(
+        SnappingPosition.pixels(
+          positionPixels: widget.height,
+          snappingCurve: Curves.easeOutExpo,
+          snappingDuration: const Duration(milliseconds: 350),
+        ),
+      ),
     );
 
     // Remove the second [SnappingPosition] after opening the popup
     Timer(
       const Duration(milliseconds: 500),
-      () => setState(() => snapPositions = [
-            SnappingPosition.pixels(
-              positionPixels: widget.height,
-            ),
-          ]),
+      () => setState(
+        () => snapPositions = [
+          SnappingPosition.pixels(
+            positionPixels: widget.height,
+          ),
+        ],
+      ),
     );
   }
 
@@ -135,7 +142,8 @@ class _DecisionPopupState extends State<DecisionPopup> {
       onSheetMoved: (positionData) {
         if (positionData.relativeToSnappingPositions >= 0) {
           setState(
-              () => _backgroundColor = _backgroundColor.withOpacity(0.3 * positionData.relativeToSnappingPositions));
+            () => _backgroundColor = _backgroundColor.withOpacity(0.3 * positionData.relativeToSnappingPositions),
+          );
         }
       },
       initialSnappingPosition: const SnappingPosition.pixels(positionPixels: -100),
@@ -145,7 +153,7 @@ class _DecisionPopupState extends State<DecisionPopup> {
           child: Container(
             width: MediaQuery.of(context).size.shortestSide < 600 ? double.infinity : 700,
             decoration: BoxDecoration(
-              color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+              color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15),
                 topRight: Radius.circular(15),

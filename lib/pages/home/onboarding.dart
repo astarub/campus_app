@@ -122,7 +122,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               ? lightTabletSystemUiStyle
               : darkTabletSystemUiStyle,
       child: Scaffold(
-        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         body: Center(
           child: SizedBox(
             width: MediaQuery.of(context).size.shortestSide >= 600 ? 550 : null,
@@ -132,7 +132,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               onDone: saveSelections,
               doneButtonText: 'Abschließen',
               buttonTextStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
-              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
               buttonColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? Colors.black
                   : const Color.fromRGBO(34, 40, 54, 1),

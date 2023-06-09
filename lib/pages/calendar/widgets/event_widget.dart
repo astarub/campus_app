@@ -41,8 +41,8 @@ class CalendarEventWidget extends StatelessWidget {
     final day = DateFormat('dd').format(event.startDate);
 
     return OpenContainer(
-      middleColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
-      closedColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      middleColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      closedColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       closedElevation: 0,
       transitionDuration: const Duration(milliseconds: 250),
       openBuilder: (context, _) => CalendarDetailPage(event: event),

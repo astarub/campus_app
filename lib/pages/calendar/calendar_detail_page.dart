@@ -56,7 +56,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
