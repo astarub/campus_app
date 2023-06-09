@@ -52,14 +52,18 @@ class _AnimatedOnboardingEntryState extends State<AnimatedOnboardingEntry> with 
     );
 
     // Define animations for fading in and offset transformation
-    _fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: widget.interval,
-    ));
-    _positionAnimation = Tween(begin: widget.offset, end: 0.0).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: widget.interval,
-    ));
+    _fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: widget.interval,
+      ),
+    );
+    _positionAnimation = Tween(begin: widget.offset, end: 0.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: widget.interval,
+      ),
+    );
 
     // Start animation on end of the frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -128,18 +132,24 @@ class _AnimatedOnboardingLogoState extends State<AnimatedOnboardingLogo> with Si
     );
 
     // Define animations for positioning and fading
-    _fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0, 1, curve: Curves.easeOutCubic),
-    ));
-    _scaleAnimation = Tween(begin: 1.9, end: 1.0).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0, 1, curve: Curves.easeOutExpo),
-    ));
-    _positionAnimation = Tween(begin: 800.0, end: 0.0).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0, 1, curve: Curves.easeOutExpo),
-    ));
+    _fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0, 1, curve: Curves.easeOutCubic),
+      ),
+    );
+    _scaleAnimation = Tween(begin: 1.9, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0, 1, curve: Curves.easeOutExpo),
+      ),
+    );
+    _positionAnimation = Tween(begin: 800.0, end: 0.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0, 1, curve: Curves.easeOutExpo),
+      ),
+    );
 
     // Start animation on end of the frame
     WidgetsBinding.instance.addPostFrameCallback((_) {

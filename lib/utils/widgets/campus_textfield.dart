@@ -54,13 +54,15 @@ class _CampusTextFieldState extends State<CampusTextField> {
   void initState() {
     super.initState();
 
-    _focusNode.addListener(() => setState(() {
-          if (_focusNode.hasFocus) {
-            hint = '';
-          } else {
-            hint = widget.textFieldText;
-          }
-        }));
+    _focusNode.addListener(
+      () => setState(() {
+        if (_focusNode.hasFocus) {
+          hint = '';
+        } else {
+          hint = widget.textFieldText;
+        }
+      }),
+    );
   }
 
   @override
@@ -89,7 +91,7 @@ class _CampusTextFieldState extends State<CampusTextField> {
                   : const EdgeInsets.only(left: 65, right: 12, top: 24, bottom: 24),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(color: Colors.black, width: 2),
+                borderSide: const BorderSide(width: 2),
               ),
               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
             ),

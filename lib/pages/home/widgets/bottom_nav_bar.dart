@@ -42,7 +42,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
       ),
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
         physics: const NeverScrollableScrollPhysics(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -210,7 +210,7 @@ class _DecisionPopupState extends State<DecisionPopup> {
                 Expanded(child: Container()),
                 // No button
                 Padding(
-                  padding: const EdgeInsets.only(top: 0, bottom: 16),
+                  padding: const EdgeInsets.only(bottom: 16),
                   child: CampusTextButton(
                     buttonText: widget.declineButtonText,
                     onTap: () {
