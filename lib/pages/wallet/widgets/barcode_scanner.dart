@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:barcode_widget/barcode_widget.dart' as bw;
 
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 

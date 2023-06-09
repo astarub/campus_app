@@ -48,15 +48,17 @@ Future<void> main() async {
   // Initialize injection container
   await ic.init();
 
-  runApp(MultiProvider(
-    providers: [
-      // Initializes the provider that handles the app-theme, authentication and other things
-      ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
-      ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-      ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
-    ],
-    child: const CampusApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        // Initializes the provider that handles the app-theme, authentication and other things
+        ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
+        ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+        ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
+      ],
+      child: const CampusApp(),
+    ),
+  );
 }
 
 final GlobalKey<HomePageState> homeKey = GlobalKey();
@@ -134,8 +136,11 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
           // Start the app and show the onboarding experience
           FlutterNativeSplash.remove();
-          Navigator.of(mainNavigatorKey.currentState!.context).push(MaterialPageRoute(
-              builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey)));
+          Navigator.of(mainNavigatorKey.currentState!.context).push(
+            MaterialPageRoute(
+              builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey),
+            ),
+          );
         }
       });
     });
@@ -189,32 +194,35 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
         FirebaseStatus.uncofigured) {
       Timer(
-          const Duration(seconds: 2),
-          () => mainNavigatorKey.currentState?.push(
-                PageRouteBuilder(
-                  opaque: false,
-                  pageBuilder: (context, _, __) => FirebasePopup(onClose: (permissionGranted) {
-                    final Settings newSettings;
+        const Duration(seconds: 2),
+        () => mainNavigatorKey.currentState?.push(
+          PageRouteBuilder(
+            opaque: false,
+            pageBuilder: (context, _, __) => FirebasePopup(
+              onClose: (permissionGranted) {
+                final Settings newSettings;
 
-                    if (permissionGranted) {
-                      // User accepted to use Google services
-                      newSettings = Provider.of<SettingsHandler>(context, listen: false)
-                          .currentSettings
-                          .copyWith(useFirebase: FirebaseStatus.permitted);
+                if (permissionGranted) {
+                  // User accepted to use Google services
+                  newSettings = Provider.of<SettingsHandler>(context, listen: false)
+                      .currentSettings
+                      .copyWith(useFirebase: FirebaseStatus.permitted);
 
-                      initializeFirebase();
-                    } else {
-                      // User denied to use Google services
-                      newSettings = Provider.of<SettingsHandler>(context, listen: false)
-                          .currentSettings
-                          .copyWith(useFirebase: FirebaseStatus.forbidden);
-                    }
+                  initializeFirebase();
+                } else {
+                  // User denied to use Google services
+                  newSettings = Provider.of<SettingsHandler>(context, listen: false)
+                      .currentSettings
+                      .copyWith(useFirebase: FirebaseStatus.forbidden);
+                }
 
-                    debugPrint('Set Firebase permission: ${newSettings.useFirebase}');
-                    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-                  }),
-                ),
-              ));
+                debugPrint('Set Firebase permission: ${newSettings.useFirebase}');
+                Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+              },
+            ),
+          ),
+        ),
+      );
     } else if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
         FirebaseStatus.permitted) {
       initializeFirebase();

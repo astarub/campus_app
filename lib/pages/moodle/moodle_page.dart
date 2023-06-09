@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/utils/pages/moodle_utils.dart';
 
 class MoodlePage extends StatelessWidget {
