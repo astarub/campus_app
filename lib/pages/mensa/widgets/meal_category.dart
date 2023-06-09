@@ -105,14 +105,16 @@ class MealItem extends StatelessWidget {
               if (infos.isNotEmpty)
                 Row(
                   children: infos
-                      .map((infoElement) => MealInfoButton(
-                            info: infoElement,
-                            onTap: () {
-                              if (infoElement == 'V' || infoElement == 'VG' || infoElement == 'H') {
-                                onPreferenceTap(infoElement);
-                              }
-                            },
-                          ))
+                      .map(
+                        (infoElement) => MealInfoButton(
+                          info: infoElement,
+                          onTap: () {
+                            if (infoElement == 'V' || infoElement == 'VG' || infoElement == 'H') {
+                              onPreferenceTap(infoElement);
+                            }
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               Expanded(child: Container()),

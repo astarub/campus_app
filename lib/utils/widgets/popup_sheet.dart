@@ -54,11 +54,13 @@ class _PopupSheetState extends State<PopupSheet> {
     // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
     Timer(
       const Duration(milliseconds: 50),
-      () => _popupController.snapToPosition(SnappingPosition.factor(
-        positionFactor: widget.openPositionFactor,
-        snappingCurve: Curves.easeOutExpo,
-        snappingDuration: const Duration(milliseconds: 350),
-      )),
+      () => _popupController.snapToPosition(
+        SnappingPosition.factor(
+          positionFactor: widget.openPositionFactor,
+          snappingCurve: Curves.easeOutExpo,
+          snappingDuration: const Duration(milliseconds: 350),
+        ),
+      ),
     );
   }
 
