@@ -211,7 +211,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                     color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                     strokeWidth: 3,
                     onRefresh: () async {
-                      loadData();
+                      await loadData();
                     },
                     child: ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
