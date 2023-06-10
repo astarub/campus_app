@@ -43,7 +43,7 @@ class _PopupSheetState extends State<PopupSheet> {
   late final SnappingSheetController _popupController;
 
   /// Animated half-transparent background color
-  Color _backgroundColor = Color.fromRGBO(0, 0, 0, 0.0);
+  Color _backgroundColor = const Color.fromRGBO(0, 0, 0, 0);
 
   @override
   void initState() {
