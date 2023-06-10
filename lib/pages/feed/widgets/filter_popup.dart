@@ -58,7 +58,7 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
           child: Column(
             children: [
               CampusMultiSelection(
-                selectionItemTitles: ['RUB', 'Events'],
+                selectionItemTitles: const ['RUB', 'Events'],
                 onSelected: onFilterSelected,
                 selections: [
                   //_selectedFilters.contains('RUB'),

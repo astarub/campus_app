@@ -296,7 +296,6 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       },
       navigatorKey: mainNavigatorKey,
       debugShowCheckedModeBanner: false,
-      showPerformanceOverlay: false,
     );
   }
 }

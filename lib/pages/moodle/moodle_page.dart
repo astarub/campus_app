@@ -8,8 +8,8 @@ class MoodlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final utils = MoodleUtils();
 
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
+    return const SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Column(
           //children: utils.getCourseWidgetList(moodleState.courses),
           ),
