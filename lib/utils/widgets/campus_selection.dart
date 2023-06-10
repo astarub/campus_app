@@ -120,7 +120,7 @@ class SelectionItem extends StatelessWidget {
                 : const Color.fromRGBO(18, 24, 38, 1),
         borderRadius: BorderRadius.circular(12),
         border: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark
-            ? Border.all(color: const Color.fromRGBO(34, 40, 54, 1), width: 1)
+            ? Border.all(color: const Color.fromRGBO(34, 40, 54, 1))
             : null,
       ),
       child: Material(

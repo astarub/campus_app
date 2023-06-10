@@ -328,7 +328,6 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
                             boxShadow: [widget.toggleShadow],
                           ),
                           child: FittedBox(
-                            fit: BoxFit.contain,
                             child: Container(
                               child: Stack(
                                 children: [

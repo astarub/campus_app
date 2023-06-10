@@ -118,7 +118,10 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
     final document = await PdfDocument.openFile(path);
     final page = await document.getPage(1);
     final pageImage = await page.render(
-        width: page.width * 2.4, height: page.height * 2.4, cropRect: Rect.fromLTWH(174, 250, page.width - 325, 269));
+      width: page.width * 2.4,
+      height: page.height * 2.4,
+      cropRect: Rect.fromLTWH(174, 250, page.width - 325, 269),
+    );
     await page.close();
 
     if (pageImage == null) {

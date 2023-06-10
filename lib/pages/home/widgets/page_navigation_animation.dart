@@ -58,14 +58,18 @@ class AnimatedEntryState extends State<AnimatedEntry> with TickerProviderStateMi
     );
 
     // Define the animations for fading in and the offset transformation
-    _fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: widget.interval,
-    ));
-    _positionAnimation = Tween(begin: widget.offset, end: 0.0).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: widget.interval,
-    ));
+    _fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: widget.interval,
+      ),
+    );
+    _positionAnimation = Tween(begin: widget.offset, end: 0.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: widget.interval,
+      ),
+    );
 
     // Start the animation on end of the first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
