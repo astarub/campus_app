@@ -13,6 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:barcode_widget/barcode_widget.dart' as bw;
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
@@ -136,6 +137,13 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
     if (result != null) {
       final File file = File(result.files.single.path!);
 
+      final String fileType = file.path.substring(file.path.lastIndexOf('.'));
+
+      if (fileType != '.pdf') {
+        await Fluttertoast.showToast(msg: 'Ungültiges Ticket!', timeInSecForIosWeb: 3, gravity: ToastGravity.TOP);
+        return;
+      }
+
       // Load the pdf file
       final sync_pdf.PdfDocument document = sync_pdf.PdfDocument(inputBytes: await file.readAsBytes());
 
@@ -146,8 +154,8 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
       document.dispose();
 
       // Check if the pdf file is a valid ticket
-      if (!pdfText.contains('Dieses Ticket ist nicht übertragbar')) {
-        // Display error
+      if (!pdfText.contains('Ticket')) {
+        await Fluttertoast.showToast(msg: 'Ungültiges Ticket!', timeInSecForIosWeb: 3, gravity: ToastGravity.TOP);
         return;
       }
 
