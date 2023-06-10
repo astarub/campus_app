@@ -37,7 +37,7 @@ class StackedCardCarousel extends StatefulWidget {
   /// Only applies to StackedCardCarouselType.cardsStack.
   final CardAlignment cardAlignment;
 
-  StackedCardCarousel({
+  const StackedCardCarousel({
     Key? key,
     required this.items,
     this.type = StackedCardCarouselType.cardsStack,

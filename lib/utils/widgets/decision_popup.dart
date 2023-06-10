@@ -77,7 +77,7 @@ class _DecisionPopupState extends State<DecisionPopup> {
   ];
 
   /// Animated half-transparent background color
-  Color _backgroundColor = Color.fromRGBO(0, 0, 0, 0.0);
+  Color _backgroundColor = const Color.fromRGBO(0, 0, 0, 0);
 
   /// Starts the closing animation for the popup.
   void closePopup() {
