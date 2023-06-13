@@ -43,7 +43,7 @@ class _PopupSheetState extends State<PopupSheet> {
   late final SnappingSheetController _popupController;
 
   /// Animated half-transparent background color
-  Color _backgroundColor = Color.fromRGBO(0, 0, 0, 0.0);
+  Color _backgroundColor = const Color.fromRGBO(0, 0, 0, 0);
 
   @override
   void initState() {
@@ -54,11 +54,13 @@ class _PopupSheetState extends State<PopupSheet> {
     // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
     Timer(
       const Duration(milliseconds: 50),
-      () => _popupController.snapToPosition(SnappingPosition.factor(
-        positionFactor: widget.openPositionFactor,
-        snappingCurve: Curves.easeOutExpo,
-        snappingDuration: const Duration(milliseconds: 350),
-      )),
+      () => _popupController.snapToPosition(
+        SnappingPosition.factor(
+          positionFactor: widget.openPositionFactor,
+          snappingCurve: Curves.easeOutExpo,
+          snappingDuration: const Duration(milliseconds: 350),
+        ),
+      ),
     );
   }
 
@@ -78,7 +80,7 @@ class _PopupSheetState extends State<PopupSheet> {
         child: Container(
           width: MediaQuery.of(context).size.shortestSide < 600 ? double.infinity : 700,
           decoration: BoxDecoration(
-            color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+            color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(15),
               topRight: Radius.circular(15),

@@ -51,6 +51,9 @@ class Settings {
   final bool useExternalBrowser;
   final bool useSystemTextScaling;
   final FirebaseStatus useFirebase;
+  final List<String> studyCourses;
+  final double? lastMensaBalance;
+  final double? lastMensaTransaction;
 
   Settings({
     this.useSystemDarkmode = true,
@@ -62,6 +65,9 @@ class Settings {
     this.useExternalBrowser = false,
     this.useSystemTextScaling = false,
     this.useFirebase = FirebaseStatus.uncofigured,
+    this.studyCourses = const [],
+    this.lastMensaBalance,
+    this.lastMensaTransaction,
   });
 
   Settings copyWith({
@@ -74,6 +80,9 @@ class Settings {
     bool? useExternalBrowser,
     bool? useSystemTextScaling,
     FirebaseStatus? useFirebase,
+    List<String>? studyCourses,
+    double? lastMensaBalance,
+    double? lastMensaTransaction,
   }) =>
       Settings(
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
@@ -85,6 +94,9 @@ class Settings {
         useExternalBrowser: useExternalBrowser ?? this.useExternalBrowser,
         useSystemTextScaling: useSystemTextScaling ?? this.useSystemTextScaling,
         useFirebase: useFirebase ?? this.useFirebase,
+        studyCourses: studyCourses ?? this.studyCourses,
+        lastMensaBalance: lastMensaBalance ?? this.lastMensaBalance,
+        lastMensaTransaction: lastMensaTransaction ?? this.lastMensaTransaction,
       );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
@@ -104,6 +116,9 @@ class Settings {
           : json['useFirebase'] == 1
               ? FirebaseStatus.forbidden
               : FirebaseStatus.uncofigured,
+      studyCourses: json['studyCourses'] != null ? List<String>.from(json['studyCourses']) : List<String>.from([]),
+      lastMensaBalance: json['lastMensaBalance'],
+      lastMensaTransaction: json['lastMensaTransaction'],
     );
   }
 
@@ -122,6 +137,9 @@ class Settings {
           : useFirebase == FirebaseStatus.forbidden
               ? 1
               : 0,
+      'studyCourses': studyCourses,
+      'lastMensaBalance': lastMensaBalance,
+      'lastMensaTransaction': lastMensaTransaction,
     };
   }
 }

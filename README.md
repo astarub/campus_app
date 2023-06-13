@@ -7,6 +7,11 @@ This app is developed & maintained by the General Student Committee of the Ruhr 
 The purpose of this app is to provide the students of the Ruhr University Bochum
 a tool that simplifies, improves and facilitates everyday students life.
 
+[![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/jqkz.svg)](https://asta-rub.betteruptime.com)
+
+<img src="https://user-images.githubusercontent.com/56138477/213162795-f00d1f4c-3978-4017-a974-b65b40e70908.png" height="14" width="14" > [Discord server](https://discord.gg/KHkQ8VFm6t)
+
+
 ## Supported platforms
 The app aims to support all mobile platforms. For now, implementation is focused on Android and iOS.
 

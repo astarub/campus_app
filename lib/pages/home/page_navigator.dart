@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/calendar/calendar_page.dart';
 import 'package:campus_app/pages/mensa/mensa_page.dart';
-import 'package:campus_app/pages/guide/guide_page.dart';
+import 'package:campus_app/pages/wallet/wallet_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
@@ -38,7 +38,7 @@ class NavBarNavigator extends StatelessWidget {
   /// to control the animation from outside the page.
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
-  NavBarNavigator({
+  const NavBarNavigator({
     required this.mainNavigatorKey,
     required this.navigatorKey,
     required this.pageItem,
@@ -65,7 +65,7 @@ class NavBarNavigator extends StatelessWidget {
         );
         break;
       case PageItem.coupons:
-        rootPage = Scaffold(); // Has to be replaced!
+        rootPage = const Scaffold(); // Has to be replaced!
         break;
       case PageItem.mensa:
         rootPage = MensaPage(
@@ -75,7 +75,7 @@ class NavBarNavigator extends StatelessWidget {
         );
         break;
       case PageItem.guide:
-        rootPage = GuidePage(
+        rootPage = WalletPage(
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );

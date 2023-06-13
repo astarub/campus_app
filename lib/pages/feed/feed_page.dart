@@ -34,14 +34,16 @@ class FeedPage extends StatefulWidget {
   State<FeedPage> createState() => FeedPageState();
 }
 
-class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
+class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<FeedPage> {
   late final ScrollController _scrollController;
   double _scrollControllerLastOffset = 0;
   double _headerOpacity = 1;
+  double _newsWidgetOpacity = 1;
 
-  late List<NewsEntity> _rubnews = [];
-  late List<Event> _events = [];
-  late List<Failure> _failures = [];
+  List<NewsEntity> _rubnews = [];
+  List<Event> _events = [];
+  List<Failure> _failures = [];
+  List<Widget> _parsedNewsWidgets = [];
 
   late final SnappingSheetController _popupController;
 
@@ -51,7 +53,9 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
 
   /// Function that call usecase and parse widgets into the corresponding
   /// lists of events, news and failures.
-  Future<void> updateStateWithFeed() async {
+  Future<void> updateStateWithFeed({bool withAnimation = false}) async {
+    if (withAnimation) setState(() => _newsWidgetOpacity = 0);
+
     final newsData = await _rubnewsUsecases.updateFeedAndFailures();
     final eventData = await _calendarUsecase.updateEventsAndFailures();
 
@@ -59,9 +63,22 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
       _rubnews = newsData['news']! as List<NewsEntity>;
       _events = eventData['events']! as List<Event>;
       _failures = (newsData['failures']! as List<Failure>)..addAll(eventData['failures']! as List<Failure>);
+      _parsedNewsWidgets = parseUpdateToWidgets();
     });
 
     debugPrint('Feed aktualisiert.');
+  }
+
+  /// Parse the updated news data into widgets and mix them with events if needed
+  List<Widget> parseUpdateToWidgets() {
+    setState(() => _newsWidgetOpacity = 1);
+
+    return _feedUtils.fromEntitiesToWidgetList(
+      news: _rubnews,
+      events: _events,
+      mixInto: Provider.of<SettingsHandler>(context, listen: false).currentSettings.feedFilter.contains('Events') ||
+          Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore,
+    );
   }
 
   void saveChangedFilters(List<String> newFilters) {
@@ -128,8 +145,10 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -146,16 +165,16 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
                     backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                     color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                     strokeWidth: 3,
-                    onRefresh: updateStateWithFeed,
-                    child: ListView(
+                    onRefresh: () => updateStateWithFeed(withAnimation: true),
+                    child: ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       controller: _scrollController,
                       physics: const BouncingScrollPhysics(),
-                      children: _feedUtils.fromEntitiesToWidgetList(
-                        news: _rubnews,
-                        events: _events,
-                        mixInto: Provider.of<SettingsHandler>(context).currentSettings.feedFilter.contains('Events') ||
-                            Provider.of<SettingsHandler>(context).currentSettings.newsExplore,
+                      itemCount: _parsedNewsWidgets.length,
+                      itemBuilder: (context, index) => AnimatedOpacity(
+                        opacity: _newsWidgetOpacity,
+                        duration: Duration(milliseconds: 100 + (index * 200)),
+                        child: _parsedNewsWidgets[index],
                       ),
                     ),
                   ),
@@ -164,7 +183,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
                 Container(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
                   color: _headerOpacity == 1
-                      ? Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor
+                      ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background
                       : Colors.transparent,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -216,13 +235,15 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
                             CampusIconButton(
                               iconPath: 'assets/img/icons/filter.svg',
                               onTap: () {
-                                widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
-                                  opaque: false,
-                                  pageBuilder: (context, _, __) => FeedFilterPopup(
-                                    selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.feedFilter,
-                                    onClose: saveChangedFilters,
+                                widget.mainNavigatorKey.currentState?.push(
+                                  PageRouteBuilder(
+                                    opaque: false,
+                                    pageBuilder: (context, _, __) => FeedFilterPopup(
+                                      selectedFilters: Provider.of<SettingsHandler>(context).currentSettings.feedFilter,
+                                      onClose: saveChangedFilters,
+                                    ),
                                   ),
-                                ));
+                                );
                               },
                             ),
                           ],
@@ -238,4 +259,8 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
       ),
     );
   }
+
+  // Keep state alive
+  @override
+  bool get wantKeepAlive => true;
 }

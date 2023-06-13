@@ -18,6 +18,7 @@ import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/pages/home/onboarding.dart';
 import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
@@ -47,15 +48,17 @@ Future<void> main() async {
   // Initialize injection container
   await ic.init();
 
-  runApp(MultiProvider(
-    providers: [
-      // Initializes the provider that handles the app-theme, authentication and other things
-      ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
-      ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-      ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
-    ],
-    child: const CampusApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        // Initializes the provider that handles the app-theme, authentication and other things
+        ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
+        ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+        ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
+      ],
+      child: const CampusApp(),
+    ),
+  );
 }
 
 final GlobalKey<HomePageState> homeKey = GlobalKey();
@@ -74,24 +77,6 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   Settings? loadedSettings;
 
   Stopwatch loadingTimer = Stopwatch();
-
-  /// Starts the app if a settings file already exists.
-  /// If not, the user starts the app for the first time, which initiates onboarding.
-  void startApp(BuildContext context) {
-    if (loadedSettings != null) {
-      // Normal app start
-      debugPrint('Initiate normal app start.');
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage(mainNavigatorKey: mainNavigatorKey)),
-      );
-    } else {
-      // Onboarding
-      debugPrint('Initiate onboarding.  -- TEMPORARY REPLACED WITH NORMAL APP START');
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage(mainNavigatorKey: mainNavigatorKey)),
-      );
-    }
-  }
 
   /// Load the saved settings and parse them to the [SettingsHandler]
   void loadSettings() {
@@ -149,10 +134,13 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           loadingTimer.stop();
           debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
 
-          // Start the app
+          // Start the app and show the onboarding experience
           FlutterNativeSplash.remove();
-
-          checkFirebasePermission();
+          Navigator.of(mainNavigatorKey.currentState!.context).push(
+            MaterialPageRoute(
+              builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey),
+            ),
+          );
         }
       });
     });
@@ -206,32 +194,35 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
         FirebaseStatus.uncofigured) {
       Timer(
-          const Duration(seconds: 2),
-          () => mainNavigatorKey.currentState?.push(
-                PageRouteBuilder(
-                  opaque: false,
-                  pageBuilder: (context, _, __) => FirebasePopup(onClose: (permissionGranted) {
-                    final Settings newSettings;
+        const Duration(seconds: 2),
+        () => mainNavigatorKey.currentState?.push(
+          PageRouteBuilder(
+            opaque: false,
+            pageBuilder: (context, _, __) => FirebasePopup(
+              onClose: (permissionGranted) {
+                final Settings newSettings;
 
-                    if (permissionGranted) {
-                      // User accepted to use Google services
-                      newSettings = Provider.of<SettingsHandler>(context, listen: false)
-                          .currentSettings
-                          .copyWith(useFirebase: FirebaseStatus.permitted);
+                if (permissionGranted) {
+                  // User accepted to use Google services
+                  newSettings = Provider.of<SettingsHandler>(context, listen: false)
+                      .currentSettings
+                      .copyWith(useFirebase: FirebaseStatus.permitted);
 
-                      initializeFirebase();
-                    } else {
-                      // User denied to use Google services
-                      newSettings = Provider.of<SettingsHandler>(context, listen: false)
-                          .currentSettings
-                          .copyWith(useFirebase: FirebaseStatus.forbidden);
-                    }
+                  initializeFirebase();
+                } else {
+                  // User denied to use Google services
+                  newSettings = Provider.of<SettingsHandler>(context, listen: false)
+                      .currentSettings
+                      .copyWith(useFirebase: FirebaseStatus.forbidden);
+                }
 
-                    debugPrint('Set Firebase permission: ${newSettings.useFirebase}');
-                    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-                  }),
-                ),
-              ));
+                debugPrint('Set Firebase permission: ${newSettings.useFirebase}');
+                Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+              },
+            ),
+          ),
+        ),
+      );
     } else if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
         FirebaseStatus.permitted) {
       initializeFirebase();
@@ -254,6 +245,10 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     // load saved settings
     loadingTimer.start();
     loadSettings();
+
+    // Handle deep links
+    handleIncomingLink();
+    handleInitialUri();
   }
 
   @override
@@ -301,7 +296,6 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       },
       navigatorKey: mainNavigatorKey,
       debugShowCheckedModeBanner: false,
-      showPerformanceOverlay: false,
     );
   }
 }

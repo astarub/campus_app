@@ -38,7 +38,7 @@ class TOTPForm extends StatelessWidget {
             const SizedBox(height: 80),
             Text(
               localization.enter_totp,
-              style: themeData.textTheme.headline1!.copyWith(
+              style: themeData.textTheme.displayLarge!.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 letterSpacing: 4,

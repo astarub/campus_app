@@ -48,20 +48,24 @@ class _CampusTextButtonState extends State<CampusTextButton> {
         if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light) {
           setState(() => buttonTextColor = const Color.fromRGBO(62, 62, 62, 1));
         } else {
-          setState(() => buttonTextColor = Provider.of<ThemesNotifier>(context, listen: false)
-              .currentThemeData
-              .textTheme
-              .labelMedium!
-              .color!
-              .withOpacity(0.6));
+          setState(
+            () => buttonTextColor = Provider.of<ThemesNotifier>(context, listen: false)
+                .currentThemeData
+                .textTheme
+                .labelMedium!
+                .color!
+                .withOpacity(0.6),
+          );
         }
       },
       onTapUp: (_) {
         if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light) {
           setState(() => buttonTextColor = Colors.black);
         } else {
-          setState(() => buttonTextColor =
-              Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.textTheme.labelMedium!.color!);
+          setState(
+            () => buttonTextColor =
+                Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.textTheme.labelMedium!.color!,
+          );
         }
 
         widget.onTap();

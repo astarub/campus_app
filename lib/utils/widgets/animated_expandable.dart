@@ -5,7 +5,7 @@ class AnimatedExpandable extends StatefulWidget {
   /// The children that are hidden when the widget is collapsed
   final List<Widget> children;
 
-  /// Wether the widget should be expanded on first build or not
+  /// Whether the widget should be expanded on first build or not
   final bool expandedAtStart;
 
   /// The duration that is used for the animation
@@ -88,9 +88,13 @@ class AnimatedExpandableState extends State<AnimatedExpandable> with SingleTicke
     return SizeTransition(
       //axisAlignment: 1, // looks like moving to top instead of collapsing
       sizeFactor: _animation,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: widget.children,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const ScrollPhysics(),
+        itemCount: widget.children.length,
+        itemBuilder: (context, index) {
+          return widget.children[index];
+        },
       ),
     );
   }

@@ -75,11 +75,14 @@ class FeedItem extends StatelessWidget {
             title: title,
             date: date,
             image: image,
+            link: link,
             content: content,
           );
         }
       },
-      closedColor: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.backgroundColor,
+      middleColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      closedColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      closedElevation: 0,
       closedBuilder: (context, VoidCallback openDetailsPage) => Padding(
         padding: const EdgeInsets.only(bottom: 14),
         child: CustomButton(

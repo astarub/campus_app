@@ -29,7 +29,7 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> {
+class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClientMixin<CalendarPage> {
   late List<Event> _events = [];
   late List<Event> _savedEvents = [];
   late List<Failure> _failures = [];
@@ -43,25 +43,41 @@ class _CalendarPageState extends State<CalendarPage> {
   late final CampusSegmentedControl upcomingSavedSwitch;
   bool showSavedEvents = false;
 
+  double eventWidgetOpacity = 0;
+  double savedWidgetOpacity = 0;
   bool showUpcomingPlaceholder = false;
   bool showSavedPlaceholder = false;
 
-  /// Function that call usecase and parse widgets into the corresponding
+  /// Function that calls usecase and parses widgets into the corresponding
   /// lists of events or failures.
-  Future<void> updateStateWithEvents() async {
-    await _calendarUsecase.updateEventsAndFailures().then((data) {
-      setState(() {
-        _events = data['events']! as List<Event>;
-        _savedEvents = data['saved']! as List<Event>;
-        _failures = data['failures']! as List<Failure>;
-
-        parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
-        savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
-
-        showUpcomingPlaceholder = _events.isEmpty;
-        showSavedPlaceholder = _savedEvents.isEmpty;
-      });
+  Future<List<Widget>> updateStateWithEvents() async {
+    setState(() {
+      eventWidgetOpacity = 0;
+      savedWidgetOpacity = 0;
     });
+
+    await _calendarUsecase.updateEventsAndFailures().then(
+      (data) {
+        setState(() {
+          _events = data['events']! as List<Event>;
+          _savedEvents = data['saved']! as List<Event>;
+          _failures = data['failures']! as List<Failure>;
+
+          parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
+          savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
+
+          showUpcomingPlaceholder = _events.isEmpty;
+          showSavedPlaceholder = _savedEvents.isEmpty;
+          eventWidgetOpacity = 1;
+          savedWidgetOpacity = 1;
+        });
+      },
+      onError: (e) {
+        throw Exception('Failed to load parsed Events: $e');
+      },
+    );
+
+    return parsedEvents;
   }
 
   @override
@@ -86,8 +102,10 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -117,17 +135,33 @@ class _CalendarPageState extends State<CalendarPage> {
                               color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                               strokeWidth: 3,
                               onRefresh: updateStateWithEvents,
-                              child: ListView(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                children: showSavedEvents ? savedEvents : parsedEvents,
-                              ),
+                              child: showSavedEvents
+                                  ? ListView.builder(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                      itemCount: savedEvents.length,
+                                      itemBuilder: (context, index) => AnimatedOpacity(
+                                        opacity: savedWidgetOpacity,
+                                        duration: Duration(milliseconds: 50 + (index * 35)),
+                                        child: savedEvents[index],
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                      itemCount: parsedEvents.length,
+                                      itemBuilder: (context, index) => AnimatedOpacity(
+                                        opacity: eventWidgetOpacity,
+                                        duration: Duration(milliseconds: 75 + (index * 40)),
+                                        child: parsedEvents[index],
+                                      ),
+                                    ),
                             ),
                 ),
                 // Header
                 Container(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -154,4 +188,8 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
     );
   }
+
+  // Keep state alive
+  @override
+  bool get wantKeepAlive => true;
 }

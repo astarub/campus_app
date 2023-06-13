@@ -12,7 +12,7 @@ import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/pages/more/static_info_page.dart';
 import 'package:campus_app/pages/more/settings_page.dart';
 
-class MorePage extends StatelessWidget {
+class MorePage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
@@ -26,6 +26,11 @@ class MorePage extends StatelessWidget {
 
   static const String privacy = 'Tbd.';
 
+  @override
+  State<MorePage> createState() => _MorePageState();
+}
+
+class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<MorePage> {
   void openLink(BuildContext context, String url) {
     debugPrint('Opening external ressource: $url');
 
@@ -51,12 +56,12 @@ class MorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(
         child: AnimatedExit(
-          key: pageExitAnimationKey,
+          key: widget.pageExitAnimationKey,
           child: AnimatedEntry(
-            key: pageEntryAnimationKey,
+            key: widget.pageEntryAnimationKey,
             child: Column(
               children: [
                 // Header
@@ -91,6 +96,11 @@ class MorePage extends StatelessWidget {
                             title: 'Repair Café',
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/repair-cafe/'),
+                          ),
+                          ExternalLinkButton(
+                            title: 'Tanzkreis',
+                            leadingIconPath: 'assets/img/asta_logo.png',
+                            onTap: () => openLink(context, 'https://asta-bochum.de/tanzkreis/'),
                           ),
                           Flex(
                             direction: Axis.horizontal,
@@ -140,8 +150,10 @@ class MorePage extends StatelessWidget {
                           ExternalLinkButton(
                             title: 'eCampus',
                             leadingIconPath: 'assets/img/icons/rub-link.png',
-                            onTap: () => openLink(context,
-                                'https://www.ruhr-uni-bochum.de/ecampus/ecampus-webclient/login_studierende.html'),
+                            onTap: () => openLink(
+                              context,
+                              'https://www.ruhr-uni-bochum.de/ecampus/ecampus-webclient/login_studierende.html',
+                            ),
                           ),
                           ExternalLinkButton(
                             title: 'FlexNow',
@@ -234,4 +246,8 @@ class MorePage extends StatelessWidget {
       ),
     );
   }
+
+  // Keep state alive
+  @override
+  bool get wantKeepAlive => true;
 }

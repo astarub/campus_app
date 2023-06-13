@@ -77,7 +77,7 @@ class ExternalLinkButton extends StatelessWidget {
                   ),
                 // Title
                 Padding(
-                  padding: const EdgeInsets.only(left: 12),
+                  padding: const EdgeInsets.only(left: 16),
                   child: Text(
                     title,
                     style: Provider.of<ThemesNotifier>(context)
