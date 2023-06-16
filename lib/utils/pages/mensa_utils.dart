@@ -7,11 +7,10 @@ class MensaUtils extends Utils {
     return str == str.toUpperCase();
   }
 
-  bool isNumeric(String s) {
-    if (s == null) {
-      return false;
-    }
-    return double.tryParse(s) != null;
+  /// check if the string contains only numbers
+  bool isNumeric(String str) {
+    final RegExp numeric = RegExp(r'^-?[0-9]+$');
+    return numeric.hasMatch(str);
   }
 
   /// Parse a list of DishEntity to widget list of type MealCategory.
@@ -95,9 +94,7 @@ class MensaUtils extends Utils {
               name: 'Putenbrust, Butter, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
           MealItem(name: 'Tofu, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
           MealItem(
-              name: 'veganem Brotaufstrich, Salat, Gurke und Tomate',
-              price: '2,20€',
-              onPreferenceTap: onPreferenceTap),
+              name: 'veganem Brotaufstrich, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
         ],
       ),
       MealCategory(
