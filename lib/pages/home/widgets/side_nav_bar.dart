@@ -64,13 +64,13 @@ class _SideNavBarState extends State<SideNavBar> {
             onTap: () => widget.onSelectedPage(PageItem.mensa),
             isActive: widget.currentPage == PageItem.mensa,
           ),
-          // Guide
+          // Wallet
           SideNavBarItem(
-            title: 'Guide',
-            imagePathActive: 'assets/img/icons/help-filled.png',
-            imagePathInactive: 'assets/img/icons/help-outlined.png',
-            onTap: () => widget.onSelectedPage(PageItem.guide),
-            isActive: widget.currentPage == PageItem.guide,
+            title: 'Wallet',
+            imagePathActive: 'assets/img/icons/wallet-filled.png',
+            imagePathInactive: 'assets/img/icons/wallet-outlined.png',
+            onTap: () => widget.onSelectedPage(PageItem.wallet),
+            isActive: widget.currentPage == PageItem.wallet,
           ),
           const Expanded(child: SizedBox()),
           // More

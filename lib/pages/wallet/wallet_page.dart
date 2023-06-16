@@ -48,7 +48,7 @@ class _WalletPageState extends State<WalletPage> {
                 Container(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 14 : 0, bottom: 40),
                   child: Text(
-                    'Guide',
+                    'Wallet',
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                   ),
                 ),

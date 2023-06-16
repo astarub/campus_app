@@ -72,13 +72,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
               onTap: () => widget.onSelectedPage(PageItem.mensa),
               isActive: widget.currentPage == PageItem.mensa,
             ),
-            // Guide
+            // Wallet
             BottomNavBarItem(
-              title: 'Guide',
+              title: 'Wallet',
               imagePathActive: 'assets/img/icons/wallet-filled.png',
               imagePathInactive: 'assets/img/icons/wallet-outlined.png',
-              onTap: () => widget.onSelectedPage(PageItem.guide),
-              isActive: widget.currentPage == PageItem.guide,
+              onTap: () => widget.onSelectedPage(PageItem.wallet),
+              isActive: widget.currentPage == PageItem.wallet,
             ),
             // More
             BottomNavBarItem(

@@ -28,6 +28,7 @@ class CampusWallet extends StatelessWidget {
     final double initialWalletOffset = (MediaQuery.of(context).size.width - 325) / 2;
 
     return StackedCardCarousel(
+      cardAlignment: CardAlignment.center,
       scrollDirection: Axis.horizontal,
       initialOffset: initialWalletOffset,
       items: const [

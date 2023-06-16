@@ -41,7 +41,7 @@ const List<Map<String, String>> faqEntries = [
       und den in den Gebäuden verteilten Fachbibliotheken zusammen. Diese bieten dir einen Raum zum Lernen und 
       Recherchieren für Hausarbeiten und Referate oder zum Lernen für Klausuren. Für jede einzelne Bibliothek bestehen 
       gesonderte Regeln, was eine mögliche Ausleihe und die Öffnungszeiten betrifft. Die UB ist in den Zeiten von MO-FR: 
-      8.00 bis 23.00 Uhr und SA-SO: von 10.00 bis 21.00 Uhr geöffnet. Die UB stellt eine große Zahl an Arbeitsplätzen mit 
+      8.00 bis 23.00 Uhr und SA-SO: von 10.00 bis 19.00 Uhr geöffnet. Die UB stellt eine große Zahl an Arbeitsplätzen mit 
       und ohne PC bereit. Für die Benutzung der Schließfächer ist eine 2€-Münze erforderlich! Erfahrt alle auf Corona 
       bezogenen und alle aktualisierten Informationen auf der Internetseite der UB. Im Servicereferat des AStA kannst du 
       auch kostenfrei einen AStA-Chip erhalten, der in die UB-Schließfächer passt. Eine Auflistung aller Fachbibliotheken 
@@ -163,15 +163,19 @@ const List<Map<String, String>> faqEntries = [
       Der Geltungsbereich des Semestertickets erstreckt sich auf den gesamten VRR-Bereich und mittlerweile auch nach Venlo. 
       Zudem ist das Ticket in ganz NRW gültig. Beachte hierbei, dass es nur ausgedruckt oder per PDF mit einem amtlichen 
       Lichtbildausweis (Perso oder Reisepass) gültig ist. Das Ticket kann über eCampus abgerufen werden.
+      Für einen Aufschlag von 12,33 € kannst du dein Semesterticket zu einem Deutschlandticket aufwerten. Beachte, dass
+      du bei Nutzung des Deutschlandtickets, den QR-Code des Deutschlandtickets, dein Semesterticket und ein Lichtbildausweis
+      mitführen musst. 
+      <a href="https://studium.ruhr-uni-bochum.de/de/vom-semesterticket-zum-deutschlandticket">Buchung/Infos</a>
     ''',
   },
   {
     'title': 'Sozialbeitrag',
     'content': '''
       Der Sozialbeitrag ist ein von jedem Studierenden für jedes Semester erneut zu entrichtender Pflichtbeitrag. 
-      Der Betrag beläuft sich im Wintersemester 2022/23 auf insgesamt 262,00 € (ermäßigt wegen des 3-monatigen 9-Tickets). 
-      Enthalten sind 110 € für das Akademische Förderungswerk (AKAFÖ), welches z.B. für die Mensa und Wohnheime zuständig 
-      ist, 213,06 € (regulär) für das Semesterticket sowie 19,37 € für die Studierendenschaft der RUB (AStA).
+      Der Betrag beläuft sich im Sommersemester 2023 auf insgesamt 362,62 €. 
+      Enthalten sind 120 € für das Akademische Förderungswerk (AKAFÖ), welches z.B. für die Mensa und Wohnheime zuständig 
+      ist, 220,02 € (regulär) für das Semesterticket sowie 20,1 € für die Studierendenschaft der RUB (AStA).
       ''',
   },
   {
