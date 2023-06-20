@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/popupRoot"
+	android:layout_width="270dp"
+	android:layout_height="250dp"
+	android:gravity="center"
+	android:orientation="vertical"
+	tools:context=".PopupActivity">
+
+	<androidx.appcompat.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="35sp"
+		android:background="?attr/colorPrimary"
+		android:elevation="0dp"
+		android:minHeight="?attr/actionBarSize"
+		app:titleTextColor="@android:color/white">
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			android:orientation="horizontal">
+
+			<ImageView
+				android:id="@+id/home"
+				android:layout_width="39sp"
+				android:layout_height="39sp"
+				android:layout_alignWithParentIfMissing="false"
+				android:layout_alignParentTop="false"
+				android:layout_alignParentRight="false"
+				android:layout_centerInParent="false"
+				android:layout_centerHorizontal="false"
+				android:layout_marginLeft="10sp"
+				android:src="@drawable/splash" />
+
+			<TextView
+				android:id="@+id/popup_title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="false"
+				android:layout_centerVertical="true"
+				android:layout_marginLeft="65sp"
+				android:autoText="false"
+				android:fontFamily="sans-serif"
+				android:text="Campus App"
+				android:textSize="17sp"
+				app:autoSizeTextType="none" />
+		</RelativeLayout>
+	</androidx.appcompat.widget.Toolbar>
+
+	<TextView
+		android:id="@+id/current"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10sp"
+		android:text="Mensa Guthaben:"
+		android:textSize="16sp" />
+
+	<TextView
+		android:id="@+id/last"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="18dp"
+		android:layout_marginBottom="87sp"
+		android:gravity="center"
+		android:text="Letzte Abbuchung:"
+		android:textSize="15sp" />
+
+</LinearLayout>

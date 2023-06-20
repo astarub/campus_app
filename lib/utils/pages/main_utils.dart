@@ -102,6 +102,7 @@ Future<void> handleInitialUri() async {
         return;
     }
   } catch (e) {
+    print(e);
     debugPrint('Cannot get initial uri.');
   }
 }
