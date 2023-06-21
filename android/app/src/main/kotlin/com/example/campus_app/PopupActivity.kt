@@ -34,15 +34,6 @@ class PopupActivity : AppCompatActivity() {
         return transceiveMethod.invoke(this, data) as ByteArray
     }
 
-    // Converts a ByteArray to an integer by shifting the bytes one by one into an int
-    fun littleEndianConversion(bytes: ByteArray): Int {
-        var result = 0
-        for (i in bytes.indices) {
-            result = result or (bytes[i].toInt() shl ((bytes.lastIndex - i) * 8))
-            }
-        return result
-    }
-
     // Converts an array of unsigned integer to an integer. Works just like the littleEndianConversion function
     fun littleEndianConversionUInt(ints: UIntArray): UInt {
         var result: UInt = 0U
@@ -111,9 +102,9 @@ class PopupActivity : AppCompatActivity() {
                         val valueResult = isoDep.transceive(valueBytes, null).reversed()
 
                         // Extract 4 bytes at index 4 onwards responsible for indicating the value of the mensa card 
-                        val valuePartList = mutableListOf<Byte>()
+                        val valuePartList = mutableListOf<UInt>()
                         for(i in 4..valueResult.lastIndex) {
-                            valuePartList.add(valueResult[i])
+                            valuePartList.add(valueResult[i].toHexString().toUInt(16))
                         }
 
                         // Extract 4 bytes at index 12 to 15 that represent the last transaction of the mensa card
@@ -122,8 +113,8 @@ class PopupActivity : AppCompatActivity() {
                             transactionPartList.add(transactionFile[i].toHexString().toUInt(16))
                         }
 
-                        // Convert the extracted bytes to an integer
-                        val mensaCardValue = littleEndianConversion(valuePartList.toByteArray())
+                        // Convert the extracted bytes to a hex string and then to a UInt because otherwise some weird values are displayed
+                        val mensaCardValue = littleEndianConversionUInt(valuePartList.toUIntArray())
                         val lastTransaction = littleEndianConversionUInt(transactionPartList.reversed().toUIntArray())
 
                         // Display the transceived values divided by 1000 to get the float representation of the integer

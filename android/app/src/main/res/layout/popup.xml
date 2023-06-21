@@ -34,7 +34,7 @@
 				android:layout_alignParentRight="false"
 				android:layout_centerInParent="false"
 				android:layout_centerHorizontal="false"
-				android:layout_marginLeft="10sp"
+				android:layout_marginLeft="7sp"
 				android:src="@drawable/splash" />
 
 			<TextView
@@ -43,10 +43,10 @@
 				android:layout_height="wrap_content"
 				android:layout_alignParentRight="false"
 				android:layout_centerVertical="true"
-				android:layout_marginLeft="65sp"
+				android:layout_marginLeft="62sp"
 				android:autoText="false"
 				android:fontFamily="sans-serif"
-				android:text="Campus App"
+				android:text="Mensa Guthaben"
 				android:textSize="17sp"
 				app:autoSizeTextType="none" />
 		</RelativeLayout>
