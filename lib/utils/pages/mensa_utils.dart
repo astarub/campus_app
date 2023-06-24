@@ -150,7 +150,7 @@ class MensaUtils extends Utils {
         ],
       ),
       MealCategory(
-        categoryName: 'Sandwich-Toaties',
+        categoryName: 'Sandwich-Toasties',
         meals: [
           MealItem(name: 'Tomate, Ei, Käse und Remoulade', price: '3,80€', onPreferenceTap: onPreferenceTap),
           MealItem(name: 'Salami, Tomate, Käse und Remoulade', price: '3,80€', onPreferenceTap: onPreferenceTap),
