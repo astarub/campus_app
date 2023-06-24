@@ -1,3 +1,5 @@
+// ignore_for_file: comment_references
+
 import 'package:flutter/material.dart';
 
 /// This widget shows a switch that uses the CampusApp design language
@@ -328,7 +330,6 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
                             boxShadow: [widget.toggleShadow],
                           ),
                           child: FittedBox(
-                            fit: BoxFit.contain,
                             child: Container(
                               child: Stack(
                                 children: [

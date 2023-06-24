@@ -38,7 +38,7 @@ class NavBarNavigator extends StatelessWidget {
   /// to control the animation from outside the page.
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
-  NavBarNavigator({
+  const NavBarNavigator({
     required this.mainNavigatorKey,
     required this.navigatorKey,
     required this.pageItem,
@@ -65,7 +65,7 @@ class NavBarNavigator extends StatelessWidget {
         );
         break;
       case PageItem.coupons:
-        rootPage = Scaffold(); // Has to be replaced!
+        rootPage = const Scaffold(); // Has to be replaced!
         break;
       case PageItem.mensa:
         rootPage = MensaPage(

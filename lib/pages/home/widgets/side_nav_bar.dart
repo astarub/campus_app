@@ -1,11 +1,8 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
-import 'package:campus_app/pages/home/widgets/bottom_nav_bar_item.dart';
 import 'package:campus_app/pages/home/widgets/side_nav_bar_item.dart';
 
 class SideNavBar extends StatefulWidget {

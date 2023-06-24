@@ -114,10 +114,11 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
         NFCTag scannedTag;
         try {
           scannedTag = await FlutterNfcKit.poll(
-              timeout: const Duration(seconds: 10),
-              readIso15693: false,
-              iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
-              iosAlertMessage: 'Scanne deine Karte.');
+            timeout: const Duration(seconds: 10),
+            readIso15693: false,
+            iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
+            iosAlertMessage: 'Scanne deine Karte.',
+          );
         } catch (e) {
           switch (e.runtimeType) {
             case PlatformException:
@@ -137,10 +138,11 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
           NFCTag scannedTag;
           try {
             scannedTag = await FlutterNfcKit.poll(
-                timeout: const Duration(seconds: 10),
-                readIso15693: false,
-                iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
-                iosAlertMessage: 'Scanne deine Karte.');
+              timeout: const Duration(seconds: 10),
+              readIso15693: false,
+              iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
+              iosAlertMessage: 'Scanne deine Karte.',
+            );
           } catch (e) {
             switch (e.runtimeType) {
               case PlatformException:
@@ -267,9 +269,10 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                         if (!tagScanned)
                           Padding(
                             padding: EdgeInsets.only(
-                                bottom: Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null
-                                    ? 100
-                                    : 180),
+                              bottom: Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null
+                                  ? 100
+                                  : 180,
+                            ),
                             child: Column(
                               children: [
                                 if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light)

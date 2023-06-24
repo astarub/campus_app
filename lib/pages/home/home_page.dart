@@ -1,5 +1,4 @@
 import 'dart:io' show Platform;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -152,7 +151,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
 
     // Theme von System auslesen & Callback erstellen
-    var window = WidgetsBinding.instance.window;
+    final window = WidgetsBinding.instance.window;
 
     window.onPlatformBrightnessChanged = () {
       final brightness = window.platformBrightness;

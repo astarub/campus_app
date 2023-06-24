@@ -14,9 +14,9 @@ class FaqPage extends StatelessWidget {
     // Sort the Entries Alphabetically before Adding them
     final List<Map<String, String>> faqList = _sortFaqList(List.from(faqEntries), 'title');
 
-    faqExpandables.addAll(faqList
-        .map((faqEntry) => ExpandableFaqItem(title: faqEntry['title']!, content: faqEntry['content']!))
-        .toList());
+    faqExpandables.addAll(
+      faqList.map((faqEntry) => ExpandableFaqItem(title: faqEntry['title']!, content: faqEntry['content']!)).toList(),
+    );
   }
 
   List<Map<String, String>> _sortFaqList(List<Map<String, String>> sortList, String byPara, {bool reverse = false}) {

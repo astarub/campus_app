@@ -427,7 +427,7 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
         if (interactionData[0] == null) return;
 
         final String url = interactionData[0];
-
+        
         if (Provider.of<SettingsHandler>(homeKey.currentState!.context, listen: false)
                 .currentSettings
                 .useExternalBrowser ||

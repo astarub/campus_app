@@ -54,13 +54,15 @@ class _CampusTextFieldState extends State<CampusTextField> {
   void initState() {
     super.initState();
 
-    _focusNode.addListener(() => setState(() {
-          if (_focusNode.hasFocus) {
-            hint = '';
-          } else {
-            hint = widget.textFieldText;
-          }
-        }));
+    _focusNode.addListener(
+      () => setState(() {
+        if (_focusNode.hasFocus) {
+          hint = '';
+        } else {
+          hint = widget.textFieldText;
+        }
+      }),
+    );
   }
 
   @override
@@ -78,21 +80,21 @@ class _CampusTextFieldState extends State<CampusTextField> {
                 ),
             cursorColor: Colors.black,
             decoration: InputDecoration(
-                filled: true,
-                fillColor: const Color.fromRGBO(245, 246, 250, 1),
-                hintText: hint,
-                hintStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
-                      color: const Color.fromARGB(255, 146, 146, 146),
-                    ),
-                contentPadding: widget.type == CampusTextFieldType.normal
-                    ? const EdgeInsets.symmetric(horizontal: 12, vertical: 24)
-                    : const EdgeInsets.only(left: 65, right: 12, top: 24, bottom: 24),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(color: Colors.black, width: 2),
-                ),
-                enabledBorder:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none)),
+              filled: true,
+              fillColor: const Color.fromRGBO(245, 246, 250, 1),
+              hintText: hint,
+              hintStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
+                    color: const Color.fromARGB(255, 146, 146, 146),
+                  ),
+              contentPadding: widget.type == CampusTextFieldType.normal
+                  ? const EdgeInsets.symmetric(horizontal: 12, vertical: 24)
+                  : const EdgeInsets.only(left: 65, right: 12, top: 24, bottom: 24),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: const BorderSide(width: 2),
+              ),
+              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+            ),
             obscureText: widget.obscuredInput,
           ),
           if (widget.type == CampusTextFieldType.icon)

@@ -78,13 +78,15 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
   Future<void> loadData() async {
     final Future<Map<String, List<dynamic>>> updatedDishes = _mensaUsecases.updateDishesAndFailures();
 
-    await updatedDishes.then((data) => setState(() {
-          _mensaDishes = data['mensa']! as List<DishEntity>;
-          _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
-          _qwestDishes = data['qwest']! as List<DishEntity>;
-          _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
-          _failures = data['failures']! as List<Failure>;
-        }));
+    await updatedDishes.then(
+      (data) => setState(() {
+        _mensaDishes = data['mensa']! as List<DishEntity>;
+        _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
+        _qwestDishes = data['qwest']! as List<DishEntity>;
+        _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
+        _failures = data['failures']! as List<Failure>;
+      }),
+    );
 
     debugPrint('Mensa Daten aktualisiert.');
   }
@@ -209,7 +211,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                     color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                     strokeWidth: 3,
                     onRefresh: () async {
-                      loadData();
+                      await loadData();
                     },
                     child: ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -251,14 +253,16 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                                       text: 'Allergene',
                                       width: null,
                                       onTap: () {
-                                        widget.mainNavigatorKey.currentState?.push(PageRouteBuilder(
-                                          opaque: false,
-                                          pageBuilder: (context, _, __) => AllergenesPopup(
-                                            allergenes:
-                                                Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
-                                            onClose: saveChangedAllergenes,
+                                        widget.mainNavigatorKey.currentState?.push(
+                                          PageRouteBuilder(
+                                            opaque: false,
+                                            pageBuilder: (context, _, __) => AllergenesPopup(
+                                              allergenes:
+                                                  Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
+                                              onClose: saveChangedAllergenes,
+                                            ),
                                           ),
-                                        ));
+                                        );
                                       },
                                     ),
                                   ),
