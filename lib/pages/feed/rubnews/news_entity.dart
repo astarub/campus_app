@@ -46,7 +46,7 @@ class NewsEntity {
     final title = xml.getElement('title')!.text;
     final url = xml.getElement('link')!.text;
     final description = xml.getElement('description')!.text;
-    final pubDate = DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse(xml.getElement('pubDate')!.text);
+    final pubDate = DateFormat('E, d MMM yyyy HH:mm:ss Z', 'de_DE').parse(xml.getElement('pubDate')!.text);
 
     /// Regular Expression to remove unwanted HTML-Tags
     final RegExp htmlTags = RegExp(
