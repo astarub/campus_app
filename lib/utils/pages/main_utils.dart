@@ -43,9 +43,9 @@ class FGBGEvents {
   static Stream<FGBGType>? _stream;
 
   static Stream<FGBGType> get stream {
-    return _stream ??= _channel.receiveBroadcastStream().map(
-          (event) => event == 'foreground' ? FGBGType.foreground : FGBGType.background,
-        );
+    return _stream ??= _channel
+        .receiveBroadcastStream()
+        .map((event) => event == 'foreground' ? FGBGType.foreground : FGBGType.background);
   }
 }
 
@@ -86,19 +86,15 @@ Future<void> handleInitialUri() async {
           // Get the event object by the specified url if a specific event is passed as an argument. Otherwise only the events page will be displayed.
           Event event;
           try {
-            event = events.firstWhere(
-              (element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/',
-            );
+            event =
+                events.firstWhere((element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/');
           } catch (e) {
             return;
           }
 
           // Push the CalendarDetailPage onto the navigator of the current page
-          await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!.push(
-            MaterialPageRoute(
-              builder: (_) => CalendarDetailPage(event: event),
-            ),
-          );
+          await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+              .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
 
           break;
         }
@@ -106,6 +102,7 @@ Future<void> handleInitialUri() async {
         return;
     }
   } catch (e) {
+    print(e);
     debugPrint('Cannot get initial uri.');
   }
 }
@@ -134,9 +131,8 @@ void handleIncomingLink() {
             // Get the event object by the specified url if a specific event is passed as an argument. Otherwise only the events page will be displayed.
             Event event;
             try {
-              event = events.firstWhere(
-                (element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/',
-              );
+              event = events
+                  .firstWhere((element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/');
             } catch (e) {
               return;
             }
@@ -146,11 +142,8 @@ void handleIncomingLink() {
             await homeKey.currentState!.selectedPage(PageItem.events);
 
             // Push the CalendarDetailPage onto the navigator of the current page
-            await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!.push(
-              MaterialPageRoute(
-                builder: (_) => CalendarDetailPage(event: event),
-              ),
-            );
+            await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+                .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
 
             break;
           }
@@ -251,11 +244,8 @@ Future<void> initializeFirebase() async {
             // Change page
             await homeKey.currentState!.selectedPage(PageItem.events);
             // Push the CalendarDetailPage onto the navigator of the current page
-            await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!.push(
-              MaterialPageRoute(
-                builder: (_) => CalendarDetailPage(event: event),
-              ),
-            );
+            await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+                .push(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
 
             break;
           }
@@ -265,9 +255,9 @@ Future<void> initializeFirebase() async {
 
             break;
           }
-        case 'guide':
+        case 'wallet':
           {
-            await homeKey.currentState!.selectedPage(PageItem.guide);
+            await homeKey.currentState!.selectedPage(PageItem.wallet);
 
             break;
           }
@@ -289,10 +279,9 @@ Future<void> initializeFirebase() async {
             final String url = interactionData[0];
 
             // Decides whether the link should be opened in the app or in an external browser
-            if (Provider.of<SettingsHandler>(
-                  homeKey.currentState!.context,
-                  listen: false,
-                ).currentSettings.useExternalBrowser ||
+            if (Provider.of<SettingsHandler>(homeKey.currentState!.context, listen: false)
+                    .currentSettings
+                    .useExternalBrowser ||
                 url.contains('instagram') ||
                 url.contains('facebook') ||
                 url.contains('twitch') ||
@@ -305,11 +294,8 @@ Future<void> initializeFirebase() async {
               );
             } else {
               // Open in InAppView
-              await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!.push(
-                MaterialPageRoute(
-                  builder: (context) => InAppWebViewPage(url: url),
-                ),
-              );
+              await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+                  .push(MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)));
             }
           }
       }
@@ -409,11 +395,8 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
         // Change page
         await homeKey.currentState!.selectedPage(PageItem.events);
         // Push the CalendarDetailPage onto the navigator of the current page
-        await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!.pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => CalendarDetailPage(event: event),
-          ),
-        );
+        await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+            .pushReplacement(MaterialPageRoute(builder: (_) => CalendarDetailPage(event: event)));
 
         break;
       }
@@ -423,9 +406,9 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
 
         break;
       }
-    case 'guide':
+    case 'wallet':
       {
-        await homeKey.currentState!.selectedPage(PageItem.guide);
+        await homeKey.currentState!.selectedPage(PageItem.wallet);
 
         break;
       }
@@ -444,11 +427,10 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
         if (interactionData[0] == null) return;
 
         final String url = interactionData[0];
-
-        if (Provider.of<SettingsHandler>(
-              homeKey.currentState!.context,
-              listen: false,
-            ).currentSettings.useExternalBrowser ||
+        
+        if (Provider.of<SettingsHandler>(homeKey.currentState!.context, listen: false)
+                .currentSettings
+                .useExternalBrowser ||
             url.contains('instagram') ||
             url.contains('facebook') ||
             url.contains('twitch') ||
@@ -461,11 +443,8 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
           );
         } else {
           // Open in InAppView
-          await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!.push(
-            MaterialPageRoute(
-              builder: (context) => InAppWebViewPage(url: url),
-            ),
-          );
+          await homeKey.currentState!.navigatorKeys[homeKey.currentState!.currentPage]?.currentState!
+              .push(MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)));
         }
       }
   }

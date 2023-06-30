@@ -26,10 +26,13 @@ class CampusWallet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double initialWalletOffset = (MediaQuery.of(context).size.width - 325) / 2;
+    const double initialWalletOffsetTablet = (550 - 325) / 2;
 
     return StackedCardCarousel(
+      cardAlignment: CardAlignment.center,
       scrollDirection: Axis.horizontal,
-      initialOffset: initialWalletOffset,
+      initialOffset: MediaQuery.of(context).size.shortestSide < 600 ? initialWalletOffset : initialWalletOffsetTablet,
+      spaceBetweenItems: MediaQuery.of(context).size.shortestSide < 600 ? 400 : 500,
       items: const [
         SizedBox(width: 325, height: 217, child: BogestraTicket()),
         SizedBox(width: 325, height: 217, child: UbCard()),

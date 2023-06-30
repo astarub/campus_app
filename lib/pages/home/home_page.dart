@@ -28,7 +28,7 @@ class HomePageState extends State<HomePage> {
     PageItem.feed: GlobalKey<NavigatorState>(),
     PageItem.events: GlobalKey<NavigatorState>(),
     PageItem.mensa: GlobalKey<NavigatorState>(),
-    PageItem.guide: GlobalKey<NavigatorState>(),
+    PageItem.wallet: GlobalKey<NavigatorState>(),
     PageItem.more: GlobalKey<NavigatorState>(),
   };
 
@@ -38,14 +38,14 @@ class HomePageState extends State<HomePage> {
     PageItem.feed: GlobalKey<AnimatedExitState>(),
     PageItem.events: GlobalKey<AnimatedExitState>(),
     PageItem.mensa: GlobalKey<AnimatedExitState>(),
-    PageItem.guide: GlobalKey<AnimatedExitState>(),
+    PageItem.wallet: GlobalKey<AnimatedExitState>(),
     PageItem.more: GlobalKey<AnimatedExitState>(),
   };
   Map<PageItem, GlobalKey<AnimatedEntryState>> entryAnimationKeys = {
     PageItem.feed: GlobalKey<AnimatedEntryState>(),
     PageItem.events: GlobalKey<AnimatedEntryState>(),
     PageItem.mensa: GlobalKey<AnimatedEntryState>(),
-    PageItem.guide: GlobalKey<AnimatedEntryState>(),
+    PageItem.wallet: GlobalKey<AnimatedEntryState>(),
     PageItem.more: GlobalKey<AnimatedEntryState>(),
   };
 
@@ -283,7 +283,7 @@ class HomePageState extends State<HomePage> {
                                           _buildOffstateNavigator(PageItem.feed),
                                           _buildOffstateNavigator(PageItem.events),
                                           _buildOffstateNavigator(PageItem.mensa),
-                                          _buildOffstateNavigator(PageItem.guide),
+                                          _buildOffstateNavigator(PageItem.wallet),
                                           _buildOffstateNavigator(PageItem.more),
                                         ],
                                       ),

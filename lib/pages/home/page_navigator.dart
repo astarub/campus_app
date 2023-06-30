@@ -7,7 +7,7 @@ import 'package:campus_app/pages/wallet/wallet_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
-enum PageItem { feed, events, coupons, mensa, guide, more }
+enum PageItem { feed, events, coupons, mensa, wallet, more }
 
 class PageNavigatorRoutes {
   /// The root-page is shown initially when this navbar-tab is the active one.
@@ -74,7 +74,7 @@ class NavBarNavigator extends StatelessWidget {
           pageExitAnimationKey: pageExitAnimationKey,
         );
         break;
-      case PageItem.guide:
+      case PageItem.wallet:
         rootPage = WalletPage(
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,

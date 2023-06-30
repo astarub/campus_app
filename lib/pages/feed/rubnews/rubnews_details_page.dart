@@ -124,10 +124,19 @@ class RubnewsDetailsPage extends StatelessWidget {
                   ),
                   // Content
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
+                    padding: const EdgeInsets.only(bottom: 4, left: 12, right: 12),
                     child: StyledHTML(
                       context: context,
                       text: content,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                  // Credits
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
+                    child: StyledHTML(
+                      context: context,
+                      text: 'Quelle: <a href="$link">news.rub.de</a>',
                       textAlign: TextAlign.justify,
                     ),
                   ),
