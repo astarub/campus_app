@@ -58,7 +58,7 @@ class DishEntity {
     late final List<String> numbers = [];
 
     final title = json['title'];
-    final price = json['price'] ?? 'pauschal';
+    final price = json['price'] ?? 'pauschal';/*TODO: Add localization*/
 
     final allInfo = (json['allergies']! as String).replaceAll('(', '').replaceAll(')', '').split(',');
 

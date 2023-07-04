@@ -64,7 +64,7 @@ class MensaUtils extends Utils {
     }
 
     if (mealCategories.isEmpty) {
-      mealCategories.add(const MealCategory(categoryName: 'Heute leider keine Angebote.'));
+      mealCategories.add(const MealCategory(categoryName: 'Heute leider keine Angebote.')); /*TODO: Add localization*/
     }
 
     return mealCategories;
@@ -80,6 +80,7 @@ class MensaUtils extends Utils {
       MealCategory(
         categoryName: 'Belegte Brötchen',
         meals: [
+          /*TODO: Add localization*/
           MealItem(name: 'Käse, Butter, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
           MealItem(name: 'Salami, Butter, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
           MealItem(
@@ -99,6 +100,7 @@ class MensaUtils extends Utils {
           ),
           MealItem(name: 'Tofu, Salat, Gurke und Tomate', price: '2,20€', onPreferenceTap: onPreferenceTap),
           MealItem(
+            /*TODO: Add localization*/
             name: 'veganem Brotaufstrich, Salat, Gurke und Tomate',
             price: '2,20€',
             onPreferenceTap: onPreferenceTap,
@@ -113,6 +115,7 @@ class MensaUtils extends Utils {
             price: '3,80€',
             onPreferenceTap: onPreferenceTap,
           ),
+          /*TODO: Add localization*/
           MealItem(
             name: 'Brie, Salat, Tomate, Gurke, Ei, Remulade und Butter',
             price: '3,80€',
@@ -131,7 +134,7 @@ class MensaUtils extends Utils {
           MealItem(
             name: 'gekochtem Schinken, Salat, Tomate, Gurke, Ei, Remulade und Butter',
             price: '3,80€',
-            onPreferenceTap: onPreferenceTap,
+            onPreferenceTap: onPreferenceTap, /*TODO: Add localization*/
           ),
           MealItem(
             name: 'rohem Schinken, Salat, Tomate, Gurke, Ei, Remulade und Butter',
@@ -148,6 +151,7 @@ class MensaUtils extends Utils {
             price: '3,80€',
             onPreferenceTap: onPreferenceTap,
           ),
+          /*TODO: Add localization*/
           MealItem(
             name: 'veganem Brotaufstrich, Salat, Tomate, Gurke, Ei, Remulade und Butter',
             price: '3,80€',

@@ -58,6 +58,7 @@ class LeitwarteButton extends StatelessWidget {
                     ),
                     Text(
                       'Leitwarte der RUB',
+                      /*TODO: Add localization*/
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
                             color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                 ? const Color.fromRGBO(207, 0, 0, 1)
@@ -74,6 +75,7 @@ class LeitwarteButton extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5),
             child: Text(
               ' 24/7 besetzt, für jegliche Notfälle',
+              /*TODO: Add localization*/
               style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
                     fontSize: 12,
                     color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light

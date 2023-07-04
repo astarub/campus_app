@@ -18,5 +18,75 @@
   "login_error": "Invalid input!",
   "login_success": "Successfully logged in!",
   "login_already": "Allready logged in.",
-  "enter_totp": "Please enter your TOTP."
+  "enter_totp": "Please enter your TOTP.",
+  "event_startingTime": "Begin':' {time}\n",
+  "@event_startingTime": {
+    "placeholders": { 
+      "time": {
+        "type": "DateTime",
+        "format" : "jm"
+      } 
+    }
+  },
+  "event_cost" : "\nCost':' {value} {currency}",
+  "@event_cost" : {
+    "placeholders": {
+      "value" : { "type" : "String?" },
+      "currency" : { "type" : "String?" }
+    }
+  },
+  "event_missingVenue" : "Venue to be announced",
+  "event_timeRange" : "{start} - {end}",
+  "@event_timeRange": {
+    "placeholders": {
+      "start": {
+        "type" : "DateTime", 
+        "format" : "jm"
+      },
+      "end": {
+        "type" : "DateTime", 
+        "format" : "jm"
+      }
+    }
+  },
+  "event_missingDescription": "No description given.",
+  "event_Venue": "Venue",
+  "event_follow": "follow",
+  "event_unfollow": "unfollow",
+  "event_noUpcomingEvents_title": "No events in sight",
+  "event_noUpcomingEvents_text": "There are no upcoming events at the moment. Try again later.",
+  "event_noFollowedEvent_title": "No followed events",
+  "event_noFollowedEvent_text": "Follow events, to see them here.",
+  "event_upcoming": "Upcomming",
+  "event_followed": "Followed",
+  "feed_searchUnimplemented": "Nothing to search here yet ':'D",
+  "feed_explore": "Explore",
+  "feed": "Feed",
+  "events": "Events",
+  "cafeteria": "Cafeteria",
+  "wallet": "Wallet",
+  "more": "More",
+  "firebase_leadingTitle": "Privacy",
+  "firebase_title": "Google Services",
+  "firebase_text": "\nIn order to send you notifications about spontaneous events and appointments around the university,\nwe currently use Firebase, a service from Google.\n\nIf you don´t want this, we respect that.\nIn January we will introduce a Google-free alternative.",
+  "firebase_text600": "\nIn order to send you notifications about spontaneous events and appointments\naround the university, we currently use Firebase, a service from Google.\n\nIf you don´t want this, we respect that.\nIn January we will introduce a Google-free alternative.",
+  "firebase_accept": "Yes, no problem",
+  "firebase_decline": "No, I don´t want that",
+  "onboarding_finish": "Finish",
+  "onboarding_presented": "Presented by your AStA",
+  "onboarding_studyProgram": "Study program",
+  "onboarding_choseStudyProgram": "Select your current study program to view events and news that are right for you.",
+  "onboarding_privacy": "Privacy",
+  "onboarding_firebaseDescription": "\nIn order to send you notifications about spontaneous events and appointments around the university, we currently use Firebase, a service from Google.\ntIf you don´t want this, we respect that.\nIn January we will introduce a Google-free alternative.\n",
+  "onboarding_firebaseAccept": "Yes, no problem",
+  "onboarding_firebaseDecline": "No, I don´t want that",
+  "onboarding_activatePushNotifications": "Activate push notifications",
+  "onboarding_firebaseAccept": "Yes, no problem",
+  "onboarding_firebaseDecline": "No, I don´t want that",
+  "onboarding_themeSubtext": "High contrast or low profile. Day or night.\nChoose your design.",
+  "onboarding_designSystem": "System",
+  "onboarding_designLight": "Light",
+  "onboarding_designDark": "Dark",
+  "onboarding_privacyText": "To receive push notifications from the Campus APP, I agree that\npersonal data (IP address, subscribed topics) to Google servers in the USA.\nUSA. I am aware that an adequate level of data protection is not guaranteed in the\nand it is possible that American authorities access this data and that I am not informed about this access.\nYou can find more information in our privacy policy.\nThis consent can be revoked at any time under ''Settings''.",
+  "onboarding_feedbackDescription": "You have an idea how we can do something better?\nYou are missing something in the app? Then just write to us!\n\nHelp us shape your Campus App, whether through feedback,\nsuggestions, or even by actively participating in the development.\n\nThe following channels are available to you,\nto reach us:"
 }

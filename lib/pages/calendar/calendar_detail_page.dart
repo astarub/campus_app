@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -163,8 +164,8 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                     child: StyledHTML(
                                       context: context,
                                       text: widget.event.venue.name == ''
-                                          ? 'Veranstaltungsort wird noch bekannt gegeben.'
-                                          : '${widget.event.venue}<br> ${DateFormat('Hm').format(widget.event.startDate)} Uhr - ${DateFormat('Hm').format(widget.event.endDate)} Uhr',
+                                          ? AppLocalizations.of(context)!.event_missingVenue
+                                          : '${widget.event.venue}<br> ${AppLocalizations.of(context)!.event_timeRange(widget.event.startDate, widget.event.endDate)}',
                                       textStyle: Provider.of<ThemesNotifier>(context)
                                           .currentThemeData
                                           .textTheme
@@ -184,7 +185,9 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       padding: const EdgeInsets.only(top: 10, bottom: 40),
                       child: StyledHTML(
                         context: context,
-                        text: widget.event.description != '' ? widget.event.description : 'No description given.',
+                        text: widget.event.description != ''
+                            ? widget.event.description
+                            : AppLocalizations.of(context)!.event_missingDescription,
                         textAlign: TextAlign.justify,
                       ),
                     ),
@@ -206,7 +209,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                     // Venue
                     if (widget.event.venue.name != '')
                       Text(
-                        'Veranstaltungsort',
+                        AppLocalizations.of(context)!.event_Venue,
                         textAlign: TextAlign.left,
                         style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                       ),
@@ -223,7 +226,9 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       padding: const EdgeInsets.only(top: 10, bottom: 30),
                       child: Center(
                         child: CampusButton(
-                          text: savedEvent ? 'Nicht mehr merken' : 'Merken',
+                          text: savedEvent
+                              ? AppLocalizations.of(context)!.event_unfollow
+                              : AppLocalizations.of(context)!.event_follow,
                           onTap: saveEventAndShowMessage,
                         ),
                       ),

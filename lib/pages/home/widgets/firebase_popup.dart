@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:campus_app/utils/widgets/decision_popup.dart';
 
@@ -18,23 +19,13 @@ class FirebasePopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecisionPopup(
-      leadingTitle: 'Datenschutz',
-      title: 'Google Services',
+      leadingTitle: AppLocalizations.of(context)!.firebase_leadingTitle,
+      title: AppLocalizations.of(context)!.firebase_title,
       content: MediaQuery.of(context).size.shortestSide < 600
-          ? '''
-        Um dir Benachrichtigungen über spontane Events und Termine rund um die Uni schicken zu können,
-        verwenden wir derzeit Firebase, einen Service von Google.
-        
-        Solltest du dies nicht wollen, respektieren wir das.
-        Im Januar werden wir dafür eine Google-freie Alternative einführen.'''
-          : '''
-        Um dir Benachrichtigungen über spontane Events und Termine rund um die Uni
-        schicken zu können, verwenden wir derzeit Firebase, einen Service von Google.
-        
-        Solltest du dies nicht wollen, respektieren wir das.
-        Im Januar werden wir dafür eine Google-freie Alternative einführen.''',
-      acceptButtonText: 'Ja, kein Problem',
-      declineButtonText: 'Nein, möchte ich nicht.',
+          ? AppLocalizations.of(context)!.firebase_text
+          : AppLocalizations.of(context)!.firebase_text600,
+      acceptButtonText: AppLocalizations.of(context)!.firebase_accept,
+      declineButtonText: AppLocalizations.of(context)!.firebase_decline,
       height: 450,
       onAccept: () {
         onClose(true);

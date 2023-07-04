@@ -46,6 +46,7 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
   @override
   Widget build(BuildContext context) {
     return PopupSheet(
+      /*TODO: Add localization*/
       title: 'Präferenzen',
       onClose: () {
         widget.onClose(_selectedPreferences);
@@ -62,12 +63,14 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 10),
               child: Text(
+                /*TODO: Add localization*/
                 'Ausschließlich',
                 textAlign: TextAlign.left,
                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
               ),
             ),
             SelectionItemRow(
+              /*TODO: Add localization*/
               selectionItemTitles: const ['Vegetarisch', 'Vegan', 'Halal'],
               selectionItemShortcut: const ['V', 'VG', 'H'],
               selections: [
@@ -81,6 +84,7 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 10),
               child: Text(
+                /*TODO: Add localization*/
                 'Vermeiden von',
                 textAlign: TextAlign.left,
                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,

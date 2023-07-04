@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
@@ -39,7 +40,7 @@ class _SideNavBarState extends State<SideNavBar> {
         children: [
           // News Feed
           SideNavBarItem(
-            title: 'Feed',
+            title: AppLocalizations.of(context)!.feed,
             imagePathActive: 'assets/img/icons/home-filled.png',
             imagePathInactive: 'assets/img/icons/home-outlined.png',
             onTap: () => widget.onSelectedPage(PageItem.feed),
@@ -47,7 +48,7 @@ class _SideNavBarState extends State<SideNavBar> {
           ),
           // Calendar
           SideNavBarItem(
-            title: 'Events',
+            title: AppLocalizations.of(context)!.events,
             imagePathActive: 'assets/img/icons/calendar-filled.png',
             imagePathInactive: 'assets/img/icons/calendar-outlined.png',
             onTap: () => widget.onSelectedPage(PageItem.events),
@@ -55,7 +56,7 @@ class _SideNavBarState extends State<SideNavBar> {
           ),
           // Mensa
           SideNavBarItem(
-            title: 'Mensa',
+            title: AppLocalizations.of(context)!.cafeteria,
             imagePathActive: 'assets/img/icons/mensa-filled.png',
             imagePathInactive: 'assets/img/icons/mensa-outlined.png',
             onTap: () => widget.onSelectedPage(PageItem.mensa),
@@ -63,7 +64,7 @@ class _SideNavBarState extends State<SideNavBar> {
           ),
           // Wallet
           SideNavBarItem(
-            title: 'Wallet',
+            title: AppLocalizations.of(context)!.wallet,
             imagePathActive: 'assets/img/icons/wallet-filled.png',
             imagePathInactive: 'assets/img/icons/wallet-outlined.png',
             onTap: () => widget.onSelectedPage(PageItem.wallet),
@@ -72,7 +73,7 @@ class _SideNavBarState extends State<SideNavBar> {
           const Expanded(child: SizedBox()),
           // More
           SideNavBarItem(
-            title: 'Mehr',
+            title: AppLocalizations.of(context)!.more,
             imagePathActive: 'assets/img/icons/more.png',
             imagePathInactive: 'assets/img/icons/more.png',
             onTap: () => widget.onSelectedPage(PageItem.more),

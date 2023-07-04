@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
@@ -209,10 +210,10 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                               iconPath: 'assets/img/icons/search.svg',
                               onTap: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  SnackBar(
                                     behavior: SnackBarBehavior.floating,
-                                    margin: EdgeInsets.only(bottom: 80, left: 20, right: 20),
-                                    content: Text('Hier gibts noch nichts zu suchen :D'),
+                                    margin: const EdgeInsets.only(bottom: 80, left: 20, right: 20),
+                                    content: Text(AppLocalizations.of(context)!.feed_searchUnimplemented),
                                   ),
                                 );
                               },
@@ -221,8 +222,8 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 24),
                               child: CampusSegmentedControl(
-                                leftTitle: 'Feed',
-                                rightTitle: 'Explore',
+                                leftTitle: AppLocalizations.of(context)!.feed,
+                                rightTitle: AppLocalizations.of(context)!.feed_explore,
                                 onChanged: saveFeedExplore,
                                 selected:
                                     Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore ==

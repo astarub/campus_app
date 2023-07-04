@@ -68,6 +68,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                 Padding(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 40),
                   child: Text(
+                    /*TODO: Add localization*/
                     'Einstellungen & Mehr',
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                   ),
@@ -83,6 +84,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                         headline: 'AStA',
                         buttons: [
                           ExternalLinkButton(
+                            /*TODO: Add localization ?*/
                             title: 'KulturCafé',
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://kulturcafe.asta-bochum.de/'),
@@ -135,6 +137,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                       ),
                       // RUB links
                       ButtonGroup(
+                        /*TODO: Add localization*/
                         headline: 'Nützliche Links',
                         buttons: [
                           ExternalLinkButton(
@@ -164,9 +167,11 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                       ),
                       // Additional sites and links
                       ButtonGroup(
+                        /*TODO: Add localization*/
                         headline: 'Sonstiges',
                         buttons: [
                           ExternalLinkButton(
+                            /*TODO: Add localization*/
                             title: 'Einstellungen',
                             leadingIconPath: 'assets/img/icons/settings.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
@@ -181,6 +186,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                           ),
                           // Privacy
                           ExternalLinkButton(
+                            /*TODO: Add localization*/
                             title: 'Datenschutz',
                             leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
@@ -189,6 +195,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const StaticInfoPage.external(
+                                    /*TODO: Add localization*/
                                     title: 'Datenschutz',
                                     url: 'https://asta-bochum.de/datenschutz/#campus-app',
                                   ),
@@ -198,6 +205,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                           ),
                           // Imprint
                           ExternalLinkButton(
+                            /*TODO: Add localization*/
                             title: 'Impressum',
                             leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
@@ -206,6 +214,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const StaticInfoPage.external(
+                                    /*TODO: Add localization*/
                                     title: 'Impressum',
                                     url: 'https://asta-bochum.de/impressum/',
                                   ),
@@ -214,6 +223,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                             },
                           ),
                           ExternalLinkButton(
+                            /*TODO: Add localization*/
                             title: 'Verwendete Ressourcen',
                             leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
@@ -221,6 +231,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                           ),
                           // Feedback
                           ExternalLinkButton(
+                            /*TODO: Add localization*/
                             title: 'Feedback',
                             leadingIconPath: 'assets/img/icons/message-square.svg',
                             onTap: () =>

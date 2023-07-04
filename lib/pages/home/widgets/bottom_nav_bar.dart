@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
@@ -49,7 +50,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           children: [
             // News Feed
             BottomNavBarItem(
-              title: 'Feed',
+              title: AppLocalizations.of(context)!.feed,
               imagePathActive: 'assets/img/icons/home-filled.png',
               imagePathInactive: 'assets/img/icons/home-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.feed),
@@ -57,7 +58,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             // Calendar
             BottomNavBarItem(
-              title: 'Events',
+              title: AppLocalizations.of(context)!.events,
               imagePathActive: 'assets/img/icons/calendar-filled.png',
               imagePathInactive: 'assets/img/icons/calendar-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.events),
@@ -65,7 +66,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             // Mensa
             BottomNavBarItem(
-              title: 'Mensa',
+              title: AppLocalizations.of(context)!.cafeteria,
               imagePathActive: 'assets/img/icons/mensa-filled.png',
               imagePathInactive: 'assets/img/icons/mensa-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.mensa),
@@ -73,7 +74,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             // Wallet
             BottomNavBarItem(
-              title: 'Wallet',
+              title: AppLocalizations.of(context)!.wallet,
               imagePathActive: 'assets/img/icons/wallet-filled.png',
               imagePathInactive: 'assets/img/icons/wallet-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.wallet),
@@ -81,7 +82,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             // More
             BottomNavBarItem(
-              title: 'Mehr',
+              title: AppLocalizations.of(context)!.more,
               imagePathActive: 'assets/img/icons/more.png',
               imagePathInactive: 'assets/img/icons/more.png',
               onTap: () => widget.onSelectedPage(PageItem.more),

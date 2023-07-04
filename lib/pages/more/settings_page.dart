@@ -51,6 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     Align(
                       child: Text(
+                        /*TODO: Add localization*/
                         'Einstellungen',
                         style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       ),
@@ -122,6 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SectionHeadline(headline: 'Verhalten'),
                   // External Browser
                   LeadingTextSwitch(
+                    /*TODO: Add localization*/
                     text: 'Verwende externen Browser für Links',
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.useExternalBrowser,
                     onToggle: (switchValue) {
@@ -131,6 +133,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   // Apply app to system text scaling
                   LeadingTextSwitch(
+                    /*TODO: Add localization*/
                     text: 'Verwende Textgröße vom System',
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling,
                     onToggle: (switchValue) {
@@ -139,9 +142,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
                   const SectionHeadline(headline: 'Datenschutz'),
+                  /*TODO: Add localization*/
                   // Use Google services
                   LeadingTextSwitch(
                     text: 'Google Services für Benachrichtigungen',
+                    /*TODO: Add localization*/
                     isActive:
                         Provider.of<SettingsHandler>(context).currentSettings.useFirebase == FirebaseStatus.permitted,
                     onToggle: (switchValue) {

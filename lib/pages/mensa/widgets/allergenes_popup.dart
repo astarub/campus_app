@@ -46,6 +46,7 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
   @override
   Widget build(BuildContext context) {
     return PopupSheet(
+      /*TODO: Add localization*/
       title: 'Allergene',
       openPositionFactor: 0.6,
       onClose: () {
@@ -62,6 +63,7 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 10),
               child: Text(
+                /*TODO: Add localization*/
                 'Vermeiden von',
                 textAlign: TextAlign.left,
                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
@@ -72,6 +74,7 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
                 padding: EdgeInsets.zero,
                 physics: const BouncingScrollPhysics(),
                 children: [
+                  /*TODO: Add  for file localization*/
                   AllergenesListItem(
                       name: 'Gluten', shortcut: 'a', onTap: selectItem, isActive: _selectedAllergenes.contains('a')),
                   AllergenesListItem(

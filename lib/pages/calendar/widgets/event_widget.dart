@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
@@ -36,7 +37,7 @@ class CalendarEventWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final startingTime = DateFormat('Hm').format(event.startDate);
+    //final startingTime = DateFormat('Hm').format(event.startDate); unused
     final month = DateFormat('LLL').format(event.startDate);
     final day = DateFormat('dd').format(event.startDate);
 
@@ -112,7 +113,7 @@ class CalendarEventWidget extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                'Beginn: $startingTime Uhr\t',
+                                AppLocalizations.of(context)!.event_startingTime(event.startDate),
                                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                               ),
                             ),
@@ -121,7 +122,8 @@ class CalendarEventWidget extends StatelessWidget {
                                 context: context,
                                 text: event.cost == null
                                     ? ''
-                                    : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",
+                                    : AppLocalizations.of(context)!
+                                        .event_cost(event.cost!['value'], event.cost!['currency']),
                                 textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                               ),
                             ),

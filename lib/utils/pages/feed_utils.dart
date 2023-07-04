@@ -74,8 +74,8 @@ class FeedUtils extends Utils {
             link: e.url,
             event: e,
             description: e.venue.name == ''
-                ? 'Von $startingTime Uhr bis $endingTime Uhr'
-                : 'Von $startingTime Uhr bis $endingTime Uhr im ${e.venue.name}',
+                ? 'Von $startingTime Uhr bis $endingTime Uhr' /*TODO: Add localization*/
+                : 'Von $startingTime Uhr bis $endingTime Uhr im ${e.venue.name}', /*TODO: Add localization*/
           ),
         );
       } else {

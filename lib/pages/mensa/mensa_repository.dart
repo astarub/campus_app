@@ -64,6 +64,7 @@ class MensaRepository {
             entities.add(
               DishEntity.fromJSON(
                 date: date,
+                /*TODO: Add localization*/
                 category: 'Speiseplan vom ${datetime.day}.${datetime.month}.${datetime.year}',
                 json: dish,
               ),

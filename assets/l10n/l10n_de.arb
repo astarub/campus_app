@@ -18,5 +18,73 @@
   "login_error": "Ungültige Eingabe!",
   "login_success": "Erfolgreich angemeldet!",
   "login_already": "Du bist bereits angemeldet.",
-  "enter_totp": "Bitte gib deinen Einmalcode (TOTP) ein."
+  "enter_totp": "Bitte gib deinen Einmalcode (TOTP) ein.",
+  "event_startingTime" : "Beginn':' {time} Uhr\t",
+  "@event_startingTime": {
+    "placeholders": { 
+      "time" : {
+        "type" : "DateTime",
+        "format": "Hm"
+      } 
+    }
+  },
+  "event_cost" : "\tKosten':' {value} {currency}",
+  "@event_cost" : {
+    "placeholders": {
+      "value" : { "type" : "String?" },
+      "currency" : { "type" : "String?" }
+    }
+  },
+  "event_missingVenue" : "Veranstaltungsort wird noch bekannt gegeben",
+  "event_timeRange" : "{start} Uhr - {end} Uhr",
+  "@event_timeRange": {
+    "placeholders": {
+      "start": {
+        "type" : "DateTime", 
+        "format" : "Hm"
+      },
+      "end": {
+        "type" : "DateTime", 
+        "format" : "Hm"
+      }
+    }
+  },
+  "event_missingDescription": "Keine Beschreibung vorhanden.",
+  "event_Venue": "Veranstaltungsort",
+  "event_follow": "Merken",
+  "event_unfollow": "Nicht mehr merken",
+  "event_noUpcomingEvents_title": "Keine Events in Sicht",
+  "event_noUpcomingEvents_text": "Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.",
+  "event_noFollowedEvent_title": "Keine gemerkten Events",
+  "event_noFollowedEvent_text": "Merke dir Events, um sie hier zu sehen.",
+  "event_upcoming": "Kommende",
+  "event_followed": "Gemerkte",
+  "feed_searchUnimplemented": "Hier gibts noch nichts zu suchen :D",
+  "feed_explore": "Entdecken",
+  "feed": "Feed",
+  "events": "Events",
+  "cafeteria": "Mensa",
+  "wallet": "Wallet",
+  "more": "Mehr",
+  "firebase_leadingTitle": "Datenschutz",
+  "firebase_title": "Google Service",
+  "firebase_text": "\tUm dir Benachrichtigungen über spontane Events und Termine rund um die Uni schicken zu können,\tverwenden wir derzeit Firebase, einen Service von Google.\t\tSolltest du dies nicht wollen, respektieren wir das.\tIm Januar werden wir dafür eine Google-freie Alternative einführen.",
+  "firebase_text600": "\tUm dir Benachrichtigungen über spontane Events und Termine rund um die Uni\tschicken zu können, verwenden wir derzeit Firebase, einen Service von Google.\t\tSolltest du dies nicht wollen, respektieren wir das.\tIm Januar werden wir dafür eine Google-freie Alternative einführen.",
+  "firebase_accept": "Ja, kein Problem",
+  "firebase_decline": "Nein, möchte ich nicht",
+  "onboarding_finish": "Abschließen",
+  "onboarding_presented": "Präsentiert von deinem AStA",
+  "onboarding_studyProgram": "Studiengang",
+  "onboarding_choseStudyProgram": "Wähle deinen aktuellen Studiengang, um für dich passende Events und News anzuzeigen.",
+  "onboarding_privacy": "Datenschutz",
+  "onboarding_firebaseDescription": "Um dir Benachrichtigungen über spontane Events und Termine rund um die Uni schicken zu können, verwenden wir derzeit Firebase, einen Service von Google.\nSolltest du dies nicht wollen, respektieren wir das.\nIm weiteren Verlauf des Jahres werden wir dafür eine Google-freie Alternative einführen.",
+  "onboarding_firebaseAccept": "Yes, no problem",
+  "onboarding_firebaseDecline": "No, I don´t want that",
+  "onboarding_activatePushNotifications": "Activate push notifications",
+  "onboarding_firebaseAccept": "Ja, kein Problem",
+  "onboarding_firebaseDecline": "Nein, möchte ich nicht.",
+  "onboarding_themeSubtext": "Kontrastreich oder unauffällig. Tag oder Nacht.\nWähle dein Design.",
+  "onboarding_designSystem": "System",
+  "onboarding_designLight": "Hell",guideguide
+  "onboarding_feedbackDescription": "Du hast eine Idee, wie wir etwas besser machen können?\nDir fehlt etwas in der App? Dann schreib uns einfach!\n\nGestalte deine Campus App mit, ob durch Feedback,\nVorschläge, oder gar durch aktive Mitarbeit in der Entwicklung.\n\nFolgende Kanäle stehen dir zur Verfügung,\num uns zu erreichen:"
 }

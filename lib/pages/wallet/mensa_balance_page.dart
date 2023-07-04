@@ -92,7 +92,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
 
       saveMensaCardData(cardBalance, lastTransaction);
 
-      if (Platform.isIOS) await FlutterNfcKit.finish(iosAlertMessage: 'Mensakarte erkannt!');
+      if (Platform.isIOS) await FlutterNfcKit.finish(iosAlertMessage: 'Mensakarte erkannt!'); /*TODO: Add localization*/
     } catch (e) {
       debugPrint('Error while scanning mensa card. Trying again...');
     }
@@ -117,7 +117,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
             timeout: const Duration(seconds: 10),
             readIso15693: false,
             iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
-            iosAlertMessage: 'Scanne deine Karte.',
+            /*TODO: Add localization*/
+            iosAlertMessage: 'Scanne deine Karte.', /*TODO: Add localization*/
           );
         } catch (e) {
           switch (e.runtimeType) {
@@ -141,7 +142,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
               timeout: const Duration(seconds: 10),
               readIso15693: false,
               iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
-              iosAlertMessage: 'Scanne deine Karte.',
+              /*TODO: Add localization*/
+              iosAlertMessage: 'Scanne deine Karte.', /*TODO: Add localization*/
             );
           } catch (e) {
             switch (e.runtimeType) {
@@ -200,6 +202,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                     Align(
                       child: Text(
                         'Mensa Guthaben',
+                        /*TODO: Add localization*/
                         style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       ),
                     ),
@@ -235,6 +238,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                   children: [
                                     Text(
                                       'Guthaben: ',
+                                      /*TODO: Add localization*/
                                       style:
                                           Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                                     ),
@@ -259,7 +263,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                 // Last transaction
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10),
-                                  child: Text('Letzte Abbuchung: -${lastTransaction.toStringAsFixed(2)} €'),
+                                  child: Text(
+                                      'Letzte Abbuchung: -${lastTransaction.toStringAsFixed(2)} €'), /*TODO: Add localization*/
                                 ),
                               ],
                             ),
@@ -284,7 +289,9 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                   Lottie.asset('assets/animations/nfc-dark.json'),
                                 const EmptyStatePlaceholder(
                                   title: 'Karte scannen',
-                                  text: 'Halte deinen Studierendenausweis an dein Smartphone, um ihn zu scannen.',
+                                  /*TODO: Add localization*/
+                                  text:
+                                      'Halte deinen Studierendenausweis an dein Smartphone, um ihn zu scannen.', /*TODO: Add localization*/
                                 ),
                               ],
                             ),
@@ -293,7 +300,9 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                     )
                   : const EmptyStatePlaceholder(
                       title: 'NFC deaktiviert',
-                      text: 'Um dein AKAFÖ Guthaben auslesen zu können, muss NFC aktiviert sein.',
+                      /*TODO: Add localization*/
+                      text:
+                          'Um dein AKAFÖ Guthaben auslesen zu können, muss NFC aktiviert sein.', /*TODO: Add localization*/
                     ),
             ),
             if (Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null &&
@@ -304,10 +313,10 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                 child: Column(
                   children: [
                     Text(
-                      'Letztes Guthaben: ${Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance} €',
+                      'Letztes Guthaben: ${Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance} €', /*TODO: Add localization*/
                     ),
                     Text(
-                      'Letzte gescannte Abbuchung: -${Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction} €',
+                      'Letzte gescannte Abbuchung: -${Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction} €', /*TODO: Add localization*/
                     ),
                   ],
                 ),

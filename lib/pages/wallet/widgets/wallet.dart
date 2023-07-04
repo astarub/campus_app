@@ -142,7 +142,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
 
       final String fileType = file.path.substring(file.path.lastIndexOf('.'));
 
-      if (fileType != '.pdf') {
+      if (fileType != '.pdf') {/*TODO: Add localization*/
         await Fluttertoast.showToast(msg: 'Ungültiges Ticket!', timeInSecForIosWeb: 3, gravity: ToastGravity.TOP);
         return;
       }
@@ -157,7 +157,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
       document.dispose();
 
       // Check if the pdf file is a valid ticket
-      if (!pdfText.contains('Ticket')) {
+      if (!pdfText.contains('Ticket')) {/*TODO: Add localization*/
         await Fluttertoast.showToast(msg: 'Ungültiges Ticket!', timeInSecForIosWeb: 3, gravity: ToastGravity.TOP);
         return;
       }
@@ -232,7 +232,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(
+                    child: Text(/*TODO: Add localization*/
                       'Füge dein Semesterticket hinzu',
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                     ),
@@ -401,7 +401,7 @@ class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCa
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
                         child: Text(
-                          'Füge deinen UB Ausweis hinzu',
+                          'Füge deinen UB Ausweis hinzu',/*TODO: Add localization*/
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                         ),
                       ),

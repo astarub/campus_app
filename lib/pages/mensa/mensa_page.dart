@@ -45,7 +45,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
   late List<Failure> _failures = [];
 
   late int selectedDay;
-
+/*TODO: Add localization*/
   static const List<Map<String, dynamic>> restaurantConfig = [
     {
       'name': 'KulturCafé',
@@ -191,6 +191,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                       Padding(
                         padding: const EdgeInsets.only(bottom: 24),
                         child: Text(
+                          /*TODO: Add localization*/
                           'Mensa',
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                         ),
@@ -228,6 +229,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 5),
                                     child: CampusButton.light(
+                                      /*TODO: Add localization*/
                                       text: 'Präferenzen',
                                       width: null,
                                       onTap: () {
@@ -250,6 +252,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: CampusButton.light(
+                                      /*TODO: Add localization*/
                                       text: 'Allergene',
                                       width: null,
                                       onTap: () {

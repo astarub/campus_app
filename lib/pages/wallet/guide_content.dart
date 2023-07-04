@@ -1,4 +1,5 @@
 const List<Map<String, String>> faqEntries = [
+  /*TODO: Add localization*/
   {
     'title': 'Anwesenheitspflicht',
     'content': '''

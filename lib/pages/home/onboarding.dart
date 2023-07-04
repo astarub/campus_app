@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_onboarding/flutter_onboarding.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
@@ -130,7 +131,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               key: onboardingSliderKey,
               donePage: HomePage(key: homeKey, mainNavigatorKey: widget.mainNavigatorKey),
               onDone: saveSelections,
-              doneButtonText: 'Abschließen',
+              doneButtonText: AppLocalizations.of(context)!.onboarding_finish,
               buttonTextStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
               backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
               buttonColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
@@ -177,7 +178,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         offsetDuration: const Duration(milliseconds: 2000),
                         interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                         child: Text(
-                          'Präsentiert von deinem AStA',
+                          AppLocalizations.of(context)!.onboarding_presented,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
                         ),
                       ),
@@ -195,7 +196,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 50, bottom: 10),
                             child: Text(
-                              'Studiengang',
+                              AppLocalizations.of(context)!.onboarding_studyProgram,
                               style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                             ),
                           ),
@@ -204,7 +205,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                           child: Text(
-                            'Wähle deinen aktuellen Studiengang, um für dich passende Events und News anzuzeigen.',
+                            AppLocalizations.of(context)!.onboarding_choseStudyProgram,
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                             textAlign: TextAlign.center,
                           ),
@@ -234,7 +235,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 50, bottom: 10),
                             child: Text(
-                              'Datenschutz',
+                              AppLocalizations.of(context)!.onboarding_privacy,
                               style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                             ),
                           ),
@@ -243,7 +244,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                           child: Text(
-                            firebaseDescription,
+                            AppLocalizations.of(context)!.onboarding_firebaseDescription,
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                             textAlign: TextAlign.center,
                           ),
@@ -256,7 +257,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Push-Benachrichtigungen aktivieren',
+                                AppLocalizations.of(context)!.onboarding_activatePushNotifications,
                                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                               ),
                             ),
@@ -268,7 +269,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             interval: const Interval(0.24, 1, curve: Curves.easeOutCubic),
                             child: SingleChildScrollView(
                               child: Text(
-                                privacyText,
+                                AppLocalizations.of(context)!.onboarding_privacyText,
                                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                                 textAlign: TextAlign.justify,
                               ),
@@ -282,7 +283,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 30, bottom: 16),
                             child: CampusTextButton(
-                              buttonText: 'Nein, möchte ich nicht.',
+                              buttonText: AppLocalizations.of(context)!.onboarding_firebaseDecline,
                               onTap: () {
                                 firebaseAccepted = false;
                                 onboardingSliderKey.currentState?.nextPage();
@@ -295,7 +296,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.40, 1, curve: Curves.easeOutCubic),
                           child: CampusButton(
-                            text: 'Ja, kein Problem',
+                            text: AppLocalizations.of(context)!.onboarding_firebaseAccept,
                             onTap: () {
                               firebaseAccepted = true;
                               onboardingSliderKey.currentState?.nextPage();
@@ -334,7 +335,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
                           child: Text(
-                            'Kontrastreich oder unauffällig. Tag oder Nacht.\nWähle dein Design.',
+                            AppLocalizations.of(context)!.onboarding_themeSubtext,
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                             textAlign: TextAlign.center,
                           ),
@@ -346,9 +347,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 80),
                             child: CampusSegmentedTripleControl(
-                              leftTitle: 'System',
-                              centerTitle: 'Hell',
-                              rightTitle: 'Dunkel',
+                              leftTitle: AppLocalizations.of(context)!.onboarding_designSystem,
+                              centerTitle: AppLocalizations.of(context)!.onboarding_designLight,
+                              rightTitle: AppLocalizations.of(context)!.onboarding_designDark,
                               onChanged: changeTheme,
                             ),
                           ),
@@ -377,7 +378,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                           child: Text(
-                            feedbackDescription,
+                            AppLocalizations.of(context)!.onboarding_feedbackDescription,
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                             textAlign: TextAlign.center,
                           ),

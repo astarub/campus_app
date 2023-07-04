@@ -72,6 +72,7 @@ class _WalletPageState extends State<WalletPage> {
                             // AKAFÖ card balance
                             SubPageButton(
                               title: 'Mensa Guthaben',
+                              /*TODO: Add localization*/
                               leadingIconPath: 'assets/img/icons/euro.svg',
                               trailingIconPath: 'assets/img/icons/chevron-right.svg',
                               onTap: () {
@@ -86,6 +87,7 @@ class _WalletPageState extends State<WalletPage> {
                             // Room finder (WIP)
                             SubPageButton(
                               title: 'Raumfinder',
+                              /*TODO: Add localization*/
                               leadingIconPath: 'assets/img/icons/map.svg',
                               trailingIconPath: 'assets/img/icons/chevron-right.svg',
                               onTap: () {},
@@ -122,6 +124,7 @@ class _WalletPageState extends State<WalletPage> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 16),
                                 child: Text(
+                                  /*TODO: Add localization*/
                                   'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen wie bspw. einen interaktiven Raumfinder erweitert werden.',
                                   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                                   overflow: TextOverflow.visible,

@@ -1,3 +1,4 @@
+//TODO: Add Localization
 const List<String> availableStudies = [
   'Accounting and Auditing',
   'Allgemeine und vergleichende Literaturwissenschaft',

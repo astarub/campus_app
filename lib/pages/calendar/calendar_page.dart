@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
@@ -84,9 +85,11 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   void initState() {
     super.initState();
 
+    //FIXME: Needs to move out of initState for localization to work
+    //TODO: Fix Localization
     upcomingSavedSwitch = CampusSegmentedControl(
-      leftTitle: 'Upcoming',
-      rightTitle: 'Saved',
+      leftTitle: 'upcoming', //AppLocalizations.of(context)!.event_upcoming,
+      rightTitle: 'followed', //AppLocalizations.of(context)!.event_followed,
       onChanged: (int selected) {
         if (selected == 0) {
           setState(() => showSavedEvents = false);
@@ -119,15 +122,15 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                   margin: EdgeInsets.only(top: Platform.isAndroid ? 70 : 60),
                   child: !showSavedEvents && showUpcomingPlaceholder
                       // Placeholder for no upcoming events
-                      ? const EmptyStatePlaceholder(
-                          title: 'Keine Events in Sicht',
-                          text: 'Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.',
+                      ? EmptyStatePlaceholder(
+                          title: AppLocalizations.of(context)!.event_noUpcomingEvents_title,
+                          text: AppLocalizations.of(context)!.event_noUpcomingEvents_text,
                         )
                       : showSavedEvents && showSavedPlaceholder
                           // Placeholder for no saved events
-                          ? const EmptyStatePlaceholder(
-                              title: 'Keine gemerkten Events',
-                              text: 'Merke dir Events, um sie hier zu sehen.',
+                          ? EmptyStatePlaceholder(
+                              title: AppLocalizations.of(context)!.event_noFollowedEvent_title,
+                              text: AppLocalizations.of(context)!.event_noFollowedEvent_text,
                             )
                           : RefreshIndicator(
                               displacement: 55,
