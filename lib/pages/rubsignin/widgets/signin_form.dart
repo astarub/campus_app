@@ -46,7 +46,7 @@ class SignInForm extends StatelessWidget {
             const SizedBox(height: 80),
             Text(
               localization.welcome,
-              style: themeData.textTheme.headline1!.copyWith(
+              style: themeData.textTheme.displayLarge!.copyWith(
                 fontSize: 50,
                 fontWeight: FontWeight.w500,
                 letterSpacing: 4,
@@ -55,7 +55,7 @@ class SignInForm extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               localization.login_prompt,
-              style: themeData.textTheme.headline1!.copyWith(
+              style: themeData.textTheme.displayLarge!.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 letterSpacing: 4,
