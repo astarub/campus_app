@@ -145,8 +145,8 @@ class PopupActivity : AppCompatActivity() {
                     } catch(ex: Exception){
                         ex.printStackTrace()
                         // Displayed if the card was removed while an ongoing operation or if it's not supported
-                        tv1.text = "Fehler beim Scannen"
-                        tv2.text = ""
+                        tv1.text = "Fehler beim Scannen."
+                        tv2.text = "Bitte versuche es erneut."
                     }
                 }
             }
