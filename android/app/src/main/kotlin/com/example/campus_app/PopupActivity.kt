@@ -1,19 +1,23 @@
 package de.asta_bochum.campus_app
 
-import androidx.appcompat.app.AppCompatActivity
-import de.asta_bochum.campus_app.R
-import android.widget.TextView
-import android.widget.LinearLayout
-import androidx.appcompat.widget.Toolbar
-import android.content.res.Configuration
-import android.graphics.Color
+import java.io.File
+
+import android.app.*
 import android.os.Bundle
 import android.content.*
 import android.nfc.NfcAdapter
 import android.nfc.NfcAdapter.*
 import android.nfc.Tag
 import android.nfc.tech.*
-import android.app.*
+import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
+import android.widget.LinearLayout
+import androidx.appcompat.widget.Toolbar
+import android.content.res.Configuration
+import android.graphics.Color
+import de.asta_bochum.campus_app.R
+
+import org.json.JSONObject
 
 class PopupActivity : AppCompatActivity() {
 
@@ -41,6 +45,19 @@ class PopupActivity : AppCompatActivity() {
             result = result or (ints[i] shl ((ints.lastIndex - i) * 8))
         }
         return result
+    }
+
+    // Saves the last scanned mensa card data
+    fun saveMensaCardData(scannedBalance: Double, lastTransaction: Double) {
+        val file: File = File("/data/user/0/de.asta_bochum.campus_app/app_flutter", "settings.json")
+        val json: JSONObject = JSONObject(file.readText())
+
+        if (json.get("lastMensaBalance") != null && json.get("lastMensaBalance") != null) {
+            json.put("lastMensaBalance", scannedBalance)
+            json.put("lastMensaTransaction", lastTransaction)
+
+            file.writeText(json.toString())
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,13 +92,13 @@ class PopupActivity : AppCompatActivity() {
         }
 
         // Check whether the app was started by the ACTION_TECH_DISCOVERED intent
-        if(NfcAdapter.ACTION_TECH_DISCOVERED == intent.action) {
+        if (NfcAdapter.ACTION_TECH_DISCOVERED == intent.action) {
             // Get the Tag object from the intent
             val tag: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
 
-            if(tag != null) {
+            if (tag != null) {
                 // Check whether the tag is compatible 
-                if(tag.techList.contains(IsoDep::class.java.name)) {
+                if (tag.techList.contains(IsoDep::class.java.name)) {
                     try {
                         // Initialise the tag technology to transceive to the mensa card
                         val isoDep = IsoDep.get(tag)
@@ -103,30 +120,33 @@ class PopupActivity : AppCompatActivity() {
 
                         // Extract 4 bytes at index 4 onwards responsible for indicating the value of the mensa card 
                         val valuePartList = mutableListOf<UInt>()
-                        for(i in 4..valueResult.lastIndex) {
+                        for (i in 4..valueResult.lastIndex) {
                             valuePartList.add(valueResult[i].toHexString().toUInt(16))
                         }
 
                         // Extract 4 bytes at index 12 to 15 that represent the last transaction of the mensa card
                         val transactionPartList = mutableListOf<UInt>()
-                        for(i in 12..15) {
+                        for (i in 12..15) {
                             transactionPartList.add(transactionFile[i].toHexString().toUInt(16))
                         }
 
                         // Convert the extracted bytes to a hex string and then to a UInt because otherwise some weird values are displayed
-                        val mensaCardValue = littleEndianConversionUInt(valuePartList.toUIntArray())
-                        val lastTransaction = littleEndianConversionUInt(transactionPartList.reversed().toUIntArray())
+                        val mensaCardValue = (littleEndianConversionUInt(valuePartList.toUIntArray())).toString().toDouble() / 1000
+                        val lastTransaction = (littleEndianConversionUInt(transactionPartList.reversed().toUIntArray())).toString().toDouble() / 1000
 
                         // Display the transceived values divided by 1000 to get the float representation of the integer
-                        tv1.text = "Guthaben: " + (mensaCardValue.toFloat() / 1000).toString() + " €"
-                        tv2.text = "Letzte Abbuchung: -" + (lastTransaction.toFloat() / 1000).toString() + " €"
+                        tv1.text = "Guthaben: " + mensaCardValue.toString() + " €"
+                        tv2.text = "Letzte Abbuchung: -" + lastTransaction.toString() + " €"
+
+                        saveMensaCardData(mensaCardValue, lastTransaction)
 
                         // Close the connection
                         isoDep.close()
                     } catch(ex: Exception){
+                        ex.printStackTrace()
                         // Displayed if the card was removed while an ongoing operation or if it's not supported
-                        tv1.text = "Fehler beim Scannen"
-                        tv2.text = ""
+                        tv1.text = "Fehler beim Scannen."
+                        tv2.text = "Bitte versuche es erneut."
                     }
                 }
             }

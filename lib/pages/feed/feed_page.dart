@@ -115,6 +115,9 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
         } else if (_scrollController.offset < (_scrollControllerLastOffset - 250)) {
           _scrollControllerLastOffset = _scrollController.offset;
           if (_headerOpacity != 1) setState(() => _headerOpacity = 1);
+        } else if (_scrollController.offset < 80) {
+          _scrollControllerLastOffset = 0;
+          if (_headerOpacity != 1) setState(() => _headerOpacity = 1);
         }
       });
 
