@@ -34,8 +34,7 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage>
-    with AutomaticKeepAliveClientMixin<CalendarPage> {
+class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClientMixin<CalendarPage> {
   late List<Event> _events = [];
   late List<Event> _savedEvents = [];
   late List<Failure> _failures = [];
@@ -50,8 +49,7 @@ class _CalendarPageState extends State<CalendarPage>
   late final CampusSegmentedControl upcomingSavedSwitch;
   bool showSavedEvents = false;
 
-  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   double eventWidgetOpacity = 0;
   double savedWidgetOpacity = 0;
@@ -69,41 +67,33 @@ class _CalendarPageState extends State<CalendarPage>
       savedWidgetOpacity = 0;
     });
 
-    await _calendarUsecase.updateEventsAndFailures().then(
-      (data) {
-        setState(() {
-          _events = data['events']! as List<Event>;
-          _savedEvents = data['saved']! as List<Event>;
-          _failures = data['failures']! as List<Failure>;
+    await _calendarUsecase.updateEventsAndFailures().then((data) {
+      setState(() {
+        _events = data['events']! as List<Event>;
+        _savedEvents = data['saved']! as List<Event>;
+        _failures = data['failures']! as List<Failure>;
 
-          parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
-          savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
+        parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
+        savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
 
-          showUpcomingPlaceholder = _events.isEmpty;
-          showSavedPlaceholder = _savedEvents.isEmpty;
-          eventWidgetOpacity = 1;
-          savedWidgetOpacity = 1;
-        });
-        // Updates the list of searched events with potential new events
-        onSearch(search);
-      },
-      onError: (e) {
-        throw Exception('Failed to load parsed Events: $e');
-      },
-    );
+        showUpcomingPlaceholder = _events.isEmpty;
+        showSavedPlaceholder = _savedEvents.isEmpty;
+        eventWidgetOpacity = 1;
+        savedWidgetOpacity = 1;
+      });
+    }, onError: (e) {
+      throw Exception('Failed to load parsed Events: $e');
+    });
 
     return parsedEvents;
   }
 
   void saveChangedFilters(List<String> newFilters) {
     final Settings newSettings =
-        Provider.of<SettingsHandler>(context, listen: false)
-            .currentSettings
-            .copyWith(eventsFilter: newFilters);
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(eventsFilter: newFilters);
 
     debugPrint('Saving new event filters: ${newSettings.eventsFilter}');
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-        newSettings;
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
   }
 
   @override
@@ -154,19 +144,14 @@ class _CalendarPageState extends State<CalendarPage>
     super.build(context);
 
     // Filter the events based on the selected sources
-    final filters = Provider.of<SettingsHandler>(context, listen: false)
-        .currentSettings
-        .eventsFilter;
+    final filters = Provider.of<SettingsHandler>(context, listen: false).currentSettings.eventsFilter;
     final List<Widget> filteredEvents = _calendarUtils.filterEventWidgets(
       filters,
       searchEvents.isNotEmpty ? searchEvents : parsedEvents,
     );
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context)
-          .currentThemeData
-          .colorScheme
-          .background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -182,8 +167,7 @@ class _CalendarPageState extends State<CalendarPage>
                       // Placeholder for no upcoming events
                       ? const EmptyStatePlaceholder(
                           title: 'Keine Events in Sicht',
-                          text:
-                              'Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.',
+                          text: 'Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.',
                         )
                       : showSavedEvents && showSavedPlaceholder
                           // Placeholder for no saved events
@@ -194,43 +178,28 @@ class _CalendarPageState extends State<CalendarPage>
                           : RefreshIndicator(
                               key: refreshIndicatorKey,
                               displacement: 67,
-                              backgroundColor:
-                                  Provider.of<ThemesNotifier>(context)
-                                      .currentThemeData
-                                      .cardColor,
-                              color: Provider.of<ThemesNotifier>(context)
-                                  .currentThemeData
-                                  .primaryColor,
+                              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                              color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                               strokeWidth: 3,
                               onRefresh: updateStateWithEvents,
                               child: showSavedEvents
                                   ? ListView.builder(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      physics: const BouncingScrollPhysics(
-                                          parent:
-                                              AlwaysScrollableScrollPhysics()),
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                                       itemCount: savedEvents.length,
-                                      itemBuilder: (context, index) =>
-                                          AnimatedOpacity(
+                                      itemBuilder: (context, index) => AnimatedOpacity(
                                         opacity: savedWidgetOpacity,
-                                        duration: Duration(
-                                            milliseconds: 50 + (index * 35)),
+                                        duration: Duration(milliseconds: 50 + (index * 35)),
                                         child: savedEvents[index],
                                       ),
                                     )
                                   : ListView.builder(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      physics: const BouncingScrollPhysics(
-                                          parent:
-                                              AlwaysScrollableScrollPhysics()),
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                                       itemCount: filteredEvents.length,
-                                      itemBuilder: (context, index) =>
-                                          AnimatedOpacity(
+                                      itemBuilder: (context, index) => AnimatedOpacity(
                                         opacity: eventWidgetOpacity,
-                                        duration: Duration(
-                                            milliseconds: 75 + (index * 40)),
+                                        duration: Duration(milliseconds: 75 + (index * 40)),
                                         child: filteredEvents[index],
                                       ),
                                     ),
@@ -238,14 +207,8 @@ class _CalendarPageState extends State<CalendarPage>
                 ),
                 // Header
                 Container(
-                  padding: EdgeInsets.only(
-                    top: Platform.isAndroid ? 10 : 0,
-                    bottom: 18,
-                  ),
-                  color: Provider.of<ThemesNotifier>(context)
-                      .currentThemeData
-                      .colorScheme
-                      .background,
+                  padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -254,10 +217,7 @@ class _CalendarPageState extends State<CalendarPage>
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Text(
                           'Events',
-                          style: Provider.of<ThemesNotifier>(context)
-                              .currentThemeData
-                              .textTheme
-                              .displayMedium,
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                         ),
                       ),
                       AnimatedSwitcher(
@@ -289,19 +249,16 @@ class _CalendarPageState extends State<CalendarPage>
                                     ),
                                     // FeedPicker
                                     Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 24),
+                                        padding: const EdgeInsets.symmetric(horizontal: 24),
                                         child: upcomingSavedSwitch),
                                     // Filter button
                                     CampusIconButton(
                                       iconPath: 'assets/img/icons/filter.svg',
                                       onTap: () {
-                                        widget.mainNavigatorKey.currentState
-                                            ?.push(
+                                        widget.mainNavigatorKey.currentState?.push(
                                           PageRouteBuilder(
                                             opaque: false,
-                                            pageBuilder: (context, _, __) =>
-                                                CalendarFilterPopup(
+                                            pageBuilder: (context, _, __) => CalendarFilterPopup(
                                               selectedFilters: List.from(
                                                 Provider.of<SettingsHandler>(
                                                   context,

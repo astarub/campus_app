@@ -92,7 +92,7 @@ class ThemeSelectionState extends State<ThemeSelection> with SingleTickerProvide
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
                 ),
               ),
             ),

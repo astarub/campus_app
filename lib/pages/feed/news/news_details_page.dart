@@ -33,8 +33,7 @@ class RubnewsDetailsPage extends StatelessWidget {
     final day = DateFormat('dd').format(date);
 
     return Scaffold(
-      backgroundColor:
-          Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
@@ -62,8 +61,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                       Share.share(
                         'Article shared via Campus App: $link',
                         subject: 'Article shared via Campus App',
-                        sharePositionOrigin:
-                            box!.localToGlobal(Offset.zero) & box.size,
+                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                       );
                     },
                   ),
@@ -89,8 +87,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                         // Date
                         if (isEvent)
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                             margin: const EdgeInsets.only(right: 4, bottom: 5),
                             decoration: BoxDecoration(
                               color: Colors.black,
@@ -109,10 +106,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                                 ),
                                 Text(
                                   day,
-                                  style: Provider.of<ThemesNotifier>(context)
-                                      .currentThemeData
-                                      .textTheme
-                                      .headlineMedium,
+                                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
                                 ),
                               ],
                             ),
@@ -122,24 +116,28 @@ class RubnewsDetailsPage extends StatelessWidget {
                   ),
                   // Title
                   Padding(
-                    padding: const EdgeInsets.only(
-                        top: 12, bottom: 6, left: 20, right: 20),
+                    padding: const EdgeInsets.only(top: 12, bottom: 6, left: 20, right: 20),
                     child: Text(
                       title,
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .headlineSmall,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                       textAlign: TextAlign.left,
                     ),
                   ),
                   // Content
                   Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 20, left: 12, right: 12),
+                    padding: const EdgeInsets.only(bottom: 10, left: 12, right: 12),
                     child: StyledHTML(
                       context: context,
                       text: content,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                  // Credits
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
+                    child: StyledHTML(
+                      context: context,
+                      text: 'Quelle: <a href="$link">news.rub.de</a>',
                       textAlign: TextAlign.justify,
                     ),
                   ),

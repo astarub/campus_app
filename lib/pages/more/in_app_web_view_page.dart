@@ -70,12 +70,13 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         body: SafeArea(
           child: Stack(
             children: [
               InAppWebView(
-                gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}..add(const Factory<VerticalDragGestureRecognizer>(VerticalDragGestureRecognizer.new)),
+                gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}
+                  ..add(const Factory<VerticalDragGestureRecognizer>(VerticalDragGestureRecognizer.new)),
                 pullToRefreshController: pullToRefreshController,
                 initialOptions: options,
                 initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),

@@ -42,7 +42,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
       ),
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
         physics: const NeverScrollableScrollPhysics(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -72,13 +71,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
               onTap: () => widget.onSelectedPage(PageItem.mensa),
               isActive: widget.currentPage == PageItem.mensa,
             ),
-            // Guide
+            // Wallet
             BottomNavBarItem(
-              title: 'Guide',
-              imagePathActive: 'assets/img/icons/help-filled.png',
-              imagePathInactive: 'assets/img/icons/help-outlined.png',
-              onTap: () => widget.onSelectedPage(PageItem.guide),
-              isActive: widget.currentPage == PageItem.guide,
+              title: 'Wallet',
+              imagePathActive: 'assets/img/icons/wallet-filled.png',
+              imagePathInactive: 'assets/img/icons/wallet-outlined.png',
+              onTap: () => widget.onSelectedPage(PageItem.wallet),
+              isActive: widget.currentPage == PageItem.wallet,
             ),
             // More
             BottomNavBarItem(

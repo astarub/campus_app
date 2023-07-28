@@ -54,7 +54,7 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -197,7 +197,7 @@ class AllergenesListItem extends StatelessWidget {
             ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                 ? const Color.fromRGBO(245, 246, 250, 1)
                 : const Color.fromRGBO(34, 40, 54, 1)
-            : Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         borderRadius: BorderRadius.circular(6),
         child: InkWell(
           splashColor: const Color.fromRGBO(0, 0, 0, 0.06),

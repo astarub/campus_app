@@ -71,6 +71,16 @@
         </dict>
       </array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+    <true/>
+    <key>NFCReaderUsageDescription</key>
+    <string>Allows the app to scan Mensa cards</string>
+    <key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
+    <array>
+      <string>D2760000850100</string>
+    </array>
+    <key>NSCameraUsageDescription</key>
+    <string>The Campus App requires camera access to scan your library card</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>The Campus App requires access to your photo library to retrieve your ticket</string>
 </dict>
 </plist>

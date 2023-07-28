@@ -56,7 +56,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -96,6 +96,11 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                             title: 'Repair Café',
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/repair-cafe/'),
+                          ),
+                          ExternalLinkButton(
+                            title: 'Sozialberatung',
+                            leadingIconPath: 'assets/img/asta_logo.png',
+                            onTap: () => openLink(context, 'https://asta-bochum.de/sozialberatung/'),
                           ),
                           ExternalLinkButton(
                             title: 'Tanzkreis',
@@ -150,8 +155,10 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                           ExternalLinkButton(
                             title: 'eCampus',
                             leadingIconPath: 'assets/img/icons/rub-link.png',
-                            onTap: () => openLink(context,
-                                'https://www.ruhr-uni-bochum.de/ecampus/ecampus-webclient/login_studierende.html'),
+                            onTap: () => openLink(
+                              context,
+                              'https://www.ruhr-uni-bochum.de/ecampus/ecampus-webclient/login_studierende.html',
+                            ),
                           ),
                           ExternalLinkButton(
                             title: 'FlexNow',

@@ -169,12 +169,7 @@ Future<void> initializeFirebase() async {
   debugPrint(fcmToken);
 
   // Request notifications permissions on iOs
-  await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    badge: true,
-    provisional: false,
-    sound: true,
-  );
+  await FirebaseMessaging.instance.requestPermission();
 
   // Enable foreground notifications on iOs
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -193,8 +188,10 @@ Future<void> initializeFirebase() async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@drawable/ic_notification');
+  const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings();
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
+    iOS: initializationSettingsDarwin,
   );
 
   await flutterLocalNotificationsPlugin.initialize(
@@ -259,9 +256,9 @@ Future<void> initializeFirebase() async {
 
             break;
           }
-        case 'guide':
+        case 'wallet':
           {
-            await homeKey.currentState!.selectedPage(PageItem.guide);
+            await homeKey.currentState!.selectedPage(PageItem.wallet);
 
             break;
           }
@@ -410,9 +407,9 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
 
         break;
       }
-    case 'guide':
+    case 'wallet':
       {
-        await homeKey.currentState!.selectedPage(PageItem.guide);
+        await homeKey.currentState!.selectedPage(PageItem.wallet);
 
         break;
       }

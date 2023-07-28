@@ -28,7 +28,7 @@ class CampusMultiSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       child: Flex(
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

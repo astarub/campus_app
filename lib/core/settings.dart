@@ -53,6 +53,8 @@ class Settings {
   final bool useSystemTextScaling;
   final FirebaseStatus useFirebase;
   final List<String> studyCourses;
+  final double? lastMensaBalance;
+  final double? lastMensaTransaction;
 
   Settings({
     this.useSystemDarkmode = true,
@@ -66,6 +68,8 @@ class Settings {
     this.useSystemTextScaling = false,
     this.useFirebase = FirebaseStatus.uncofigured,
     this.studyCourses = const [],
+    this.lastMensaBalance,
+    this.lastMensaTransaction,
   });
 
   Settings copyWith({
@@ -80,6 +84,8 @@ class Settings {
     bool? useSystemTextScaling,
     FirebaseStatus? useFirebase,
     List<String>? studyCourses,
+    double? lastMensaBalance,
+    double? lastMensaTransaction,
   }) =>
       Settings(
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
@@ -93,25 +99,21 @@ class Settings {
         useSystemTextScaling: useSystemTextScaling ?? this.useSystemTextScaling,
         useFirebase: useFirebase ?? this.useFirebase,
         studyCourses: studyCourses ?? this.studyCourses,
+        lastMensaBalance: lastMensaBalance ?? this.lastMensaBalance,
+        lastMensaTransaction: lastMensaTransaction ?? this.lastMensaTransaction,
       );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
     return Settings(
       useSystemDarkmode: json['useSystemDarkmode'] ?? true,
       useDarkmode: json['useDarkmode'] ?? false,
-      feedFilter: json['feedFilter'] != null
-          ? List<String>.from(json['feedFilter'])
-          : List<String>.from([]),
+      feedFilter: json['feedFilter'] != null ? List<String>.from(json['feedFilter']) : List<String>.from([]),
       newsExplore: json['newsExplore'] ?? false,
-      eventsFilter: json['eventsFilter'] != null
-          ? List<String>.from(json['eventsFilter'])
-          : List<String>.from([]),
-      mensaPreferences: json['mensaPreferences'] != null
-          ? List<String>.from(json['mensaPreferences'])
-          : List<String>.from([]),
-      mensaAllergenes: json['mensaAllergenes'] != null
-          ? List<String>.from(json['mensaAllergenes'])
-          : List<String>.from([]),
+      eventsFilter: json['eventsFilter'] != null ? List<String>.from(json['eventsFilter']) : List<String>.from([]),
+      mensaPreferences:
+          json['mensaPreferences'] != null ? List<String>.from(json['mensaPreferences']) : List<String>.from([]),
+      mensaAllergenes:
+          json['mensaAllergenes'] != null ? List<String>.from(json['mensaAllergenes']) : List<String>.from([]),
       useExternalBrowser: json['useExternalBrowser'] ?? false,
       useSystemTextScaling: json['useSystemTextScaling'] ?? false,
       useFirebase: json['useFirebase'] == 2
@@ -119,9 +121,7 @@ class Settings {
           : json['useFirebase'] == 1
               ? FirebaseStatus.forbidden
               : FirebaseStatus.uncofigured,
-      studyCourses: json['studyCourses'] != null
-          ? List<String>.from(json['studyCourses'])
-          : List<String>.from([]),
+      studyCourses: json['studyCourses'] != null ? List<String>.from(json['studyCourses']) : List<String>.from([]),
     );
   }
 
@@ -142,6 +142,8 @@ class Settings {
               ? 1
               : 0,
       'studyCourses': studyCourses,
+      'lastMensaBalance': lastMensaBalance,
+      'lastMensaTransaction': lastMensaTransaction,
     };
   }
 }

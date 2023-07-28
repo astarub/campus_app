@@ -1,5 +1,4 @@
 import 'dart:io' show Platform;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +28,7 @@ class HomePageState extends State<HomePage> {
     PageItem.feed: GlobalKey<NavigatorState>(),
     PageItem.events: GlobalKey<NavigatorState>(),
     PageItem.mensa: GlobalKey<NavigatorState>(),
-    PageItem.guide: GlobalKey<NavigatorState>(),
+    PageItem.wallet: GlobalKey<NavigatorState>(),
     PageItem.more: GlobalKey<NavigatorState>(),
   };
 
@@ -39,14 +38,14 @@ class HomePageState extends State<HomePage> {
     PageItem.feed: GlobalKey<AnimatedExitState>(),
     PageItem.events: GlobalKey<AnimatedExitState>(),
     PageItem.mensa: GlobalKey<AnimatedExitState>(),
-    PageItem.guide: GlobalKey<AnimatedExitState>(),
+    PageItem.wallet: GlobalKey<AnimatedExitState>(),
     PageItem.more: GlobalKey<AnimatedExitState>(),
   };
   Map<PageItem, GlobalKey<AnimatedEntryState>> entryAnimationKeys = {
     PageItem.feed: GlobalKey<AnimatedEntryState>(),
     PageItem.events: GlobalKey<AnimatedEntryState>(),
     PageItem.mensa: GlobalKey<AnimatedEntryState>(),
-    PageItem.guide: GlobalKey<AnimatedEntryState>(),
+    PageItem.wallet: GlobalKey<AnimatedEntryState>(),
     PageItem.more: GlobalKey<AnimatedEntryState>(),
   };
 
@@ -105,7 +104,7 @@ class HomePageState extends State<HomePage> {
         curve: Curves.easeInOut,
       );
 
-    // Tablet Layout
+      // Tablet Layout
     } else {
       // Reset the exit animation of the new page to make the content visible again
       exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
@@ -152,7 +151,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
 
     // Theme von System auslesen & Callback erstellen
-    var window = WidgetsBinding.instance.window;
+    final window = WidgetsBinding.instance.window;
 
     window.onPlatformBrightnessChanged = () {
       final brightness = window.platformBrightness;
@@ -191,7 +190,7 @@ class HomePageState extends State<HomePage> {
       child: WillPopScope(
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(
-          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
           body: MediaQuery.of(context).size.shortestSide < 600
               // Phone layout
               ? SafeArea(
@@ -273,7 +272,7 @@ class HomePageState extends State<HomePage> {
                                 child: Container(
                                   padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
-                                    color: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                                    color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   child: Center(
@@ -284,7 +283,7 @@ class HomePageState extends State<HomePage> {
                                           _buildOffstateNavigator(PageItem.feed),
                                           _buildOffstateNavigator(PageItem.events),
                                           _buildOffstateNavigator(PageItem.mensa),
-                                          _buildOffstateNavigator(PageItem.guide),
+                                          _buildOffstateNavigator(PageItem.wallet),
                                           _buildOffstateNavigator(PageItem.more),
                                         ],
                                       ),

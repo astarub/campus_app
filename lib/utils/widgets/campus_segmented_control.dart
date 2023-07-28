@@ -80,7 +80,7 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
             decoration: BoxDecoration(
               color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? const Color.fromRGBO(245, 246, 250, 1)
-                  : Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+                  : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
               borderRadius: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? BorderRadius.circular(6)
                   : BorderRadius.circular(10),
@@ -106,7 +106,7 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
                     ? Colors.white
                     : const Color.fromRGBO(34, 40, 54, 1),
                 borderRadius: BorderRadius.circular(6),
-                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 0))],
+                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
               ),
             ),
           ),

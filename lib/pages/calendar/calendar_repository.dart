@@ -19,8 +19,12 @@ class CalendarRepository {
 
       final List<Event> entities = [];
 
-      for (final Map<String, dynamic> event in astaEventsJson) {
-        entities.add(Event.fromExternalJson(event));
+      for (final Map<String, dynamic> eventJson in astaEventsJson) {
+        final Event event = Event.fromExternalJson(eventJson);
+
+        if (event.categories.map((cat) => cat.name).contains('UFO')) continue;
+
+        entities.add(event);
       }
 
       // write entities to cach

@@ -1,7 +1,7 @@
 name: campus_app
 description: Simplifie, improve and facilitate everyday students life.
 publish_to: 'none'
-version: 1.1.1
+version: 2.0.1
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
@@ -48,6 +48,16 @@ dependencies:
     git:
       url: https://github.com/C4s4r/flutter_onboarding
       ref: 9d74464
+  flutter_nfc_kit: ^3.3.1
+  lottie: ^2.3.0
+  file_picker: ^5.2.6
+  pdfx: any
+  pdf_image_renderer: ^0.7.0
+  syncfusion_flutter_pdf: ^21.1.35
+  mobile_scanner: ^3.2.0
+  barcode_widget: ^2.0.3
+  screen_brightness: ^0.2.2
+  fluttertoast: ^8.2.2
   
 dev_dependencies:
   flutter_test:
@@ -103,6 +113,8 @@ flutter:
      - assets/img/icons/mensa-filled.png
      - assets/img/icons/help-outlined.png
      - assets/img/icons/help-filled.png
+     - assets/img/icons/wallet-outlined.png
+     - assets/img/icons/wallet-filled.png
      - assets/img/icons/more.png
      - assets/img/icons/settings.svg
      - assets/img/icons/info.svg
@@ -138,6 +150,14 @@ flutter:
      - assets/img/icons/share.svg
      - assets/img/icons/discord-filled.svg
      - assets/img/icons/github.svg
+     - assets/img/icons/map.svg
+     - assets/img/icons/help-circle.svg
+     - assets/img/icons/euro.svg
+     - assets/animations/nfc-light.json
+     - assets/animations/nfc-dark.json
+     - assets/animations/coin-flip.json
+     - assets/img/bogestra-logo.svg
+     - assets/img/icons/file-plus.svg
 
   fonts:
     - family: SF-Pro

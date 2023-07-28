@@ -30,8 +30,7 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
 
   void onFilterSelected(String selectedFilter) {
     if (_selectedFilters.contains(selectedFilter)) {
-      setState(() =>
-          _selectedFilters.removeWhere((filter) => filter == selectedFilter));
+      setState(() => _selectedFilters.removeWhere((filter) => filter == selectedFilter));
     } else {
       setState(() => _selectedFilters.add(selectedFilter));
     }
@@ -53,10 +52,7 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
         Navigator.pop(context);
       },
       child: Container(
-        color: Provider.of<ThemesNotifier>(context)
-            .currentThemeData
-            .colorScheme
-            .background,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Column(
