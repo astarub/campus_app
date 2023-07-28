@@ -4,7 +4,7 @@ import 'package:html/parser.dart' as html;
 import 'package:xml/xml.dart';
 
 import 'package:campus_app/core/exceptions.dart';
-import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
+import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/utils/constants.dart';
 
 class RubnewsDatasource {

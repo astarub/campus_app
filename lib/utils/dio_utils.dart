@@ -28,13 +28,13 @@ class DioUtils {
     // };
   }
 
-  void configureAsyncInsecure()
-  {
-    (client.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
+  void configureAsyncInsecure() {
+    (client.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+      final HttpClient aClient = HttpClient(context: SecurityContext());
+
+      aClient.badCertificateCallback = (cert, host, port) => true;
+
+      return aClient;
     };
   }
 

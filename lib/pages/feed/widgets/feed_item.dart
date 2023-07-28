@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_details_page.dart';
+import 'package:campus_app/pages/feed/news/news_details_page.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
@@ -82,27 +82,17 @@ class FeedItem extends StatelessWidget {
           );
         }
       },
-      middleColor: Provider.of<ThemesNotifier>(context, listen: false)
-          .currentThemeData
-          .colorScheme
-          .background,
-      closedColor: Provider.of<ThemesNotifier>(context, listen: false)
-          .currentThemeData
-          .colorScheme
-          .background,
+      middleColor: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.colorScheme.background,
+      closedColor: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.colorScheme.background,
       closedElevation: 0,
       closedBuilder: (context, VoidCallback openDetailsPage) => Padding(
         padding: const EdgeInsets.only(bottom: 14),
         child: CustomButton(
           borderRadius: BorderRadius.circular(15),
-          highlightColor: Provider.of<ThemesNotifier>(context, listen: false)
-                      .currentTheme ==
-                  AppThemes.light
+          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.03)
               : const Color.fromRGBO(255, 255, 255, 0.03),
-          splashColor: Provider.of<ThemesNotifier>(context, listen: false)
-                      .currentTheme ==
-                  AppThemes.light
+          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.04)
               : const Color.fromRGBO(255, 255, 255, 0.04),
           tapHandler: openDetailsPage,
@@ -128,8 +118,7 @@ class FeedItem extends StatelessWidget {
                     // Date
                     if (event != null)
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                         margin: const EdgeInsets.only(right: 4, bottom: 5),
                         decoration: BoxDecoration(
                           color: Colors.black,
@@ -148,10 +137,7 @@ class FeedItem extends StatelessWidget {
                             ),
                             Text(
                               day,
-                              style: Provider.of<ThemesNotifier>(context)
-                                  .currentThemeData
-                                  .textTheme
-                                  .headlineMedium,
+                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
                             ),
                           ],
                         ),
@@ -164,20 +150,14 @@ class FeedItem extends StatelessWidget {
                   child: StyledHTML(
                     context: context,
                     text: title,
-                    textStyle: Provider.of<ThemesNotifier>(context)
-                        .currentThemeData
-                        .textTheme
-                        .headlineSmall,
+                    textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                   ),
                 ),
                 // Description
                 StyledHTML(
                   context: context,
                   text: description,
-                  textStyle: Provider.of<ThemesNotifier>(context)
-                      .currentThemeData
-                      .textTheme
-                      .bodyMedium,
+                  textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                 ),
               ],
             ),

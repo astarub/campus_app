@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
-import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
+import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/feed/widgets/feed_item.dart';
 import 'package:campus_app/utils/pages/presentation_functions.dart';
 
@@ -36,9 +36,8 @@ class FeedUtils extends Utils {
     // parse news in widget
     for (final n in news) {
       // Removes empty lines and white spaces
-      final String formattedDescription = n.description
-          .replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '')
-          .replaceAll(RegExp(' {2,}'), '');
+      final String formattedDescription =
+          n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
 
       _news.add(
         FeedItem(
@@ -59,9 +58,8 @@ class FeedUtils extends Utils {
     // parse events in widget
     for (final e in events) {
       // Removes empty lines and white spaces
-      final String formattedDescription = e.description
-          .replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '')
-          .replaceAll(RegExp(' {2,}'), '');
+      final String formattedDescription =
+          e.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
 
       final startingTime = DateFormat('Hm').format(e.startDate);
       final endingTime = DateFormat('Hm').format(e.endDate);
@@ -144,13 +142,13 @@ class FeedUtils extends Utils {
         if (f.link.startsWith('https://news.rub.de')) {
           filteredFeedItems.add(f);
         }
-        if (f.link.startsWith('https://asta-bochum.de') &&
-            filters.contains('AStA')) filteredFeedItems.add(f);
-      }else if (f is CalendarEventWidget) {
+        if (f.link.startsWith('https://asta-bochum.de') && filters.contains('AStA')) filteredFeedItems.add(f);
+      } else if (f is CalendarEventWidget) {
         final past = DateTime.now().add(const Duration(days: 60));
 
         if (f.event.url.startsWith('https://asta-bochum.de') &&
-            filters.contains('AStA') && f.event.startDate.compareTo(past) < 0) filteredFeedItems.add(f);
+            filters.contains('AStA') &&
+            f.event.startDate.compareTo(past) < 0) filteredFeedItems.add(f);
       } else {
         filteredFeedItems.add(f);
       }

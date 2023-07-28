@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_repository.dart';
+import 'package:campus_app/pages/feed/news/news_entity.dart';
+import 'package:campus_app/pages/feed/news/news_repository.dart';
 
 class RubnewsUsecases {
   final RubnewsRepository rubnewsRepository;

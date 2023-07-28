@@ -1,13 +1,13 @@
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_repository.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_usecases.dart';
+import 'package:campus_app/pages/feed/news/news_entity.dart';
+import 'package:campus_app/pages/feed/news/news_repository.dart';
+import 'package:campus_app/pages/feed/news/news_usecases.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:dartz/dartz.dart';
 
-import 'rubnews_usecases_test.mocks.dart';
+import 'news_usecases_test.mocks.dart';
 
 @GenerateMocks([RubnewsRepository])
 void main() {

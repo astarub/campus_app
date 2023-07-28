@@ -7,7 +7,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:campus_app/core/authentication/authentication_datasource.dart';
 import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/authentication/authentication_repository.dart';
@@ -24,10 +23,10 @@ import 'package:campus_app/pages/mensa/mensa_usecases.dart';
 import 'package:campus_app/pages/moodle/moodle_datasource.dart';
 import 'package:campus_app/pages/moodle/moodle_repository.dart';
 import 'package:campus_app/pages/moodle/moodle_usecases.dart';
-import 'package:campus_app/pages/feed/astafeed/astafeed_datasource.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_datasource.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_repository.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_usecases.dart';
+import 'package:campus_app/pages/feed/news/astafeed_datasource.dart';
+import 'package:campus_app/pages/feed/news/rubnews_datasource.dart';
+import 'package:campus_app/pages/feed/news/news_repository.dart';
+import 'package:campus_app/pages/feed/news/news_usecases.dart';
 import 'package:campus_app/utils/apis/forgerock_api.dart';
 import 'package:campus_app/utils/dio_utils.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
@@ -45,14 +44,14 @@ Future<void> init() async {
   sl.registerSingletonAsync(() async {
     final client = Dio();
 
-    (client.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
+    (client.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+      final HttpClient aClient = HttpClient(context: SecurityContext());
+
+      aClient.badCertificateCallback = (cert, host, port) => true;
+
+      return aClient;
     };
-    return MensaDataSource(
-        client: client, mensaCache: await Hive.openBox('mensaCache'));
+    return MensaDataSource(client: client, mensaCache: await Hive.openBox('mensaCache'));
   });
 
   sl.registerSingletonAsync(

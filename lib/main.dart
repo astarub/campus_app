@@ -19,7 +19,7 @@ import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/pages/home/onboarding.dart';
-import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
+import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
@@ -120,7 +120,8 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           // Create settings file for the first time, if it doesnt exist
           debugPrint('Settings-file created.');
           settingsJsonFile.create();
-          final Settings initialSettings = Settings(feedFilter: ['RUB', 'AStA'], mensaPreferences: [], mensaAllergenes: []);
+          final Settings initialSettings =
+              Settings(feedFilter: ['RUB', 'AStA'], mensaPreferences: [], mensaAllergenes: []);
           settingsJsonFile.writeAsString(json.encode(initialSettings.toJson()));
 
           // Apply the inital settings

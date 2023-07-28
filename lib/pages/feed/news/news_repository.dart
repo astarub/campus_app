@@ -5,16 +5,15 @@ import 'package:xml/xml.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_datasource.dart';
-import 'package:campus_app/pages/feed/astafeed/astafeed_datasource.dart';
+import 'package:campus_app/pages/feed/news/news_entity.dart';
+import 'package:campus_app/pages/feed/news/rubnews_datasource.dart';
+import 'package:campus_app/pages/feed/news/astafeed_datasource.dart';
 
 class RubnewsRepository {
   final RubnewsDatasource rubnewsDatasource;
   final AstaFeedDatasource astaFeedDatasource;
 
-  RubnewsRepository(
-      {required this.rubnewsDatasource, required this.astaFeedDatasource});
+  RubnewsRepository({required this.rubnewsDatasource, required this.astaFeedDatasource});
 
   /// Return a list of web news or a failure.
   Future<Either<Failure, List<NewsEntity>>> getRemoteNewsfeed() async {
@@ -44,8 +43,7 @@ class RubnewsRepository {
         }
       }
 
-      await Future.forEach(newsXmlList.map((news) => news),
-          (XmlElement e) async {
+      await Future.forEach(newsXmlList.map((news) => news), (XmlElement e) async {
         final link = e.getElement('link')!.text;
         final imageUrls = await rubnewsDatasource.getImageUrlsFromNewsUrl(link);
         entities.add(NewsEntity.fromXML(e, imageUrls));
