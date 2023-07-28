@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:html/parser.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
@@ -118,7 +119,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12, bottom: 6, left: 20, right: 20),
                     child: Text(
-                      title,
+                      parseFragment(title).text != null ? parseFragment(title).text! : '',
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                       textAlign: TextAlign.left,
                     ),
@@ -137,7 +138,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
                     child: StyledHTML(
                       context: context,
-                      text: 'Quelle: <a href="$link">news.rub.de</a>',
+                      text: 'Quelle: <a href="$link">${Uri.parse(link).host}</a>',
                       textAlign: TextAlign.justify,
                     ),
                   ),
