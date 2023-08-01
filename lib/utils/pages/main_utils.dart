@@ -86,9 +86,9 @@ Future<void> handleInitialUri() async {
           // Get the event object by the specified url if a specific event is passed as an argument. Otherwise only the events page will be displayed.
           Event event;
           try {
-            event =
-                events.firstWhere((element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/');
+            event = events.firstWhere((element) => element.url == 'https://asta-bochum.de${uri.path}');
           } catch (e) {
+            debugPrint('Universal link error: $e');
             return;
           }
 
@@ -131,9 +131,9 @@ void handleIncomingLink() {
             // Get the event object by the specified url if a specific event is passed as an argument. Otherwise only the events page will be displayed.
             Event event;
             try {
-              event = events
-                  .firstWhere((element) => element.url == 'https://asta-bochum.de/termin/${uri.pathSegments[1]}/');
+              event = events.firstWhere((element) => element.url == 'https://asta-bochum.de${uri.path}');
             } catch (e) {
+              debugPrint('Universal link error: $e');
               return;
             }
 
@@ -427,7 +427,7 @@ void _handleFirebaseInteraction(RemoteMessage message) async {
         if (interactionData[0] == null) return;
 
         final String url = interactionData[0];
-        
+
         if (Provider.of<SettingsHandler>(homeKey.currentState!.context, listen: false)
                 .currentSettings
                 .useExternalBrowser ||

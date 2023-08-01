@@ -47,7 +47,10 @@ dependencies:
     git:
       url: https://github.com/C4s4r/flutter_onboarding
       ref: 9d74464
-  flutter_nfc_kit: ^3.3.1
+  flutter_nfc_kit:
+    git:
+      url: https://github.com/henry-herrmann/flutter_nfc_kit
+      ref: b2d19ed
   lottie: ^2.3.0
   file_picker: ^5.2.6
   pdfx: any
