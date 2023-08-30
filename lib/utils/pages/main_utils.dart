@@ -343,12 +343,7 @@ class MainUtils {
     }
 
     // Request notifications permissions on iOs
-    await FirebaseMessaging.instance.requestPermission(
-      alert: true,
-      badge: true,
-      provisional: false,
-      sound: true,
-    );
+    await FirebaseMessaging.instance.requestPermission();
 
     // Enable foreground notifications on iOs
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
