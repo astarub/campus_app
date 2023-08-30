@@ -326,12 +326,11 @@ class MainUtils {
 
   /// This function initializes the Google Firebase services and FCM
   Future<void> initializeFirebase(BuildContext context) async {
+    // Initialize Firebase
     await Firebase.initializeApp(
+      name: 'Campus App',
       options: DefaultFirebaseOptions.currentPlatform,
     );
-
-    // Initialize Firebase
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
     String fcmToken = '';
     try {

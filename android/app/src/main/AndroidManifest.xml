@@ -47,9 +47,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" />
-                <data
-                    android:host="asta-bochum.de"
-                    android:pathPrefix="/termin" />
+                <data android:host="asta-bochum.de" />
+
+                <data android:pathPrefix="/termin/" />
+                <data android:pathPrefix="/termine/" />
             </intent-filter>
         </activity>
         <activity android:name="com.linusu.flutter_web_auth_2.CallbackActivity" android:exported="true">
