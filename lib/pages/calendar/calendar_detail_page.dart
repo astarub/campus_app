@@ -1,3 +1,4 @@
+import 'package:campus_app/core/exceptions.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -6,6 +7,8 @@ import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/pages/calendar/calendar_repository.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
@@ -27,17 +30,42 @@ class CalendarDetailPage extends StatefulWidget {
 
 class _CalendarDetailState extends State<CalendarDetailPage> {
   final CalendarRepository calendarRepository = sl<CalendarRepository>();
+  final BackendRepository backendRepository = sl<BackendRepository>();
 
   bool savedEvent = false;
 
   /// Function that updates the saved event state and shows an info
   /// message inside a [SnackBar]
   Future<void> saveEventAndShowMessage() async {
-    await calendarRepository.updateSavedEvents(event: widget.event);
-
     setState(() {
       savedEvent = !savedEvent;
     });
+
+    try {
+      final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
+
+      if (settingsHandler.currentSettings.useFirebase != FirebaseStatus.forbidden &&
+          settingsHandler.currentSettings.useFirebase != FirebaseStatus.uncofigured) {
+        if (savedEvent) {
+          await backendRepository.addSavedEvent(
+            settingsHandler,
+            widget.event,
+          );
+        } else {
+          await backendRepository.removeSavedEvent(
+            settingsHandler,
+            widget.event.id,
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint(
+        'Could not save event on the backend. Retrying when connection is re-established.',
+      );
+    }
+
+    // Remove the event from the saved event cache
+    await calendarRepository.updateSavedEvents(event: widget.event);
   }
 
   @override
@@ -79,8 +107,8 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                     final box = context.findRenderObject() as RenderBox?;
 
                     Share.share(
-                      'RUB AStA Event shared via Campus App: ${widget.event.url}',
-                      subject: 'RUB AStA Event shared via Campus App',
+                      'Campus App Event: ${widget.event.title}\nURL: ${widget.event.url}',
+                      subject: widget.event.title,
                       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                     );
                   },

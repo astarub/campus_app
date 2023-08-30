@@ -103,7 +103,10 @@ class _CampusTextFieldState extends State<CampusTextField> {
               child: widget.pathToIcon.substring(widget.pathToIcon.length - 3) == 'svg'
                   ? SvgPicture.asset(
                       widget.pathToIcon,
-                      color: Colors.black87,
+                      colorFilter: const ColorFilter.mode(
+                        Colors.black87,
+                        BlendMode.srcIn,
+                      ),
                       height: 30,
                     )
                   : Image.asset(

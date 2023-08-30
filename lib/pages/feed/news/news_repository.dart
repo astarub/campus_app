@@ -6,21 +6,19 @@ import 'package:xml/xml.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
-import 'package:campus_app/pages/feed/news/rubnews_datasource.dart';
-import 'package:campus_app/pages/feed/news/astafeed_datasource.dart';
+import 'package:campus_app/pages/feed/news/news_datasource.dart';
 
-class RubnewsRepository {
-  final RubnewsDatasource rubnewsDatasource;
-  final AstaFeedDatasource astaFeedDatasource;
+class NewsRepository {
+  final NewsDatasource newsDatasource;
 
-  RubnewsRepository({required this.rubnewsDatasource, required this.astaFeedDatasource});
+  NewsRepository({required this.newsDatasource});
 
   /// Return a list of web news or a failure.
   Future<Either<Failure, List<NewsEntity>>> getRemoteNewsfeed() async {
     try {
-      final newsXml = await rubnewsDatasource.getNewsfeedAsXml();
-      final astaFeed = await astaFeedDatasource.getAStAFeedAsJson();
-      final appFeed = await astaFeedDatasource.getAppFeedAsJson();
+      final newsXml = await newsDatasource.getNewsfeedAsXml();
+      final astaFeed = await newsDatasource.getAStAFeedAsJson();
+      final appFeed = await newsDatasource.getAppFeedAsJson();
       final newsXmlList = newsXml.findAllElements('item');
 
       final List<NewsEntity> entities = [];
@@ -45,12 +43,12 @@ class RubnewsRepository {
 
       await Future.forEach(newsXmlList.map((news) => news), (XmlElement e) async {
         final link = e.getElement('link')!.text;
-        final imageUrls = await rubnewsDatasource.getImageUrlsFromNewsUrl(link);
+        final imageUrls = await newsDatasource.getImageUrlsFromNewsUrl(link);
         entities.add(NewsEntity.fromXML(e, imageUrls));
       });
 
       // write entities to cache
-      unawaited(rubnewsDatasource.writeNewsEntitiesToCache(entities));
+      unawaited(newsDatasource.writeNewsEntitiesToCache(entities));
 
       return Right(entities);
     } catch (e) {
@@ -67,7 +65,7 @@ class RubnewsRepository {
   /// Return a list of cached news or a failure.
   Either<Failure, List<NewsEntity>> getCachedNewsfeed() {
     try {
-      final cachedNewsfeed = rubnewsDatasource.readNewsEntitiesFromCach();
+      final cachedNewsfeed = newsDatasource.readNewsEntitiesFromCach();
       return Right(cachedNewsfeed);
     } catch (e) {
       return Left(CachFailure());

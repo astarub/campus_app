@@ -1,19 +1,21 @@
-import 'package:campus_app/pages/calendar/widgets/calendar_filter_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/backend/entities/publisher_entity.dart';
+import 'package:campus_app/utils/widgets/campus_filter_selection.dart';
 import 'package:campus_app/utils/widgets/popup_sheet.dart';
 
 /// This widget displays the filter options that are available for the
 /// personal news feed and is used in the [SnappingSheet] widget
 class CalendarFilterPopup extends StatefulWidget {
   /// Can be given to show saved filters on build
-  final List<String> selectedFilters;
+  final List<Publisher> selectedFilters;
 
   /// The function that is called when the popup is closed by the user.
   /// Returns a List of Strings that represent the selected filters.
-  final void Function(List<String>) onClose;
+  final void Function(List<Publisher>) onClose;
 
   const CalendarFilterPopup({
     Key? key,
@@ -26,11 +28,11 @@ class CalendarFilterPopup extends StatefulWidget {
 }
 
 class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
-  late List<String> _selectedFilters;
+  late List<Publisher> _selectedFilters;
 
-  void onFilterSelected(String selectedFilter) {
-    if (_selectedFilters.contains(selectedFilter)) {
-      setState(() => _selectedFilters.removeWhere((filter) => filter == selectedFilter));
+  void onFilterSelected(Publisher selectedFilter) {
+    if (_selectedFilters.map((e) => e.name).toList().contains(selectedFilter.name)) {
+      setState(() => _selectedFilters.removeWhere((filter) => filter.name == selectedFilter.name));
     } else {
       setState(() => _selectedFilters.add(selectedFilter));
     }
@@ -45,11 +47,17 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> options = ['FSR Wirtschaftsingenieurswesen', 'Andere'];
+    final List<Publisher> publishers = Provider.of<SettingsHandler>(
+      context,
+    ).currentSettings.publishers;
     final List<bool> selections = [];
 
-    for (int i = 0; i < options.length; i++) {
-      selections.add(_selectedFilters.contains(options[i]));
+    final List<String> filterNames = _selectedFilters.map((e) => e.name).toList();
+
+    selections.add(filterNames.contains('AStA'));
+
+    for (int i = 0; i < publishers.length; i++) {
+      selections.add(filterNames.contains(publishers[i].name));
     }
 
     return PopupSheet(
@@ -65,10 +73,10 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
           child: Column(
             children: [
               Expanded(
-                child: CalendarFilterSelection(
-                  filters: ['AStA'] + options,
+                child: CampusFilterSelection(
+                  filters: [Publisher(id: 0, name: 'AStA')] + publishers,
                   onSelected: onFilterSelected,
-                  selections: [true] + selections,
+                  selections: selections,
                 ),
               ),
             ],

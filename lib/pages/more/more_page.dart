@@ -165,6 +165,11 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                             leadingIconPath: 'assets/img/icons/flexnow-link.png',
                             onTap: () => openLink(context, 'https://www.flexnow.ruhr-uni-bochum.de/'),
                           ),
+                          ExternalLinkButton(
+                            title: 'Hochschulsport',
+                            leadingIconPath: 'assets/img/icons/hochschulsport_icon.png',
+                            onTap: () => openLink(context, 'https://hochschulsport-bochum.ruhr-uni-bochum.de/de'),
+                          ),
                         ],
                       ),
                       // Additional sites and links

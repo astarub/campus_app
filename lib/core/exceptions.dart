@@ -1,5 +1,10 @@
+import 'package:dartz/dartz.dart';
+
 /// response status code is not 200
 class ServerException implements Exception {}
+
+// failed to parse
+class ParseException implements Exception {}
 
 /// expected response is not existing
 class EmptyResponseException implements Exception {}
@@ -15,3 +20,12 @@ class JsonException implements Exception {}
 
 /// some unexpected error occured
 class UnexpectedException implements Exception {}
+
+/// Error while authenticating to the appwrite backend
+class AuthenticationException implements Exception {}
+
+/// No connection to the backend
+class NoConnectionException implements Exception {}
+
+/// Too many request to the backend
+class RateLimitException implements Exception {}

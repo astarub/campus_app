@@ -9,14 +9,14 @@ import 'package:dartz/dartz.dart';
 
 import 'news_usecases_test.mocks.dart';
 
-@GenerateMocks([RubnewsRepository])
+@GenerateMocks([NewsRepository])
 void main() {
-  late RubnewsUsecases rubnewsUsecases;
-  late MockRubnewsRepository mockRubnewsRepository;
+  late NewsUsecases newsUsecases;
+  late MockNewsRepository mockNewsRepository;
 
   setUp(() {
-    mockRubnewsRepository = MockRubnewsRepository();
-    rubnewsUsecases = RubnewsUsecases(rubnewsRepository: mockRubnewsRepository);
+    mockNewsRepository = MockNewsRepository();
+    newsUsecases = NewsUsecases(newsRepository: mockNewsRepository);
   });
 
   group('[updateFeedAndFailures]', () {
@@ -33,17 +33,17 @@ void main() {
       };
 
       // arrange: remoteFeed contains news entities and localFeed contains a CachFailure
-      when(mockRubnewsRepository.getRemoteNewsfeed()).thenAnswer((_) => Future.value(Right(samleNewsEntities)));
-      when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Left(CachFailure()));
+      when(mockNewsRepository.getRemoteNewsfeed()).thenAnswer((_) => Future.value(Right(samleNewsEntities)));
+      when(mockNewsRepository.getCachedNewsfeed()).thenAnswer((_) => Left(CachFailure()));
 
       // act: function call
-      final testReturn = await rubnewsUsecases.updateFeedAndFailures();
+      final testReturn = await newsUsecases.updateFeedAndFailures();
 
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
-      verify(mockRubnewsRepository.getRemoteNewsfeed());
-      verify(mockRubnewsRepository.getCachedNewsfeed());
-      verifyNoMoreInteractions(mockRubnewsRepository);
+      verify(mockNewsRepository.getRemoteNewsfeed());
+      verify(mockNewsRepository.getCachedNewsfeed());
+      verifyNoMoreInteractions(mockNewsRepository);
     });
     test('Should return a JSON object with empty list of failures and list of news', () async {
       final expectedReturn = {
@@ -52,17 +52,17 @@ void main() {
       };
 
       // arrange: remoteFeed contains news entities and localFeed contains a CachFailure
-      when(mockRubnewsRepository.getRemoteNewsfeed()).thenAnswer((_) => Future.value(Right(samleNewsEntities)));
-      when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Right(samleNewsEntities));
+      when(mockNewsRepository.getRemoteNewsfeed()).thenAnswer((_) => Future.value(Right(samleNewsEntities)));
+      when(mockNewsRepository.getCachedNewsfeed()).thenAnswer((_) => Right(samleNewsEntities));
 
       // act: function call
-      final testReturn = await rubnewsUsecases.updateFeedAndFailures();
+      final testReturn = await newsUsecases.updateFeedAndFailures();
 
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
-      verify(mockRubnewsRepository.getRemoteNewsfeed());
-      verify(mockRubnewsRepository.getCachedNewsfeed());
-      verifyNoMoreInteractions(mockRubnewsRepository);
+      verify(mockNewsRepository.getRemoteNewsfeed());
+      verify(mockNewsRepository.getCachedNewsfeed());
+      verifyNoMoreInteractions(mockNewsRepository);
     });
 
     test('Should return a JSON object with empty list of news and list of failures', () async {
@@ -72,17 +72,17 @@ void main() {
       };
 
       // arrange: remoteFeed contains news entities and localFeed contains a CachFailure
-      when(mockRubnewsRepository.getRemoteNewsfeed()).thenAnswer((_) => Future.value(Left(ServerFailure())));
-      when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Left(CachFailure()));
+      when(mockNewsRepository.getRemoteNewsfeed()).thenAnswer((_) => Future.value(Left(ServerFailure())));
+      when(mockNewsRepository.getCachedNewsfeed()).thenAnswer((_) => Left(CachFailure()));
 
       // act: function call
-      final testReturn = await rubnewsUsecases.updateFeedAndFailures();
+      final testReturn = await newsUsecases.updateFeedAndFailures();
 
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
-      verify(mockRubnewsRepository.getRemoteNewsfeed());
-      verify(mockRubnewsRepository.getCachedNewsfeed());
-      verifyNoMoreInteractions(mockRubnewsRepository);
+      verify(mockNewsRepository.getRemoteNewsfeed());
+      verify(mockNewsRepository.getCachedNewsfeed());
+      verifyNoMoreInteractions(mockNewsRepository);
     });
 
     test('Should return a JSON object with list of news and ServerFailure', () async {
@@ -92,17 +92,17 @@ void main() {
       };
 
       // arrange: remoteFeed contains news entities and localFeed contains a CachFailure
-      when(mockRubnewsRepository.getRemoteNewsfeed()).thenAnswer((_) => Future.value(Left(ServerFailure())));
-      when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Right(samleNewsEntities));
+      when(mockNewsRepository.getRemoteNewsfeed()).thenAnswer((_) => Future.value(Left(ServerFailure())));
+      when(mockNewsRepository.getCachedNewsfeed()).thenAnswer((_) => Right(samleNewsEntities));
 
       // act: function call
-      final testReturn = await rubnewsUsecases.updateFeedAndFailures();
+      final testReturn = await newsUsecases.updateFeedAndFailures();
 
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
-      verify(mockRubnewsRepository.getRemoteNewsfeed());
-      verify(mockRubnewsRepository.getCachedNewsfeed());
-      verifyNoMoreInteractions(mockRubnewsRepository);
+      verify(mockNewsRepository.getRemoteNewsfeed());
+      verify(mockNewsRepository.getCachedNewsfeed());
+      verifyNoMoreInteractions(mockNewsRepository);
     });
   });
 
@@ -120,16 +120,16 @@ void main() {
       };
 
       // arrange: localFeed contains news entities
-      when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Right(samleNewsEntities));
+      when(mockNewsRepository.getCachedNewsfeed()).thenAnswer((_) => Right(samleNewsEntities));
 
       // act: function call
-      final testReturn = rubnewsUsecases.getCachedFeedAndFailures();
+      final testReturn = newsUsecases.getCachedFeedAndFailures();
 
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
-      verifyNever(mockRubnewsRepository.getRemoteNewsfeed());
-      verify(mockRubnewsRepository.getCachedNewsfeed());
-      verifyNoMoreInteractions(mockRubnewsRepository);
+      verifyNever(mockNewsRepository.getRemoteNewsfeed());
+      verify(mockNewsRepository.getCachedNewsfeed());
+      verifyNoMoreInteractions(mockNewsRepository);
     });
 
     test('Should return a JSON object with empty list of news and list of failures', () {
@@ -139,16 +139,16 @@ void main() {
       };
 
       // arrange: localFeed contains a CachFailure
-      when(mockRubnewsRepository.getCachedNewsfeed()).thenAnswer((_) => Left(CachFailure()));
+      when(mockNewsRepository.getCachedNewsfeed()).thenAnswer((_) => Left(CachFailure()));
 
       // act: function call
-      final testReturn = rubnewsUsecases.getCachedFeedAndFailures();
+      final testReturn = newsUsecases.getCachedFeedAndFailures();
 
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
-      verifyNever(mockRubnewsRepository.getRemoteNewsfeed());
-      verify(mockRubnewsRepository.getCachedNewsfeed());
-      verifyNoMoreInteractions(mockRubnewsRepository);
+      verifyNever(mockNewsRepository.getRemoteNewsfeed());
+      verify(mockNewsRepository.getCachedNewsfeed());
+      verifyNoMoreInteractions(mockNewsRepository);
     });
   });
 }

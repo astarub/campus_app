@@ -14,8 +14,7 @@ class CalendarRepository {
   /// Return a list of events or a failure
   Future<Either<Failure, List<Event>>> getAStAEvents() async {
     try {
-      final astaEventsJson =
-          await calendarDatasource.getAStAEventsAsJsonArray();
+      final astaEventsJson = await calendarDatasource.getAStAEventsAsJsonArray();
 
       final List<Event> entities = [];
 
@@ -89,8 +88,7 @@ class CalendarRepository {
       // Cache contains both app and asta events
       if (cachedAppEvents.isNotEmpty && cachedEvents.isNotEmpty) {
         return Right(
-          List<Event>.from(cachedEvents) +
-              List<Event>.from(cachedAppEvents),
+          List<Event>.from(cachedEvents) + List<Event>.from(cachedAppEvents),
         );
       }
 
@@ -124,8 +122,7 @@ class CalendarRepository {
         }
       }
 
-      unawaited(
-          calendarDatasource.writeEventsToCache(savedEvents, saved: true));
+      unawaited(calendarDatasource.writeEventsToCache(savedEvents, saved: true));
 
       return Right(savedEvents);
     } catch (e) {

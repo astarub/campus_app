@@ -34,7 +34,7 @@ class RubnewsDetailsPage extends StatelessWidget {
     final day = DateFormat('dd').format(date);
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.backgroundColor,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
@@ -60,8 +60,8 @@ class RubnewsDetailsPage extends StatelessWidget {
                       final box = context.findRenderObject() as RenderBox?;
 
                       Share.share(
-                        'Article shared via Campus App: $link',
-                        subject: 'Article shared via Campus App',
+                        'Campus App Article: $title\nURL: $link',
+                        subject: title,
                         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                       );
                     },

@@ -1,4 +1,4 @@
-import 'package:campus_app/pages/moodle/entities/moodle_course_entity.dart';
+import 'package:campus_app/pages/mensa/entities/moodle_course_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 

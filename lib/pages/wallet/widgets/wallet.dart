@@ -228,7 +228,10 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                     'assets/img/icons/file-plus.svg',
                     height: 20,
                     width: 20,
-                    color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color,
+                    colorFilter: ColorFilter.mode(
+                      Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!,
+                      BlendMode.srcIn,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
@@ -396,7 +399,10 @@ class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCa
                         'assets/img/icons/file-plus.svg',
                         height: 20,
                         width: 20,
-                        color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color,
+                        colorFilter: ColorFilter.mode(
+                          Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!,
+                          BlendMode.srcIn,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
@@ -416,7 +422,7 @@ Future<void> setBrightness(double brightness) async {
   try {
     await ScreenBrightness().setScreenBrightness(brightness);
   } catch (e) {
-    print(e);
+    debugPrint(e.toString());
     throw 'Failed to set brightness';
   }
 }
@@ -425,7 +431,7 @@ Future<void> resetBrightness() async {
   try {
     await ScreenBrightness().resetScreenBrightness();
   } catch (e) {
-    print(e);
+    debugPrint(e.toString());
     throw 'Failed to reset brightness';
   }
 }

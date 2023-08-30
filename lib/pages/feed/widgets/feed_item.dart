@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import 'package:animations/animations.dart';
@@ -37,6 +35,12 @@ class FeedItem extends StatelessWidget {
   /// Wether the given news is an event announcement and should display an event date
   final Event? event;
 
+  /// Author of the post
+  final int author;
+
+  /// WP Category ids
+  final List<int> categoryIds;
+
   /// Creates a NewsFeed-item with an expandable content
   FeedItem({
     Key? key,
@@ -47,6 +51,8 @@ class FeedItem extends StatelessWidget {
     this.link = '',
     required this.content,
     this.event,
+    this.author = 0,
+    this.categoryIds = const [],
   }) : super(key: key);
 
   /// Creates a NewsFeed-item with an external link
@@ -59,6 +65,8 @@ class FeedItem extends StatelessWidget {
     required this.link,
     this.content = '',
     this.event,
+    this.author = 0,
+    this.categoryIds = const [],
   }) : super(key: key);
 
   @override

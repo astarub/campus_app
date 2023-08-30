@@ -9,7 +9,6 @@ class ThemesNotifier with ChangeNotifier {
     ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      backgroundColor: Colors.white,
       primaryColor: Colors.black,
       cardColor: Colors.white,
       colorScheme: const ColorScheme(
@@ -72,7 +71,6 @@ class ThemesNotifier with ChangeNotifier {
     ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      backgroundColor: const Color.fromRGBO(14, 20, 32, 1),
       primaryColor: Colors.white,
       cardColor: const Color.fromRGBO(17, 25, 38, 1),
       colorScheme: const ColorScheme(

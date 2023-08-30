@@ -50,9 +50,9 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
       options: PullToRefreshOptions(color: Colors.black),
       onRefresh: () async {
         if (Platform.isAndroid) {
-          webViewController?.reload();
+          await webViewController?.reload();
         } else if (Platform.isIOS) {
-          webViewController?.loadUrl(urlRequest: URLRequest(url: await webViewController?.getUrl()));
+          await webViewController?.loadUrl(urlRequest: URLRequest(url: await webViewController?.getUrl()));
         }
       },
     );

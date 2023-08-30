@@ -8,13 +8,15 @@ import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/backend/backend_repository.dart';
+import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/feed/news/news_usecases.dart';
-import 'package:campus_app/pages/feed/widgets/filter_popup.dart';
 import 'package:campus_app/pages/feed/widgets/feed_item.dart';
+import 'package:campus_app/pages/feed/widgets/feed_filter_popup.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
@@ -56,16 +58,22 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
   late final SnappingSheetController _popupController;
 
-  final RubnewsUsecases _rubnewsUsecases = sl<RubnewsUsecases>();
+  final NewsUsecases _newsUsecases = sl<NewsUsecases>();
   final CalendarUsecases _calendarUsecase = sl<CalendarUsecases>();
   final FeedUtils _feedUtils = sl<FeedUtils>();
+  final BackendRepository backendRepository = sl<BackendRepository>();
 
   /// Function that call usecase and parse widgets into the corresponding
   /// lists of events, news and failures.
   Future<void> updateStateWithFeed({bool withAnimation = false}) async {
     if (withAnimation) setState(() => _newsWidgetOpacity = 0);
 
-    final newsData = await _rubnewsUsecases.updateFeedAndFailures();
+    try {
+      await backendRepository.loadPublishers(Provider.of<SettingsHandler>(context, listen: false));
+      // ignore: empty_catches
+    } catch (e) {}
+
+    final newsData = await _newsUsecases.updateFeedAndFailures();
     final eventData = await _calendarUsecase.updateEventsAndFailures();
 
     setState(() {
@@ -92,20 +100,17 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     );
   }
 
-  void saveChangedFilters(List<String> newFilters) {
+  void saveChangedFilters(List<Publisher> newFilters) {
     final Settings newSettings =
         Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(feedFilter: newFilters);
 
-    debugPrint('Saving new feed filter: ${newSettings.feedFilter}');
+    debugPrint('Saving new feed filters: ${newSettings.feedFilter.map((e) => e.name).toList()}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-
-    // Update the feed with updated filters
-    updateStateWithFeed();
   }
 
   void saveFeedExplore(int selected) {
-    bool explore = true;
-    if (selected == 1) explore = false;
+    bool explore = false;
+    if (selected == 1) explore = true;
 
     final Settings newSettings =
         Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(newsExplore: explore);
@@ -168,7 +173,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     _popupController = SnappingSheetController();
 
     // initial data request
-    final newsData = _rubnewsUsecases.getCachedFeedAndFailures();
+    final newsData = _newsUsecases.getCachedFeedAndFailures();
     _rubnews = newsData['news']! as List<NewsEntity>; // empty when no data was cached before
     _failures = newsData['failures']! as List<Failure>; // CachFailure when no data was cached before
 
@@ -241,6 +246,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                 Container(
                   padding: EdgeInsets.only(
                     top: Platform.isAndroid ? 10 : 0,
+                    bottom: 20,
                   ),
                   color: _headerOpacity == 1
                       ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background
@@ -292,15 +298,13 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                                       Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 24),
                                         child: CampusSegmentedControl(
-                                          leftTitle: 'Explore',
-                                          rightTitle: 'Feed',
+                                          leftTitle: 'Feed',
+                                          rightTitle: 'Explore',
                                           onChanged: saveFeedExplore,
-                                          selected: Provider.of<SettingsHandler>(context, listen: false)
-                                                      .currentSettings
-                                                      .newsExplore ==
-                                                  false
-                                              ? 1
-                                              : 0,
+                                          selected:
+                                              Provider.of<SettingsHandler>(context).currentSettings.newsExplore == false
+                                                  ? 0
+                                                  : 1,
                                         ),
                                       ),
                                       // Filter button

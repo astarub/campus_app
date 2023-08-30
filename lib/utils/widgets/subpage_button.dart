@@ -70,7 +70,10 @@ class SubPageButton extends StatelessWidget {
                 if (leadingIconPath.substring(leadingIconPath.length - 3) == 'svg')
                   SvgPicture.asset(
                     leadingIconPath,
-                    color: disabled ? buttonContentColor.withOpacity(0.5) : buttonContentColor,
+                    colorFilter: ColorFilter.mode(
+                      disabled ? buttonContentColor.withOpacity(0.5) : buttonContentColor,
+                      BlendMode.srcIn,
+                    ),
                     width: 22,
                   )
                 else
@@ -96,6 +99,21 @@ class SubPageButton extends StatelessWidget {
                 Expanded(
                   child: SvgPicture.asset(
                     trailingIconPath,
+                    colorFilter: ColorFilter.mode(
+                      Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                          ? disabled
+                              ? Colors.black.withOpacity(0.5)
+                              : Colors.black
+                          : disabled
+                              ? Provider.of<ThemesNotifier>(context)
+                                  .currentThemeData
+                                  .textTheme
+                                  .bodyMedium!
+                                  .color!
+                                  .withOpacity(0.5)
+                              : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!,
+                      BlendMode.srcIn,
+                    ),
                     color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                         ? disabled
                             ? Colors.black.withOpacity(0.5)

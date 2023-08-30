@@ -4,6 +4,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:campus_app/core/backend/entities/account_entity.dart';
+import 'package:campus_app/core/backend/entities/publisher_entity.dart';
+import 'package:campus_app/core/backend/entities/study_course_entity.dart';
+
 enum FirebaseStatus { uncofigured, forbidden, permitted }
 
 class SettingsHandler with ChangeNotifier {
@@ -44,46 +48,64 @@ class SettingsHandler with ChangeNotifier {
 class Settings {
   final bool useSystemDarkmode;
   final bool useDarkmode;
-  final List<String> feedFilter;
+  final List<Publisher> feedFilter;
   final bool newsExplore;
-  final List<String> eventsFilter;
+  final List<Publisher> eventsFilter;
   final List<String> mensaPreferences;
   final List<String> mensaAllergenes;
   final bool useExternalBrowser;
   final bool useSystemTextScaling;
   final FirebaseStatus useFirebase;
-  final List<String> studyCourses;
+  final List<StudyCourse> selectedStudyCourses;
+  final List<StudyCourse> studyCourses;
+  final List<Publisher> publishers;
+  final bool savedEventsNotifications;
+  final BackendAccount backendAccount;
+  final String latestVersion;
   final double? lastMensaBalance;
   final double? lastMensaTransaction;
+  final List<Map<String, dynamic>>? mensaRestaurantConfig;
 
   Settings({
     this.useSystemDarkmode = true,
     this.useDarkmode = false,
     this.feedFilter = const [],
-    this.newsExplore = true,
+    this.newsExplore = false,
     this.eventsFilter = const [],
     this.mensaPreferences = const [],
     this.mensaAllergenes = const [],
     this.useExternalBrowser = false,
     this.useSystemTextScaling = false,
     this.useFirebase = FirebaseStatus.uncofigured,
+    this.selectedStudyCourses = const [],
     this.studyCourses = const [],
+    this.publishers = const [],
+    this.savedEventsNotifications = true,
+    this.backendAccount = const BackendAccount.empty(),
+    this.latestVersion = '',
     this.lastMensaBalance,
     this.lastMensaTransaction,
+    this.mensaRestaurantConfig = const [],
   });
 
   Settings copyWith({
     bool? useSystemDarkmode,
     bool? useDarkmode,
-    List<String>? feedFilter,
+    List<Publisher>? feedFilter,
     bool? newsExplore,
-    List<String>? eventsFilter,
+    List<Publisher>? eventsFilter,
     List<String>? mensaPreferences,
     List<String>? mensaAllergenes,
+    List<Map<String, dynamic>>? mensaRestaurantConfig,
     bool? useExternalBrowser,
     bool? useSystemTextScaling,
     FirebaseStatus? useFirebase,
-    List<String>? studyCourses,
+    List<StudyCourse>? selectedStudyCourses,
+    List<StudyCourse>? studyCourses,
+    List<Publisher>? publishers,
+    bool? savedEventsNotifications,
+    BackendAccount? backendAccount,
+    String? latestVersion,
     double? lastMensaBalance,
     double? lastMensaTransaction,
   }) =>
@@ -98,22 +120,35 @@ class Settings {
         useExternalBrowser: useExternalBrowser ?? this.useExternalBrowser,
         useSystemTextScaling: useSystemTextScaling ?? this.useSystemTextScaling,
         useFirebase: useFirebase ?? this.useFirebase,
+        selectedStudyCourses: selectedStudyCourses ?? this.selectedStudyCourses,
         studyCourses: studyCourses ?? this.studyCourses,
+        publishers: publishers ?? this.publishers,
+        savedEventsNotifications: savedEventsNotifications ?? this.savedEventsNotifications,
+        backendAccount: backendAccount ?? this.backendAccount,
+        latestVersion: latestVersion ?? this.latestVersion,
         lastMensaBalance: lastMensaBalance ?? this.lastMensaBalance,
         lastMensaTransaction: lastMensaTransaction ?? this.lastMensaTransaction,
+        mensaRestaurantConfig: mensaRestaurantConfig ?? this.mensaRestaurantConfig,
       );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
     return Settings(
       useSystemDarkmode: json['useSystemDarkmode'] ?? true,
       useDarkmode: json['useDarkmode'] ?? false,
-      feedFilter: json['feedFilter'] != null ? List<String>.from(json['feedFilter']) : List<String>.from([]),
+      feedFilter: json['newFeedFilter'] != null
+          ? List<Map<String, dynamic>>.from(json['newFeedFilter']).map((c) => Publisher.fromJson(json: c)).toList()
+          : List<Publisher>.from([]),
       newsExplore: json['newsExplore'] ?? false,
-      eventsFilter: json['eventsFilter'] != null ? List<String>.from(json['eventsFilter']) : List<String>.from([]),
+      eventsFilter: json['eventsFilter'] != null
+          ? List<Map<String, dynamic>>.from(json['eventsFilter']).map((c) => Publisher.fromJson(json: c)).toList()
+          : List<Publisher>.from([]),
       mensaPreferences:
           json['mensaPreferences'] != null ? List<String>.from(json['mensaPreferences']) : List<String>.from([]),
       mensaAllergenes:
           json['mensaAllergenes'] != null ? List<String>.from(json['mensaAllergenes']) : List<String>.from([]),
+      mensaRestaurantConfig: json['mensaRestaurantConfig'] != null
+          ? List<Map<String, dynamic>>.from(json['mensaRestaurantConfig'])
+          : List<Map<String, dynamic>>.from([]),
       useExternalBrowser: json['useExternalBrowser'] ?? false,
       useSystemTextScaling: json['useSystemTextScaling'] ?? false,
       useFirebase: json['useFirebase'] == 2
@@ -121,7 +156,25 @@ class Settings {
           : json['useFirebase'] == 1
               ? FirebaseStatus.forbidden
               : FirebaseStatus.uncofigured,
-      studyCourses: json['studyCourses'] != null ? List<String>.from(json['studyCourses']) : List<String>.from([]),
+      selectedStudyCourses: json['selectedStudyCourses'] != null
+          ? List<Map<String, dynamic>>.from(json['selectedStudyCourses'])
+              .map((c) => StudyCourse.fromJson(json: c))
+              .toList()
+          : List<StudyCourse>.from([]),
+      // Renamed to newStudyCourses as older settings file might provide wrong data
+      studyCourses: json['newStudyCourses'] != null
+          ? List<Map<String, dynamic>>.from(json['newStudyCourses']).map((c) => StudyCourse.fromJson(json: c)).toList()
+          : List<StudyCourse>.from([]),
+      publishers: json['publishers'] != null
+          ? List<Map<String, dynamic>>.from(json['publishers']).map((c) => Publisher.fromJson(json: c)).toList()
+          : List<Publisher>.from([]),
+      savedEventsNotifications: json['savedEventsNotifications'] ?? true,
+      backendAccount: json['backendAccount'] != null
+          ? BackendAccount.fromJson(json: Map<String, dynamic>.from(json['backendAccount']))
+          : const BackendAccount.empty(),
+      latestVersion: json['latestVersion'] ?? '',
+      lastMensaBalance: json['lastMensaBalance'] ?? 0.0,
+      lastMensaTransaction: json['lastMensaTransaction'] ?? 0.0,
     );
   }
 
@@ -129,11 +182,12 @@ class Settings {
     return {
       'useSystemDarkmode': useSystemDarkmode,
       'useDarkmode': useDarkmode,
-      'feedFilter': feedFilter,
+      'newFeedFilter': feedFilter.map((p) => p.toInternalJson()).toList(),
       'newsExplore': newsExplore,
-      'eventsFilter': eventsFilter,
+      'eventsFilter': eventsFilter.map((p) => p.toInternalJson()).toList(),
       'mensaPreferences': mensaPreferences,
       'mensaAllergenes': mensaAllergenes,
+      'mensaRestaurantConfig': mensaRestaurantConfig,
       'useExternalBrowser': useExternalBrowser,
       'useSystemTextScaling': useSystemTextScaling,
       'useFirebase': useFirebase == FirebaseStatus.permitted
@@ -141,7 +195,12 @@ class Settings {
           : useFirebase == FirebaseStatus.forbidden
               ? 1
               : 0,
-      'studyCourses': studyCourses,
+      'selectedStudyCourses': selectedStudyCourses.map((p) => p.toInternalJson()).toList(),
+      'newStudyCourses': studyCourses.map((c) => c.toInternalJson()).toList(),
+      'publishers': publishers.map((p) => p.toInternalJson()).toList(),
+      'savedEventsNotifications': savedEventsNotifications,
+      'backendAccount': backendAccount.toInternalJson(),
+      'latestVersion': latestVersion,
       'lastMensaBalance': lastMensaBalance,
       'lastMensaTransaction': lastMensaTransaction,
     };

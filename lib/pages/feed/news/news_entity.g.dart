@@ -23,13 +23,15 @@ class NewsEntityAdapter extends TypeAdapter<NewsEntity> {
       imageUrls: (fields[3] as List).cast<String>(),
       url: fields[4] as String,
       content: fields[5] as String,
+      author: fields[6] as int,
+      categoryIds: (fields[7] as List).cast<int>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, NewsEntity obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -41,7 +43,11 @@ class NewsEntityAdapter extends TypeAdapter<NewsEntity> {
       ..writeByte(4)
       ..write(obj.url)
       ..writeByte(5)
-      ..write(obj.content);
+      ..write(obj.content)
+      ..writeByte(6)
+      ..write(obj.author)
+      ..writeByte(7)
+      ..write(obj.categoryIds);
   }
 
   @override

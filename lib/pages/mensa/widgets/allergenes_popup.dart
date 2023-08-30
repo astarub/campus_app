@@ -230,7 +230,10 @@ class AllergenesListItem extends StatelessWidget {
                   child: isActive
                       ? SvgPicture.asset(
                           'assets/img/icons/x.svg',
-                          color: Colors.white,
+                          colorFilter: const ColorFilter.mode(
+                            Colors.white,
+                            BlendMode.srcIn,
+                          ),
                         )
                       : Container(),
                 ),

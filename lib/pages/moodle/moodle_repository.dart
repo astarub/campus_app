@@ -1,7 +1,7 @@
 import 'package:campus_app/core/authentication/authentication_datasource.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/moodle/entities/moodle_course_entity.dart';
+import 'package:campus_app/pages/mensa/entities/moodle_course_entity.dart';
 import 'package:campus_app/pages/moodle/models/moodle_course_model.dart';
 import 'package:campus_app/pages/moodle/moodle_datasource.dart';
 import 'package:dartz/dartz.dart';
@@ -26,8 +26,7 @@ class MoodleRepository {
         return Left(NotAuthenticatedFailure());
       }
 
-      final jsonCourses =
-          await moodleDatasource.getUsersCoursesAsJson(token, userid);
+      final jsonCourses = await moodleDatasource.getUsersCoursesAsJson(token, userid);
 
       final List<MoodleCourseEntity> courses = [];
 

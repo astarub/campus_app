@@ -12,11 +12,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:campus_app/core/authentication/authentication_handler.dart';
+import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/pages/home/onboarding.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
@@ -27,6 +30,7 @@ import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/pages/home/widgets/firebase_popup.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
+import 'package:campus_app/utils/pages/mensa_utils.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -78,6 +82,10 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
   Stopwatch loadingTimer = Stopwatch();
 
+  final BackendRepository backendRepository = ic.sl<BackendRepository>();
+  final MainUtils mainUtils = ic.sl<MainUtils>();
+  final MensaUtils mensaUtils = ic.sl<MensaUtils>();
+
   /// Load the saved settings and parse them to the [SettingsHandler]
   void loadSettings() {
     debugPrint('LoadSettings initalized.');
@@ -97,7 +105,6 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
             if (rawFileContent != '') {
               final dynamic rawData = json.decode(rawFileContent);
               loadedSettings = Settings.fromJson(rawData);
-              loadedSettings = loadedSettings!.copyWith(newsExplore: true); // Default Feed on every start
 
               debugPrint('Settings loaded.');
               Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(loadedSettings!);
@@ -115,15 +122,21 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
               // Start the app
               FlutterNativeSplash.remove();
 
+              // Check whether the user agreed to use Firebase
               checkFirebasePermission();
+
+              // Initialize the backend connection
+              initializeBackendConnection();
             }
           });
         } else {
           // Create settings file for the first time, if it doesnt exist
           debugPrint('Settings-file created.');
           settingsJsonFile.create();
-          final Settings initialSettings =
-              Settings(feedFilter: ['RUB', 'AStA'], mensaPreferences: [], mensaAllergenes: []);
+          final Settings initialSettings = Settings(
+            mensaAllergenes: [],
+            mensaRestaurantConfig: mensaUtils.restaurantConfig,
+          );
           settingsJsonFile.writeAsString(json.encode(initialSettings.toJson()));
 
           // Apply the inital settings
@@ -131,6 +144,9 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
           // Set theme (defaults to current system brightness)
           setTheme(contextForThemeProvider: context);
+
+          // Initialize the backend connection
+          initializeBackendConnection();
 
           loadingTimer.stop();
           debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
@@ -186,12 +202,53 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     });
   }
 
+  Future<void> initializeBackendConnection() async {
+    final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
+
+    // Set the initial publishers for users who weren't connected to the backend in the past
+    if (settingsHandler.currentSettings.latestVersion == '') {
+      await mainUtils.setInitialPublishers(Provider.of<SettingsHandler>(context, listen: false));
+    }
+
+    try {
+      await backendRepository.login(
+        settingsHandler,
+      );
+    } catch (e) {
+      debugPrint('Could not connect to the backend. Retrying next restart.');
+    }
+
+    if (settingsHandler.currentSettings.savedEventsNotifications == false) {
+      try {
+        await backendRepository.removeAllSavedEvents(
+          settingsHandler,
+        );
+        await backendRepository.unsubscribeFromAllSavedEvents(
+          settingsHandler,
+        );
+      } catch (e) {
+        debugPrint(
+          'Could not remove all saved events from the backend. Retrying next restart.',
+        );
+      }
+    }
+
+    try {
+      if (await backendRepository.updateAvailable(settingsHandler)) {}
+
+      await backendRepository.loadStudyCourses(settingsHandler);
+      await backendRepository.loadMensaRestaurantConfig(settingsHandler);
+    } catch (e) {
+      debugPrint('Could not lead filters. Exception $e');
+    }
+  }
+
   /// This function checks if the firebase permission is `FirebaseStatus.unconfigured`.
   /// If so, it shows a popup to ask wether or not the user wants to use Firebase.
   ///
   /// If the _useFirebase_ setting is already set to `permitted`,
   /// the function [initializeFirebase] is called.
-  void checkFirebasePermission() {
+  Future<void> checkFirebasePermission() async {
     if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
         FirebaseStatus.uncofigured) {
       Timer(
@@ -209,7 +266,7 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
                       .currentSettings
                       .copyWith(useFirebase: FirebaseStatus.permitted);
 
-                  initializeFirebase();
+                  mainUtils.initializeFirebase(context);
                 } else {
                   // User denied to use Google services
                   newSettings = Provider.of<SettingsHandler>(context, listen: false)
@@ -226,7 +283,26 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       );
     } else if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
         FirebaseStatus.permitted) {
-      initializeFirebase();
+      await mainUtils.initializeFirebase(context);
+    } else if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
+        FirebaseStatus.forbidden) {
+      try {
+        await backendRepository.removeAllSavedEvents(
+          Provider.of<SettingsHandler>(context, listen: false),
+        );
+      } catch (e) {
+        debugPrint(
+          'Could not remove all events from the database while trying to remove the device from Firebase. Retrying next restart.',
+        );
+      }
+
+      try {
+        await FirebaseMessaging.instance.deleteToken();
+      } catch (e) {
+        debugPrint(
+          'Error while trying to remove the device from Firebase. Please check your connection.',
+        );
+      }
     }
   }
 
@@ -248,8 +324,8 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     loadSettings();
 
     // Handle deep links
-    handleIncomingLink();
-    handleInitialUri();
+    mainUtils.handleIncomingLink();
+    mainUtils.handleInitialUri();
   }
 
   @override

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
@@ -47,7 +48,36 @@ class CalendarDatasource {
         throw EmptyResponseException();
       }
 
-      return responseBody['events'] as List<dynamic>;
+      final List<dynamic> events = responseBody['events'];
+
+      // Fetch events from multiple pages, if there are more than one page
+      try {
+        final int pages = int.parse(response.headers.value('x-tec-totalpages')!);
+
+        if (pages > 1) {
+          for (int i = 2; i <= pages; i++) {
+            final responseForPage = await client.get('$astaEvents?page=$i');
+
+            if (responseForPage.statusCode != 200) continue;
+
+            Map<String, dynamic> responsePageBody;
+
+            try {
+              responsePageBody = responseForPage.data as Map<String, dynamic>;
+            } catch (e) {
+              continue;
+            }
+
+            if ((responsePageBody['events'] as List<dynamic>).isEmpty) continue;
+
+            events.addAll(responsePageBody['events']);
+          }
+        }
+      } catch (e) {
+        throw ParseException();
+      }
+
+      return events;
     }
   }
 
@@ -70,7 +100,36 @@ class CalendarDatasource {
         throw EmptyResponseException();
       }
 
-      return responseBody['events'] as List<dynamic>;
+      final List<dynamic> events = responseBody['events'];
+
+      // Fetch events from multiple pages, if there are more than one page
+      try {
+        final int pages = int.parse(response.headers.value('x-tec-totalpages')!);
+
+        if (pages > 1) {
+          for (int i = 2; i <= pages; i++) {
+            final responseForPage = await client.get('$appEvents?page=$i');
+
+            if (responseForPage.statusCode != 200) continue;
+
+            Map<String, dynamic> responsePageBody;
+
+            try {
+              responsePageBody = responseForPage.data as Map<String, dynamic>;
+            } catch (e) {
+              continue;
+            }
+
+            if ((responsePageBody['events'] as List<dynamic>).isEmpty) continue;
+
+            events.addAll(responsePageBody['events']);
+          }
+        }
+      } catch (e) {
+        throw ParseException();
+      }
+
+      return events;
     }
   }
 
@@ -97,6 +156,24 @@ class CalendarDatasource {
         await eventCache.put(i, entity);
       }
       i++;
+    }
+
+    if (entities.isEmpty) {
+      final int tempCntEntities = saved
+          ? eventCache.get(_keyCntSaved) ?? 0
+          : app
+              ? eventCache.get(_keyCntApp) ?? 0
+              : eventCache.get(_keyCnt) ?? 0;
+
+      for (int i = 0; i < tempCntEntities; i++) {
+        if (saved) {
+          await eventCache.delete('saved$i');
+        } else if (app) {
+          await eventCache.delete('app$i');
+        } else {
+          await eventCache.delete(i);
+        }
+      }
     }
   }
 

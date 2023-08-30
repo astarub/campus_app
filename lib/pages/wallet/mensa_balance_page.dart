@@ -28,12 +28,14 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
   late AnimationController successAnimationController;
 
   void saveMensaCardData(double scannedBalance, double lastTransaction) {
-    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false)
-        .currentSettings
-        .copyWith(lastMensaBalance: scannedBalance, lastMensaTransaction: lastTransaction);
+    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
+          lastMensaBalance: scannedBalance,
+          lastMensaTransaction: lastTransaction,
+        );
 
     debugPrint(
-        'Saving scanned mensa card data: Balance=${newSettings.lastMensaBalance}, Last Transaction: ${newSettings.lastMensaTransaction}');
+      'Saving scanned mensa card data: Balance=${newSettings.lastMensaBalance}, Last Transaction: ${newSettings.lastMensaTransaction}',
+    );
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
   }
 
@@ -51,7 +53,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
       // Select application
       await FlutterNfcKit.transceive(
         Uint8List.fromList(
-            [0x90, 0x5A, 0x00, 0x00, 3, (0x5F8415 & 0xFF0000) >> 16, (0x5F8415 & 0xFF00) >> 8, 0x5F8415 & 0xFF, 0x00]),
+          [0x90, 0x5A, 0x00, 0x00, 3, (0x5F8415 & 0xFF0000) >> 16, (0x5F8415 & 0xFF00) >> 8, 0x5F8415 & 0xFF, 0x00],
+        ),
       );
 
       // Get the transaction history file

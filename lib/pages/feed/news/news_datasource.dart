@@ -7,7 +7,7 @@ import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/utils/constants.dart';
 
-class RubnewsDatasource {
+class NewsDatasource {
   /// Key to identify count of news in Hive box / Cach
   static const String _keyCnt = 'cnt';
 
@@ -17,7 +17,7 @@ class RubnewsDatasource {
   /// Hive.Box to store news entities inside
   final Box rubnewsCache;
 
-  RubnewsDatasource({
+  NewsDatasource({
     required this.client,
     required this.rubnewsCache,
   });
@@ -68,6 +68,49 @@ class RubnewsDatasource {
       }
 
       return imgageUrls;
+    }
+  }
+
+  /// Request posts from asta-bochum.de
+  /// Throws a server exception if respond code is not 200.
+  Future<List<dynamic>> getAStAFeedAsJson() async {
+    final response = await client.get(astaFeed);
+
+    if (response.statusCode != 200) {
+      throw ServerException();
+    } else {
+      return response.data;
+    }
+  }
+
+  /// Request posts from asta-bochum.de
+  /// Throws a server exception if respond code is not 200.
+  Future<List<dynamic>> getAppFeedAsJson() async {
+    final response = await client.get(appFeed);
+
+    if (response.statusCode != 200) {
+      throw ServerException();
+    } else {
+      final List<dynamic> data = response.data;
+
+      // Fetch events from multiple pages, if there are more than one page
+      try {
+        final int pages = int.parse(response.headers.value('x-wp-totalpages')!);
+
+        if (pages > 1) {
+          for (int i = 2; i <= pages; i++) {
+            final responseForPage = await client.get('$appFeed?page=$i');
+
+            if (responseForPage.statusCode != 200) continue;
+
+            data.addAll(responseForPage.data);
+          }
+        }
+      } catch (e) {
+        throw ParseException();
+      }
+
+      return data;
     }
   }
 

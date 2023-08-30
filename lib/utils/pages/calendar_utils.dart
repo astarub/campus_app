@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/utils/pages/presentation_functions.dart';
@@ -24,18 +25,19 @@ class CalendarUtils extends Utils {
     return widgets;
   }
 
-  List<Widget> filterEventWidgets(List<String> filters, List<Widget> parsedEvents) {
+  List<Widget> filterEventWidgets(List<Publisher> filters, List<Widget> parsedEvents, List<Publisher> publishers) {
     final List<Widget> filteredEvents = [];
 
-    for (Widget e in parsedEvents) {
+    for (final Widget e in parsedEvents) {
       if (e is CalendarEventWidget) {
         final categoryNames = e.event.categories.map((e) => e.name);
 
-        /*if (e.event.url.startsWith('https://asta-bochum.de') ||
-            filters.any((element) => categoryNames.contains(element))) {
+        if (e.event.url.startsWith('https://asta-bochum.de') && filters.map((e) => e.name).contains('AStA')) {
           filteredEvents.add(e);
-        }*/
-        filteredEvents.add(e);
+        } else if (e.event.url.startsWith('https://app2.asta-bochum.de') &&
+            (filters.map((e) => e.id).contains(int.parse(e.event.author)) || categoryNames.contains('Global'))) {
+          filteredEvents.add(e);
+        }
       } else {
         filteredEvents.add(e);
       }

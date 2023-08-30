@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 
+import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
@@ -51,6 +52,8 @@ class FeedUtils extends Utils {
           content: n.content,
           link: n.url,
           description: formattedDescription,
+          author: n.author,
+          categoryIds: n.categoryIds,
         ),
       );
     }
@@ -85,11 +88,10 @@ class FeedUtils extends Utils {
       }
     }
 
-    // sort news and events by date
-    _events.sort(_sortFeed);
-    _news.sort(_sortFeed);
+    _news.sort(sortFeedDesc);
 
     if (shuffle) {
+      _events.sort(sortFeedDesc);
       feedItemOrEventWidget.addAll(_events);
       feedItemOrEventWidget.addAll(_news);
 
@@ -101,6 +103,7 @@ class FeedUtils extends Utils {
 
       feedItemOrEventWidget = shuffeledItemOrEventWidgets;
     } else if (mixInto) {
+      _events.sort(sortFeedAsc);
       // mix events in feed, both are still sorted by date
       while (_news.isNotEmpty || _events.isNotEmpty) {
         if (_news.isNotEmpty && _events.isEmpty) {
@@ -120,7 +123,7 @@ class FeedUtils extends Utils {
     } else {
       // sort widgets according to date
       feedItemOrEventWidget.addAll(_news);
-      feedItemOrEventWidget.sort(_sortFeed);
+      feedItemOrEventWidget.sort(sortFeedDesc);
     }
 
     // add all FeedItems or CalendarEventWidgets to list of Widget
@@ -134,21 +137,38 @@ class FeedUtils extends Utils {
     return widgets;
   }
 
-  List<Widget> filterFeedWidgets(List<String> filters, List<Widget> parsedFeedItems) {
+  List<Widget> filterFeedWidgets(List<Publisher> filters, List<Widget> parsedFeedItems) {
     final List<Widget> filteredFeedItems = [];
+
+    final List<String> filterNames = filters.map((e) => e.name).toList();
 
     for (final Widget f in parsedFeedItems) {
       if (f is FeedItem) {
-        if (f.link.startsWith('https://news.rub.de')) {
+        if (f.link.startsWith('https://news.rub.de') && filterNames.contains('RUB')) {
           filteredFeedItems.add(f);
         }
-        if (f.link.startsWith('https://asta-bochum.de') && filters.contains('AStA')) filteredFeedItems.add(f);
+        if (f.link.startsWith('https://asta-bochum.de') && filterNames.contains('AStA')) {
+          filteredFeedItems.add(f);
+        }
+
+        if (f.link.startsWith('https://app2.asta-bochum.de') &&
+                (f.author != 0 && filters.map((e) => e.id).contains(f.author)) ||
+            f.categoryIds.contains(66)) {
+          filteredFeedItems.add(f);
+        }
       } else if (f is CalendarEventWidget) {
+        final categoryNames = f.event.categories.map((e) => e.name);
         final past = DateTime.now().add(const Duration(days: 60));
 
         if (f.event.url.startsWith('https://asta-bochum.de') &&
-            filters.contains('AStA') &&
+            filterNames.contains('AStA') &&
             f.event.startDate.compareTo(past) < 0) filteredFeedItems.add(f);
+
+        if (f.event.url.startsWith('https://app2.asta-bochum.de') &&
+            (filters.map((e) => e.id).contains(int.parse(f.event.author)) || categoryNames.contains('Global')) &&
+            f.event.startDate.compareTo(past) < 0) {
+          filteredFeedItems.add(f);
+        }
       } else {
         filteredFeedItems.add(f);
       }
@@ -156,7 +176,21 @@ class FeedUtils extends Utils {
     return filteredFeedItems;
   }
 
-  int _sortFeed(a, b) {
+  int sortFeedDesc(dynamic a, dynamic b) {
+    if (a is FeedItem && b is FeedItem) {
+      return b.date.compareTo(a.date);
+    } else if (a is FeedItem && b is CalendarEventWidget) {
+      return b.event.startDate.compareTo(a.date);
+    } else if (a is CalendarEventWidget && b is FeedItem) {
+      return b.date.compareTo(a.event.startDate);
+    } else if (a is CalendarEventWidget && b is CalendarEventWidget) {
+      return b.event.startDate.compareTo(a.event.startDate);
+    } else {
+      return 0;
+    }
+  }
+
+  int sortFeedAsc(dynamic a, dynamic b) {
     if (a is FeedItem && b is FeedItem) {
       return a.date.compareTo(b.date);
     } else if (a is FeedItem && b is CalendarEventWidget) {

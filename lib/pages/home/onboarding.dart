@@ -7,11 +7,14 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/core/backend/backend_repository.dart';
+import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 import 'package:campus_app/pages/home/home_page.dart';
-import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/pages/home/widgets/animated_onboarding_entry.dart';
 import 'package:campus_app/pages/home/widgets/study_selection.dart';
 import 'package:campus_app/pages/home/widgets/theme_selection.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/onboarding_data.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_text_button.dart';
@@ -38,10 +41,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final GlobalKey<OnboardingSliderState> onboardingSliderKey = GlobalKey();
   final GlobalKey<ThemeSelectionState> themeSelectionKey = GlobalKey();
 
-  late StudySelection studySelection;
+  final BackendRepository backendRepository = sl<BackendRepository>();
+  final MainUtils mainUtils = sl<MainUtils>();
 
   // Selected options during onboarding
-  List<String> selectedStudies = [];
+  List<StudyCourse> selectedStudies = [];
+
   bool firebaseAccepted = true;
   int selectedTheme = 0;
 
@@ -78,15 +83,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
     final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
           useSystemDarkmode: selectedTheme == 0,
           useDarkmode: selectedTheme == 2,
-          studyCourses: selectedStudies,
+          selectedStudyCourses: selectedStudies,
           useFirebase: firebaseAccepted ? FirebaseStatus.permitted : FirebaseStatus.forbidden,
         );
 
-    if (firebaseAccepted) initializeFirebase();
+    if (firebaseAccepted) mainUtils.initializeFirebase(widget.homePageKey.currentContext!);
 
-    debugPrint('Onboarding completed. Selected study-courses: ${newSettings.studyCourses}');
+    debugPrint('Onboarding completed. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
 
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+
+    mainUtils.setIntialStudyCoursePublishers(Provider.of<SettingsHandler>(context, listen: false), selectedStudies);
   }
 
   void openLink(BuildContext context, String url) {
@@ -108,7 +115,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
   void initState() {
     super.initState();
 
-    studySelection = StudySelection(selectedStudies: selectedStudies);
+    backendRepository.loadStudyCourses(
+      Provider.of<SettingsHandler>(context, listen: false),
+    );
   }
 
   @override
@@ -145,9 +154,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       : const Color.fromRGBO(34, 40, 54, 1),
               nextButtonIcon: SvgPicture.asset(
                 'assets/img/icons/arrow-right.svg',
-                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? Colors.white
-                    : const Color.fromRGBO(184, 186, 191, 1),
+                colorFilter: ColorFilter.mode(
+                  Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? Colors.white
+                      : const Color.fromRGBO(184, 186, 191, 1),
+                  BlendMode.srcIn,
+                ),
               ),
               items: [
                 // Welcome screen with logo
@@ -209,16 +221,37 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        Expanded(
-                          child: AnimatedOnboardingEntry(
-                            offsetDuration: const Duration(milliseconds: 500),
-                            interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 50),
-                              child: studySelection,
+                        if (Provider.of<SettingsHandler>(context, listen: false)
+                            .currentSettings
+                            .studyCourses
+                            .isNotEmpty) ...[
+                          Expanded(
+                            child: AnimatedOnboardingEntry(
+                              offsetDuration: const Duration(milliseconds: 500),
+                              interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 50),
+                                child: StudySelection(
+                                  availableStudies:
+                                      Provider.of<SettingsHandler>(context, listen: false).currentSettings.studyCourses,
+                                  selectedStudies: selectedStudies,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ] else ...[
+                          Padding(
+                            padding: const EdgeInsets.only(top: 50),
+                            child: SizedBox(
+                              height: 35,
+                              child: CircularProgressIndicator(
+                                backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                                color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
+                                strokeWidth: 3,
+                              ),
+                            ),
+                          )
+                        ]
                       ],
                     ),
                   ),

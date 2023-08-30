@@ -51,9 +51,12 @@ class LeitwarteButton extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 10),
                       child: SvgPicture.asset(
                         'assets/img/icons/siren.svg',
-                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                            ? const Color.fromRGBO(207, 0, 0, 1)
-                            : const Color.fromRGBO(255, 72, 72, 1),
+                        colorFilter: ColorFilter.mode(
+                          Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                              ? const Color.fromRGBO(207, 0, 0, 1)
+                              : const Color.fromRGBO(255, 72, 72, 1),
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ),
                     Text(

@@ -3,14 +3,17 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/utils/onboarding_data.dart';
+import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 
 class StudySelection extends StatefulWidget {
+  List<StudyCourse> availableStudies;
+
   /// Can be given to show previously selected studies
-  List<String> selectedStudies;
+  List<StudyCourse> selectedStudies;
 
   StudySelection({
     Key? key,
+    required this.availableStudies,
     required this.selectedStudies,
   }) : super(key: key);
 
@@ -19,9 +22,9 @@ class StudySelection extends StatefulWidget {
 }
 
 class _StudySelectionState extends State<StudySelection> {
-  void selectItem(String selected) {
-    if (widget.selectedStudies.contains(selected)) {
-      setState(() => widget.selectedStudies.removeWhere((preference) => preference == selected));
+  void selectItem(StudyCourse selected) {
+    if (widget.selectedStudies.map((e) => e.name).contains(selected.name)) {
+      setState(() => widget.selectedStudies.removeWhere((preference) => preference.name == selected.name));
     } else {
       setState(() => widget.selectedStudies.add(selected));
     }
@@ -32,12 +35,11 @@ class _StudySelectionState extends State<StudySelection> {
     return ListView.builder(
       padding: EdgeInsets.zero,
       physics: const BouncingScrollPhysics(),
-      itemCount: availableStudies.length,
+      itemCount: widget.availableStudies.length,
       itemBuilder: (context, index) => StudySelectionItem(
-        name: availableStudies[index],
-        shortcut: availableStudies[index],
+        course: widget.availableStudies[index],
         onTap: selectItem,
-        isActive: widget.selectedStudies.contains(availableStudies[index]),
+        isActive: widget.selectedStudies.contains(widget.availableStudies[index]),
       ),
     );
   }
@@ -45,22 +47,17 @@ class _StudySelectionState extends State<StudySelection> {
 
 /// This widget displays one selectable option in a list
 class StudySelectionItem extends StatelessWidget {
-  /// The displayed name
-  final String name;
-
-  /// The shortcut that is uesd and saved in the background
-  final String shortcut;
+  final StudyCourse course;
 
   /// The function that should be called when tapped
-  final void Function(String) onTap;
+  final void Function(StudyCourse) onTap;
 
   /// Wether the widget is selected or not
   final bool isActive;
 
   const StudySelectionItem({
     Key? key,
-    required this.name,
-    required this.shortcut,
+    required this.course,
     required this.onTap,
     this.isActive = false,
   }) : super(key: key);
@@ -80,7 +77,7 @@ class StudySelectionItem extends StatelessWidget {
           splashColor: const Color.fromRGBO(0, 0, 0, 0.06),
           highlightColor: const Color.fromRGBO(0, 0, 0, 0.04),
           borderRadius: BorderRadius.circular(6),
-          onTap: () => onTap(shortcut),
+          onTap: () => onTap(course),
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Row(
@@ -107,7 +104,10 @@ class StudySelectionItem extends StatelessWidget {
                   child: isActive
                       ? SvgPicture.asset(
                           'assets/img/icons/x.svg',
-                          color: Colors.white,
+                          colorFilter: const ColorFilter.mode(
+                            Colors.white,
+                            BlendMode.srcIn,
+                          ),
                         )
                       : Container(),
                 ),
@@ -116,7 +116,7 @@ class StudySelectionItem extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16),
                     child: Text(
-                      name,
+                      course.name,
                       style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                           ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
                                 fontSize: 15,

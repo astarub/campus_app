@@ -1,5 +1,5 @@
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/moodle/entities/moodle_course_entity.dart';
+import 'package:campus_app/pages/mensa/entities/moodle_course_entity.dart';
 import 'package:campus_app/pages/moodle/moodle_repository.dart';
 import 'package:dartz/dartz.dart';
 

@@ -1,12 +1,19 @@
+import 'dart:async';
 import 'dart:io' show Platform;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/animated_conditional.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/pages/more/widgets/leading_text_switch.dart';
+
+import '../../core/exceptions.dart';
 
 /// This page displays the app settings
 class SettingsPage extends StatefulWidget {
@@ -20,6 +27,9 @@ class _SettingsPageState extends State<SettingsPage> {
   late Settings _settings;
 
   final GlobalKey<AnimatedConditionalState> _darkmodeAnimationKey = GlobalKey();
+
+  final BackendRepository backendRepository = sl<BackendRepository>();
+  final MainUtils mainUtils = sl<MainUtils>();
 
   @override
   void didChangeDependencies() {
@@ -80,12 +90,16 @@ class _SettingsPageState extends State<SettingsPage> {
                         // in order to not change the brightness whenever the useSystemDarkmode setting is turned off
                         if (MediaQuery.of(context).platformBrightness == Brightness.light) {
                           Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.light;
-                          Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                              _settings.copyWith(useDarkmode: false, useSystemDarkmode: switchValue);
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = _settings.copyWith(
+                            useDarkmode: false,
+                            useSystemDarkmode: switchValue,
+                          );
                         } else {
                           Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
-                          Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                              _settings.copyWith(useDarkmode: true, useSystemDarkmode: switchValue);
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = _settings.copyWith(
+                            useDarkmode: true,
+                            useSystemDarkmode: switchValue,
+                          );
                         }
                       }
 
@@ -144,13 +158,62 @@ class _SettingsPageState extends State<SettingsPage> {
                     text: 'Google Services für Benachrichtigungen',
                     isActive:
                         Provider.of<SettingsHandler>(context).currentSettings.useFirebase == FirebaseStatus.permitted,
-                    onToggle: (switchValue) {
+                    onToggle: (switchValue) async {
+                      if (switchValue) {
+                        Provider.of<SettingsHandler>(context, listen: false).currentSettings = _settings.copyWith(
+                          useFirebase: FirebaseStatus.permitted,
+                        );
+
+                        await mainUtils.initializeFirebase(context);
+                      } else {
+                        if (mounted) {
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = _settings.copyWith(
+                            useFirebase: FirebaseStatus.forbidden,
+                          );
+                        }
+
+                        try {
+                          await backendRepository.removeAllSavedEvents(
+                            Provider.of<SettingsHandler>(
+                              context,
+                              listen: false,
+                            ),
+                          );
+                          await FirebaseMessaging.instance.deleteToken();
+                        } catch (e) {
+                          debugPrint(
+                            'Could not remove the device from Firebase. Retrying next restart.',
+                          );
+                        }
+                      }
+                    },
+                  ),
+                  const SectionHeadline(headline: 'Push-Benachrichtigungen'),
+                  LeadingTextSwitch(
+                    text: 'Benachrichtigungen für gespeicherte Events',
+                    isActive: Provider.of<SettingsHandler>(context).currentSettings.savedEventsNotifications,
+                    onToggle: (switchValue) async {
                       if (switchValue) {
                         Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                            _settings.copyWith(useFirebase: FirebaseStatus.permitted);
+                            _settings.copyWith(savedEventsNotifications: true);
                       } else {
                         Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                            _settings.copyWith(useFirebase: FirebaseStatus.forbidden);
+                            _settings.copyWith(savedEventsNotifications: false);
+
+                        try {
+                          final provider = Provider.of<SettingsHandler>(context, listen: false);
+
+                          await backendRepository.unsubscribeFromAllSavedEvents(
+                            provider,
+                          );
+                          await backendRepository.removeAllSavedEvents(
+                            provider,
+                          );
+                        } on NoConnectionException catch (e) {
+                          debugPrint(
+                            'Could not remove all saved events from the backend. Retrying next restart.',
+                          );
+                        }
                       }
                     },
                   ),

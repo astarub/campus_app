@@ -1,8 +1,7 @@
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/feed/news/astafeed_datasource.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
-import 'package:campus_app/pages/feed/news/rubnews_datasource.dart';
+import 'package:campus_app/pages/feed/news/news_datasource.dart';
 import 'package:campus_app/pages/feed/news/news_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -15,17 +14,14 @@ import '../test_constants.dart';
 import 'news_repository_test.mocks.dart';
 import 'samples/single_news_xmlitem.dart';
 
-@GenerateMocks([RubnewsDatasource])
+@GenerateMocks([NewsDatasource])
 void main() {
-  late RubnewsRepository rubnewsRepository;
-  late MockRubnewsDatasource mockRubnewsDatasource;
-  late AstaFeedDatasource astaFeedDatasource;
+  late NewsRepository newsRepository;
+  late MockNewsDatasource mockNewsDatasource;
 
   setUp(() {
-    mockRubnewsDatasource = MockRubnewsDatasource();
-    astaFeedDatasource = AstaFeedDatasource(client: MockDio());
-    rubnewsRepository =
-        RubnewsRepository(rubnewsDatasource: mockRubnewsDatasource, astaFeedDatasource: astaFeedDatasource);
+    mockNewsDatasource = MockNewsDatasource();
+    newsRepository = NewsRepository(newsDatasource: mockNewsDatasource);
   });
 
   group('[getRemoteNewsfeed]', () {
@@ -46,18 +42,18 @@ void main() {
       ];
 
       // arrange: RubnewsRemoteDatasource respond with a XmlDocument
-      when(mockRubnewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
+      when(mockNewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
 
       // act: funtion call
-      final testReturn = await rubnewsRepository.getRemoteNewsfeed();
+      final testReturn = await newsRepository.getRemoteNewsfeed();
 
       // assert: is testElement expected object? -> List<NewsEntity> of length one with specified entity
       identical(testReturn, expectedReturn);
-      verify(mockRubnewsDatasource.getNewsfeedAsXml()); // one element -> one function call
+      verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verify(
-        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
-      verifyNoMoreInteractions(mockRubnewsDatasource);
+      verifyNoMoreInteractions(mockNewsDatasource);
     });
 
     test('Should return a ServerFailure on failed web request inside getNewsfeedAsXml()', () async {
@@ -65,18 +61,18 @@ void main() {
       final expectedReturn = ServerFailure();
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
-      when(mockRubnewsDatasource.getNewsfeedAsXml()).thenThrow(ServerException());
+      when(mockNewsDatasource.getNewsfeedAsXml()).thenThrow(ServerException());
 
       // act: funtion call
-      final testReturn = await rubnewsRepository.getRemoteNewsfeed();
+      final testReturn = await newsRepository.getRemoteNewsfeed();
 
       // assert: is testElement expected object? -> ServerFailure
       identical(testReturn, expectedReturn);
-      verify(mockRubnewsDatasource.getNewsfeedAsXml()); // one element -> one function call
+      verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verifyNever(
-        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // exception is thrown inside first funtion, so this function shouldn't called
-      verifyNoMoreInteractions(mockRubnewsDatasource);
+      verifyNoMoreInteractions(mockNewsDatasource);
     });
 
     test('Should return a ServerFailure on failed web request inside getImageUrlsFromNewsUrl()', () async {
@@ -84,19 +80,19 @@ void main() {
       final expectedReturn = ServerFailure();
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
-      when(mockRubnewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
-      when(mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(ServerException());
+      when(mockNewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
+      when(mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(ServerException());
 
       // act: funtion call
-      final testReturn = await rubnewsRepository.getRemoteNewsfeed();
+      final testReturn = await newsRepository.getRemoteNewsfeed();
 
       // assert: is testElement expected object? -> ServerFailure
       identical(testReturn, expectedReturn);
-      verify(mockRubnewsDatasource.getNewsfeedAsXml()); // one element -> one function call
+      verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verify(
-        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
-      verifyNoMoreInteractions(mockRubnewsDatasource);
+      verifyNoMoreInteractions(mockNewsDatasource);
     });
 
     test('Should return a GeneralFailure on unexpected Exception inside getNewsfeedAsXml()', () async {
@@ -104,18 +100,18 @@ void main() {
       final expectedReturn = ServerFailure();
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
-      when(mockRubnewsDatasource.getNewsfeedAsXml()).thenThrow(Exception());
+      when(mockNewsDatasource.getNewsfeedAsXml()).thenThrow(Exception());
 
       // act: funtion call
-      final testReturn = await rubnewsRepository.getRemoteNewsfeed();
+      final testReturn = await newsRepository.getRemoteNewsfeed();
 
       // assert: is testElement expected object? -> ServerFailure
       identical(testReturn, expectedReturn);
-      verify(mockRubnewsDatasource.getNewsfeedAsXml()); // one element -> one function call
+      verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verifyNever(
-        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // exception is thrown inside first funtion, so this function shouldn't called
-      verifyNoMoreInteractions(mockRubnewsDatasource);
+      verifyNoMoreInteractions(mockNewsDatasource);
     });
 
     test('Should return a GeneralFailure on unexpected Exception inside getImageUrlsFromNewsUrl()', () async {
@@ -123,19 +119,19 @@ void main() {
       final expectedReturn = GeneralFailure();
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
-      when(mockRubnewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
-      when(mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(Exception());
+      when(mockNewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
+      when(mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(Exception());
 
       // act: funtion call
-      final testReturn = await rubnewsRepository.getRemoteNewsfeed();
+      final testReturn = await newsRepository.getRemoteNewsfeed();
 
       // assert: is testElement expected object? -> ServerFailure
       identical(testReturn, expectedReturn);
-      verify(mockRubnewsDatasource.getNewsfeedAsXml()); // one element -> one function call
+      verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verify(
-        mockRubnewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
-      verifyNoMoreInteractions(mockRubnewsDatasource);
+      verifyNoMoreInteractions(mockNewsDatasource);
     });
   });
 
@@ -147,15 +143,15 @@ void main() {
     ];
     test("Should return list of news etities if datasource doesn't throw a exception", () {
       // arrange: datasource return a news entity list
-      when(mockRubnewsDatasource.readNewsEntitiesFromCach()).thenAnswer((_) => samleNewsEntities);
+      when(mockNewsDatasource.readNewsEntitiesFromCach()).thenAnswer((_) => samleNewsEntities);
 
       // act: function call
-      final testReturn = rubnewsRepository.getCachedNewsfeed();
+      final testReturn = newsRepository.getCachedNewsfeed();
 
       // assert: is testElement expected object? -> ServerFailure
       identical(testReturn, samleNewsEntities);
-      verify(mockRubnewsDatasource.readNewsEntitiesFromCach());
-      verifyNoMoreInteractions(mockRubnewsDatasource);
+      verify(mockNewsDatasource.readNewsEntitiesFromCach());
+      verifyNoMoreInteractions(mockNewsDatasource);
     });
 
     test('Should return a CachFailure on unexpected Exception inside readNewsEntitiesFromCach()', () async {
@@ -163,15 +159,15 @@ void main() {
       final expectedReturn = CachFailure();
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
-      when(mockRubnewsDatasource.readNewsEntitiesFromCach()).thenThrow(Exception());
+      when(mockNewsDatasource.readNewsEntitiesFromCach()).thenThrow(Exception());
 
       // act: funtion call
-      final testReturn = rubnewsRepository.getCachedNewsfeed();
+      final testReturn = newsRepository.getCachedNewsfeed();
 
       // assert: is testElement expected object? -> CachFailure
       identical(testReturn, expectedReturn);
-      verify(mockRubnewsDatasource.readNewsEntitiesFromCach());
-      verifyNoMoreInteractions(mockRubnewsDatasource);
+      verify(mockNewsDatasource.readNewsEntitiesFromCach());
+      verifyNoMoreInteractions(mockNewsDatasource);
     });
   });
 }

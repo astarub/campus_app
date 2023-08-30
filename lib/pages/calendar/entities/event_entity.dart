@@ -95,7 +95,7 @@ class Event {
     this.categories = const <Category>[],
     required this.venue,
     this.organizers = const <Organizer>[],
-    this.author = "",
+    this.author = '',
   });
 
   factory Event.fromExternalJson(Map<String, dynamic> json) {

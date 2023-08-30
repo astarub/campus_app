@@ -4,10 +4,10 @@ import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/feed/news/news_repository.dart';
 
-class RubnewsUsecases {
-  final RubnewsRepository rubnewsRepository;
+class NewsUsecases {
+  final NewsRepository newsRepository;
 
-  RubnewsUsecases({required this.rubnewsRepository});
+  NewsUsecases({required this.newsRepository});
 
   /// Return a JSON object `data` that contains failures and news.
   ///
@@ -20,8 +20,8 @@ class RubnewsUsecases {
     };
 
     // get remote and cached news feed
-    final Either<Failure, List<NewsEntity>> remoteFeed = await rubnewsRepository.getRemoteNewsfeed();
-    final Either<Failure, List<NewsEntity>> cachedFeed = rubnewsRepository.getCachedNewsfeed();
+    final Either<Failure, List<NewsEntity>> remoteFeed = await newsRepository.getRemoteNewsfeed();
+    final Either<Failure, List<NewsEntity>> cachedFeed = newsRepository.getCachedNewsfeed();
 
     // fold cachedFeed
     cachedFeed.fold(
@@ -49,7 +49,7 @@ class RubnewsUsecases {
     };
 
     // get only cached news feed
-    final Either<Failure, List<NewsEntity>> cachedFeed = rubnewsRepository.getCachedNewsfeed();
+    final Either<Failure, List<NewsEntity>> cachedFeed = newsRepository.getCachedNewsfeed();
 
     // fold cachedFeed
     cachedFeed.fold(

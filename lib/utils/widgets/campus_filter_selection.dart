@@ -3,16 +3,16 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/utils/onboarding_data.dart';
+import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 
-class CalendarFilterSelection extends StatefulWidget {
+class CampusFilterSelection extends StatefulWidget {
   /// Holds all available filters
-  final List<String> filters;
+  final List<Publisher> filters;
   final List<bool> selections;
 
-  final void Function(String) onSelected;
+  final void Function(Publisher) onSelected;
 
-  const CalendarFilterSelection({
+  const CampusFilterSelection({
     Key? key,
     required this.filters,
     required this.onSelected,
@@ -20,19 +20,18 @@ class CalendarFilterSelection extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CalendarFilterSelection> createState() => _CalendarFilterSelectionState();
+  State<CampusFilterSelection> createState() => _CampusFilterSelectionState();
 }
 
-class _CalendarFilterSelectionState extends State<CalendarFilterSelection> {
+class _CampusFilterSelectionState extends State<CampusFilterSelection> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: EdgeInsets.zero,
       physics: const BouncingScrollPhysics(),
       itemCount: widget.filters.length,
-      itemBuilder: (context, index) => CalendarFilterSelectionItem(
-        name: widget.filters[index],
-        shortcut: widget.filters[index],
+      itemBuilder: (context, index) => CampusFilterSelectionItem(
+        publisher: widget.filters[index],
         onTap: widget.onSelected,
         isActive: widget.selections[index],
       ),
@@ -41,23 +40,18 @@ class _CalendarFilterSelectionState extends State<CalendarFilterSelection> {
 }
 
 /// This widget displays one selectable option in a list
-class CalendarFilterSelectionItem extends StatelessWidget {
-  /// The displayed name
-  final String name;
-
-  /// The shortcut that is uesd and saved in the background
-  final String shortcut;
+class CampusFilterSelectionItem extends StatelessWidget {
+  final Publisher publisher;
 
   /// The function that should be called when tapped
-  final void Function(String) onTap;
+  final void Function(Publisher) onTap;
 
   /// Wether the widget is selected or not
   final bool isActive;
 
-  const CalendarFilterSelectionItem({
+  const CampusFilterSelectionItem({
     Key? key,
-    required this.name,
-    required this.shortcut,
+    required this.publisher,
     required this.onTap,
     this.isActive = false,
   }) : super(key: key);
@@ -77,7 +71,7 @@ class CalendarFilterSelectionItem extends StatelessWidget {
           splashColor: const Color.fromRGBO(0, 0, 0, 0.06),
           highlightColor: const Color.fromRGBO(0, 0, 0, 0.04),
           borderRadius: BorderRadius.circular(6),
-          onTap: () => onTap(shortcut),
+          onTap: () => onTap(publisher),
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Row(
@@ -104,7 +98,10 @@ class CalendarFilterSelectionItem extends StatelessWidget {
                   child: isActive
                       ? SvgPicture.asset(
                           'assets/img/icons/x.svg',
-                          color: Colors.white,
+                          colorFilter: const ColorFilter.mode(
+                            Colors.white,
+                            BlendMode.srcIn,
+                          ),
                         )
                       : Container(),
                 ),
@@ -113,7 +110,7 @@ class CalendarFilterSelectionItem extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16),
                     child: Text(
-                      name,
+                      publisher.name,
                       style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                           ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
                                 fontSize: 15,
@@ -123,7 +120,7 @@ class CalendarFilterSelectionItem extends StatelessWidget {
                                 fontSize: 15,
                                 color: Colors.white,
                               ),
-                      overflow: TextOverflow.fade,
+                      overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       softWrap: false,
                     ),

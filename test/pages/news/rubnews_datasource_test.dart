@@ -1,6 +1,6 @@
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
-import 'package:campus_app/pages/feed/news/rubnews_datasource.dart';
+import 'package:campus_app/pages/feed/news/news_datasource.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,7 +16,7 @@ import 'samples/newsfeed_response.dart';
 
 @GenerateMocks([Dio, Box])
 void main() {
-  late RubnewsDatasource rubnewsRemoteDatasource;
+  late NewsDatasource rubnewsRemoteDatasource;
   late Dio mockClient;
   late Box mockCach;
 
@@ -24,7 +24,7 @@ void main() {
     mockClient = MockDio();
     mockCach = MockBox();
 
-    rubnewsRemoteDatasource = RubnewsDatasource(client: mockClient, rubnewsCache: mockCach);
+    rubnewsRemoteDatasource = NewsDatasource(client: mockClient, rubnewsCache: mockCach);
   });
 
   group('[getNewsfeedAsXml]', () {
