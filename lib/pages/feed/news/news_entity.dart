@@ -41,6 +41,10 @@ class NewsEntity {
   @HiveField(7)
   final List<int> categoryIds;
 
+  /// Copyright for the news images
+  @HiveField(8)
+  final List<String> copyright;
+
   const NewsEntity({
     required this.title,
     this.description = '',
@@ -50,15 +54,16 @@ class NewsEntity {
     this.content = '',
     this.author = 0,
     this.categoryIds = const [],
+    this.copyright = const [],
   });
 
   /// Returns a NewsEntity based on a single XML element given by the web server
-  factory NewsEntity.fromXML(XmlElement xml, List<String> imageUrls) {
-    final content = xml.getElement('content')!.text;
-    final title = xml.getElement('title')!.text;
-    final url = xml.getElement('link')!.text;
-    final description = xml.getElement('description')!.text;
-    final pubDate = DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse(xml.getElement('pubDate')!.text);
+  factory NewsEntity.fromXML(XmlElement xml, Map<String, dynamic> imageData) {
+    final content = xml.getElement('content')!.innerText;
+    final title = xml.getElement('title')!.innerText;
+    final url = xml.getElement('link')!.innerText;
+    final description = xml.getElement('description')!.innerText;
+    final pubDate = DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse(xml.getElement('pubDate')!.innerText);
 
     /// Regular Expression to remove unwanted HTML-Tags
     final RegExp htmlTags = RegExp(
@@ -73,7 +78,8 @@ class NewsEntity {
       url: url,
       description: description,
       pubDate: pubDate,
-      imageUrls: imageUrls,
+      imageUrls: List.castFrom(imageData['imageUrls']),
+      copyright: imageData['copyright'],
     );
   }
 

@@ -42,9 +42,10 @@ class NewsRepository {
       }
 
       await Future.forEach(newsXmlList.map((news) => news), (XmlElement e) async {
-        final link = e.getElement('link')!.text;
-        final imageUrls = await newsDatasource.getImageUrlsFromNewsUrl(link);
-        entities.add(NewsEntity.fromXML(e, imageUrls));
+        final link = e.getElement('link')!.innerText;
+        final imageData = await newsDatasource.getImageDataFromNewsUrl(link);
+
+        entities.add(NewsEntity.fromXML(e, imageData));
       });
 
       // write entities to cache

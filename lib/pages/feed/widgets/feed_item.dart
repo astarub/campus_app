@@ -41,19 +41,23 @@ class FeedItem extends StatelessWidget {
   /// WP Category ids
   final List<int> categoryIds;
 
+  /// Copyright of the news image
+  final String copyright;
+
   /// Creates a NewsFeed-item with an expandable content
-  FeedItem({
-    Key? key,
-    required this.title,
-    this.description = '',
-    required this.date,
-    this.image,
-    this.link = '',
-    required this.content,
-    this.event,
-    this.author = 0,
-    this.categoryIds = const [],
-  }) : super(key: key);
+  FeedItem(
+      {Key? key,
+      required this.title,
+      this.description = '',
+      required this.date,
+      this.image,
+      this.link = '',
+      required this.content,
+      this.event,
+      this.author = 0,
+      this.categoryIds = const [],
+      this.copyright = ''})
+      : super(key: key);
 
   /// Creates a NewsFeed-item with an external link
   FeedItem.link({
@@ -67,6 +71,7 @@ class FeedItem extends StatelessWidget {
     this.event,
     this.author = 0,
     this.categoryIds = const [],
+    this.copyright = '',
   }) : super(key: key);
 
   @override
@@ -87,6 +92,7 @@ class FeedItem extends StatelessWidget {
             image: image,
             link: link,
             content: content,
+            copyright: copyright,
           );
         }
       },

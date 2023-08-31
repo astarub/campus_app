@@ -17,6 +17,7 @@ class RubnewsDetailsPage extends StatelessWidget {
   final String content;
   final bool isEvent;
   final String link;
+  final String copyright;
 
   const RubnewsDetailsPage({
     Key? key,
@@ -26,6 +27,7 @@ class RubnewsDetailsPage extends StatelessWidget {
     required this.link,
     required this.content,
     this.isEvent = false,
+    this.copyright = '',
   }) : super(key: key);
 
   @override
@@ -115,9 +117,19 @@ class RubnewsDetailsPage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  if (!isEvent && copyright != '')
+                    // Copyright
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
+                      child: Text(
+                        copyright,
+                        style: const TextStyle(fontSize: 12.5),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
                   // Title
                   Padding(
-                    padding: const EdgeInsets.only(top: 12, bottom: 6, left: 20, right: 20),
+                    padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 20),
                     child: Text(
                       parseFragment(title).text != null ? parseFragment(title).text! : '',
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,

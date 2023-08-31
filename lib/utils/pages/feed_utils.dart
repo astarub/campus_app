@@ -44,7 +44,7 @@ class FeedUtils extends Utils {
         FeedItem(
           title: n.title,
           date: n.pubDate,
-          image: n.imageUrls[0] != 'false'
+          image: n.imageUrls[0] != 'false' || (n.copyright.isNotEmpty && !n.copyright.contains('Fotolia'))
               ? CachedNetworkImage(
                   imageUrl: n.imageUrls[0],
                 )
@@ -54,6 +54,7 @@ class FeedUtils extends Utils {
           description: formattedDescription,
           author: n.author,
           categoryIds: n.categoryIds,
+          copyright: n.copyright.isNotEmpty ? n.copyright[0] : '',
         ),
       );
     }

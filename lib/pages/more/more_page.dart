@@ -145,12 +145,18 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                           ExternalLinkButton(
                             title: 'RubMail',
                             leadingIconPath: 'assets/img/icons/mail-link.png',
-                            onTap: () => openLink(context, 'https://mail.ruhr-uni-bochum.de/rubwebmail/'),
+                            onTap: () => openLink(
+                              context,
+                              'https://mail.ruhr-uni-bochum.de/rubwebmail/',
+                            ),
                           ),
                           ExternalLinkButton(
                             title: 'Moodle',
                             leadingIconPath: 'assets/img/icons/moodle-link.png',
-                            onTap: () => openLink(context, 'https://moodle.ruhr-uni-bochum.de/'),
+                            onTap: () => openLink(
+                              context,
+                              'https://moodle.ruhr-uni-bochum.de/',
+                            ),
                           ),
                           ExternalLinkButton(
                             title: 'eCampus',
@@ -163,12 +169,18 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                           ExternalLinkButton(
                             title: 'FlexNow',
                             leadingIconPath: 'assets/img/icons/flexnow-link.png',
-                            onTap: () => openLink(context, 'https://www.flexnow.ruhr-uni-bochum.de/'),
+                            onTap: () => openLink(
+                              context,
+                              'https://www.flexnow.ruhr-uni-bochum.de/',
+                            ),
                           ),
                           ExternalLinkButton(
                             title: 'Hochschulsport',
                             leadingIconPath: 'assets/img/icons/hochschulsport_icon.png',
-                            onTap: () => openLink(context, 'https://hochschulsport-bochum.ruhr-uni-bochum.de/de'),
+                            onTap: () => openLink(
+                              context,
+                              'https://buchung.hochschulsport.ruhr-uni-bochum.de/angebote/aktueller_zeitraum/m.html',
+                            ),
                           ),
                         ],
                       ),

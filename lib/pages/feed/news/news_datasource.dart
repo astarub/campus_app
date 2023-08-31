@@ -35,9 +35,14 @@ class NewsDatasource {
     }
   }
 
-  /// Request image url list of linked news.
+  /// Request image url and copyright text from linked news
   /// Throws a server excpetion if respond code is not 200.
-  Future<List<String>> getImageUrlsFromNewsUrl(String url) async {
+  Future<Map<String, dynamic>> getImageDataFromNewsUrl(String url) async {
+    final Map<String, dynamic> data = {
+      'copyright': <String>[],
+      'imageUrls': <String>[],
+    };
+
     final response = await client.get(url);
 
     if (response.statusCode != 200) {
@@ -45,20 +50,22 @@ class NewsDatasource {
     } else {
       final document = html.parse(response.data);
       final htmlClass = document.getElementsByClassName('field-std-bild-artikel');
-      final List<String> imgageUrls = [];
 
       // some news has multiple images with different HTML paths
       if (htmlClass.isEmpty) {
         // multiple image
         final images = document.getElementsByClassName('bst-bild');
-        for (final image in images) {
-          imgageUrls.add(
-            image.getElementsByTagName('img')[0].attributes['src'].toString(),
-          );
+        for (int i = 0; i < images.length; i++) {
+          final copyright = document.getElementsByClassName('bildzeile-copyright')[i].text;
+
+          List.castFrom(data['copyright']).add(copyright);
+          List.castFrom(data['imageUrls']).add(images[i].getElementsByTagName('img')[0].attributes['src'].toString());
         }
       } else {
-        // single images
-        imgageUrls.add(
+        final copyright = document.getElementsByClassName('bildzeile-copyright')[0].text;
+
+        List.castFrom(data['copyright']).add(copyright);
+        List.castFrom(data['imageUrls']).add(
           document
               .getElementsByClassName('field-std-bild-artikel')[0]
               .getElementsByTagName('img')[0]
@@ -67,7 +74,7 @@ class NewsDatasource {
         );
       }
 
-      return imgageUrls;
+      return data;
     }
   }
 

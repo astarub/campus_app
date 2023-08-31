@@ -25,13 +25,14 @@ class NewsEntityAdapter extends TypeAdapter<NewsEntity> {
       content: fields[5] as String,
       author: fields[6] as int,
       categoryIds: (fields[7] as List).cast<int>(),
+      copyright: (fields[8] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, NewsEntity obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class NewsEntityAdapter extends TypeAdapter<NewsEntity> {
       ..writeByte(6)
       ..write(obj.author)
       ..writeByte(7)
-      ..write(obj.categoryIds);
+      ..write(obj.categoryIds)
+      ..writeByte(8)
+      ..write(obj.copyright);
   }
 
   @override
@@ -56,7 +59,5 @@ class NewsEntityAdapter extends TypeAdapter<NewsEntity> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NewsEntityAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is NewsEntityAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }
