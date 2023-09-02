@@ -28,11 +28,8 @@ class FeedUtils extends Utils {
     List<dynamic> feedItemOrEventWidget = <dynamic>[];
     final widgets = <Widget>[];
 
-    final _news = <FeedItem>[];
-    final _events = <dynamic>[];
-
-    // generates a new Random object
-    final _random = Random();
+    final feedItems = <FeedItem>[];
+    final eventItems = <dynamic>[];
 
     // parse news in widget
     for (final n in news) {
@@ -40,7 +37,7 @@ class FeedUtils extends Utils {
       final String formattedDescription =
           n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
 
-      _news.add(
+      feedItems.add(
         FeedItem(
           title: n.title,
           date: n.pubDate,
@@ -69,7 +66,7 @@ class FeedUtils extends Utils {
       final endingTime = DateFormat('Hm').format(e.endDate);
 
       if (e.hasImage) {
-        _events.add(
+        eventItems.add(
           FeedItem(
             title: e.title,
             date: e.startDate,
@@ -85,16 +82,16 @@ class FeedUtils extends Utils {
           ),
         );
       } else {
-        _events.add(CalendarEventWidget(event: e));
+        eventItems.add(CalendarEventWidget(event: e));
       }
     }
 
-    _news.sort(sortFeedDesc);
+    feedItems.sort(sortFeedDesc);
 
     if (shuffle) {
-      _events.sort(sortFeedDesc);
-      feedItemOrEventWidget.addAll(_events);
-      feedItemOrEventWidget.addAll(_news);
+      eventItems.sort(sortFeedDesc);
+      feedItemOrEventWidget.addAll(eventItems);
+      feedItemOrEventWidget.addAll(feedItems);
 
       if (shuffeledItemOrEventWidgets.length < feedItemOrEventWidget.length) {
         feedItemOrEventWidget.shuffle();
@@ -104,26 +101,26 @@ class FeedUtils extends Utils {
 
       feedItemOrEventWidget = shuffeledItemOrEventWidgets;
     } else if (mixInto) {
-      _events.sort(sortFeedAsc);
+      eventItems.sort(sortFeedAsc);
       // mix events in feed, both are still sorted by date
-      while (_news.isNotEmpty || _events.isNotEmpty) {
-        if (_news.isNotEmpty && _events.isEmpty) {
-          feedItemOrEventWidget.addAll(_news);
-          _news.clear();
-        } else if (_news.isEmpty && _events.isNotEmpty) {
-          feedItemOrEventWidget.addAll(_events);
-          _events.clear();
-        } else if (_news.isEmpty && _events.isEmpty) {
+      while (feedItems.isNotEmpty || eventItems.isNotEmpty) {
+        if (feedItems.isNotEmpty && eventItems.isEmpty) {
+          feedItemOrEventWidget.addAll(feedItems);
+          feedItems.clear();
+        } else if (feedItems.isEmpty && eventItems.isNotEmpty) {
+          feedItemOrEventWidget.addAll(eventItems);
+          eventItems.clear();
+        } else if (feedItems.isEmpty && eventItems.isEmpty) {
           break;
         } else {
-          feedItemOrEventWidget.addAll([_news.first, _events.first]);
-          _news.removeAt(0);
-          _events.removeAt(0);
+          feedItemOrEventWidget.addAll([feedItems.first, eventItems.first]);
+          feedItems.removeAt(0);
+          eventItems.removeAt(0);
         }
       }
     } else {
       // sort widgets according to date
-      feedItemOrEventWidget.addAll(_news);
+      feedItemOrEventWidget.addAll(feedItems);
       feedItemOrEventWidget.sort(sortFeedDesc);
     }
 

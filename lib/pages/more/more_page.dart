@@ -27,10 +27,10 @@ class MorePage extends StatefulWidget {
   static const String privacy = 'Tbd.';
 
   @override
-  State<MorePage> createState() => _MorePageState();
+  State<MorePage> createState() => MorePageState();
 }
 
-class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<MorePage> {
+class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<MorePage> {
   void openLink(BuildContext context, String url) {
     debugPrint('Opening external ressource: $url');
 

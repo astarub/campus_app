@@ -26,10 +26,10 @@ class CampusTextButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CampusTextButton> createState() => _CampusTextButtonState();
+  State<CampusTextButton> createState() => CampusTextButtonState();
 }
 
-class _CampusTextButtonState extends State<CampusTextButton> {
+class CampusTextButtonState extends State<CampusTextButton> {
   late Color buttonTextColor;
 
   @override

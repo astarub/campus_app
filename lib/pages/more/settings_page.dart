@@ -1,9 +1,10 @@
-import 'dart:async';
 import 'dart:io' show Platform;
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/injection.dart';
@@ -13,18 +14,16 @@ import 'package:campus_app/utils/widgets/animated_conditional.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/pages/more/widgets/leading_text_switch.dart';
 
-import '../../core/exceptions.dart';
-
 /// This page displays the app settings
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<SettingsPage> createState() => SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
-  late Settings _settings;
+class SettingsPageState extends State<SettingsPage> {
+  late Settings settings;
 
   final GlobalKey<AnimatedConditionalState> _darkmodeAnimationKey = GlobalKey();
 
@@ -35,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _settings = Provider.of<SettingsHandler>(context).currentSettings;
+    settings = Provider.of<SettingsHandler>(context).currentSettings;
   }
 
   @override
@@ -84,19 +83,19 @@ class _SettingsPageState extends State<SettingsPage> {
                       if (switchValue) {
                         Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
                         Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                            _settings.copyWith(useSystemDarkmode: switchValue);
+                            settings.copyWith(useSystemDarkmode: switchValue);
                       } else {
                         // Apply the system brightness to the useDarkmode setting as a default falue
                         // in order to not change the brightness whenever the useSystemDarkmode setting is turned off
                         if (MediaQuery.of(context).platformBrightness == Brightness.light) {
                           Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.light;
-                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = _settings.copyWith(
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = settings.copyWith(
                             useDarkmode: false,
                             useSystemDarkmode: switchValue,
                           );
                         } else {
                           Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
-                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = _settings.copyWith(
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = settings.copyWith(
                             useDarkmode: true,
                             useSystemDarkmode: switchValue,
                           );
@@ -121,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         isActive: Provider.of<SettingsHandler>(context).currentSettings.useDarkmode,
                         onToggle: (switchValue) {
                           Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                              _settings.copyWith(useDarkmode: switchValue);
+                              settings.copyWith(useDarkmode: switchValue);
 
                           // Notify the UI that the currentTheme has changed
                           if (switchValue) {
@@ -140,7 +139,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.useExternalBrowser,
                     onToggle: (switchValue) {
                       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                          _settings.copyWith(useExternalBrowser: switchValue);
+                          settings.copyWith(useExternalBrowser: switchValue);
                     },
                   ),
                   // Apply app to system text scaling
@@ -149,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling,
                     onToggle: (switchValue) {
                       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                          _settings.copyWith(useSystemTextScaling: switchValue);
+                          settings.copyWith(useSystemTextScaling: switchValue);
                     },
                   ),
                   const SectionHeadline(headline: 'Datenschutz'),
@@ -160,14 +159,14 @@ class _SettingsPageState extends State<SettingsPage> {
                         Provider.of<SettingsHandler>(context).currentSettings.useFirebase == FirebaseStatus.permitted,
                     onToggle: (switchValue) async {
                       if (switchValue) {
-                        Provider.of<SettingsHandler>(context, listen: false).currentSettings = _settings.copyWith(
+                        Provider.of<SettingsHandler>(context, listen: false).currentSettings = settings.copyWith(
                           useFirebase: FirebaseStatus.permitted,
                         );
 
                         await mainUtils.initializeFirebase(context);
                       } else {
                         if (mounted) {
-                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = _settings.copyWith(
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = settings.copyWith(
                             useFirebase: FirebaseStatus.forbidden,
                           );
                         }
@@ -195,10 +194,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     onToggle: (switchValue) async {
                       if (switchValue) {
                         Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                            _settings.copyWith(savedEventsNotifications: true);
+                            settings.copyWith(savedEventsNotifications: true);
                       } else {
                         Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                            _settings.copyWith(savedEventsNotifications: false);
+                            settings.copyWith(savedEventsNotifications: false);
 
                         try {
                           final provider = Provider.of<SettingsHandler>(context, listen: false);

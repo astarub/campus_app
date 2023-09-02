@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
@@ -10,13 +9,13 @@ import 'package:campus_app/utils/constants.dart';
 
 class CalendarDatasource {
   /// Key to identify count of events in Hive box / Cach
-  static const String _keyCnt = 'cnt';
+  static const String keyCnt = 'cnt';
 
   /// Key to identify savedEvents in Hive box / Cach
-  static const String _keyCntSaved = 'cntSaved';
+  static const String keyCntSaved = 'cntSaved';
 
   /// Key to identify events of our own WP instance in Hive box / Cach
-  static const String _keyCntApp = 'cntApp';
+  static const String keyCntApp = 'cntApp';
 
   /// Dio client to perfrom network operations
   final Dio client;
@@ -139,11 +138,11 @@ class CalendarDatasource {
     final cntEntities = entities.length;
 
     if (saved) {
-      await eventCache.put(_keyCntSaved, cntEntities);
+      await eventCache.put(keyCntSaved, cntEntities);
     } else if (app) {
-      await eventCache.put(_keyCntApp, cntEntities);
+      await eventCache.put(keyCntApp, cntEntities);
     } else {
-      await eventCache.put(_keyCnt, cntEntities);
+      await eventCache.put(keyCnt, cntEntities);
     }
 
     int i = 0; // use list index as identifier
@@ -160,10 +159,10 @@ class CalendarDatasource {
 
     if (entities.isEmpty) {
       final int tempCntEntities = saved
-          ? eventCache.get(_keyCntSaved) ?? 0
+          ? eventCache.get(keyCntSaved) ?? 0
           : app
-              ? eventCache.get(_keyCntApp) ?? 0
-              : eventCache.get(_keyCnt) ?? 0;
+              ? eventCache.get(keyCntApp) ?? 0
+              : eventCache.get(keyCnt) ?? 0;
 
       for (int i = 0; i < tempCntEntities; i++) {
         if (saved) {
@@ -183,11 +182,11 @@ class CalendarDatasource {
     final List<Event> entities = [];
 
     if (saved) {
-      cntEntities = eventCache.get(_keyCntSaved) ?? 0;
+      cntEntities = eventCache.get(keyCntSaved) ?? 0;
     } else if (app) {
-      cntEntities = eventCache.get(_keyCntApp) ?? 0;
+      cntEntities = eventCache.get(keyCntApp) ?? 0;
     } else {
-      cntEntities = eventCache.get(_keyCnt) ?? 0;
+      cntEntities = eventCache.get(keyCnt) ?? 0;
     }
 
     for (int i = 0; i < cntEntities; i++) {

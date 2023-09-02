@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:campus_app/pages/mensa/entities/moodle_course_entity.dart';
+import 'package:campus_app/pages/moodle/entities/moodle_course_entity.dart';
 
 class MoodleCourseModel extends MoodleCourseEntity {
   MoodleCourseModel({

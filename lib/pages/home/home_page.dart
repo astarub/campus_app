@@ -83,7 +83,7 @@ class HomePageState extends State<HomePage> {
 
   GlobalKey<FeedPageState> feedKey = GlobalKey();
 
-  final PageController _pageController = PageController();
+  final PageController pageController = PageController();
 
   double pagePosition = 0;
 
@@ -98,7 +98,7 @@ class HomePageState extends State<HomePage> {
       final int indexNewPage = pages.indexWhere((element) => element == selectedPageItem);
 
       // Switch to the selected page
-      await _pageController.animateToPage(
+      await pageController.animateToPage(
         indexNewPage,
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
@@ -120,7 +120,7 @@ class HomePageState extends State<HomePage> {
   }
 
   /// Returns the [NavBarNavigator] for the specified PageItem on phones
-  Widget _buildNavigator(PageItem tabItem) {
+  Widget buildNavigator(PageItem tabItem) {
     return NavBarNavigator(
       mainNavigatorKey: widget.mainNavigatorKey,
       navigatorKey: navigatorKeys[tabItem]!,
@@ -133,7 +133,7 @@ class HomePageState extends State<HomePage> {
   /// Wraps the [NavBarNavigator] that holds the displayed page in an [Offstage] widget
   /// in order to stack them and show only the active page.
   /// Only used for tablets.
-  Widget _buildOffstateNavigator(PageItem tabItem) {
+  Widget buildOffstateNavigator(PageItem tabItem) {
     return Offstage(
       offstage: currentPage != tabItem,
       child: NavBarNavigator(
@@ -172,8 +172,8 @@ class HomePageState extends State<HomePage> {
       }
     };
 
-    _pageController.addListener(() {
-      setState(() => pagePosition = _pageController.page ?? 0);
+    pageController.addListener(() {
+      setState(() => pagePosition = pageController.page ?? 0);
     });
   }
 
@@ -200,7 +200,7 @@ class HomePageState extends State<HomePage> {
                       Padding(
                         padding: EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
                         child: PageView.builder(
-                          controller: _pageController,
+                          controller: pageController,
                           itemCount: navigatorKeys.length,
                           onPageChanged: (page) {
                             final List<PageItem> pages = navigatorKeys.keys.toList();
@@ -229,7 +229,7 @@ class HomePageState extends State<HomePage> {
                                           ? 0
                                           : 1 - (pagePosition - index),
                               duration: const Duration(milliseconds: 100),
-                              child: _buildNavigator(navigatorKeys.keys.toList()[index]),
+                              child: buildNavigator(navigatorKeys.keys.toList()[index]),
                             );
                           },
                         ),
@@ -280,11 +280,11 @@ class HomePageState extends State<HomePage> {
                                       width: 550,
                                       child: Stack(
                                         children: [
-                                          _buildOffstateNavigator(PageItem.feed),
-                                          _buildOffstateNavigator(PageItem.events),
-                                          _buildOffstateNavigator(PageItem.mensa),
-                                          _buildOffstateNavigator(PageItem.wallet),
-                                          _buildOffstateNavigator(PageItem.more),
+                                          buildOffstateNavigator(PageItem.feed),
+                                          buildOffstateNavigator(PageItem.events),
+                                          buildOffstateNavigator(PageItem.mensa),
+                                          buildOffstateNavigator(PageItem.wallet),
+                                          buildOffstateNavigator(PageItem.more),
                                         ],
                                       ),
                                     ),

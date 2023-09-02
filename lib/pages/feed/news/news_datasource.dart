@@ -9,7 +9,7 @@ import 'package:campus_app/utils/constants.dart';
 
 class NewsDatasource {
   /// Key to identify count of news in Hive box / Cach
-  static const String _keyCnt = 'cnt';
+  static const String keyCnt = 'cnt';
 
   /// Dio client to perfrom network operations
   final Dio client;
@@ -125,7 +125,7 @@ class NewsDatasource {
   /// The put()-call is awaited to make sure that the write operations are successful.
   Future<void> writeNewsEntitiesToCache(List<NewsEntity> entities) async {
     final cntEntities = entities.length;
-    await rubnewsCache.put(_keyCnt, cntEntities);
+    await rubnewsCache.put(keyCnt, cntEntities);
 
     int index = 0; // use list index as identifier
     for (final entity in entities) {
@@ -136,7 +136,7 @@ class NewsDatasource {
 
   /// Read cach of news entities and return them.
   List<NewsEntity> readNewsEntitiesFromCach() {
-    final cntEntities = rubnewsCache.get(_keyCnt) as int;
+    final cntEntities = rubnewsCache.get(keyCnt) as int;
     final List<NewsEntity> entities = [];
 
     for (int i = 0; i < cntEntities; i++) {

@@ -199,32 +199,32 @@ class CampusSwitch extends StatefulWidget {
         super(key: key);
 
   @override
-  _CampusSwitchState createState() => _CampusSwitchState();
+  CampusSwitchState createState() => CampusSwitchState();
 }
 
-class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderStateMixin {
-  late final AnimationController _animationController;
-  late final Animation _toggleAnimation;
+class CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderStateMixin {
+  late final AnimationController animationController;
+  late final Animation toggleAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    _animationController = AnimationController(
+    animationController = AnimationController(
       vsync: this,
       value: widget.value ? 1.0 : 0.0,
       duration: widget.duration,
     );
 
-    _toggleAnimation = AlignmentTween(
+    toggleAnimation = AlignmentTween(
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
-    ).animate(CurvedAnimation(parent: _animationController, curve: widget.curve));
+    ).animate(CurvedAnimation(parent: animationController, curve: widget.curve));
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    animationController.dispose();
 
     super.dispose();
   }
@@ -236,35 +236,35 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
     if (oldWidget.value == widget.value) return;
 
     if (widget.value) {
-      _animationController.forward();
+      animationController.forward();
     } else {
-      _animationController.reverse();
+      animationController.reverse();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Color _toggleColor = Colors.white;
-    Color _switchColor = Colors.white;
-    Border? _switchBorder;
-    Border? _toggleBorder;
+    Color toggleColor = Colors.white;
+    Color switchColor = Colors.white;
+    Border? switchBorder;
+    Border? toggleBorder;
 
     if (widget.value) {
-      _toggleColor = widget.activeToggleColor ?? widget.toggleColor;
-      _switchColor = widget.activeColor;
-      _switchBorder = widget.activeSwitchBorder as Border? ?? widget.switchBorder as Border?;
-      _toggleBorder = widget.activeToggleBorder as Border? ?? widget.toggleBorder as Border?;
+      toggleColor = widget.activeToggleColor ?? widget.toggleColor;
+      switchColor = widget.activeColor;
+      switchBorder = widget.activeSwitchBorder as Border? ?? widget.switchBorder as Border?;
+      toggleBorder = widget.activeToggleBorder as Border? ?? widget.toggleBorder as Border?;
     } else {
-      _toggleColor = widget.inactiveToggleColor ?? widget.toggleColor;
-      _switchColor = widget.inactiveColor;
-      _switchBorder = widget.inactiveSwitchBorder as Border? ?? widget.switchBorder as Border?;
-      _toggleBorder = widget.inactiveToggleBorder as Border? ?? widget.toggleBorder as Border?;
+      toggleColor = widget.inactiveToggleColor ?? widget.toggleColor;
+      switchColor = widget.inactiveColor;
+      switchBorder = widget.inactiveSwitchBorder as Border? ?? widget.switchBorder as Border?;
+      toggleBorder = widget.inactiveToggleBorder as Border? ?? widget.toggleBorder as Border?;
     }
 
-    final double _textSpace = widget.width - widget.toggleSize;
+    final double textSpace = widget.width - widget.toggleSize;
 
     return AnimatedBuilder(
-      animation: _animationController,
+      animation: animationController,
       builder: (context, child) {
         return SizedBox(
           width: widget.width,
@@ -273,9 +273,9 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
               onTap: () {
                 if (!widget.disabled) {
                   if (widget.value) {
-                    _animationController.forward();
+                    animationController.forward();
                   } else {
-                    _animationController.reverse();
+                    animationController.reverse();
                   }
 
                   widget.onToggle(!widget.value);
@@ -289,8 +289,8 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
                   padding: EdgeInsets.all(widget.padding),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(widget.borderRadius),
-                    color: _switchColor,
-                    border: _switchBorder,
+                    color: switchColor,
+                    border: switchBorder,
                   ),
                   child: Stack(
                     children: <Widget>[
@@ -298,7 +298,7 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
                         opacity: widget.value ? 1.0 : 0.0,
                         duration: widget.duration,
                         child: Container(
-                          width: _textSpace,
+                          width: textSpace,
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           alignment: Alignment.centerLeft,
                           child: _activeText,
@@ -310,7 +310,7 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
                           opacity: !widget.value ? 1.0 : 0.0,
                           duration: widget.duration,
                           child: Container(
-                            width: _textSpace,
+                            width: textSpace,
                             padding: const EdgeInsets.symmetric(horizontal: 4),
                             alignment: Alignment.centerRight,
                             child: _inactiveText,
@@ -318,15 +318,15 @@ class _CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSt
                         ),
                       ),
                       Align(
-                        alignment: _toggleAnimation.value,
+                        alignment: toggleAnimation.value,
                         child: Container(
                           width: widget.toggleSize,
                           height: widget.toggleSize,
                           padding: const EdgeInsets.all(4.0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: _toggleColor,
-                            border: _toggleBorder,
+                            color: toggleColor,
+                            border: toggleBorder,
                             boxShadow: [widget.toggleShadow],
                           ),
                           child: FittedBox(

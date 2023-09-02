@@ -43,30 +43,30 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   late final ScrollController _scrollController;
-  double _scrollControllerLastOffset = 0;
-  double _headerOpacity = 1;
-  double _newsWidgetOpacity = 1;
+  double scrollControllerLastOffset = 0;
+  double headerOpacity = 1;
+  double newsWidgetOpacity = 1;
 
-  List<NewsEntity> _rubnews = [];
-  List<Event> _events = [];
-  List<Failure> _failures = [];
-  List<Widget> _parsedNewsWidgets = [];
-  List<Widget> _searchNewsWidgets = [];
-
-  bool showSearchBar = false;
-  String searchWord = '';
-
-  late final SnappingSheetController _popupController;
+  List<NewsEntity> news = [];
+  List<Event> events = [];
+  List<Failure> failures = [];
+  List<Widget> parsedNewsWidgets = [];
+  List<Widget> searchNewsWidgets = [];
 
   final NewsUsecases _newsUsecases = sl<NewsUsecases>();
   final CalendarUsecases _calendarUsecase = sl<CalendarUsecases>();
   final FeedUtils _feedUtils = sl<FeedUtils>();
   final BackendRepository backendRepository = sl<BackendRepository>();
 
+  late final SnappingSheetController popupController;
+
+  String searchWord = '';
+  bool showSearchBar = false;
+
   /// Function that call usecase and parse widgets into the corresponding
   /// lists of events, news and failures.
   Future<void> updateStateWithFeed({bool withAnimation = false}) async {
-    if (withAnimation) setState(() => _newsWidgetOpacity = 0);
+    if (withAnimation) setState(() => newsWidgetOpacity = 0);
 
     try {
       await backendRepository.loadPublishers(Provider.of<SettingsHandler>(context, listen: false));
@@ -77,10 +77,10 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     final eventData = await _calendarUsecase.updateEventsAndFailures();
 
     setState(() {
-      _rubnews = newsData['news']! as List<NewsEntity>;
-      _events = eventData['events']! as List<Event>;
-      _failures = (newsData['failures']! as List<Failure>)..addAll(eventData['failures']! as List<Failure>);
-      _parsedNewsWidgets = parseUpdateToWidgets();
+      news = newsData['news']! as List<NewsEntity>;
+      events = eventData['events']! as List<Event>;
+      failures = (newsData['failures']! as List<Failure>)..addAll(eventData['failures']! as List<Failure>);
+      parsedNewsWidgets = parseUpdateToWidgets();
     });
 
     // Apply search to newly parsed feed items
@@ -91,11 +91,11 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
   /// Parse the updated news data into widgets and mix them with events if needed
   List<Widget> parseUpdateToWidgets() {
-    setState(() => _newsWidgetOpacity = 1);
+    setState(() => newsWidgetOpacity = 1);
 
     return _feedUtils.fromEntitiesToWidgetList(
-      news: _rubnews,
-      events: _events,
+      news: news,
+      events: events,
       mixInto: Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore,
     );
   }
@@ -120,7 +120,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
     // Mix in widget when changed to the explore section and vice versa
     setState(() {
-      _parsedNewsWidgets = parseUpdateToWidgets();
+      parsedNewsWidgets = parseUpdateToWidgets();
       onSearch(searchWord);
     });
   }
@@ -129,7 +129,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   void onSearch(String search) {
     final List<Widget> filteredWidgets = [];
 
-    for (final Widget e in _parsedNewsWidgets) {
+    for (final Widget e in parsedNewsWidgets) {
       if (e is FeedItem) {
         if (e.title.toUpperCase().contains(search.toUpperCase())) {
           filteredWidgets.add(e);
@@ -144,7 +144,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     }
 
     setState(() {
-      _searchNewsWidgets = filteredWidgets;
+      searchNewsWidgets = filteredWidgets;
       searchWord = search;
     });
   }
@@ -158,28 +158,28 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
     _scrollController = ScrollController()
       ..addListener(() {
-        if (_scrollController.offset > (_scrollControllerLastOffset + 80) && _scrollController.offset > 0) {
-          _scrollControllerLastOffset = _scrollController.offset;
-          if (_headerOpacity != 0) setState(() => _headerOpacity = 0);
-        } else if (_scrollController.offset < (_scrollControllerLastOffset - 250)) {
-          _scrollControllerLastOffset = _scrollController.offset;
-          if (_headerOpacity != 1) setState(() => _headerOpacity = 1);
+        if (_scrollController.offset > (scrollControllerLastOffset + 80) && _scrollController.offset > 0) {
+          scrollControllerLastOffset = _scrollController.offset;
+          if (headerOpacity != 0) setState(() => headerOpacity = 0);
+        } else if (_scrollController.offset < (scrollControllerLastOffset - 250)) {
+          scrollControllerLastOffset = _scrollController.offset;
+          if (headerOpacity != 1) setState(() => headerOpacity = 1);
         } else if (_scrollController.offset < 80) {
-          _scrollControllerLastOffset = 0;
-          if (_headerOpacity != 1) setState(() => _headerOpacity = 1);
+          scrollControllerLastOffset = 0;
+          if (headerOpacity != 1) setState(() => headerOpacity = 1);
         }
       });
 
-    _popupController = SnappingSheetController();
+    popupController = SnappingSheetController();
 
     // initial data request
     final newsData = _newsUsecases.getCachedFeedAndFailures();
-    _rubnews = newsData['news']! as List<NewsEntity>; // empty when no data was cached before
-    _failures = newsData['failures']! as List<Failure>; // CachFailure when no data was cached before
+    news = newsData['news']! as List<NewsEntity>; // empty when no data was cached before
+    failures = newsData['failures']! as List<Failure>; // CachFailure when no data was cached before
 
     final eventData = _calendarUsecase.getCachedEventsAndFailures();
-    _events = eventData['events']! as List<Event>; // empty when no data was cached before
-    _failures.addAll(eventData['failures']! as List<Failure>); // CachFailure when no data was cached before
+    events = eventData['events']! as List<Event>; // empty when no data was cached before
+    failures.addAll(eventData['failures']! as List<Failure>); // CachFailure when no data was cached before
 
     // Request an update for the feed and show the refresh indicator
     Future.delayed(const Duration(milliseconds: 200)).then((_) {
@@ -206,7 +206,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
     final List<Widget> filteredFeedItems = _feedUtils.filterFeedWidgets(
       filters,
-      searchWord != '' ? _searchNewsWidgets : _parsedNewsWidgets,
+      searchWord != '' ? searchNewsWidgets : parsedNewsWidgets,
     );
 
     return Scaffold(
@@ -235,7 +235,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                       physics: const BouncingScrollPhysics(),
                       itemCount: filteredFeedItems.length,
                       itemBuilder: (context, index) => AnimatedOpacity(
-                        opacity: _newsWidgetOpacity,
+                        opacity: newsWidgetOpacity,
                         duration: Duration(milliseconds: 100 + (index * 200)),
                         child: filteredFeedItems[index],
                       ),
@@ -248,7 +248,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                     top: Platform.isAndroid ? 10 : 0,
                     bottom: 20,
                   ),
-                  color: _headerOpacity == 1
+                  color: headerOpacity == 1
                       ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background
                       : Colors.transparent,
                   child: Column(
@@ -264,7 +264,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                       ),
                       // FeedPicker & filter
                       AnimatedOpacity(
-                        opacity: _headerOpacity,
+                        opacity: headerOpacity,
                         duration: const Duration(milliseconds: 200),
                         curve: Curves.easeOut,
                         child: AnimatedSwitcher(
@@ -274,7 +274,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                                   onChange: onSearch,
                                   onBack: () {
                                     setState(() {
-                                      _searchNewsWidgets = _parsedNewsWidgets;
+                                      searchNewsWidgets = parsedNewsWidgets;
                                       showSearchBar = false;
                                       searchWord = '';
                                     });

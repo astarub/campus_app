@@ -40,21 +40,21 @@ class PopupSheet extends StatefulWidget {
 
 class _PopupSheetState extends State<PopupSheet> {
   /// Controls the SnappingSheet
-  late final SnappingSheetController _popupController;
+  late final SnappingSheetController popupController;
 
   /// Animated half-transparent background color
-  Color _backgroundColor = const Color.fromRGBO(0, 0, 0, 0);
+  Color backgroundColor = const Color.fromRGBO(0, 0, 0, 0);
 
   @override
   void initState() {
     super.initState();
 
-    _popupController = SnappingSheetController();
+    popupController = SnappingSheetController();
 
     // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
     Timer(
       const Duration(milliseconds: 50),
-      () => _popupController.snapToPosition(
+      () => popupController.snapToPosition(
         SnappingPosition.factor(
           positionFactor: widget.openPositionFactor,
           snappingCurve: Curves.easeOutExpo,
@@ -67,7 +67,7 @@ class _PopupSheetState extends State<PopupSheet> {
   @override
   Widget build(BuildContext context) {
     return SnappingSheet(
-      controller: _popupController,
+      controller: popupController,
       sheetBelow: SnappingSheetContent(
         child: MediaQuery.of(context).size.shortestSide < 600
             ? widget.child
@@ -125,14 +125,14 @@ class _PopupSheetState extends State<PopupSheet> {
       ],
       lockOverflowDrag: true,
       onSheetMoved: (positionData) {
-        setState(() => _backgroundColor = _backgroundColor.withOpacity(0.3 * positionData.relativeToSnappingPositions));
+        setState(() => backgroundColor = backgroundColor.withOpacity(0.3 * positionData.relativeToSnappingPositions));
       },
       onSnapCompleted: (positionData, snappingPosition) {
         // Remove the popup from the navigation-stack when it's snapped outside the view
         if (positionData.pixels == -60) widget.onClose();
       },
       child: GestureDetector(
-        onTap: () => _popupController.snapToPosition(
+        onTap: () => popupController.snapToPosition(
           const SnappingPosition.pixels(
             positionPixels: -60,
             snappingCurve: Curves.easeOutExpo,
@@ -141,7 +141,7 @@ class _PopupSheetState extends State<PopupSheet> {
         ),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 50),
-          color: _backgroundColor,
+          color: backgroundColor,
         ),
       ),
     );

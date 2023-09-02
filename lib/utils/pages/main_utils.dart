@@ -55,6 +55,7 @@ class FGBGEvents {
 class MainUtils {
   // Deep link handling
   bool initialUriHandled = false;
+  // ignore: cancel_subscriptions
   StreamSubscription? subscription;
 
   final CalendarUsecases calendarUsecases = sl<CalendarUsecases>();
@@ -235,11 +236,13 @@ class MainUtils {
 
               // Retrieves all events from the calendar
               final Map<String, List<dynamic>> eventsAndFailures = await calendarUsecases.updateEventsAndFailures();
-              final List<Event> events = eventsAndFailures['events'] as List<Event>;
+              final List<Event> events = eventsAndFailures['events']! as List<Event>;
 
-              if (interactionData[0] == null || interactionData[0]['event'] == null) return;
+              if (interactionData[0] == null || List<Map<String, dynamic>>.from(interactionData)[0]['event'] == null) {
+                return;
+              }
 
-              final Map<String, dynamic> eventJson = interactionData[0]['event'];
+              final Map<String, dynamic> eventJson = List<Map<String, dynamic>>.from(interactionData)[0]['event'];
 
               // Get the event according to the id in the message payload
               Event event;
@@ -290,6 +293,7 @@ class MainUtils {
               final String url = interactionData[0];
 
               // Decides whether the link should be opened in the app or in an external browser
+              // ignore: use_build_context_synchronously
               if (Provider.of<SettingsHandler>(homeKey.currentState!.context, listen: false)
                       .currentSettings
                       .useExternalBrowser ||
@@ -446,11 +450,13 @@ class MainUtils {
           // Retrieves all events from the calendar
           final calendarUsecase = sl<CalendarUsecases>();
           final Map<String, List<dynamic>> eventsAndFailures = await calendarUsecase.updateEventsAndFailures();
-          final List<Event> events = eventsAndFailures['events'] as List<Event>;
+          final List<Event> events = eventsAndFailures['events']! as List<Event>;
 
-          if (interactionData[0] == null || interactionData[0]['event'] == null) return;
+          if (interactionData[0] == null || List<Map<String, dynamic>>.from(interactionData)[0]['event'] == null) {
+            return;
+          }
 
-          final Map<String, dynamic> eventJson = interactionData[0]['event'];
+          final Map<String, dynamic> eventJson = List<Map<String, dynamic>>.from(interactionData)[0]['event'];
 
           // Get the event according to the id in the message payload
           Event event;
@@ -499,6 +505,7 @@ class MainUtils {
 
           final String url = interactionData[0];
 
+          // ignore: use_build_context_synchronously
           if (Provider.of<SettingsHandler>(homeKey.currentState!.context, listen: false)
                   .currentSettings
                   .useExternalBrowser ||

@@ -33,10 +33,10 @@ class OnboardingPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<OnboardingPage> createState() => _OnboardingPageState();
+  State<OnboardingPage> createState() => OnboardingPageState();
 }
 
-class _OnboardingPageState extends State<OnboardingPage> {
+class OnboardingPageState extends State<OnboardingPage> {
   final GlobalKey<HomePageState> homeKey = GlobalKey();
   final GlobalKey<OnboardingSliderState> onboardingSliderKey = GlobalKey();
   final GlobalKey<ThemeSelectionState> themeSelectionKey = GlobalKey();

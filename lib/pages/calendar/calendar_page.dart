@@ -40,21 +40,21 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClientMixin<CalendarPage> {
-  late List<Event> _events = [];
-  late List<Event> _savedEvents = [];
-  late List<Failure> _failures = [];
-
-  final _calendarRepository = sl<CalendarRepository>();
-  final _calendarUsecase = sl<CalendarUsecases>();
-  final _calendarUtils = sl<CalendarUtils>();
   final BackendRepository backendRepository = sl<BackendRepository>();
+  final calendarRepository = sl<CalendarRepository>();
+  final calendarUsecases = sl<CalendarUsecases>();
+  final calendarUtils = sl<CalendarUtils>();
 
-  late List<Widget> parsedEvents = [];
-  late List<Widget> savedEvents = [];
-  late List<Widget> searchEvents = [];
+  late List<Event> events = [];
+  late List<Event> savedEvents = [];
+  late List<Failure> failures = [];
+
+  late List<Widget> parsedEventWidgets = [];
+  late List<Widget> savedEventWidgets = [];
+  late List<Widget> searchEventWidgets = [];
 
   late final CampusSegmentedControl upcomingSavedSwitch;
-  bool showSavedEvents = false;
+  bool showsavedEventWidgets = false;
 
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
@@ -67,7 +67,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   String search = '';
 
   /// Checks if new events were saved locally but not the backend
-  Future<void> syncSavedEvents() async {
+  Future<void> syncsavedEventWidgets() async {
     if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase == FirebaseStatus.forbidden ||
         Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
             FirebaseStatus.uncofigured) {
@@ -76,11 +76,12 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
     final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
-    final List<Map<String, dynamic>> accountSavedEvents = settingsHandler.currentSettings.backendAccount.savedEvents;
-    final List<Map<String, dynamic>> tempAccountSavedEvents = [];
-    tempAccountSavedEvents.addAll(accountSavedEvents);
+    final List<Map<String, dynamic>> accountsavedEventWidgets =
+        settingsHandler.currentSettings.backendAccount.savedEvents;
+    final List<Map<String, dynamic>> tempAccountsavedEventWidgets = [];
+    tempAccountsavedEventWidgets.addAll(accountsavedEventWidgets);
 
-    for (final Map<String, dynamic> accountEvent in tempAccountSavedEvents) {
+    for (final Map<String, dynamic> accountEvent in tempAccountsavedEventWidgets) {
       final DateTime startDate = DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').parse(accountEvent['startDate']);
 
       if (startDate.compareTo(DateTime.now()) < 0) {
@@ -89,10 +90,10 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
           accountEvent['eventId'],
         );
 
-        await updateSavedEventWidgets(event: _savedEvents.firstWhere((event) => event.id == accountEvent['eventId']));
+        await updateSavedEventWidgets(event: savedEvents.firstWhere((event) => event.id == accountEvent['eventId']));
       }
 
-      if (!_savedEvents.map((e) => e.id).toList().contains(accountEvent['eventId'])) {
+      if (!savedEvents.map((e) => e.id).toList().contains(accountEvent['eventId'])) {
         await backendRepository.removeSavedEvent(
           settingsHandler,
           accountEvent['eventId'],
@@ -100,9 +101,9 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
       }
     }
 
-    for (final Event event in _savedEvents) {
+    for (final Event event in savedEvents) {
       try {
-        accountSavedEvents.firstWhere(
+        accountsavedEventWidgets.firstWhere(
           (element) => element['eventId'] == event.id,
         );
       } catch (e) {
@@ -116,19 +117,19 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
   /// Update the saved event widget list
   Future<void> updateSavedEventWidgets({Event? event}) async {
-    final dartz.Either<Failure, List<Event>> updatedSavedEvents =
-        await _calendarRepository.updateSavedEvents(event: event);
+    final dartz.Either<Failure, List<Event>> updatedsavedEventWidgets =
+        await calendarRepository.updateSavedEvents(event: event);
 
     List<Event> saved = [];
 
-    updatedSavedEvents.fold(
-      (failure) => true,
+    updatedsavedEventWidgets.fold(
+      (failure) => failures.add(failure),
       (events) => saved = events,
     );
 
     setState(() {
-      savedEvents = _calendarUtils.getEventWidgetList(events: saved);
-      _savedEvents = saved;
+      savedEventWidgets = calendarUtils.getEventWidgetList(events: saved);
+      savedEvents = saved;
       showSavedPlaceholder = saved.isEmpty;
     });
   }
@@ -146,18 +147,18 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
       // ignore: empty_catches
     } catch (e) {}
 
-    await _calendarUsecase.updateEventsAndFailures().then(
+    await calendarUsecases.updateEventsAndFailures().then(
       (data) {
         setState(() {
-          _events = data['events']! as List<Event>;
-          _savedEvents = data['saved']! as List<Event>;
-          _failures = data['failures']! as List<Failure>;
+          events = data['events']! as List<Event>;
+          savedEvents = data['saved']! as List<Event>;
+          failures = data['failures']! as List<Failure>;
 
-          parsedEvents = _calendarUtils.getEventWidgetList(events: _events);
-          savedEvents = _calendarUtils.getEventWidgetList(events: _savedEvents);
+          parsedEventWidgets = calendarUtils.getEventWidgetList(events: events);
+          savedEventWidgets = calendarUtils.getEventWidgetList(events: savedEvents);
 
-          showUpcomingPlaceholder = _events.isEmpty;
-          showSavedPlaceholder = _savedEvents.isEmpty;
+          showUpcomingPlaceholder = events.isEmpty;
+          showSavedPlaceholder = savedEvents.isEmpty;
           eventWidgetOpacity = 1;
           savedWidgetOpacity = 1;
         });
@@ -167,11 +168,11 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
       },
     );
 
-    await syncSavedEvents();
+    await syncsavedEventWidgets();
 
     debugPrint('Events aktualisiert.');
 
-    return parsedEvents;
+    return parsedEventWidgets;
   }
 
   void saveChangedFilters(List<Publisher> newFilters) {
@@ -191,12 +192,12 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
       rightTitle: 'Saved',
       onChanged: (int selected) async {
         if (selected == 0) {
-          setState(() => showSavedEvents = false);
+          setState(() => showsavedEventWidgets = false);
         } else {
           // Update the saved events list when changing tabs
           await updateSavedEventWidgets();
 
-          setState(() => showSavedEvents = true);
+          setState(() => showsavedEventWidgets = true);
         }
       },
     );
@@ -211,7 +212,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   void onSearch(String search) {
     final List<Widget> filteredWidgets = [];
 
-    for (final Widget e in parsedEvents) {
+    for (final Widget e in parsedEventWidgets) {
       if (e is CalendarEventWidget) {
         if (e.event.title.toUpperCase().contains(search.toUpperCase())) {
           filteredWidgets.add(e);
@@ -222,7 +223,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     }
 
     setState(() {
-      searchEvents = filteredWidgets;
+      searchEventWidgets = filteredWidgets;
       this.search = search;
     });
   }
@@ -234,11 +235,11 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     // Filter the events based on the selected sources
     final filters = Provider.of<SettingsHandler>(context).currentSettings.eventsFilter;
     final publishers = Provider.of<SettingsHandler>(context).currentSettings.publishers;
-    final List<Widget> filteredEvents =
-        _calendarUtils.filterEventWidgets(filters, searchEvents.isNotEmpty ? searchEvents : parsedEvents, publishers);
+    final List<Widget> filteredEvents = calendarUtils.filterEventWidgets(
+        filters, searchEventWidgets.isNotEmpty ? searchEventWidgets : parsedEventWidgets, publishers);
 
     // Update the saved events list in case a user just saved an event
-    if (showSavedEvents) unawaited(updateSavedEventWidgets());
+    if (showsavedEventWidgets) unawaited(updateSavedEventWidgets());
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
@@ -253,13 +254,13 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                 // Events
                 Container(
                   margin: EdgeInsets.only(top: Platform.isAndroid ? 70 : 60),
-                  child: !showSavedEvents && showUpcomingPlaceholder
+                  child: !showsavedEventWidgets && showUpcomingPlaceholder
                       // Placeholder for no upcoming events
                       ? const EmptyStatePlaceholder(
                           title: 'Keine Events in Sicht',
                           text: 'Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.',
                         )
-                      : showSavedEvents && showSavedPlaceholder
+                      : showsavedEventWidgets && showSavedPlaceholder
                           // Placeholder for no saved events
                           ? const EmptyStatePlaceholder(
                               title: 'Keine gemerkten Events',
@@ -272,15 +273,15 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                               color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                               strokeWidth: 3,
                               onRefresh: updateStateWithEvents,
-                              child: showSavedEvents
+                              child: showsavedEventWidgets
                                   ? ListView.builder(
                                       padding: const EdgeInsets.symmetric(horizontal: 10),
                                       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                      itemCount: savedEvents.length,
+                                      itemCount: savedEventWidgets.length,
                                       itemBuilder: (context, index) => AnimatedOpacity(
                                         opacity: savedWidgetOpacity,
                                         duration: Duration(milliseconds: 50 + (index * 35)),
-                                        child: savedEvents[index],
+                                        child: savedEventWidgets[index],
                                       ),
                                     )
                                   : ListView.builder(
@@ -317,7 +318,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                                 onChange: onSearch,
                                 onBack: () {
                                   setState(() {
-                                    searchEvents = parsedEvents;
+                                    searchEventWidgets = parsedEventWidgets;
                                     showSearchBar = false;
                                     search = '';
                                   });

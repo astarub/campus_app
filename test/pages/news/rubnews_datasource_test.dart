@@ -85,7 +85,7 @@ void main() {
       when(mockClient.get(rubnewsTestNewsUrlSingleImage)).thenAnswer((_) async => resSuccess);
 
       // act: function call
-      final testReturn = rubnewsRemoteDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage);
+      final testReturn = rubnewsRemoteDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage);
 
       // assert: is testElement expected object? -> XmlDocument
       identical(testReturn, expectedReturn); // is the returned object the expected one?
@@ -105,7 +105,7 @@ void main() {
 
       // assert: is ServerException thrown?
       expect(
-        () => rubnewsRemoteDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        () => rubnewsRemoteDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage),
         throwsA(isA<ServerException>()),
       );
       verify(mockClient.get(rubnewsTestNewsUrlSingleImage)); // was client function called?
@@ -124,7 +124,7 @@ void main() {
       when(mockClient.get(rubnewsTestNewsUrlMultipleImages)).thenAnswer((_) async => resSuccess);
 
       // act: function call
-      final testReturn = rubnewsRemoteDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlMultipleImages);
+      final testReturn = rubnewsRemoteDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlMultipleImages);
 
       // assert: is testElement expected object? -> XmlDocument
       identical(testReturn, rubnewsTestNewsUrlMultipleImagesUrls); // is the returned object the expected one?

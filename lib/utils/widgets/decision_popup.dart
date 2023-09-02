@@ -57,12 +57,12 @@ class DecisionPopup extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DecisionPopup> createState() => _DecisionPopupState();
+  State<DecisionPopup> createState() => DecisionPopupState();
 }
 
-class _DecisionPopupState extends State<DecisionPopup> {
+class DecisionPopupState extends State<DecisionPopup> {
   /// Controls the SnappingSheet
-  late final SnappingSheetController _popupController;
+  late final SnappingSheetController popupController;
 
   /// Changed during widget lifetime in order to make the popup non-draggable
   List<SnappingPosition> snapPositions = [
@@ -77,7 +77,7 @@ class _DecisionPopupState extends State<DecisionPopup> {
   ];
 
   /// Animated half-transparent background color
-  Color _backgroundColor = const Color.fromRGBO(0, 0, 0, 0);
+  Color backgroundColor = const Color.fromRGBO(0, 0, 0, 0);
 
   /// Starts the closing animation for the popup.
   void closePopup() {
@@ -94,7 +94,7 @@ class _DecisionPopupState extends State<DecisionPopup> {
       ],
     );
 
-    _popupController.snapToPosition(
+    popupController.snapToPosition(
       const SnappingPosition.pixels(
         positionPixels: -60,
         snappingCurve: Curves.easeOutExpo,
@@ -107,12 +107,12 @@ class _DecisionPopupState extends State<DecisionPopup> {
   void initState() {
     super.initState();
 
-    _popupController = SnappingSheetController();
+    popupController = SnappingSheetController();
 
     // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
     Timer(
       const Duration(milliseconds: 50),
-      () => _popupController.snapToPosition(
+      () => popupController.snapToPosition(
         SnappingPosition.pixels(
           positionPixels: widget.height,
           snappingCurve: Curves.easeOutExpo,
@@ -137,12 +137,12 @@ class _DecisionPopupState extends State<DecisionPopup> {
   @override
   Widget build(BuildContext context) {
     return SnappingSheet(
-      controller: _popupController,
+      controller: popupController,
       lockOverflowDrag: true,
       onSheetMoved: (positionData) {
         if (positionData.relativeToSnappingPositions >= 0) {
           setState(
-            () => _backgroundColor = _backgroundColor.withOpacity(0.3 * positionData.relativeToSnappingPositions),
+            () => backgroundColor = backgroundColor.withOpacity(0.3 * positionData.relativeToSnappingPositions),
           );
         }
       },
@@ -238,7 +238,7 @@ class _DecisionPopupState extends State<DecisionPopup> {
       // Transparent background
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 50),
-        color: _backgroundColor,
+        color: backgroundColor,
       ),
     );
   }

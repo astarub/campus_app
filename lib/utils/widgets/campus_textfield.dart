@@ -43,10 +43,10 @@ class CampusTextField extends StatefulWidget {
   }
 
   @override
-  State<CampusTextField> createState() => _CampusTextFieldState();
+  State<CampusTextField> createState() => CampusTextFieldState();
 }
 
-class _CampusTextFieldState extends State<CampusTextField> {
+class CampusTextFieldState extends State<CampusTextField> {
   final FocusNode _focusNode = FocusNode();
   late String hint = widget.textFieldText;
 

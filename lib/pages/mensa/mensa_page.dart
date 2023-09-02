@@ -29,34 +29,34 @@ class MensaPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<MensaPage> createState() => _MensaPageState();
+  State<MensaPage> createState() => MensaPageState();
 }
 
-class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<MensaPage> {
-  late Settings _settings;
+class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<MensaPage> {
+  late Settings settings;
 
-  final MensaUsecases _mensaUsecases = sl<MensaUsecases>();
-  final MensaUtils _mensaUtils = sl<MensaUtils>();
+  final MensaUsecases mensaUsecases = sl<MensaUsecases>();
+  final MensaUtils mensaUtils = sl<MensaUtils>();
 
-  late List<DishEntity> _mensaDishes = [];
-  late List<DishEntity> _roteBeeteDishes = [];
-  late List<DishEntity> _qwestDishes = [];
-  late List<DishEntity> _henkelmannDishes = [];
-  late List<Failure> _failures = [];
+  late List<DishEntity> mensaDishes = [];
+  late List<DishEntity> roteBeeteDishes = [];
+  late List<DishEntity> qwestDishes = [];
+  late List<DishEntity> henkelmannDishes = [];
+  late List<Failure> failures = [];
 
   late int selectedDay;
 
   /// This function initiates the loading of the mensa data (and caching)
   Future<void> loadData() async {
-    final Future<Map<String, List<dynamic>>> updatedDishes = _mensaUsecases.updateDishesAndFailures();
+    final Future<Map<String, List<dynamic>>> updatedDishes = mensaUsecases.updateDishesAndFailures();
 
     await updatedDishes.then(
       (data) => setState(() {
-        _mensaDishes = data['mensa']! as List<DishEntity>;
-        _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
-        _qwestDishes = data['qwest']! as List<DishEntity>;
-        _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
-        _failures = data['failures']! as List<Failure>;
+        mensaDishes = data['mensa']! as List<DishEntity>;
+        roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
+        qwestDishes = data['qwest']! as List<DishEntity>;
+        henkelmannDishes = data['henkelmann']! as List<DishEntity>;
+        failures = data['failures']! as List<Failure>;
       }),
     );
 
@@ -84,9 +84,9 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
   /// This function is called whenever one of the 3 preferences "vegetarian", "vegan"
   /// or "halal" is selected. It automatically adds or removes the preference from the list.
   void singlePreferenceSelected(String selectedPreference) {
-    List<String> newPreferences = _settings.mensaPreferences;
+    final List<String> newPreferences = settings.mensaPreferences;
 
-    if (_settings.mensaPreferences.contains(selectedPreference)) {
+    if (settings.mensaPreferences.contains(selectedPreference)) {
       newPreferences.remove(selectedPreference);
     } else {
       newPreferences.add(selectedPreference);
@@ -127,7 +127,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _settings = Provider.of<SettingsHandler>(context).currentSettings;
+    settings = Provider.of<SettingsHandler>(context).currentSettings;
   }
 
   @override
@@ -250,7 +250,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                             name: restaurantConfig[index - 1]['name'],
                             imagePath: restaurantConfig[index - 1]['imagePath'],
                             meals: index == 1
-                                ? _mensaUtils.buildKulturCafeRestaurant(
+                                ? mensaUtils.buildKulturCafeRestaurant(
                                     onPreferenceTap: singlePreferenceSelected,
                                     mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
                                         .currentSettings
@@ -259,14 +259,14 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                                         .currentSettings
                                         .mensaPreferences,
                                   )
-                                : _mensaUtils.fromDishListToMealCategoryList(
+                                : mensaUtils.fromDishListToMealCategoryList(
                                     entities: index == 2
-                                        ? _mensaDishes
+                                        ? mensaDishes
                                         : index == 3
-                                            ? _roteBeeteDishes
+                                            ? roteBeeteDishes
                                             : index == 4
-                                                ? _qwestDishes
-                                                : _henkelmannDishes,
+                                                ? qwestDishes
+                                                : henkelmannDishes,
                                     day: selectedDay,
                                     onPreferenceTap: singlePreferenceSelected,
                                     mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
