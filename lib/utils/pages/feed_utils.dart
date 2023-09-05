@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/widgets.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +9,7 @@ import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/feed/widgets/feed_item.dart';
 import 'package:campus_app/utils/pages/presentation_functions.dart';
+import 'package:campus_app/utils/constants.dart';
 
 class FeedUtils extends Utils {
   // Save the shuffeled list to prevent constant re-shuffeling
@@ -149,8 +148,7 @@ class FeedUtils extends Utils {
           filteredFeedItems.add(f);
         }
 
-        if (f.link.startsWith('https://app2.asta-bochum.de') &&
-                (f.author != 0 && filters.map((e) => e.id).contains(f.author)) ||
+        if (f.link.startsWith(appDataHost) && (f.author != 0 && filters.map((e) => e.id).contains(f.author)) ||
             f.categoryIds.contains(66)) {
           filteredFeedItems.add(f);
         }
@@ -162,7 +160,7 @@ class FeedUtils extends Utils {
             filterNames.contains('AStA') &&
             f.event.startDate.compareTo(past) < 0) filteredFeedItems.add(f);
 
-        if (f.event.url.startsWith('https://app2.asta-bochum.de') &&
+        if (f.event.url.startsWith(appDataHost) &&
             (filters.map((e) => e.id).contains(int.parse(f.event.author)) || categoryNames.contains('Global')) &&
             f.event.startDate.compareTo(past) < 0) {
           filteredFeedItems.add(f);
