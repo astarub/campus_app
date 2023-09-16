@@ -18,4 +18,7 @@ abstract class Env {
 
   @EnviedField(varName: 'FIREBASE_IOS_API_KEY', obfuscate: true)
   static final String firebaseIosApiKey = _Env.firebaseIosApiKey;
+
+  @EnviedField(varName: 'APPWRITE_CREATE_USER_AUTH_KEY', obfuscate: true)
+  static final String appwriteCreateUserKey = _Env.appwriteCreateUserKey;
 }

@@ -14,6 +14,7 @@ import 'package:campus_app/core/backend/entities/account_entity.dart';
 import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/utils/constants.dart';
 import 'package:campus_app/utils/onboarding_data.dart';
 
 class BackendRepository {
@@ -33,10 +34,9 @@ class BackendRepository {
     try {
       final result = await functionService.createExecution(
         functionId: 'create_user',
-        data: jsonEncode(
+        body: jsonEncode(
           {
-            'api_key':
-                'dJ^C#SiLQ7iwDXnjzH5miKtu3qzSR^F*xn!g!x&toSdJ4qYU%!#tzgp@wA3b&F%&hk&qB#%SpS#uLttReu^&b7yYUkW5sSvF*G9YqRXrY@p2!@c#&frZuSScaLP2Xt',
+            'api_key': appwriteCreateUserKey,
             'userId': userId,
             'email': '$userId@app.asta-bochum.de',
             'password': password,
@@ -44,9 +44,9 @@ class BackendRepository {
         ),
       );
 
-      if (result.statusCode != 200) {
+      if (result.responseStatusCode != 200) {
         debugPrint(
-          'Error while creating an account at the backend. Error: ${result.response}',
+          'Error while creating an account at the backend. Error: ${result.responseBody}',
         );
         return;
       }
@@ -228,23 +228,26 @@ class BackendRepository {
 
       if (savedEvents.isEmpty) savedEvents = [];
 
+      final String eventUrlHost = Uri.parse(event.url).host;
+
       savedEvents.add({
         'eventId': event.id,
         'documentId': document.$id,
         'startDate': DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').format(event.startDate),
+        'host': eventUrlHost,
       });
 
       settingsHandler.currentSettings = settingsHandler.currentSettings.copyWith(
         backendAccount: settingsHandler.currentSettings.backendAccount.copyWith(savedEvents: savedEvents),
       );
 
-      await FirebaseMessaging.instance.subscribeToTopic(event.id.toString());
+      await FirebaseMessaging.instance.subscribeToTopic('${eventUrlHost}_${event.id}');
     } catch (e) {
       debugPrint(e.toString());
     }
   }
 
-  Future<void> removeSavedEvent(SettingsHandler settingsHandler, int eventId) async {
+  Future<void> removeSavedEvent(SettingsHandler settingsHandler, int eventId, String eventUrlHost) async {
     final Databases databaseService = Databases(client);
 
     if (settingsHandler.currentSettings.useFirebase == FirebaseStatus.forbidden ||
@@ -256,7 +259,7 @@ class BackendRepository {
     String documentId = '';
     try {
       final Map<String, dynamic> savedEvent = settingsHandler.currentSettings.backendAccount.savedEvents
-          .firstWhere((element) => element['eventId'] == eventId);
+          .firstWhere((element) => element['eventId'] == eventId && element['host'] == eventUrlHost);
 
       documentId = savedEvent['documentId'];
     } catch (e) {
@@ -287,7 +290,7 @@ class BackendRepository {
       backendAccount: settingsHandler.currentSettings.backendAccount.copyWith(savedEvents: savedEvents),
     );
 
-    await FirebaseMessaging.instance.unsubscribeFromTopic(eventId.toString());
+    await FirebaseMessaging.instance.unsubscribeFromTopic('${eventUrlHost}_$eventId');
   }
 
   Future<void> removeAllSavedEvents(SettingsHandler settingsHandler) async {
@@ -336,7 +339,7 @@ class BackendRepository {
 
     for (final Map<String, dynamic> savedEvent in savedEvents) {
       try {
-        await FirebaseMessaging.instance.unsubscribeFromTopic(savedEvent['eventId'].toString());
+        await FirebaseMessaging.instance.unsubscribeFromTopic("${savedEvent['host']}_${savedEvent['eventId']}");
       } catch (e) {
         debugPrint(e.toString());
         continue;

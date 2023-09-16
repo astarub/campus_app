@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,6 +15,7 @@ import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
+import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 import 'package:campus_app/firebase_options.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';

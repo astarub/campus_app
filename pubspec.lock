@@ -37,10 +37,10 @@ packages:
     dependency: "direct main"
     description:
       name: appwrite
-      sha256: "2a277dcaddc3423efab14ce83f0bb64294cf6acf43937fd1ccf925b3474bbcb9"
+      sha256: "3d06ae350dba1c213cb235ff194155059d2e0c428dabd54734c19521dd1b2c45"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.1"
+    version: "11.0.0"
   archive:
     dependency: transitive
     description:
@@ -1484,6 +1484,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  visibility_detector:
+    dependency: "direct main"
+    description:
+      name: visibility_detector
+      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0+2"
   watcher:
     dependency: transitive
     description:

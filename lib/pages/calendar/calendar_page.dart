@@ -67,7 +67,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   String search = '';
 
   /// Checks if new events were saved locally but not the backend
-  Future<void> syncsavedEventWidgets() async {
+  Future<void> syncSavedEventWidgets() async {
     if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase == FirebaseStatus.forbidden ||
         Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
             FirebaseStatus.uncofigured) {
@@ -88,23 +88,30 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
         await backendRepository.removeSavedEvent(
           settingsHandler,
           accountEvent['eventId'],
+          accountEvent['host'],
         );
 
-        await updateSavedEventWidgets(event: savedEvents.firstWhere((event) => event.id == accountEvent['eventId']));
+        try {
+          final Event savedEvent = savedEvents.firstWhere(
+            (event) => event.id == accountEvent['eventId'] && Uri.parse(event.url).host == accountEvent['host'],
+          );
+
+          await updateSavedEventWidgets(
+            event: savedEvent,
+          );
+          // ignore: empty_catches
+        } catch (e) {}
       }
 
       if (!savedEvents.map((e) => e.id).toList().contains(accountEvent['eventId'])) {
-        await backendRepository.removeSavedEvent(
-          settingsHandler,
-          accountEvent['eventId'],
-        );
+        await backendRepository.removeSavedEvent(settingsHandler, accountEvent['eventId'], accountEvent['host']);
       }
     }
 
     for (final Event event in savedEvents) {
       try {
         accountsavedEventWidgets.firstWhere(
-          (element) => element['eventId'] == event.id,
+          (element) => element['eventId'] == event.id && element['host'] == Uri.parse(event.url).host,
         );
       } catch (e) {
         await backendRepository.addSavedEvent(
@@ -168,7 +175,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
       },
     );
 
-    await syncsavedEventWidgets();
+    await syncSavedEventWidgets();
 
     debugPrint('Events aktualisiert.');
 

@@ -18,3 +18,4 @@ const String mensaData = 'https://api-app.asta-bochum.de/get_meal';
 final String mensaApiKey = Env.mensaApiKey;
 final String firebaseAndroidApiKey = Env.firebaseAndroidApiKey;
 final String firebaseIosApiKey = Env.firebaseIosApiKey;
+final String appwriteCreateUserKey = Env.appwriteCreateUserKey;

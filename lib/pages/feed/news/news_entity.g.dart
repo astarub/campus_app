@@ -59,5 +59,7 @@ class NewsEntityAdapter extends TypeAdapter<NewsEntity> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NewsEntityAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is NewsEntityAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

@@ -81,11 +81,19 @@ class HomePageState extends State<HomePage> {
   /// Holds the currently active page.
   PageItem currentPage = PageItem.feed;
 
-  GlobalKey<FeedPageState> feedKey = GlobalKey();
-
+  /// Controls the Page View
   final PageController pageController = PageController();
-
   double pagePosition = 0;
+
+  /// Indicates whether swiping is disabled
+  bool swipeDisabled = false;
+
+  /// Temporarily disable swiping for certain pages e.g. in app web view
+  void setSwipeDisabled({bool disableSwipe = false}) {
+    setState(() {
+      swipeDisabled = disableSwipe;
+    });
+  }
 
   /// Switches to another page when selected in the nav-menu on phones
   Future<bool> selectedPage(PageItem selectedPageItem) async {
@@ -115,6 +123,9 @@ class HomePageState extends State<HomePage> {
       // Start the entry animation of the new page
       await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
     }
+
+    // Enable swiping upon navigation
+    setSwipeDisabled();
 
     return true;
   }
@@ -200,6 +211,7 @@ class HomePageState extends State<HomePage> {
                       Padding(
                         padding: EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
                         child: PageView.builder(
+                          physics: swipeDisabled ? const NeverScrollableScrollPhysics() : const ScrollPhysics(),
                           controller: pageController,
                           itemCount: navigatorKeys.length,
                           onPageChanged: (page) {

@@ -1,4 +1,3 @@
-import 'package:campus_app/core/exceptions.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -55,6 +54,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
           await backendRepository.removeSavedEvent(
             settingsHandler,
             widget.event.id,
+            Uri.parse(widget.event.url).host,
           );
         }
       }

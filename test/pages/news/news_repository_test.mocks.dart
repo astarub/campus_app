@@ -92,14 +92,15 @@ class MockNewsDatasource extends _i1.Mock implements _i5.NewsDatasource {
         )),
       ) as _i6.Future<_i4.XmlDocument>);
   @override
-  _i6.Future<List<String>> getImageUrlsFromNewsUrl(String? url) =>
+  _i6.Future<Map<String, dynamic>> getImageDataFromNewsUrl(String? url) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getImageUrlsFromNewsUrl,
+          #getImageDataFromNewsUrl,
           [url],
         ),
-        returnValue: _i6.Future<List<String>>.value(<String>[]),
-      ) as _i6.Future<List<String>>);
+        returnValue:
+            _i6.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i6.Future<Map<String, dynamic>>);
   @override
   _i6.Future<List<dynamic>> getAStAFeedAsJson() => (super.noSuchMethod(
         Invocation.method(

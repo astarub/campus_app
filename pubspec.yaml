@@ -61,8 +61,9 @@ dependencies:
   barcode_widget: ^2.0.3
   screen_brightness: ^0.2.2
   fluttertoast: ^8.2.2
-  appwrite: ^9.0.1
+  appwrite: ^11.0.0
   slugid: ^1.1.2
+  visibility_detector: ^0.4.0+2
   
 dev_dependencies:
   flutter_test:

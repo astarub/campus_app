@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/main.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 /// This page shows an [InAppWebView] in order to display external
 /// websites from the helpful ressources that are not yet natively implemented
@@ -65,34 +67,54 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
         if (await webViewController!.canGoBack()) {
           await webViewController?.goBack();
         } else {
+          if (homeKey.currentState != null) {
+            homeKey.currentState!.setSwipeDisabled();
+          }
           return true;
         }
         return false;
       },
-      child: Scaffold(
-        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
-        body: SafeArea(
-          child: Stack(
-            children: [
-              InAppWebView(
-                gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}
-                  ..add(const Factory<VerticalDragGestureRecognizer>(VerticalDragGestureRecognizer.new)),
-                pullToRefreshController: pullToRefreshController,
-                initialOptions: options,
-                initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
-                onWebViewCreated: (controller) {
-                  webViewController = controller;
-                },
-              ),
-              // Back button
-              Padding(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: CampusIconButton(
-                  iconPath: 'assets/img/icons/arrow-left.svg',
-                  onTap: () => Navigator.pop(context),
+      child: VisibilityDetector(
+        onVisibilityChanged: (info) {
+          final bool isVisible = info.visibleFraction > 0;
+
+          if (isVisible) {
+            if (homeKey.currentState != null) {
+              homeKey.currentState!.setSwipeDisabled(disableSwipe: true);
+            }
+          }
+        },
+        key: const Key('visibility-key'),
+        child: Scaffold(
+          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+          body: SafeArea(
+            child: Stack(
+              children: [
+                InAppWebView(
+                  gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}
+                    ..add(const Factory<VerticalDragGestureRecognizer>(VerticalDragGestureRecognizer.new)),
+                  pullToRefreshController: pullToRefreshController,
+                  initialOptions: options,
+                  initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
+                  onWebViewCreated: (controller) {
+                    webViewController = controller;
+                  },
                 ),
-              ),
-            ],
+                // Back button
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                  child: CampusIconButton(
+                    iconPath: 'assets/img/icons/arrow-left.svg',
+                    onTap: () {
+                      if (homeKey.currentState != null) {
+                        homeKey.currentState!.setSwipeDisabled();
+                      }
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
