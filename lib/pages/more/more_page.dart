@@ -107,6 +107,11 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/tanzkreis/'),
                           ),
+                          ExternalLinkButton(
+                            title: 'Gaming Hub',
+                            leadingIconPath: 'assets/img/asta-gaming-hub.png',
+                            onTap: () => openLink(context, 'https://asta-bochum.de/gaming_hub/'),
+                          ),
                           Flex(
                             direction: Axis.horizontal,
                             children: [

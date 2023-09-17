@@ -35,7 +35,7 @@ class CalendarUtils extends Utils {
 
         if (e.event.url.startsWith('https://asta-bochum.de') && filters.map((e) => e.name).contains('AStA')) {
           filteredEvents.add(e);
-        } else if (e.event.url.startsWith(appDataHost) &&
+        } else if (e.event.url.startsWith(appWordpressHost) &&
             (filters.map((e) => e.id).contains(int.parse(e.event.author)) || categoryNames.contains('Global'))) {
           filteredEvents.add(e);
         }

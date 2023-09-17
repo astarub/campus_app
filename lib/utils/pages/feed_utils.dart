@@ -148,7 +148,7 @@ class FeedUtils extends Utils {
           filteredFeedItems.add(f);
         }
 
-        if (f.link.startsWith(appDataHost) && (f.author != 0 && filters.map((e) => e.id).contains(f.author)) ||
+        if (f.link.startsWith(appWordpressHost) && (f.author != 0 && filters.map((e) => e.id).contains(f.author)) ||
             f.categoryIds.contains(66)) {
           filteredFeedItems.add(f);
         }
@@ -160,7 +160,7 @@ class FeedUtils extends Utils {
             filterNames.contains('AStA') &&
             f.event.startDate.compareTo(past) < 0) filteredFeedItems.add(f);
 
-        if (f.event.url.startsWith(appDataHost) &&
+        if (f.event.url.startsWith(appWordpressHost) &&
             (filters.map((e) => e.id).contains(int.parse(f.event.author)) || categoryNames.contains('Global')) &&
             f.event.startDate.compareTo(past) < 0) {
           filteredFeedItems.add(f);
