@@ -9,7 +9,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:xml/xml.dart';
 
-import '../calendar/calendar_datasource_test.mocks.dart';
 import '../test_constants.dart';
 import 'news_repository_test.mocks.dart';
 import 'samples/single_news_xmlitem.dart';
@@ -51,7 +50,7 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verify(
-        mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
       verifyNoMoreInteractions(mockNewsDatasource);
     });
@@ -70,7 +69,7 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verifyNever(
-        mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // exception is thrown inside first funtion, so this function shouldn't called
       verifyNoMoreInteractions(mockNewsDatasource);
     });
@@ -81,7 +80,7 @@ void main() {
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
       when(mockNewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
-      when(mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(ServerException());
+      when(mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(ServerException());
 
       // act: funtion call
       final testReturn = await newsRepository.getRemoteNewsfeed();
@@ -90,7 +89,7 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verify(
-        mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
       verifyNoMoreInteractions(mockNewsDatasource);
     });
@@ -109,7 +108,7 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verifyNever(
-        mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // exception is thrown inside first funtion, so this function shouldn't called
       verifyNoMoreInteractions(mockNewsDatasource);
     });
@@ -120,7 +119,7 @@ void main() {
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
       when(mockNewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
-      when(mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(Exception());
+      when(mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(Exception());
 
       // act: funtion call
       final testReturn = await newsRepository.getRemoteNewsfeed();
@@ -129,7 +128,7 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
       verify(
-        mockNewsDatasource.getImageUrlsFromNewsUrl(rubnewsTestNewsUrlSingleImage),
+        mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
       verifyNoMoreInteractions(mockNewsDatasource);
     });
