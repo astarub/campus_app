@@ -280,7 +280,7 @@ class MensaDaySelectionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5),
+      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.shortestSide < 600 ? 5 : 20),
       decoration: BoxDecoration(
         color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
             ? isActive
