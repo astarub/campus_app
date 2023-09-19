@@ -66,7 +66,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   bool showSearchBar = false;
   String search = '';
 
-  /// Checks if new events were saved locally but not the backend
+  /// Checks if new events were saved locally but not the backend or if outdated events are ready for removal
   Future<void> syncSavedEventWidgets() async {
     if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase == FirebaseStatus.forbidden ||
         Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
@@ -175,6 +175,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
       },
     );
 
+    // Sync saved events
     await syncSavedEventWidgets();
 
     debugPrint('Events aktualisiert.');
@@ -275,7 +276,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                             )
                           : RefreshIndicator(
                               key: refreshIndicatorKey,
-                              displacement: 67,
+                              displacement: 75,
                               backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                               color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                               strokeWidth: 3,

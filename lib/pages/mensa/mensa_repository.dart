@@ -1,11 +1,12 @@
 import 'dart:async';
+
 import 'package:dartz/dartz.dart';
+import 'package:intl/intl.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
-import 'package:intl/intl.dart';
 
 class MensaRepository {
   final MensaDataSource mensaDatasource;
@@ -35,24 +36,42 @@ class MensaRepository {
         // Correct DateFormat is e.g. "Mo., 10.10." instead of "Mo, 10.10."
         final datetime = DateFormat('E, y.d.M.', 'de_DE').parse(day.replaceRange(2, 4, '., ${firstDayOfWeek.year}.'));
 
-        if (datetime.isBefore(firstDayOfWeek) || datetime.isAfter(lastDayOfWeek)) continue;
-
         late int date;
         switch (datetime.weekday) {
           case 1: // Monday
-            date = 0;
+            if (datetime.compareTo(lastDayOfWeek) > 0) {
+              date = 5;
+            } else {
+              date = 0;
+            }
             break;
           case 2: // Tuesday
-            date = 1;
+            if (datetime.compareTo(lastDayOfWeek) > 0) {
+              date = 6;
+            } else {
+              date = 1;
+            }
             break;
           case 3: // Wednesday
-            date = 2;
+            if (datetime.compareTo(lastDayOfWeek) > 0) {
+              date = 7;
+            } else {
+              date = 2;
+            }
             break;
           case 4: // Thursday
-            date = 3;
+            if (datetime.compareTo(lastDayOfWeek) > 0) {
+              date = 8;
+            } else {
+              date = 3;
+            }
             break;
           default: // Friday, Saturday or Sunday
-            date = 4;
+            if (datetime.compareTo(lastDayOfWeek) > 0) {
+              date = 9;
+            } else {
+              date = 4;
+            }
             break;
         }
 

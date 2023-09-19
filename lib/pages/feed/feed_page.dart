@@ -224,7 +224,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                   margin: EdgeInsets.only(top: Platform.isAndroid ? 70 : 60),
                   child: RefreshIndicator(
                     key: refreshIndicatorKey,
-                    displacement: 63,
+                    displacement: 75,
                     backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                     color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
                     strokeWidth: 3,
