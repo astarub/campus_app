@@ -110,8 +110,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
       }
     }
 
-    for(final Map<String, dynamic>)
-
     for (final Event event in savedEvents) {
       try {
         accountsavedEventWidgets.firstWhere(
