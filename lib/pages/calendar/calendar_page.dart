@@ -81,6 +81,8 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     final List<Map<String, dynamic>> tempAccountsavedEventWidgets = [];
     tempAccountsavedEventWidgets.addAll(accountsavedEventWidgets);
 
+    final List<Map<String, dynamic>> remoteSavedEvents = await backendRepository.getSavedEvents(settingsHandler);
+
     for (final Map<String, dynamic> accountEvent in tempAccountsavedEventWidgets) {
       final DateTime startDate = DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').parse(accountEvent['startDate']);
 
@@ -107,6 +109,8 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
         await backendRepository.removeSavedEvent(settingsHandler, accountEvent['eventId'], accountEvent['host']);
       }
     }
+
+    for(final Map<String, dynamic>)
 
     for (final Event event in savedEvents) {
       try {

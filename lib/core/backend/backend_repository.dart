@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:appwrite/models.dart' as models;
 import 'package:flutter/material.dart';
+import 'package:html/dom.dart';
 import 'package:slugid/slugid.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -195,6 +196,32 @@ class BackendRepository {
     return available;
   }
 
+  Future<List<Map<String, dynamic>>> getSavedEvents(SettingsHandler settingsHandler) async {
+    final Databases databaseService = Databases(client);
+
+    models.DocumentList? list;
+
+    List<Map<String, dynamic>> events = [];
+
+    try {
+      list = await databaseService.listDocuments(
+        databaseId: 'push_notifications',
+        collectionId: 'saved_events',
+        queries: [Query.equal('fcmToken', settingsHandler.currentSettings.backendAccount.fcmToken)],
+      );
+    } on AppwriteException catch (e) {
+      debugPrint(
+        'Could not fetch saved events. Exception: ${e.message}',
+      );
+    }
+
+    if (list != null) {
+      events = list.documents.map((e) => {'eventId': e.data['eventId'], 'startDate': e.data['startDate']}).toList();
+    }
+
+    return events;
+  }
+
   Future<void> addSavedEvent(SettingsHandler settingsHandler, Event event) async {
     final Databases databaseService = Databases(client);
 
@@ -203,6 +230,8 @@ class BackendRepository {
         !settingsHandler.currentSettings.savedEventsNotifications) {
       return;
     }
+
+    final String eventUrlHost = Uri.parse(event.url).host;
 
     try {
       final document = await databaseService.createDocument(
@@ -213,6 +242,7 @@ class BackendRepository {
           'fcmToken': settingsHandler.currentSettings.backendAccount.fcmToken,
           'eventId': event.id,
           'startDate': DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').format(event.startDate),
+          'host': eventUrlHost,
         },
         permissions: [
           Permission.read(
@@ -228,13 +258,10 @@ class BackendRepository {
 
       if (savedEvents.isEmpty) savedEvents = [];
 
-      final String eventUrlHost = Uri.parse(event.url).host;
-
       savedEvents.add({
         'eventId': event.id,
         'documentId': document.$id,
         'startDate': DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').format(event.startDate),
-        'host': eventUrlHost,
       });
 
       settingsHandler.currentSettings = settingsHandler.currentSettings.copyWith(
