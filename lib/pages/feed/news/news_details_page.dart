@@ -1,3 +1,4 @@
+import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,7 +11,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 
-class RubnewsDetailsPage extends StatelessWidget {
+class NewsDetailsPage extends StatefulWidget {
   final String title;
   final DateTime date;
   final CachedNetworkImage? image;
@@ -19,7 +20,7 @@ class RubnewsDetailsPage extends StatelessWidget {
   final String link;
   final String copyright;
 
-  const RubnewsDetailsPage({
+  const NewsDetailsPage({
     Key? key,
     required this.title,
     required this.date,
@@ -31,12 +32,20 @@ class RubnewsDetailsPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<NewsDetailsPage> createState() => NewsDetailsPageState();
+}
+
+class NewsDetailsPageState extends State<NewsDetailsPage> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
   Widget build(BuildContext context) {
-    final month = DateFormat('LLL').format(date);
-    final day = DateFormat('dd').format(date);
+    final month = DateFormat('LLL').format(widget.date);
+    final day = DateFormat('dd').format(widget.date);
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      floatingActionButton: ScrollToTopButton(scrollController: scrollController),
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
@@ -62,8 +71,8 @@ class RubnewsDetailsPage extends StatelessWidget {
                       final box = context.findRenderObject() as RenderBox?;
 
                       Share.share(
-                        'Campus App Article: $title\nURL: $link',
-                        subject: title,
+                        'Campus App Article: ${widget.title}\nURL: ${widget.link}',
+                        subject: widget.title,
                         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                       );
                     },
@@ -73,6 +82,7 @@ class RubnewsDetailsPage extends StatelessWidget {
             ),
             Expanded(
               child: ListView(
+                controller: scrollController,
                 physics: const BouncingScrollPhysics(),
                 children: [
                   // Image & Date
@@ -82,13 +92,13 @@ class RubnewsDetailsPage extends StatelessWidget {
                       alignment: Alignment.bottomRight,
                       children: [
                         // Image
-                        if (image != null)
+                        if (widget.image != null)
                           ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: image,
+                            child: widget.image,
                           ),
                         // Date
-                        if (isEvent)
+                        if (widget.isEvent)
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                             margin: const EdgeInsets.only(right: 4, bottom: 5),
@@ -117,12 +127,12 @@ class RubnewsDetailsPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (!isEvent && copyright != '')
+                  if (!widget.isEvent && widget.copyright != '')
                     // Copyright
                     Padding(
                       padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
                       child: Text(
-                        copyright,
+                        widget.copyright,
                         style: const TextStyle(fontSize: 12.5),
                         textAlign: TextAlign.left,
                       ),
@@ -131,7 +141,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 20),
                     child: Text(
-                      parseFragment(title).text != null ? parseFragment(title).text! : '',
+                      parseFragment(widget.title).text != null ? parseFragment(widget.title).text! : '',
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                       textAlign: TextAlign.left,
                     ),
@@ -141,7 +151,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 10, left: 12, right: 12),
                     child: StyledHTML(
                       context: context,
-                      text: content,
+                      text: widget.content,
                       textAlign: TextAlign.justify,
                     ),
                   ),
@@ -150,7 +160,7 @@ class RubnewsDetailsPage extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
                     child: StyledHTML(
                       context: context,
-                      text: 'Quelle: <a href="$link">${Uri.parse(link).host}</a>',
+                      text: 'Quelle: <a href="${widget.link}">${Uri.parse(widget.link).host}</a>',
                       textAlign: TextAlign.justify,
                     ),
                   ),

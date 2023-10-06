@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -211,6 +212,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      floatingActionButton: ScrollToTopButton(scrollController: _scrollController),
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,

@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +35,8 @@ class MensaPage extends StatefulWidget {
 }
 
 class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<MensaPage> {
+  final ScrollController scrollController = ScrollController();
+
   late Settings settings;
 
   final MensaUsecases mensaUsecases = sl<MensaUsecases>();
@@ -149,6 +152,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      floatingActionButton: ScrollToTopButton(scrollController: scrollController),
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -191,6 +195,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                     child: ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                      controller: scrollController,
                       itemCount: restaurantConfig.length + 1,
                       itemBuilder: (context, index) {
                         if (index == 0) {

@@ -86,7 +86,7 @@ class FeedItem extends StatelessWidget {
         if (event != null) {
           return CalendarDetailPage(event: event!);
         } else {
-          return RubnewsDetailsPage(
+          return NewsDetailsPage(
             title: title,
             date: date,
             image: image,
@@ -96,17 +96,17 @@ class FeedItem extends StatelessWidget {
           );
         }
       },
-      middleColor: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.colorScheme.background,
-      closedColor: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.colorScheme.background,
+      middleColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      closedColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       closedElevation: 0,
       closedBuilder: (context, VoidCallback openDetailsPage) => Padding(
         padding: const EdgeInsets.only(bottom: 14),
         child: CustomButton(
           borderRadius: BorderRadius.circular(15),
-          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          highlightColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.03)
               : const Color.fromRGBO(255, 255, 255, 0.03),
-          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          splashColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.04)
               : const Color.fromRGBO(255, 255, 255, 0.04),
           tapHandler: openDetailsPage,
