@@ -76,23 +76,26 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
     final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
-    final List<Map<String, dynamic>> accountsavedEventWidgets =
-        settingsHandler.currentSettings.backendAccount.savedEvents;
-    final List<Map<String, dynamic>> tempAccountsavedEventWidgets = [];
-    tempAccountsavedEventWidgets.addAll(accountsavedEventWidgets);
+    final List<Map<String, dynamic>> accountSavedEvents = settingsHandler.currentSettings.backendAccount.savedEvents;
+    final List<Map<String, dynamic>> tempAccountSavedEvents = [];
+    tempAccountSavedEvents.addAll(accountSavedEvents);
 
     final List<Map<String, dynamic>> remoteSavedEvents = await backendRepository.getSavedEvents(settingsHandler);
 
-    for (final Map<String, dynamic> accountEvent in tempAccountsavedEventWidgets) {
-      final DateTime startDate = DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').parse(accountEvent['startDate']);
+    for (final Map<String, dynamic> accountEvent in tempAccountSavedEvents) {
+      // Remove events that were removed without an internet connection
+      if (!savedEvents.map((e) => e.id).toList().contains(accountEvent['eventId'])) {
+        await backendRepository.removeSavedEvent(settingsHandler, accountEvent['eventId'], accountEvent['host']);
+      }
 
-      if (startDate.compareTo(DateTime.now()) < 0) {
-        await backendRepository.removeSavedEvent(
-          settingsHandler,
-          accountEvent['eventId'],
-          accountEvent['host'],
+      // Remove events that were removed on the backend
+      try {
+        remoteSavedEvents.firstWhere(
+          (remoteEvent) =>
+              remoteEvent['eventId'] == accountEvent['eventId'] && remoteEvent['host'] == accountEvent['host'],
         );
-
+      } catch (e) {
+        // Remove the event from the saved events widget list
         try {
           final Event savedEvent = savedEvents.firstWhere(
             (event) => event.id == accountEvent['eventId'] && Uri.parse(event.url).host == accountEvent['host'],
@@ -103,16 +106,24 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
           );
           // ignore: empty_catches
         } catch (e) {}
-      }
 
-      if (!savedEvents.map((e) => e.id).toList().contains(accountEvent['eventId'])) {
-        await backendRepository.removeSavedEvent(settingsHandler, accountEvent['eventId'], accountEvent['host']);
+        // Remove the event from the mirrored local saved events list
+        try {
+          accountSavedEvents.removeWhere((element) => element['documentId'] == accountEvent['documentId']);
+          // ignore: empty_catches
+        } catch (e) {}
       }
     }
 
+    // Update the local saved events list
+    settingsHandler.currentSettings = settingsHandler.currentSettings.copyWith(
+      backendAccount: settingsHandler.currentSettings.backendAccount.copyWith(savedEvents: accountSavedEvents),
+    );
+
+    // Add events to the backend that were added without an internet connection
     for (final Event event in savedEvents) {
       try {
-        accountsavedEventWidgets.firstWhere(
+        accountSavedEvents.firstWhere(
           (element) => element['eventId'] == event.id && element['host'] == Uri.parse(event.url).host,
         );
       } catch (e) {

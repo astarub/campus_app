@@ -216,7 +216,7 @@ class BackendRepository {
     }
 
     if (list != null) {
-      events = list.documents.map((e) => {'eventId': e.data['eventId'], 'startDate': e.data['startDate']}).toList();
+      events = list.documents.map((e) => e.data).toList();
     }
 
     return events;
@@ -261,6 +261,7 @@ class BackendRepository {
       savedEvents.add({
         'eventId': event.id,
         'documentId': document.$id,
+        'host': eventUrlHost,
         'startDate': DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').format(event.startDate),
       });
 
