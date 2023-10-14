@@ -127,7 +127,7 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                       ],
                     ),
                   ),
-                  if (!widget.isEvent && widget.copyright != '')
+                  if (widget.image != null && !widget.isEvent && widget.copyright != '')
                     // Copyright
                     Padding(
                       padding: const EdgeInsets.only(top: 12, left: 20, right: 20),

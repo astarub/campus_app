@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' show Platform;
+import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +59,8 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
+  ScrollController scrollController = ScrollController();
+
   double eventWidgetOpacity = 0;
   double savedWidgetOpacity = 0;
   bool showUpcomingPlaceholder = false;
@@ -66,7 +69,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   bool showSearchBar = false;
   String search = '';
 
-  /// Checks if new events were saved locally but not the backend or if outdated events are ready for removal
+  /// Checks for events that were saved locally or removed from the server-side
   Future<void> syncSavedEventWidgets() async {
     if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase == FirebaseStatus.forbidden ||
         Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
@@ -76,10 +79,12 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
     final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
+    // Copy the list of saved events in order to remove elements from the original list while iterating over the cloned one
     final List<Map<String, dynamic>> accountSavedEvents = settingsHandler.currentSettings.backendAccount.savedEvents;
     final List<Map<String, dynamic>> tempAccountSavedEvents = [];
     tempAccountSavedEvents.addAll(accountSavedEvents);
 
+    // Get all saved events identified by the device's FCM token
     final List<Map<String, dynamic>> remoteSavedEvents = await backendRepository.getSavedEvents(settingsHandler);
 
     for (final Map<String, dynamic> accountEvent in tempAccountSavedEvents) {
@@ -264,6 +269,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      floatingActionButton: ScrollToTopButton(scrollController: scrollController),
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -297,6 +303,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                               child: showsavedEventWidgets
                                   ? ListView.builder(
                                       padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      controller: scrollController,
                                       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                                       itemCount: savedEventWidgets.length,
                                       itemBuilder: (context, index) => AnimatedOpacity(
@@ -307,6 +314,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                                     )
                                   : ListView.builder(
                                       padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      controller: scrollController,
                                       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                                       itemCount: filteredEvents.length,
                                       itemBuilder: (context, index) => AnimatedOpacity(

@@ -121,7 +121,7 @@ class NewsEntity {
       pubDate: pubDate,
       author: author,
       categoryIds: List<int>.from(categories),
-      imageUrls: [if (json['fimg_url'] != null) json['fimg_url'].toString() else 'false'],
+      imageUrls: [if (json['fimg_url'] != null) json['fimg_url'].toString()],
       copyright: copyright,
     );
   }
