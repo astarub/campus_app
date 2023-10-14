@@ -84,7 +84,7 @@ class NewsEntity {
   }
 
   /// Returns a NewsEntity from a JSON object provided by an external webserver
-  factory NewsEntity.fromJSON(Map<String, dynamic> json) {
+  factory NewsEntity.fromJSON({required Map<String, dynamic> json, required List<String> copyright}) {
     final title = Map<String, dynamic>.from(json['title'])['rendered'] as String;
     final pubDate = DateTime.parse(json['date']);
     final url = json['link'];
@@ -122,6 +122,7 @@ class NewsEntity {
       author: author,
       categoryIds: List<int>.from(categories),
       imageUrls: [if (json['fimg_url'] != null) json['fimg_url'].toString() else 'false'],
+      copyright: copyright,
     );
   }
 }
