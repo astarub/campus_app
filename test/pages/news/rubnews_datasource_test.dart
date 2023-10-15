@@ -135,9 +135,9 @@ void main() {
 
   group('[Caching]', () {
     final samleNewsEntities = [
-      NewsEntity(title: 'title1', pubDate: DateTime(0), imageUrls: ['']),
-      NewsEntity(title: 'title2', pubDate: DateTime(1), imageUrls: ['0', '1'], description: 'description'),
-      NewsEntity(title: 'title', pubDate: DateTime(0), imageUrls: ['imageUrls', ''], content: 'content'),
+      NewsEntity(title: 'title1', pubDate: DateTime(0), imageUrl: ''),
+      NewsEntity(title: 'title2', pubDate: DateTime(1), imageUrl: '0', description: 'description'),
+      NewsEntity(title: 'title', pubDate: DateTime(0), imageUrl: 'imageUrls', content: 'content'),
     ];
     test('Should return the same entities on read as writen befor', () async {
       when(mockCach.get('cnt')).thenAnswer((_) => 3);

@@ -21,9 +21,9 @@ void main() {
 
   group('[updateFeedAndFailures]', () {
     final samleNewsEntities = [
-      NewsEntity(title: 'title1', pubDate: DateTime(0), imageUrls: ['']),
-      NewsEntity(title: 'title2', pubDate: DateTime(1), imageUrls: ['0', '1'], description: 'description'),
-      NewsEntity(title: 'title', pubDate: DateTime(0), imageUrls: ['imageUrls', ''], content: 'content'),
+      NewsEntity(title: 'title1', pubDate: DateTime(0), imageUrl: ''),
+      NewsEntity(title: 'title2', pubDate: DateTime(1), imageUrl: '0', description: 'description'),
+      NewsEntity(title: 'title', pubDate: DateTime(0), imageUrl: 'imageUrls', content: 'content'),
     ];
 
     test('Should return a JSON object with list of failures and list of news', () async {
@@ -108,9 +108,9 @@ void main() {
 
   group('[getCachedFeedAndFailures]', () {
     final samleNewsEntities = [
-      NewsEntity(title: 'title1', pubDate: DateTime(0), imageUrls: ['']),
-      NewsEntity(title: 'title2', pubDate: DateTime(1), imageUrls: ['0', '1'], description: 'description'),
-      NewsEntity(title: 'title', pubDate: DateTime(0), imageUrls: ['imageUrls', ''], content: 'content'),
+      NewsEntity(title: 'title1', pubDate: DateTime(0), imageUrl: ''),
+      NewsEntity(title: 'title2', pubDate: DateTime(1), imageUrl: '0', description: 'description'),
+      NewsEntity(title: 'title', pubDate: DateTime(0), imageUrl: 'imageUrls', content: 'content'),
     ];
 
     test('Should return a JSON object with empty list of failures and list of news', () {

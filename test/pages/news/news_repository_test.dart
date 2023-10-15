@@ -33,7 +33,8 @@ void main() {
         NewsEntity(
           title: 'title',
           pubDate: DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse('Wed, 07 Sep 2022 09:31:00 +0200'),
-          imageUrls: [rubnewsTestNewsUrlSingleImageUrl],
+          imageUrl: rubnewsTestNewsUrlSingleImageUrl,
+          videoUrl: rubnewsTestNewsUrlSingleImageUrl,
           description: 'description',
           content: 'content',
           url: rubnewsTestNewsUrlSingleImage,
@@ -136,9 +137,9 @@ void main() {
 
   group('[getCachedNewsfeed]', () {
     final samleNewsEntities = [
-      NewsEntity(title: 'title1', pubDate: DateTime(0), imageUrls: ['']),
-      NewsEntity(title: 'title2', pubDate: DateTime(1), imageUrls: ['0', '1'], description: 'description'),
-      NewsEntity(title: 'title', pubDate: DateTime(0), imageUrls: ['imageUrls', ''], content: 'content'),
+      NewsEntity(title: 'title1', pubDate: DateTime(0), imageUrl: ''),
+      NewsEntity(title: 'title2', pubDate: DateTime(1), imageUrl: '0', description: 'description'),
+      NewsEntity(title: 'title', pubDate: DateTime(0), imageUrl: 'imageUrls', content: 'content'),
     ];
     test("Should return list of news etities if datasource doesn't throw a exception", () {
       // arrange: datasource return a news entity list
