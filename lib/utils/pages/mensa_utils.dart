@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_escaping_inner_quotes
+
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
 import 'package:campus_app/utils/pages/presentation_functions.dart';
