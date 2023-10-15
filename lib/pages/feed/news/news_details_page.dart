@@ -1,3 +1,4 @@
+import 'package:campus_app/pages/feed/widgets/video_player.dart';
 import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,7 @@ class NewsDetailsPage extends StatefulWidget {
   final bool isEvent;
   final String link;
   final String copyright;
+  final String? videoUrl;
 
   const NewsDetailsPage({
     Key? key,
@@ -29,6 +31,7 @@ class NewsDetailsPage extends StatefulWidget {
     required this.content,
     this.isEvent = false,
     this.copyright = '',
+    this.videoUrl,
   }) : super(key: key);
 
   @override
@@ -92,10 +95,15 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                       alignment: Alignment.bottomRight,
                       children: [
                         // Image
-                        if (widget.image != null)
+                        if (widget.image != null || widget.videoUrl != null)
                           ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: widget.image,
+                            child: widget.videoUrl != null
+                                ? FeedVideoPlayer(
+                                    url: widget.videoUrl!,
+                                    autoplay: true,
+                                  )
+                                : widget.image,
                           ),
                         // Date
                         if (widget.isEvent)

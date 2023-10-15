@@ -1,3 +1,4 @@
+import 'package:campus_app/pages/feed/widgets/video_player.dart';
 import 'package:flutter/material.dart';
 
 import 'package:animations/animations.dart';
@@ -35,6 +36,9 @@ class FeedItem extends StatelessWidget {
   /// Wether the given news is an event announcement and should display an event date
   final Event? event;
 
+  /// If post contains a video, the URL to the media file
+  final String? videoUrl;
+
   /// Author of the post
   final int author;
 
@@ -45,19 +49,20 @@ class FeedItem extends StatelessWidget {
   final String copyright;
 
   /// Creates a NewsFeed-item with an expandable content
-  FeedItem(
-      {Key? key,
-      required this.title,
-      this.description = '',
-      required this.date,
-      this.image,
-      this.link = '',
-      required this.content,
-      this.event,
-      this.author = 0,
-      this.categoryIds = const [],
-      this.copyright = ''})
-      : super(key: key);
+  FeedItem({
+    Key? key,
+    required this.title,
+    this.description = '',
+    required this.date,
+    this.image,
+    this.link = '',
+    required this.content,
+    this.event,
+    this.videoUrl,
+    this.author = 0,
+    this.categoryIds = const [],
+    this.copyright = '',
+  }) : super(key: key);
 
   /// Creates a NewsFeed-item with an external link
   FeedItem.link({
@@ -69,6 +74,7 @@ class FeedItem extends StatelessWidget {
     required this.link,
     this.content = '',
     this.event,
+    this.videoUrl,
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
@@ -93,6 +99,7 @@ class FeedItem extends StatelessWidget {
             link: link,
             content: content,
             copyright: copyright,
+            videoUrl: videoUrl,
           );
         }
       },
@@ -110,6 +117,7 @@ class FeedItem extends StatelessWidget {
               ? const Color.fromRGBO(0, 0, 0, 0.04)
               : const Color.fromRGBO(255, 255, 255, 0.04),
           tapHandler: openDetailsPage,
+          longPressHandler: openDetailsPage,
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
@@ -120,13 +128,17 @@ class FeedItem extends StatelessWidget {
                 Stack(
                   alignment: Alignment.bottomRight,
                   children: [
-                    if (image != null)
+                    if (image != null || videoUrl != null)
                       // Image
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
-                          child: image,
+                          child: image ??
+                              FeedVideoPlayer(
+                                url: videoUrl!,
+                                tabHandler: openDetailsPage,
+                              ),
                         ),
                       ),
                     // Date

@@ -20,10 +20,9 @@ class NewsEntity {
   @HiveField(2)
   final DateTime pubDate;
 
-  /// A list of urls to the news images. Usally only one image per news but
-  /// multiple images are possible.
+  /// A list of urls to the news images.
   @HiveField(3)
-  final List<String> imageUrls;
+  final String imageUrl;
 
   /// The external url to the news.
   @HiveField(4)
@@ -45,16 +44,21 @@ class NewsEntity {
   @HiveField(8)
   final List<String> copyright;
 
+  /// URL to Video if news has one
+  @HiveField(9)
+  final String? videoUrl;
+
   const NewsEntity({
     required this.title,
     this.description = '',
     required this.pubDate,
-    required this.imageUrls,
+    required this.imageUrl,
     this.url = '',
     this.content = '',
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = const [],
+    this.videoUrl,
   });
 
   /// Returns a NewsEntity based on a single XML element given by the web server
@@ -78,7 +82,7 @@ class NewsEntity {
       url: url,
       description: description,
       pubDate: pubDate,
-      imageUrls: List.castFrom(imageData['imageUrls']),
+      imageUrl: List.castFrom(imageData['imageUrls'])[0],
       copyright: imageData['copyright'],
     );
   }
@@ -121,8 +125,9 @@ class NewsEntity {
       pubDate: pubDate,
       author: author,
       categoryIds: List<int>.from(categories),
-      imageUrls: [if (json['fimg_url'] != null) json['fimg_url'].toString()],
       copyright: copyright,
+      imageUrl: json['fimg_url'] != null ? json['fimg_url'].toString() : 'false',
+      videoUrl: json['fvideo_url'] != null ? json['fvideo_url'].toString() : 'false',
     );
   }
 }

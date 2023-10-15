@@ -40,9 +40,9 @@ class FeedUtils extends Utils {
         FeedItem(
           title: n.title,
           date: n.pubDate,
-          image: n.imageUrls[0] != 'false' && (n.copyright.isNotEmpty && !n.copyright.contains('Fotolia'))
+          image: n.imageUrl != 'false' && (n.copyright.isNotEmpty && !n.copyright.contains('Fotolia'))
               ? CachedNetworkImage(
-                  imageUrl: n.imageUrls[0],
+                  imageUrl: n.imageUrl,
                 )
               : null,
           content: n.content,
@@ -51,6 +51,7 @@ class FeedUtils extends Utils {
           author: n.author,
           categoryIds: n.categoryIds,
           copyright: n.copyright.isNotEmpty ? n.copyright[0] : '',
+          videoUrl: n.videoUrl != 'false' ? n.videoUrl : null,
         ),
       );
     }
