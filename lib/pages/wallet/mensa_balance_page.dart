@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:lottie/lottie.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
@@ -97,6 +98,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
       if (Platform.isIOS) await FlutterNfcKit.finish(iosAlertMessage: 'Mensakarte erkannt!');
     } catch (e) {
       debugPrint('Error while scanning mensa card. Trying again...');
+      await Fluttertoast.showToast(msg: 'Fehler beim Auslesen!', timeInSecForIosWeb: 3, gravity: ToastGravity.BOTTOM);
     }
   }
 
