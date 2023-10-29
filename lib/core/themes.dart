@@ -31,6 +31,11 @@ class ThemesNotifier with ChangeNotifier {
           fontSize: 30,
           fontWeight: FontWeight.w600,
         ),
+        displaySmall: TextStyle(
+          color: Colors.black,
+          fontSize: 26,
+          fontWeight: FontWeight.w600,
+        ),
         headlineMedium: TextStyle(
           color: Colors.white,
           fontSize: 24,
@@ -91,6 +96,11 @@ class ThemesNotifier with ChangeNotifier {
         displayMedium: TextStyle(
           color: Colors.white,
           fontSize: 30,
+          fontWeight: FontWeight.w600,
+        ),
+        displaySmall: TextStyle(
+          color: Colors.white,
+          fontSize: 26,
           fontWeight: FontWeight.w600,
         ),
         headlineMedium: TextStyle(

@@ -56,6 +56,7 @@ class Settings {
   final bool useExternalBrowser;
   final bool useSystemTextScaling;
   final FirebaseStatus useFirebase;
+  final bool studyCoursePopup;
   final List<StudyCourse> selectedStudyCourses;
   final List<StudyCourse> studyCourses;
   final List<Publisher> publishers;
@@ -77,6 +78,7 @@ class Settings {
     this.useExternalBrowser = false,
     this.useSystemTextScaling = false,
     this.useFirebase = FirebaseStatus.uncofigured,
+    this.studyCoursePopup = false,
     this.selectedStudyCourses = const [],
     this.studyCourses = const [],
     this.publishers = const [],
@@ -100,6 +102,7 @@ class Settings {
     bool? useExternalBrowser,
     bool? useSystemTextScaling,
     FirebaseStatus? useFirebase,
+    bool? studyCoursePopup,
     List<StudyCourse>? selectedStudyCourses,
     List<StudyCourse>? studyCourses,
     List<Publisher>? publishers,
@@ -120,6 +123,7 @@ class Settings {
         useExternalBrowser: useExternalBrowser ?? this.useExternalBrowser,
         useSystemTextScaling: useSystemTextScaling ?? this.useSystemTextScaling,
         useFirebase: useFirebase ?? this.useFirebase,
+        studyCoursePopup: studyCoursePopup ?? this.studyCoursePopup,
         selectedStudyCourses: selectedStudyCourses ?? this.selectedStudyCourses,
         studyCourses: studyCourses ?? this.studyCourses,
         publishers: publishers ?? this.publishers,
@@ -156,6 +160,7 @@ class Settings {
           : json['useFirebase'] == 1
               ? FirebaseStatus.forbidden
               : FirebaseStatus.uncofigured,
+      studyCoursePopup: json['studyCoursePopup'] ?? false,
       selectedStudyCourses: json['selectedStudyCourses'] != null
           ? List<Map<String, dynamic>>.from(json['selectedStudyCourses'])
               .map((c) => StudyCourse.fromJson(json: c))
@@ -195,6 +200,7 @@ class Settings {
           : useFirebase == FirebaseStatus.forbidden
               ? 1
               : 0,
+      'studyCoursePopup': studyCoursePopup,
       'selectedStudyCourses': selectedStudyCourses.map((p) => p.toInternalJson()).toList(),
       'newStudyCourses': studyCourses.map((c) => c.toInternalJson()).toList(),
       'publishers': publishers.map((p) => p.toInternalJson()).toList(),
