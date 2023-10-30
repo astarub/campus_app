@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:appwrite/models.dart' as models;
 import 'package:flutter/material.dart';
-import 'package:html/dom.dart';
 import 'package:slugid/slugid.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -63,7 +62,7 @@ class BackendRepository {
     } on AppwriteException catch (e) {
       debugPrint(e.message);
 
-      return;
+      throw ServerException();
     }
   }
 
@@ -71,7 +70,11 @@ class BackendRepository {
     final Account accountService = Account(client);
 
     if (settingsHandler.currentSettings.backendAccount.id == '') {
-      await createAccount(settingsHandler);
+      try {
+        await createAccount(settingsHandler);
+      } catch (e) {
+        return;
+      }
     }
 
     try {

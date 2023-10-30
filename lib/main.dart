@@ -19,7 +19,6 @@ import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/home/home_page.dart';
 import 'package:campus_app/pages/home/onboarding.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
@@ -60,21 +59,24 @@ Future<void> main() async {
         ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
         ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
       ],
-      child: const CampusApp(),
+      child: CampusApp(
+        key: campusAppKey,
+      ),
     ),
   );
 }
 
+final GlobalKey<CampusAppState> campusAppKey = GlobalKey();
 final GlobalKey<HomePageState> homeKey = GlobalKey();
 
 class CampusApp extends StatefulWidget {
   const CampusApp({Key? key}) : super(key: key);
 
   @override
-  State<CampusApp> createState() => _CampusAppState();
+  State<CampusApp> createState() => CampusAppState();
 }
 
-class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
+class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   final GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey();
 
   String _directoryPath = '';
@@ -123,7 +125,10 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
               FlutterNativeSplash.remove();
 
               // Check whether the user agreed to use Firebase
-              checkFirebasePermission();
+              mainUtils.checkFirebasePermission(
+                context,
+                mainNavigatorKey,
+              );
 
               // Initialize the backend connection
               initializeBackendConnection();
@@ -240,69 +245,6 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       await backendRepository.loadMensaRestaurantConfig(settingsHandler);
     } catch (e) {
       debugPrint('Could not lead filters. Exception $e');
-    }
-  }
-
-  /// This function checks if the firebase permission is `FirebaseStatus.unconfigured`.
-  /// If so, it shows a popup to ask wether or not the user wants to use Firebase.
-  ///
-  /// If the _useFirebase_ setting is already set to `permitted`,
-  /// the function [initializeFirebase] is called.
-  Future<void> checkFirebasePermission() async {
-    if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
-        FirebaseStatus.uncofigured) {
-      Timer(
-        const Duration(seconds: 2),
-        () => mainNavigatorKey.currentState?.push(
-          PageRouteBuilder(
-            opaque: false,
-            pageBuilder: (context, _, __) => FirebasePopup(
-              onClose: (permissionGranted) {
-                final Settings newSettings;
-
-                if (permissionGranted) {
-                  // User accepted to use Google services
-                  newSettings = Provider.of<SettingsHandler>(context, listen: false)
-                      .currentSettings
-                      .copyWith(useFirebase: FirebaseStatus.permitted);
-
-                  mainUtils.initializeFirebase(context);
-                } else {
-                  // User denied to use Google services
-                  newSettings = Provider.of<SettingsHandler>(context, listen: false)
-                      .currentSettings
-                      .copyWith(useFirebase: FirebaseStatus.forbidden);
-                }
-
-                debugPrint('Set Firebase permission: ${newSettings.useFirebase}');
-                Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-              },
-            ),
-          ),
-        ),
-      );
-    } else if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
-        FirebaseStatus.permitted) {
-      await mainUtils.initializeFirebase(context);
-    } else if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
-        FirebaseStatus.forbidden) {
-      try {
-        await backendRepository.removeAllSavedEvents(
-          Provider.of<SettingsHandler>(context, listen: false),
-        );
-      } catch (e) {
-        debugPrint(
-          'Could not remove all events from the database while trying to remove the device from Firebase. Retrying next restart.',
-        );
-      }
-
-      try {
-        await FirebaseMessaging.instance.deleteToken();
-      } catch (e) {
-        debugPrint(
-          'Error while trying to remove the device from Firebase. Please check your connection.',
-        );
-      }
     }
   }
 

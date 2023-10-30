@@ -8,11 +8,15 @@ import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 /// This widget displays a search bar that can be hidden via a button
 /// and is used to search the news feed and events.
 class CampusSearchBar extends StatelessWidget {
+  final bool arrowHidden;
+  final double horizontalPadding;
   final void Function() onBack;
   final void Function(String) onChange;
 
   const CampusSearchBar({
     Key? key,
+    this.arrowHidden = false,
+    this.horizontalPadding = 20,
     required this.onBack,
     required this.onChange,
   }) : super(key: key);
@@ -20,7 +24,7 @@ class CampusSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Container(
         height: 55,
         alignment: Alignment.centerLeft,
@@ -33,27 +37,30 @@ class CampusSearchBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: CampusIconButton(
-                iconPath: 'assets/img/icons/arrow-left.svg',
-                onTap: onBack,
-                transparent: true,
-                backgroundColorDark: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? const Color.fromRGBO(245, 246, 250, 1)
-                    : const Color.fromRGBO(34, 40, 54, 1),
-                backgroundColorLight:
-                    Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? const Color.fromRGBO(245, 246, 250, 1)
-                        : const Color.fromRGBO(34, 40, 54, 1),
-                borderColorDark: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? const Color.fromRGBO(245, 246, 250, 1)
-                    : const Color.fromRGBO(34, 40, 54, 1),
-                borderColorLight: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? const Color.fromRGBO(245, 246, 250, 1)
-                    : const Color.fromRGBO(34, 40, 54, 1),
+            if (!arrowHidden) ...[
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: CampusIconButton(
+                  iconPath: 'assets/img/icons/arrow-left.svg',
+                  onTap: onBack,
+                  transparent: true,
+                  backgroundColorDark:
+                      Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                          ? const Color.fromRGBO(245, 246, 250, 1)
+                          : const Color.fromRGBO(34, 40, 54, 1),
+                  backgroundColorLight:
+                      Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                          ? const Color.fromRGBO(245, 246, 250, 1)
+                          : const Color.fromRGBO(34, 40, 54, 1),
+                  borderColorDark: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromRGBO(245, 246, 250, 1)
+                      : const Color.fromRGBO(34, 40, 54, 1),
+                  borderColorLight: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromRGBO(245, 246, 250, 1)
+                      : const Color.fromRGBO(34, 40, 54, 1),
+                ),
               ),
-            ),
+            ],
             Expanded(
               child: TextField(
                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium?.copyWith(
@@ -64,14 +71,14 @@ class CampusSearchBar extends StatelessWidget {
                     ),
                 onChanged: onChange,
                 decoration: InputDecoration(
-                  labelText: 'Search',
+                  labelText: 'Suche',
                   labelStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   errorBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,
-                  contentPadding: const EdgeInsets.only(left: 12, right: 15, bottom: 21.6),
+                  contentPadding: EdgeInsets.only(left: !arrowHidden ? 12 : 20, right: 15, bottom: 21.6),
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                 ),
               ),

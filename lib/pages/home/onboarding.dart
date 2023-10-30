@@ -84,6 +84,7 @@ class OnboardingPageState extends State<OnboardingPage> {
           useSystemDarkmode: selectedTheme == 0,
           useDarkmode: selectedTheme == 2,
           selectedStudyCourses: selectedStudies,
+          studyCoursePopup: true,
           useFirebase: firebaseAccepted ? FirebaseStatus.permitted : FirebaseStatus.forbidden,
         );
 

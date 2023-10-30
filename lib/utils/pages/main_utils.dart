@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:campus_app/pages/home/widgets/study_course_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,6 +18,7 @@ import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 import 'package:campus_app/firebase_options.dart';
+import 'package:campus_app/pages/home/widgets/firebase_popup.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
@@ -326,6 +328,102 @@ class MainUtils {
         ?.createNotificationChannel(androidChannels['savedEvents']!);
 
     return flutterLocalNotificationsPlugin;
+  }
+
+  /// This function checks if the firebase permission is `FirebaseStatus.unconfigured`.
+  /// If so, it shows a popup to ask wether or not the user wants to use Firebase.
+  ///
+  /// If the _useFirebase_ setting is already set to `permitted`,
+  /// the function [initializeFirebase] is called.
+  Future<void> checkFirebasePermission(BuildContext context, GlobalKey<NavigatorState> mainKey) async {
+    final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
+    if (settingsHandler.currentSettings.useFirebase == FirebaseStatus.uncofigured) {
+      Timer(
+        const Duration(seconds: 2),
+        () => mainKey.currentState?.push(
+          PageRouteBuilder(
+            opaque: false,
+            pageBuilder: (context, _, __) => FirebasePopup(
+              onClose: (permissionGranted) {
+                final Settings newSettings;
+
+                if (permissionGranted) {
+                  // User accepted to use Google services
+                  newSettings = settingsHandler.currentSettings.copyWith(useFirebase: FirebaseStatus.permitted);
+
+                  initializeFirebase(context);
+                } else {
+                  // User denied to use Google services
+                  newSettings = settingsHandler.currentSettings.copyWith(useFirebase: FirebaseStatus.forbidden);
+                }
+
+                debugPrint('Set Firebase permission: ${newSettings.useFirebase}');
+                settingsHandler.currentSettings = newSettings;
+
+                // Check whether the user already chose their study courses
+                if (!settingsHandler.currentSettings.studyCoursePopup) {
+                  Timer(
+                    const Duration(seconds: 2),
+                    () => mainKey.currentState?.push(
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (context, _, __) => const StudyCoursePopup(),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ),
+      );
+    } else if (settingsHandler.currentSettings.useFirebase == FirebaseStatus.permitted) {
+      await initializeFirebase(context);
+
+      // Check whether the user already chose their study courses
+      if (!settingsHandler.currentSettings.studyCoursePopup) {
+        Timer(
+          const Duration(seconds: 2),
+          () => mainKey.currentState?.push(
+            PageRouteBuilder(
+              opaque: false,
+              pageBuilder: (context, _, __) => const StudyCoursePopup(),
+            ),
+          ),
+        );
+      }
+    } else if (settingsHandler.currentSettings.useFirebase == FirebaseStatus.forbidden) {
+      try {
+        await backendRepository.removeAllSavedEvents(
+          settingsHandler,
+        );
+      } catch (e) {
+        debugPrint(
+          'Could not remove all events from the database while trying to remove the device from Firebase. Retrying next restart.',
+        );
+      }
+
+      try {
+        await FirebaseMessaging.instance.deleteToken();
+      } catch (e) {
+        debugPrint(
+          'Error while trying to remove the device from Firebase. Please check your connection.',
+        );
+      }
+
+      // Check whether the user already chose their study courses
+      if (!settingsHandler.currentSettings.studyCoursePopup) {
+        Timer(
+          const Duration(seconds: 2),
+          () => mainKey.currentState?.push(
+            PageRouteBuilder(
+              opaque: false,
+              pageBuilder: (context, _, __) => const StudyCoursePopup(),
+            ),
+          ),
+        );
+      }
+    }
   }
 
   /// This function initializes the Google Firebase services and FCM

@@ -4,15 +4,18 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/main.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
+import 'package:campus_app/pages/home/widgets/study_course_popup.dart';
+import 'package:campus_app/pages/more/widgets/leading_button.dart';
+import 'package:campus_app/pages/more/widgets/leading_text_switch.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/animated_conditional.dart';
-import 'package:campus_app/utils/pages/main_utils.dart';
-import 'package:campus_app/pages/more/widgets/leading_text_switch.dart';
 
 /// This page displays the app settings
 class SettingsPage extends StatefulWidget {
@@ -131,6 +134,19 @@ class SettingsPageState extends State<SettingsPage> {
                         },
                       ),
                     ),
+                  ),
+                  const SectionHeadline(headline: 'Stammdaten'),
+                  LeadingButton(
+                    text: 'Studiengang',
+                    buttonText: 'Ändern',
+                    onTap: () => campusAppKey.currentState?.mainNavigatorKey.currentState?.push(
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (context, _, __) => const StudyCoursePopup(),
+                      ),
+                    ),
+                    height: 45,
+                    width: 80,
                   ),
                   const SectionHeadline(headline: 'Verhalten'),
                   // External Browser
