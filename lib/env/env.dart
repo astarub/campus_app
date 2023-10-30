@@ -2,6 +2,9 @@ import 'package:envied/envied.dart';
 
 part 'env.g.dart';
 
+// CONTAINS WRONG CREDENTIALS
+// ACCESS TO OUR INFRASTRUCTURE IS RESTRICTED!!!!!!
+
 /// This class holds all secret environment variables.
 ///
 /// To genereate the [env.g.dart] file with new variables, create a
