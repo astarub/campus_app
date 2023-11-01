@@ -58,6 +58,7 @@ class MockMensaDataSource extends _i1.Mock implements _i4.MensaDataSource {
           Invocation.getter(#client),
         ),
       ) as _i2.Dio);
+
   @override
   _i3.Box<dynamic> get mensaCache => (super.noSuchMethod(
         Invocation.getter(#mensaCache),
@@ -66,6 +67,7 @@ class MockMensaDataSource extends _i1.Mock implements _i4.MensaDataSource {
           Invocation.getter(#mensaCache),
         ),
       ) as _i3.Box<dynamic>);
+
   @override
   _i5.Future<Map<String, dynamic>> getRemoteData(int? restaurant) =>
       (super.noSuchMethod(
@@ -76,6 +78,7 @@ class MockMensaDataSource extends _i1.Mock implements _i4.MensaDataSource {
         returnValue:
             _i5.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
       ) as _i5.Future<Map<String, dynamic>>);
+
   @override
   _i5.Future<void> writeDishEntitiesToCache(
     List<_i6.DishEntity>? entities,
@@ -92,6 +95,7 @@ class MockMensaDataSource extends _i1.Mock implements _i4.MensaDataSource {
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
+
   @override
   List<_i6.DishEntity> readDishEntitiesFromCache(int? restaurant) =>
       (super.noSuchMethod(

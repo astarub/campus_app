@@ -32,104 +32,130 @@ class CalendarDatasource {
   /// Throws a server excpetion if respond code is not 200.
   Future<List<dynamic>> getAStAEventsAsJsonArray() async {
     final response = await client.get(astaEvents);
+
     late final Map<String, dynamic> responseBody;
 
     if (response.statusCode != 200) {
       throw ServerException();
-    } else {
-      try {
-        responseBody = response.data as Map<String, dynamic>;
-      } catch (e) {
-        throw JsonException();
-      }
-
-      if ((responseBody['events'] as List<dynamic>).isEmpty) {
-        throw EmptyResponseException();
-      }
-
-      final List<dynamic> events = responseBody['events'];
-
-      // Fetch events from multiple pages, if there are more than one page
-      try {
-        final int pages = int.parse(response.headers.value('x-tec-totalpages')!);
-
-        if (pages > 1) {
-          for (int i = 2; i <= pages; i++) {
-            final responseForPage = await client.get('$astaEvents?page=$i');
-
-            if (responseForPage.statusCode != 200) continue;
-
-            Map<String, dynamic> responsePageBody;
-
-            try {
-              responsePageBody = responseForPage.data as Map<String, dynamic>;
-            } catch (e) {
-              continue;
-            }
-
-            if ((responsePageBody['events'] as List<dynamic>).isEmpty) continue;
-
-            events.addAll(responsePageBody['events']);
-          }
-        }
-      } catch (e) {
-        throw ParseException();
-      }
-
-      return events;
     }
+
+    try {
+      responseBody = response.data as Map<String, dynamic>;
+    } catch (e) {
+      throw JsonException();
+    }
+
+    final List<dynamic> events = responseBody['events'];
+
+    // Fetch events from multiple pages, if there are more than one page
+    try {
+      final int pages = int.parse(response.headers.value('x-tec-totalpages')!);
+
+      if (pages > 1) {
+        final List<Future<List<dynamic>>> futures = [];
+        for (int i = 2; i <= pages; i++) {
+          futures.add(getAStAEventPage(i));
+        }
+
+        final List<List<dynamic>> responses = await Future.wait(futures);
+
+        final List<dynamic> allEvents =
+            responses.fold<List<dynamic>>([], (responseList, response) => responseList..addAll(response));
+
+        events.addAll(allEvents);
+      }
+    } catch (e) {
+      throw ServerException();
+    }
+
+    return events;
   }
 
-  /// Request events from the app's wordpress instance using the tribe api.
+  /// Fetch a specific page from the asta-bochum.de JSON API
+  Future<List<dynamic>> getAStAEventPage(int page) async {
+    final List<dynamic> events = [];
+    final responseForPage = await client.get('$astaEvents?page=$page');
+
+    if (responseForPage.statusCode != 200) {
+      return events;
+    }
+
+    Map<String, dynamic> responsePageBody;
+
+    try {
+      responsePageBody = responseForPage.data as Map<String, dynamic>;
+    } catch (e) {
+      return events;
+    }
+
+    events.addAll(responsePageBody['events']);
+
+    return events;
+  }
+
+  /// Request events from tribe api.
   /// Throws a server excpetion if respond code is not 200.
   Future<List<dynamic>> getAppEventsAsJsonArray() async {
     final response = await client.get(appEvents);
+
     late final Map<String, dynamic> responseBody;
 
     if (response.statusCode != 200) {
       throw ServerException();
-    } else {
-      try {
-        responseBody = response.data as Map<String, dynamic>;
-      } catch (e) {
-        throw JsonException();
-      }
+    }
 
-      if ((responseBody['events'] as List<dynamic>).isEmpty) {
-        throw EmptyResponseException();
-      }
+    try {
+      responseBody = response.data as Map<String, dynamic>;
+    } catch (e) {
+      throw JsonException();
+    }
 
-      final List<dynamic> events = responseBody['events'];
+    final List<dynamic> events = responseBody['events'];
 
-      // Fetch events from multiple pages, if there are more than one page
-      try {
-        final int pages = int.parse(response.headers.value('x-tec-totalpages')!);
+    // Fetch events from multiple pages, if there are more than one page
+    try {
+      final int pages = int.parse(response.headers.value('x-tec-totalpages')!);
 
-        if (pages > 1) {
-          for (int i = 2; i <= pages; i++) {
-            final responseForPage = await client.get('$appEvents?page=$i');
-
-            if (responseForPage.statusCode != 200) continue;
-
-            Map<String, dynamic> responsePageBody;
-
-            try {
-              responsePageBody = responseForPage.data as Map<String, dynamic>;
-            } catch (e) {
-              continue;
-            }
-
-            if ((responsePageBody['events'] as List<dynamic>).isEmpty) continue;
-
-            events.addAll(responsePageBody['events']);
-          }
+      if (pages > 1) {
+        final List<Future<List<dynamic>>> futures = [];
+        for (int i = 2; i <= pages; i++) {
+          futures.add(getAppEventPage(i));
         }
-      } catch (e) {
-        throw ParseException();
-      }
 
+        final List<List<dynamic>> responses = await Future.wait(futures);
+
+        final List<dynamic> allEvents =
+            responses.fold<List<dynamic>>([], (responseList, response) => responseList..addAll(response));
+
+        events.addAll(allEvents);
+      }
+    } catch (e) {
+      throw ServerException();
+    }
+
+    return events;
+  }
+
+  /// Fetch a specific page from the asta-bochum.de JSON API
+  Future<List<dynamic>> getAppEventPage(int page) async {
+    final List<dynamic> events = [];
+    final responseForPage = await client.get('$appEvents?page=$page');
+
+    if (responseForPage.statusCode != 200) {
       return events;
     }
+
+    Map<String, dynamic> responsePageBody;
+
+    try {
+      responsePageBody = responseForPage.data as Map<String, dynamic>;
+    } catch (e) {
+      return events;
+    }
+
+    events.addAll(responsePageBody['events']);
+
+    return events;
   }
 
   /// Write given list of Events to Hive.Box 'eventCache'.

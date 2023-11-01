@@ -69,6 +69,7 @@ class MockNewsDatasource extends _i1.Mock implements _i5.NewsDatasource {
           Invocation.getter(#client),
         ),
       ) as _i2.Dio);
+
   @override
   _i3.Box<dynamic> get rubnewsCache => (super.noSuchMethod(
         Invocation.getter(#rubnewsCache),
@@ -77,6 +78,7 @@ class MockNewsDatasource extends _i1.Mock implements _i5.NewsDatasource {
           Invocation.getter(#rubnewsCache),
         ),
       ) as _i3.Box<dynamic>);
+
   @override
   _i6.Future<_i4.XmlDocument> getNewsfeedAsXml() => (super.noSuchMethod(
         Invocation.method(
@@ -91,6 +93,7 @@ class MockNewsDatasource extends _i1.Mock implements _i5.NewsDatasource {
           ),
         )),
       ) as _i6.Future<_i4.XmlDocument>);
+
   @override
   _i6.Future<Map<String, dynamic>> getImageDataFromNewsUrl(String? url) =>
       (super.noSuchMethod(
@@ -101,6 +104,7 @@ class MockNewsDatasource extends _i1.Mock implements _i5.NewsDatasource {
         returnValue:
             _i6.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
       ) as _i6.Future<Map<String, dynamic>>);
+
   @override
   _i6.Future<List<dynamic>> getAStAFeedAsJson() => (super.noSuchMethod(
         Invocation.method(
@@ -109,6 +113,7 @@ class MockNewsDatasource extends _i1.Mock implements _i5.NewsDatasource {
         ),
         returnValue: _i6.Future<List<dynamic>>.value(<dynamic>[]),
       ) as _i6.Future<List<dynamic>>);
+
   @override
   _i6.Future<List<dynamic>> getAppFeedAsJson() => (super.noSuchMethod(
         Invocation.method(
@@ -117,6 +122,7 @@ class MockNewsDatasource extends _i1.Mock implements _i5.NewsDatasource {
         ),
         returnValue: _i6.Future<List<dynamic>>.value(<dynamic>[]),
       ) as _i6.Future<List<dynamic>>);
+
   @override
   _i6.Future<void> writeNewsEntitiesToCache(List<_i7.NewsEntity>? entities) =>
       (super.noSuchMethod(
@@ -127,6 +133,7 @@ class MockNewsDatasource extends _i1.Mock implements _i5.NewsDatasource {
         returnValue: _i6.Future<void>.value(),
         returnValueForMissingStub: _i6.Future<void>.value(),
       ) as _i6.Future<void>);
+
   @override
   List<_i7.NewsEntity> readNewsEntitiesFromCach() => (super.noSuchMethod(
         Invocation.method(

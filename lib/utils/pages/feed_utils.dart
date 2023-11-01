@@ -40,7 +40,8 @@ class FeedUtils extends Utils {
         FeedItem(
           title: n.title,
           date: n.pubDate,
-          image: n.imageUrl != 'false' && (n.copyright.isNotEmpty && !n.copyright.contains('Fotolia'))
+          image: n.imageUrl != 'false' &&
+                  (n.copyright.isNotEmpty && !n.copyright.map((e) => e.toLowerCase()).toList().contains('fotolia'))
               ? CachedNetworkImage(
                   imageUrl: n.imageUrl,
                 )

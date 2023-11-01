@@ -59,6 +59,7 @@ class MockCalendarDatasource extends _i1.Mock
           Invocation.getter(#client),
         ),
       ) as _i2.Dio);
+
   @override
   _i3.Box<dynamic> get eventCache => (super.noSuchMethod(
         Invocation.getter(#eventCache),
@@ -67,6 +68,7 @@ class MockCalendarDatasource extends _i1.Mock
           Invocation.getter(#eventCache),
         ),
       ) as _i3.Box<dynamic>);
+
   @override
   _i5.Future<List<dynamic>> getAStAEventsAsJsonArray() => (super.noSuchMethod(
         Invocation.method(
@@ -75,6 +77,7 @@ class MockCalendarDatasource extends _i1.Mock
         ),
         returnValue: _i5.Future<List<dynamic>>.value(<dynamic>[]),
       ) as _i5.Future<List<dynamic>>);
+
   @override
   _i5.Future<List<dynamic>> getAppEventsAsJsonArray() => (super.noSuchMethod(
         Invocation.method(
@@ -83,6 +86,7 @@ class MockCalendarDatasource extends _i1.Mock
         ),
         returnValue: _i5.Future<List<dynamic>>.value(<dynamic>[]),
       ) as _i5.Future<List<dynamic>>);
+
   @override
   _i5.Future<void> writeEventsToCache(
     List<_i6.Event>? entities, {
@@ -101,6 +105,7 @@ class MockCalendarDatasource extends _i1.Mock
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
+
   @override
   List<_i6.Event> readEventsFromCache({
     bool? saved = false,

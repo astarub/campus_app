@@ -61,6 +61,7 @@ class MockCalendarRepository extends _i1.Mock
           Invocation.getter(#calendarDatasource),
         ),
       ) as _i2.CalendarDatasource);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>> getAStAEvents() =>
       (super.noSuchMethod(
@@ -77,6 +78,7 @@ class MockCalendarRepository extends _i1.Mock
           ),
         )),
       ) as _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>>);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>> getAppEvents() =>
       (super.noSuchMethod(
@@ -93,6 +95,7 @@ class MockCalendarRepository extends _i1.Mock
           ),
         )),
       ) as _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>>);
+
   @override
   _i3.Either<_i6.Failure, List<_i7.Event>> getCachedEvents() =>
       (super.noSuchMethod(
@@ -108,6 +111,7 @@ class MockCalendarRepository extends _i1.Mock
           ),
         ),
       ) as _i3.Either<_i6.Failure, List<_i7.Event>>);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>> updateSavedEvents(
           {_i7.Event? event}) =>

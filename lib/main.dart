@@ -12,7 +12,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
@@ -27,7 +26,6 @@ import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
-import 'package:campus_app/pages/home/widgets/firebase_popup.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 

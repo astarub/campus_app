@@ -90,35 +90,55 @@ class NewsDatasource {
     }
   }
 
-  /// Request posts from asta-bochum.de
+  /// Request posts from app.asta-bochum.de
   /// Throws a server exception if respond code is not 200.
   Future<List<dynamic>> getAppFeedAsJson() async {
     final response = await client.get(appFeed);
 
     if (response.statusCode != 200) {
       throw ServerException();
-    } else {
-      final List<dynamic> data = response.data;
-
-      // Fetch events from multiple pages, if there are more than one page
-      try {
-        final int pages = int.parse(response.headers.value('x-wp-totalpages')!);
-
-        if (pages > 1) {
-          for (int i = 2; i <= pages; i++) {
-            final responseForPage = await client.get('$appFeed?page=$i');
-
-            if (responseForPage.statusCode != 200) continue;
-
-            data.addAll(responseForPage.data);
-          }
-        }
-      } catch (e) {
-        throw ParseException();
-      }
-
-      return data;
     }
+    final List<dynamic> data = response.data;
+
+    // Fetch posts from multiple pages, if there are more than one page
+    try {
+      final int pages = int.parse(response.headers.value('x-wp-totalpages')!);
+
+      if (pages > 1) {
+        final List<Future<List<dynamic>>> futures = [];
+        for (int i = 2; i <= pages; i++) {
+          futures.add(getAppFeedPage(i));
+        }
+
+        final List<List<dynamic>> responses = await Future.wait(futures);
+
+        final List<dynamic> allPosts =
+            responses.fold<List<dynamic>>([], (responseList, response) => responseList..addAll(response));
+
+        data.addAll(allPosts);
+      }
+    } catch (e) {
+      throw ParseException();
+    }
+
+    return data;
+  }
+
+  /// Fetch a specific page from the app.asta-bochum.de JSON API
+  Future<List<dynamic>> getAppFeedPage(int page) async {
+    final List<dynamic> data = [];
+
+    try {
+      final responseForPage = await client.get('$appFeed?page=$page');
+
+      if (responseForPage.statusCode != 200) throw ServerException();
+
+      data.addAll(responseForPage.data);
+    } catch (e) {
+      throw ServerException();
+    }
+
+    return data;
   }
 
   /// Write given list of NewsEntity to Hive.Box 'rubnewsCach'.

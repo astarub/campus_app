@@ -60,6 +60,7 @@ class MockNewsRepository extends _i1.Mock implements _i4.NewsRepository {
           Invocation.getter(#newsDatasource),
         ),
       ) as _i2.NewsDatasource);
+
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.NewsEntity>>>
       getRemoteNewsfeed() => (super.noSuchMethod(
@@ -77,6 +78,7 @@ class MockNewsRepository extends _i1.Mock implements _i4.NewsRepository {
               ),
             )),
           ) as _i5.Future<_i3.Either<_i6.Failure, List<_i7.NewsEntity>>>);
+
   @override
   _i3.Either<_i6.Failure, List<_i7.NewsEntity>> getCachedNewsfeed() =>
       (super.noSuchMethod(

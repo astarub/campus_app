@@ -163,11 +163,8 @@ class _Env {
     684409311
   ];
   static final String firebaseAndroidApiKey = String.fromCharCodes(
-    List.generate(_envieddatafirebaseAndroidApiKey.length, (i) => i,
-            growable: false)
-        .map((i) =>
-            _envieddatafirebaseAndroidApiKey[i] ^
-            _enviedkeyfirebaseAndroidApiKey[i])
+    List.generate(_envieddatafirebaseAndroidApiKey.length, (i) => i, growable: false)
+        .map((i) => _envieddatafirebaseAndroidApiKey[i] ^ _enviedkeyfirebaseAndroidApiKey[i])
         .toList(growable: false),
   );
   static const List<int> _enviedkeyfirebaseIosApiKey = [
@@ -253,10 +250,8 @@ class _Env {
     3124910762
   ];
   static final String firebaseIosApiKey = String.fromCharCodes(
-    List.generate(_envieddatafirebaseIosApiKey.length, (i) => i,
-            growable: false)
-        .map((i) =>
-            _envieddatafirebaseIosApiKey[i] ^ _enviedkeyfirebaseIosApiKey[i])
+    List.generate(_envieddatafirebaseIosApiKey.length, (i) => i, growable: false)
+        .map((i) => _envieddatafirebaseIosApiKey[i] ^ _enviedkeyfirebaseIosApiKey[i])
         .toList(growable: false),
   );
   static const List<int> _enviedkeyappwriteCreateUserKey = [
@@ -330,11 +325,8 @@ class _Env {
     2577032726
   ];
   static final String appwriteCreateUserKey = String.fromCharCodes(
-    List.generate(_envieddataappwriteCreateUserKey.length, (i) => i,
-            growable: false)
-        .map((i) =>
-            _envieddataappwriteCreateUserKey[i] ^
-            _enviedkeyappwriteCreateUserKey[i])
+    List.generate(_envieddataappwriteCreateUserKey.length, (i) => i, growable: false)
+        .map((i) => _envieddataappwriteCreateUserKey[i] ^ _enviedkeyappwriteCreateUserKey[i])
         .toList(growable: false),
   );
 }
