@@ -44,11 +44,12 @@ class BackendRepository {
         ),
       );
 
-      if (result.responseStatusCode != 200) {
+      if (result.responseStatusCode != 200 ||
+          result.responseBody == '"Incorrect api key. Please provide a valid api key."') {
         debugPrint(
           'Error while creating an account at the backend. Error: ${result.responseBody}',
         );
-        return;
+        throw AuthenticationException();
       }
 
       debugPrint('Successfully created an account at the backend.');
@@ -93,7 +94,7 @@ class BackendRepository {
           backendAccount: const BackendAccount.empty(),
         );
 
-        await login(settingsHandler);
+        //await login(settingsHandler);
       } else {
         debugPrint(e.message);
       }

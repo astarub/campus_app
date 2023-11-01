@@ -6,8 +6,10 @@ import 'package:snapping_sheet_2/snapping_sheet.dart';
 
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 import 'package:campus_app/pages/home/widgets/study_selection.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 
 /// This widget allows to push a popup to the navigator-stack that is fully
@@ -30,7 +32,7 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
   /// Changed during widget lifetime in order to make the popup non-draggable
   List<SnappingPosition> snapPositions = [
     const SnappingPosition.pixels(
-      positionPixels: 450,
+      positionPixels: 630,
     ),
     const SnappingPosition.pixels(
       positionPixels: -60,
@@ -42,6 +44,8 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
   /// Animated half-transparent background color
   Color backgroundColor = const Color.fromRGBO(0, 0, 0, 0);
 
+  final MainUtils mainUtils = sl<MainUtils>();
+
   List<StudyCourse> availableCourses = [];
   // Selected study courses
   List<StudyCourse> selectedStudies = [];
@@ -51,7 +55,7 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
     setState(
       () => snapPositions = [
         const SnappingPosition.pixels(
-          positionPixels: 420,
+          positionPixels: 630,
         ),
         const SnappingPosition.pixels(
           positionPixels: -60,
@@ -68,6 +72,7 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
         snappingDuration: Duration(milliseconds: 350),
       ),
     );
+    Navigator.pop(context);
   }
 
   /// Filters the feed based on the search input of the user
@@ -77,9 +82,11 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
     if (search == '') {
       filteredCourses = Provider.of<SettingsHandler>(context, listen: false).currentSettings.studyCourses;
     } else {
-      for (final StudyCourse s in Provider.of<SettingsHandler>(context, listen: false).currentSettings.studyCourses) {
-        if (s.name.contains(search)) filteredCourses.add(s);
-      }
+      filteredCourses = Provider.of<SettingsHandler>(context, listen: false)
+          .currentSettings
+          .studyCourses
+          .where((course) => course.name.toLowerCase().contains(search.toLowerCase()))
+          .toList();
     }
 
     setState(() {
@@ -96,6 +103,8 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
     debugPrint('Saved study courses. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
 
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+
+    mainUtils.setIntialStudyCoursePublishers(Provider.of<SettingsHandler>(context, listen: false), selectedStudies);
   }
 
   @override
@@ -112,22 +121,10 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
       const Duration(milliseconds: 50),
       () => popupController.snapToPosition(
         const SnappingPosition.pixels(
-          positionPixels: 650,
+          positionPixels: 630,
           snappingCurve: Curves.easeOutExpo,
           snappingDuration: Duration(milliseconds: 350),
         ),
-      ),
-    );
-
-    // Remove the second [SnappingPosition] after opening the popup
-    Timer(
-      const Duration(milliseconds: 500),
-      () => setState(
-        () => snapPositions = [
-          const SnappingPosition.pixels(
-            positionPixels: 650,
-          ),
-        ],
       ),
     );
   }
@@ -144,8 +141,15 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
           );
         }
       },
-      initialSnappingPosition: const SnappingPosition.pixels(positionPixels: -100),
+      initialSnappingPosition: const SnappingPosition.pixels(positionPixels: -60),
       snappingPositions: snapPositions,
+      onSnapCompleted: (positionData, snappingPosition) {
+        // Remove the popup from the navigation-stack when it's snapped outside the view
+        if (positionData.pixels == -60) {
+          saveSelections();
+          closePopup();
+        }
+      },
       sheetBelow: SnappingSheetContent(
         child: Align(
           child: Container(
@@ -232,7 +236,6 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
                     onTap: () {
                       saveSelections();
                       closePopup();
-                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -243,9 +246,18 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
         ),
       ),
       // Transparent background
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 50),
-        color: backgroundColor,
+      child: GestureDetector(
+        onTap: () => popupController.snapToPosition(
+          const SnappingPosition.pixels(
+            positionPixels: -60,
+            snappingCurve: Curves.easeOutExpo,
+            snappingDuration: Duration(milliseconds: 350),
+          ),
+        ),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 50),
+          color: backgroundColor,
+        ),
       ),
     );
   }

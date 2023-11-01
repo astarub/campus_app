@@ -31,6 +31,8 @@ Follow the installation guide as instructed here: https://appwrite.io/docs/insta
 
 In order to create the databases you also have to install the Appwrite CLI which can be found here: https://appwrite.io/docs/command-line
 
+# After setup, make sure to follow the Environment Variables section, otherwise you won't be able to communicate with your own backend
+
 ---
 
 ## Configuration
