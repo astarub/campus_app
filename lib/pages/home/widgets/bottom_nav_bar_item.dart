@@ -26,9 +26,9 @@ class BottomNavBarItem extends StatefulWidget {
   final VoidCallback onTap;
 
   /// Wether the refered page is the currently displayed one
-  bool isActive;
+  final bool isActive;
 
-  BottomNavBarItem({
+  const BottomNavBarItem({
     Key? key,
     required this.imagePathActive,
     required this.imagePathInactive,

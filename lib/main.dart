@@ -196,15 +196,6 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     precacheImage(Image.asset('assets/img/icons/more.png').image, context);
   }
 
-  /// DEBUG ONLY - Deletes the existing settings!
-  void _debugDeleteSettings() {
-    getApplicationDocumentsDirectory().then((Directory directory) {
-      final String tempDirectoryPath = directory.path;
-      final File jsonFile = File('$tempDirectoryPath/settings.json');
-      jsonFile.delete().then((_) => debugPrint('DEBUG: Settings-Datei gelöscht.'));
-    });
-  }
-
   Future<void> initializeBackendConnection() async {
     final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 

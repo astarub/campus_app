@@ -344,7 +344,7 @@ class MainUtils {
           PageRouteBuilder(
             opaque: false,
             pageBuilder: (context, _, __) => FirebasePopup(
-              onClose: (permissionGranted) {
+              onClose: ({bool permissionGranted = false}) {
                 final Settings newSettings;
 
                 if (permissionGranted) {

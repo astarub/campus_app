@@ -38,7 +38,7 @@ void main() {
           description: 'description',
           content: 'content',
           url: rubnewsTestNewsUrlSingleImage,
-        )
+        ),
       ];
 
       // arrange: RubnewsRemoteDatasource respond with a XmlDocument

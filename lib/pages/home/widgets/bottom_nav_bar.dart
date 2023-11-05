@@ -10,24 +10,22 @@ import 'package:campus_app/pages/home/widgets/bottom_nav_bar_item.dart';
 /// Creates the bottom navigation bar that lets the user switch between different pages.
 class BottomNavBar extends StatefulWidget {
   /// Needs the currently active page in order to highlight it
-  PageItem currentPage;
+  final PageItem currentPage;
 
   /// Calls this function when an item of the navigation bar is selected.
   final Function onSelectedPage;
 
-  BottomNavBar({
+  const BottomNavBar({
+    Key? key,
     required this.currentPage,
     required this.onSelectedPage,
-  });
+  }) : super(key: key);
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  // Adjust this value in order to change the icon height of each navbar-element
-  static const double iconHeight = 26;
-
   @override
   Widget build(BuildContext context) {
     return Container(

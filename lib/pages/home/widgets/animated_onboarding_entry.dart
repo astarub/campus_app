@@ -34,10 +34,10 @@ class AnimatedOnboardingEntry extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AnimatedOnboardingEntryState createState() => _AnimatedOnboardingEntryState();
+  AnimatedOnboardingEntryState createState() => AnimatedOnboardingEntryState();
 }
 
-class _AnimatedOnboardingEntryState extends State<AnimatedOnboardingEntry> with SingleTickerProviderStateMixin {
+class AnimatedOnboardingEntryState extends State<AnimatedOnboardingEntry> with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _positionAnimation;
@@ -113,10 +113,10 @@ class AnimatedOnboardingLogo extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AnimatedOnboardingLogoState createState() => _AnimatedOnboardingLogoState();
+  AnimatedOnboardingLogoState createState() => AnimatedOnboardingLogoState();
 }
 
-class _AnimatedOnboardingLogoState extends State<AnimatedOnboardingLogo> with SingleTickerProviderStateMixin {
+class AnimatedOnboardingLogoState extends State<AnimatedOnboardingLogo> with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;

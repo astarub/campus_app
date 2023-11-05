@@ -36,7 +36,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '27',
       'hour': '17',
       'minutes': '00',
-      'seconds': '00'
+      'seconds': '00',
     },
     'utc_end_date': '2022-09-27 19:30:00',
     'utc_end_date_details': {
@@ -45,7 +45,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '27',
       'hour': '19',
       'minutes': '30',
-      'seconds': '00'
+      'seconds': '00',
     },
     'timezone': 'Europe\/Berlin',
     'timezone_abbr': 'CEST',
@@ -74,7 +74,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'show_map': true,
       'show_map_link': true,
       'global_id': 'asta-bochum.de?id=12061',
-      'global_id_lineage': ['asta-bochum.de?id=12061']
+      'global_id_lineage': ['asta-bochum.de?id=12061'],
     },
     'organizer': [
       {
@@ -89,9 +89,9 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'organizer': 'AStA',
         'slug': 'asta',
         'global_id': 'asta-bochum.de?id=4333',
-        'global_id_lineage': ['asta-bochum.de?id=4333']
-      }
-    ]
+        'global_id_lineage': ['asta-bochum.de?id=4333'],
+      },
+    ],
   },
   {
     'id': 12923,
@@ -124,7 +124,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
           'mime-type': 'image\/jpeg',
           'filesize': 12501,
           'url':
-              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/08\/EE0EFBE3-3515-4F3C-A079-82B969A47B01-300x157.jpeg'
+              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/08\/EE0EFBE3-3515-4F3C-A079-82B969A47B01-300x157.jpeg',
         },
         'thumbnail': {
           'width': 150,
@@ -132,7 +132,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
           'mime-type': 'image\/jpeg',
           'filesize': 7033,
           'url':
-              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/08\/EE0EFBE3-3515-4F3C-A079-82B969A47B01-150x150.jpeg'
+              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/08\/EE0EFBE3-3515-4F3C-A079-82B969A47B01-150x150.jpeg',
         },
         'medium_large': {
           'width': 768,
@@ -140,9 +140,9 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
           'mime-type': 'image\/jpeg',
           'filesize': 60887,
           'url':
-              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/08\/EE0EFBE3-3515-4F3C-A079-82B969A47B01-768x402.jpeg'
-        }
-      }
+              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/08\/EE0EFBE3-3515-4F3C-A079-82B969A47B01-768x402.jpeg',
+        },
+      },
     },
     'all_day': false,
     'start_date': '2022-10-11 19:00:00',
@@ -156,7 +156,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '11',
       'hour': '17',
       'minutes': '00',
-      'seconds': '00'
+      'seconds': '00',
     },
     'utc_end_date': '2022-10-11 19:00:00',
     'utc_end_date_details': {
@@ -165,7 +165,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '11',
       'hour': '19',
       'minutes': '00',
-      'seconds': '00'
+      'seconds': '00',
     },
     'timezone': 'Europe\/Berlin',
     'timezone_abbr': 'CEST',
@@ -174,7 +174,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'currency_symbol': '\u20ac',
       'currency_code': '',
       'currency_position': 'suffix',
-      'values': ['21.50']
+      'values': ['21.50'],
     },
     'website': 'https:\/\/asta-bochum.de\/cocktail-kurs\/\u00a0',
     'show_map': false,
@@ -196,9 +196,9 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'id': 11,
         'urls': {
           'self': 'https:\/\/asta-bochum.de\/wp-json\/tribe\/events\/v1\/categories\/11',
-          'collection': 'https:\/\/asta-bochum.de\/wp-json\/tribe\/events\/v1\/categories'
-        }
-      }
+          'collection': 'https:\/\/asta-bochum.de\/wp-json\/tribe\/events\/v1\/categories',
+        },
+      },
     ],
     'tags': [],
     'venue': {
@@ -222,7 +222,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'show_map': true,
       'show_map_link': true,
       'global_id': 'asta-bochum.de?id=11703',
-      'global_id_lineage': ['asta-bochum.de?id=11703']
+      'global_id_lineage': ['asta-bochum.de?id=11703'],
     },
     'organizer': [
       {
@@ -237,7 +237,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'organizer': 'AStA',
         'slug': 'asta',
         'global_id': 'asta-bochum.de?id=4333',
-        'global_id_lineage': ['asta-bochum.de?id=4333']
+        'global_id_lineage': ['asta-bochum.de?id=4333'],
       },
       {
         'id': 11704,
@@ -251,9 +251,9 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'organizer': 'GAME &#038; funfood',
         'slug': 'game-funfood',
         'global_id': 'asta-bochum.de?id=11704',
-        'global_id_lineage': ['asta-bochum.de?id=11704']
-      }
-    ]
+        'global_id_lineage': ['asta-bochum.de?id=11704'],
+      },
+    ],
   },
   {
     'id': 12580,
@@ -285,30 +285,30 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
           'height': 157,
           'mime-type': 'image\/jpeg',
           'filesize': 24695,
-          'url': 'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/07\/facebook-empire-Tanzkurs-2-300x157.jpg'
+          'url': 'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/07\/facebook-empire-Tanzkurs-2-300x157.jpg',
         },
         'large': {
           'width': 1024,
           'height': 536,
           'mime-type': 'image\/jpeg',
           'filesize': 108226,
-          'url': 'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/07\/facebook-empire-Tanzkurs-2-1024x536.jpg'
+          'url': 'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/07\/facebook-empire-Tanzkurs-2-1024x536.jpg',
         },
         'thumbnail': {
           'width': 150,
           'height': 150,
           'mime-type': 'image\/jpeg',
           'filesize': 19284,
-          'url': 'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/07\/facebook-empire-Tanzkurs-2-150x150.jpg'
+          'url': 'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/07\/facebook-empire-Tanzkurs-2-150x150.jpg',
         },
         'medium_large': {
           'width': 768,
           'height': 402,
           'mime-type': 'image\/jpeg',
           'filesize': 73338,
-          'url': 'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/07\/facebook-empire-Tanzkurs-2-768x402.jpg'
-        }
-      }
+          'url': 'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/07\/facebook-empire-Tanzkurs-2-768x402.jpg',
+        },
+      },
     },
     'all_day': false,
     'start_date': '2022-10-15 13:00:00',
@@ -322,7 +322,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '15',
       'hour': '11',
       'minutes': '00',
-      'seconds': '00'
+      'seconds': '00',
     },
     'utc_end_date': '2022-10-16 14:00:00',
     'utc_end_date_details': {
@@ -331,7 +331,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '16',
       'hour': '14',
       'minutes': '00',
-      'seconds': '00'
+      'seconds': '00',
     },
     'timezone': 'Europe\/Berlin',
     'timezone_abbr': 'CEST',
@@ -340,7 +340,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'currency_symbol': '\u20ac',
       'currency_code': '',
       'currency_position': 'prefix',
-      'values': ['30']
+      'values': ['30'],
     },
     'website': 'https:\/\/asta-bochum.de\/empire\/',
     'show_map': false,
@@ -368,7 +368,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'show_map': true,
       'show_map_link': true,
       'global_id': 'asta-bochum.de?id=12621',
-      'global_id_lineage': ['asta-bochum.de?id=12621']
+      'global_id_lineage': ['asta-bochum.de?id=12621'],
     },
     'organizer': [
       {
@@ -383,7 +383,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'organizer': 'AStA Referat f\u00fcr Kultur und Internationalismus',
         'slug': 'asta-referat-fuer-kultur-und-internationalismus-2',
         'global_id': 'asta-bochum.de?id=12623',
-        'global_id_lineage': ['asta-bochum.de?id=12623']
+        'global_id_lineage': ['asta-bochum.de?id=12623'],
       },
       {
         'id': 9935,
@@ -397,9 +397,9 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'organizer': 'AStA-Tanzkreis',
         'slug': 'asta-tanzkreis',
         'global_id': 'asta-bochum.de?id=9935',
-        'global_id_lineage': ['asta-bochum.de?id=9935']
+        'global_id_lineage': ['asta-bochum.de?id=9935'],
       }
-    ]
+    ],
   },
   {
     'id': 12926,
@@ -432,7 +432,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
           'mime-type': 'image\/jpeg',
           'filesize': 16405,
           'url':
-              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-300x157.jpg'
+              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-300x157.jpg',
         },
         'thumbnail': {
           'width': 150,
@@ -440,7 +440,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
           'mime-type': 'image\/jpeg',
           'filesize': 10937,
           'url':
-              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-150x150.jpg'
+              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-150x150.jpg',
         },
         'medium_large': {
           'width': 768,
@@ -448,9 +448,9 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
           'mime-type': 'image\/jpeg',
           'filesize': 64791,
           'url':
-              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-768x402.jpg'
-        }
-      }
+              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-768x402.jpg',
+        },
+      },
     },
     'all_day': false,
     'start_date': '2022-11-08 19:00:00',
@@ -464,7 +464,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '08',
       'hour': '18',
       'minutes': '00',
-      'seconds': '00'
+      'seconds': '00',
     },
     'utc_end_date': '2022-11-08 20:00:00',
     'utc_end_date_details': {
@@ -473,7 +473,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '08',
       'hour': '20',
       'minutes': '00',
-      'seconds': '00'
+      'seconds': '00',
     },
     'timezone': 'Europe\/Berlin',
     'timezone_abbr': 'CET',
@@ -482,7 +482,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'currency_symbol': '\u20ac',
       'currency_code': '',
       'currency_position': 'suffix',
-      'values': ['21.50']
+      'values': ['21.50'],
     },
     'website': 'https:\/\/asta-bochum.de\/cocktail-kurs\/',
     'show_map': false,
@@ -504,8 +504,8 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'id': 11,
         'urls': {
           'self': 'https:\/\/asta-bochum.de\/wp-json\/tribe\/events\/v1\/categories\/11',
-          'collection': 'https:\/\/asta-bochum.de\/wp-json\/tribe\/events\/v1\/categories'
-        }
+          'collection': 'https:\/\/asta-bochum.de\/wp-json\/tribe\/events\/v1\/categories',
+        },
       }
     ],
     'tags': [],
@@ -530,7 +530,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'show_map': true,
       'show_map_link': true,
       'global_id': 'asta-bochum.de?id=11703',
-      'global_id_lineage': ['asta-bochum.de?id=11703']
+      'global_id_lineage': ['asta-bochum.de?id=11703'],
     },
     'organizer': [
       {
@@ -545,7 +545,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'organizer': 'AStA',
         'slug': 'asta',
         'global_id': 'asta-bochum.de?id=4333',
-        'global_id_lineage': ['asta-bochum.de?id=4333']
+        'global_id_lineage': ['asta-bochum.de?id=4333'],
       },
       {
         'id': 11705,
@@ -559,9 +559,9 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'organizer': 'GAME food &#038; fun',
         'slug': 'game-food-fun',
         'global_id': 'asta-bochum.de?id=11705',
-        'global_id_lineage': ['asta-bochum.de?id=11705']
+        'global_id_lineage': ['asta-bochum.de?id=11705'],
       }
-    ]
+    ],
   },
   {
     'id': 12931,
@@ -594,7 +594,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
           'mime-type': 'image\/jpeg',
           'filesize': 16405,
           'url':
-              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-300x157.jpg'
+              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-300x157.jpg',
         },
         'thumbnail': {
           'width': 150,
@@ -602,7 +602,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
           'mime-type': 'image\/jpeg',
           'filesize': 10937,
           'url':
-              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-150x150.jpg'
+              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-150x150.jpg',
         },
         'medium_large': {
           'width': 768,
@@ -610,9 +610,9 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
           'mime-type': 'image\/jpeg',
           'filesize': 64791,
           'url':
-              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-768x402.jpg'
-        }
-      }
+              'https:\/\/asta-bochum.de\/wp-content\/uploads\/2022\/09\/49fbfc5c-b91d-415e-bc18-228ee4126271-2-768x402.jpg',
+        },
+      },
     },
     'all_day': false,
     'start_date': '2022-12-06 19:00:00',
@@ -626,7 +626,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '06',
       'hour': '18',
       'minutes': '00',
-      'seconds': '00'
+      'seconds': '00',
     },
     'utc_end_date': '2022-12-06 20:00:00',
     'utc_end_date_details': {
@@ -635,7 +635,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '06',
       'hour': '20',
       'minutes': '00',
-      'seconds': '00'
+      'seconds': '00',
     },
     'timezone': 'Europe\/Berlin',
     'timezone_abbr': 'CET',
@@ -644,7 +644,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'currency_symbol': '\u20ac',
       'currency_code': '',
       'currency_position': 'suffix',
-      'values': ['21.50']
+      'values': ['21.50'],
     },
     'website': 'https:\/\/asta-bochum.de\/cocktail-kurs\/',
     'show_map': false,
@@ -666,8 +666,8 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'id': 11,
         'urls': {
           'self': 'https:\/\/asta-bochum.de\/wp-json\/tribe\/events\/v1\/categories\/11',
-          'collection': 'https:\/\/asta-bochum.de\/wp-json\/tribe\/events\/v1\/categories'
-        }
+          'collection': 'https:\/\/asta-bochum.de\/wp-json\/tribe\/events\/v1\/categories',
+        },
       }
     ],
     'tags': [],
@@ -692,7 +692,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'show_map': true,
       'show_map_link': true,
       'global_id': 'asta-bochum.de?id=11703',
-      'global_id_lineage': ['asta-bochum.de?id=11703']
+      'global_id_lineage': ['asta-bochum.de?id=11703'],
     },
     'organizer': [
       {
@@ -707,7 +707,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'organizer': 'AStA',
         'slug': 'asta',
         'global_id': 'asta-bochum.de?id=4333',
-        'global_id_lineage': ['asta-bochum.de?id=4333']
+        'global_id_lineage': ['asta-bochum.de?id=4333'],
       },
       {
         'id': 11705,
@@ -721,9 +721,9 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'organizer': 'GAME food &#038; fun',
         'slug': 'game-food-fun',
         'global_id': 'asta-bochum.de?id=11705',
-        'global_id_lineage': ['asta-bochum.de?id=11705']
+        'global_id_lineage': ['asta-bochum.de?id=11705'],
       }
-    ]
+    ],
   },
   {
     'id': 12576,
@@ -756,7 +756,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '08',
       'hour': '17',
       'minutes': '00',
-      'seconds': '00'
+      'seconds': '00',
     },
     'utc_end_date': '2022-12-08 18:45:00',
     'utc_end_date_details': {
@@ -765,7 +765,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'day': '08',
       'hour': '18',
       'minutes': '45',
-      'seconds': '00'
+      'seconds': '00',
     },
     'timezone': 'Europe\/Berlin',
     'timezone_abbr': 'CET',
@@ -793,7 +793,7 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
       'show_map': true,
       'show_map_link': true,
       'global_id': 'asta-bochum.de?id=2877',
-      'global_id_lineage': ['asta-bochum.de?id=2877']
+      'global_id_lineage': ['asta-bochum.de?id=2877'],
     },
     'organizer': [
       {
@@ -808,8 +808,8 @@ const List<Map<String, dynamic>> calendarSamplesEventList = [
         'organizer': 'AStA',
         'slug': 'asta',
         'global_id': 'asta-bochum.de?id=4333',
-        'global_id_lineage': ['asta-bochum.de?id=4333']
+        'global_id_lineage': ['asta-bochum.de?id=4333'],
       }
-    ]
+    ],
   }
 ];

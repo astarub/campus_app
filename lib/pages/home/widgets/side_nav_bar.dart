@@ -7,24 +7,22 @@ import 'package:campus_app/pages/home/widgets/side_nav_bar_item.dart';
 
 class SideNavBar extends StatefulWidget {
   /// Needs the currently active page in order to highlight it
-  PageItem currentPage;
+  final PageItem currentPage;
 
   /// Calls this function when an item of the navigation bar is selected.
   final Function onSelectedPage;
 
-  SideNavBar({
+  const SideNavBar({
+    Key? key,
     required this.currentPage,
     required this.onSelectedPage,
-  });
+  }) : super(key: key);
 
   @override
   State<SideNavBar> createState() => _SideNavBarState();
 }
 
 class _SideNavBarState extends State<SideNavBar> {
-  // Adjust this value in order to change the icon height of each navbar-element
-  static const double iconHeight = 26;
-
   @override
   Widget build(BuildContext context) {
     return Container(

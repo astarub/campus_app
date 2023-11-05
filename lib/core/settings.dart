@@ -178,8 +178,8 @@ class Settings {
           ? BackendAccount.fromJson(json: Map<String, dynamic>.from(json['backendAccount']))
           : const BackendAccount.empty(),
       latestVersion: json['latestVersion'] ?? '',
-      lastMensaBalance: json['lastMensaBalance'] ?? 0.0,
-      lastMensaTransaction: json['lastMensaTransaction'] ?? 0.0,
+      lastMensaBalance: json['lastMensaBalance'],
+      lastMensaTransaction: json['lastMensaTransaction'],
     );
   }
 

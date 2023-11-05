@@ -8,7 +8,7 @@ class FirebasePopup extends StatelessWidget {
   /// The function that is called when the popup is closed by the user.
   ///
   /// Returns `true` when the user accepts to use Firebase, and returns `false` if not.
-  final void Function(bool) onClose;
+  final void Function({bool permissionGranted}) onClose;
 
   const FirebasePopup({
     Key? key,
@@ -37,11 +37,11 @@ class FirebasePopup extends StatelessWidget {
       declineButtonText: 'Nein, möchte ich nicht.',
       height: 450,
       onAccept: () {
-        onClose(true);
+        onClose(permissionGranted: true);
         Navigator.pop(context);
       },
       onDecline: () {
-        onClose(false);
+        onClose(permissionGranted: false);
         Navigator.pop(context);
       },
     );

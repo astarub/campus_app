@@ -91,7 +91,6 @@ class FeedUtils extends Utils {
 
     if (shuffle) {
       eventItems.sort(sortFeedDesc);
-      feedItemOrEventWidget.addAll(eventItems);
       feedItemOrEventWidget.addAll(feedItems);
 
       if (shuffeledItemOrEventWidgets.length < feedItemOrEventWidget.length) {

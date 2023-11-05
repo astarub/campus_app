@@ -500,7 +500,9 @@ class BackendRepository {
     for (final String v in doc.data['value']) {
       try {
         temp.add(Map<String, dynamic>.from(jsonDecode(v)));
-      } catch (e) {}
+      } catch (e) {
+        debugPrint('Could not parse the JSON Mensa restaurant config.');
+      }
     }
 
     settingsHandler.currentSettings = settingsHandler.currentSettings.copyWith(mensaRestaurantConfig: temp);

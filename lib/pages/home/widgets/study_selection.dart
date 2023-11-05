@@ -6,12 +6,12 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 
 class StudySelection extends StatefulWidget {
-  List<StudyCourse> availableStudies;
+  final List<StudyCourse> availableStudies;
 
   /// Can be given to show previously selected studies
-  List<StudyCourse> selectedStudies;
+  final List<StudyCourse> selectedStudies;
 
-  StudySelection({
+  const StudySelection({
     Key? key,
     required this.availableStudies,
     required this.selectedStudies,

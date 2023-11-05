@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:isolate';
 
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
@@ -51,44 +52,16 @@ class CalendarDatasource {
     try {
       final int pages = int.parse(response.headers.value('x-tec-totalpages')!);
 
-      if (pages > 1) {
-        final List<Future<List<dynamic>>> futures = [];
-        for (int i = 2; i <= pages; i++) {
-          futures.add(getAStAEventPage(i));
-        }
+      final receivePort = ReceivePort();
 
-        final List<List<dynamic>> responses = await Future.wait(futures);
+      await Isolate.spawn(isolateAStACalendar, [receivePort.sendPort, pages]);
 
-        final List<dynamic> allEvents =
-            responses.fold<List<dynamic>>([], (responseList, response) => responseList..addAll(response));
+      final List<dynamic> pageData = await receivePort.first;
 
-        events.addAll(allEvents);
-      }
+      events.addAll(pageData);
     } catch (e) {
       throw ServerException();
     }
-
-    return events;
-  }
-
-  /// Fetch a specific page from the asta-bochum.de JSON API
-  Future<List<dynamic>> getAStAEventPage(int page) async {
-    final List<dynamic> events = [];
-    final responseForPage = await client.get('$astaEvents?page=$page');
-
-    if (responseForPage.statusCode != 200) {
-      return events;
-    }
-
-    Map<String, dynamic> responsePageBody;
-
-    try {
-      responsePageBody = responseForPage.data as Map<String, dynamic>;
-    } catch (e) {
-      return events;
-    }
-
-    events.addAll(responsePageBody['events']);
 
     return events;
   }
@@ -116,44 +89,16 @@ class CalendarDatasource {
     try {
       final int pages = int.parse(response.headers.value('x-tec-totalpages')!);
 
-      if (pages > 1) {
-        final List<Future<List<dynamic>>> futures = [];
-        for (int i = 2; i <= pages; i++) {
-          futures.add(getAppEventPage(i));
-        }
+      final receivePort = ReceivePort();
 
-        final List<List<dynamic>> responses = await Future.wait(futures);
+      await Isolate.spawn(isolateAppCalendar, [receivePort.sendPort, pages]);
 
-        final List<dynamic> allEvents =
-            responses.fold<List<dynamic>>([], (responseList, response) => responseList..addAll(response));
+      final List<dynamic> pageData = await receivePort.first;
 
-        events.addAll(allEvents);
-      }
+      events.addAll(pageData);
     } catch (e) {
       throw ServerException();
     }
-
-    return events;
-  }
-
-  /// Fetch a specific page from the asta-bochum.de JSON API
-  Future<List<dynamic>> getAppEventPage(int page) async {
-    final List<dynamic> events = [];
-    final responseForPage = await client.get('$appEvents?page=$page');
-
-    if (responseForPage.statusCode != 200) {
-      return events;
-    }
-
-    Map<String, dynamic> responsePageBody;
-
-    try {
-      responsePageBody = responseForPage.data as Map<String, dynamic>;
-    } catch (e) {
-      return events;
-    }
-
-    events.addAll(responsePageBody['events']);
 
     return events;
   }
@@ -227,4 +172,80 @@ class CalendarDatasource {
 
     return entities;
   }
+}
+
+/// Isolate function to fetch the AStA calendar
+Future<void> isolateAStACalendar(List<dynamic> args) async {
+  if (args.isEmpty || args[0] is! SendPort || args[1] is! int) return;
+  final SendPort sendPort = args[0];
+  final int pages = args[1];
+
+  final client = Dio();
+  final List<dynamic> events = [];
+
+  // Fetch a specific page from the asta-bochum.de JSON API
+  Future<void> getAStAEventPage(int page) async {
+    final responseForPage = await client.get('$astaEvents?page=$page');
+
+    if (responseForPage.statusCode != 200) return;
+
+    Map<String, dynamic> responsePageBody;
+
+    try {
+      responsePageBody = responseForPage.data as Map<String, dynamic>;
+    } catch (e) {
+      return;
+    }
+
+    events.addAll(responsePageBody['events']);
+  }
+
+  if (pages > 1) {
+    final List<Future<void>> futures = [];
+    for (int i = 2; i <= pages; i++) {
+      futures.add(getAStAEventPage(i));
+    }
+
+    await Future.wait(futures);
+  }
+
+  sendPort.send(events);
+}
+
+/// Isolate function to fetch the app calendar
+Future<void> isolateAppCalendar(List<dynamic> args) async {
+  if (args.isEmpty || args[0] is! SendPort || args[1] is! int) return;
+  final SendPort sendPort = args[0];
+  final int pages = args[1];
+
+  final client = Dio();
+  final List<dynamic> events = [];
+
+  /// Fetch a specific page from the asta-bochum.de JSON API
+  Future<void> getAppEventPage(int page) async {
+    final responseForPage = await client.get('$appEvents?page=$page');
+
+    if (responseForPage.statusCode != 200) return;
+
+    Map<String, dynamic> responsePageBody;
+
+    try {
+      responsePageBody = responseForPage.data as Map<String, dynamic>;
+    } catch (e) {
+      return;
+    }
+
+    events.addAll(responsePageBody['events']);
+  }
+
+  if (pages > 1) {
+    final List<Future<void>> futures = [];
+    for (int i = 2; i <= pages; i++) {
+      futures.add(getAppEventPage(i));
+    }
+
+    await Future.wait(futures);
+  }
+
+  sendPort.send(events);
 }

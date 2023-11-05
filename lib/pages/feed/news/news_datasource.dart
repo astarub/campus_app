@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'package:html/parser.dart' as html;
@@ -100,42 +102,19 @@ class NewsDatasource {
     }
     final List<dynamic> data = response.data;
 
-    // Fetch posts from multiple pages, if there are more than one page
+    // Fetch posts from multiple pages, if there is more than one page
     try {
       final int pages = int.parse(response.headers.value('x-wp-totalpages')!);
 
-      if (pages > 1) {
-        final List<Future<List<dynamic>>> futures = [];
-        for (int i = 2; i <= pages; i++) {
-          futures.add(getAppFeedPage(i));
-        }
+      final receivePort = ReceivePort();
 
-        final List<List<dynamic>> responses = await Future.wait(futures);
+      await Isolate.spawn(isolateAppFeed, [receivePort.sendPort, pages]);
 
-        final List<dynamic> allPosts =
-            responses.fold<List<dynamic>>([], (responseList, response) => responseList..addAll(response));
+      final List<dynamic> pageData = await receivePort.first;
 
-        data.addAll(allPosts);
-      }
+      data.addAll(pageData);
     } catch (e) {
       throw ParseException();
-    }
-
-    return data;
-  }
-
-  /// Fetch a specific page from the app.asta-bochum.de JSON API
-  Future<List<dynamic>> getAppFeedPage(int page) async {
-    final List<dynamic> data = [];
-
-    try {
-      final responseForPage = await client.get('$appFeed?page=$page');
-
-      if (responseForPage.statusCode != 200) throw ServerException();
-
-      data.addAll(responseForPage.data);
-    } catch (e) {
-      throw ServerException();
     }
 
     return data;
@@ -165,4 +144,38 @@ class NewsDatasource {
 
     return entities;
   }
+}
+
+// Isolate function to fetch the app feed
+Future<void> isolateAppFeed(List<dynamic> args) async {
+  if (args.isEmpty || args[0] is! SendPort || args[1] is! int) return;
+  final SendPort sendPort = args[0];
+  final int pages = args[1];
+
+  final client = Dio();
+  final List<dynamic> data = [];
+
+  /// Fetch a specific page from the app.asta-bochum.de JSON API
+  Future<void> getAppFeedPage(int page) async {
+    try {
+      final responseForPage = await client.get('$appFeed?page=$page');
+
+      if (responseForPage.statusCode != 200) throw ServerException();
+
+      data.addAll(responseForPage.data);
+    } catch (e) {
+      return;
+    }
+  }
+
+  if (pages > 1) {
+    final List<Future<void>> futures = [];
+    for (int i = 2; i <= pages; i++) {
+      futures.add(getAppFeedPage(i));
+    }
+
+    await Future.wait(futures);
+  }
+
+  sendPort.send(data);
 }

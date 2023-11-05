@@ -98,6 +98,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
       news: news,
       events: events,
       mixInto: Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore,
+      shuffle: !Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore,
     );
   }
 

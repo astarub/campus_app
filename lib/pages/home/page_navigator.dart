@@ -39,12 +39,13 @@ class NavBarNavigator extends StatelessWidget {
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const NavBarNavigator({
+    Key? key,
     required this.mainNavigatorKey,
     required this.navigatorKey,
     required this.pageItem,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
-  });
+  }) : super(key: key);
 
   /// Creates a map of the root and detail page of the specific page.
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context) {
@@ -93,11 +94,6 @@ class NavBarNavigator extends StatelessWidget {
       //TabNavigatorRoutes.detail: (context) => ,
     };
   }
-
-  /// Pushes the detail page onto the navigation-stack of the specific page
-  ///
-  /// HAS TO BE IMPLEMENTED!
-  void _push(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {

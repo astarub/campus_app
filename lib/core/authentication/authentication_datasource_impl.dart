@@ -93,10 +93,9 @@ class AuthenticationDatasourceImpl implements AuthenticationDatasource {
 
     final response = await client.post(
       MoodleAPIOperations.getTokenByLogin,
-      data: dio.FormData.fromMap({
-        MoodleAPIConstants.passwordQuery: password,
-        MoodleAPIConstants.usernameQuery: username
-      }),
+      data: dio.FormData.fromMap(
+        {MoodleAPIConstants.passwordQuery: password, MoodleAPIConstants.usernameQuery: username},
+      ),
     );
 
     if (response.statusCode != 200) {
@@ -104,8 +103,7 @@ class AuthenticationDatasourceImpl implements AuthenticationDatasource {
     } else {
       final responseBody = response.data as Map<String, dynamic>;
 
-      if (responseBody['token'] == null ||
-          responseBody['privatetoken'] == null) {
+      if (responseBody['token'] == null || responseBody['privatetoken'] == null) {
         throw InvalidLoginIDAndPasswordException();
       }
 

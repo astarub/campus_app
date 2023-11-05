@@ -16,7 +16,6 @@ import 'package:campus_app/pages/mensa/widgets/day_selection.dart';
 import 'package:campus_app/pages/mensa/widgets/expandable_restaurant.dart';
 import 'package:campus_app/pages/mensa/widgets/preferences_popup.dart';
 import 'package:campus_app/pages/mensa/widgets/allergenes_popup.dart';
-import 'package:xml/xml_events.dart';
 
 class MensaPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;

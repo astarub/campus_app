@@ -1,5 +1,3 @@
-import 'package:dartz/dartz.dart';
-
 /// response status code is not 200
 class ServerException implements Exception {}
 

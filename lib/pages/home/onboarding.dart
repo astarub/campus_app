@@ -251,8 +251,8 @@ class OnboardingPageState extends State<OnboardingPage> {
                                 strokeWidth: 3,
                               ),
                             ),
-                          )
-                        ]
+                          ),
+                        ],
                       ],
                     ),
                   ),

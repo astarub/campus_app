@@ -21,10 +21,9 @@ class MoodleDatasource {
         MoodleAPIConstants.baseUrl + MoodleAPIOperations.getUsersCoursesAsJson,
       ),
     );
-    request.fields.addAll({
-      MoodleAPIConstants.tokenQuery: token,
-      MoodleAPIConstants.usridQuery: userid.toString()
-    });
+    request.fields.addAll(
+      {MoodleAPIConstants.tokenQuery: token, MoodleAPIConstants.usridQuery: userid.toString()},
+    );
 
     final stream = await client.send(request);
     final response = await http.Response.fromStream(stream);

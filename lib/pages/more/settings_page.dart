@@ -224,7 +224,7 @@ class SettingsPageState extends State<SettingsPage> {
                           await backendRepository.removeAllSavedEvents(
                             provider,
                           );
-                        } on NoConnectionException catch (e) {
+                        } on NoConnectionException {
                           debugPrint(
                             'Could not remove all saved events from the backend. Retrying next restart.',
                           );

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io' show Platform;
 import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
@@ -262,7 +261,10 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     final filters = Provider.of<SettingsHandler>(context).currentSettings.eventsFilter;
     final publishers = Provider.of<SettingsHandler>(context).currentSettings.publishers;
     final List<Widget> filteredEvents = calendarUtils.filterEventWidgets(
-        filters, searchEventWidgets.isNotEmpty ? searchEventWidgets : parsedEventWidgets, publishers);
+      filters,
+      searchEventWidgets.isNotEmpty ? searchEventWidgets : parsedEventWidgets,
+      publishers,
+    );
 
     // Update the saved events list in case a user just saved an event
     if (showsavedEventWidgets) unawaited(updateSavedEventWidgets());
@@ -369,8 +371,9 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                                     ),
                                     // FeedPicker
                                     Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                                        child: upcomingSavedSwitch),
+                                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                                      child: upcomingSavedSwitch,
+                                    ),
                                     // Filter button
                                     CampusIconButton(
                                       iconPath: 'assets/img/icons/filter.svg',

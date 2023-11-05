@@ -25,7 +25,7 @@ class FeedItem extends StatelessWidget {
   final DateTime date;
 
   /// The image of the news feed item that is displayed in the feed and detail apge
-  CachedNetworkImage? image;
+  final CachedNetworkImage? image;
 
   /// A link of the news feed item that links to an external website, if no content is given
   final String link;
@@ -49,7 +49,7 @@ class FeedItem extends StatelessWidget {
   final String copyright;
 
   /// Creates a NewsFeed-item with an expandable content
-  FeedItem({
+  const FeedItem({
     Key? key,
     required this.title,
     this.description = '',
@@ -65,7 +65,7 @@ class FeedItem extends StatelessWidget {
   }) : super(key: key);
 
   /// Creates a NewsFeed-item with an external link
-  FeedItem.link({
+  const FeedItem.link({
     Key? key,
     required this.title,
     this.description = '',

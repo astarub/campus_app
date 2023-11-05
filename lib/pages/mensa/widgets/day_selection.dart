@@ -267,9 +267,9 @@ class MensaDaySelectionItem extends StatelessWidget {
   final VoidCallback onTap;
 
   /// Wether the SelectionItem is the currently active one or not
-  bool isActive;
+  final bool isActive;
 
-  MensaDaySelectionItem({
+  const MensaDaySelectionItem({
     Key? key,
     required this.day,
     required this.date,

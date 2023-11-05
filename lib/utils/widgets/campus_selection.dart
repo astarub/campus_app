@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -143,27 +145,27 @@ class SelectionItem extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: paddingVertical),
             child: Center(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 7),
+                padding: const EdgeInsets.symmetric(horizontal: 7),
                 height: 30,
                 alignment: Alignment.center,
                 child: Text(
                   text,
                   style: isActive
                       ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                    fontSize: text.length > 10 ? 10 : 13,
-                    color: Colors.white,
-                  )
+                            fontWeight: FontWeight.w500,
+                            fontSize: text.length > 10 ? 10 : 13,
+                            color: Colors.white,
+                          )
                       : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                    fontSize: text.length > 10 ? 11 : 13,
-                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? Colors.black
-                        : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.color,
-                  ),
+                            fontWeight: FontWeight.w500,
+                            fontSize: text.length > 10 ? 11 : 13,
+                            color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                ? Colors.black
+                                : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.color,
+                          ),
                   textAlign: TextAlign.center,
                 ),
-              )
+              ),
             ),
           ),
         ),

@@ -9,7 +9,6 @@ import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
 import 'package:campus_app/pages/home/widgets/side_nav_bar.dart';
-import 'package:campus_app/pages/feed/feed_page.dart';
 
 /// The [HomePage] displays all general UI elements like the bottom nav-menu and
 /// handles the switching between the different pages.
@@ -162,7 +161,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
 
     // Theme von System auslesen & Callback erstellen
-    final window = WidgetsBinding.instance.window;
+    final window = WidgetsBinding.instance.platformDispatcher;
 
     window.onPlatformBrightnessChanged = () {
       final brightness = window.platformBrightness;
