@@ -11,11 +11,11 @@ part 'env.g.dart';
 abstract class Env {
   // Can be called to access the obfuscated mensa API key
   @EnviedField(varName: 'MENSA_API_KEY', obfuscate: true)
-  static final mensaApiKey = _Env.mensaApiKey;
+  static final String mensaApiKey = _Env.mensaApiKey;
 
   @EnviedField(varName: 'FIREBASE_ANDROID_API_KEY', obfuscate: true)
-  static final firebaseAndroidApiKey = _Env.firebaseAndroidApiKey;
+  static final String firebaseAndroidApiKey = _Env.firebaseAndroidApiKey;
 
   @EnviedField(varName: 'FIREBASE_IOS_API_KEY', obfuscate: true)
-  static final firebaseIosApiKey = _Env.firebaseIosApiKey;
+  static final String firebaseIosApiKey = _Env.firebaseIosApiKey;
 }

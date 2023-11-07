@@ -95,8 +95,23 @@ class _CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           // Load settings and parse it
           settingsJsonFile.readAsString().then((String rawFileContent) {
             if (rawFileContent != '') {
-              final dynamic rawData = json.decode(rawFileContent);
-              loadedSettings = Settings.fromJson(rawData);
+              try {
+                final dynamic rawData = json.decode(rawFileContent);
+                loadedSettings = Settings.fromJson(rawData);
+              } catch (e) {
+                debugPrint('Settings file corrupted. Creating a new settings file.');
+
+                settingsJsonFile.deleteSync();
+                settingsJsonFile.create();
+
+                loadedSettings = Settings(
+                  feedFilter: ['RUB'],
+                  mensaPreferences: [],
+                  mensaAllergenes: [],
+                );
+
+                settingsJsonFile.writeAsString(json.encode(loadedSettings!.toJson()));
+              }
               loadedSettings = loadedSettings!.copyWith(newsExplore: false); // Default Feed on every start
 
               debugPrint('Settings loaded.');
