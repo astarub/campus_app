@@ -48,4 +48,3 @@ app.*.map.json
 
 # exclude all .env files
 *.env
-env.g.dart

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
@@ -31,6 +32,7 @@ import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 
+import 'package:sentry/sentry.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -132,8 +134,21 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           // Load settings and parse it
           settingsJsonFile.readAsString().then((String rawFileContent) {
             if (rawFileContent != '') {
-              final dynamic rawData = json.decode(rawFileContent);
-              loadedSettings = Settings.fromJson(rawData);
+              try {
+                final dynamic rawData = json.decode(rawFileContent);
+                loadedSettings = Settings.fromJson(rawData);
+              } catch (e) {
+                debugPrint('Settings file corrupted. Creating a new settings file.');
+
+                settingsJsonFile.deleteSync();
+                settingsJsonFile.create();
+
+                loadedSettings = Settings(
+                  mensaRestaurantConfig: mensaUtils.restaurantConfig,
+                );
+
+                settingsJsonFile.writeAsString(json.encode(loadedSettings!.toJson()));
+              }
 
               debugPrint('Settings loaded.');
               Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(loadedSettings!);
