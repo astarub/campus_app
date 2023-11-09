@@ -24,26 +24,26 @@ class MoodleCourseModel extends MoodleCourseEntity {
     Map<String, dynamic> json,
     String moodleToken, // TODO: image request requiers token
   ) {
-    CachedNetworkImage? _image;
+    CachedNetworkImage? image;
     final jsonImages = json['overviewfiles'] as List<dynamic>;
 
     if (jsonImages.isNotEmpty) {
       final imageUrl = (jsonImages[0] as Map<String, dynamic>)['fileurl'];
-      _image = CachedNetworkImage(imageUrl: imageUrl);
+      image = CachedNetworkImage(imageUrl: imageUrl);
     } else {
-      _image = null;
+      image = null;
     }
 
-    final _visible = json['visible'] == 1;
+    final visible = json['visible'] == 1;
 
     return MoodleCourseModel(
       id: json['id'],
       enrolledusercount: json['enrolledusercount'],
       fullname: json['fullname'],
-      image: _image,
+      image: image,
       shortname: json['shortname'],
       summary: json['summary'],
-      visible: _visible,
+      visible: visible,
     );
   }
 }

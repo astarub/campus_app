@@ -13,8 +13,8 @@ class SignInForm extends StatelessWidget {
 
     final utils = Utils();
 
-    late String _loginId;
-    late String _password;
+    late String loginId;
+    late String password;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -23,7 +23,7 @@ class SignInForm extends StatelessWidget {
       if (input == null || input.isEmpty) {
         return localization.empty_input_field;
       } else {
-        _loginId = input;
+        loginId = input;
         return null;
       }
     }
@@ -32,7 +32,7 @@ class SignInForm extends StatelessWidget {
       if (input == null || input.isEmpty) {
         return localization.empty_input_field;
       } else {
-        _password = input;
+        password = input;
         return null;
       }
     }

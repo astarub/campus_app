@@ -13,7 +13,7 @@ class TOTPForm extends StatelessWidget {
 
     final utils = Utils();
 
-    late String _totp;
+    late String totp;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -23,7 +23,7 @@ class TOTPForm extends StatelessWidget {
       } else if (input.length != 6) {
         return localization.login_error;
       } else {
-        _totp = input;
+        totp = input;
         return null;
       }
     }

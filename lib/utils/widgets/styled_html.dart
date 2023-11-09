@@ -54,15 +54,15 @@ class StyledHTML extends Html {
     BuildContext context,
     String url,
   ) {
-    String _url = url;
+    String url0 = url;
 
     // If a RUB news article refers to another RUB news article, than we
     // have to add a leading https://news.rub.de/
     if (url.startsWith(RegExp('/'))) {
-      _url = url.replaceFirst(RegExp('/'), 'https://news.rub.de/');
+      url0 = url.replaceFirst(RegExp('/'), 'https://news.rub.de/');
     }
 
-    final uri = Uri.parse(_url);
+    final uri = Uri.parse(url0);
 
     // Enforces to open social links in external browser to let the system handle these
     // and open designated apps, if installed

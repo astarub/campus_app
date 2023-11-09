@@ -184,7 +184,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
       FlutterNfcKit.finish();
       // ignore: empty_catches
     } on PlatformException {
-      debugPrint("yes");
+      debugPrint('yes');
     }
   }
 
