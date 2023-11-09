@@ -3,6 +3,7 @@ import 'dart:isolate';
 
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
+import 'package:sentry/sentry_io.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
@@ -54,7 +55,8 @@ class CalendarDatasource {
 
       final receivePort = ReceivePort();
 
-      await Isolate.spawn(isolateAStACalendar, [receivePort.sendPort, pages]);
+      final Isolate isolate = await Isolate.spawn(isolateAStACalendar, [receivePort.sendPort, pages]);
+      isolate.addSentryErrorListener();
 
       final List<dynamic> pageData = await receivePort.first;
 
@@ -91,7 +93,8 @@ class CalendarDatasource {
 
       final receivePort = ReceivePort();
 
-      await Isolate.spawn(isolateAppCalendar, [receivePort.sendPort, pages]);
+      final Isolate isolate = await Isolate.spawn(isolateAppCalendar, [receivePort.sendPort, pages]);
+      isolate.addSentryErrorListener();
 
       final List<dynamic> pageData = await receivePort.first;
 

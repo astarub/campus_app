@@ -19,3 +19,4 @@ final String mensaApiKey = Env.mensaApiKey;
 final String firebaseAndroidApiKey = Env.firebaseAndroidApiKey;
 final String firebaseIosApiKey = Env.firebaseIosApiKey;
 final String appwriteCreateUserKey = Env.appwriteCreateUserKey;
+final String sentryDsn = Env.sentryDsn;

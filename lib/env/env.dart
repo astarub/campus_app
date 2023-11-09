@@ -24,4 +24,7 @@ abstract class Env {
 
   @EnviedField(varName: 'APPWRITE_CREATE_USER_AUTH_KEY', obfuscate: true)
   static final String appwriteCreateUserKey = _Env.appwriteCreateUserKey;
+
+  @EnviedField(varName: 'SENTRY_DSN', obfuscate: true)
+  static final String sentryDsn = _Env.sentryDsn;
 }

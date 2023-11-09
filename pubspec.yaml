@@ -63,6 +63,8 @@ dependencies:
   slugid: ^1.1.2
   visibility_detector: ^0.4.0+2
   appinio_video_player: ^1.2.2
+  sentry_flutter: ^7.12.0
+  sentry: ^7.12.0
   
 dev_dependencies:
   flutter_test:

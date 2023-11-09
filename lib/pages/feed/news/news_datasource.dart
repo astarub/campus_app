@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'package:html/parser.dart' as html;
 import 'package:xml/xml.dart';
+import 'package:sentry/sentry_io.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
@@ -108,7 +109,8 @@ class NewsDatasource {
 
       final receivePort = ReceivePort();
 
-      await Isolate.spawn(isolateAppFeed, [receivePort.sendPort, pages]);
+      final Isolate isolate = await Isolate.spawn(isolateAppFeed, [receivePort.sendPort, pages]);
+      isolate.addSentryErrorListener();
 
       final List<dynamic> pageData = await receivePort.first;
 
