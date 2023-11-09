@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pdf_image_renderer/pdf_image_renderer.dart';
@@ -25,8 +27,8 @@ class CampusWallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double initialWalletOffset = (MediaQuery.of(context).size.width - 325) / 2;
-    const double initialWalletOffsetTablet = (550 - 325) / 2;
+    final double initialWalletOffset = (MediaQuery.of(context).size.width - 350) / 2;
+    const double initialWalletOffsetTablet = (550 - 350) / 2;
 
     return StackedCardCarousel(
       cardAlignment: CardAlignment.center,
@@ -34,8 +36,8 @@ class CampusWallet extends StatelessWidget {
       initialOffset: MediaQuery.of(context).size.shortestSide < 600 ? initialWalletOffset : initialWalletOffsetTablet,
       spaceBetweenItems: MediaQuery.of(context).size.shortestSide < 600 ? 400 : 500,
       items: const [
-        SizedBox(width: 325, height: 217, child: BogestraTicket()),
-        SizedBox(width: 325, height: 217, child: UbCard()),
+        SizedBox(width: 350, height: 217, child: BogestraTicket()),
+        SizedBox(width: 350, height: 217, child: UbCard()),
       ],
     );
   }
@@ -203,11 +205,20 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
       child: scanned
           ? GestureDetector(
               onTap: () {
-                setState(() => showQrCode = !showQrCode);
-                if (showQrCode) {
-                  setBrightness(1);
+                if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.displayFullscreenTicket) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BogestraTicketFullScreen(),
+                    ),
+                  );
                 } else {
-                  resetBrightness();
+                  setState(() => showQrCode = !showQrCode);
+                  if (showQrCode) {
+                    setBrightness(1);
+                  } else {
+                    resetBrightness();
+                  }
                 }
               },
               onLongPress: addTicket,

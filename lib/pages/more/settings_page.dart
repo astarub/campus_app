@@ -167,6 +167,15 @@ class SettingsPageState extends State<SettingsPage> {
                           settings.copyWith(useSystemTextScaling: switchValue);
                     },
                   ),
+                  // Display semester ticket on a separate page
+                  LeadingTextSwitch(
+                    text: 'Vollbildschirmmodus QR-Code Semesterticket',
+                    isActive: Provider.of<SettingsHandler>(context).currentSettings.displayFullscreenTicket,
+                    onToggle: (switchValue) {
+                      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                          settings.copyWith(displayFullscreenTicket: switchValue);
+                    },
+                  ),
                   const SectionHeadline(headline: 'Datenschutz'),
                   // Use Google services
                   LeadingTextSwitch(

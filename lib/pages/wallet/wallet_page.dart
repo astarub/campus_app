@@ -53,7 +53,7 @@ class _WalletPageState extends State<WalletPage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 250,
+                  height: 265,
                   child: CampusWallet(),
                 ),
                 Expanded(

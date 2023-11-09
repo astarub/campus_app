@@ -63,6 +63,7 @@ class Settings {
   final bool savedEventsNotifications;
   final BackendAccount backendAccount;
   final String latestVersion;
+  final bool displayFullscreenTicket;
   final double? lastMensaBalance;
   final double? lastMensaTransaction;
   final List<Map<String, dynamic>>? mensaRestaurantConfig;
@@ -75,6 +76,7 @@ class Settings {
     this.eventsFilter = const [],
     this.mensaPreferences = const [],
     this.mensaAllergenes = const [],
+    this.mensaRestaurantConfig = const [],
     this.useExternalBrowser = false,
     this.useSystemTextScaling = false,
     this.useFirebase = FirebaseStatus.uncofigured,
@@ -85,9 +87,9 @@ class Settings {
     this.savedEventsNotifications = true,
     this.backendAccount = const BackendAccount.empty(),
     this.latestVersion = '',
+    this.displayFullscreenTicket = false,
     this.lastMensaBalance,
     this.lastMensaTransaction,
-    this.mensaRestaurantConfig = const [],
   });
 
   Settings copyWith({
@@ -109,6 +111,7 @@ class Settings {
     bool? savedEventsNotifications,
     BackendAccount? backendAccount,
     String? latestVersion,
+    bool? displayFullscreenTicket,
     double? lastMensaBalance,
     double? lastMensaTransaction,
   }) =>
@@ -130,6 +133,7 @@ class Settings {
         savedEventsNotifications: savedEventsNotifications ?? this.savedEventsNotifications,
         backendAccount: backendAccount ?? this.backendAccount,
         latestVersion: latestVersion ?? this.latestVersion,
+        displayFullscreenTicket: displayFullscreenTicket ?? this.displayFullscreenTicket,
         lastMensaBalance: lastMensaBalance ?? this.lastMensaBalance,
         lastMensaTransaction: lastMensaTransaction ?? this.lastMensaTransaction,
         mensaRestaurantConfig: mensaRestaurantConfig ?? this.mensaRestaurantConfig,
@@ -178,6 +182,7 @@ class Settings {
           ? BackendAccount.fromJson(json: Map<String, dynamic>.from(json['backendAccount']))
           : const BackendAccount.empty(),
       latestVersion: json['latestVersion'] ?? '',
+      displayFullscreenTicket: json['displayFullscreenTicket'] ?? false,
       lastMensaBalance: json['lastMensaBalance'],
       lastMensaTransaction: json['lastMensaTransaction'],
     );
@@ -207,6 +212,7 @@ class Settings {
       'savedEventsNotifications': savedEventsNotifications,
       'backendAccount': backendAccount.toInternalJson(),
       'latestVersion': latestVersion,
+      'displayFullscreenTicket': displayFullscreenTicket,
       'lastMensaBalance': lastMensaBalance,
       'lastMensaTransaction': lastMensaTransaction,
     };
