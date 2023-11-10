@@ -11,6 +11,7 @@ import 'package:screen_brightness/screen_brightness.dart';
 import 'package:campus_app/core/themes.dart';
 
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class BogestraTicketFullScreen extends StatefulWidget {
   const BogestraTicketFullScreen({Key? key}) : super(key: key);
@@ -82,33 +83,48 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
-      body: Padding(
-        padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0),
-        child: Column(
-          children: [
-            // Back button & page title
-            Padding(
-              padding: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
-              child: SizedBox(
-                width: double.infinity,
-                child: Stack(
-                  children: [
-                    CampusIconButton(
-                      iconPath: 'assets/img/icons/arrow-left.svg',
-                      onTap: () => Navigator.pop(context),
-                    ),
-                  ],
+    return VisibilityDetector(
+      key: const Key('ticket-key'),
+      onVisibilityChanged: (info) {
+        final bool isVisible = info.visibleFraction > 0;
+
+        if (isVisible) {
+          setBrightness(1);
+        } else {
+          resetBrightness();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        body: Padding(
+          padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0),
+          child: Column(
+            children: [
+              // Back button & page title
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Stack(
+                    children: [
+                      CampusIconButton(
+                        iconPath: 'assets/img/icons/arrow-left.svg',
+                        onTap: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height / 2) + 40,
-              alignment: Alignment.center,
-              child: qrCodeImage ?? Container(),
-            ),
-          ],
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: Platform.isIOS ? 88 : 68),
+                  child: Center(
+                    child: qrCodeImage ?? Container(),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

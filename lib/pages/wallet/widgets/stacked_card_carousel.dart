@@ -123,7 +123,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
                 child: Wrap(
                   children: <Widget>[
                     Transform.scale(
-                      scale: scale,
+                      scale: scale + 0.085,
                       child: item.value,
                     ),
                   ],
