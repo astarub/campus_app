@@ -35,7 +35,7 @@ Please keep in mind the following rules when it comes to contribution:
 
 ### No direct commits to the main/master branch
 
-We work with feature branches, which means whenever you work on a feature or bug you do that on the explicit branch. If the feature is ready, we **merge it with a pull-request** into the main/master branch.
+We work with feature branches, which means whenever you work on a feature or bug you do that on the explicit branch. If the feature is ready, we **merge it with a pull-request** into the main/master branch. In some cases, the app team can bypass that rule if deemed necessary. 
 
 ### No pull-request merge without another persons approval
 
