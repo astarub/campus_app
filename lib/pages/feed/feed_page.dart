@@ -49,7 +49,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   double newsWidgetOpacity = 1;
 
   List<NewsEntity> news = [];
-  List<Event> events = [];
   List<Failure> failures = [];
   List<Widget> parsedNewsWidgets = [];
   List<Widget> searchNewsWidgets = [];
@@ -75,12 +74,9 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     } catch (e) {}
 
     final newsData = await _newsUsecases.updateFeedAndFailures();
-    final eventData = await _calendarUsecase.updateEventsAndFailures();
 
     setState(() {
       news = newsData['news']! as List<NewsEntity>;
-      events = eventData['events']! as List<Event>;
-      failures = (newsData['failures']! as List<Failure>)..addAll(eventData['failures']! as List<Failure>);
       parsedNewsWidgets = parseUpdateToWidgets();
     });
 
@@ -96,9 +92,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
     return _feedUtils.fromEntitiesToWidgetList(
       news: news,
-      events: events,
-      mixInto: Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore,
-      shuffle: !Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore,
+      shuffle: true,
     );
   }
 
@@ -134,10 +128,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     for (final Widget e in parsedNewsWidgets) {
       if (e is FeedItem) {
         if (e.title.toUpperCase().contains(search.toUpperCase())) {
-          filteredWidgets.add(e);
-        }
-      } else if (e is CalendarEventWidget) {
-        if (e.event.title.toUpperCase().contains(search.toUpperCase())) {
           filteredWidgets.add(e);
         }
       } else {
@@ -179,10 +169,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     news = newsData['news']! as List<NewsEntity>; // empty when no data was cached before
     failures = newsData['failures']! as List<Failure>; // CachFailure when no data was cached before
 
-    final eventData = _calendarUsecase.getCachedEventsAndFailures();
-    events = eventData['events']! as List<Event>; // empty when no data was cached before
-    failures.addAll(eventData['failures']! as List<Failure>); // CachFailure when no data was cached before
-
     // Request an update for the feed and show the refresh indicator
     Future.delayed(const Duration(milliseconds: 200)).then((_) {
       refreshIndicatorKey.currentState?.show();
@@ -205,11 +191,14 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
     // Filter the feed items based on the selected filters
     final filters = Provider.of<SettingsHandler>(context, listen: false).currentSettings.feedFilter;
+    final explore = Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore;
 
-    final List<Widget> filteredFeedItems = _feedUtils.filterFeedWidgets(
-      filters,
-      searchWord != '' ? searchNewsWidgets : parsedNewsWidgets,
-    );
+    final List<Widget> filteredFeedItems = !explore
+        ? _feedUtils.filterFeedWidgets(
+            filters,
+            searchWord != '' ? searchNewsWidgets : parsedNewsWidgets,
+          )
+        : (searchWord != '' ? searchNewsWidgets : parsedNewsWidgets);
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,

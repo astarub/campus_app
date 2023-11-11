@@ -47,9 +47,9 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Publisher> publishers = Provider.of<SettingsHandler>(
-      context,
-    ).currentSettings.publishers;
+    final List<Publisher> publishers =
+        Provider.of<SettingsHandler>(context).currentSettings.publishers.where((p) => !p.hidden).toList();
+
     final List<bool> selections = [];
 
     final List<String> filterNames = _selectedFilters.map((e) => e.name).toList();
@@ -67,6 +67,7 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
         widget.onClose(_selectedFilters);
         Navigator.pop(context);
       },
+      openPositionFactor: 0.6,
       child: Container(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         child: Padding(

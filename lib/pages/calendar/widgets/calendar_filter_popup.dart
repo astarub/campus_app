@@ -47,9 +47,8 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Publisher> publishers = Provider.of<SettingsHandler>(
-      context,
-    ).currentSettings.publishers;
+    final List<Publisher> publishers =
+        Provider.of<SettingsHandler>(context).currentSettings.publishers.where((p) => !p.hidden).toList();
     final List<bool> selections = [];
 
     final List<String> filterNames = _selectedFilters.map((e) => e.name).toList();
@@ -62,6 +61,7 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
 
     return PopupSheet(
       title: 'Event Filter',
+      openPositionFactor: 0.6,
       onClose: () {
         widget.onClose(_selectedFilters);
         Navigator.pop(context);

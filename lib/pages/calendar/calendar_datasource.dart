@@ -150,6 +150,11 @@ class CalendarDatasource {
     }
   }
 
+  /// Clears the cache
+  Future<void> clearEventEntityCache() async {
+    await eventCache.clear();
+  }
+
   /// Read cache of event entities and return them.
   List<Event> readEventsFromCache({bool saved = false, bool app = false}) {
     late int cntEntities;

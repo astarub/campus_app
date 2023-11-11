@@ -135,6 +135,11 @@ class NewsDatasource {
     }
   }
 
+  /// Clears the cache
+  Future<void> clearNewsEntityCache() async {
+    await rubnewsCache.clear();
+  }
+
   /// Read cach of news entities and return them.
   List<NewsEntity> readNewsEntitiesFromCach() {
     final cntEntities = rubnewsCache.get(keyCnt) as int;

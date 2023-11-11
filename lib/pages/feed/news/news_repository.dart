@@ -49,7 +49,7 @@ class NewsRepository {
       });
 
       // write entities to cache
-      unawaited(newsDatasource.writeNewsEntitiesToCache(entities));
+      unawaited(newsDatasource.clearNewsEntityCache().then((_) => newsDatasource.writeNewsEntitiesToCache(entities)));
 
       return Right(entities);
     } catch (e) {

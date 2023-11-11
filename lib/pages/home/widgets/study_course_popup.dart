@@ -114,7 +114,8 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
     popupController = SnappingSheetController();
 
     availableCourses = Provider.of<SettingsHandler>(context, listen: false).currentSettings.studyCourses;
-    selectedStudies = Provider.of<SettingsHandler>(context, listen: false).currentSettings.selectedStudyCourses;
+    selectedStudies = [];
+    selectedStudies.addAll(Provider.of<SettingsHandler>(context, listen: false).currentSettings.selectedStudyCourses);
 
     // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
     Timer(

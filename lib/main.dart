@@ -56,43 +56,19 @@ Future<void> main() async {
 
   // Checks if the app is in release mode and initializes sentry
   // REMOVE THIS CHECK IF YOU WISH TO RUN THE APP IN RELEASE MODE OTHERWISE THE APP WILL NOT RUN
-  if (kReleaseMode) {
-    await SentryFlutter.init(
-      (options) {
-        options.dsn = sentryDsn;
-        // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-        // We recommend adjusting this value in production.
-        options.tracesSampleRate = 0.3;
-      },
-      appRunner: () => runApp(
-        MultiProvider(
-          providers: [
-            // Initializes the provider that handles the app-theme, authentication and other things
-            ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
-            ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-            ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
-          ],
-          child: CampusApp(
-            key: campusAppKey,
-          ),
-        ),
+  runApp(
+    MultiProvider(
+      providers: [
+        // Initializes the provider that handles the app-theme, authentication and other things
+        ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
+        ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+        ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
+      ],
+      child: CampusApp(
+        key: campusAppKey,
       ),
-    );
-  } else {
-    runApp(
-      MultiProvider(
-        providers: [
-          // Initializes the provider that handles the app-theme, authentication and other things
-          ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
-          ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-          ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
-        ],
-        child: CampusApp(
-          key: campusAppKey,
-        ),
-      ),
-    );
-  }
+    ),
+  );
 }
 
 final GlobalKey<CampusAppState> campusAppKey = GlobalKey();

@@ -60,14 +60,14 @@ Future<void> init() async {
   sl.registerSingletonAsync(
     () async => NewsDatasource(
       client: sl(),
-      rubnewsCache: await Hive.openBox('newsCache'),
+      rubnewsCache: await Hive.openBox('postsCache'),
     ),
   );
 
   sl.registerSingletonAsync(
     () async => CalendarDatasource(
       client: sl(),
-      eventCache: await Hive.openBox('eventCache'),
+      eventCache: await Hive.openBox('eventsCache'),
     ),
   );
 
