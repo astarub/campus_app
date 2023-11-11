@@ -24,12 +24,7 @@ class MensaUtils {
       'name': 'Q-West',
       'openingHours': {'1-5': '11:15-22:00', '6': '', '7': ''},
       'imagePath': 'assets/img/qwest.png',
-    },
-    {
-      'name': 'Henkelmann',
-      'openingHours': {'1-5': '11:00-14:00', '6': '', '7': ''},
-      'imagePath': 'assets/img/henkelmann.png',
-    },
+    }
   ];
 
   bool isUppercase(String str) {

@@ -44,7 +44,6 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   late List<DishEntity> mensaDishes = [];
   late List<DishEntity> roteBeeteDishes = [];
   late List<DishEntity> qwestDishes = [];
-  late List<DishEntity> henkelmannDishes = [];
   late List<Failure> failures = [];
 
   late int selectedDay;
@@ -58,7 +57,6 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
         mensaDishes = data['mensa']! as List<DishEntity>;
         roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
         qwestDishes = data['qwest']! as List<DishEntity>;
-        henkelmannDishes = data['henkelmann']! as List<DishEntity>;
         failures = data['failures']! as List<Failure>;
       }),
     );
@@ -269,9 +267,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                                         ? mensaDishes
                                         : index == 3
                                             ? roteBeeteDishes
-                                            : index == 4
-                                                ? qwestDishes
-                                                : henkelmannDishes,
+                                            : qwestDishes,
                                     day: selectedDay,
                                     onPreferenceTap: singlePreferenceSelected,
                                     mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)

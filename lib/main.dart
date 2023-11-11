@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:path_provider/path_provider.dart';
@@ -15,7 +14,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import 'package:campus_app/core/authentication/authentication_handler.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
@@ -30,8 +28,6 @@ import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
-
-import 'package:sentry/sentry.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -55,19 +51,41 @@ Future<void> main() async {
 
   // Checks if the app is in release mode and initializes sentry
   // REMOVE THIS CHECK IF YOU WISH TO RUN THE APP IN RELEASE MODE OTHERWISE THE APP WILL NOT RUN
-  runApp(
-    MultiProvider(
-      providers: [
-        // Initializes the provider that handles the app-theme, authentication and other things
-        ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
-        ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-        ChangeNotifierProvider<AuthenticationHandler>(create: (_) => AuthenticationHandler()),
-      ],
-      child: CampusApp(
-        key: campusAppKey,
+  if (kReleaseMode) {
+    await SentryFlutter.init(
+      (options) {
+        options.dsn = sentryDsn;
+        // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+        // We recommend adjusting this value in production.
+        options.tracesSampleRate = 0.3;
+      },
+      appRunner: () => runApp(
+        MultiProvider(
+          providers: [
+            // Initializes the provider that handles the app-theme, authentication and other things
+            ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
+            ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+          ],
+          child: CampusApp(
+            key: campusAppKey,
+          ),
+        ),
       ),
-    ),
-  );
+    );
+  } else {
+    runApp(
+      MultiProvider(
+        providers: [
+          // Initializes the provider that handles the app-theme, authentication and other things
+          ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
+          ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+        ],
+        child: CampusApp(
+          key: campusAppKey,
+        ),
+      ),
+    );
+  }
 }
 
 final GlobalKey<CampusAppState> campusAppKey = GlobalKey();
@@ -183,7 +201,6 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
         }
       });
     });
-    //throw PlatformException(code: "sa");
   }
 
   /// Given the loaded settings, listen to the system brightness mode and apply the theme
@@ -267,8 +284,6 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
     // Add observer in order to listen to `didChangeAppLifecycleState`
     WidgetsBinding.instance.addObserver(this);
-
-    //_debugDeleteSettings();
 
     // load saved settings
     loadingTimer.start();
