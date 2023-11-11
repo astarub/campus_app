@@ -2,9 +2,8 @@
 
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
-import 'package:campus_app/utils/pages/presentation_functions.dart';
 
-class MensaUtils extends Utils {
+class MensaUtils {
   final List<Map<String, dynamic>> restaurantConfig = [
     {
       'name': 'KulturCafé',

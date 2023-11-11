@@ -1,17 +1,13 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:intl/intl.dart';
 
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/feed/widgets/feed_item.dart';
-import 'package:campus_app/utils/pages/presentation_functions.dart';
 import 'package:campus_app/utils/constants.dart';
 
-class FeedUtils extends Utils {
+class FeedUtils {
   // Save the shuffeled list to prevent constant re-shuffeling
   List shuffeledItemOrEventWidgets = [];
 

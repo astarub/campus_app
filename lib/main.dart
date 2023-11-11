@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -304,8 +303,6 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
       theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,
       darkTheme: Provider.of<ThemesNotifier>(context, listen: false).darkThemeData,
       themeMode: Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode,
