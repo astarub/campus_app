@@ -37,6 +37,11 @@ class MensaUsecases {
       (dishes) => data['roteBeete'] = dishes,
     );
 
+    qwestCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['qwest'] = dishes,
+    );
+
     qwestRemoteDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['qwest'] = dishes,
@@ -50,11 +55,6 @@ class MensaUsecases {
     roteBeeteRemoteDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['roteBeete'] = dishes,
-    );
-
-    qwestCachedDishes.fold(
-      (failure) => data['failures']!.add(failure),
-      (dishes) => data['qwest'] = dishes,
     );
 
     return data;

@@ -58,7 +58,7 @@ dependencies:
   mobile_scanner: ^3.5.2
   barcode_widget: ^2.0.4
   screen_brightness: ^0.2.2+1
-  fluttertoast: ^8.2.3
+  fluttertoast: ^8.2.4
   appwrite: ^11.0.0
   slugid: ^1.1.2
   visibility_detector: ^0.4.0+2

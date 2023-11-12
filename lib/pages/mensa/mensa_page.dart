@@ -47,6 +47,11 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   late List<Failure> failures = [];
 
   late int selectedDay;
+  DateTime selectedDate = DateTime.now().weekday == 6
+      ? DateTime.now().subtract(const Duration(days: 1))
+      : DateTime.now().weekday == 7
+          ? DateTime.now().subtract(const Duration(days: 2))
+          : DateTime.now();
 
   /// This function initiates the loading of the mensa data (and caching)
   Future<void> loadData() async {
@@ -174,7 +179,14 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                       // Day selection
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: MensaDaySelection(onChanged: (int day) => setState(() => selectedDay = day)),
+                        child: MensaDaySelection(
+                          onChanged: (int day, DateTime date) => setState(
+                            () {
+                              selectedDay = day;
+                              selectedDate = date;
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -252,6 +264,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                           return ExpandableRestaurant(
                             name: restaurantConfig[index - 1]['name'],
                             imagePath: restaurantConfig[index - 1]['imagePath'],
+                            date: selectedDate,
                             meals: index == 1
                                 ? mensaUtils.buildKulturCafeRestaurant(
                                     onPreferenceTap: singlePreferenceSelected,

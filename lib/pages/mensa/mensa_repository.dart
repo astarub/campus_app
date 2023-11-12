@@ -77,7 +77,6 @@ class MensaRepository {
 
         if (restaurant == 3) {
           // restaurant == QWEST
-
           final dishes = dishesJson[day] as List<dynamic>;
           for (final dish in dishes) {
             entities.add(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:slugid/slugid.dart';
 
 class ScrollToTopButton extends StatefulWidget {
   final ScrollController scrollController;
@@ -39,6 +40,7 @@ class ScrollToTopButtonState extends State<ScrollToTopButton> {
       duration: const Duration(milliseconds: 300),
       opacity: showBacktoTopButton ? 1 : 0,
       child: FloatingActionButton(
+        heroTag: Slugid.v4(),
         onPressed: () {
           widget.scrollController.animateTo(
             0,
