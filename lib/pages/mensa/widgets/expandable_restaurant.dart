@@ -25,7 +25,10 @@ class ExpandableRestaurant extends StatefulWidget {
   /// Opening hours in the format hh:mm-hh:mm
   final Map<String, String> openingHours;
 
+  /// Selected date
   final DateTime date;
+
+  final Stream<int> stream;
 
   const ExpandableRestaurant({
     Key? key,
@@ -34,6 +37,7 @@ class ExpandableRestaurant extends StatefulWidget {
     required this.meals,
     required this.openingHours,
     required this.date,
+    required this.stream,
   }) : super(key: key);
 
   @override
@@ -172,17 +176,6 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    // Get the current restaurant status
-    status = getOpeningStatus(widget.openingHours, widget.date);
-
-    // Set the remaining time timer
-    setTimer();
-  }
-
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
@@ -197,9 +190,25 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+
+    // Get the current restaurant status
     status = getOpeningStatus(widget.openingHours, widget.date);
 
+    // Set the remaining time timer
+    setTimer();
+
+    // Listen for day changes
+    widget.stream.listen((_) {
+      setState(() {
+        status = getOpeningStatus(widget.openingHours, widget.date);
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 30),
       decoration: BoxDecoration(

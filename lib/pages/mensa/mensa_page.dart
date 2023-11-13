@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
@@ -47,11 +48,14 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   late List<Failure> failures = [];
 
   late int selectedDay;
+
   DateTime selectedDate = DateTime.now().weekday == 6
       ? DateTime.now().subtract(const Duration(days: 1))
       : DateTime.now().weekday == 7
           ? DateTime.now().subtract(const Duration(days: 2))
           : DateTime.now();
+
+  StreamController<int> streamController = StreamController<int>();
 
   /// This function initiates the loading of the mensa data (and caching)
   Future<void> loadData() async {
@@ -184,6 +188,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                             () {
                               selectedDay = day;
                               selectedDate = date;
+                              streamController.add(1);
                             },
                           ),
                         ),
@@ -265,6 +270,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                             name: restaurantConfig[index - 1]['name'],
                             imagePath: restaurantConfig[index - 1]['imagePath'],
                             date: selectedDate,
+                            stream: streamController.stream,
                             meals: index == 1
                                 ? mensaUtils.buildKulturCafeRestaurant(
                                     onPreferenceTap: singlePreferenceSelected,
