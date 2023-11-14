@@ -55,7 +55,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
           ? DateTime.now().subtract(const Duration(days: 2))
           : DateTime.now();
 
-  StreamController<int> streamController = StreamController<int>();
+  StreamController<int> streamController = StreamController<int>.broadcast();
 
   /// This function initiates the loading of the mensa data (and caching)
   Future<void> loadData() async {

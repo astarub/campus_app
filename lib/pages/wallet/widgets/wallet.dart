@@ -71,7 +71,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
     final File ticketFile = File('$directoryPath/ticket.pdf');
 
     // If the images were parsed and saved in the past, they're loaded
-    final bool tickedSaved = await ticketFile.exists();
+    final bool tickedSaved = ticketFile.existsSync();
     if (tickedSaved) {
       final Image semesterTicketImage = await renderSemesterTicket(ticketFile.path);
       final Image qrCodeImage = await renderQRCode(ticketFile.path);
@@ -299,7 +299,7 @@ class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCa
     final String directoryPath = saveDirectory.path;
 
     final File barcodeFile = File('$directoryPath/settings.txt');
-    barcodeFile.writeAsString(scannedValue);
+    await barcodeFile.writeAsString(scannedValue);
 
     debugPrint('Saved UB barcode.');
   }
@@ -311,20 +311,18 @@ class _UbCardState extends State<UbCard> with AutomaticKeepAliveClientMixin<UbCa
 
     final File barcodeFile = File('$directoryPath/settings.txt');
 
-    await barcodeFile.exists().then((bool existing) {
-      if (existing) {
-        debugPrint('Loading UB barcode');
+    if (barcodeFile.existsSync()) {
+      debugPrint('Loading UB barcode');
 
-        barcodeFile.readAsString().then((String loadedValue) {
-          if (loadedValue != '') {
-            setState(() {
-              scannedValue = loadedValue;
-              scanned = true;
-            });
-          }
-        });
-      }
-    });
+      await barcodeFile.readAsString().then((String loadedValue) {
+        if (loadedValue != '') {
+          setState(() {
+            scannedValue = loadedValue;
+            scanned = true;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -434,7 +432,6 @@ Future<void> setBrightness(double brightness) async {
     await ScreenBrightness().setScreenBrightness(brightness);
   } catch (e) {
     debugPrint(e.toString());
-    throw 'Failed to set brightness';
   }
 }
 
@@ -443,6 +440,5 @@ Future<void> resetBrightness() async {
     await ScreenBrightness().resetScreenBrightness();
   } catch (e) {
     debugPrint(e.toString());
-    throw 'Failed to reset brightness';
   }
 }

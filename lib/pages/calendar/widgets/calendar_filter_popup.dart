@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';

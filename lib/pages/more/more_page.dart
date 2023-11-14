@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:campus_app/pages/more/privacy_policy_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,6 +12,7 @@ import 'package:campus_app/pages/more/widgets/button_group.dart';
 import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/pages/more/static_info_page.dart';
 import 'package:campus_app/pages/more/settings_page.dart';
+import 'package:campus_app/pages/more/imprint_page.dart';
 
 class MorePage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -215,10 +217,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const StaticInfoPage.external(
-                                    title: 'Datenschutz',
-                                    url: 'https://asta-bochum.de/datenschutz/#campus-app',
-                                  ),
+                                  builder: (context) => const PrivacyPolicyPage(),
                                 ),
                               );
                             },
@@ -231,12 +230,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => const StaticInfoPage.external(
-                                    title: 'Impressum',
-                                    url: 'https://asta-bochum.de/impressum/',
-                                  ),
-                                ),
+                                MaterialPageRoute(builder: (context) => ImprintPage()),
                               );
                             },
                           ),

@@ -139,7 +139,12 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
         timer = t;
         final DateTime now = DateTime.now();
         final DateTime closingDate = now.copyWith(
-            hour: closingHourGlobal, minute: closingMinuteGlobal, second: 0, millisecond: 0, microsecond: 0);
+          hour: closingHourGlobal,
+          minute: closingMinuteGlobal,
+          second: 0,
+          millisecond: 0,
+          microsecond: 0,
+        );
 
         final Duration difference = closingDate.difference(now);
 
@@ -158,7 +163,10 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
           final int minutes = difference.inMinutes % 60;
           final int seconds = difference.inSeconds % 60;
 
-          if (!mounted) return;
+          if (!mounted) {
+            t.cancel();
+            return;
+          }
 
           if (hours == 0) {
             setState(() {
@@ -199,10 +207,13 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
     // Set the remaining time timer
     setTimer();
 
-    // Listen for day changes
-    widget.stream.listen((_) {
-      setState(() {
-        status = getOpeningStatus(widget.openingHours, widget.date);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.stream.listen((_) {
+        if (mounted) {
+          setState(() {
+            status = getOpeningStatus(widget.openingHours, widget.date);
+          });
+        }
       });
     });
   }

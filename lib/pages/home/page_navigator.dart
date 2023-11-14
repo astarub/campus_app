@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:campus_app/pages/feed/feed_page.dart';
+import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
 import 'package:campus_app/pages/calendar/calendar_page.dart';
 import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/wallet/wallet_page.dart';

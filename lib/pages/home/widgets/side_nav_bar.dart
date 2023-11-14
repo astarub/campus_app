@@ -10,7 +10,7 @@ class SideNavBar extends StatefulWidget {
   final PageItem currentPage;
 
   /// Calls this function when an item of the navigation bar is selected.
-  final Function onSelectedPage;
+  final Function(PageItem) onSelectedPage;
 
   const SideNavBar({
     Key? key,

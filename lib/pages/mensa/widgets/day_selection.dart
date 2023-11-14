@@ -137,7 +137,7 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
 
     return Stack(
       alignment: Alignment.center,

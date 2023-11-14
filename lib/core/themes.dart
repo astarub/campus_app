@@ -184,7 +184,7 @@ class ThemesNotifier with ChangeNotifier {
     _currentThemeMode = mode;
 
     if (mode == ThemeMode.system) {
-      final Brightness deviceMode = WidgetsBinding.instance.window.platformBrightness;
+      final Brightness deviceMode = WidgetsBinding.instance.platformDispatcher.platformBrightness;
       if (deviceMode == Brightness.light) {
         debugPrint('System-Theme ist: LightMode');
         if (currentTheme == AppThemes.dark) currentTheme = AppThemes.light;

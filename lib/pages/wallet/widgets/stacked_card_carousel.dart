@@ -199,7 +199,7 @@ class ClickThroughRenderStack extends RenderStack {
     final List<RenderBox> children = getChildrenAsList();
 
     for (final RenderBox child in children) {
-      final StackParentData childParentData = child.parentData as StackParentData;
+      final StackParentData childParentData = child.parentData! as StackParentData;
 
       final bool childHit = result.addWithPaintOffset(
         offset: childParentData.offset,

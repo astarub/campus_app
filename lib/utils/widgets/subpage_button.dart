@@ -114,18 +114,6 @@ class SubPageButton extends StatelessWidget {
                               : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!,
                       BlendMode.srcIn,
                     ),
-                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? disabled
-                            ? Colors.black.withOpacity(0.5)
-                            : Colors.black
-                        : disabled
-                            ? Provider.of<ThemesNotifier>(context)
-                                .currentThemeData
-                                .textTheme
-                                .bodyMedium
-                                ?.color
-                                ?.withOpacity(0.5)
-                            : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium?.color,
                     height: 20,
                     alignment: Alignment.centerRight,
                   ),

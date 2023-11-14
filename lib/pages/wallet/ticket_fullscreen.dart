@@ -135,7 +135,6 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
       await ScreenBrightness().setScreenBrightness(brightness);
     } catch (e) {
       debugPrint(e.toString());
-      throw 'Failed to set brightness';
     }
   }
 
@@ -144,7 +143,6 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
       await ScreenBrightness().resetScreenBrightness();
     } catch (e) {
       debugPrint(e.toString());
-      throw 'Failed to reset brightness';
     }
   }
 }
