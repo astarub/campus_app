@@ -10,6 +10,7 @@ import 'package:campus_app/pages/wallet/mensa_balance_page.dart';
 import 'package:campus_app/utils/widgets/subpage_button.dart';
 import 'package:campus_app/pages/wallet/widgets/leitwarte_button.dart';
 import 'package:campus_app/pages/wallet/widgets/wallet.dart';
+import 'package:campus_app/pages/wallet/Raumfinder.dart';
 
 class WalletPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -84,12 +85,19 @@ class _WalletPageState extends State<WalletPage> {
                               },
                             ),
                             // Room finder (WIP)
+                            // Room finder (WIP)
                             SubPageButton(
                               title: 'Raumfinder',
                               leadingIconPath: 'assets/img/icons/map.svg',
                               trailingIconPath: 'assets/img/icons/chevron-right.svg',
-                              onTap: () {},
-                              disabled: true,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const RaumfinderPage(),
+                                  ),
+                                );
+                              },
                             ),
                             // FAQ
                             SubPageButton(
