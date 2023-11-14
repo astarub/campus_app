@@ -20,7 +20,6 @@ class _RaumfinderPageState extends State<RaumfinderPage> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  // Note: Load from external File instead -> Dictionary is Default
   final Map<String, LatLng> predefinedLocations = {
     "UFO": LatLng(51.448051, 7.259111),
     "U35-Haltestelle": LatLng(51.447198, 7.259043),
@@ -92,6 +91,7 @@ class _RaumfinderPageState extends State<RaumfinderPage> {
     "IDN": LatLng(51.447889, 7.263472),
   };
 
+  // Example for later date
   final Map data = {
     "Bib": const [
       "51.447105",
