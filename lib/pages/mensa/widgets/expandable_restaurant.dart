@@ -133,8 +133,10 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
     final DateTime now = DateTime.now();
 
     if (status == RestaurantStatus.open && DateUtils.isSameDay(widget.date, now)) {
+      // Abort if a timer is already running
       if (timer != null) return;
 
+      // Set a timer
       Timer.periodic(const Duration(seconds: 1), (t) {
         timer = t;
         final DateTime now = DateTime.now();
@@ -208,6 +210,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
     setTimer();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Listen for new day selections
       widget.stream.listen((_) {
         if (mounted) {
           setState(() {

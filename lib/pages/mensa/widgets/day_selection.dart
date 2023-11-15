@@ -44,25 +44,37 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
     switch (today.weekday) {
       case 1: // Monday
         calculatedDates.add(DateFormat('dd.MM').format(today));
+
+        // Add days for this week
         for (int i = 1; i <= 4; i++) {
           calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
         }
+
+        // Add days for next week
         for (int i = 7; i <= 11; i++) {
           calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
         }
         break;
       case 2: // Tuesday
+        // Add the day before this day -> Monday
         calculatedDates.add(DateFormat('dd.MM').format(today.add(const Duration(days: -1))));
+
+        // Add today's date
         calculatedDates.add(DateFormat('dd.MM').format(today));
+
+        // Add the remaining dates of this week
         for (int i = 1; i <= 3; i++) {
           calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
         }
+
+        // Add the dates of next week
         for (int i = 6; i <= 10; i++) {
           calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
         }
         selectedDay = 1;
         break;
       case 3: // Wednesday
+        // Same scheme as above
         for (int i = -2; i <= -1; i++) {
           calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
         }
@@ -76,6 +88,7 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
         selectedDay = 2;
         break;
       case 4: // Thursday
+        // Same scheme as above
         for (int i = -3; i <= -1; i++) {
           calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
         }
@@ -87,9 +100,11 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
         selectedDay = 3;
         break;
       default: // Friday, Saturday or Sunday
+        // Same scheme as above
         for (int i = -4; i <= -1; i++) {
           calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
         }
+        // Same scheme as above
         calculatedDates.add(DateFormat('dd.MM').format(today));
         for (int i = 3; i <= 7; i++) {
           calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
@@ -111,6 +126,8 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
     super.initState();
 
     weekDates = _generateDays();
+
+    // Controller for the horizontal scroll direction arrows
 
     controller.addListener(() {
       if (controller.offset > 2) {

@@ -11,9 +11,6 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
-import 'package:campus_app/pages/calendar/calendar_usecases.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/feed/news/news_usecases.dart';
 import 'package:campus_app/pages/feed/widgets/feed_item.dart';
@@ -54,7 +51,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   List<Widget> searchNewsWidgets = [];
 
   final NewsUsecases _newsUsecases = sl<NewsUsecases>();
-  final CalendarUsecases _calendarUsecase = sl<CalendarUsecases>();
   final FeedUtils _feedUtils = sl<FeedUtils>();
   final BackendRepository backendRepository = sl<BackendRepository>();
 

@@ -10,7 +10,6 @@ import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/more/widgets/external_link_button.dart';
 import 'package:campus_app/pages/more/widgets/button_group.dart';
 import 'package:campus_app/pages/more/in_app_web_view_page.dart';
-import 'package:campus_app/pages/more/static_info_page.dart';
 import 'package:campus_app/pages/more/settings_page.dart';
 import 'package:campus_app/pages/more/imprint_page.dart';
 
@@ -230,7 +229,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => ImprintPage()),
+                                MaterialPageRoute(builder: (context) => const ImprintPage()),
                               );
                             },
                           ),
