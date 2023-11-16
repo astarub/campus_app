@@ -131,7 +131,7 @@ class ThemesNotifier with ChangeNotifier {
           fontWeight: FontWeight.w600,
         ),
       ),
-    )
+    ),
   ];
 
   AppThemes _currentTheme = AppThemes.light;

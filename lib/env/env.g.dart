@@ -39,7 +39,7 @@ class _Env {
     129865009,
     3288995117,
     3693412547,
-    1466338230
+    1466338230,
   ];
   static const List<int> _envieddatamensaApiKey = [
     2447609971,
@@ -73,7 +73,7 @@ class _Env {
     129864960,
     3288995102,
     3693412592,
-    1466338177
+    1466338177,
   ];
   static final mensaApiKey = String.fromCharCodes(
     List.generate(_envieddatamensaApiKey.length, (i) => i, growable: false)
@@ -119,7 +119,7 @@ class _Env {
     690650138,
     4251870393,
     1012358125,
-    2177988640
+    2177988640,
   ];
   static const List<int> _envieddatafirebaseAndroidApiKey = [
     2284955583,
@@ -160,7 +160,7 @@ class _Env {
     690650223,
     4251870428,
     1012358017,
-    2177988679
+    2177988679,
   ];
   static final firebaseAndroidApiKey = String.fromCharCodes(
     List.generate(_envieddatafirebaseAndroidApiKey.length, (i) => i, growable: false)
@@ -206,7 +206,7 @@ class _Env {
     1980533142,
     4156005444,
     3363924071,
-    1209741763
+    1209741763,
   ];
   static const List<int> _envieddatafirebaseIosApiKey = [
     1105731039,
@@ -247,7 +247,7 @@ class _Env {
     1980533244,
     4156005431,
     3363923976,
-    1209741748
+    1209741748,
   ];
   static final firebaseIosApiKey = String.fromCharCodes(
     List.generate(_envieddatafirebaseIosApiKey.length, (i) => i, growable: false)

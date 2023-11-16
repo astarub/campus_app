@@ -111,7 +111,7 @@ class SubPageButton extends StatelessWidget {
                     height: 20,
                     alignment: Alignment.centerRight,
                   ),
-                )
+                ),
               ],
             ),
           ),

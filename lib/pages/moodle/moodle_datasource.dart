@@ -23,7 +23,7 @@ class MoodleDatasource {
     );
     request.fields.addAll({
       MoodleAPIConstants.tokenQuery: token,
-      MoodleAPIConstants.usridQuery: userid.toString()
+      MoodleAPIConstants.usridQuery: userid.toString(),
     });
 
     final stream = await client.send(request);

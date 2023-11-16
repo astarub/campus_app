@@ -399,7 +399,7 @@ class MensaUtils extends Utils {
                 'Apfelsaft, Apfelschorle, Orangensaft, Orangenschorle, Kirsch-Nektar, Bananen-Nektar, Pfirisch-Nektar, KiBa/BaKi, Maracuja-Nektar, Andere Saftschorle oder Tomatensaft',
             price: '1,80€ / 3,40',
             onPreferenceTap: onPreferenceTap,
-          )
+          ),
         ],
       ),
       MealCategory(

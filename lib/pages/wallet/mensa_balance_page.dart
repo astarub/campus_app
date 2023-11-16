@@ -292,7 +292,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                 ),
                               ],
                             ),
-                          )
+                          ),
                       ],
                     )
                   : const EmptyStatePlaceholder(
