@@ -56,6 +56,8 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(

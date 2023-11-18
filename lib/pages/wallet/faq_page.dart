@@ -8,7 +8,7 @@ import 'package:campus_app/pages/wallet/widgets/expandable_faq_item.dart';
 import 'package:campus_app/pages/wallet/guide_content.dart';
 
 class FaqPage extends StatelessWidget {
-  List<Widget> faqExpandables = [];
+  final List<Widget> faqExpandables = [];
 
   FaqPage({Key? key}) : super(key: key) {
     // Sort the Entries Alphabetically before Adding them
