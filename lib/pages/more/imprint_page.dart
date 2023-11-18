@@ -13,7 +13,7 @@ class ImprintPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Padding(
-        padding: const EdgeInsets.only(top: 40),
+        padding: const EdgeInsets.only(top: 20),
         child: Column(
           children: [
             // Back button & page title
