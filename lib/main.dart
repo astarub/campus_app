@@ -121,86 +121,86 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       // Load settings async
       final File settingsJsonFile = File('$_directoryPath/settings.json');
 
+      final bool existing = settingsJsonFile.existsSync();
+
       // Check if settings file already exists
-      settingsJsonFile.exists().then((bool existing) {
-        if (existing) {
-          debugPrint('Settings-file already exists. Initialize loading of settings.');
-          // Load settings and parse it
-          settingsJsonFile.readAsString().then((String rawFileContent) {
-            if (rawFileContent != '') {
-              try {
-                final dynamic rawData = json.decode(rawFileContent);
-                loadedSettings = Settings.fromJson(rawData);
-              } catch (e) {
-                debugPrint('Settings file corrupted. Creating a new settings file.');
+      if (existing) {
+        debugPrint('Settings-file already exists. Initialize loading of settings.');
+        // Load settings and parse it
+        settingsJsonFile.readAsString().then((String rawFileContent) {
+          if (rawFileContent != '') {
+            try {
+              final dynamic rawData = json.decode(rawFileContent);
+              loadedSettings = Settings.fromJson(rawData);
+            } catch (e) {
+              debugPrint('Settings file corrupted. Creating a new settings file.');
 
-                settingsJsonFile.deleteSync();
-                settingsJsonFile.create();
+              settingsJsonFile.deleteSync();
+              settingsJsonFile.create();
 
-                loadedSettings = Settings(
-                  mensaRestaurantConfig: mensaUtils.restaurantConfig,
-                );
-
-                settingsJsonFile.writeAsString(json.encode(loadedSettings!.toJson()));
-              }
-
-              debugPrint('Settings loaded.');
-              Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(loadedSettings!);
-
-              // Set theme
-              setTheme(
-                contextForThemeProvider: context,
-                useSystemDarkmode: loadedSettings!.useSystemDarkmode,
-                useDarkmode: loadedSettings!.useDarkmode,
+              loadedSettings = Settings(
+                mensaRestaurantConfig: mensaUtils.restaurantConfig,
               );
 
-              loadingTimer.stop();
-              debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
-
-              // Start the app
-              FlutterNativeSplash.remove();
-
-              // Check whether the user agreed to use Firebase
-              mainUtils.checkFirebasePermission(
-                context,
-                mainNavigatorKey,
-              );
-
-              // Initialize the backend connection
-              initializeBackendConnection();
+              settingsJsonFile.writeAsString(json.encode(loadedSettings!.toJson()));
             }
-          });
-        } else {
-          // Create settings file for the first time, if it doesnt exist
-          debugPrint('Settings-file created.');
-          settingsJsonFile.create();
-          final Settings initialSettings = Settings(
-            mensaAllergenes: [],
-            mensaRestaurantConfig: mensaUtils.restaurantConfig,
-          );
-          settingsJsonFile.writeAsString(json.encode(initialSettings.toJson()));
 
-          // Apply the inital settings
-          Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(initialSettings);
+            debugPrint('Settings loaded.');
+            Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(loadedSettings!);
 
-          // Set theme (defaults to current system brightness)
-          setTheme(contextForThemeProvider: context);
+            // Set theme
+            setTheme(
+              contextForThemeProvider: context,
+              useSystemDarkmode: loadedSettings!.useSystemDarkmode,
+              useDarkmode: loadedSettings!.useDarkmode,
+            );
 
-          // Initialize the backend connection
-          initializeBackendConnection();
+            loadingTimer.stop();
+            debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
 
-          loadingTimer.stop();
-          debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
+            // Start the app
+            FlutterNativeSplash.remove();
 
-          // Start the app and show the onboarding experience
-          FlutterNativeSplash.remove();
-          Navigator.of(mainNavigatorKey.currentState!.context).push(
-            MaterialPageRoute(
-              builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey),
-            ),
-          );
-        }
-      });
+            // Check whether the user agreed to use Firebase
+            mainUtils.checkFirebasePermission(
+              context,
+              mainNavigatorKey,
+            );
+
+            // Initialize the backend connection
+            initializeBackendConnection();
+          }
+        });
+      } else {
+        // Create settings file for the first time, if it doesnt exist
+        debugPrint('Settings-file created.');
+        settingsJsonFile.create();
+        final Settings initialSettings = Settings(
+          mensaAllergenes: [],
+          mensaRestaurantConfig: mensaUtils.restaurantConfig,
+        );
+        settingsJsonFile.writeAsString(json.encode(initialSettings.toJson()));
+
+        // Apply the inital settings
+        Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(initialSettings);
+
+        // Set theme (defaults to current system brightness)
+        setTheme(contextForThemeProvider: context);
+
+        // Initialize the backend connection
+        initializeBackendConnection();
+
+        loadingTimer.stop();
+        debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
+
+        // Start the app and show the onboarding experience
+        FlutterNativeSplash.remove();
+        Navigator.of(mainNavigatorKey.currentState!.context).push(
+          MaterialPageRoute(
+            builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey),
+          ),
+        );
+      }
     });
   }
 
