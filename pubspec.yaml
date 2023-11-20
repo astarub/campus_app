@@ -57,24 +57,22 @@ dependencies:
       url: 'https://github.com/ScerIO/packages.flutter'
       path: packages/pdfx
   pdf_image_renderer: ^0.7.0
-  syncfusion_flutter_pdf: ^23.1.44
-  mobile_scanner: ^3.5.2
-  barcode_widget: ^2.0.4
+  syncfusion_flutter_pdf: ^23.2.4
   screen_brightness: ^0.2.2+1
   fluttertoast: ^8.2.4
-  appwrite: ^11.0.0
+  appwrite: ^11.0.1
   slugid: ^1.1.2
   visibility_detector: ^0.4.0+2
   appinio_video_player: ^1.2.2
   sentry_flutter: ^7.12.0
-  sentry: ^7.12.0
+  sentry: ^7.13.1
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.3.3  
   flutter_lints: ^2.0.1
-  mockito: ^5.4.0
+  mockito: ^5.4.3
   envied_generator: ^0.5.1
   flutter_launcher_icons: ^0.13.1
 
