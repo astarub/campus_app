@@ -83,7 +83,6 @@ class PrivacyPolicyPage extends StatelessWidget {
                     Ein Einfluss auf die Verarbeitung der dort erhobenen Daten besteht nicht. 
                     Die oben genannten Nutzungsdaten werden dabei an folgende Anbieter übermittelt: <br>
                     - ruhr-uni-bochum.de, Universitätsstraße 150, 44801 Bochum. Datenschutzerklärung: <a href="https://www.ruhr-uni-bochum.de/de/datenschutz">https://www.ruhr-uni-bochum.de/de/datenschutz</a><br>
-                    - asta-bochum.de, Universitätsstraße 150, 44801 Bochum. Datenschutzerklärung: <a href="https://asta-bochum.de/datenschutz">https://asta-bochum.de/datenschutz</a><br>
                     <br>
                     Bei der Installation der App werden Benutzer:innen danach gefragt, ob sie Push Notifications zu bestimmten Themen bekommen möchten. 
                     Wenn Nutzer:innen in den Bezug von Push Notifications Einwilligen werden personenbezogene Daten wie z.B. IP Adresse und die gewählten Themen an Server der Firma Google Inc. übertragen. 
