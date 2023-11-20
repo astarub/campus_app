@@ -41,7 +41,7 @@ void main() {
     mockClient = MockDio();
     mockCach = MockBox();
 
-    calendarDatasource = CalendarDatasource(client: mockClient, eventCach: mockCach);
+    calendarDatasource = CalendarDatasource(client: mockClient, eventCache: mockCach);
   });
 
   group('[getAStAEventsAsJsonArray]', () {
@@ -124,8 +124,8 @@ void main() {
       when(mockCach.get(2)).thenAnswer((_) => samleEventEntities[2]);
 
       // act: write sample entities to cach
-      await calendarDatasource.writeEventsToCach(samleEventEntities);
-      final testReturn = calendarDatasource.readEventsFromCach();
+      await calendarDatasource.writeEventsToCache(samleEventEntities);
+      final testReturn = calendarDatasource.readEventsFromCache();
 
       // assert: is testElement expected object? -> List<Event> samleEventEntities
       identical(testReturn, samleEventEntities); // is the returned object the expected one?

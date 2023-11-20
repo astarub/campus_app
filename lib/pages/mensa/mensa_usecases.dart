@@ -16,19 +16,16 @@ class MensaUsecases {
       'mensa': <DishEntity>[],
       'roteBeete': <DishEntity>[],
       'qwest': <DishEntity>[],
-      'henkelmann': <DishEntity>[],
     };
 
     // Get remote and cached dishes
     final Either<Failure, List<DishEntity>> mensaRemoteDishes = await mensaRepository.getRemoteDishes(1);
     final Either<Failure, List<DishEntity>> roteBeeteRemoteDishes = await mensaRepository.getRemoteDishes(2);
     final Either<Failure, List<DishEntity>> qwestRemoteDishes = await mensaRepository.getRemoteDishes(3);
-    final Either<Failure, List<DishEntity>> henkelmannRemoteDishes = await mensaRepository.getRemoteDishes(4);
 
     final Either<Failure, List<DishEntity>> mensaCachedDishes = mensaRepository.getCachedDishes(1);
     final Either<Failure, List<DishEntity>> roteBeeteCachedDishes = mensaRepository.getCachedDishes(2);
     final Either<Failure, List<DishEntity>> qwestCachedDishes = mensaRepository.getCachedDishes(3);
-    final Either<Failure, List<DishEntity>> henkelmannCachedDishes = mensaRepository.getCachedDishes(4);
 
     mensaCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
@@ -40,14 +37,14 @@ class MensaUsecases {
       (dishes) => data['roteBeete'] = dishes,
     );
 
-    qwestRemoteDishes.fold(
+    qwestCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['qwest'] = dishes,
     );
 
-    henkelmannRemoteDishes.fold(
+    qwestRemoteDishes.fold(
       (failure) => data['failures']!.add(failure),
-      (dishes) => data['henkelmann'] = dishes,
+      (dishes) => data['qwest'] = dishes,
     );
 
     mensaRemoteDishes.fold(
@@ -60,16 +57,6 @@ class MensaUsecases {
       (dishes) => data['roteBeete'] = dishes,
     );
 
-    qwestCachedDishes.fold(
-      (failure) => data['failures']!.add(failure),
-      (dishes) => data['qwest'] = dishes,
-    );
-
-    henkelmannCachedDishes.fold(
-      (failure) => data['failures']!.add(failure),
-      (dishes) => data['henkelmann'] = dishes,
-    );
-
     return data;
   }
 
@@ -79,13 +66,11 @@ class MensaUsecases {
       'mensa': <DishEntity>[],
       'roteBeete': <DishEntity>[],
       'qwest': <DishEntity>[],
-      'henkelmann': <DishEntity>[],
     };
 
     final Either<Failure, List<DishEntity>> mensaCachedDishes = mensaRepository.getCachedDishes(1);
     final Either<Failure, List<DishEntity>> roteBeeteCachedDishes = mensaRepository.getCachedDishes(2);
-    final Either<Failure, List<DishEntity>> qwestCachedDishes = mensaRepository.getCachedDishes(2);
-    final Either<Failure, List<DishEntity>> henkelmannCachedDishes = mensaRepository.getCachedDishes(2);
+    final Either<Failure, List<DishEntity>> qwestCachedDishes = mensaRepository.getCachedDishes(3);
 
     mensaCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
@@ -100,11 +85,6 @@ class MensaUsecases {
     qwestCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['qwest'] = dishes,
-    );
-
-    henkelmannCachedDishes.fold(
-      (failure) => data['failures']!.add(failure),
-      (dishes) => data['henkelmann'] = dishes,
     );
 
     return data;

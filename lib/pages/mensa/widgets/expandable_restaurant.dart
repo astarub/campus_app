@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,30 +25,42 @@ class ExpandableRestaurant extends StatefulWidget {
   /// Opening hours in the format hh:mm-hh:mm
   final Map<String, String> openingHours;
 
+  /// Selected date
+  final DateTime date;
+
+  final Stream<int> stream;
+
   const ExpandableRestaurant({
     Key? key,
     required this.name,
     required this.imagePath,
     required this.meals,
     required this.openingHours,
+    required this.date,
+    required this.stream,
   }) : super(key: key);
 
   @override
   State<ExpandableRestaurant> createState() => _ExpandableRestaurantState();
 }
 
-class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
+class _ExpandableRestaurantState extends State<ExpandableRestaurant> with WidgetsBindingObserver {
   /// Key to acess the state of the AnimatedExpandable() for showing & hiding the meals
   final GlobalKey<AnimatedExpandableState> restaurantExpandableKey = GlobalKey();
 
   bool _isExpanded = false;
-  DateTime now = DateTime.now();
+
+  RestaurantStatus status = RestaurantStatus.unknown;
+  String openingHours = '';
+  int closingHourGlobal = 0;
+  int closingMinuteGlobal = 0;
+  String remainingTime = '';
+  Timer? timer;
 
   /// Retrieves the opening hours for the current day based on either a range of weekday Integers or a single Integer
-  RestaurantStatus getOpeningStatus(Map<String, String> openingHoursMap) {
+  RestaurantStatus getOpeningStatus(Map<String, String> openingHoursMap, DateTime now) {
     // Get all opening/closed days
     final List<String> days = openingHoursMap.keys.toList();
-    String openingHours = '';
 
     // Choose the right opening hours in accordance to the current weekday
     for (final String weekday in days) {
@@ -90,6 +104,9 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
                 ? openingHours.substring(9)
                 : '0';
 
+        closingHourGlobal = int.tryParse(closingHour) != null ? int.tryParse(closingHour)! : 0;
+        closingMinuteGlobal = int.tryParse(closingMinute) != null ? int.tryParse(closingMinute)! : 0;
+
         // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
         final int openComb = int.tryParse(openingHour + openingMinute)!;
         final int closeComb = int.tryParse(closingHour + closingMinute)!;
@@ -111,11 +128,101 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
     return status;
   }
 
+  // Checks whether the current restaurant is open and then runs a periodic timer to update the remaining time
+  void setTimer() {
+    final DateTime now = DateTime.now();
+
+    if (status == RestaurantStatus.open && DateUtils.isSameDay(widget.date, now)) {
+      // Abort if a timer is already running
+      if (timer != null) return;
+
+      // Set a timer
+      Timer.periodic(const Duration(seconds: 1), (t) {
+        timer = t;
+        final DateTime now = DateTime.now();
+        final DateTime closingDate = now.copyWith(
+          hour: closingHourGlobal,
+          minute: closingMinuteGlobal,
+          second: 0,
+          millisecond: 0,
+          microsecond: 0,
+        );
+
+        final Duration difference = closingDate.difference(now);
+
+        if (difference.inSeconds == 0) {
+          t.cancel();
+          timer = null;
+
+          if (!mounted) return;
+
+          setState(() {
+            status = RestaurantStatus.closed;
+            remainingTime = '';
+          });
+        } else {
+          final int hours = difference.inHours % 24;
+          final int minutes = difference.inMinutes % 60;
+          final int seconds = difference.inSeconds % 60;
+
+          if (!mounted) {
+            t.cancel();
+            return;
+          }
+
+          if (hours == 0) {
+            setState(() {
+              remainingTime = '${minutes >= 10 ? minutes : "0$minutes"}:${seconds >= 10 ? seconds : "0$seconds"}';
+            });
+          } else {
+            setState(() {
+              remainingTime =
+                  '${hours >= 10 ? hours : "0$hours"}:${minutes >= 10 ? minutes : "0$minutes"}:${seconds >= 10 ? seconds : "0$seconds"}';
+            });
+          }
+        }
+      });
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // Updates the opening state of the current restaurant and sets the remaining time timer
+    if (state == AppLifecycleState.resumed) {
+      setState(() {
+        status = getOpeningStatus(widget.openingHours, widget.date);
+      });
+
+      setTimer();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Get the current restaurant status
+    status = getOpeningStatus(widget.openingHours, widget.date);
+
+    // Set the remaining time timer
+    setTimer();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Listen for new day selections
+      widget.stream.listen((_) {
+        if (mounted) {
+          setState(() {
+            status = getOpeningStatus(widget.openingHours, widget.date);
+          });
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Get the current restaurant status
-    final RestaurantStatus status = getOpeningStatus(widget.openingHours);
-
     return Container(
       margin: const EdgeInsets.only(bottom: 30),
       decoration: BoxDecoration(
@@ -218,7 +325,33 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> {
           // Items
           AnimatedExpandable(
             key: restaurantExpandableKey,
-            children: widget.meals,
+            children: <Widget>[
+                  // Opening hours
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          status == RestaurantStatus.closed
+                              ? 'Öffnungszeiten: ${openingHours.split("-")[0]} - ${openingHours.split("-")[1]} Uhr'
+                              : 'Geöffnet: ${openingHours.split("-")[0]} - ${openingHours.split("-")[1]} Uhr',
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                        ),
+                        if (status == RestaurantStatus.open && DateUtils.isSameDay(widget.date, DateTime.now())) ...[
+                          Text(
+                            'Verbleibende Zeit: $remainingTime',
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ] +
+                widget.meals,
           ),
         ],
       ),

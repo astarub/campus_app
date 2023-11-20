@@ -1,4 +1,4 @@
-const List<String> availableStudies = [
+const List<String> staticStudyCourses = [
   'Accounting and Auditing',
   'Allgemeine und vergleichende Literaturwissenschaft',
   'Angewandte Informatik',

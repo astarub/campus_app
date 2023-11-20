@@ -29,9 +29,10 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
   late AnimationController successAnimationController;
 
   void saveMensaCardData(double scannedBalance, double lastTransaction) {
-    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false)
-        .currentSettings
-        .copyWith(lastMensaBalance: scannedBalance, lastMensaTransaction: lastTransaction);
+    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
+          lastMensaBalance: scannedBalance,
+          lastMensaTransaction: lastTransaction,
+        );
 
     debugPrint(
       'Saving scanned mensa card data: Balance=${newSettings.lastMensaBalance}, Last Transaction: ${newSettings.lastMensaTransaction}',
@@ -179,7 +180,12 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
     super.dispose();
 
     successAnimationController.dispose();
-    FlutterNfcKit.finish();
+    try {
+      FlutterNfcKit.finish();
+      // ignore: empty_catches
+    } on PlatformException {
+      debugPrint('yes');
+    }
   }
 
   @override
@@ -270,7 +276,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                           ),
                         ),
                         // Scan card notification
-                        if (!tagScanned)
+                        if (!tagScanned) ...[
                           Padding(
                             padding: EdgeInsets.only(
                               bottom: Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null
@@ -292,7 +298,8 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                 ),
                               ],
                             ),
-                          )
+                          ),
+                        ],
                       ],
                     )
                   : const EmptyStatePlaceholder(

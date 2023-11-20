@@ -21,9 +21,14 @@ class CalendarUsecases {
     };
 
     // get events from AStA API and cached events
-    final Either<Failure, List<Event>> remoteEvents = await calendarRepository.getAStAEvents();
-    final Either<Failure, List<Event>> cachedEvents = calendarRepository.getCachedEvents();
-    final Either<Failure, List<Event>> savedEvents = await calendarRepository.updateSavedEvents();
+    final Either<Failure, List<Event>> remoteEvents =
+        await calendarRepository.getAStAEvents();
+    final Either<Failure, List<Event>> remoteAppEvents =
+        await calendarRepository.getAppEvents();
+    final Either<Failure, List<Event>> cachedEvents =
+        calendarRepository.getCachedEvents();
+    final Either<Failure, List<Event>> savedEvents =
+        await calendarRepository.updateSavedEvents();
 
     // fold cachedEvents
     cachedEvents.fold(
@@ -36,12 +41,24 @@ class CalendarUsecases {
       (failure) => data['failures']!.add(failure),
       (events) => data['events'] = events, // overwrite cached feed
     );
+    remoteAppEvents.fold(
+      (failure) => data['failures']!.add(failure),
+      (events) => data['events'] = List<Event>.from(data['events']!) + List<Event>.from(events),
+    );
 
     // fold savedEvents
     savedEvents.fold(
       (failure) => data['failures']!.add(failure),
       (events) => data['saved'] = events,
     );
+
+    List<Event>.from(data['events']!).sort((a, b) {
+      return a.startDate.compareTo(b.startDate);
+    });
+
+    List<Event>.from(data['saved']!).sort((a, b) {
+      return a.startDate.compareTo(b.startDate);
+    });
 
     return data;
   }
@@ -58,13 +75,22 @@ class CalendarUsecases {
     };
 
     // get only cached events
-    final Either<Failure, List<Event>> cachedEvents = calendarRepository.getCachedEvents();
+    final Either<Failure, List<Event>> cachedEvents =
+        calendarRepository.getCachedEvents();
 
     // fold cachedEvents
     cachedEvents.fold(
       (failure) => data['failures']!.add(failure),
       (events) => data['events'] = events,
     );
+
+    List<Event>.from(data['events']!).sort((a, b) {
+      return a.startDate.compareTo(b.startDate);
+    });
+
+    List<Event>.from(data['saved']!).sort((a, b) {
+      return a.startDate.compareTo(b.startDate);
+    });
 
     return data;
   }

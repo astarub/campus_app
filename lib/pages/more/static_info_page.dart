@@ -34,10 +34,10 @@ class StaticInfoPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StaticInfoPage> createState() => _StaticInfoPageState();
+  State<StaticInfoPage> createState() => StaticInfoPageState();
 }
 
-class _StaticInfoPageState extends State<StaticInfoPage> {
+class StaticInfoPageState extends State<StaticInfoPage> {
   InAppWebViewController? webViewController;
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(

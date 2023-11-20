@@ -57,10 +57,10 @@ class CalendarEventWidget extends StatelessWidget {
         ),
         child: CustomButton(
           borderRadius: BorderRadius.circular(15),
-          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          highlightColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.03)
               : const Color.fromRGBO(255, 255, 255, 0.03),
-          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          splashColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.04)
               : const Color.fromRGBO(255, 255, 255, 0.04),
           tapHandler: openable ? openDetailsPage : () {},

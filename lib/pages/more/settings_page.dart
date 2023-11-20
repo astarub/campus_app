@@ -1,31 +1,43 @@
 import 'dart:io' show Platform;
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/main.dart';
+import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/core/backend/backend_repository.dart';
+import 'package:campus_app/pages/home/widgets/study_course_popup.dart';
+import 'package:campus_app/pages/more/widgets/leading_button.dart';
+import 'package:campus_app/pages/more/widgets/leading_text_switch.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/animated_conditional.dart';
-import 'package:campus_app/pages/more/widgets/leading_text_switch.dart';
 
 /// This page displays the app settings
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<SettingsPage> createState() => SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
-  late Settings _settings;
+class SettingsPageState extends State<SettingsPage> {
+  late Settings settings;
 
   final GlobalKey<AnimatedConditionalState> _darkmodeAnimationKey = GlobalKey();
+
+  final BackendRepository backendRepository = sl<BackendRepository>();
+  final MainUtils mainUtils = sl<MainUtils>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _settings = Provider.of<SettingsHandler>(context).currentSettings;
+    settings = Provider.of<SettingsHandler>(context).currentSettings;
   }
 
   @override
@@ -74,18 +86,22 @@ class _SettingsPageState extends State<SettingsPage> {
                       if (switchValue) {
                         Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
                         Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                            _settings.copyWith(useSystemDarkmode: switchValue);
+                            settings.copyWith(useSystemDarkmode: switchValue);
                       } else {
                         // Apply the system brightness to the useDarkmode setting as a default falue
                         // in order to not change the brightness whenever the useSystemDarkmode setting is turned off
                         if (MediaQuery.of(context).platformBrightness == Brightness.light) {
                           Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.light;
-                          Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                              _settings.copyWith(useDarkmode: false, useSystemDarkmode: switchValue);
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = settings.copyWith(
+                            useDarkmode: false,
+                            useSystemDarkmode: switchValue,
+                          );
                         } else {
                           Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
-                          Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                              _settings.copyWith(useDarkmode: true, useSystemDarkmode: switchValue);
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = settings.copyWith(
+                            useDarkmode: true,
+                            useSystemDarkmode: switchValue,
+                          );
                         }
                       }
 
@@ -107,7 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         isActive: Provider.of<SettingsHandler>(context).currentSettings.useDarkmode,
                         onToggle: (switchValue) {
                           Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                              _settings.copyWith(useDarkmode: switchValue);
+                              settings.copyWith(useDarkmode: switchValue);
 
                           // Notify the UI that the currentTheme has changed
                           if (switchValue) {
@@ -119,6 +135,19 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                   ),
+                  const SectionHeadline(headline: 'Stammdaten'),
+                  LeadingButton(
+                    text: 'Studiengang',
+                    buttonText: 'Ändern',
+                    onTap: () => campusAppKey.currentState?.mainNavigatorKey.currentState?.push(
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (context, _, __) => const StudyCoursePopup(),
+                      ),
+                    ),
+                    height: 45,
+                    width: 80,
+                  ),
                   const SectionHeadline(headline: 'Verhalten'),
                   // External Browser
                   LeadingTextSwitch(
@@ -126,7 +155,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.useExternalBrowser,
                     onToggle: (switchValue) {
                       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                          _settings.copyWith(useExternalBrowser: switchValue);
+                          settings.copyWith(useExternalBrowser: switchValue);
                     },
                   ),
                   // Apply app to system text scaling
@@ -135,7 +164,16 @@ class _SettingsPageState extends State<SettingsPage> {
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling,
                     onToggle: (switchValue) {
                       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                          _settings.copyWith(useSystemTextScaling: switchValue);
+                          settings.copyWith(useSystemTextScaling: switchValue);
+                    },
+                  ),
+                  // Display semester ticket on a separate page
+                  LeadingTextSwitch(
+                    text: 'Vollbildschirmmodus QR-Code Semesterticket',
+                    isActive: Provider.of<SettingsHandler>(context).currentSettings.displayFullscreenTicket,
+                    onToggle: (switchValue) {
+                      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+                          settings.copyWith(displayFullscreenTicket: switchValue);
                     },
                   ),
                   const SectionHeadline(headline: 'Datenschutz'),
@@ -144,13 +182,62 @@ class _SettingsPageState extends State<SettingsPage> {
                     text: 'Google Services für Benachrichtigungen',
                     isActive:
                         Provider.of<SettingsHandler>(context).currentSettings.useFirebase == FirebaseStatus.permitted,
-                    onToggle: (switchValue) {
+                    onToggle: (switchValue) async {
+                      if (switchValue) {
+                        Provider.of<SettingsHandler>(context, listen: false).currentSettings = settings.copyWith(
+                          useFirebase: FirebaseStatus.permitted,
+                        );
+
+                        await mainUtils.initializeFirebase(context);
+                      } else {
+                        if (mounted) {
+                          Provider.of<SettingsHandler>(context, listen: false).currentSettings = settings.copyWith(
+                            useFirebase: FirebaseStatus.forbidden,
+                          );
+                        }
+
+                        try {
+                          await backendRepository.removeAllSavedEvents(
+                            Provider.of<SettingsHandler>(
+                              context,
+                              listen: false,
+                            ),
+                          );
+                          await FirebaseMessaging.instance.deleteToken();
+                        } catch (e) {
+                          debugPrint(
+                            'Could not remove the device from Firebase. Retrying next restart.',
+                          );
+                        }
+                      }
+                    },
+                  ),
+                  const SectionHeadline(headline: 'Push-Benachrichtigungen'),
+                  LeadingTextSwitch(
+                    text: 'Benachrichtigungen für gespeicherte Events',
+                    isActive: Provider.of<SettingsHandler>(context).currentSettings.savedEventsNotifications,
+                    onToggle: (switchValue) async {
                       if (switchValue) {
                         Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                            _settings.copyWith(useFirebase: FirebaseStatus.permitted);
+                            settings.copyWith(savedEventsNotifications: true);
                       } else {
                         Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                            _settings.copyWith(useFirebase: FirebaseStatus.forbidden);
+                            settings.copyWith(savedEventsNotifications: false);
+
+                        try {
+                          final provider = Provider.of<SettingsHandler>(context, listen: false);
+
+                          await backendRepository.unsubscribeFromAllSavedEvents(
+                            provider,
+                          );
+                          await backendRepository.removeAllSavedEvents(
+                            provider,
+                          );
+                        } on NoConnectionException {
+                          debugPrint(
+                            'Could not remove all saved events from the backend. Retrying next restart.',
+                          );
+                        }
                       }
                     },
                   ),

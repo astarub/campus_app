@@ -17,7 +17,7 @@ class ThemeSelectionState extends State<ThemeSelection> with SingleTickerProvide
 
   void changeTheme(int selectedThemeMode) {
     // Control animation
-    final Brightness currentBrightness = WidgetsBinding.instance.window.platformBrightness;
+    final Brightness currentBrightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
     if (selectedThemeMode == 0 &&
         Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
         currentBrightness == Brightness.light) {

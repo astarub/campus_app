@@ -28,10 +28,10 @@ class CampusSegmentedTripleControl extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CampusSegmentedTripleControl> createState() => _CampusSegmentedTripleControlState();
+  State<CampusSegmentedTripleControl> createState() => CampusSegmentedTripleControlState();
 }
 
-class _CampusSegmentedTripleControlState extends State<CampusSegmentedTripleControl> {
+class CampusSegmentedTripleControlState extends State<CampusSegmentedTripleControl> {
   late AlignmentGeometry _hoverAligment;
   static const double _pickerWidth = 300;
 

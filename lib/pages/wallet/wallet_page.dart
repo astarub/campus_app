@@ -53,7 +53,7 @@ class _WalletPageState extends State<WalletPage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 250,
+                  height: 265,
                   child: CampusWallet(),
                 ),
                 Expanded(
@@ -116,7 +116,10 @@ class _WalletPageState extends State<WalletPage> {
                             SvgPicture.asset(
                               'assets/img/icons/info-message.svg',
                               height: 24,
-                              color: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color,
+                              colorFilter: ColorFilter.mode(
+                                Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!,
+                                BlendMode.srcIn,
+                              ),
                             ),
                             Expanded(
                               child: Padding(

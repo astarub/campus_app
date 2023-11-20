@@ -25,7 +25,7 @@ class AnimatedEntry extends StatefulWidget {
   const AnimatedEntry({
     required Key? key,
     this.duration = const Duration(milliseconds: 750),
-    this.interval = const Interval(0.0, 1.0, curve: Curves.easeOutCubic),
+    this.interval = const Interval(0, 1, curve: Curves.easeOutCubic),
     this.offset = 10,
     this.offsetDuration = const Duration(milliseconds: 100),
     required this.child,

@@ -2,6 +2,9 @@ import 'package:envied/envied.dart';
 
 part 'env.g.dart';
 
+// CONTAINS WRONG CREDENTIALS
+// ACCESS TO OUR INFRASTRUCTURE IS RESTRICTED!!!!!!
+
 /// This class holds all secret environment variables.
 ///
 /// To genereate the [env.g.dart] file with new variables, create a
@@ -18,4 +21,10 @@ abstract class Env {
 
   @EnviedField(varName: 'FIREBASE_IOS_API_KEY', obfuscate: true)
   static final String firebaseIosApiKey = _Env.firebaseIosApiKey;
+
+  @EnviedField(varName: 'APPWRITE_CREATE_USER_AUTH_KEY', obfuscate: true)
+  static final String appwriteCreateUserKey = _Env.appwriteCreateUserKey;
+
+  @EnviedField(varName: 'SENTRY_DSN', obfuscate: true)
+  static final String sentryDsn = _Env.sentryDsn;
 }

@@ -2,9 +2,31 @@
 
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
-import 'package:campus_app/utils/pages/presentation_functions.dart';
 
-class MensaUtils extends Utils {
+class MensaUtils {
+  final List<Map<String, dynamic>> restaurantConfig = [
+    {
+      'name': 'KulturCafé',
+      'openingHours': {'1-4': '10:00-20:00', '5': '11:00-16:00', '6': '', '7': ''},
+      'imagePath': 'assets/img/qwest.png',
+    },
+    {
+      'name': 'Mensa der RUB',
+      'openingHours': {'1-5': '11:00-14:30', '6': '', '7': ''},
+      'imagePath': 'assets/img/mensa.png',
+    },
+    {
+      'name': 'Rote Bete',
+      'openingHours': {'1-5': '11:00-14:30', '6': '', '7': ''},
+      'imagePath': 'assets/img/rotebeete.png',
+    },
+    {
+      'name': 'Q-West',
+      'openingHours': {'1-5': '11:15-22:00', '6': '', '7': ''},
+      'imagePath': 'assets/img/qwest.png',
+    }
+  ];
+
   bool isUppercase(String str) {
     return str == str.toUpperCase();
   }
@@ -399,7 +421,7 @@ class MensaUtils extends Utils {
                 'Apfelsaft, Apfelschorle, Orangensaft, Orangenschorle, Kirsch-Nektar, Bananen-Nektar, Pfirisch-Nektar, KiBa/BaKi, Maracuja-Nektar, Andere Saftschorle oder Tomatensaft',
             price: '1,80€ / 3,40',
             onPreferenceTap: onPreferenceTap,
-          )
+          ),
         ],
       ),
       MealCategory(

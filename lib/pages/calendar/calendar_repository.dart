@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:dartz/dartz.dart';
-
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/calendar/calendar_datasource.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:dartz/dartz.dart';
 
 class CalendarRepository {
   final CalendarDatasource calendarDatasource;
@@ -28,7 +27,41 @@ class CalendarRepository {
       }
 
       // write entities to cach
-      unawaited(calendarDatasource.writeEventsToCach(entities));
+      unawaited(
+        calendarDatasource.clearEventEntityCache().then((_) => calendarDatasource.writeEventsToCache(entities)),
+      );
+
+      return Right(entities);
+    } catch (e) {
+      switch (e.runtimeType) {
+        case ServerException:
+          return Left(ServerFailure());
+
+        case JsonException:
+          return Left(ServerFailure());
+
+        case EmptyResponseException:
+          return Left(NoDataFailure());
+
+        default:
+          return Left(GeneralFailure());
+      }
+    }
+  }
+
+  /// Return a list of events or a failure
+  Future<Either<Failure, List<Event>>> getAppEvents() async {
+    try {
+      final astaEventsJson = await calendarDatasource.getAppEventsAsJsonArray();
+
+      final List<Event> entities = [];
+
+      for (final Map<String, dynamic> event in astaEventsJson) {
+        entities.add(Event.fromExternalJson(event));
+      }
+
+      // write entities to cache
+      unawaited(calendarDatasource.writeEventsToCache(entities, app: true));
 
       return Right(entities);
     } catch (e) {
@@ -51,8 +84,27 @@ class CalendarRepository {
   /// Return a list of cached events or a failure.
   Either<Failure, List<Event>> getCachedEvents() {
     try {
-      final cachedEvents = calendarDatasource.readEventsFromCach();
-      return Right(cachedEvents);
+      final cachedEvents = calendarDatasource.readEventsFromCache();
+      final cachedAppEvents = calendarDatasource.readEventsFromCache(app: true);
+
+      // Cache contains both app and asta events
+      if (cachedAppEvents.isNotEmpty && cachedEvents.isNotEmpty) {
+        return Right(
+          List<Event>.from(cachedEvents) + List<Event>.from(cachedAppEvents),
+        );
+      }
+
+      // Cache only contains app events
+      if (cachedAppEvents.isNotEmpty && cachedEvents.isEmpty) {
+        return Right(
+          List<Event>.from(cachedAppEvents),
+        );
+      }
+
+      // Cache only contains asta events
+      return Right(
+        List<Event>.from(cachedEvents),
+      );
     } catch (e) {
       return Left(CachFailure());
     }
@@ -61,7 +113,7 @@ class CalendarRepository {
   /// Return a list of saved events or a failure.
   Future<Either<Failure, List<Event>>> updateSavedEvents({Event? event}) async {
     try {
-      final savedEvents = calendarDatasource.readEventsFromCach(saved: true);
+      final savedEvents = calendarDatasource.readEventsFromCache(saved: true);
 
       // update list of saved events
       if (event != null) {
@@ -72,7 +124,7 @@ class CalendarRepository {
         }
       }
 
-      unawaited(calendarDatasource.writeEventsToCach(savedEvents, saved: true));
+      unawaited(calendarDatasource.writeEventsToCache(savedEvents, saved: true));
 
       return Right(savedEvents);
     } catch (e) {

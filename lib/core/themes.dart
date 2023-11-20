@@ -9,7 +9,6 @@ class ThemesNotifier with ChangeNotifier {
     ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      backgroundColor: Colors.white,
       primaryColor: Colors.black,
       cardColor: Colors.white,
       colorScheme: const ColorScheme(
@@ -30,6 +29,11 @@ class ThemesNotifier with ChangeNotifier {
         displayMedium: TextStyle(
           color: Colors.black,
           fontSize: 30,
+          fontWeight: FontWeight.w600,
+        ),
+        displaySmall: TextStyle(
+          color: Colors.black,
+          fontSize: 26,
           fontWeight: FontWeight.w600,
         ),
         headlineMedium: TextStyle(
@@ -72,7 +76,6 @@ class ThemesNotifier with ChangeNotifier {
     ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      backgroundColor: const Color.fromRGBO(14, 20, 32, 1),
       primaryColor: Colors.white,
       cardColor: const Color.fromRGBO(17, 25, 38, 1),
       colorScheme: const ColorScheme(
@@ -93,6 +96,11 @@ class ThemesNotifier with ChangeNotifier {
         displayMedium: TextStyle(
           color: Colors.white,
           fontSize: 30,
+          fontWeight: FontWeight.w600,
+        ),
+        displaySmall: TextStyle(
+          color: Colors.white,
+          fontSize: 26,
           fontWeight: FontWeight.w600,
         ),
         headlineMedium: TextStyle(
@@ -131,7 +139,7 @@ class ThemesNotifier with ChangeNotifier {
           fontWeight: FontWeight.w600,
         ),
       ),
-    )
+    ),
   ];
 
   AppThemes _currentTheme = AppThemes.light;
@@ -176,7 +184,7 @@ class ThemesNotifier with ChangeNotifier {
     _currentThemeMode = mode;
 
     if (mode == ThemeMode.system) {
-      final Brightness deviceMode = WidgetsBinding.instance.window.platformBrightness;
+      final Brightness deviceMode = WidgetsBinding.instance.platformDispatcher.platformBrightness;
       if (deviceMode == Brightness.light) {
         debugPrint('System-Theme ist: LightMode');
         if (currentTheme == AppThemes.dark) currentTheme = AppThemes.light;

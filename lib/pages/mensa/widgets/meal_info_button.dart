@@ -86,10 +86,13 @@ class MealInfoButton extends StatelessWidget {
                   child: iconPath!.substring(iconPath!.length - 3) == 'svg'
                       ? SvgPicture.asset(
                           iconPath!,
-                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
-                                  (info == 'A' || info == 'H')
-                              ? Colors.white70
-                              : iconColor,
+                          colorFilter: ColorFilter.mode(
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
+                                    (info == 'A' || info == 'H')
+                                ? Colors.white70
+                                : iconColor!,
+                            BlendMode.srcIn,
+                          ),
                         )
                       : Image.asset(
                           iconPath!,

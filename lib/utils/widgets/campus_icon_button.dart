@@ -17,6 +17,8 @@ class CampusIconButton extends StatelessWidget {
 
   final Color? borderColorDark;
 
+  final bool transparent;
+
   const CampusIconButton({
     Key? key,
     required this.iconPath,
@@ -25,6 +27,7 @@ class CampusIconButton extends StatelessWidget {
     this.backgroundColorDark,
     this.borderColorLight,
     this.borderColorDark,
+    this.transparent = false,
   }) : super(key: key);
 
   @override
@@ -35,16 +38,18 @@ class CampusIconButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(
-          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-              ? borderColorLight != null
-                  ? borderColorLight!
-                  : const Color.fromRGBO(245, 246, 250, 1)
-              : borderColorDark != null
-                  ? borderColorDark!
-                  : const Color.fromRGBO(34, 40, 54, 1),
-          width: 2,
-        ),
+        border: !transparent
+            ? Border.all(
+                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                    ? borderColorLight != null
+                        ? borderColorLight!
+                        : const Color.fromRGBO(245, 246, 250, 1)
+                    : borderColorDark != null
+                        ? borderColorDark!
+                        : const Color.fromRGBO(34, 40, 54, 1),
+                width: 2,
+              )
+            : null,
       ),
       child: Material(
         color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
@@ -68,9 +73,12 @@ class CampusIconButton extends StatelessWidget {
             child: iconPath.substring(iconPath.length - 3) == 'svg'
                 ? SvgPicture.asset(
                     iconPath,
-                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? Colors.black
-                        : const Color.fromRGBO(184, 186, 191, 1),
+                    colorFilter: ColorFilter.mode(
+                      Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                          ? Colors.black
+                          : const Color.fromRGBO(184, 186, 191, 1),
+                      BlendMode.srcIn,
+                    ),
                     width: 24,
                   )
                 : Image.asset(

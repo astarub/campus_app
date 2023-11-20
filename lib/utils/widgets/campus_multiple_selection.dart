@@ -24,7 +24,6 @@ class CampusMultiSelection extends StatelessWidget {
     this.selections = const [false, false, false],
     required this.onSelected,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(

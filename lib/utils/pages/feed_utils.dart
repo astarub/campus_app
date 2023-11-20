@@ -1,17 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter/widgets.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:intl/intl.dart';
 
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
-import 'package:campus_app/pages/feed/rubnews/news_entity.dart';
+import 'package:campus_app/core/backend/entities/publisher_entity.dart';
+import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/feed/widgets/feed_item.dart';
-import 'package:campus_app/utils/pages/presentation_functions.dart';
+import 'package:campus_app/utils/constants.dart';
 
-class FeedUtils extends Utils {
+class FeedUtils {
   // Save the shuffeled list to prevent constant re-shuffeling
   List shuffeledItemOrEventWidgets = [];
 
@@ -19,19 +15,13 @@ class FeedUtils extends Utils {
   /// For Padding insert at first position a SizedBox with heigth := 80 or given heigth.
   List<Widget> fromEntitiesToWidgetList({
     required List<NewsEntity> news,
-    required List<Event> events,
     double? heigth,
     bool shuffle = false,
-    bool mixInto = true,
   }) {
     List<dynamic> feedItemOrEventWidget = <dynamic>[];
     final widgets = <Widget>[];
 
-    final _news = <FeedItem>[];
-    final _events = <dynamic>[];
-
-    // generates a new Random object
-    final _random = Random();
+    final feedItems = <FeedItem>[];
 
     // parse news in widget
     for (final n in news) {
@@ -39,57 +29,31 @@ class FeedUtils extends Utils {
       final String formattedDescription =
           n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
 
-      _news.add(
+      feedItems.add(
         FeedItem(
           title: n.title,
           date: n.pubDate,
-          image: CachedNetworkImage(
-            imageUrl: n.imageUrls[0],
-          ),
+          image: n.imageUrl != 'false' &&
+                  (n.copyright.isNotEmpty && !n.copyright.map((e) => e.toLowerCase()).toList().contains('fotolia'))
+              ? CachedNetworkImage(
+                  imageUrl: n.imageUrl,
+                )
+              : null,
           content: n.content,
           link: n.url,
           description: formattedDescription,
+          author: n.author,
+          categoryIds: n.categoryIds,
+          copyright: n.copyright.isNotEmpty ? n.copyright[0] : '',
+          videoUrl: n.videoUrl != 'false' ? n.videoUrl : null,
         ),
       );
     }
 
-    // parse events in widget
-    for (final e in events) {
-      // Removes empty lines and white spaces
-      final String formattedDescription =
-          e.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
-
-      final startingTime = DateFormat('Hm').format(e.startDate);
-      final endingTime = DateFormat('Hm').format(e.endDate);
-
-      if (e.hasImage) {
-        _events.add(
-          FeedItem(
-            title: e.title,
-            date: e.startDate,
-            image: CachedNetworkImage(
-              imageUrl: e.imageUrl!,
-            ),
-            content: formattedDescription,
-            link: e.url,
-            event: e,
-            description: e.venue.name == ''
-                ? 'Von $startingTime Uhr bis $endingTime Uhr'
-                : 'Von $startingTime Uhr bis $endingTime Uhr im ${e.venue.name}',
-          ),
-        );
-      } else {
-        _events.add(CalendarEventWidget(event: e));
-      }
-    }
-
-    // sort news and events by date
-    _events.sort(_sortFeed);
-    _news.sort(_sortFeed);
+    feedItems.sort(sortFeedDesc);
 
     if (shuffle) {
-      feedItemOrEventWidget.addAll(_events);
-      feedItemOrEventWidget.addAll(_news);
+      feedItemOrEventWidget.addAll(feedItems);
 
       if (shuffeledItemOrEventWidgets.length < feedItemOrEventWidget.length) {
         feedItemOrEventWidget.shuffle();
@@ -98,27 +62,10 @@ class FeedUtils extends Utils {
       }
 
       feedItemOrEventWidget = shuffeledItemOrEventWidgets;
-    } else if (mixInto) {
-      // mix events in feed, both are still sorted by date
-      while (_news.isNotEmpty || _events.isNotEmpty) {
-        if (_news.isNotEmpty && _events.isEmpty) {
-          feedItemOrEventWidget.addAll(_news);
-          _news.clear();
-        } else if (_news.isEmpty && _events.isNotEmpty) {
-          feedItemOrEventWidget.addAll(_events);
-          _events.clear();
-        } else if (_news.isEmpty && _events.isEmpty) {
-          break;
-        } else {
-          feedItemOrEventWidget.addAll([_news.first, _events.first]);
-          _news.removeAt(0);
-          _events.removeAt(0);
-        }
-      }
     } else {
       // sort widgets according to date
-      feedItemOrEventWidget.addAll(_news);
-      feedItemOrEventWidget.sort(_sortFeed);
+      feedItemOrEventWidget.addAll(feedItems);
+      feedItemOrEventWidget.sort(sortFeedDesc);
     }
 
     // add all FeedItems or CalendarEventWidgets to list of Widget
@@ -132,15 +79,42 @@ class FeedUtils extends Utils {
     return widgets;
   }
 
-  int _sortFeed(a, b) {
+  List<Widget> filterFeedWidgets(List<Publisher> filters, List<Widget> parsedFeedItems) {
+    final List<Widget> filteredFeedItems = [];
+
+    final List<String> filterNames = filters.map((e) => e.name).toList();
+
+    for (final Widget f in parsedFeedItems) {
+      if (f is FeedItem) {
+        if (f.link.startsWith('https://news.rub.de') && filterNames.contains('RUB')) {
+          filteredFeedItems.add(f);
+        }
+        if (f.link.startsWith('https://asta-bochum.de') && filterNames.contains('AStA')) {
+          filteredFeedItems.add(f);
+        }
+
+        if (f.link.startsWith(appWordpressHost) && (f.author != 0 && filters.map((e) => e.id).contains(f.author)) ||
+            f.categoryIds.contains(66)) {
+          filteredFeedItems.add(f);
+        }
+      } else {
+        filteredFeedItems.add(f);
+      }
+    }
+    return filteredFeedItems;
+  }
+
+  int sortFeedDesc(dynamic a, dynamic b) {
     if (a is FeedItem && b is FeedItem) {
       return b.date.compareTo(a.date);
-    } else if (a is FeedItem && b is CalendarEventWidget) {
-      return b.event.startDate.compareTo(a.date);
-    } else if (a is CalendarEventWidget && b is FeedItem) {
-      return b.date.compareTo(a.event.startDate);
-    } else if (a is CalendarEventWidget && b is CalendarEventWidget) {
-      return b.event.startDate.compareTo(a.event.startDate);
+    } else {
+      return 0;
+    }
+  }
+
+  int sortFeedAsc(dynamic a, dynamic b) {
+    if (a is FeedItem && b is FeedItem) {
+      return a.date.compareTo(b.date);
     } else {
       return 0;
     }

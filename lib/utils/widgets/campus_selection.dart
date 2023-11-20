@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -99,12 +101,14 @@ class SelectionItem extends StatelessWidget {
   final VoidCallback onTap;
 
   bool isActive;
+  double paddingVertical;
 
   SelectionItem({
     Key? key,
     required this.text,
     required this.onTap,
     this.isActive = false,
+    this.paddingVertical = 10,
   }) : super(key: key);
 
   @override
@@ -138,23 +142,29 @@ class SelectionItem extends StatelessWidget {
           highlightColor: isActive ? const Color.fromRGBO(255, 255, 255, 0.08) : const Color.fromRGBO(0, 0, 0, 0.04),
           borderRadius: BorderRadius.circular(12),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: EdgeInsets.symmetric(vertical: paddingVertical),
             child: Center(
-              child: Text(
-                text,
-                style: isActive
-                    ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: Colors.white,
-                        )
-                    : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                              ? Colors.black
-                              : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.color,
-                        ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                height: 30,
+                alignment: Alignment.center,
+                child: Text(
+                  text,
+                  style: isActive
+                      ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: text.length > 10 ? 10 : 13,
+                            color: Colors.white,
+                          )
+                      : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: text.length > 10 ? 11 : 13,
+                            color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                ? Colors.black
+                                : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.color,
+                          ),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ),

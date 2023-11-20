@@ -1,36 +1,33 @@
 import 'dart:io';
 
+import 'package:appwrite/appwrite.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/adapter.dart';
+import 'package:dio/io.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import 'package:campus_app/core/authentication/authentication_datasource.dart';
-import 'package:campus_app/core/authentication/authentication_handler.dart';
-import 'package:campus_app/core/authentication/authentication_repository.dart';
+import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/pages/calendar/calendar_datasource.dart';
 import 'package:campus_app/pages/calendar/calendar_repository.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
 import 'package:campus_app/pages/mensa/mensa_repository.dart';
 import 'package:campus_app/pages/mensa/mensa_usecases.dart';
+
 //import 'package:campus_app/pages/ecampus/bloc/ecampus_bloc.dart';
 //import 'package:campus_app/pages/ecampus/ticket_datasource.dart';
 //import 'package:campus_app/pages/ecampus/ticket_repository.dart';
-import 'package:campus_app/pages/moodle/moodle_datasource.dart';
-import 'package:campus_app/pages/moodle/moodle_repository.dart';
-import 'package:campus_app/pages/moodle/moodle_usecases.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_datasource.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_repository.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_usecases.dart';
-import 'package:campus_app/utils/apis/forgerock_api.dart';
+import 'package:campus_app/pages/feed/news/news_datasource.dart';
+import 'package:campus_app/pages/feed/news/news_repository.dart';
+import 'package:campus_app/pages/feed/news/news_usecases.dart';
 import 'package:campus_app/utils/dio_utils.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:campus_app/utils/constants.dart';
 
 final sl = GetIt.instance; // service locator
 
@@ -43,47 +40,42 @@ Future<void> init() async {
   sl.registerSingletonAsync(() async {
     final client = Dio();
 
-    (client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
-      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-      return client;
+    (client.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+      final HttpClient aClient = HttpClient(context: SecurityContext());
+
+      aClient.badCertificateCallback = (cert, host, port) => true;
+
+      return aClient;
     };
-    return MensaDataSource(client: client, mensaCache: await Hive.openBox('mensaCach'));
+    return MensaDataSource(client: client, mensaCache: await Hive.openBox('mensaCache'));
   });
 
   sl.registerSingletonAsync(
-    () async => RubnewsDatasource(
+    () async => NewsDatasource(
       client: sl(),
-      rubnewsCach: await Hive.openBox('rubnewsCach'),
+      rubnewsCache: await Hive.openBox('postsCache'),
     ),
   );
 
   sl.registerSingletonAsync(
     () async => CalendarDatasource(
       client: sl(),
-      eventCach: await Hive.openBox('eventCach'),
+      eventCache: await Hive.openBox('eventsCache'),
     ),
   );
 
-  sl.registerLazySingleton<AuthenticationDatasource>(
-    () => AuthenticationDatasourceImpl(
-      client: sl(),
-      dioUtils: sl(),
-      storage: sl(),
-      apiUtils: sl(),
-    ),
-  );
-
-  sl.registerLazySingleton(
-    () => MoodleDatasource(client: sl()),
-  );
+  sl.registerLazySingleton(() {
+    final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
+    return BackendRepository(client: client);
+  });
 
   //!
   //! Repositories
   //!
 
   sl.registerSingletonWithDependencies(
-    () => RubnewsRepository(rubnewsDatasource: sl()),
-    dependsOn: [RubnewsDatasource],
+    () => NewsRepository(newsDatasource: sl()),
+    dependsOn: [NewsDatasource],
   );
 
   sl.registerSingletonWithDependencies(
@@ -91,23 +83,9 @@ Future<void> init() async {
     dependsOn: [CalendarDatasource],
   );
 
-  sl.registerLazySingleton<AuthenticationRepository>(
-    () => AuthenticationRepositoryImpl(
-      authenticationDatasource: sl(),
-      authenticationHandler: sl(),
-    ),
-  );
-
   sl.registerSingletonWithDependencies(
     () => MensaRepository(mensaDatasource: sl()),
     dependsOn: [MensaDataSource],
-  );
-
-  sl.registerLazySingleton(
-    () => MoodleRepository(
-      moodleDatasource: sl(),
-      authenticationDatasource: sl(),
-    ),
   );
 
   //!
@@ -115,8 +93,8 @@ Future<void> init() async {
   //!
 
   sl.registerSingletonWithDependencies(
-    () => RubnewsUsecases(rubnewsRepository: sl()),
-    dependsOn: [RubnewsRepository],
+    () => NewsUsecases(newsRepository: sl()),
+    dependsOn: [NewsRepository],
   );
 
   sl.registerSingletonWithDependencies(
@@ -129,8 +107,6 @@ Future<void> init() async {
     dependsOn: [MensaRepository],
   );
 
-  sl.registerLazySingleton(() => MoodleUsecases(moodleRepository: sl()));
-
   //!
   //! Utils
   //!
@@ -142,16 +118,11 @@ Future<void> init() async {
     )..init(),
   );
 
-  sl.registerLazySingleton(ForgerockAPIUtils.new);
   sl.registerLazySingleton(CalendarUtils.new);
   sl.registerLazySingleton(FeedUtils.new);
   sl.registerLazySingleton(MensaUtils.new);
 
-  //!
-  //! Handlers
-  //!
-
-  sl.registerLazySingleton(AuthenticationHandler.new);
+  sl.registerLazySingleton(MainUtils.new);
 
   //!
   //! External

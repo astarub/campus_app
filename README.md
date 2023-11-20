@@ -7,7 +7,8 @@ This app is developed & maintained by the General Student Committee of the Ruhr 
 The purpose of this app is to provide the students of the Ruhr University Bochum
 a tool that simplifies, improves and facilitates everyday students life.
 
-[![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/jqkz.svg)](https://asta-rub.betteruptime.com)
+Mensa Scraper: [![Mensa Scraper Status Badge](https://uptime.betterstack.com/status-badges/v1/monitor/u2xs.svg)](https://campus-app.betteruptime.com/)\
+Backend: [![Backend Status Badge](https://uptime.betterstack.com/status-badges/v1/monitor/u39n.svg)](https://campus-app.betteruptime.com/)
 
 <img src="https://user-images.githubusercontent.com/56138477/213162795-f00d1f4c-3978-4017-a974-b65b40e70908.png" height="14" width="14" > [Discord server](https://discord.gg/KHkQ8VFm6t)
 
@@ -34,7 +35,7 @@ Please keep in mind the following rules when it comes to contribution:
 
 ### No direct commits to the main/master branch
 
-We work with feature branches, which means whenever you work on a feature or bug you do that on the explicit branch. If the feature is ready, we **merge it with a pull-request** into the main/master branch.
+We work with feature branches, which means whenever you work on a feature or bug you do that on the explicit branch. If the feature is ready, we **merge it with a pull-request** into the main/master branch. In some cases, the app team can bypass that rule if deemed necessary. 
 
 ### No pull-request merge without another persons approval
 

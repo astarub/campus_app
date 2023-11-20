@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io' show Platform;
+import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,62 +31,42 @@ class MensaPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<MensaPage> createState() => _MensaPageState();
+  State<MensaPage> createState() => MensaPageState();
 }
 
-class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<MensaPage> {
-  late Settings _settings;
+class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<MensaPage> {
+  final ScrollController scrollController = ScrollController();
 
-  final MensaUsecases _mensaUsecases = sl<MensaUsecases>();
-  final MensaUtils _mensaUtils = sl<MensaUtils>();
+  late Settings settings;
 
-  late List<DishEntity> _mensaDishes = [];
-  late List<DishEntity> _roteBeeteDishes = [];
-  late List<DishEntity> _qwestDishes = [];
-  late List<DishEntity> _henkelmannDishes = [];
-  late List<Failure> _failures = [];
+  final MensaUsecases mensaUsecases = sl<MensaUsecases>();
+  final MensaUtils mensaUtils = sl<MensaUtils>();
+
+  late List<DishEntity> mensaDishes = [];
+  late List<DishEntity> roteBeeteDishes = [];
+  late List<DishEntity> qwestDishes = [];
+  late List<Failure> failures = [];
 
   late int selectedDay;
 
-  static const List<Map<String, dynamic>> restaurantConfig = [
-    {
-      'name': 'KulturCafé',
-      'openingHours': {'1-4': '10:00-20:00', '5': '11:00-16:00', '6': '', '7': ''},
-      'imagePath': 'assets/img/qwest.png',
-    },
-    {
-      'name': 'Mensa der RUB',
-      'openingHours': {'1-5': '11:00-14:30', '6': '', '7': ''},
-      'imagePath': 'assets/img/mensa.png',
-    },
-    {
-      'name': 'Rote Bete',
-      'openingHours': {'1-5': '11:00-14:30', '6': '', '7': ''},
-      'imagePath': 'assets/img/rotebeete.png',
-    },
-    {
-      'name': 'Q-West',
-      'openingHours': {'1-5': '11:15-22:00', '6': '', '7': ''},
-      'imagePath': 'assets/img/qwest.png',
-    },
-    {
-      'name': 'Henkelmann',
-      'openingHours': {'1-5': '11:00-14:00', '6': '', '7': ''},
-      'imagePath': 'assets/img/henkelmann.png',
-    },
-  ];
+  DateTime selectedDate = DateTime.now().weekday == 6
+      ? DateTime.now().subtract(const Duration(days: 1))
+      : DateTime.now().weekday == 7
+          ? DateTime.now().subtract(const Duration(days: 2))
+          : DateTime.now();
+
+  StreamController<int> streamController = StreamController<int>.broadcast();
 
   /// This function initiates the loading of the mensa data (and caching)
   Future<void> loadData() async {
-    final Future<Map<String, List<dynamic>>> updatedDishes = _mensaUsecases.updateDishesAndFailures();
+    final Future<Map<String, List<dynamic>>> updatedDishes = mensaUsecases.updateDishesAndFailures();
 
     await updatedDishes.then(
       (data) => setState(() {
-        _mensaDishes = data['mensa']! as List<DishEntity>;
-        _roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
-        _qwestDishes = data['qwest']! as List<DishEntity>;
-        _henkelmannDishes = data['henkelmann']! as List<DishEntity>;
-        _failures = data['failures']! as List<Failure>;
+        mensaDishes = data['mensa']! as List<DishEntity>;
+        roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
+        qwestDishes = data['qwest']! as List<DishEntity>;
+        failures = data['failures']! as List<Failure>;
       }),
     );
 
@@ -112,9 +94,9 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
   /// This function is called whenever one of the 3 preferences "vegetarian", "vegan"
   /// or "halal" is selected. It automatically adds or removes the preference from the list.
   void singlePreferenceSelected(String selectedPreference) {
-    List<String> newPreferences = _settings.mensaPreferences;
+    final List<String> newPreferences = settings.mensaPreferences;
 
-    if (_settings.mensaPreferences.contains(selectedPreference)) {
+    if (settings.mensaPreferences.contains(selectedPreference)) {
       newPreferences.remove(selectedPreference);
     } else {
       newPreferences.add(selectedPreference);
@@ -155,7 +137,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _settings = Provider.of<SettingsHandler>(context).currentSettings;
+    settings = Provider.of<SettingsHandler>(context).currentSettings;
   }
 
   @override
@@ -172,8 +154,11 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
   Widget build(BuildContext context) {
     super.build(context);
 
+    final restaurantConfig = Provider.of<SettingsHandler>(context).currentSettings.mensaRestaurantConfig!;
+
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      floatingActionButton: ScrollToTopButton(scrollController: scrollController),
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,
@@ -198,7 +183,15 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                       // Day selection
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: MensaDaySelection(onChanged: (int day) => setState(() => selectedDay = day)),
+                        child: MensaDaySelection(
+                          onChanged: (int day, DateTime date) => setState(
+                            () {
+                              selectedDay = day;
+                              selectedDate = date;
+                              streamController.add(1);
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -216,6 +209,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                     child: ListView.builder(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                      controller: scrollController,
                       itemCount: restaurantConfig.length + 1,
                       itemBuilder: (context, index) {
                         if (index == 0) {
@@ -275,8 +269,10 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                           return ExpandableRestaurant(
                             name: restaurantConfig[index - 1]['name'],
                             imagePath: restaurantConfig[index - 1]['imagePath'],
+                            date: selectedDate,
+                            stream: streamController.stream,
                             meals: index == 1
-                                ? _mensaUtils.buildKulturCafeRestaurant(
+                                ? mensaUtils.buildKulturCafeRestaurant(
                                     onPreferenceTap: singlePreferenceSelected,
                                     mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
                                         .currentSettings
@@ -285,14 +281,12 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                                         .currentSettings
                                         .mensaPreferences,
                                   )
-                                : _mensaUtils.fromDishListToMealCategoryList(
+                                : mensaUtils.fromDishListToMealCategoryList(
                                     entities: index == 2
-                                        ? _mensaDishes
+                                        ? mensaDishes
                                         : index == 3
-                                            ? _roteBeeteDishes
-                                            : index == 4
-                                                ? _qwestDishes
-                                                : _henkelmannDishes,
+                                            ? roteBeeteDishes
+                                            : qwestDishes,
                                     day: selectedDay,
                                     onPreferenceTap: singlePreferenceSelected,
                                     mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
@@ -302,7 +296,7 @@ class _MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Auto
                                         .currentSettings
                                         .mensaPreferences,
                                   ),
-                            openingHours: restaurantConfig[index - 1]['openingHours'],
+                            openingHours: Map<String, String>.from(restaurantConfig[index - 1]['openingHours']),
                           );
                         }
                       },

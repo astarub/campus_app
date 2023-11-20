@@ -36,6 +36,11 @@ class MensaDataSource {
     }
   }
 
+  /// Clears the cache
+  Future<void> clearDishEntityCache() async {
+    await mensaCache.clear();
+  }
+
   /// Write given list of DishEntities to Hive.Box
   /// The `put()`-call is awaited to make sure that the write operations are successful.
   Future<void> writeDishEntitiesToCache(List<DishEntity> entities, int restaurant) async {

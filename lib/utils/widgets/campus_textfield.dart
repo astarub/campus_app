@@ -43,10 +43,10 @@ class CampusTextField extends StatefulWidget {
   }
 
   @override
-  State<CampusTextField> createState() => _CampusTextFieldState();
+  State<CampusTextField> createState() => CampusTextFieldState();
 }
 
-class _CampusTextFieldState extends State<CampusTextField> {
+class CampusTextFieldState extends State<CampusTextField> {
   final FocusNode _focusNode = FocusNode();
   late String hint = widget.textFieldText;
 
@@ -103,7 +103,10 @@ class _CampusTextFieldState extends State<CampusTextField> {
               child: widget.pathToIcon.substring(widget.pathToIcon.length - 3) == 'svg'
                   ? SvgPicture.asset(
                       widget.pathToIcon,
-                      color: Colors.black87,
+                      colorFilter: const ColorFilter.mode(
+                        Colors.black87,
+                        BlendMode.srcIn,
+                      ),
                       height: 30,
                     )
                   : Image.asset(

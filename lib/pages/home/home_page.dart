@@ -9,7 +9,6 @@ import 'package:campus_app/pages/home/page_navigator.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
 import 'package:campus_app/pages/home/widgets/side_nav_bar.dart';
-import 'package:campus_app/pages/feed/feed_page.dart';
 
 /// The [HomePage] displays all general UI elements like the bottom nav-menu and
 /// handles the switching between the different pages.
@@ -81,11 +80,19 @@ class HomePageState extends State<HomePage> {
   /// Holds the currently active page.
   PageItem currentPage = PageItem.feed;
 
-  GlobalKey<FeedPageState> feedKey = GlobalKey();
-
-  final PageController _pageController = PageController();
-
+  /// Controls the Page View
+  final PageController pageController = PageController();
   double pagePosition = 0;
+
+  /// Indicates whether swiping is disabled
+  bool swipeDisabled = false;
+
+  /// Temporarily disable swiping for certain pages e.g. in app web view
+  void setSwipeDisabled({bool disableSwipe = false}) {
+    setState(() {
+      swipeDisabled = disableSwipe;
+    });
+  }
 
   /// Switches to another page when selected in the nav-menu on phones
   Future<bool> selectedPage(PageItem selectedPageItem) async {
@@ -98,7 +105,7 @@ class HomePageState extends State<HomePage> {
       final int indexNewPage = pages.indexWhere((element) => element == selectedPageItem);
 
       // Switch to the selected page
-      await _pageController.animateToPage(
+      await pageController.animateToPage(
         indexNewPage,
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
@@ -116,11 +123,14 @@ class HomePageState extends State<HomePage> {
       await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
     }
 
+    // Enable swiping upon navigation
+    setSwipeDisabled();
+
     return true;
   }
 
   /// Returns the [NavBarNavigator] for the specified PageItem on phones
-  Widget _buildNavigator(PageItem tabItem) {
+  Widget buildNavigator(PageItem tabItem) {
     return NavBarNavigator(
       mainNavigatorKey: widget.mainNavigatorKey,
       navigatorKey: navigatorKeys[tabItem]!,
@@ -133,7 +143,7 @@ class HomePageState extends State<HomePage> {
   /// Wraps the [NavBarNavigator] that holds the displayed page in an [Offstage] widget
   /// in order to stack them and show only the active page.
   /// Only used for tablets.
-  Widget _buildOffstateNavigator(PageItem tabItem) {
+  Widget buildOffstateNavigator(PageItem tabItem) {
     return Offstage(
       offstage: currentPage != tabItem,
       child: NavBarNavigator(
@@ -151,7 +161,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
 
     // Theme von System auslesen & Callback erstellen
-    final window = WidgetsBinding.instance.window;
+    final window = WidgetsBinding.instance.platformDispatcher;
 
     window.onPlatformBrightnessChanged = () {
       final brightness = window.platformBrightness;
@@ -172,8 +182,8 @@ class HomePageState extends State<HomePage> {
       }
     };
 
-    _pageController.addListener(() {
-      setState(() => pagePosition = _pageController.page ?? 0);
+    pageController.addListener(() {
+      setState(() => pagePosition = pageController.page ?? 0);
     });
   }
 
@@ -200,7 +210,8 @@ class HomePageState extends State<HomePage> {
                       Padding(
                         padding: EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
                         child: PageView.builder(
-                          controller: _pageController,
+                          physics: swipeDisabled ? const NeverScrollableScrollPhysics() : const ScrollPhysics(),
+                          controller: pageController,
                           itemCount: navigatorKeys.length,
                           onPageChanged: (page) {
                             final List<PageItem> pages = navigatorKeys.keys.toList();
@@ -229,7 +240,7 @@ class HomePageState extends State<HomePage> {
                                           ? 0
                                           : 1 - (pagePosition - index),
                               duration: const Duration(milliseconds: 100),
-                              child: _buildNavigator(navigatorKeys.keys.toList()[index]),
+                              child: buildNavigator(navigatorKeys.keys.toList()[index]),
                             );
                           },
                         ),
@@ -280,11 +291,11 @@ class HomePageState extends State<HomePage> {
                                       width: 550,
                                       child: Stack(
                                         children: [
-                                          _buildOffstateNavigator(PageItem.feed),
-                                          _buildOffstateNavigator(PageItem.events),
-                                          _buildOffstateNavigator(PageItem.mensa),
-                                          _buildOffstateNavigator(PageItem.wallet),
-                                          _buildOffstateNavigator(PageItem.more),
+                                          buildOffstateNavigator(PageItem.feed),
+                                          buildOffstateNavigator(PageItem.events),
+                                          buildOffstateNavigator(PageItem.mensa),
+                                          buildOffstateNavigator(PageItem.wallet),
+                                          buildOffstateNavigator(PageItem.more),
                                         ],
                                       ),
                                     ),

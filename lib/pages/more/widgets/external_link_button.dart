@@ -65,7 +65,10 @@ class ExternalLinkButton extends StatelessWidget {
                 if (leadingIconPath.substring(leadingIconPath.length - 3) == 'svg')
                   SvgPicture.asset(
                     leadingIconPath,
-                    color: buttonContentColor,
+                    colorFilter: ColorFilter.mode(
+                      buttonContentColor,
+                      BlendMode.srcIn,
+                    ),
                     width: 22,
                   )
                 else
@@ -91,13 +94,16 @@ class ExternalLinkButton extends StatelessWidget {
                 Expanded(
                   child: SvgPicture.asset(
                     trailingIconPath,
-                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? Colors.black
-                        : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium?.color,
+                    colorFilter: ColorFilter.mode(
+                      Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                          ? Colors.black
+                          : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!,
+                      BlendMode.srcIn,
+                    ),
                     height: 20,
                     alignment: Alignment.centerRight,
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -154,9 +160,12 @@ class SocialMediaButton extends StatelessWidget {
               padding: const EdgeInsets.all(9),
               child: SvgPicture.asset(
                 iconPath,
-                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? Colors.black
-                    : Colors.white,
+                colorFilter: ColorFilter.mode(
+                  Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? Colors.black
+                      : Colors.white,
+                  BlendMode.srcIn,
+                ),
                 height: 22,
                 width: 22,
               ),

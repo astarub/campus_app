@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:campus_app/pages/more/privacy_policy_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,8 +10,8 @@ import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/more/widgets/external_link_button.dart';
 import 'package:campus_app/pages/more/widgets/button_group.dart';
 import 'package:campus_app/pages/more/in_app_web_view_page.dart';
-import 'package:campus_app/pages/more/static_info_page.dart';
 import 'package:campus_app/pages/more/settings_page.dart';
+import 'package:campus_app/pages/more/imprint_page.dart';
 
 class MorePage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -27,10 +28,10 @@ class MorePage extends StatefulWidget {
   static const String privacy = 'Tbd.';
 
   @override
-  State<MorePage> createState() => _MorePageState();
+  State<MorePage> createState() => MorePageState();
 }
 
-class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<MorePage> {
+class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<MorePage> {
   void openLink(BuildContext context, String url) {
     debugPrint('Opening external ressource: $url');
 
@@ -55,6 +56,8 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
       body: Center(
@@ -88,7 +91,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                             onTap: () => openLink(context, 'https://kulturcafe.asta-bochum.de/'),
                           ),
                           ExternalLinkButton(
-                            title: 'Fahrrad Werkstatt',
+                            title: 'Fahrradwerkstatt',
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/fahrradwerkstatt/'),
                           ),
@@ -106,6 +109,11 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                             title: 'Tanzkreis',
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/tanzkreis/'),
+                          ),
+                          ExternalLinkButton(
+                            title: 'Gaming Hub',
+                            leadingIconPath: 'assets/img/asta-gaming-hub.png',
+                            onTap: () => openLink(context, 'https://asta-bochum.de/gaming_hub/'),
                           ),
                           Flex(
                             direction: Axis.horizontal,
@@ -145,12 +153,18 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                           ExternalLinkButton(
                             title: 'RubMail',
                             leadingIconPath: 'assets/img/icons/mail-link.png',
-                            onTap: () => openLink(context, 'https://mail.ruhr-uni-bochum.de/rubwebmail/'),
+                            onTap: () => openLink(
+                              context,
+                              'https://mail.ruhr-uni-bochum.de/rubwebmail/',
+                            ),
                           ),
                           ExternalLinkButton(
                             title: 'Moodle',
                             leadingIconPath: 'assets/img/icons/moodle-link.png',
-                            onTap: () => openLink(context, 'https://moodle.ruhr-uni-bochum.de/'),
+                            onTap: () => openLink(
+                              context,
+                              'https://moodle.ruhr-uni-bochum.de/',
+                            ),
                           ),
                           ExternalLinkButton(
                             title: 'eCampus',
@@ -163,7 +177,18 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                           ExternalLinkButton(
                             title: 'FlexNow',
                             leadingIconPath: 'assets/img/icons/flexnow-link.png',
-                            onTap: () => openLink(context, 'https://www.flexnow.ruhr-uni-bochum.de/'),
+                            onTap: () => openLink(
+                              context,
+                              'https://www.flexnow.ruhr-uni-bochum.de/',
+                            ),
+                          ),
+                          ExternalLinkButton(
+                            title: 'Hochschulsport',
+                            leadingIconPath: 'assets/img/icons/hochschulsport_icon.png',
+                            onTap: () => openLink(
+                              context,
+                              'https://buchung.hochschulsport.ruhr-uni-bochum.de/angebote/aktueller_zeitraum/m.html',
+                            ),
                           ),
                         ],
                       ),
@@ -193,10 +218,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const StaticInfoPage.external(
-                                    title: 'Datenschutz',
-                                    url: 'https://asta-bochum.de/datenschutz/#campus-app',
-                                  ),
+                                  builder: (context) => const PrivacyPolicyPage(),
                                 ),
                               );
                             },
@@ -209,12 +231,7 @@ class _MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => const StaticInfoPage.external(
-                                    title: 'Impressum',
-                                    url: 'https://asta-bochum.de/impressum/',
-                                  ),
-                                ),
+                                MaterialPageRoute(builder: (context) => const ImprintPage()),
                               );
                             },
                           ),

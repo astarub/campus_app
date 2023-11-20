@@ -1,3 +1,4 @@
+import 'package:campus_app/pages/feed/widgets/video_player.dart';
 import 'package:flutter/material.dart';
 
 import 'package:animations/animations.dart';
@@ -8,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/feed/rubnews/rubnews_details_page.dart';
+import 'package:campus_app/pages/feed/news/news_details_page.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
@@ -24,7 +25,7 @@ class FeedItem extends StatelessWidget {
   final DateTime date;
 
   /// The image of the news feed item that is displayed in the feed and detail apge
-  final CachedNetworkImage image;
+  final CachedNetworkImage? image;
 
   /// A link of the news feed item that links to an external website, if no content is given
   final String link;
@@ -35,16 +36,32 @@ class FeedItem extends StatelessWidget {
   /// Wether the given news is an event announcement and should display an event date
   final Event? event;
 
+  /// If post contains a video, the URL to the media file
+  final String? videoUrl;
+
+  /// Author of the post
+  final int author;
+
+  /// WP Category ids
+  final List<int> categoryIds;
+
+  /// Copyright of the news image
+  final String copyright;
+
   /// Creates a NewsFeed-item with an expandable content
   const FeedItem({
     Key? key,
     required this.title,
     this.description = '',
     required this.date,
-    required this.image,
+    this.image,
     this.link = '',
     required this.content,
     this.event,
+    this.videoUrl,
+    this.author = 0,
+    this.categoryIds = const [],
+    this.copyright = '',
   }) : super(key: key);
 
   /// Creates a NewsFeed-item with an external link
@@ -53,10 +70,14 @@ class FeedItem extends StatelessWidget {
     required this.title,
     this.description = '',
     required this.date,
-    required this.image,
+    this.image,
     required this.link,
     this.content = '',
     this.event,
+    this.videoUrl,
+    this.author = 0,
+    this.categoryIds = const [],
+    this.copyright = '',
   }) : super(key: key);
 
   @override
@@ -71,12 +92,14 @@ class FeedItem extends StatelessWidget {
         if (event != null) {
           return CalendarDetailPage(event: event!);
         } else {
-          return RubnewsDetailsPage(
+          return NewsDetailsPage(
             title: title,
             date: date,
             image: image,
             link: link,
             content: content,
+            copyright: copyright,
+            videoUrl: videoUrl,
           );
         }
       },
@@ -87,13 +110,14 @@ class FeedItem extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 14),
         child: CustomButton(
           borderRadius: BorderRadius.circular(15),
-          highlightColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          highlightColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.03)
               : const Color.fromRGBO(255, 255, 255, 0.03),
-          splashColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+          splashColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.04)
               : const Color.fromRGBO(255, 255, 255, 0.04),
           tapHandler: openDetailsPage,
+          longPressHandler: openDetailsPage,
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
@@ -104,14 +128,19 @@ class FeedItem extends StatelessWidget {
                 Stack(
                   alignment: Alignment.bottomRight,
                   children: [
-                    // Image
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: image,
+                    if (image != null || videoUrl != null)
+                      // Image
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: image ??
+                              FeedVideoPlayer(
+                                url: videoUrl!,
+                                tabHandler: openDetailsPage,
+                              ),
+                        ),
                       ),
-                    ),
                     // Date
                     if (event != null)
                       Container(

@@ -33,7 +33,6 @@ class CampusSegmentedControl extends StatefulWidget {
 }
 
 class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
-  late AlignmentGeometry _hoverAligment;
   static const double _pickerWidth = 200;
 
   void _picked(int newSelected) {
@@ -44,27 +43,8 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
       // Update the visuals
       setState(() {
         widget.selected = newSelected;
-        if (newSelected == 0) {
-          _hoverAligment = Alignment.centerLeft;
-        } else {
-          _hoverAligment = Alignment.centerRight;
-        }
       });
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // This does not apply the inital value from the settings correctly
-    setState(() {
-      if (widget.selected == 0) {
-        _hoverAligment = Alignment.centerLeft;
-      } else {
-        _hoverAligment = Alignment.centerRight;
-      }
-    });
   }
 
   @override
@@ -94,7 +74,7 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
           ),
           // Selection
           AnimatedAlign(
-            alignment: _hoverAligment,
+            alignment: widget.selected == 1 ? Alignment.centerRight : Alignment.centerLeft,
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOut,
             child: Container(
