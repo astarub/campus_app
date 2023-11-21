@@ -140,6 +140,8 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
               loadedSettings = Settings(
                 mensaRestaurantConfig: mensaUtils.restaurantConfig,
+                mensaPreferences: [],
+                mensaAllergenes: [],
               );
 
               settingsJsonFile.writeAsString(json.encode(loadedSettings!.toJson()));
