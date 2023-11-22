@@ -398,7 +398,7 @@ class BackendRepository {
       );
 
       for (final course in staticStudyCourses) {
-        courses.add(StudyCourse(pId: 0, name: course));
+        courses.add(StudyCourse.empty(name: course));
       }
     }
 
