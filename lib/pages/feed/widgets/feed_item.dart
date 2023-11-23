@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
@@ -14,7 +13,6 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/feed/news/news_details_page.dart';
-import 'package:campus_app/pages/feed/widgets/video_player.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
