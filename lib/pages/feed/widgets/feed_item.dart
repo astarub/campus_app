@@ -138,6 +138,7 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
             content: widget.content,
             copyright: widget.copyright,
             videoUrl: widget.videoUrl,
+            author: widget.author,
           );
         }
       },
