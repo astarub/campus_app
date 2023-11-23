@@ -72,7 +72,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     final newsData = await _newsUsecases.updateFeedAndFailures();
 
     setState(() {
-      news = newsData['news']! as List<NewsEntity>;
+      news = newsData['news'] != null ? newsData['news']! as List<NewsEntity> : [];
       parsedNewsWidgets = parseUpdateToWidgets();
     });
 

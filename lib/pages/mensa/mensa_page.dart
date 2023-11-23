@@ -63,10 +63,10 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
 
     await updatedDishes.then(
       (data) => setState(() {
-        mensaDishes = data['mensa']! as List<DishEntity>;
-        roteBeeteDishes = data['roteBeete']! as List<DishEntity>;
-        qwestDishes = data['qwest']! as List<DishEntity>;
-        failures = data['failures']! as List<Failure>;
+        mensaDishes = data['mensa'] != null ? data['mensa']! as List<DishEntity> : [];
+        roteBeeteDishes = data['roteBeete'] != null ? data['roteBeete']! as List<DishEntity> : [];
+        qwestDishes = data['qwest'] != null ? data['qwest']! as List<DishEntity> : [];
+        failures = data['failures'] != null ? data['failures']! as List<Failure> : [];
       }),
     );
 

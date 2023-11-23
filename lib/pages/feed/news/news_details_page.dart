@@ -1,3 +1,4 @@
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/feed/widgets/video_player.dart';
 import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class NewsDetailsPage extends StatefulWidget {
   final bool isEvent;
   final String link;
   final String copyright;
+  final int author;
   final String? videoUrl;
 
   const NewsDetailsPage({
@@ -31,6 +33,7 @@ class NewsDetailsPage extends StatefulWidget {
     required this.content,
     this.isEvent = false,
     this.copyright = '',
+    this.author = 0,
     this.videoUrl,
   }) : super(key: key);
 
@@ -45,6 +48,19 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
   Widget build(BuildContext context) {
     final month = DateFormat('LLL').format(widget.date);
     final day = DateFormat('dd').format(widget.date);
+
+    // Copyright for videos
+    String authorName = 'AStA';
+    if (widget.author != 0) {
+      try {
+        authorName = Provider.of<SettingsHandler>(context)
+            .currentSettings
+            .publishers
+            .firstWhere((element) => element.id == widget.author)
+            .name;
+        // ignore: empty_catches
+      } catch (e) {}
+    }
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
@@ -141,6 +157,16 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                       padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
                       child: Text(
                         widget.copyright,
+                        style: const TextStyle(fontSize: 12.5),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  if (widget.videoUrl != null && widget.author != 0)
+                    // Copyright for Videos
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
+                      child: Text(
+                        '© $authorName',
                         style: const TextStyle(fontSize: 12.5),
                         textAlign: TextAlign.left,
                       ),

@@ -104,7 +104,7 @@ class _FeedVideoPlayerState extends State<FeedVideoPlayer> {
                     decoration: BoxDecoration(
                       color: _customVideoPlayerController.videoPlayerController.value.isPlaying
                           ? const Color.fromRGBO(0, 0, 0, 0)
-                          : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                          : Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
                               ? const Color.fromRGBO(245, 246, 250, 0.5)
                               : const Color.fromRGBO(34, 40, 54, 0.5),
                       borderRadius: const BorderRadius.all(Radius.circular(35)),
@@ -117,7 +117,7 @@ class _FeedVideoPlayerState extends State<FeedVideoPlayer> {
                               : Icons.play_arrow_sharp,
                       color: _customVideoPlayerController.videoPlayerController.value.isPlaying
                           ? const Color.fromRGBO(0, 0, 0, 0)
-                          : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                          : Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
                               ? const Color.fromRGBO(34, 40, 54, 1)
                               : const Color.fromRGBO(245, 246, 250, 1),
                     ),
