@@ -10,7 +10,7 @@ import 'package:campus_app/pages/wallet/mensa_balance_page.dart';
 import 'package:campus_app/utils/widgets/subpage_button.dart';
 import 'package:campus_app/pages/wallet/widgets/leitwarte_button.dart';
 import 'package:campus_app/pages/wallet/widgets/wallet.dart';
-import 'package:campus_app/pages/wallet/Raumfinder.dart';
+import 'package:campus_app/pages/wallet/pathfinder_page.dart';
 
 class WalletPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;

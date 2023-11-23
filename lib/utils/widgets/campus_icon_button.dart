@@ -43,7 +43,7 @@ class CampusIconButton extends StatelessWidget {
               : borderColorDark != null
                   ? borderColorDark!
                   : const Color.fromRGBO(34, 40, 54, 1),
-          width: 2,
+          width: borderColorLight != null || borderColorDark != null ? 2 : 0,
         ),
       ),
       child: Material(

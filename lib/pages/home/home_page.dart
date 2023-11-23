@@ -190,6 +190,7 @@ class HomePageState extends State<HomePage> {
       child: WillPopScope(
         onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
           body: MediaQuery.of(context).size.shortestSide < 600
               // Phone layout
