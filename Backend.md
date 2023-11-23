@@ -95,7 +95,8 @@ To create the required databases for the campus app, you have to run the followi
    - String wpUserId : ``appwrite databases createIntegerAttribute --databaseId data --collectionId publishers --key id --required true``
    - String name : ``appwrite databases createStringAttribute --databaseId data --collectionId publishers --key name --size 100 --required true``
    - String initiallyDisplayed : ``appwrite databases createBooleanAttribute --databaseId data --collectionId publishers --key initiallyDisplayed --xdefault false --required false``
-   
+   - bool hidden : ``appwrite databases createBooleanAttribute --databaseId data --collectionId publishers --key hidden --xdefault false --required false``
+
 3. Create an index for the ``publishers`` collection:
    - ``appwrite databases createIndex --databaseId data --collectionId publishers --key index --type key --attributes 'id' --orders 'ASC'``
 
@@ -107,6 +108,7 @@ To create the required databases for the campus app, you have to run the followi
 2. Create the following attributes for the ``study_courses`` collection:
    - String wpUserId : ``appwrite databases createIntegerAttribute --databaseId data --collectionId study_courses --key pId --required true``
    - String name : ``appwrite databases createStringAttribute --databaseId data --collectionId study_courses --key name --size 100 --required true``
+   - String faculty : ``appwrite databases createStringAttribute --databaseId data --collectionId study_courses --key faculty --size 220 --required true``
    
 3. Create an index for the ``study_courses`` collection:
    - ``appwrite databases createIndex --databaseId data --collectionId study_courses --key index --type key --attributes 'pId' --orders 'ASC'``
