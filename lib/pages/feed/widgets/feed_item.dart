@@ -110,18 +110,15 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
   }
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      generateVideoThumbnail(widget.videoUrl);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
+
     final month = DateFormat('LLL').format(widget.date);
     final day = DateFormat('dd').format(widget.date);
+
+    if (videoThumbnailFile == null) {
+      generateVideoThumbnail(widget.videoUrl);
+    }
 
     return OpenContainer(
       transitionType: ContainerTransitionType.fadeThrough,
