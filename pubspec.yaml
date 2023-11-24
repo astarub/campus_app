@@ -58,10 +58,8 @@ dependencies:
   barcode_widget: ^2.0.3
   screen_brightness: ^0.2.2
   fluttertoast: ^8.2.2
-
   location: ^5.0.3
   #url_launcher: ^6.0.3
-  cupertino_icons: ^1.0.2
   flutter_map: ^6.0.1
   http: ^1.1.0
   flutter_polyline_points: ^2.0.0
@@ -139,6 +137,8 @@ flutter:
      - assets/img/icons/arrow-right.svg
      - assets/img/icons/info-message.svg
      - assets/img/icons/x.svg
+     - assets/img/icons/map-outlined.png
+     - assets/img/icons/map-filled.png
      - assets/img/icons/mensa-alcohol.png
      - assets/img/icons/mensa-beef.png
      - assets/img/icons/mensa-chicken.png
@@ -160,7 +160,6 @@ flutter:
      - assets/img/icons/share.svg
      - assets/img/icons/discord-filled.svg
      - assets/img/icons/github.svg
-     - assets/img/icons/map.svg
      - assets/img/icons/help-circle.svg
      - assets/img/icons/euro.svg
      - assets/animations/nfc-light.json

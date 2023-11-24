@@ -10,7 +10,6 @@ import 'package:campus_app/pages/wallet/mensa_balance_page.dart';
 import 'package:campus_app/utils/widgets/subpage_button.dart';
 import 'package:campus_app/pages/wallet/widgets/leitwarte_button.dart';
 import 'package:campus_app/pages/wallet/widgets/wallet.dart';
-import 'package:campus_app/pages/wallet/pathfinder_page.dart';
 
 class WalletPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -84,21 +83,6 @@ class _WalletPageState extends State<WalletPage> {
                                 );
                               },
                             ),
-                            // Room finder (WIP)
-                            // Room finder (WIP)
-                            SubPageButton(
-                              title: 'Raumfinder',
-                              leadingIconPath: 'assets/img/icons/map.svg',
-                              trailingIconPath: 'assets/img/icons/chevron-right.svg',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const RaumfinderPage(),
-                                  ),
-                                );
-                              },
-                            ),
                             // FAQ
                             SubPageButton(
                               title: 'Campus ABC',
@@ -130,7 +114,7 @@ class _WalletPageState extends State<WalletPage> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 16),
                                 child: Text(
-                                  'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen wie bspw. einen interaktiven Raumfinder erweitert werden.',
+                                  'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen in die App zu integrieren.',
                                   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                                   overflow: TextOverflow.visible,
                                 ),

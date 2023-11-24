@@ -27,6 +27,7 @@ class HomePageState extends State<HomePage> {
   Map<PageItem, GlobalKey<NavigatorState>> navigatorKeys = {
     PageItem.feed: GlobalKey<NavigatorState>(),
     PageItem.events: GlobalKey<NavigatorState>(),
+    PageItem.pathfinder: GlobalKey<NavigatorState>(),
     PageItem.mensa: GlobalKey<NavigatorState>(),
     PageItem.wallet: GlobalKey<NavigatorState>(),
     PageItem.more: GlobalKey<NavigatorState>(),
@@ -37,6 +38,7 @@ class HomePageState extends State<HomePage> {
   Map<PageItem, GlobalKey<AnimatedExitState>> exitAnimationKeys = {
     PageItem.feed: GlobalKey<AnimatedExitState>(),
     PageItem.events: GlobalKey<AnimatedExitState>(),
+    PageItem.pathfinder: GlobalKey<AnimatedExitState>(),
     PageItem.mensa: GlobalKey<AnimatedExitState>(),
     PageItem.wallet: GlobalKey<AnimatedExitState>(),
     PageItem.more: GlobalKey<AnimatedExitState>(),
@@ -44,6 +46,7 @@ class HomePageState extends State<HomePage> {
   Map<PageItem, GlobalKey<AnimatedEntryState>> entryAnimationKeys = {
     PageItem.feed: GlobalKey<AnimatedEntryState>(),
     PageItem.events: GlobalKey<AnimatedEntryState>(),
+    PageItem.pathfinder: GlobalKey<AnimatedEntryState>(),
     PageItem.mensa: GlobalKey<AnimatedEntryState>(),
     PageItem.wallet: GlobalKey<AnimatedEntryState>(),
     PageItem.more: GlobalKey<AnimatedEntryState>(),
@@ -278,11 +281,12 @@ class HomePageState extends State<HomePage> {
                                   ),
                                   child: Center(
                                     child: SizedBox(
-                                      width: 550,
+                                      width: currentPage != PageItem.pathfinder ? 550 : null,
                                       child: Stack(
                                         children: [
                                           _buildOffstateNavigator(PageItem.feed),
                                           _buildOffstateNavigator(PageItem.events),
+                                          _buildOffstateNavigator(PageItem.pathfinder),
                                           _buildOffstateNavigator(PageItem.mensa),
                                           _buildOffstateNavigator(PageItem.wallet),
                                           _buildOffstateNavigator(PageItem.more),
