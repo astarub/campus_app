@@ -55,13 +55,28 @@ class FeedUtils {
     if (shuffle) {
       feedItemOrEventWidget.addAll(feedItems);
 
-      if (shuffeledItemOrEventWidgets.length < feedItemOrEventWidget.length) {
-        feedItemOrEventWidget.shuffle();
+      // Remove all outdated feed items
+      final List<String> feedItemLinks = feedItems.map((e) => e.link).toList();
+      List tshuffeledFeedItems = [];
 
-        shuffeledItemOrEventWidgets = feedItemOrEventWidget;
+      for (final n in shuffeledItemOrEventWidgets) {
+        if (n is FeedItem) {
+          try {
+            if (feedItemLinks.contains(n.link)) {
+              tshuffeledFeedItems.add(n);
+            }
+            // ignore: empty_catches
+          } catch (e) {}
+        }
       }
 
-      feedItemOrEventWidget = shuffeledItemOrEventWidgets;
+      if (tshuffeledFeedItems.length < feedItemOrEventWidget.length) {
+        feedItemOrEventWidget.shuffle();
+
+        tshuffeledFeedItems = feedItemOrEventWidget;
+      }
+
+      feedItemOrEventWidget = tshuffeledFeedItems;
     } else {
       // sort widgets according to date
       feedItemOrEventWidget.addAll(feedItems);
