@@ -133,7 +133,13 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   }
 
   Future<void> addTicket() async {
-    final FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result;
+
+    try {
+      result = await FilePicker.platform.pickFiles();
+    } catch (e) {
+      debugPrint('Access files permission not granted.');
+    }
 
     if (result != null) {
       final File file = File(result.files.single.path!);
