@@ -1,3 +1,4 @@
+import 'package:campus_app/pages/pathfinder/pathfinder_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:campus_app/pages/feed/feed_page.dart';
@@ -8,7 +9,7 @@ import 'package:campus_app/pages/wallet/wallet_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
-enum PageItem { feed, events, coupons, mensa, wallet, more }
+enum PageItem { feed, events, pathfinder, coupons, mensa, wallet, more }
 
 class PageNavigatorRoutes {
   /// The root-page is shown initially when this navbar-tab is the active one.
@@ -62,6 +63,12 @@ class NavBarNavigator extends StatelessWidget {
       case PageItem.events:
         rootPage = CalendarPage(
           mainNavigatorKey: mainNavigatorKey,
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
+        );
+        break;
+      case PageItem.pathfinder:
+        rootPage = RaumfinderPage(
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );

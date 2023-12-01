@@ -66,6 +66,16 @@ dependencies:
   sentry_flutter: ^7.12.0
   sentry: ^7.13.1
   video_thumbnail: ^0.5.3
+  mobile_scanner: ^3.2.0
+  barcode_widget: ^2.0.3
+  location: ^5.0.3
+  #url_launcher: ^6.0.3
+  flutter_map: ^6.0.1
+  #http: ^1.1.0
+  flutter_polyline_points: ^2.0.0
+  flutter_map_location_marker: any
+  geolocator: ^10.1.0
+  latlong2: ^0.9.0
   
 dev_dependencies:
   flutter_test:
@@ -137,6 +147,8 @@ flutter:
      - assets/img/icons/arrow-right.svg
      - assets/img/icons/info-message.svg
      - assets/img/icons/x.svg
+     - assets/img/icons/map-outlined.png
+     - assets/img/icons/map-filled.png
      - assets/img/icons/mensa-alcohol.png
      - assets/img/icons/mensa-beef.png
      - assets/img/icons/mensa-chicken.png
@@ -158,7 +170,6 @@ flutter:
      - assets/img/icons/share.svg
      - assets/img/icons/discord-filled.svg
      - assets/img/icons/github.svg
-     - assets/img/icons/map.svg
      - assets/img/icons/help-circle.svg
      - assets/img/icons/euro.svg
      - assets/animations/nfc-light.json
@@ -166,6 +177,7 @@ flutter:
      - assets/animations/coin-flip.json
      - assets/img/bogestra-logo.svg
      - assets/img/icons/file-plus.svg
+     - assets/img/icons/map.svg
 
   fonts:
     - family: SF-Pro

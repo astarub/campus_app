@@ -61,6 +61,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
               onTap: () => widget.onSelectedPage(PageItem.events),
               isActive: widget.currentPage == PageItem.events,
             ),
+            // Pathfinder
+            BottomNavBarItem(
+              title: 'Raumfinder',
+              imagePathActive: 'assets/img/icons/map-filled.png',
+              imagePathInactive: 'assets/img/icons/map-outlined.png',
+              iconHeight: 32,
+              iconVerticalPadding: 7.5,
+              onTap: () => widget.onSelectedPage(PageItem.pathfinder),
+              isActive: widget.currentPage == PageItem.pathfinder,
+            ),
             // Mensa
             BottomNavBarItem(
               title: 'Mensa',

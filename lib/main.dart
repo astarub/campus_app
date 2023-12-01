@@ -230,6 +230,8 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     precacheImage(Image.asset('assets/img/icons/home-filled.png').image, context);
     precacheImage(Image.asset('assets/img/icons/calendar-outlined.png').image, context);
     precacheImage(Image.asset('assets/img/icons/calendar-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/map-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/map-filled.png').image, context);
     precacheImage(Image.asset('assets/img/icons/mensa-outlined.png').image, context);
     precacheImage(Image.asset('assets/img/icons/mensa-filled.png').image, context);
     precacheImage(Image.asset('assets/img/icons/wallet-outlined.png').image, context);
