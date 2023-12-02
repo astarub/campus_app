@@ -74,6 +74,7 @@ class FeedUtils {
         feedItemOrEventWidget.shuffle();
 
         tshuffeledFeedItems = feedItemOrEventWidget;
+        shuffeledItemOrEventWidgets = tshuffeledFeedItems;
       }
 
       feedItemOrEventWidget = tshuffeledFeedItems;

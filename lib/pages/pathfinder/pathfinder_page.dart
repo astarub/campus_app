@@ -1,10 +1,9 @@
-// ignore_for_file: avoid_dynamic_calls, avoid_print
-
-//import 'dart:io';
-//import 'dart:math';
-
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
@@ -12,17 +11,22 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 
-//import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-//import 'package:campus_app/utils/widgets/campus_icon_button.dart';
-//import 'package:campus_app/utils/constants.dart';
+import 'package:campus_app/pages/home/widgets/study_course_popup.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/utils/constants.dart';
 
 class RaumfinderPage extends StatefulWidget {
+  final GlobalKey<NavigatorState> mainNavigatorKey;
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const RaumfinderPage({
     Key? key,
+    required this.mainNavigatorKey,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
   }) : super(key: key);
@@ -31,11 +35,14 @@ class RaumfinderPage extends StatefulWidget {
   State<RaumfinderPage> createState() => RaumfinderPageState();
 }
 
-class RaumfinderPageState extends State<RaumfinderPage> {
+class RaumfinderPageState extends State<RaumfinderPage>
+    with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<RaumfinderPage> {
+  TextEditingController searchController = TextEditingController();
+  FocusNode globalFocusNode = FocusNode();
   LocationData? currentLocation;
+  LatLng? symbolPosition;
   List<LatLng> waypoints = [];
-  final TextEditingController _searchController = TextEditingController();
-  FocusNode _focusNode = FocusNode();
+  List<String> suggestions = [];
 
   final Map<String, LatLng> predefinedLocations = {
     'UFO': const LatLng(51.448051, 7.259111),
@@ -148,55 +155,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
     'Wahlurne: Studienkolleg': const LatLng(51.446911, 7.246478),
   };
 
-  List<String> suggestions = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _getLocation();
-  }
-
-  void _showDialog() {
-    const Color customAccentColor = Colors.blue;
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          'Informationen zu den Wahlen',
-          style: TextStyle(
-            color: customAccentColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: const SingleChildScrollView(
-          child: Text(
-            'Die Ruhr-Universität Bochum führt Wahlen zum 56. Studierendenparlament und zum 8. SHK-Rat sowie eine Urabstimmung der Studierendenschaft durch. Alle Studierenden sind wahlberechtigt. Die Studierendenparlamentswahl ist eine personalisierte Listenwahl, bei der Sitze den Wahllisten entsprechend der Stimmenanzahl zugeteilt werden. Das Studierendenparlament trifft grundlegende Entscheidungen für die Studierendenschaft, darunter Haushaltsbeschlüsse, Festsetzung von Teilen des Semesterbeitrags und die Wahl und Kontrolle des Allgemeinen Studierendenausschusses (AStA). Die Wahlen finden vom 4. bis 8. Dezember 2023 statt.\n \nThe Ruhr-University Bochum is conducting elections for the 56th Student Parliament and the 8th SHK Council, as well as a referendum for the student body. All students are eligible to vote. The Student Parliament election is a personalized list election, where seats are allocated to the election lists based on the number of votes received by their respective candidates. The Student Parliament makes fundamental decisions for the student body, including budget decisions, determining parts of the semester fee, and electing and overseeing the General Student Committee (AStA). The elections will take place from December 4th to December 8th, 2023.',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            child: const Text(
-              'Ok',
-              style: TextStyle(
-                color: customAccentColor,
-              ),
-            ),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _getLocation() async {
+  Future<void> getLocation() async {
     waypoints = [];
     final Location location = Location();
 
@@ -204,12 +163,12 @@ class RaumfinderPageState extends State<RaumfinderPage> {
       currentLocation = await location.getLocation();
       setState(() {});
     } catch (e) {
-      print('Error getting location: $e');
+      debugPrint('Error getting location: $e');
     }
   }
 
-  Future<void> _getShortestPath(LatLng start, LatLng end) async {
-    const String apiUrl = 'https://osrm.app.asta-bochum.de/route/v1/';
+  Future<void> getShortestPath(LatLng start, LatLng end) async {
+    const String apiUrl = '$osrmBackend/route/v1/';
     const String profile = 'walking';
     final String url =
         '$apiUrl$profile/${start.longitude},${start.latitude};${end.longitude},${end.latitude}?overview=false&alternatives=false&steps=true';
@@ -228,11 +187,11 @@ class RaumfinderPageState extends State<RaumfinderPage> {
 
         final List<dynamic> routes = data['routes'];
         if (routes.isNotEmpty) {
-          final List<dynamic> legs = routes[0]['legs'];
+          final List<dynamic> legs = Map<String, dynamic>.from(routes[0])['legs'];
           for (final leg in legs) {
-            final List<dynamic> steps = leg['steps'];
+            final List<dynamic> steps = Map<String, dynamic>.from(leg)['steps'];
             for (final step in steps) {
-              final String geometry = step['geometry'];
+              final String geometry = Map<String, dynamic>.from(step)['geometry'];
               final List<LatLng> coordinates =
                   PolylinePoints().decodePolyline(geometry).map((e) => LatLng(e.latitude, e.longitude)).toList();
               newWaypoints.addAll(coordinates);
@@ -242,74 +201,18 @@ class RaumfinderPageState extends State<RaumfinderPage> {
 
         setState(() {
           waypoints = newWaypoints;
-          _focusNode.unfocus();
+          globalFocusNode.unfocus();
         });
-
-        _searchController.text = suggestions.first;
+        searchController.text = suggestions.first;
       } else {
-        print('Error: ${response.statusCode}');
+        debugPrint('Error: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
     }
   }
 
-/*
-  void _updateSuggestions(String query) {
-    suggestions = [];
-    predefinedLocations.forEach((key, value) {
-      if (key.toLowerCase().contains(query.toLowerCase())) {
-        suggestions.add(key);
-      }
-    });
-
-    if (suggestions.isEmpty && query.isNotEmpty) {
-      final String mostProbableKey = _findMostProbableKey(query);
-      suggestions.add(mostProbableKey);
-    }
-
-    setState(() {});
-  }
-
-  String _findMostProbableKey(String query) {
-    String mostProbableKey = '';
-    int minDistance = double.maxFinite.toInt();
-
-    for (var key in predefinedLocations.keys) {
-      final int distance = _calculateLevenshteinDistance(query.toLowerCase(), key.toLowerCase());
-      if (distance < minDistance) {
-        minDistance = distance;
-        mostProbableKey = key;
-      }
-    }
-
-    return mostProbableKey;
-  }
-
-  int _calculateLevenshteinDistance(String a, String b) {
-    final List<List<int>> dp = List.generate(a.length + 1, (index) => List<int>.filled(b.length + 1, 0));
-
-    for (int i = 0; i <= a.length; i++) {
-      for (int j = 0; j <= b.length; j++) {
-        if (i == 0) {
-          dp[i][j] = j;
-        } else if (j == 0) {
-          dp[i][j] = i;
-        } else {
-          dp[i][j] = _min(dp[i - 1][j - 1] + (a[i - 1] == b[j - 1] ? 0 : 1), _min(dp[i - 1][j] + 1, dp[i][j - 1] + 1));
-        }
-      }
-    }
-
-    return dp[a.length][b.length];
-  }
-*/
-  //int _min(int a, int b) => (a < b) ? a : b;
-
-  void _displayInfo(BuildContext context) {}
-
-  LatLng? symbolPosition;
-  void _placeSymbol(String locationKey) {
+  void placeSymbol(String locationKey) {
     if (predefinedLocations.containsKey(locationKey)) {
       setState(() {
         symbolPosition = predefinedLocations[locationKey];
@@ -317,7 +220,26 @@ class RaumfinderPageState extends State<RaumfinderPage> {
     }
   }
 
-/*
+  String getFaculty() {
+    final currentSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings;
+
+    if (currentSettings.studyCourses.isNotEmpty) {
+      return currentSettings.studyCourses.first.faculty;
+    } else {
+      widget.mainNavigatorKey.currentState?.push(
+        PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (context, _, __) => StudyCoursePopup(
+            callback: (List<StudyCourse> selectedCourse) {
+              return currentSettings.studyCourses.first.faculty;
+            },
+          ),
+        ),
+      );
+    }
+    return '';
+  }
+
   bool _isVotingButtonVisible() {
     final DateTime currentDate = DateTime.now().toUtc().toLocal();
     final DateTime startDate = DateTime(2023, 11, 30).toUtc().toLocal();
@@ -325,33 +247,30 @@ class RaumfinderPageState extends State<RaumfinderPage> {
 
     return currentDate.isAfter(startDate) && currentDate.isBefore(endDate);
   }
-*/
 
-  //bool _dialogShown = false;
+  TileLayer buildTileLayer() {
+    try {
+      return TileLayer(
+        urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      );
+    } catch (e) {
+      debugPrint('An exception occurred: $e');
+
+      return TileLayer(
+        urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      /*
-      if (!_dialogShown) {
-        _dialogShown = true;
-        _showDialog();
-      }
-      */
-    });
-
-    TileLayer buildTileLayer() {
-      try {
-        return TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        );
-      } catch (e) {
-        print('An exception occurred: $e');
-
-        return TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        );
-      }
-    }
+    super.build(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -419,9 +338,10 @@ class RaumfinderPageState extends State<RaumfinderPage> {
             left: 10,
             right: 10,
             child: Container(
-              padding: const EdgeInsets.all(8),
+              height: 70,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 20, 20, 39),
+                color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -434,14 +354,14 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                         );
                       },
                       onSelected: (String selectedOption) {
-                        _searchController.text = selectedOption;
+                        searchController.text = selectedOption;
                         final LatLng startLocation = LatLng(
                           currentLocation!.latitude!,
                           currentLocation!.longitude!,
                         );
                         final LatLng endLocation = predefinedLocations[selectedOption]!;
-                        _getShortestPath(startLocation, endLocation);
-                        _placeSymbol(selectedOption);
+                        getShortestPath(startLocation, endLocation);
+                        placeSymbol(selectedOption);
                       },
                       optionsViewBuilder:
                           (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
@@ -480,87 +400,149 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                         FocusNode focusNode,
                         VoidCallback onFieldSubmitted,
                       ) {
-                        _focusNode = focusNode;
+                        globalFocusNode = focusNode;
+                        searchController = textEditingController;
 
                         return TextField(
                           controller: textEditingController,
                           focusNode: focusNode,
-                          decoration: const InputDecoration(
-                            hintText: 'Search locations',
-                            hintStyle: TextStyle(
-                              color: Color.fromARGB(255, 255, 252, 252),
-                            ),
-                            //border: InputBorder.none,
+                          decoration: InputDecoration(
+                            labelText: 'Suche',
+                            labelStyle: Provider.of<ThemesNotifier>(context)
+                                .currentThemeData
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(
+                                  fontSize: 16,
+                                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                          AppThemes.light
+                                      ? Colors.black
+                                      : null,
+                                ),
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            contentPadding: const EdgeInsets.only(left: 17, bottom: 17),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                           ),
-                          onChanged: (value) {
-                            //_updateSuggestions(value);
+                          style: Provider.of<ThemesNotifier>(context)
+                              .currentThemeData
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
+                                fontSize: 16,
+                                color:
+                                    Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                        ? Colors.black
+                                        : null,
+                              ),
+                          onEditingComplete: () {
+                            final LatLng startLocation = LatLng(
+                              currentLocation!.latitude!,
+                              currentLocation!.longitude!,
+                            );
+                            final LatLng endLocation = predefinedLocations[textEditingController.text]!;
+                            getShortestPath(startLocation, endLocation);
+                            placeSymbol(textEditingController.text);
+                          },
+                          onChanged: (String value) {
+                            searchController.text = value;
                           },
                         );
                       },
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      final String enteredLocation = _searchController.text.trim();
-                      if (predefinedLocations.containsKey(enteredLocation)) {
-                        final LatLng startLocation = LatLng(
-                          currentLocation!.latitude!,
-                          currentLocation!.longitude!,
-                        );
-                        final LatLng endLocation = predefinedLocations[enteredLocation]!;
-                        _getShortestPath(startLocation, endLocation);
-                      } /*else if (suggestions.isNotEmpty) {
-                        final LatLng startLocation = LatLng(
-                          currentLocation!.latitude!,
-                          currentLocation!.longitude!,
-                        );
-                        final LatLng endLocation = predefinedLocations[suggestions.first]!;
-                        _getShortestPath(startLocation, endLocation);
-                      } */
-                      else {
-                        print('Invalid location entered');
-                      }
-                    },
-                    icon: const Icon(Icons.search),
-                    color: Colors.blue,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 11),
+                    child: CampusIconButton(
+                      iconPath: 'assets/img/icons/search.svg',
+                      onTap: () {
+                        final String enteredLocation = searchController.text.trim();
+                        if (predefinedLocations.containsKey(enteredLocation)) {
+                          final LatLng startLocation = LatLng(
+                            currentLocation!.latitude!,
+                            currentLocation!.longitude!,
+                          );
+                          final LatLng endLocation = predefinedLocations[enteredLocation]!;
+                          getShortestPath(startLocation, endLocation);
+                          placeSymbol(searchController.text);
+                        } else {
+                          debugPrint('Invalid location entered');
+                        }
+                      },
+                      transparent: true,
+                      backgroundColorDark:
+                          Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                              ? const Color.fromRGBO(245, 246, 250, 1)
+                              : const Color.fromRGBO(34, 40, 54, 1),
+                      backgroundColorLight:
+                          Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                              ? const Color.fromRGBO(245, 246, 250, 1)
+                              : const Color.fromRGBO(34, 40, 54, 1),
+                      borderColorDark:
+                          Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                              ? const Color.fromRGBO(245, 246, 250, 1)
+                              : const Color.fromRGBO(34, 40, 54, 1),
+                      borderColorLight:
+                          Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                              ? const Color.fromRGBO(245, 246, 250, 1)
+                              : const Color.fromRGBO(34, 40, 54, 1),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          /*
           Positioned(
             bottom: 25,
             right: 20,
             child: _isVotingButtonVisible()
                 ? ElevatedButton(
                     onPressed: () {
-                      const String locationKey = "MA"; //Dummy 
-                      getFaculties();
-                      _placeVotingSymbol(locationKey);
+                      String locationKey = getFaculty();
+
+                      if (locationKey.isEmpty) return;
+
+                      locationKey = 'Wahlurne: $locationKey';
+
+                      searchController.text = locationKey;
+
+                      placeSymbol(locationKey);
+
                       final LatLng startLocation = LatLng(
                         currentLocation!.latitude!,
                         currentLocation!.longitude!,
                       );
-                      LatLng? endLocation = predefinedLocations[locationKey];
-                      _getShortestPath(startLocation, endLocation!);
+                      final LatLng? endLocation = predefinedLocations[locationKey];
+
+                      getShortestPath(startLocation, endLocation!);
                     },
                     style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      padding: EdgeInsets.all(16),
-                      primary: Colors.blue,
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(20),
+                      backgroundColor: Colors.blue,
                       elevation: 10,
-                      shadowColor: Colors.blue,
+                      shadowColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary,
                     ),
-                    child: Icon(
-                      Icons.how_to_vote,
-                      size: 30,
+                    child: SvgPicture.asset(
+                      'assets/img/icons/vote.svg',
+                      colorFilter: const ColorFilter.mode(
+                        Colors.white,
+                        BlendMode.srcIn,
+                      ),
+                      width: 30,
                     ),
                   )
-                : SizedBox(),
-          ),*/
+                : const SizedBox(),
+          ),
         ],
       ),
     );
   }
+
+  // Keep state alive
+  @override
+  bool get wantKeepAlive => true;
 }

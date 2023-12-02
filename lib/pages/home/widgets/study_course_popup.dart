@@ -17,9 +17,8 @@ import 'package:campus_app/utils/widgets/campus_button.dart';
 ///
 /// The [SnappingSheet] package handles the animations and layout.
 class StudyCoursePopup extends StatefulWidget {
-  const StudyCoursePopup({
-    Key? key,
-  }) : super(key: key);
+  final Function(List<StudyCourse>)? callback;
+  const StudyCoursePopup({Key? key, this.callback}) : super(key: key);
 
   @override
   State<StudyCoursePopup> createState() => StudyCoursePopupState();
@@ -72,6 +71,11 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
         snappingDuration: Duration(milliseconds: 350),
       ),
     );
+
+    if (widget.callback != null) {
+      // ignore: prefer_null_aware_method_calls
+      widget.callback!(selectedStudies);
+    }
     Navigator.pop(context);
   }
 

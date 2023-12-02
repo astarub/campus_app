@@ -133,6 +133,7 @@ flutter:
      - assets/img/icons/help-filled.png
      - assets/img/icons/wallet-outlined.png
      - assets/img/icons/wallet-filled.png
+     - assets/img/icons/vote.svg
      - assets/img/icons/more.png
      - assets/img/icons/settings.svg
      - assets/img/icons/info.svg
@@ -177,7 +178,6 @@ flutter:
      - assets/animations/coin-flip.json
      - assets/img/bogestra-logo.svg
      - assets/img/icons/file-plus.svg
-     - assets/img/icons/map.svg
 
   fonts:
     - family: SF-Pro

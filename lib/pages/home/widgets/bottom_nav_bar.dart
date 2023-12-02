@@ -67,7 +67,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               imagePathActive: 'assets/img/icons/map-filled.png',
               imagePathInactive: 'assets/img/icons/map-outlined.png',
               iconHeight: 32,
-              iconVerticalPadding: 7.5,
+              iconVerticalPadding: 6.5,
               onTap: () => widget.onSelectedPage(PageItem.pathfinder),
               isActive: widget.currentPage == PageItem.pathfinder,
             ),
