@@ -35,22 +35,22 @@ PODS:
   - file_picker (0.0.1):
     - DKImagePickerController/PhotoGallery
     - Flutter
-  - Firebase/CoreOnly (10.17.0):
-    - FirebaseCore (= 10.17.0)
-  - Firebase/Messaging (10.17.0):
+  - Firebase/CoreOnly (10.18.0):
+    - FirebaseCore (= 10.18.0)
+  - Firebase/Messaging (10.18.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 10.17.0)
-  - firebase_core (2.22.0):
-    - Firebase/CoreOnly (= 10.17.0)
+    - FirebaseMessaging (~> 10.18.0)
+  - firebase_core (2.24.0):
+    - Firebase/CoreOnly (= 10.18.0)
     - Flutter
-  - firebase_messaging (14.7.4):
-    - Firebase/Messaging (= 10.17.0)
+  - firebase_messaging (14.7.6):
+    - Firebase/Messaging (= 10.18.0)
     - firebase_core
     - Flutter
-  - FirebaseCore (10.17.0):
+  - FirebaseCore (10.18.0):
     - FirebaseCoreInternal (~> 10.0)
-    - GoogleUtilities/Environment (~> 7.8)
-    - GoogleUtilities/Logger (~> 7.8)
+    - GoogleUtilities/Environment (~> 7.12)
+    - GoogleUtilities/Logger (~> 7.12)
   - FirebaseCoreInternal (10.18.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FirebaseInstallations (10.18.0):
@@ -58,7 +58,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
-  - FirebaseMessaging (10.17.0):
+  - FirebaseMessaging (10.18.0):
     - FirebaseCore (~> 10.0)
     - FirebaseInstallations (~> 10.0)
     - GoogleDataTransport (~> 9.2)
@@ -99,23 +99,6 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleMLKit/BarcodeScanning (4.0.0):
-    - GoogleMLKit/MLKitCore
-    - MLKitBarcodeScanning (~> 3.0.0)
-  - GoogleMLKit/MLKitCore (4.0.0):
-    - MLKitCommon (~> 9.0.0)
-  - GoogleToolboxForMac/DebugUtils (2.3.2):
-    - GoogleToolboxForMac/Defines (= 2.3.2)
-  - GoogleToolboxForMac/Defines (2.3.2)
-  - GoogleToolboxForMac/Logger (2.3.2):
-    - GoogleToolboxForMac/Defines (= 2.3.2)
-  - "GoogleToolboxForMac/NSData+zlib (2.3.2)":
-    - GoogleToolboxForMac/Defines (= 2.3.2)
-  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.3.2)":
-    - GoogleToolboxForMac/DebugUtils (= 2.3.2)
-    - GoogleToolboxForMac/Defines (= 2.3.2)
-    - "GoogleToolboxForMac/NSString+URLArguments (= 2.3.2)"
-  - "GoogleToolboxForMac/NSString+URLArguments (2.3.2)"
   - GoogleUtilities/AppDelegateSwizzler (7.12.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -133,9 +116,6 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.12.0):
     - GoogleUtilities/Logger
-  - GoogleUtilitiesComponents (1.1.0):
-    - GoogleUtilities/Logger
-  - GTMSessionFetcher/Core (2.3.0)
   - libwebp (1.3.2):
     - libwebp/demux (= 1.3.2)
     - libwebp/mux (= 1.3.2)
@@ -150,27 +130,6 @@ PODS:
     - libwebp/sharpyuv
   - location (0.0.1):
     - Flutter
-  - MLImage (1.0.0-beta4)
-  - MLKitBarcodeScanning (3.0.0):
-    - MLKitCommon (~> 9.0)
-    - MLKitVision (~> 5.0)
-  - MLKitCommon (9.0.0):
-    - GoogleDataTransport (~> 9.0)
-    - GoogleToolboxForMac/Logger (~> 2.1)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
-    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
-    - GoogleUtilities/UserDefaults (~> 7.0)
-    - GoogleUtilitiesComponents (~> 1.0)
-    - GTMSessionFetcher/Core (< 3.0, >= 1.1)
-  - MLKitVision (5.0.0):
-    - GoogleToolboxForMac/Logger (~> 2.1)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
-    - GTMSessionFetcher/Core (< 3.0, >= 1.1)
-    - MLImage (= 1.0.0-beta4)
-    - MLKitCommon (~> 9.0)
-  - mobile_scanner (3.5.5):
-    - Flutter
-    - GoogleMLKit/BarcodeScanning (~> 4.0.0)
   - nanopb (2.30909.1):
     - nanopb/decode (= 2.30909.1)
     - nanopb/encode (= 2.30909.1)
@@ -233,7 +192,6 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - location (from `.symlinks/plugins/location/ios`)
-  - mobile_scanner (from `.symlinks/plugins/mobile_scanner/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - pdf_image_renderer (from `.symlinks/plugins/pdf_image_renderer/ios`)
@@ -258,16 +216,8 @@ SPEC REPOS:
     - FirebaseMessaging
     - FMDB
     - GoogleDataTransport
-    - GoogleMLKit
-    - GoogleToolboxForMac
     - GoogleUtilities
-    - GoogleUtilitiesComponents
-    - GTMSessionFetcher
     - libwebp
-    - MLImage
-    - MLKitBarcodeScanning
-    - MLKitCommon
-    - MLKitVision
     - nanopb
     - OrderedSet
     - PromisesObjC
@@ -308,8 +258,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geolocator_apple/ios"
   location:
     :path: ".symlinks/plugins/location/ios"
-  mobile_scanner:
-    :path: ".symlinks/plugins/mobile_scanner/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -340,13 +288,13 @@ SPEC CHECKSUMS:
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 15fd9539e4eb735dc54bae8c0534a7a9511a03de
-  Firebase: f4ac0b02927af9253ae094d23deecf0890da7374
-  firebase_core: efc9455611b8769fa90fbdae5da182600bd6901c
-  firebase_messaging: 9c697d1ecfe77edf15d995b5048906ffc994c96c
-  FirebaseCore: 534544dd98cabcf4bf8598d88ec683b02319a528
+  Firebase: 414ad272f8d02dfbf12662a9d43f4bba9bec2a06
+  firebase_core: f802c5c1f6caff9b8d38b591a36e7b25f8878936
+  firebase_messaging: ca2fc59ddd52ef032d80f1a717d12eae8fa0e994
+  FirebaseCore: 2322423314d92f946219c8791674d2f3345b598f
   FirebaseCoreInternal: 8eb002e564b533bdcf1ba011f33f2b5c10e2ed4a
   FirebaseInstallations: e842042ec6ac1fd2e37d7706363ebe7f662afea4
-  FirebaseMessaging: 1367b28c0c83a63072af4a711328fcc2e6899902
+  FirebaseMessaging: 9bc34a98d2e0237e1b121915120d4d48ddcf301e
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_compass: cbbd285cea1584c7ac9c4e0c3e1f17cbea55e855
   flutter_inappwebview: 3d32228f1304635e7c028b0d4252937730bbc6cf
@@ -359,18 +307,9 @@ SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
   GoogleDataTransport: 57c22343ab29bc686febbf7cbb13bad167c2d8fe
-  GoogleMLKit: 2bd0dc6253c4d4f227aad460f69215a504b2980e
-  GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
-  GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
-  GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   location: d5cf8598915965547c3f36761ae9cc4f4e87d22e
-  MLImage: 7bb7c4264164ade9bf64f679b40fb29c8f33ee9b
-  MLKitBarcodeScanning: 04e264482c5f3810cb89ebc134ef6b61e67db505
-  MLKitCommon: c1b791c3e667091918d91bda4bba69a91011e390
-  MLKitVision: 8baa5f46ee3352614169b85250574fde38c36f49
-  mobile_scanner: 202ab6f652e40a9add68b10de4c4fb2a745c4348
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
@@ -388,10 +327,10 @@ SPEC CHECKSUMS:
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
-  url_launcher_ios: 68d46cc9766d0c41dbdc884310529557e3cd7a86
-  video_player_avfoundation: 8563f13d8fc8b2c29dc2d09e60b660e4e8128837
+  url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
+  video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
 
 PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 
-COCOAPODS: 1.14.2
+COCOAPODS: 1.14.3
