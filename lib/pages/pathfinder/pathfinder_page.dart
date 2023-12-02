@@ -223,8 +223,8 @@ class RaumfinderPageState extends State<RaumfinderPage>
   String getFaculty() {
     final currentSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings;
 
-    if (currentSettings.studyCourses.isNotEmpty) {
-      return currentSettings.studyCourses.first.faculty;
+    if (currentSettings.selectedStudyCourses.isNotEmpty) {
+      return currentSettings.selectedStudyCourses.first.faculty;
     } else {
       widget.mainNavigatorKey.currentState?.push(
         PageRouteBuilder(

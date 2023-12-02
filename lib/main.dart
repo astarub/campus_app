@@ -52,7 +52,7 @@ Future<void> main() async {
 
   // Checks if the app is in release mode and initializes sentry
   // REMOVE THIS CHECK IF YOU WISH TO RUN THE APP IN RELEASE MODE OTHERWISE THE APP WILL NOT RUN
-  if (kReleaseMode) {
+  /*if (kReleaseMode) {
     await SentryFlutter.init(
       (options) {
         options.dsn = sentryDsn;
@@ -86,7 +86,20 @@ Future<void> main() async {
         ),
       ),
     );
-  }
+  }*/
+
+  runApp(
+    MultiProvider(
+      providers: [
+        // Initializes the provider that handles the app-theme, authentication and other things
+        ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
+        ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+      ],
+      child: CampusApp(
+        key: campusAppKey,
+      ),
+    ),
+  );
 }
 
 final GlobalKey<CampusAppState> campusAppKey = GlobalKey();
