@@ -14,6 +14,8 @@ const String appwrite = 'https://api-app.asta-bochum.de/v1';
 
 const String mensaData = 'https://api-app.asta-bochum.de/get_meal';
 
+const String osrmBackend = 'https://osrm.app.asta-bochum.de';
+
 // See: https://codewithandrea.com/articles/flutter-api-keys-dart-define-env-files/
 final String mensaApiKey = Env.mensaApiKey;
 final String firebaseAndroidApiKey = Env.firebaseAndroidApiKey;

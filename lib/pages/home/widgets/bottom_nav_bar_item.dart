@@ -19,6 +19,12 @@ class BottomNavBarItem extends StatefulWidget {
   /// ATTENTION: Only use .png-files
   final String imagePathInactive;
 
+  /// Icon height
+  final double iconHeight;
+
+  /// Padding above and below the icon
+  final double iconVerticalPadding;
+
   /// Title of the page that this menu item refers to
   final String title;
 
@@ -33,6 +39,8 @@ class BottomNavBarItem extends StatefulWidget {
     required this.imagePathActive,
     required this.imagePathInactive,
     required this.title,
+    this.iconHeight = 26,
+    this.iconVerticalPadding = 10,
     required this.onTap,
     this.isActive = false,
   }) : super(key: key);
@@ -64,10 +72,10 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
           CustomButton(
             tapHandler: () => widget.onTap(),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 14, vertical: widget.iconVerticalPadding),
               child: Image.asset(
                 widget.isActive ? widget.imagePathActive : widget.imagePathInactive,
-                height: iconHeight,
+                height: widget.iconHeight,
                 color: widget.isActive
                     ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary
                     : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
