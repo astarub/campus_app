@@ -522,7 +522,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(20),
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary,
                       elevation: 10,
                       shadowColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary,
                     ),
