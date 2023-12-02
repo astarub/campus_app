@@ -72,13 +72,17 @@
       </array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
-    <key>NFCReaderUsageDescription</key>
-    <string>Allows the app to scan Mensa cards</string>
     <key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
     <array>
       <string>D2760000850100</string>
     </array>
-    <key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow the built in Pathfinder feature of the app to access the user's location</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>The Campus App requires access to your photo library to retrieve your ticket</string>
+	<key>NFCReaderUsageDescription</key>
+    <string>Allows the app to scan Mensa cards</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allows the built-in Pathfinder feature of the app to access the user's location</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow the built-in Pathfinder feature of the app to access the user's location</string>
 </dict>
 </plist>
