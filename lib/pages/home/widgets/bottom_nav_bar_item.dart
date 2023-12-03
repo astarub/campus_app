@@ -50,8 +50,6 @@ class BottomNavBarItem extends StatefulWidget {
 }
 
 class _BottomNavBarItemState extends State<BottomNavBarItem> {
-  // Adjust this value in order to change the icon height of each navbar-element
-  static const double iconHeight = 26;
   // Adjust this value in order to change the animation curve that is used for the
   // vertical translation-animation
   static const Curve animationCurve = Curves.easeOutExpo;

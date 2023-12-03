@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
+
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
 class DioUtils {
@@ -28,7 +26,7 @@ class DioUtils {
     // };
   }
 
-  void configureAsyncInsecure() {
+  /*void configureAsyncInsecure() {
     (client.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
       final HttpClient aClient = HttpClient(context: SecurityContext());
 
@@ -36,7 +34,7 @@ class DioUtils {
 
       return aClient;
     };
-  }
+  }*/
 
   void configure({
     int connectTimeout = 5000,

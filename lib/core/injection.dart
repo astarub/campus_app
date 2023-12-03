@@ -28,6 +28,7 @@ import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:campus_app/utils/constants.dart';
+import 'package:native_dio_adapter/native_dio_adapter.dart';
 
 final sl = GetIt.instance; // service locator
 
@@ -39,14 +40,8 @@ Future<void> init() async {
   //! Datasources
   sl.registerSingletonAsync(() async {
     final client = Dio();
+    client.httpClientAdapter = NativeAdapter();
 
-    (client.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-      final HttpClient aClient = HttpClient(context: SecurityContext());
-
-      aClient.badCertificateCallback = (cert, host, port) => true;
-
-      return aClient;
-    };
     return MensaDataSource(client: client, mensaCache: await Hive.openBox('mensaCache'));
   });
 

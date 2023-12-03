@@ -61,14 +61,18 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   Future<void> loadData() async {
     final Future<Map<String, List<dynamic>>> updatedDishes = mensaUsecases.updateDishesAndFailures();
 
-    await updatedDishes.then(
-      (data) => setState(() {
-        mensaDishes = data['mensa'] != null ? data['mensa']! as List<DishEntity> : [];
-        roteBeeteDishes = data['roteBeete'] != null ? data['roteBeete']! as List<DishEntity> : [];
-        qwestDishes = data['qwest'] != null ? data['qwest']! as List<DishEntity> : [];
-        failures = data['failures'] != null ? data['failures']! as List<Failure> : [];
-      }),
-    );
+    try {
+      await updatedDishes.then(
+        (data) => setState(() {
+          mensaDishes = data['mensa'] != null ? data['mensa']! as List<DishEntity> : [];
+          roteBeeteDishes = data['roteBeete'] != null ? data['roteBeete']! as List<DishEntity> : [];
+          qwestDishes = data['qwest'] != null ? data['qwest']! as List<DishEntity> : [];
+          failures = data['failures'] != null ? data['failures']! as List<Failure> : [];
+        }),
+      );
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
 
     debugPrint('Mensa Daten aktualisiert.');
   }

@@ -440,6 +440,9 @@ class MainUtils {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
+    // Request notifications permissions on iOS
+    await FirebaseMessaging.instance.requestPermission();
+
     String fcmToken = '';
     try {
       // Get the FCM Token
@@ -449,9 +452,6 @@ class MainUtils {
     } catch (e) {
       return;
     }
-
-    // Request notifications permissions on iOs
-    await FirebaseMessaging.instance.requestPermission();
 
     // Enable foreground notifications on iOs
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
