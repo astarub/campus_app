@@ -21,6 +21,8 @@ class BottomNavBarItem extends StatefulWidget {
 
   /// Padding above and below the icon
   final double iconVerticalPadding;
+  final double iconPaddingLeft;
+  final double iconPaddingRight;
 
   /// Title of the page that this menu item refers to
   final String title;
@@ -37,6 +39,8 @@ class BottomNavBarItem extends StatefulWidget {
     required this.imagePathInactive,
     required this.title,
     this.iconVerticalPadding = 10,
+    this.iconPaddingLeft = 14,
+    this.iconPaddingRight = 14,
     required this.onTap,
     this.isActive = false,
   }) : super(key: key);
@@ -68,7 +72,12 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
           CustomButton(
             tapHandler: () => widget.onTap(),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14, vertical: widget.iconVerticalPadding),
+              padding: EdgeInsets.only(
+                left: widget.iconPaddingLeft,
+                right: widget.iconPaddingRight,
+                top: widget.iconVerticalPadding,
+                bottom: widget.iconVerticalPadding,
+              ),
               child: Image.asset(
                 widget.isActive ? widget.imagePathActive : widget.imagePathInactive,
                 height: iconHeight,

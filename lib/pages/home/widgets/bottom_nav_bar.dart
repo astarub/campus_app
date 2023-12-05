@@ -56,6 +56,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             // Calendar
             BottomNavBarItem(
               title: 'Events',
+              iconPaddingRight: 7,
               imagePathActive: 'assets/img/icons/calendar-filled.png',
               imagePathInactive: 'assets/img/icons/calendar-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.events),
@@ -64,6 +65,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             // Pathfinder
             BottomNavBarItem(
               title: 'Raumfinder',
+              //iconH: 0,
               imagePathActive: 'assets/img/icons/map-filled.png',
               imagePathInactive: 'assets/img/icons/map-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.pathfinder),
@@ -72,6 +74,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             // Mensa
             BottomNavBarItem(
               title: 'Mensa',
+              iconPaddingLeft: 7,
               imagePathActive: 'assets/img/icons/mensa-filled.png',
               imagePathInactive: 'assets/img/icons/mensa-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.mensa),
@@ -80,6 +83,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             // Wallet
             BottomNavBarItem(
               title: 'Wallet',
+              iconPaddingRight: 7,
               imagePathActive: 'assets/img/icons/wallet-filled.png',
               imagePathInactive: 'assets/img/icons/wallet-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.wallet),
