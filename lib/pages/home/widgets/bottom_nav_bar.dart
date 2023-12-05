@@ -30,7 +30,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Container(
       height: Platform.isIOS ? 88 : 68,
-      padding: Platform.isIOS ? const EdgeInsets.only(bottom: 20) : EdgeInsets.zero,
+      padding: Platform.isIOS ? const EdgeInsets.only(bottom: 20, left: 5) : const EdgeInsets.only(left: 5),
       decoration: BoxDecoration(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: const BorderRadius.only(
@@ -66,8 +66,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
               title: 'Raumfinder',
               imagePathActive: 'assets/img/icons/map-filled.png',
               imagePathInactive: 'assets/img/icons/map-outlined.png',
-              iconHeight: 32,
-              iconVerticalPadding: 6.5,
               onTap: () => widget.onSelectedPage(PageItem.pathfinder),
               isActive: widget.currentPage == PageItem.pathfinder,
             ),

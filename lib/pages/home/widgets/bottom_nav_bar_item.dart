@@ -19,9 +19,6 @@ class BottomNavBarItem extends StatefulWidget {
   /// ATTENTION: Only use .png-files
   final String imagePathInactive;
 
-  /// Icon height
-  final double iconHeight;
-
   /// Padding above and below the icon
   final double iconVerticalPadding;
 
@@ -39,7 +36,6 @@ class BottomNavBarItem extends StatefulWidget {
     required this.imagePathActive,
     required this.imagePathInactive,
     required this.title,
-    this.iconHeight = 26,
     this.iconVerticalPadding = 10,
     required this.onTap,
     this.isActive = false,
@@ -50,6 +46,8 @@ class BottomNavBarItem extends StatefulWidget {
 }
 
 class _BottomNavBarItemState extends State<BottomNavBarItem> {
+  // Adjust this value in order to change the icon height of each navbar-element
+  static const double iconHeight = 26;
   // Adjust this value in order to change the animation curve that is used for the
   // vertical translation-animation
   static const Curve animationCurve = Curves.easeOutExpo;
@@ -73,7 +71,7 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
               padding: EdgeInsets.symmetric(horizontal: 14, vertical: widget.iconVerticalPadding),
               child: Image.asset(
                 widget.isActive ? widget.imagePathActive : widget.imagePathInactive,
-                height: widget.iconHeight,
+                height: iconHeight,
                 color: widget.isActive
                     ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary
                     : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
