@@ -1,4 +1,3 @@
-import 'package:campus_app/main.dart';
 import 'package:campus_app/pages/pathfinder/pathfinder_page.dart';
 import 'package:flutter/material.dart';
 

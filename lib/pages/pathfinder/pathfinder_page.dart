@@ -443,6 +443,9 @@ class RaumfinderPageState extends State<RaumfinderPage>
                               currentLocation!.latitude!,
                               currentLocation!.longitude!,
                             );
+
+                            if (!predefinedLocations.containsKey(textEditingController.text)) return;
+
                             final LatLng endLocation = predefinedLocations[textEditingController.text]!;
                             getShortestPath(startLocation, endLocation);
                             placeSymbol(textEditingController.text);

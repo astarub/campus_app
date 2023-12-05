@@ -171,26 +171,30 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
       // ignore: empty_catches
     } catch (e) {}
 
-    await calendarUsecases.updateEventsAndFailures().then(
-      (data) {
-        setState(() {
-          events = data['events']! as List<Event>;
-          savedEvents = data['saved']! as List<Event>;
-          failures = data['failures']! as List<Failure>;
+    try {
+      await calendarUsecases.updateEventsAndFailures().then(
+        (data) {
+          setState(() {
+            events = data['events']! as List<Event>;
+            savedEvents = data['saved']! as List<Event>;
+            failures = data['failures']! as List<Failure>;
 
-          parsedEventWidgets = calendarUtils.getEventWidgetList(events: events);
-          savedEventWidgets = calendarUtils.getEventWidgetList(events: savedEvents);
+            parsedEventWidgets = calendarUtils.getEventWidgetList(events: events);
+            savedEventWidgets = calendarUtils.getEventWidgetList(events: savedEvents);
 
-          showUpcomingPlaceholder = events.isEmpty;
-          showSavedPlaceholder = savedEvents.isEmpty;
-          eventWidgetOpacity = 1;
-          savedWidgetOpacity = 1;
-        });
-      },
-      onError: (e) {
-        throw Exception('Failed to load parsed Events: $e');
-      },
-    );
+            showUpcomingPlaceholder = events.isEmpty;
+            showSavedPlaceholder = savedEvents.isEmpty;
+            eventWidgetOpacity = 1;
+            savedWidgetOpacity = 1;
+          });
+        },
+        onError: (e) {
+          throw Exception('Failed to load parsed Events: $e');
+        },
+      );
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
 
     // Sync saved events
     await syncSavedEventWidgets();

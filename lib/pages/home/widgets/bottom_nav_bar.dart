@@ -30,7 +30,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Container(
       height: Platform.isIOS ? 88 : 68,
-      padding: Platform.isIOS ? const EdgeInsets.only(bottom: 20) : EdgeInsets.zero,
+      padding: Platform.isIOS ? const EdgeInsets.only(bottom: 20, left: 5) : const EdgeInsets.only(left: 7),
       decoration: BoxDecoration(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: const BorderRadius.only(
@@ -48,6 +48,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             // News Feed
             BottomNavBarItem(
               title: 'Feed',
+              iconPaddingLeft: 7,
+              iconPaddingRight: 14,
               imagePathActive: 'assets/img/icons/home-filled.png',
               imagePathInactive: 'assets/img/icons/home-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.feed),
@@ -56,6 +58,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             // Calendar
             BottomNavBarItem(
               title: 'Events',
+              iconPaddingLeft: 7,
+              iconPaddingRight: 0,
               imagePathActive: 'assets/img/icons/calendar-filled.png',
               imagePathInactive: 'assets/img/icons/calendar-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.events),
@@ -64,16 +68,18 @@ class _BottomNavBarState extends State<BottomNavBar> {
             // Pathfinder
             BottomNavBarItem(
               title: 'Raumfinder',
+              iconPaddingLeft: 0,
+              iconPaddingRight: 0,
               imagePathActive: 'assets/img/icons/map-filled.png',
               imagePathInactive: 'assets/img/icons/map-outlined.png',
-              iconHeight: 32,
-              iconVerticalPadding: 6.5,
               onTap: () => widget.onSelectedPage(PageItem.pathfinder),
               isActive: widget.currentPage == PageItem.pathfinder,
             ),
             // Mensa
             BottomNavBarItem(
               title: 'Mensa',
+              iconPaddingLeft: 0,
+              iconPaddingRight: 12,
               imagePathActive: 'assets/img/icons/mensa-filled.png',
               imagePathInactive: 'assets/img/icons/mensa-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.mensa),
@@ -82,6 +88,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             // Wallet
             BottomNavBarItem(
               title: 'Wallet',
+              iconPaddingLeft: 7,
+              iconPaddingRight: 7,
               imagePathActive: 'assets/img/icons/wallet-filled.png',
               imagePathInactive: 'assets/img/icons/wallet-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.wallet),
@@ -90,6 +98,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             // More
             BottomNavBarItem(
               title: 'Mehr',
+              iconPaddingLeft: 7,
+              iconPaddingRight: 4,
               imagePathActive: 'assets/img/icons/more.png',
               imagePathInactive: 'assets/img/icons/more.png',
               onTap: () => widget.onSelectedPage(PageItem.more),

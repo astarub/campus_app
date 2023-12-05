@@ -25,6 +25,7 @@ dependencies:
   dartz: ^0.10.1
   dio: ^5.3.3
   dio_cookie_manager: ^3.1.1
+  native_dio_adapter: ^1.2.0
   get_it: ^7.6.4
   html: ^0.15.4
   http: ^1.0.0
