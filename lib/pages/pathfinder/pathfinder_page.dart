@@ -377,6 +377,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
                             child: Material(
                               elevation: 4,
                               child: ListView(
+                                padding: EdgeInsets.zero,
                                 children: options
                                     .map(
                                       (String option) => GestureDetector(
