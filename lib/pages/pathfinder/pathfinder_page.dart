@@ -181,26 +181,6 @@ class RaumfinderPageState extends State<RaumfinderPage>
     }
   }
 
-  String getFaculty() {
-    final currentSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings;
-
-    if (currentSettings.selectedStudyCourses.isNotEmpty) {
-      return currentSettings.selectedStudyCourses.first.faculty;
-    } else {
-      widget.mainNavigatorKey.currentState?.push(
-        PageRouteBuilder(
-          opaque: false,
-          pageBuilder: (context, _, __) => StudyCoursePopup(
-            callback: (List<StudyCourse> selectedCourse) {
-              return currentSettings.studyCourses.first.faculty;
-            },
-          ),
-        ),
-      );
-    }
-    return '';
-  }
-
   TileLayer? buildTileLayer() {
     try {
       return TileLayer(
@@ -270,7 +250,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
                       color: Colors.blue,
                     ),
                   ),
-                  markerSize: const Size.square(40),
+                  markerSize: const Size.square(45),
                   accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withOpacity(0.1),
                   headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withOpacity(0.8),
                   headingSectorRadius: 120,
