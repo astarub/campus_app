@@ -88,6 +88,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
     'HGA': const LatLng(51.443737, 7.259958),
     'HGB': const LatLng(51.443342, 7.258866),
     'HGC': const LatLng(51.442974, 7.257662),
+    'HGD': const LatLng(51.44226, 7.256181),
     'GCFW': const LatLng(51.442346, 7.256945),
     'GAFO': const LatLng(51.442847, 7.260564),
     'GABF': const LatLng(51.442539, 7.259553),
