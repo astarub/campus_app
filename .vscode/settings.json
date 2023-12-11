@@ -10,7 +10,7 @@
         "editor.suggestSelection": "first",
         "editor.tabCompletion": "onlySnippets",
         "editor.selectionHighlight": false,
-        "editor.wordBasedSuggestions": false,
+        "editor.wordBasedSuggestions": "off",
         "editor.suggest.snippetsPreventQuickSuggestions": false,
         "editor.formatOnSave": true,
 

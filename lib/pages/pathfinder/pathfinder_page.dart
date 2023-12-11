@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_map/flutter_map.dart';
@@ -39,6 +38,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
     with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<RaumfinderPage> {
   TextEditingController searchController = TextEditingController();
   FocusNode globalFocusNode = FocusNode();
+  TileLayer? tileLayer;
   LocationData? currentLocation;
   LatLng? symbolPosition;
   List<LatLng> waypoints = [];
@@ -88,6 +88,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
     'HGA': const LatLng(51.443737, 7.259958),
     'HGB': const LatLng(51.443342, 7.258866),
     'HGC': const LatLng(51.442974, 7.257662),
+    'HGD': const LatLng(51.44226, 7.256181),
     'GCFW': const LatLng(51.442346, 7.256945),
     'GAFO': const LatLng(51.442847, 7.260564),
     'GABF': const LatLng(51.442539, 7.259553),
@@ -113,46 +114,6 @@ class RaumfinderPageState extends State<RaumfinderPage>
     'IBN': const LatLng(51.447, 7.262752),
     'ICN': const LatLng(51.447448, 7.263219),
     'IDN': const LatLng(51.447889, 7.263472),
-
-    'Wahlurne: Fakultät für Mathematik': const LatLng(51.446348, 7.263733),
-    'Wahlurne: Fakultät für Geowissenschaften': const LatLng(51.446348, 7.263733),
-    'Wahlurne: Fakultät für Psychologie': const LatLng(51.446348, 7.263733),
-    'Wahlurne: International Graduate School of Neuroscience (IGSN)': const LatLng(51.446348, 7.263733),
-
-    'Wahlurne: Fakultät für Maschinenbau': const LatLng(51.446741, 7.264835),
-    'Wahlurne: Fakultät für Bau- und Umweltingenieurwissenschaften': const LatLng(51.446741, 7.264835),
-    'Wahlurne: Interdisciplinary Centre for Advanced Materials Simulation (ICAMS)': const LatLng(51.446741, 7.264835),
-
-    'Wahlurne: Fakultät für Elektrotechnik und Informationstechnik': const LatLng(51.447127, 7.266222),
-
-    'Wahlurne: Fakultät für Biologie und Biotechnologie': const LatLng(51.445032, 7.26556),
-    'Wahlurne: Fakultät für Chemie und Biochemie': const LatLng(51.445032, 7.26556),
-    'Wahlurne: Fakultät für Physik und Astronomie': const LatLng(51.445032, 7.26556),
-    'Wahlurne: Institut für Arbeitswissenschaften (IAW)': const LatLng(51.445032, 7.26556),
-    'Wahlurne: Institut für Neuroinformatik (INI)': const LatLng(51.445032, 7.26556),
-
-    'Wahlurne: Fakultät für Informatik': const LatLng(51.444993, 7.258908),
-    'Wahlurne: Medizinische Fakultät': const LatLng(51.444993, 7.258908),
-    'Wahlurne: sonstigen Einrichtungen': const LatLng(51.444993, 7.258908),
-
-    'Wahlurne: Evangelisch-Theologischen Fakultät': const LatLng(51.443491, 7.25955),
-    'Wahlurne: Katholisch-Theologischen Fakultät': const LatLng(51.443491, 7.25955),
-    'Wahlurne: Centrum für Religionswissenschaftliche Studien (CERES)': const LatLng(51.443491, 7.25955),
-    'Wahlurne: Fakultät für Philosophie und Erziehungswissenschaften': const LatLng(51.443491, 7.25955),
-    'Wahlurne: Fakultät für Geschichtswissenschaft': const LatLng(51.443491, 7.25955),
-
-    'Wahlurne: Fakultät für Philologie': const LatLng(51.443106, 7.25845),
-    'Wahlurne: Fakultät für Ostasienwissenschaften': const LatLng(51.443106, 7.25845),
-    'Wahlurne: Institut für Entwicklungsforschung und Entwicklungspolitik (IEE)': const LatLng(51.443106, 7.25845),
-
-    'Wahlurne: Juristischen Fakultät': const LatLng(51.44226, 7.256181),
-    'Wahlurne: Institut für Friedenssicherungsrecht und Humanitäres Völkerrecht (IFHV)':
-        const LatLng(51.44226, 7.256181),
-    'Wahlurne: Fakultät für Wirtschaftswissenschaft': const LatLng(51.44226, 7.256181),
-    'Wahlurne: Fakultät für Sozialwissenschaft': const LatLng(51.44226, 7.256181),
-
-    'Wahlurne: Fakultät für Sportwissenschaft': const LatLng(51.446911, 7.246478),
-    'Wahlurne: Studienkolleg': const LatLng(51.446911, 7.246478),
   };
 
   Future<void> getLocation() async {
@@ -220,52 +181,34 @@ class RaumfinderPageState extends State<RaumfinderPage>
     }
   }
 
-  String getFaculty() {
-    final currentSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings;
-
-    if (currentSettings.selectedStudyCourses.isNotEmpty) {
-      return currentSettings.selectedStudyCourses.first.faculty;
-    } else {
-      widget.mainNavigatorKey.currentState?.push(
-        PageRouteBuilder(
-          opaque: false,
-          pageBuilder: (context, _, __) => StudyCoursePopup(
-            callback: (List<StudyCourse> selectedCourse) {
-              return currentSettings.studyCourses.first.faculty;
-            },
-          ),
-        ),
-      );
-    }
-    return '';
-  }
-
-  bool _isVotingButtonVisible() {
-    final DateTime currentDate = DateTime.now().toUtc().toLocal();
-    final DateTime startDate = DateTime(2023, 11, 30).toUtc().toLocal();
-    final DateTime endDate = DateTime(2023, 12, 8).toUtc().toLocal();
-
-    return currentDate.isAfter(startDate) && currentDate.isBefore(endDate);
-  }
-
-  TileLayer buildTileLayer() {
+  TileLayer? buildTileLayer() {
     try {
       return TileLayer(
         urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       );
     } catch (e) {
       debugPrint('An exception occurred: $e');
-
-      return TileLayer(
-        urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-      );
     }
+
+    return null;
   }
 
   @override
   void initState() {
     super.initState();
     getLocation();
+
+    tileLayer = buildTileLayer();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // Rebuild tile layer
+    if (state == AppLifecycleState.resumed) {
+      tileLayer = buildTileLayer();
+    }
   }
 
   @override
@@ -287,7 +230,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
               initialZoom: 15,
             ),
             children: [
-              buildTileLayer(),
+              if (tileLayer != null) tileLayer! else const SizedBox(),
               if (waypoints.isNotEmpty)
                 PolylineLayer(
                   polylines: [
@@ -307,7 +250,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
                       color: Colors.blue,
                     ),
                   ),
-                  markerSize: const Size.square(40),
+                  markerSize: const Size.square(45),
                   accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withOpacity(0.1),
                   headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withOpacity(0.8),
                   headingSectorRadius: 120,
@@ -377,6 +320,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
                             child: Material(
                               elevation: 4,
                               child: ListView(
+                                padding: EdgeInsets.zero,
                                 children: options
                                     .map(
                                       (String option) => GestureDetector(
@@ -497,48 +441,6 @@ class RaumfinderPageState extends State<RaumfinderPage>
                 ],
               ),
             ),
-          ),
-          Positioned(
-            bottom: 25,
-            right: 20,
-            child: _isVotingButtonVisible()
-                ? ElevatedButton(
-                    onPressed: () {
-                      String locationKey = getFaculty();
-
-                      if (locationKey.isEmpty) return;
-
-                      locationKey = 'Wahlurne: $locationKey';
-
-                      searchController.text = locationKey;
-
-                      placeSymbol(locationKey);
-
-                      final LatLng startLocation = LatLng(
-                        currentLocation!.latitude!,
-                        currentLocation!.longitude!,
-                      );
-                      final LatLng? endLocation = predefinedLocations[locationKey];
-
-                      getShortestPath(startLocation, endLocation!);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(20),
-                      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary,
-                      elevation: 10,
-                      shadowColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary,
-                    ),
-                    child: SvgPicture.asset(
-                      'assets/img/icons/vote.svg',
-                      colorFilter: const ColorFilter.mode(
-                        Colors.white,
-                        BlendMode.srcIn,
-                      ),
-                      width: 30,
-                    ),
-                  )
-                : const SizedBox(),
           ),
         ],
       ),
