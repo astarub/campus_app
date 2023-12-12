@@ -309,7 +309,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
                       optionsViewBuilder:
                           (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
                         final int itemCount = options.length;
-                        final double containerHeight = itemCount * 80.0;
+                        final double containerHeight = itemCount * 58.0;
                         return Align(
                           alignment: Alignment.topLeft,
                           child: Container(
