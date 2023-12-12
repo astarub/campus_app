@@ -51,7 +51,7 @@ class _SideNavBarState extends State<SideNavBar> {
             onTap: () => widget.onSelectedPage(PageItem.events),
             isActive: widget.currentPage == PageItem.events,
           ),
-          SideNavBarItem(
+          /*SideNavBarItem(
             title: 'Map',
             imagePathActive: 'assets/img/icons/map-filled.png',
             imagePathInactive: 'assets/img/icons/map-outlined.png',
@@ -60,7 +60,7 @@ class _SideNavBarState extends State<SideNavBar> {
             verticalPadding: 7,
             onTap: () => widget.onSelectedPage(PageItem.pathfinder),
             isActive: widget.currentPage == PageItem.pathfinder,
-          ),
+          ),*/
           // Mensa
           SideNavBarItem(
             title: 'Mensa',
