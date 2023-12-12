@@ -22,6 +22,19 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>campus_app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -33,9 +46,18 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NFCReaderUsageDescription</key>
+	<string>Allows the app to scan Mensa cards</string>
+	<key>NSCameraUsageDescription</key>
+	<string>The Campus App requires camera access to scan your library card</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>The Campus App requires access to your photo library to retrieve your ticket</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
+		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
@@ -57,30 +79,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CFBundleURLTypes</key>
-      <array>
-        <dict>
-          <key>CFBundleTypeRole</key>
-          <string>Editor</string>
-          <key>CFBundleURLName</key>
-          <string>campus_app</string>
-          <key>CFBundleURLSchemes</key>
-          <array>
-            <string>app</string>
-          </array>
-        </dict>
-      </array>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-    <true/>
-    <key>NFCReaderUsageDescription</key>
-    <string>Allows the app to scan Mensa cards</string>
-    <key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
-    <array>
-      <string>D2760000850100</string>
-    </array>
-    <key>NSCameraUsageDescription</key>
-    <string>The Campus App requires camera access to scan your library card</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>The Campus App requires access to your photo library to retrieve your ticket</string>
+	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
+	<array>
+		<string>D2760000850100</string>
+	</array>
 </dict>
 </plist>
