@@ -265,12 +265,6 @@ class MainUtils {
 
               break;
             }
-          case 'pathfinder':
-            {
-              await homeKey.currentState!.selectedPage(PageItem.pathfinder);
-
-              break;
-            }
           case 'mensa':
             {
               await homeKey.currentState!.selectedPage(PageItem.mensa);
@@ -578,12 +572,6 @@ class MainUtils {
               builder: (_) => CalendarDetailPage(event: event),
             ),
           );
-
-          break;
-        }
-      case 'pathfinder':
-        {
-          await homeKey.currentState!.selectedPage(PageItem.pathfinder);
 
           break;
         }

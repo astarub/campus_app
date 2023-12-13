@@ -67,12 +67,6 @@ dependencies:
   sentry_flutter: ^7.12.0
   sentry: ^7.13.1
   video_thumbnail: ^0.5.3
-  location: ^5.0.3
-  flutter_map: ^6.1.0
-  flutter_polyline_points: ^2.0.0
-  flutter_map_location_marker: any
-  geolocator: ^10.1.0
-  latlong2: ^0.9.0
   
 dev_dependencies:
   flutter_test:
