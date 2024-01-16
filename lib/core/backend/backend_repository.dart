@@ -472,6 +472,8 @@ class BackendRepository {
       }
     }
 
+    publishers.sort((a, b) => a.name.compareTo(b.name));
+
     settingsHandler.currentSettings = settingsHandler.currentSettings
         .copyWith(feedFilter: clearedFeedFilters, eventsFilter: clearedEventFilters, publishers: publishers);
 
