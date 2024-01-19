@@ -30,7 +30,6 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
   late PullToRefreshController pullToRefreshController;
 
   InAppWebViewSettings settings = InAppWebViewSettings(
-    useShouldOverrideUrlLoading: true,
     mediaPlaybackRequiresUserGesture: false,
     verticalScrollBarEnabled: false,
     horizontalScrollBarEnabled: false,
@@ -101,9 +100,6 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                   child: CampusIconButton(
                     iconPath: 'assets/img/icons/arrow-left.svg',
                     onTap: () {
-                      if (homeKey.currentState != null) {
-                        homeKey.currentState!.setSwipeDisabled();
-                      }
                       Navigator.maybePop(context);
                     },
                   ),
