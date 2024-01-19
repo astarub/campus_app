@@ -55,7 +55,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
           ? DateTime.now().subtract(const Duration(days: 2))
           : DateTime.now();
 
-  StreamController<int> streamController = StreamController<int>.broadcast();
+  StreamController<DateTime> streamController = StreamController<DateTime>.broadcast();
 
   /// This function initiates the loading of the mensa data (and caching)
   Future<void> loadData() async {
@@ -188,13 +188,14 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: MensaDaySelection(
-                          onChanged: (int day, DateTime date) => setState(
-                            () {
+                          onChanged: (int day, DateTime date) {
+                            setState(() {
                               selectedDay = day;
                               selectedDate = date;
-                              streamController.add(1);
-                            },
-                          ),
+                            });
+
+                            streamController.add(date);
+                          },
                         ),
                       ),
                     ],

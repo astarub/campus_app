@@ -106,9 +106,7 @@ class MensaRepository {
 
       // Write entities to cache
       unawaited(
-        mensaDatasource
-            .clearDishEntityCache()
-            .then((_) => mensaDatasource.writeDishEntitiesToCache(entities, restaurant)),
+        mensaDatasource.writeDishEntitiesToCache(entities, restaurant),
       );
 
       // if (restaurant == 3) {

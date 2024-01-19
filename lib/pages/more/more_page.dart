@@ -88,7 +88,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                           ExternalLinkButton(
                             title: 'KulturCafé',
                             leadingIconPath: 'assets/img/asta_logo.png',
-                            onTap: () => openLink(context, 'https://kulturcafe.asta-bochum.de/'),
+                            onTap: () => openLink(context, 'https://asta-bochum.de/kulturcafe/'),
                           ),
                           ExternalLinkButton(
                             title: 'Fahrradwerkstatt',
