@@ -34,6 +34,7 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
     verticalScrollBarEnabled: false,
     horizontalScrollBarEnabled: false,
     allowsInlineMediaPlayback: true,
+    useHybridComposition: false,
   );
 
   @override
