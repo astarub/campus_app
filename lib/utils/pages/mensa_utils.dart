@@ -88,7 +88,7 @@ class MensaUtils {
     }
 
     if (mealCategories.isEmpty) {
-      mealCategories.add(const MealCategory(categoryName: 'Heute leider keine Angebote.'));
+      mealCategories.add(const MealCategory(categoryName: 'Kein Speiseplan verfügbar.'));
     }
 
     return mealCategories;
