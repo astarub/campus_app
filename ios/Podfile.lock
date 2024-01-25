@@ -45,7 +45,7 @@ PODS:
   - firebase_core (2.24.2):
     - Firebase/CoreOnly (= 10.18.0)
     - Flutter
-  - firebase_messaging (14.7.8):
+  - firebase_messaging (14.7.10):
     - Firebase/Messaging (= 10.18.0)
     - firebase_core
     - Flutter
@@ -70,11 +70,11 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 7.8)
     - nanopb (< 2.30910.0, >= 2.30908.0)
   - Flutter (1.0.0)
-  - flutter_inappwebview (0.0.1):
+  - flutter_inappwebview_ios (0.0.1):
     - Flutter
-    - flutter_inappwebview/Core (= 0.0.1)
+    - flutter_inappwebview_ios/Core (= 0.0.1)
     - OrderedSet (~> 5.0)
-  - flutter_inappwebview/Core (0.0.1):
+  - flutter_inappwebview_ios/Core (0.0.1):
     - Flutter
     - OrderedSet (~> 5.0)
   - flutter_local_notifications (0.0.1):
@@ -147,13 +147,13 @@ PODS:
   - SDWebImage (5.18.5):
     - SDWebImage/Core (= 5.18.5)
   - SDWebImage/Core (5.18.5)
-  - Sentry/HybridSDK (8.15.2):
-    - SentryPrivate (= 8.15.2)
+  - Sentry/HybridSDK (8.17.2):
+    - SentryPrivate (= 8.17.2)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry/HybridSDK (= 8.15.2)
-  - SentryPrivate (8.15.2)
+    - Sentry/HybridSDK (= 8.17.2)
+  - SentryPrivate (8.17.2)
   - share_plus (0.0.1):
     - Flutter
   - sqflite (0.0.3):
@@ -179,7 +179,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
-  - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
+  - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_nfc_kit (from `.symlinks/plugins/flutter_nfc_kit/ios`)
@@ -234,8 +234,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
-  flutter_inappwebview:
-    :path: ".symlinks/plugins/flutter_inappwebview/ios"
+  flutter_inappwebview_ios:
+    :path: ".symlinks/plugins/flutter_inappwebview_ios/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_native_splash:
@@ -281,13 +281,13 @@ SPEC CHECKSUMS:
   file_picker: 15fd9539e4eb735dc54bae8c0534a7a9511a03de
   Firebase: 414ad272f8d02dfbf12662a9d43f4bba9bec2a06
   firebase_core: 0af4a2b24f62071f9bf283691c0ee41556dcb3f5
-  firebase_messaging: d4e4603f091c7b716b3f6c55550b2fa5dbf62ffd
+  firebase_messaging: 90e8a6db84b6e1e876cebce4f30f01dc495e7014
   FirebaseCore: 2322423314d92f946219c8791674d2f3345b598f
   FirebaseCoreInternal: 8eb002e564b533bdcf1ba011f33f2b5c10e2ed4a
   FirebaseInstallations: e842042ec6ac1fd2e37d7706363ebe7f662afea4
   FirebaseMessaging: 9bc34a98d2e0237e1b121915120d4d48ddcf301e
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_inappwebview: 3d32228f1304635e7c028b0d4252937730bbc6cf
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_inappwebview_ios: 97215cf7d4677db55df76782dbd2930c5e1c1ea0
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   flutter_nfc_kit: 965c98c3fa68f5609f1cc89abb968fe1b8ffdbaa
@@ -301,22 +301,22 @@ SPEC CHECKSUMS:
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
-  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   pdf_image_renderer: dc5cf3f09a47e742ed9438adda12d2f386993bc6
   pdfx: 7b876b09de8b7a0bf444a4f82b439ffcff4ee1ec
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   screen_brightness_ios: 715ca807df953bf676d339f11464e438143ee625
   SDWebImage: 7ac2b7ddc5e8484c79aa90fc4e30b149d6a2c88f
-  Sentry: 6f5742b4c47c17c9adcf265f6f328cf4a0ed1923
-  sentry_flutter: 2c309a1d4b45e59d02cfa15795705687f1e2081b
-  SentryPrivate: b2f7996f37781080f04a946eb4e377ff63c64195
+  Sentry: 64a9f9c3637af913adcf53deced05bbe452d1410
+  sentry_flutter: 57912cf425e09398bdf47f38842a1fcb9836f1be
+  SentryPrivate: 024c6fed507ac39ae98e6d087034160f942920d5
   share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
-  url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
-  video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1
+  url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
+  video_player_avfoundation: 02011213dab73ae3687df27ce441fbbcc82b5579
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
 
 PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
