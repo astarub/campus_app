@@ -40,19 +40,12 @@ class StaticInfoPage extends StatefulWidget {
 class StaticInfoPageState extends State<StaticInfoPage> {
   InAppWebViewController? webViewController;
 
-  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-    crossPlatform: InAppWebViewOptions(
-      useShouldOverrideUrlLoading: true,
-      mediaPlaybackRequiresUserGesture: false,
-      verticalScrollBarEnabled: false,
-      horizontalScrollBarEnabled: false,
-    ),
-    android: AndroidInAppWebViewOptions(
-      useHybridComposition: true,
-    ),
-    ios: IOSInAppWebViewOptions(
-      allowsInlineMediaPlayback: true,
-    ),
+  InAppWebViewSettings settings = InAppWebViewSettings(
+    useShouldOverrideUrlLoading: true,
+    mediaPlaybackRequiresUserGesture: false,
+    verticalScrollBarEnabled: false,
+    horizontalScrollBarEnabled: false,
+    allowsInlineMediaPlayback: true,
   );
 
   @override
@@ -99,8 +92,8 @@ class StaticInfoPageState extends State<StaticInfoPage> {
                     : InAppWebView(
                         gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}
                           ..add(const Factory<VerticalDragGestureRecognizer>(VerticalDragGestureRecognizer.new)),
-                        initialOptions: options,
-                        initialUrlRequest: URLRequest(url: Uri.parse(widget.url!)),
+                        initialSettings: settings,
+                        initialUrlRequest: URLRequest(url: WebUri(widget.url!)),
                         onWebViewCreated: (controller) {
                           webViewController = controller;
                         },

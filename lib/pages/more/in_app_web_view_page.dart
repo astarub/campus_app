@@ -29,19 +29,12 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
   InAppWebViewController? webViewController;
   late PullToRefreshController pullToRefreshController;
 
-  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-    crossPlatform: InAppWebViewOptions(
-      useShouldOverrideUrlLoading: true,
-      mediaPlaybackRequiresUserGesture: false,
-      verticalScrollBarEnabled: false,
-      horizontalScrollBarEnabled: false,
-    ),
-    android: AndroidInAppWebViewOptions(
-      useHybridComposition: true,
-    ),
-    ios: IOSInAppWebViewOptions(
-      allowsInlineMediaPlayback: true,
-    ),
+  InAppWebViewSettings settings = InAppWebViewSettings(
+    mediaPlaybackRequiresUserGesture: false,
+    verticalScrollBarEnabled: false,
+    horizontalScrollBarEnabled: false,
+    allowsInlineMediaPlayback: true,
+    useHybridComposition: false,
   );
 
   @override
@@ -49,7 +42,7 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
     super.initState();
 
     pullToRefreshController = PullToRefreshController(
-      options: PullToRefreshOptions(color: Colors.black),
+      settings: PullToRefreshSettings(color: Colors.black),
       onRefresh: () async {
         if (Platform.isAndroid) {
           await webViewController?.reload();
@@ -62,17 +55,19 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+        final navigator = Navigator.of(context);
         if (await webViewController!.canGoBack()) {
           await webViewController?.goBack();
         } else {
           if (homeKey.currentState != null) {
             homeKey.currentState!.setSwipeDisabled();
           }
-          return true;
+          navigator.pop();
         }
-        return false;
       },
       child: VisibilityDetector(
         onVisibilityChanged: (info) {
@@ -94,8 +89,8 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                   gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}
                     ..add(const Factory<VerticalDragGestureRecognizer>(VerticalDragGestureRecognizer.new)),
                   pullToRefreshController: pullToRefreshController,
-                  initialOptions: options,
-                  initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
+                  initialSettings: settings,
+                  initialUrlRequest: URLRequest(url: WebUri(widget.url)),
                   onWebViewCreated: (controller) {
                     webViewController = controller;
                   },
@@ -106,10 +101,7 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                   child: CampusIconButton(
                     iconPath: 'assets/img/icons/arrow-left.svg',
                     onTap: () {
-                      if (homeKey.currentState != null) {
-                        homeKey.currentState!.setSwipeDisabled();
-                      }
-                      Navigator.pop(context);
+                      Navigator.maybePop(context);
                     },
                   ),
                 ),

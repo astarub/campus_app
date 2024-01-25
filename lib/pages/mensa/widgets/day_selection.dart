@@ -116,9 +116,20 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
     return calculatedDates;
   }
 
-  void selectDay(int selected, DateTime date) {
+  void selectDay(int selected) {
+    final DateTime now = DateTime.now();
+
+    widget.onChanged(
+      selected,
+      DateFormat('dd.MM').parse(weekDates[selected]).copyWith(
+            year: now.year,
+            hour: now.hour,
+            minute: now.minute,
+            second: now.second,
+          ),
+    );
+
     setState(() => selectedDay = selected);
-    widget.onChanged(selected, date);
   }
 
   @override
@@ -169,71 +180,31 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
               MensaDaySelectionItem(
                 day: 'Mo',
                 date: weekDates[0],
-                onTap: () => selectDay(
-                  0,
-                  DateFormat('dd.MM').parse(weekDates[0]).copyWith(
-                        year: now.year,
-                        hour: now.hour,
-                        minute: now.minute,
-                        second: now.second,
-                      ),
-                ),
+                onTap: () => selectDay(0),
                 isActive: selectedDay == 0,
               ),
               MensaDaySelectionItem(
                 day: 'Di',
                 date: weekDates[1],
-                onTap: () => selectDay(
-                  1,
-                  DateFormat('dd.MM').parse(weekDates[1]).copyWith(
-                        year: now.year,
-                        hour: now.hour,
-                        minute: now.minute,
-                        second: now.second,
-                      ),
-                ),
+                onTap: () => selectDay(1),
                 isActive: selectedDay == 1,
               ),
               MensaDaySelectionItem(
                 day: 'Mi',
                 date: weekDates[2],
-                onTap: () => selectDay(
-                  2,
-                  DateFormat('dd.MM').parse(weekDates[2]).copyWith(
-                        year: now.year,
-                        hour: now.hour,
-                        minute: now.minute,
-                        second: now.second,
-                      ),
-                ),
+                onTap: () => selectDay(2),
                 isActive: selectedDay == 2,
               ),
               MensaDaySelectionItem(
                 day: 'Do',
                 date: weekDates[3],
-                onTap: () => selectDay(
-                  3,
-                  DateFormat('dd.MM').parse(weekDates[3]).copyWith(
-                        year: now.year,
-                        hour: now.hour,
-                        minute: now.minute,
-                        second: now.second,
-                      ),
-                ),
+                onTap: () => selectDay(3),
                 isActive: selectedDay == 3,
               ),
               MensaDaySelectionItem(
                 day: 'Fr',
                 date: weekDates[4],
-                onTap: () => selectDay(
-                  4,
-                  DateFormat('dd.MM').parse(weekDates[4]).copyWith(
-                        year: now.year,
-                        hour: now.hour,
-                        minute: now.minute,
-                        second: now.second,
-                      ),
-                ),
+                onTap: () => selectDay(4),
                 isActive: selectedDay == 4,
               ),
               VerticalDivider(
@@ -242,73 +213,31 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
               MensaDaySelectionItem(
                 day: 'Mo',
                 date: weekDates[5],
-                onTap: () => selectDay(
-                  5,
-                  DateFormat('dd.MM').parse(weekDates[5]).copyWith(
-                        year: now.year,
-                        hour: now.hour,
-                        minute: now.minute,
-                        second: now.second,
-                      ),
-                ),
+                onTap: () => selectDay(5),
                 isActive: selectedDay == 5,
               ),
               MensaDaySelectionItem(
                 day: 'Di',
                 date: weekDates[6],
-                onTap: () => selectDay(
-                  6,
-                  DateFormat('dd.MM').parse(weekDates[6]).copyWith(
-                        year: now.year,
-                        hour: now.hour,
-                        minute: now.minute,
-                        second: now.second,
-                      ),
-                ),
+                onTap: () => selectDay(6),
                 isActive: selectedDay == 6,
               ),
               MensaDaySelectionItem(
                 day: 'Mi',
                 date: weekDates[7],
-                onTap: () => selectDay(
-                  7,
-                  DateFormat('dd.MM').parse(weekDates[7]).copyWith(
-                        year: now.year,
-                        hour: now.hour,
-                        minute: now.minute,
-                        second: now.second,
-                      ),
-                ),
+                onTap: () => selectDay(7),
                 isActive: selectedDay == 7,
               ),
               MensaDaySelectionItem(
                 day: 'Do',
                 date: weekDates[8],
-                onTap: () => selectDay(
-                  8,
-                  DateFormat('dd.MM').parse(weekDates[8])
-                    ..copyWith(
-                      year: now.year,
-                      hour: now.hour,
-                      minute: now.minute,
-                      second: now.second,
-                    ),
-                ),
+                onTap: () => selectDay(8),
                 isActive: selectedDay == 8,
               ),
               MensaDaySelectionItem(
                 day: 'Fr',
                 date: weekDates[9],
-                onTap: () => selectDay(
-                  9,
-                  DateFormat('dd.MM').parse(weekDates[9])
-                    ..copyWith(
-                      year: now.year,
-                      hour: now.hour,
-                      minute: now.minute,
-                      second: now.second,
-                    ),
-                ),
+                onTap: () => selectDay(9),
                 isActive: selectedDay == 9,
               ),
             ],

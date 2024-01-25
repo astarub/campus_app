@@ -92,7 +92,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
     return _feedUtils.fromEntitiesToWidgetList(
       news: news,
-      shuffle: true,
     );
   }
 

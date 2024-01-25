@@ -28,7 +28,7 @@ class ExpandableRestaurant extends StatefulWidget {
   /// Selected date
   final DateTime date;
 
-  final Stream<int> stream;
+  final Stream<DateTime> stream;
 
   const ExpandableRestaurant({
     Key? key,
@@ -55,10 +55,11 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
   int closingHourGlobal = 0;
   int closingMinuteGlobal = 0;
   String remainingTime = '';
+  DateTime date = DateTime.now();
   Timer? timer;
 
   /// Retrieves the opening hours for the current day based on either a range of weekday Integers or a single Integer
-  RestaurantStatus getOpeningStatus(Map<String, String> openingHoursMap, DateTime now) {
+  void setOpeningStatus(Map<String, String> openingHoursMap, DateTime now) {
     // Get all opening/closed days
     final List<String> days = openingHoursMap.keys.toList();
 
@@ -80,7 +81,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
       }
     }
 
-    RestaurantStatus status = RestaurantStatus.closed;
+    RestaurantStatus tempStatus = RestaurantStatus.closed;
 
     // Checks if any openingHours exist for the current weekday, otherwise the status will be closed
     if (openingHours.isNotEmpty) {
@@ -119,20 +120,22 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
 
         // Checks if the weekday is lower than Saturday and if the current time is in the span of the opening and closing hours
         if (now.weekday <= 6 && nowComb >= openComb && nowComb <= closeComb) {
-          status = RestaurantStatus.open;
+          tempStatus = RestaurantStatus.open;
         }
       } else {
-        status = RestaurantStatus.unknown;
+        tempStatus = RestaurantStatus.unknown;
       }
     }
-    return status;
+    setState(() {
+      status = tempStatus;
+    });
   }
 
   // Checks whether the current restaurant is open and then runs a periodic timer to update the remaining time
   void setTimer() {
     final DateTime now = DateTime.now();
 
-    if (status == RestaurantStatus.open && DateUtils.isSameDay(widget.date, now)) {
+    if (status == RestaurantStatus.open && DateUtils.isSameDay(date, now)) {
       // Abort if a timer is already running
       if (timer != null) return;
 
@@ -191,9 +194,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
 
     // Updates the opening state of the current restaurant and sets the remaining time timer
     if (state == AppLifecycleState.resumed) {
-      setState(() {
-        status = getOpeningStatus(widget.openingHours, widget.date);
-      });
+      setOpeningStatus(widget.openingHours, date);
 
       setTimer();
     }
@@ -203,19 +204,24 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
   void initState() {
     super.initState();
 
+    // Set the initial date
+    date = widget.date;
+
     // Get the current restaurant status
-    status = getOpeningStatus(widget.openingHours, widget.date);
+    setOpeningStatus(widget.openingHours, date);
 
     // Set the remaining time timer
     setTimer();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Listen for new day selections
-      widget.stream.listen((_) {
+      widget.stream.listen((streamedDate) {
         if (mounted) {
           setState(() {
-            status = getOpeningStatus(widget.openingHours, widget.date);
+            date = streamedDate;
           });
+          setOpeningStatus(widget.openingHours, streamedDate);
+          setTimer();
         }
       });
     });
@@ -341,7 +347,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
                               : 'Geöffnet: ${openingHours.split("-")[0]} - ${openingHours.split("-")[1]} Uhr',
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                         ),
-                        if (status == RestaurantStatus.open && DateUtils.isSameDay(widget.date, DateTime.now())) ...[
+                        if (status == RestaurantStatus.open && DateUtils.isSameDay(date, DateTime.now())) ...[
                           Text(
                             'Verbleibende Zeit: $remainingTime',
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
