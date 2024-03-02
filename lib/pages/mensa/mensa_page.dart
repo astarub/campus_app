@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io' show Platform;
-import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,13 +9,14 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_usecases.dart';
-import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/pages/mensa/widgets/day_selection.dart';
 import 'package:campus_app/pages/mensa/widgets/expandable_restaurant.dart';
 import 'package:campus_app/pages/mensa/widgets/preferences_popup.dart';
 import 'package:campus_app/pages/mensa/widgets/allergenes_popup.dart';
+import 'package:campus_app/utils/widgets/campus_button.dart';
+import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
+import 'package:campus_app/utils/pages/mensa_utils.dart';
 
 class MensaPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;

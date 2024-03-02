@@ -1,5 +1,4 @@
 import 'dart:io' show Platform;
-import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -20,6 +19,7 @@ import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/campus_search_bar.dart';
+import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 
 class FeedPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;

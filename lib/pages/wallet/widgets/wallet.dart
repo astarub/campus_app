@@ -2,22 +2,22 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:pdf_image_renderer/pdf_image_renderer.dart';
 import 'package:pdfx/pdfx.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart' as sync_pdf;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screen_brightness/screen_brightness.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+import 'package:campus_app/utils/constants.dart';
 
 class CampusWallet extends StatelessWidget {
   const CampusWallet({Key? key}) : super(key: key);
@@ -133,54 +133,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   }
 
   Future<void> addTicket() async {
-    FilePickerResult? result;
-
-    try {
-      result = await FilePicker.platform.pickFiles();
-    } catch (e) {
-      debugPrint('Access files permission not granted.');
-    }
-
-    if (result != null) {
-      final File file = File(result.files.single.path!);
-
-      final String fileType = file.path.substring(file.path.lastIndexOf('.'));
-
-      if (fileType != '.pdf') {
-        await Fluttertoast.showToast(msg: 'Ungültiges Ticket!', timeInSecForIosWeb: 3, gravity: ToastGravity.TOP);
-        return;
-      }
-
-      // Load the pdf file
-      final sync_pdf.PdfDocument document = sync_pdf.PdfDocument(inputBytes: await file.readAsBytes());
-
-      // Get the pdf text
-      final String pdfText = sync_pdf.PdfTextExtractor(document).extractText(startPageIndex: 0);
-
-      // Remove the pdf file from memory for efficiency reasons
-      document.dispose();
-
-      // Check if the pdf file is a valid ticket
-      if (!pdfText.contains('Ticket')) {
-        await Fluttertoast.showToast(msg: 'Ungültiges Ticket!', timeInSecForIosWeb: 3, gravity: ToastGravity.TOP);
-        return;
-      }
-
-      // Save the picked pdf file
-      unawaited(saveTicketPDF(file));
-
-      // Parse the picked pdf
-      final Image semesterTicketImage = await renderSemesterTicket(file.path);
-      final Image qrCodeImage = await renderQRCode(file.path);
-
-      setState(() {
-        scanned = true;
-        this.semesterTicketImage = semesterTicketImage;
-        this.qrCodeImage = qrCodeImage;
-      });
-    } else {
-      // User canceled the picker
-    }
+    Navigator.push(context, MaterialPageRoute(builder: (context) => InAppWebViewPage(url: rideTicketing)));
   }
 
   @override
