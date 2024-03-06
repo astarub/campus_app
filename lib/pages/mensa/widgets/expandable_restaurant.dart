@@ -343,7 +343,9 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
                       children: [
                         Text(
                           status == RestaurantStatus.closed
-                              ? 'Öffnungszeiten: ${openingHours.split("-")[0]} - ${openingHours.split("-")[1]} Uhr'
+                              ? (openingHours.isEmpty
+                                  ? 'Öffnungszeiten: Geschlossen'
+                                  : 'Öffnungszeiten: ${openingHours.split("-")[0]} - ${openingHours.split("-")[1]} Uhr')
                               : 'Geöffnet: ${openingHours.split("-")[0]} - ${openingHours.split("-")[1]} Uhr',
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                         ),
