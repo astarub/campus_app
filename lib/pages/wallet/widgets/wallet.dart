@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -6,18 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:pdf_image_renderer/pdf_image_renderer.dart';
-import 'package:pdfx/pdfx.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:image/image.dart' as IMG;
 
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
-import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
-import 'package:campus_app/utils/constants.dart';
 
 class CampusWallet extends StatelessWidget {
   const CampusWallet({Key? key}) : super(key: key);
@@ -50,7 +49,6 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   bool scanned = false;
   String scannedValue = '';
 
-  late Image semesterTicketImage;
   late Image qrCodeImage;
 
   bool showQrCode = false;
@@ -64,29 +62,29 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
     final String directoryPath = saveDirectory.path;
 
     // Define the image files
-    final File ticketFile = File('$directoryPath/ticket.pdf');
+    final File ticketFile = File('$directoryPath/ticket.png');
 
     // If the images were parsed and saved in the past, they're loaded
     final bool tickedSaved = ticketFile.existsSync();
     if (tickedSaved) {
-      final Image semesterTicketImage = await renderSemesterTicket(ticketFile.path);
-      final Image qrCodeImage = await renderQRCode(ticketFile.path);
+      final Image qrCodeImage = await renderQRCode(ticketFile);
 
       setState(() {
         scanned = true;
-        this.semesterTicketImage = semesterTicketImage;
         this.qrCodeImage = qrCodeImage;
       });
     }
   }
 
   /// Saves a loaded semester ticket and its corresponding aztec-code
-  Future<void> saveTicketPDF(File ticketPdf) async {
+  Future<void> saveTicketPDF(String code) async {
     final Directory saveDirectory = await getApplicationDocumentsDirectory();
     final String directoryPath = saveDirectory.path;
 
     // Save the given pdf file to the apps directory
-    await ticketPdf.copy('$directoryPath/ticket.pdf');
+    final File file = File('$directoryPath/ticket.png');
+
+    await file.writeAsBytes(base64Decode(code));
   }
 
   Future<Image> renderSemesterTicket(String path) async {
@@ -115,26 +113,18 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
     return Image(image: MemoryImage(bytes));
   }
 
-  Future<Image> renderQRCode(String path) async {
-    final document = await PdfDocument.openFile(path);
-    final page = await document.getPage(1);
-    final pageImage = await page.render(
-      width: page.width * 2.4,
-      height: page.height * 2.4,
-      cropRect: Rect.fromLTWH(174, 250, page.width - 325, 269),
+  Future<Image> renderQRCode(File ticketFile) async {
+    Uint8List resizedData = ticketFile.readAsBytesSync();
+    final IMG.Image img = IMG.decodeImage(resizedData)!;
+    final IMG.Image resized = IMG.copyResize(img, width: 250, height: 250);
+    resizedData = IMG.encodePng(resized);
+
+    return Image(
+      image: MemoryImage(resizedData),
     );
-    await page.close();
-
-    if (pageImage == null) {
-      return Image(image: MemoryImage(Uint8List.fromList([0])));
-    }
-
-    return Image(image: MemoryImage(pageImage.bytes));
   }
 
-  Future<void> addTicket() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => InAppWebViewPage(url: rideTicketing)));
-  }
+  Future<void> addTicket() async {}
 
   @override
   bool get wantKeepAlive => true;
@@ -177,7 +167,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                 }
               },
               onLongPress: addTicket,
-              child: showQrCode ? qrCodeImage : semesterTicketImage,
+              child: qrCodeImage,
             )
           : CustomButton(
               tapHandler: addTicket,

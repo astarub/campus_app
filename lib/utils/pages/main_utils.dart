@@ -430,7 +430,6 @@ class MainUtils {
   Future<void> initializeFirebase(BuildContext context) async {
     // Initialize Firebase
     await Firebase.initializeApp(
-      name: 'campus_app',
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
