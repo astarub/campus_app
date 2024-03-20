@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:appwrite/appwrite.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_datasource.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -60,13 +58,21 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton(() {
-    final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
-    return BackendRepository(client: client);
+    return TicketDataSource(
+      secureStorage: const FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+      ),
+    );
   });
 
   //!
   //! Repositories
   //!
+
+  sl.registerLazySingleton(() {
+    final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
+    return BackendRepository(client: client);
+  });
 
   sl.registerSingletonWithDependencies(
     () => NewsRepository(newsDatasource: sl()),

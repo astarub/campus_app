@@ -2,11 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:campus_app/utils/constants.dart';
 
 class TicketDataSource {
-  Future<Map<String, dynamic>> getTicket() {
+  final FlutterSecureStorage secureStorage;
+
+  TicketDataSource({
+    required this.secureStorage,
+  });
+
+  Future<Map<String, dynamic>> getTicket() async {
     final Completer<Map<String, dynamic>> completer = Completer<Map<String, dynamic>>();
 
     final Map<String, dynamic> ticket = {
@@ -16,6 +23,13 @@ class TicketDataSource {
       'owner': '',
       'birthdate': '',
     };
+
+    final String? loginId = await secureStorage.read(key: 'loginId');
+    final String? password = await secureStorage.read(key: 'password');
+
+    if (loginId == null || password == null) {
+      return ticket;
+    }
 
     HeadlessInAppWebView? headlessWebView;
     headlessWebView = HeadlessInAppWebView(
@@ -69,7 +83,7 @@ class TicketDataSource {
             url.toString().endsWith('s1')) {
           await controller.evaluateJavascript(
             source: """
-              document.getElementById('username').value="";
+              document.getElementById('username').value="${await secureStorage.read(key: 'loginID')}";
               document.getElementById('password').value="";
               setTimeout(function(){
                 document.getElementById('shibbutton').click();
