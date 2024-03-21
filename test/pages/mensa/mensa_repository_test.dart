@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_dynamic_calls
 
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -14,7 +14,7 @@ import 'package:campus_app/pages/mensa/mensa_repository.dart';
 import 'mensa_repository_test.mocks.dart';
 import 'samples/mensa_sample_json_response.dart';
 
-@GenerateMocks([MensaDataSource])
+@GenerateMocks([MensaDataSource, Client])
 void main() {
   late MensaRepository mensaRepository;
   late MockMensaDataSource mockMensaDataSource;
@@ -22,9 +22,12 @@ void main() {
 
   setUp(() {
     mockMensaDataSource = MockMensaDataSource();
-    mensaRepository = MensaRepository(mensaDatasource: mockMensaDataSource);
+    mensaRepository = MensaRepository(
+      mensaDatasource: mockMensaDataSource,
+      awClient: MockClient(),
+    );
 
-    initializeDateFormatting('de_DE').then((_) {
+    //initializeDateFormatting('de_DE').then((_) {
       samleDishEntities = [
         DishEntity.fromJSON(
           date: 0,
@@ -52,14 +55,14 @@ void main() {
           json: mensaSampleTestData['data']['Di, 11.10.']['Dessert'][1],
         ),
       ];
-    });
+    //});
   });
 
   group('[getRemoteData]', () {
     test('Should return a list of [DishEntity] on successfully web reuest', () async {
       when(mockMensaDataSource.getRemoteData(1)).thenAnswer((_) async => mensaSampleTestData);
 
-      final testReturn = await mensaRepository.getRemoteDishes(1);
+      final testReturn = await mensaRepository.getScrappedDishes(1);
 
       identical(testReturn, samleDishEntities);
       verify(mockMensaDataSource.getRemoteData(1));
@@ -73,7 +76,7 @@ void main() {
 
       when(mockMensaDataSource.getRemoteData(1)).thenThrow(ServerException());
 
-      final testReturn = await mensaRepository.getRemoteDishes(1);
+      final testReturn = await mensaRepository.getScrappedDishes(1);
 
       identical(testReturn, expectedReturn);
       verify(mockMensaDataSource.getRemoteData(1));
@@ -86,7 +89,7 @@ void main() {
 
       when(mockMensaDataSource.getRemoteData(1)).thenThrow(Exception());
 
-      final testReturn = await mensaRepository.getRemoteDishes(1);
+      final testReturn = await mensaRepository.getScrappedDishes(1);
 
       identical(testReturn, expectedReturn);
       verify(mockMensaDataSource.getRemoteData(1));
