@@ -5,6 +5,7 @@ import 'package:campus_app/core/themes.dart';
 
 /// This widget allows the user to pick between two options.
 /// It is a linear set of two segments, each of which functions as a button.
+/// ignore: must_be_immutable
 class CampusSegmentedControl extends StatefulWidget {
   /// The displayed text on the left button of the SegmentedControl
   final String leftTitle;

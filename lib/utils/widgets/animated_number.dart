@@ -69,6 +69,7 @@ class _AnimatedNumberTextState<T extends num> extends AnimatedWidgetBaseState<An
 
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
+    // ignore: unnecessary_lambdas
     _numTween = visitor(_numTween, widget.data, (value) => _createTween(value)) as Tween<T>?;
     _styleTween = visitor(_styleTween, widget.style, (dynamic value) => TextStyleTween(begin: value as TextStyle))
         as TextStyleTween?;
@@ -82,6 +83,7 @@ class _AnimatedNumberTextState<T extends num> extends AnimatedWidgetBaseState<An
   }
 
   String _toStringFormatted(T? value) {
+    // ignore: parameter_assignments
     value = value ?? widget.data;
     return widget.formatter?.call(value) ?? value.toString();
   }
@@ -103,7 +105,7 @@ class _AnimatedNumberTextState<T extends num> extends AnimatedWidgetBaseState<An
       locale: widget.locale,
       softWrap: widget.softWrap,
       overflow: widget.overflow,
-      textScaleFactor: widget.textScaleFactor,
+      textScaler: widget.textScaleFactor == null ? TextScaler.linear(widget.textScaleFactor!) : null,
       textHeightBehavior: widget.textHeightBehavior,
       maxLines: widget.maxLines,
       semanticsLabel: widget.semanticsLabel,
