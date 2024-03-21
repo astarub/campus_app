@@ -5,7 +5,6 @@ import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_repository.dart';
 import 'package:campus_app/pages/mensa/mensa_usecases.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:dartz/dartz.dart';
@@ -23,7 +22,7 @@ void main() {
     mockMensaRepository = MockMensaRepository();
     mensaUsecases = MensaUsecases(mensaRepository: mockMensaRepository);
 
-    initializeDateFormatting('de_DE').then((_) {
+    //initializeDateFormatting('de_DE').then((_) {
       samleDishEntities = [
         DishEntity.fromJSON(
           date: 0,
@@ -51,7 +50,7 @@ void main() {
           json: mensaSampleTestData['data']['Di, 11.10.']['Dessert'][1],
         ),
       ];
-    });
+    //});
   });
 
   group('[updateDishesAndFailures]', () {
@@ -62,8 +61,8 @@ void main() {
         'roteBeete': samleDishEntities,
       };
 
-      when(mockMensaRepository.getRemoteDishes(1)).thenAnswer((_) async => Right(samleDishEntities));
-      when(mockMensaRepository.getRemoteDishes(2)).thenAnswer((_) async => Right(samleDishEntities));
+      when(mockMensaRepository.getScrappedDishes(1)).thenAnswer((_) async => Right(samleDishEntities));
+      when(mockMensaRepository.getScrappedDishes(2)).thenAnswer((_) async => Right(samleDishEntities));
       when(mockMensaRepository.getCachedDishes(1)).thenAnswer((_) => Left(CachFailure()));
       when(mockMensaRepository.getCachedDishes(2)).thenAnswer((_) => Left(CachFailure()));
 
@@ -71,8 +70,8 @@ void main() {
 
       identical(testReturn, expectedReturn);
       verifyInOrder([
-        mockMensaRepository.getRemoteDishes(1),
-        mockMensaRepository.getRemoteDishes(2),
+        mockMensaRepository.getScrappedDishes(1),
+        mockMensaRepository.getScrappedDishes(2),
         mockMensaRepository.getCachedDishes(1),
         mockMensaRepository.getCachedDishes(2),
       ]);
@@ -86,8 +85,8 @@ void main() {
         'roteBeete': samleDishEntities,
       };
 
-      when(mockMensaRepository.getRemoteDishes(1)).thenAnswer((_) async => Right(samleDishEntities));
-      when(mockMensaRepository.getRemoteDishes(2)).thenAnswer((_) async => Right(samleDishEntities));
+      when(mockMensaRepository.getScrappedDishes(1)).thenAnswer((_) async => Right(samleDishEntities));
+      when(mockMensaRepository.getScrappedDishes(2)).thenAnswer((_) async => Right(samleDishEntities));
       when(mockMensaRepository.getCachedDishes(1)).thenAnswer((_) => Right(samleDishEntities));
       when(mockMensaRepository.getCachedDishes(2)).thenAnswer((_) => Right(samleDishEntities));
 
@@ -97,8 +96,8 @@ void main() {
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
       verifyInOrder([
-        mockMensaRepository.getRemoteDishes(1),
-        mockMensaRepository.getRemoteDishes(2),
+        mockMensaRepository.getScrappedDishes(1),
+        mockMensaRepository.getScrappedDishes(2),
         mockMensaRepository.getCachedDishes(1),
         mockMensaRepository.getCachedDishes(2),
       ]);
@@ -112,8 +111,8 @@ void main() {
         'roteBeete': [],
       };
 
-      when(mockMensaRepository.getRemoteDishes(1)).thenAnswer((_) async => Left(ServerFailure()));
-      when(mockMensaRepository.getRemoteDishes(2)).thenAnswer((_) async => Left(GeneralFailure()));
+      when(mockMensaRepository.getScrappedDishes(1)).thenAnswer((_) async => Left(ServerFailure()));
+      when(mockMensaRepository.getScrappedDishes(2)).thenAnswer((_) async => Left(GeneralFailure()));
       when(mockMensaRepository.getCachedDishes(1)).thenAnswer((_) => Left(CachFailure()));
       when(mockMensaRepository.getCachedDishes(2)).thenAnswer((_) => Left(GeneralFailure()));
 
@@ -123,8 +122,8 @@ void main() {
       // assert: is expected result the actual return
       identical(testReturn, expectedReturn);
       verifyInOrder([
-        mockMensaRepository.getRemoteDishes(1),
-        mockMensaRepository.getRemoteDishes(2),
+        mockMensaRepository.getScrappedDishes(1),
+        mockMensaRepository.getScrappedDishes(2),
         mockMensaRepository.getCachedDishes(1),
         mockMensaRepository.getCachedDishes(2),
       ]);
@@ -150,8 +149,8 @@ void main() {
         mockMensaRepository.getCachedDishes(1),
         mockMensaRepository.getCachedDishes(2),
       ]);
-      verifyNever(mockMensaRepository.getRemoteDishes(1));
-      verifyNever(mockMensaRepository.getRemoteDishes(2));
+      verifyNever(mockMensaRepository.getScrappedDishes(1));
+      verifyNever(mockMensaRepository.getScrappedDishes(2));
       verifyNoMoreInteractions(mockMensaRepository);
     });
 
@@ -174,8 +173,8 @@ void main() {
         mockMensaRepository.getCachedDishes(1),
         mockMensaRepository.getCachedDishes(2),
       ]);
-      verifyNever(mockMensaRepository.getRemoteDishes(1));
-      verifyNever(mockMensaRepository.getRemoteDishes(2));
+      verifyNever(mockMensaRepository.getScrappedDishes(1));
+      verifyNever(mockMensaRepository.getScrappedDishes(2));
       verifyNoMoreInteractions(mockMensaRepository);
     });
   });

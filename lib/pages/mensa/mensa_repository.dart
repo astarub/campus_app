@@ -1,25 +1,45 @@
 import 'dart:async';
 
-import 'package:dartz/dartz.dart';
-import 'package:intl/intl.dart';
-
+import 'package:appwrite/appwrite.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
+import 'package:dartz/dartz.dart';
+import 'package:intl/intl.dart';
 
 class MensaRepository {
+  // Datasource for Scrapping
   final MensaDataSource mensaDatasource;
 
-  MensaRepository({required this.mensaDatasource});
+  // AppWrite Datasource
+  final Client awClient;
+
+  MensaRepository({required this.mensaDatasource, required this.awClient});
 
   /// Returns a list of [DishEntity] widgets or a failure.
-  /// Reataurant is 1 (Mensa) by default. Theire are the following possible values:
+  /// Calls AppWrite instance to get list of dishes from database.
+  Future<Either<Failure, List<DishEntity>>> getAWDishes(int restaurant) async {
+    throw UnimplementedError();
+  }
+
+  /// Returns a list of [DishEntity] widgets or a failure
+  Either<Failure, List<DishEntity>> getCachedDishes(int restaurant) {
+    try {
+      return Right(mensaDatasource.readDishEntitiesFromCache(restaurant));
+    } catch (e) {
+      return Left(CachFailure());
+    }
+  }
+
+  /// Returns a list of [DishEntity] widgets or a failure.
+  /// Calls the mensa scrapper API to get the data.
+  /// Theire are the following possible values:
   ///   * 1: AKAFÖ Mensa
   ///   * 2: AKAFÖ Rote Beete
   ///   * 3: AKAFÖ Qwest
   ///   * 4: AKAFÖ Pfannengericht
-  Future<Either<Failure, List<DishEntity>>> getRemoteDishes(int restaurant) async {
+  Future<Either<Failure, List<DishEntity>>> getScrappedDishes(int restaurant) async {
     try {
       final List<DishEntity> entities = [];
 
@@ -127,15 +147,6 @@ class MensaRepository {
         default:
           return Left(GeneralFailure());
       }
-    }
-  }
-
-  /// Returns a list of [DishEntity] widgets or a failure
-  Either<Failure, List<DishEntity>> getCachedDishes(int restaurant) {
-    try {
-      return Right(mensaDatasource.readDishEntitiesFromCache(restaurant));
-    } catch (e) {
-      return Left(CachFailure());
     }
   }
 }
