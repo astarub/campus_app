@@ -60,6 +60,14 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton(() {
+    // TODO: BackendRepository Refactoring
+    //    1.) It's implementation is too long: 500+ lines of code
+    //    2.) It mix-ups multiple features and/or clean-architecture-layers:
+    //        - e.g. the function `loadMensaRestaurantConfig` mensa feature
+    //        - e.g. the `addSavedEvent` is a usecase of the calendar / feed
+    //        - "Backend" is in general a vague term, so a better approach would be
+    //          writing e.g. a user / authentication feature for the auth handling
+    //    3.) The AppWrite client should registered as a seperate datasource
     final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
     return BackendRepository(client: client);
   });
