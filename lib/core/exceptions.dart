@@ -10,6 +10,10 @@ class EmptyResponseException implements Exception {}
 /// RUB login credentials incorrect
 class InvalidLoginIDAndPasswordException implements Exception {}
 
+class MissingCredentialsException implements Exception {}
+
+class TicketNotFoundException implements Exception {}
+
 /// 2FA token is not correct
 class Invalid2FATokenException implements Exception {}
 

@@ -13,6 +13,53 @@ class TicketDataSource {
     required this.secureStorage,
   });
 
+  Future<void> logout() async {
+    HeadlessInAppWebView? headlessWebView;
+    headlessWebView = HeadlessInAppWebView(
+      initialUrlRequest: URLRequest(url: WebUri(rideTicketing)),
+      initialSettings: InAppWebViewSettings(cacheEnabled: false, clearCache: true),
+      onWebViewCreated: (controller) {
+        controller.addJavaScriptHandler(
+          handlerName: 'error',
+          callback: (args) {
+            debugPrint('An error occurred. Error: $args');
+
+            headlessWebView!.dispose();
+          },
+        );
+
+        controller.addJavaScriptHandler(
+          handlerName: 'dispose',
+          callback: (args) {
+            headlessWebView!.dispose();
+          },
+        );
+      },
+      onLoadStop: (controller, url) async {
+        print(url.toString() == rideTicketing);
+        if (url.toString() == rideTicketing) {
+          await controller.evaluateJavascript(
+            source: '''
+              setTimeout(function(){
+                document.getElementsByClassName("abo-card-wrapper")[0].click();
+              }, 500);
+              ''',
+          );
+        }
+        // Fallback to ensure that the headless web view is always disposed, even if the ticket cannot be fetched.
+        await controller.evaluateJavascript(
+          source: '''
+              setTimeout(function(){
+                window.flutter_inappwebview.callHandler('dispose', '');
+              }, 10000);
+              ''',
+        );
+      },
+    );
+
+    await headlessWebView.run();
+  }
+
   Future<Map<String, dynamic>> getTicket() async {
     final Completer<Map<String, dynamic>> completer = Completer<Map<String, dynamic>>();
 
@@ -28,12 +75,13 @@ class TicketDataSource {
     final String? password = await secureStorage.read(key: 'password');
 
     if (loginId == null || password == null) {
-      return ticket;
+      completer.completeError('No login credentials found.');
     }
 
     HeadlessInAppWebView? headlessWebView;
     headlessWebView = HeadlessInAppWebView(
       initialUrlRequest: URLRequest(url: WebUri(rideTicketing)),
+      initialSettings: InAppWebViewSettings(cacheEnabled: false, clearCache: true),
       onWebViewCreated: (controller) {
         controller.addJavaScriptHandler(
           handlerName: 'barcode',
@@ -49,12 +97,16 @@ class TicketDataSource {
         controller.addJavaScriptHandler(
           handlerName: 'ticket_details',
           callback: (args) {
-            if (args.isEmpty && args.length != 4) return;
+            if (args.isEmpty || List.of(args)[0] is! List || List.of(args[0]).length != 4) {
+              completer.completeError('Invalid ticket details');
+            }
 
-            ticket['valid_from'] = args[0];
-            ticket['valid_till'] = args[1];
-            ticket['owner'] = args[2];
-            ticket['birthdate'] = args[3];
+            final List<dynamic> arguments = List.of(args)[0];
+
+            ticket['valid_from'] = arguments[0];
+            ticket['valid_till'] = arguments[1];
+            ticket['owner'] = arguments[2];
+            ticket['birthdate'] = arguments[3];
 
             completer.complete(ticket);
             headlessWebView!.dispose();
@@ -83,8 +135,8 @@ class TicketDataSource {
             url.toString().endsWith('s1')) {
           await controller.evaluateJavascript(
             source: """
-              document.getElementById('username').value="${await secureStorage.read(key: 'loginID')}";
-              document.getElementById('password').value="";
+              document.getElementById('username').value="${loginId!}";
+              document.getElementById('password').value="${password!}";
               setTimeout(function(){
                 document.getElementById('shibbutton').click();
               }, 500);
@@ -94,6 +146,9 @@ class TicketDataSource {
             url.toString().endsWith('s2')) {
           await controller.evaluateJavascript(
             source: """
+              if(document.getElementsByClassName("form-error").length == 1) {
+                window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
+              }
               setTimeout(function(){
                 document.getElementById('consentbutton_2').click();
               }, 500);
@@ -115,7 +170,7 @@ class TicketDataSource {
             source: '''
               setTimeout(function(){
                 if(!document.URL.startsWith("https://abo.ride-ticketing.de/app/ticket")) {
-                  window.flutter_inappwebview.callHandler('test', "Could not open ticket page.");
+                  window.flutter_inappwebview.callHandler('error', "Could not open ticket page.");
                   return;
                 }
                 window.flutter_inappwebview.callHandler('barcode', document.getElementsByClassName("barcode")[0].src);
@@ -143,6 +198,8 @@ class TicketDataSource {
         }
       },
     );
+
+    await headlessWebView.run();
 
     return completer.future;
   }

@@ -1,16 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_web_view.dart';
+import 'package:campus_app/pages/wallet/widgets/ticket_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:pdf_image_renderer/pdf_image_renderer.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screen_brightness/screen_brightness.dart';
-import 'package:image/image.dart' as IMG;
 
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
@@ -53,22 +52,16 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
 
   bool showQrCode = false;
 
+  TicketUsecases ticketUsecases = sl<TicketUsecases>();
+
   /// Loads the previously saved image of the semester ticket and
   /// the corresponding aztec-code
   Future<void> loadTicket() async {
     debugPrint('Loading semester ticket');
 
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
+    final Image? qrCodeImage = await ticketUsecases.renderQRCode();
 
-    // Define the image files
-    final File ticketFile = File('$directoryPath/ticket.png');
-
-    // If the images were parsed and saved in the past, they're loaded
-    final bool tickedSaved = ticketFile.existsSync();
-    if (tickedSaved) {
-      final Image qrCodeImage = await renderQRCode(ticketFile);
-
+    if (qrCodeImage != null) {
       setState(() {
         scanned = true;
         this.qrCodeImage = qrCodeImage;
@@ -76,55 +69,14 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
     }
   }
 
-  /// Saves a loaded semester ticket and its corresponding aztec-code
-  Future<void> saveTicketPDF(String code) async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    // Save the given pdf file to the apps directory
-    final File file = File('$directoryPath/ticket.png');
-
-    await file.writeAsBytes(base64Decode(code));
-  }
-
-  Future<Image> renderSemesterTicket(String path) async {
-    final pdf = PdfImageRendererPdf(path: path);
-
-    await pdf.open();
-    await pdf.openPage(pageIndex: 0);
-
-    final size = await pdf.getPageSize(pageIndex: 0);
-
-    final bytes = await pdf.renderPage(
-      x: 71,
-      y: 66,
-      width: size.width - 353,
-      height: size.height - 690,
-      scale: 4,
-    );
-
-    await pdf.closePage(pageIndex: 0);
-    await pdf.close();
-
-    if (bytes == null) {
-      return Image(image: MemoryImage(Uint8List.fromList([0])));
-    }
-
-    return Image(image: MemoryImage(bytes));
-  }
-
-  Future<Image> renderQRCode(File ticketFile) async {
-    Uint8List resizedData = ticketFile.readAsBytesSync();
-    final IMG.Image img = IMG.decodeImage(resizedData)!;
-    final IMG.Image resized = IMG.copyResize(img, width: 250, height: 250);
-    resizedData = IMG.encodePng(resized);
-
-    return Image(
-      image: MemoryImage(resizedData),
+  Future<void> addTicket() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const TicketWebViewPage(),
+      ),
     );
   }
-
-  Future<void> addTicket() async {}
 
   @override
   bool get wantKeepAlive => true;

@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:campus_app/core/exceptions.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:image/image.dart' as img;
 
 import 'package:campus_app/pages/wallet/ticket/ticket_datasource.dart';
 
@@ -21,31 +19,64 @@ class TicketRepository {
     try {
       ticket = await ticketDataSource.getTicket();
     } catch (e) {
-      debugPrint(e.toString());
-      return;
+      if (e == 'No login credentials found.') {
+        throw MissingCredentialsException();
+      } else if (e == 'Invalid credentials.') {
+        throw InvalidLoginIDAndPasswordException();
+      } else if (e == 'Could not open ticket page.') {
+        await deleteTicketQRCode();
+        throw TicketNotFoundException();
+      }
+    }
+    if (ticket == null) {
+      throw TicketNotFoundException();
     }
 
-    if (ticket['barcode'] == null) {
-      return;
-    }
+    await saveTicketQRCode(ticket['barcode']);
+  }
 
+  Future<void> saveTicketQRCode(String code) async {
     final Directory saveDirectory = await getApplicationDocumentsDirectory();
     final String directoryPath = saveDirectory.path;
 
-    // Save the given pdf file to the apps directory
+    // Save the given png file to the app directory
     final File file = File('$directoryPath/ticket.png');
 
-    await file.writeAsBytes(base64Decode(ticket['barcode']));
+    await file.writeAsBytes(base64Decode(code));
   }
 
-  Future<Image> renderQRCode(File ticketFile) async {
-    Uint8List resizedData = ticketFile.readAsBytesSync();
-    final img.Image image = img.decodeImage(resizedData)!;
-    final img.Image resized = img.copyResize(image, width: 250, height: 250);
-    resizedData = img.encodePng(resized);
+  Future<void> deleteTicketQRCode() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
 
-    return Image(
-      image: MemoryImage(resizedData),
-    );
+    // Define the image file
+    final File ticketFile = File('$directoryPath/ticket.png');
+
+    if (await ticketFileExists()) {
+      ticketFile.deleteSync();
+    }
+  }
+
+  Future<File> getTicketFile() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    // Define the image files
+    final File ticketFile = File('$directoryPath/ticket.png');
+
+    return ticketFile;
+  }
+
+  Future<bool> ticketFileExists() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    // Define the image file
+    final File ticketFile = File('$directoryPath/ticket.png');
+
+    // If the images were parsed and saved in the past, they're loaded
+    final bool ticketSaved = ticketFile.existsSync();
+
+    return ticketSaved;
   }
 }

@@ -1,5 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_datasource.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -59,9 +61,7 @@ Future<void> init() async {
 
   sl.registerLazySingleton(() {
     return TicketDataSource(
-      secureStorage: const FlutterSecureStorage(
-        aOptions: AndroidOptions(encryptedSharedPreferences: true),
-      ),
+      secureStorage: sl(),
     );
   });
 
@@ -89,6 +89,10 @@ Future<void> init() async {
     dependsOn: [MensaDataSource],
   );
 
+  sl.registerLazySingleton(
+    () => TicketRepository(ticketDataSource: sl()),
+  );
+
   //!
   //! Usecases
   //!
@@ -106,6 +110,10 @@ Future<void> init() async {
   sl.registerSingletonWithDependencies(
     () => MensaUsecases(mensaRepository: sl()),
     dependsOn: [MensaRepository],
+  );
+
+  sl.registerLazySingleton(
+    () => TicketUsecases(ticketRepository: sl()),
   );
 
   //!
@@ -130,9 +138,13 @@ Future<void> init() async {
   //!
 
   //sl.registerLazySingleton(http.Client.new);
-  sl.registerLazySingleton(FlutterSecureStorage.new);
   sl.registerLazySingleton(Dio.new);
   sl.registerLazySingleton(CookieJar.new);
+  sl.registerLazySingleton(
+    () => const FlutterSecureStorage(
+      aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    ),
+  );
 
   await sl.allReady();
 }
