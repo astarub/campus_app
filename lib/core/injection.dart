@@ -84,8 +84,8 @@ Future<void> init() async {
   );
 
   sl.registerSingletonWithDependencies(
-    () => MensaRepository(mensaDatasource: sl(), awClient: sl()),
-    dependsOn: [MensaDataSource],
+    () => MensaRepository(mensaDatasource: sl(), awClient: sl(), utils: sl()),
+    dependsOn: [MensaDataSource, Client, MensaUtils],
   );
 
   //!

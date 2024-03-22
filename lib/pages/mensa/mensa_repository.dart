@@ -5,6 +5,7 @@ import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
+import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
 
@@ -15,7 +16,10 @@ class MensaRepository {
   // AppWrite Datasource
   final Client awClient;
 
-  MensaRepository({required this.mensaDatasource, required this.awClient});
+  // Mensa Utils
+  final MensaUtils utils;
+
+  MensaRepository({required this.mensaDatasource, required this.awClient, required this.utils});
 
   /// Returns a list of [DishEntity] widgets or a failure.
   /// Calls AppWrite instance to get list of dishes from database.
@@ -104,6 +108,7 @@ class MensaRepository {
                 date: date,
                 category: 'Speiseplan vom ${datetime.day}.${datetime.month}.${datetime.year}',
                 json: dish,
+                utils: utils,
               ),
             );
           }
@@ -117,6 +122,7 @@ class MensaRepository {
                   date: date,
                   category: category,
                   json: dish,
+                  utils: utils,
                 ),
               );
             }
@@ -128,12 +134,6 @@ class MensaRepository {
       unawaited(
         mensaDatasource.writeDishEntitiesToCache(entities, restaurant),
       );
-
-      // if (restaurant == 3) {
-      //   for (final element in entities) {
-      //     print(element);
-      //   }
-      // }
 
       return Right(entities);
     } catch (e) {
