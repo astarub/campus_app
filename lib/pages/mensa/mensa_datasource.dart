@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 
@@ -31,9 +33,15 @@ class MensaDataSource {
 
     if (response.statusCode != 200) {
       throw ServerException();
-    } else {
-      return response.data as Map<String, dynamic>;
     }
+
+    // response could be parsed by dart
+    if (response.data is Map<String, dynamic>) {
+      return response.data;
+    }
+
+    // response is string
+    return json.decode(response.data);
   }
 
   /// Write given list of DishEntities to Hive.Box
