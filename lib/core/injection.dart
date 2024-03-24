@@ -31,16 +31,47 @@ final sl = GetIt.instance; // service locator
 
 Future<void> init() async {
   //!
+  //! External
+  //!
+
+  sl.registerLazySingleton(() {
+    final client = Dio();
+    client.httpClientAdapter = NativeAdapter();
+    return client;
+  });
+
+  sl.registerLazySingleton(FlutterSecureStorage.new);
+  sl.registerLazySingleton(CookieJar.new);
+
+  // AppWrite Client
+  sl.registerLazySingleton(() => Client(endPoint: appwrite).setProject('campus_app'));
+
+  //!
+  //! Utils
+  //!
+
+  sl.registerLazySingleton(
+    () => DioUtils(
+      client: sl(),
+      cookieJar: sl(),
+    )..init(),
+  );
+
+  sl.registerLazySingleton(CalendarUtils.new);
+  sl.registerLazySingleton(FeedUtils.new);
+  sl.registerLazySingleton(MensaUtils.new);
+  sl.registerLazySingleton(MainUtils.new);
+
+  //!
   //! Datasources
   //!
 
-  //! Datasources
-  sl.registerSingletonAsync(() async {
-    final client = Dio();
-    client.httpClientAdapter = NativeAdapter();
-
-    return MensaDataSource(client: client, mensaCache: await Hive.openBox('mensaCache'));
-  });
+  sl.registerSingletonAsync(
+    () async => MensaDataSource(
+      client: sl(),
+      mensaCache: await Hive.openBox('mensaCache'),
+    ),
+  );
 
   sl.registerSingletonAsync(
     () async => NewsDatasource(
@@ -55,19 +86,6 @@ Future<void> init() async {
       eventCache: await Hive.openBox('eventsCache'),
     ),
   );
-
-  sl.registerLazySingleton(() {
-    // TODO: BackendRepository Refactoring
-    //    1.) It's implementation is too long: 500+ lines of code
-    //    2.) It mix-ups multiple features and/or clean-architecture-layers:
-    //        - e.g. the function `loadMensaRestaurantConfig` mensa feature
-    //        - e.g. the `addSavedEvent` is a usecase of the calendar / feed
-    //        - "Backend" is in general a vague term, so a better approach would be
-    //          writing e.g. a user / authentication feature for the auth handling
-    //    3.) The AppWrite client should registered as a seperate datasource
-    final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
-    return BackendRepository(client: client);
-  });
 
   //!
   //! Repositories
@@ -85,7 +103,13 @@ Future<void> init() async {
 
   sl.registerSingletonWithDependencies(
     () => MensaRepository(mensaDatasource: sl(), awClient: sl(), utils: sl()),
-    dependsOn: [MensaDataSource, Client, MensaUtils],
+    dependsOn: [MensaDataSource],
+  );
+
+  sl.registerLazySingleton(
+    () => BackendRepository(
+      client: sl(),
+    ),
   );
 
   //!
@@ -107,33 +131,7 @@ Future<void> init() async {
     dependsOn: [MensaRepository],
   );
 
-  //!
-  //! Utils
-  //!
-
-  sl.registerLazySingleton(
-    () => DioUtils(
-      client: sl(),
-      cookieJar: sl(),
-    )..init(),
-  );
-
-  sl.registerLazySingleton(CalendarUtils.new);
-  sl.registerLazySingleton(FeedUtils.new);
-  sl.registerLazySingleton(MensaUtils.new);
-
-  sl.registerLazySingleton(MainUtils.new);
-
-  //!
-  //! External
-  //!
-
-  //sl.registerLazySingleton(http.Client.new);
-  sl.registerLazySingleton(FlutterSecureStorage.new);
-  sl.registerLazySingleton(Dio.new);
-  sl.registerLazySingleton(CookieJar.new);
-  // AppWrite Client
-  sl.registerLazySingleton(() => Client(endPoint: appwrite).setProject('campus_app'));
+  //! Await Singletons
 
   await sl.allReady();
 }
