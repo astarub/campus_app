@@ -30,7 +30,7 @@
     },
 
     "dart.lineLength": 120,
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "disabled",
     "cmake.configureOnOpen": false,
     "workbench.editor.enablePreview": false,
 }
