@@ -1,6 +1,5 @@
-import 'package:hive/hive.dart';
-
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:hive/hive.dart';
 
 part 'dish_entity.g.dart';
 

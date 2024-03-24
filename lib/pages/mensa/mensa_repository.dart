@@ -7,6 +7,7 @@ import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 class MensaRepository {
@@ -37,28 +38,35 @@ class MensaRepository {
       final mensaDocs = await dbServ.listDocuments(
         databaseId: 'data',
         collectionId: 'mensa',
-        queries: [Query.equal('restaurant', utils.getAWRestaurantId(restaurant))],
+        queries: [
+          Query.equal('restaurant', utils.getAWRestaurantId(restaurant)),
+          // Limit is set to 5000 to ensure downloading the full collection.
+          // In production, there should be less than 1000 dishes in total.
+          Query.limit(5000),
+        ],
       );
 
       for (final dishDoc in mensaDocs.documents) {
-        final dishData = dishDoc.toMap();
+        final dishData = dishDoc.data;
         dishes.add(
           DishEntity(
-            date: dishData['date'],
+            date: utils.weekdayToInt(dishData['date']),
             category: dishData['menuName'],
             title: dishData['dishName'],
             price: dishData['dishPrice'] ?? 'Preis vor Ort',
-            infos: dishData['dishAdditives'] ?? [],
+            infos: utils.readListOfAdditives(dishData['dishAdditives']),
             // Difference between these three lists is
             // not present in XML / AppWrite data
-            // allergenes: dishData['dishAdditives'] ?? [],
-            // additives: dishData['dishAdditives'] ?? [],
+            // allergenes: utils.readListOfAdditives(dishData['dishAdditives']),
+            // additives: utils.readListOfAdditives(dishData['dishAdditives']),
           ),
         );
       }
 
       return Right(dishes);
     } catch (e) {
+      debugPrint(e.toString());
+
       switch (e.runtimeType) {
         case AppwriteException:
           return Left(ServerFailure());

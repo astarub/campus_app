@@ -18,6 +18,8 @@ import 'samples/mensa_sample_json_response.dart';
 void main() {
   late MensaRepository mensaRepository;
   late MensaUtils utils;
+
+  late MockClient mockAWCLient;
   late MockMensaDataSource mockMensaDataSource;
 
   late List<DishEntity> samleDishEntities;
@@ -28,10 +30,11 @@ void main() {
   setUp(() {
     mockMensaDataSource = MockMensaDataSource();
     utils = MensaUtils();
+    mockAWCLient = MockClient();
 
     mensaRepository = MensaRepository(
       mensaDatasource: mockMensaDataSource,
-      awClient: MockClient(),
+      awClient: mockAWCLient,
       utils: utils,
     );
 
@@ -138,6 +141,22 @@ void main() {
       identical(testReturn, expectedReturn);
       verify(mockMensaDataSource.readDishEntitiesFromCache(1));
       verifyNoMoreInteractions(mockMensaDataSource);
+    });
+  });
+
+  group('[getAWDishes]', () {
+    test('should return a [ServerFailure] at [AppwriteException]', () {
+      when(mockAWCLient.call(any)).thenThrow(AppwriteException);
+      identical(mensaRepository.getAWDishes(1), ServerFailure());
+    });
+
+    test('should return [GeneralFailure] on any other error', () {
+      when(mockAWCLient.call(any)).thenThrow(UnexpectedException);
+      identical(mensaRepository.getAWDishes(1), GeneralFailure());
+    });
+
+    test('should return list of [DishEntity] on success', () {
+      // TODO
     });
   });
 }

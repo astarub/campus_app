@@ -508,4 +508,30 @@ class MensaUtils {
   bool isUppercase(String str) {
     return str == str.toUpperCase();
   }
+
+  List<String> readListOfAdditives(List<dynamic> awList) {
+    final retVal = <String>[];
+
+    for (final additiv in awList) {
+      if (additiv is String) {
+        retVal.add(additiv);
+      }
+    }
+
+    return retVal;
+  }
+
+  int weekdayToInt(String weekday) {
+    if (weekday.startsWith('Mo')) {
+      return 0;
+    } else if (weekday.startsWith('Di')) {
+      return 1;
+    } else if (weekday.startsWith('Mi')) {
+      return 2;
+    } else if (weekday.startsWith('Do')) {
+      return 3;
+    } else {
+      return 4;
+    }
+  }
 }
