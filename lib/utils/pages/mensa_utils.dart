@@ -27,73 +27,6 @@ class MensaUtils {
     }
   ];
 
-  bool isUppercase(String str) {
-    return str == str.toUpperCase();
-  }
-
-  /// check if the string contains only numbers
-  bool isNumeric(String str) {
-    final RegExp numeric = RegExp(r'^-?[0-9]+$');
-    return numeric.hasMatch(str);
-  }
-
-  /// Parse a list of DishEntity to widget list of type MealCategory.
-  List<MealCategory> fromDishListToMealCategoryList({
-    required List<DishEntity> entities,
-    required int day,
-    required void Function(String) onPreferenceTap,
-    List<String> mensaPreferences = const [],
-    List<String> mensaAllergenes = const [],
-  }) {
-    // Create a separate list to not edit the one of the SettingsHandler
-    final List<String> filteredMensaPreferences = [];
-    filteredMensaPreferences.addAll(mensaPreferences);
-
-    // Also show vegan meals, when vegetarian preference is selected
-    if (filteredMensaPreferences.contains('V')) {
-      filteredMensaPreferences.add('VG');
-    }
-
-    final mealCategories = <MealCategory>[];
-
-    // create a set for unique categories
-    final categories = <String>{};
-    for (final DishEntity dish in entities) {
-      categories.add(dish.category);
-    }
-
-    for (final category in categories) {
-      final meals = <MealItem>[];
-      for (final dish in entities.where((dish) => dish.date == day && dish.category == category)) {
-        // Do not show meal if user doesn't want this
-        if (mensaAllergenes.any(dish.allergenes.contains)) continue;
-        if (filteredMensaPreferences.any((e) => dish.infos.contains(e) && !['V', 'VG', 'H'].contains(e))) continue;
-
-        if (!(['V', 'VG', 'H'].any(filteredMensaPreferences.contains) &&
-                filteredMensaPreferences.any(dish.infos.contains)) &&
-            filteredMensaPreferences.where((e) => e == 'V' || e == 'VG' || e == 'H').isNotEmpty) continue;
-
-        meals.add(
-          MealItem(
-            name: dish.title,
-            price: dish.price,
-            infos: dish.infos,
-            allergenes: dish.allergenes,
-            onPreferenceTap: onPreferenceTap,
-          ),
-        );
-      }
-      if (meals.isEmpty) continue;
-      mealCategories.add(MealCategory(categoryName: category, meals: meals));
-    }
-
-    if (mealCategories.isEmpty) {
-      mealCategories.add(const MealCategory(categoryName: 'Kein Speiseplan verfügbar.'));
-    }
-
-    return mealCategories;
-  }
-
   /// Hardcoded KulturCafé.
   List<MealCategory> buildKulturCafeRestaurant({
     required void Function(String) onPreferenceTap,
@@ -490,5 +423,89 @@ class MensaUtils {
         ],
       ),
     ];
+  }
+
+  /// Parse a list of DishEntity to widget list of type MealCategory.
+  List<MealCategory> fromDishListToMealCategoryList({
+    required List<DishEntity> entities,
+    required int day,
+    required void Function(String) onPreferenceTap,
+    List<String> mensaPreferences = const [],
+    List<String> mensaAllergenes = const [],
+  }) {
+    // Create a separate list to not edit the one of the SettingsHandler
+    final List<String> filteredMensaPreferences = [];
+    filteredMensaPreferences.addAll(mensaPreferences);
+
+    // Also show vegan meals, when vegetarian preference is selected
+    if (filteredMensaPreferences.contains('V')) {
+      filteredMensaPreferences.add('VG');
+    }
+
+    final mealCategories = <MealCategory>[];
+
+    // create a set for unique categories
+    final categories = <String>{};
+    for (final DishEntity dish in entities) {
+      categories.add(dish.category);
+    }
+
+    for (final category in categories) {
+      final meals = <MealItem>[];
+      for (final dish in entities.where((dish) => dish.date == day && dish.category == category)) {
+        // Do not show meal if user doesn't want this
+        if (mensaAllergenes.any(dish.allergenes.contains)) continue;
+        if (filteredMensaPreferences.any((e) => dish.infos.contains(e) && !['V', 'VG', 'H'].contains(e))) continue;
+
+        if (!(['V', 'VG', 'H'].any(filteredMensaPreferences.contains) &&
+                filteredMensaPreferences.any(dish.infos.contains)) &&
+            filteredMensaPreferences.where((e) => e == 'V' || e == 'VG' || e == 'H').isNotEmpty) continue;
+
+        meals.add(
+          MealItem(
+            name: dish.title,
+            price: dish.price,
+            infos: dish.infos,
+            allergenes: dish.allergenes,
+            onPreferenceTap: onPreferenceTap,
+          ),
+        );
+      }
+      if (meals.isEmpty) continue;
+      mealCategories.add(MealCategory(categoryName: category, meals: meals));
+    }
+
+    if (mealCategories.isEmpty) {
+      mealCategories.add(const MealCategory(categoryName: 'Kein Speiseplan verfügbar.'));
+    }
+
+    return mealCategories;
+  }
+
+  String getAWRestaurantId(int restaurant) {
+    switch (restaurant) {
+      case 1:
+        return 'mensa_rub';
+      case 2:
+        return 'rote_bete';
+      case 3:
+        return 'qwest';
+      case 4:
+        return 'henkelmann';
+      case 5:
+        return 'unikids';
+      default:
+        return 'mensa_rub';
+    }
+  }
+
+  /// check if the string contains only numbers
+  bool isNumeric(String str) {
+    final RegExp numeric = RegExp(r'^-?[0-9]+$');
+    return numeric.hasMatch(str);
+  }
+
+  bool isUppercase(String str) {
+    return str == str.toUpperCase();
   }
 }

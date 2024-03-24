@@ -23,8 +23,50 @@ class MensaRepository {
 
   /// Returns a list of [DishEntity] widgets or a failure.
   /// Calls AppWrite instance to get list of dishes from database.
+  /// Theire are the following possible values:
+  ///   * 1: AKAFÖ Mensa (default)
+  ///   * 2: AKAFÖ Rote Beete
+  ///   * 3: AKAFÖ Qwest
+  ///   * 4: AKAFÖ Pfannengericht
+  ///   * 5: AKAFÖ Unikids / Unizwerge
   Future<Either<Failure, List<DishEntity>>> getAWDishes(int restaurant) async {
-    throw UnimplementedError();
+    try {
+      final List<DishEntity> dishes = [];
+
+      final dbServ = Databases(awClient);
+      final mensaDocs = await dbServ.listDocuments(
+        databaseId: 'data',
+        collectionId: 'mensa',
+        queries: [Query.equal('restaurant', utils.getAWRestaurantId(restaurant))],
+      );
+
+      for (final dishDoc in mensaDocs.documents) {
+        final dishData = dishDoc.toMap();
+        dishes.add(
+          DishEntity(
+            date: dishData['date'],
+            category: dishData['menuName'],
+            title: dishData['dishName'],
+            price: dishData['dishPrice'] ?? 'Preis vor Ort',
+            infos: dishData['dishAdditives'] ?? [],
+            // Difference between these three lists is
+            // not present in XML / AppWrite data
+            // allergenes: dishData['dishAdditives'] ?? [],
+            // additives: dishData['dishAdditives'] ?? [],
+          ),
+        );
+      }
+
+      return Right(dishes);
+    } catch (e) {
+      switch (e.runtimeType) {
+        case AppwriteException:
+          return Left(ServerFailure());
+
+        default:
+          return Left(GeneralFailure());
+      }
+    }
   }
 
   /// Returns a list of [DishEntity] widgets or a failure
