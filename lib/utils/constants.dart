@@ -16,7 +16,8 @@ const String mensaData = 'https://api-app.asta-bochum.de/get_meal';
 
 const String osrmBackend = 'https://osrm.app.asta-bochum.de';
 
-const String rideTicketing = 'https://abo.ride-ticketing.de/app/login?partnerId=61b1cbf4604e623aef325ef0e4226cea';
+const String rideTicketing =
+    'https://auth.ride-ticketing.de/auth/realms/ride/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fabo.ride-ticketing.de%2Fapp%2Fprofile%3FpartnerId%3D61b1cbf4604e623aef325ef0e4226cea';
 
 // See: https://codewithandrea.com/articles/flutter-api-keys-dart-define-env-files/
 final String mensaApiKey = Env.mensaApiKey;

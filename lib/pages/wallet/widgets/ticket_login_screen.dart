@@ -12,7 +12,8 @@ import 'package:campus_app/utils/widgets/campus_textfield.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 
 class TicketLoginScreen extends StatefulWidget {
-  const TicketLoginScreen({super.key});
+  final void Function() onTicketLoaded;
+  const TicketLoginScreen({super.key, required this.onTicketLoaded});
 
   @override
   State<TicketLoginScreen> createState() => _TicketLoginScreenState();
@@ -59,6 +60,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
             const Padding(padding: EdgeInsets.only(top: 10)),
             Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
                     'assets/img/icons/rub-link.png',
@@ -68,7 +70,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                     width: 80,
                     filterQuality: FilterQuality.high,
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 25)),
+                  const Padding(padding: EdgeInsets.only(top: 30)),
                   CampusTextField(
                     textFieldController: usernameController,
                     textFieldText: 'RUB LoginID',
@@ -98,14 +100,23 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                         loading = true;
                       });
 
+                      final previousLoginId = await secureStorage.read(key: 'loginId');
+                      final previousPassword = await secureStorage.read(key: 'password');
+
                       await secureStorage.write(key: 'loginId', value: usernameController.text);
                       await secureStorage.write(key: 'password', value: passwordController.text);
 
                       try {
                         await ticketRepository.loadTicket();
+                        widget.onTicketLoaded();
                         navigator.pop();
                       } catch (e) {
                         if (e is InvalidLoginIDAndPasswordException) {
+                          if (previousLoginId != null && previousPassword != null) {
+                            await secureStorage.write(key: 'loginId', value: previousLoginId);
+                            await secureStorage.write(key: 'password', value: previousPassword);
+                          }
+
                           setState(() {
                             errorMessage = 'Falsche LoginID und/oder Passwort!';
                             showErrorMessage = true;
@@ -118,6 +129,38 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                     },
                   ),
                   const Padding(padding: EdgeInsets.only(top: 25)),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/img/icons/info.svg',
+                          colorFilter: ColorFilter.mode(
+                            Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                                ? Colors.black
+                                : const Color.fromRGBO(184, 186, 191, 1),
+                            BlendMode.srcIn,
+                          ),
+                          width: 18,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 5),
+                        ),
+                        SizedBox(
+                          width: 320,
+                          child: Text(
+                            'Deine Daten werden verschlüsselt auf deinem Gerät gespeichert und nur bei der Anmeldung an die RUB gesendet.',
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall!.copyWith(
+                                  color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                                      ? Colors.black
+                                      : const Color.fromRGBO(184, 186, 191, 1),
+                                ),
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   if (showErrorMessage) ...[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -131,11 +174,11 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                           width: 18,
                         ),
                         const Padding(
-                          padding: EdgeInsets.only(left: 3),
+                          padding: EdgeInsets.only(left: 5),
                         ),
                         Text(
                           errorMessage,
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall!.copyWith(
                               color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
                                   ? Colors.black
                                   : const Color.fromRGBO(184, 186, 191, 1)),

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:campus_app/core/exceptions.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_datasource.dart';
 
 class TicketRepository {
@@ -17,66 +17,93 @@ class TicketRepository {
     Map<String, dynamic>? ticket;
 
     try {
-      ticket = await ticketDataSource.getTicket();
+      ticket = await ticketDataSource.getRemoteTicket();
     } catch (e) {
       if (e == 'No login credentials found.') {
         throw MissingCredentialsException();
       } else if (e == 'Invalid credentials.') {
         throw InvalidLoginIDAndPasswordException();
       } else if (e == 'Could not open ticket page.') {
-        await deleteTicketQRCode();
+        await deleteTicket();
         throw TicketNotFoundException();
       }
     }
-    if (ticket == null) {
+    if (ticket == null || ticket['barcode'].toString().isEmpty) {
       throw TicketNotFoundException();
     }
 
-    await saveTicketQRCode(ticket['barcode']);
+    await saveTicket(ticket);
   }
 
-  Future<void> saveTicketQRCode(String code) async {
+  Future<void> saveTicket(Map<String, dynamic> ticket) async {
     final Directory saveDirectory = await getApplicationDocumentsDirectory();
     final String directoryPath = saveDirectory.path;
 
     // Save the given png file to the app directory
-    final File file = File('$directoryPath/ticket.png');
+    final File qrCodeFile = File('$directoryPath/ticket.png');
+    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
 
-    await file.writeAsBytes(base64Decode(code));
+    await qrCodeFile.writeAsBytes(base64Decode(ticket['barcode']));
+    await ticketDetailsFile.writeAsString(jsonEncode(ticket));
   }
 
-  Future<void> deleteTicketQRCode() async {
+  Future<void> deleteTicket() async {
     final Directory saveDirectory = await getApplicationDocumentsDirectory();
     final String directoryPath = saveDirectory.path;
 
     // Define the image file
-    final File ticketFile = File('$directoryPath/ticket.png');
+    final File qrCodeFile = File('$directoryPath/ticket.png');
+    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
 
-    if (await ticketFileExists()) {
-      ticketFile.deleteSync();
+    if (await qrCodeFileExists()) {
+      await qrCodeFile.delete();
+    }
+
+    if (await ticketDetailsFileExists()) {
+      await ticketDetailsFile.delete();
     }
   }
 
-  Future<File> getTicketFile() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    // Define the image files
-    final File ticketFile = File('$directoryPath/ticket.png');
-
-    return ticketFile;
-  }
-
-  Future<bool> ticketFileExists() async {
+  Future<File> getQRCodeFile() async {
     final Directory saveDirectory = await getApplicationDocumentsDirectory();
     final String directoryPath = saveDirectory.path;
 
     // Define the image file
-    final File ticketFile = File('$directoryPath/ticket.png');
+    final File qrCodeFile = File('$directoryPath/ticket.png');
+
+    return qrCodeFile;
+  }
+
+  Future<File> getTicketDetailsFile() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
+
+    return ticketDetailsFile;
+  }
+
+  Future<bool> qrCodeFileExists() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    // Define the image file
+    final File qrCodeFile = File('$directoryPath/ticket.png');
 
     // If the images were parsed and saved in the past, they're loaded
-    final bool ticketSaved = ticketFile.existsSync();
+    final bool exists = qrCodeFile.existsSync();
 
-    return ticketSaved;
+    return exists;
+  }
+
+  Future<bool> ticketDetailsFileExists() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
+
+    final bool exists = ticketDetailsFile.existsSync();
+
+    return exists;
   }
 }

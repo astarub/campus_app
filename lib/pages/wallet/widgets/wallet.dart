@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
-import 'package:campus_app/pages/wallet/ticket/ticket_web_view.dart';
 import 'package:campus_app/pages/wallet/widgets/ticket_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,16 +21,21 @@ class CampusWallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double initialWalletOffset = (MediaQuery.of(context).size.width - 325) / 2;
-    const double initialWalletOffsetTablet = (550 - 325) / 2;
+    final double initialWalletOffset =
+        (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width - 70)) / 2;
+    final double initialWalletOffsetTablet = (MediaQuery.of(context).size.width - 500) / 2;
 
     return StackedCardCarousel(
       cardAlignment: CardAlignment.center,
       scrollDirection: Axis.horizontal,
-      initialOffset: MediaQuery.of(context).size.shortestSide < 600 ? initialWalletOffset : initialWalletOffsetTablet,
+      initialOffset:
+          MediaQuery.of(context).size.shortestSide < 600 ? initialWalletOffset : initialWalletOffsetTablet + 30,
       spaceBetweenItems: MediaQuery.of(context).size.shortestSide < 600 ? 400 : 500,
-      items: const [
-        SizedBox(width: 325, height: 217, child: BogestraTicket()),
+      items: [
+        SizedBox(
+            width: MediaQuery.of(context).size.shortestSide < 600 ? MediaQuery.of(context).size.width - 70 : 330,
+            height: 217,
+            child: const BogestraTicket()),
       ],
     );
   }
@@ -49,22 +53,24 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   String scannedValue = '';
 
   late Image qrCodeImage;
+  late Map<String, dynamic> ticketDetails;
 
   bool showQrCode = false;
 
+  TicketRepository ticketRepository = sl<TicketRepository>();
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
 
   /// Loads the previously saved image of the semester ticket and
   /// the corresponding aztec-code
-  Future<void> loadTicket() async {
-    debugPrint('Loading semester ticket');
-
+  Future<void> renderTicket() async {
     final Image? qrCodeImage = await ticketUsecases.renderQRCode();
+    final Map<String, dynamic>? ticketDetails = await ticketUsecases.getTicketDetails();
 
-    if (qrCodeImage != null) {
+    if (qrCodeImage != null && ticketDetails != null) {
       setState(() {
         scanned = true;
         this.qrCodeImage = qrCodeImage;
+        this.ticketDetails = ticketDetails;
       });
     }
   }
@@ -73,7 +79,11 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const TicketWebViewPage(),
+        builder: (context) => TicketLoginScreen(
+          onTicketLoaded: () async {
+            await renderTicket();
+          },
+        ),
       ),
     );
   }
@@ -85,7 +95,10 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   void initState() {
     super.initState();
 
-    loadTicket();
+    ticketRepository.loadTicket().catchError((error) {
+      debugPrint('Wallet widget: $error');
+    });
+    renderTicket();
   }
 
   @override
@@ -119,7 +132,92 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                 }
               },
               onLongPress: addTicket,
-              child: qrCodeImage,
+              child: showQrCode
+                  ? qrCodeImage
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: SvgPicture.asset(
+                            'assets/img/bogestra-logo.svg',
+                            height: 60,
+                            width: 30,
+                          ),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: SizedBox(
+                                width: 130,
+                                height: 130,
+                                child: qrCodeImage,
+                              ),
+                            ),
+                            const Expanded(child: SizedBox()),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10, left: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Deutschlandsemesterticket',
+                                    style: Provider.of<ThemesNotifier>(context)
+                                        .currentThemeData
+                                        .textTheme
+                                        .headlineSmall!
+                                        .copyWith(color: Colors.black, fontSize: 12.5),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    ticketDetails['owner'],
+                                    style: Provider.of<ThemesNotifier>(context)
+                                        .currentThemeData
+                                        .textTheme
+                                        .headlineSmall!
+                                        .copyWith(color: Colors.black, fontSize: 12.5),
+                                  ),
+                                  Text(
+                                    'Geburtstag: ${ticketDetails['birthdate']}',
+                                    style: Provider.of<ThemesNotifier>(context)
+                                        .currentThemeData
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(color: Colors.black, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Von: ${ticketDetails['valid_from']}',
+                                    style: Provider.of<ThemesNotifier>(context)
+                                        .currentThemeData
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(color: Colors.black, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Bis: ${ticketDetails['valid_till']}',
+                                    style: Provider.of<ThemesNotifier>(context)
+                                        .currentThemeData
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(color: Colors.black, fontSize: 12),
+                                  ),
+                                  if (ticketDetails['validity_region'].toString().isNotEmpty)
+                                    Text(
+                                      'Geltungsbereich: ${ticketDetails['validity_region']}',
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(color: Colors.black, fontSize: 12),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
             )
           : CustomButton(
               tapHandler: addTicket,
