@@ -30,7 +30,7 @@ class FeedVideoPlayer extends StatefulWidget {
 
 class _FeedVideoPlayerState extends State<FeedVideoPlayer> {
   /// The controller object to handle video player
-  late VideoPlayerController _videoPlayerController;
+  late CachedVideoPlayerController _videoPlayerController;
   late CustomVideoPlayerController _customVideoPlayerController;
 
   // Show replay instead of pause / play button
@@ -39,7 +39,7 @@ class _FeedVideoPlayerState extends State<FeedVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(widget.url))..initialize();
+    _videoPlayerController = CachedVideoPlayerController.network(widget.url)..initialize();
     _customVideoPlayerController = CustomVideoPlayerController(
       context: context,
       videoPlayerController: _videoPlayerController,
