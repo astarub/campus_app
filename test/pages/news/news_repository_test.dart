@@ -43,6 +43,9 @@ void main() {
 
       // arrange: RubnewsRemoteDatasource respond with a XmlDocument
       when(mockNewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
+      when(mockNewsDatasource.getAStAFeedAsJson()).thenAnswer((_) async => []);
+      when(mockNewsDatasource.getAppFeedAsJson()).thenAnswer((_) async => []);
+      when(mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenAnswer((_) async => {});
 
       // act: funtion call
       final testReturn = await newsRepository.getRemoteNewsfeed();
@@ -50,6 +53,8 @@ void main() {
       // assert: is testElement expected object? -> List<NewsEntity> of length one with specified entity
       identical(testReturn, expectedReturn);
       verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
+      verify(mockNewsDatasource.getAStAFeedAsJson());
+      verify(mockNewsDatasource.getAppFeedAsJson());
       verify(
         mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
@@ -62,6 +67,8 @@ void main() {
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
       when(mockNewsDatasource.getNewsfeedAsXml()).thenThrow(ServerException());
+      when(mockNewsDatasource.getAStAFeedAsJson()).thenAnswer((_) async => []);
+      when(mockNewsDatasource.getAppFeedAsJson()).thenAnswer((_) async => []);
 
       // act: funtion call
       final testReturn = await newsRepository.getRemoteNewsfeed();
@@ -81,6 +88,8 @@ void main() {
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
       when(mockNewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
+      when(mockNewsDatasource.getAStAFeedAsJson()).thenAnswer((_) async => []);
+      when(mockNewsDatasource.getAppFeedAsJson()).thenAnswer((_) async => []);
       when(mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(ServerException());
 
       // act: funtion call
@@ -89,6 +98,8 @@ void main() {
       // assert: is testElement expected object? -> ServerFailure
       identical(testReturn, expectedReturn);
       verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
+      verify(mockNewsDatasource.getAStAFeedAsJson());
+      verify(mockNewsDatasource.getAppFeedAsJson());
       verify(
         mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
@@ -108,6 +119,8 @@ void main() {
       // assert: is testElement expected object? -> ServerFailure
       identical(testReturn, expectedReturn);
       verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
+      verifyNever(mockNewsDatasource.getAStAFeedAsJson());
+      verifyNever(mockNewsDatasource.getAppFeedAsJson());
       verifyNever(
         mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // exception is thrown inside first funtion, so this function shouldn't called
@@ -120,6 +133,8 @@ void main() {
 
       // arrange: RubnewsRemoteDatasource throws a ServerException
       when(mockNewsDatasource.getNewsfeedAsXml()).thenAnswer((_) async => testXmlDocument);
+      when(mockNewsDatasource.getAStAFeedAsJson()).thenAnswer((_) async => []);
+      when(mockNewsDatasource.getAppFeedAsJson()).thenAnswer((_) async => []);
       when(mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage)).thenThrow(Exception());
 
       // act: funtion call
@@ -128,6 +143,8 @@ void main() {
       // assert: is testElement expected object? -> ServerFailure
       identical(testReturn, expectedReturn);
       verify(mockNewsDatasource.getNewsfeedAsXml()); // one element -> one function call
+      verify(mockNewsDatasource.getAStAFeedAsJson());
+      verify(mockNewsDatasource.getAppFeedAsJson());
       verify(
         mockNewsDatasource.getImageDataFromNewsUrl(rubnewsTestNewsUrlSingleImage),
       ); // one element -> one function call
