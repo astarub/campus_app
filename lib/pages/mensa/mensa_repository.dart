@@ -7,7 +7,6 @@ import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 class MensaRepository {
@@ -33,16 +32,25 @@ class MensaRepository {
   Future<Either<Failure, List<DishEntity>>> getAWDishes(int restaurant) async {
     try {
       final List<DishEntity> dishes = [];
+      final today = DateTime.now();
 
       final dbServ = Databases(awClient);
       final mensaDocs = await dbServ.listDocuments(
         databaseId: 'data',
         collectionId: 'mensa',
         queries: [
+          // Limit is set to 250 to ensure downloading the full collection.
+          // In production, the value should be far less than this value for
+          // a single restaurant call.
+          Query.limit(250),
+          // Search only for the specified restaurant
           Query.equal('restaurant', utils.getAWRestaurantId(restaurant)),
-          // Limit is set to 5000 to ensure downloading the full collection.
-          // In production, there should be less than 1000 dishes in total.
-          Query.limit(5000),
+          // Request only dishes that should displayed inside the app (2 weeks)
+          Query.between(
+            'date',
+            today.subtract(Duration(days: today.weekday - 1)),
+            today.add(Duration(days: 14 - today.weekday)),
+          )
         ],
       );
 
@@ -50,7 +58,7 @@ class MensaRepository {
         final dishData = dishDoc.data;
         dishes.add(
           DishEntity(
-            date: utils.weekdayToInt(dishData['date']),
+            date: utils.dishDateToInt(DateTime.parse(dishData['date'])),
             category: dishData['menuName'],
             title: dishData['dishName'],
             price: dishData['dishPrice'] ?? 'Preis vor Ort',
@@ -63,10 +71,13 @@ class MensaRepository {
         );
       }
 
+      // Write entities to cache
+      unawaited(
+        mensaDatasource.writeDishEntitiesToCache(dishes, restaurant),
+      );
+
       return Right(dishes);
     } catch (e) {
-      debugPrint(e.toString());
-
       switch (e.runtimeType) {
         case AppwriteException:
           return Left(ServerFailure());
@@ -99,7 +110,6 @@ class MensaRepository {
 
       final Map<String, dynamic> dishesJson = (await mensaDatasource.getRemoteData(restaurant))['data'];
 
-      final DateTime lastDayOfWeek = DateTime.now().add(Duration(days: DateTime.daysPerWeek - DateTime.now().weekday));
       final DateTime firstDayOfWeek = DateTime.now().subtract(Duration(days: DateTime.now().weekday));
 
       // Take a look at 'test/pages/mensa/samples/mensa_sample_json_response.dart' to understand remote data structure
@@ -108,46 +118,8 @@ class MensaRepository {
         if (day == 'id') continue;
 
         // Correct DateFormat is e.g. "Mo., 10.10." instead of "Mo, 10.10."
-        final datetime = DateFormat('E, y.d.M.', 'de_DE').parse(day.replaceRange(2, 4, '., ${firstDayOfWeek.year}.'));
-
-        late int date;
-        switch (datetime.weekday) {
-          case 1: // Monday
-            if (datetime.compareTo(lastDayOfWeek) > 0) {
-              date = 5;
-            } else {
-              date = 0;
-            }
-            break;
-          case 2: // Tuesday
-            if (datetime.compareTo(lastDayOfWeek) > 0) {
-              date = 6;
-            } else {
-              date = 1;
-            }
-            break;
-          case 3: // Wednesday
-            if (datetime.compareTo(lastDayOfWeek) > 0) {
-              date = 7;
-            } else {
-              date = 2;
-            }
-            break;
-          case 4: // Thursday
-            if (datetime.compareTo(lastDayOfWeek) > 0) {
-              date = 8;
-            } else {
-              date = 3;
-            }
-            break;
-          default: // Friday, Saturday or Sunday
-            if (datetime.compareTo(lastDayOfWeek) > 0) {
-              date = 9;
-            } else {
-              date = 4;
-            }
-            break;
-        }
+        final dishDate = DateFormat('E, y.d.M.', 'de_DE').parse(day.replaceRange(2, 4, '., ${firstDayOfWeek.year}.'));
+        final int date = utils.dishDateToInt(dishDate);
 
         if (restaurant == 3) {
           // restaurant == QWEST
@@ -156,7 +128,7 @@ class MensaRepository {
             entities.add(
               DishEntity.fromJSON(
                 date: date,
-                category: 'Speiseplan vom ${datetime.day}.${datetime.month}.${datetime.year}',
+                category: 'Speiseplan vom ${dishDate.day}.${dishDate.month}.${dishDate.year}',
                 json: dish,
                 utils: utils,
               ),

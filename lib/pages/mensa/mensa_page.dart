@@ -45,6 +45,8 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   late List<DishEntity> mensaDishes = [];
   late List<DishEntity> roteBeeteDishes = [];
   late List<DishEntity> qwestDishes = [];
+  late List<DishEntity> henkelmannDishes = [];
+  late List<DishEntity> unikidsDishes = [];
   late List<Failure> failures = [];
 
   late int selectedDay;
@@ -67,6 +69,8 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
           mensaDishes = data['mensa'] != null ? data['mensa']! as List<DishEntity> : [];
           roteBeeteDishes = data['roteBeete'] != null ? data['roteBeete']! as List<DishEntity> : [];
           qwestDishes = data['qwest'] != null ? data['qwest']! as List<DishEntity> : [];
+          henkelmannDishes = data['henkelmann'] != null ? data['henkelmann']! as List<DishEntity> : [];
+          unikidsDishes = data['unikids'] != null ? data['unikids']! as List<DishEntity> : [];
           failures = data['failures'] != null ? data['failures']! as List<Failure> : [];
         }),
       );
@@ -287,11 +291,14 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                                         .mensaPreferences,
                                   )
                                 : mensaUtils.fromDishListToMealCategoryList(
+                                    // TODO: Refactor instead of endless if-else
                                     entities: index == 2
                                         ? mensaDishes
                                         : index == 3
                                             ? roteBeeteDishes
-                                            : qwestDishes,
+                                            : index == 4
+                                                ? qwestDishes
+                                                : unikidsDishes,
                                     day: selectedDay,
                                     onPreferenceTap: singlePreferenceSelected,
                                     mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)

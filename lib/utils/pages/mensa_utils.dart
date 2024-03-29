@@ -4,6 +4,9 @@ import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
 
 class MensaUtils {
+  // name = how to display the name inside the app
+  // openingHours = map of days and hours. 1-5 = Mo-Fr, 6 = Sa, 7 = So
+  // imagePath = path to the asset that is displayed in the light theme
   final List<Map<String, dynamic>> restaurantConfig = [
     {
       'name': 'KulturCafé',
@@ -23,6 +26,11 @@ class MensaUtils {
     {
       'name': 'Q-West',
       'openingHours': {'1-5': '11:15-22:00', '6': '', '7': ''},
+      'imagePath': 'assets/img/qwest.png',
+    },
+    {
+      'name': 'Unikids',
+      'openingHours': {'1-5': '', '6': '', '7': ''},
       'imagePath': 'assets/img/qwest.png',
     }
   ];
@@ -521,17 +529,49 @@ class MensaUtils {
     return retVal;
   }
 
-  int weekdayToInt(String weekday) {
-    if (weekday.startsWith('Mo')) {
-      return 0;
-    } else if (weekday.startsWith('Di')) {
-      return 1;
-    } else if (weekday.startsWith('Mi')) {
-      return 2;
-    } else if (weekday.startsWith('Do')) {
-      return 3;
-    } else {
-      return 4;
+  int dishDateToInt(DateTime dishDate) {
+    late int date;
+
+    final DateTime lastDayOfWeek = DateTime.now().add(Duration(days: DateTime.daysPerWeek - DateTime.now().weekday));
+
+    switch (dishDate.weekday) {
+      case 1: // Monday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 5;
+        } else {
+          date = 0;
+        }
+        break;
+      case 2: // Tuesday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 6;
+        } else {
+          date = 1;
+        }
+        break;
+      case 3: // Wednesday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 7;
+        } else {
+          date = 2;
+        }
+        break;
+      case 4: // Thursday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 8;
+        } else {
+          date = 3;
+        }
+        break;
+      default: // Friday, Saturday or Sunday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 9;
+        } else {
+          date = 4;
+        }
+        break;
     }
+
+    return date;
   }
 }

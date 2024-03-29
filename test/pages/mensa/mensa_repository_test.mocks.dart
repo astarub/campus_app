@@ -3,20 +3,18 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i8;
+import 'dart:async' as _i7;
 
-import 'package:appwrite/appwrite.dart' as _i13;
-import 'package:appwrite/models.dart' as _i6;
 import 'package:appwrite/src/client.dart' as _i5;
-import 'package:appwrite/src/enums.dart' as _i12;
+import 'package:appwrite/src/enums.dart' as _i11;
 import 'package:appwrite/src/response.dart' as _i4;
-import 'package:appwrite/src/upload_progress.dart' as _i11;
-import 'package:campus_app/pages/mensa/dish_entity.dart' as _i9;
-import 'package:campus_app/pages/mensa/mensa_datasource.dart' as _i7;
+import 'package:appwrite/src/upload_progress.dart' as _i10;
+import 'package:campus_app/pages/mensa/dish_entity.dart' as _i8;
+import 'package:campus_app/pages/mensa/mensa_datasource.dart' as _i6;
 import 'package:dio/dio.dart' as _i2;
 import 'package:hive/hive.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i10;
+import 'package:mockito/src/dummies.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -71,30 +69,10 @@ class _FakeClient_3 extends _i1.SmartFake implements _i5.Client {
         );
 }
 
-class _FakeDocumentList_4 extends _i1.SmartFake implements _i6.DocumentList {
-  _FakeDocumentList_4(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeDocument_5 extends _i1.SmartFake implements _i6.Document {
-  _FakeDocument_5(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
 /// A class which mocks [MensaDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMensaDataSource extends _i1.Mock implements _i7.MensaDataSource {
+class MockMensaDataSource extends _i1.Mock implements _i6.MensaDataSource {
   MockMensaDataSource() {
     _i1.throwOnMissingStub(this);
   }
@@ -118,19 +96,29 @@ class MockMensaDataSource extends _i1.Mock implements _i7.MensaDataSource {
       ) as _i3.Box<dynamic>);
 
   @override
-  _i8.Future<Map<String, dynamic>> getRemoteData(int? restaurant) =>
+  _i7.Future<Map<String, dynamic>> getRemoteData(int? restaurant) =>
       (super.noSuchMethod(
         Invocation.method(
           #getRemoteData,
           [restaurant],
         ),
         returnValue:
-            _i8.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
-      ) as _i8.Future<Map<String, dynamic>>);
+            _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i7.Future<Map<String, dynamic>>);
 
   @override
-  _i8.Future<void> writeDishEntitiesToCache(
-    List<_i9.DishEntity>? entities,
+  List<_i8.DishEntity> readDishEntitiesFromCache(int? restaurant) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #readDishEntitiesFromCache,
+          [restaurant],
+        ),
+        returnValue: <_i8.DishEntity>[],
+      ) as List<_i8.DishEntity>);
+
+  @override
+  _i7.Future<void> writeDishEntitiesToCache(
+    List<_i8.DishEntity>? entities,
     int? restaurant,
   ) =>
       (super.noSuchMethod(
@@ -141,19 +129,9 @@ class MockMensaDataSource extends _i1.Mock implements _i7.MensaDataSource {
             restaurant,
           ],
         ),
-        returnValue: _i8.Future<void>.value(),
-        returnValueForMissingStub: _i8.Future<void>.value(),
-      ) as _i8.Future<void>);
-
-  @override
-  List<_i9.DishEntity> readDishEntitiesFromCache(int? restaurant) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #readDishEntitiesFromCache,
-          [restaurant],
-        ),
-        returnValue: <_i9.DishEntity>[],
-      ) as List<_i9.DishEntity>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
 }
 
 /// A class which mocks [Client].
@@ -182,14 +160,14 @@ class MockClient extends _i1.Mock implements _i5.Client {
   @override
   String get endPoint => (super.noSuchMethod(
         Invocation.getter(#endPoint),
-        returnValue: _i10.dummyValue<String>(
+        returnValue: _i9.dummyValue<String>(
           this,
           Invocation.getter(#endPoint),
         ),
       ) as String);
 
   @override
-  _i8.Future<dynamic> webAuth(
+  _i7.Future<dynamic> webAuth(
     Uri? url, {
     String? callbackUrlScheme,
   }) =>
@@ -199,17 +177,17 @@ class MockClient extends _i1.Mock implements _i5.Client {
           [url],
           {#callbackUrlScheme: callbackUrlScheme},
         ),
-        returnValue: _i8.Future<dynamic>.value(),
-      ) as _i8.Future<dynamic>);
+        returnValue: _i7.Future<dynamic>.value(),
+      ) as _i7.Future<dynamic>);
 
   @override
-  _i8.Future<_i4.Response<dynamic>> chunkedUpload({
+  _i7.Future<_i4.Response<dynamic>> chunkedUpload({
     required String? path,
     required Map<String, dynamic>? params,
     required String? paramName,
     required String? idParamName,
     required Map<String, String>? headers,
-    dynamic Function(_i11.UploadProgress)? onProgress,
+    dynamic Function(_i10.UploadProgress)? onProgress,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -225,7 +203,7 @@ class MockClient extends _i1.Mock implements _i5.Client {
           },
         ),
         returnValue:
-            _i8.Future<_i4.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+            _i7.Future<_i4.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
           this,
           Invocation.method(
             #chunkedUpload,
@@ -240,7 +218,7 @@ class MockClient extends _i1.Mock implements _i5.Client {
             },
           ),
         )),
-      ) as _i8.Future<_i4.Response<dynamic>>);
+      ) as _i7.Future<_i4.Response<dynamic>>);
 
   @override
   _i5.Client setSelfSigned({bool? status = true}) => (super.noSuchMethod(
@@ -360,12 +338,12 @@ class MockClient extends _i1.Mock implements _i5.Client {
       ) as _i5.Client);
 
   @override
-  _i8.Future<_i4.Response<dynamic>> call(
-    _i12.HttpMethod? method, {
+  _i7.Future<_i4.Response<dynamic>> call(
+    _i11.HttpMethod? method, {
     String? path = r'',
     Map<String, String>? headers = const {},
     Map<String, dynamic>? params = const {},
-    _i12.ResponseType? responseType,
+    _i11.ResponseType? responseType,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -379,7 +357,7 @@ class MockClient extends _i1.Mock implements _i5.Client {
           },
         ),
         returnValue:
-            _i8.Future<_i4.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
+            _i7.Future<_i4.Response<dynamic>>.value(_FakeResponse_2<dynamic>(
           this,
           Invocation.method(
             #call,
@@ -392,177 +370,5 @@ class MockClient extends _i1.Mock implements _i5.Client {
             },
           ),
         )),
-      ) as _i8.Future<_i4.Response<dynamic>>);
-}
-
-/// A class which mocks [Databases].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockDatabases extends _i1.Mock implements _i13.Databases {
-  MockDatabases() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i5.Client get client => (super.noSuchMethod(
-        Invocation.getter(#client),
-        returnValue: _FakeClient_3(
-          this,
-          Invocation.getter(#client),
-        ),
-      ) as _i5.Client);
-
-  @override
-  _i8.Future<_i6.DocumentList> listDocuments({
-    required String? databaseId,
-    required String? collectionId,
-    List<String>? queries,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #listDocuments,
-          [],
-          {
-            #databaseId: databaseId,
-            #collectionId: collectionId,
-            #queries: queries,
-          },
-        ),
-        returnValue: _i8.Future<_i6.DocumentList>.value(_FakeDocumentList_4(
-          this,
-          Invocation.method(
-            #listDocuments,
-            [],
-            {
-              #databaseId: databaseId,
-              #collectionId: collectionId,
-              #queries: queries,
-            },
-          ),
-        )),
-      ) as _i8.Future<_i6.DocumentList>);
-
-  @override
-  _i8.Future<_i6.Document> createDocument({
-    required String? databaseId,
-    required String? collectionId,
-    required String? documentId,
-    required Map<dynamic, dynamic>? data,
-    List<String>? permissions,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #createDocument,
-          [],
-          {
-            #databaseId: databaseId,
-            #collectionId: collectionId,
-            #documentId: documentId,
-            #data: data,
-            #permissions: permissions,
-          },
-        ),
-        returnValue: _i8.Future<_i6.Document>.value(_FakeDocument_5(
-          this,
-          Invocation.method(
-            #createDocument,
-            [],
-            {
-              #databaseId: databaseId,
-              #collectionId: collectionId,
-              #documentId: documentId,
-              #data: data,
-              #permissions: permissions,
-            },
-          ),
-        )),
-      ) as _i8.Future<_i6.Document>);
-
-  @override
-  _i8.Future<_i6.Document> getDocument({
-    required String? databaseId,
-    required String? collectionId,
-    required String? documentId,
-    List<String>? queries,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getDocument,
-          [],
-          {
-            #databaseId: databaseId,
-            #collectionId: collectionId,
-            #documentId: documentId,
-            #queries: queries,
-          },
-        ),
-        returnValue: _i8.Future<_i6.Document>.value(_FakeDocument_5(
-          this,
-          Invocation.method(
-            #getDocument,
-            [],
-            {
-              #databaseId: databaseId,
-              #collectionId: collectionId,
-              #documentId: documentId,
-              #queries: queries,
-            },
-          ),
-        )),
-      ) as _i8.Future<_i6.Document>);
-
-  @override
-  _i8.Future<_i6.Document> updateDocument({
-    required String? databaseId,
-    required String? collectionId,
-    required String? documentId,
-    Map<dynamic, dynamic>? data,
-    List<String>? permissions,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #updateDocument,
-          [],
-          {
-            #databaseId: databaseId,
-            #collectionId: collectionId,
-            #documentId: documentId,
-            #data: data,
-            #permissions: permissions,
-          },
-        ),
-        returnValue: _i8.Future<_i6.Document>.value(_FakeDocument_5(
-          this,
-          Invocation.method(
-            #updateDocument,
-            [],
-            {
-              #databaseId: databaseId,
-              #collectionId: collectionId,
-              #documentId: documentId,
-              #data: data,
-              #permissions: permissions,
-            },
-          ),
-        )),
-      ) as _i8.Future<_i6.Document>);
-
-  @override
-  _i8.Future<dynamic> deleteDocument({
-    required String? databaseId,
-    required String? collectionId,
-    required String? documentId,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #deleteDocument,
-          [],
-          {
-            #databaseId: databaseId,
-            #collectionId: collectionId,
-            #documentId: documentId,
-          },
-        ),
-        returnValue: _i8.Future<dynamic>.value(),
-      ) as _i8.Future<dynamic>);
+      ) as _i7.Future<_i4.Response<dynamic>>);
 }
