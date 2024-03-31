@@ -46,12 +46,15 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NFCReaderUsageDescription</key>
+	<string>Allows the app to scan Mensa cards</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>The Campus App requires access to your photo library to retrieve your ticket</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
-                <string>fetch</string>
-		<string>location</string>
+		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
@@ -73,32 +76,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CFBundleURLTypes</key>
-        <array>
-                <dict>
-                     <key>CFBundleTypeRole</key>
-                     <string>Editor</string>
-                     <key>CFBundleURLName</key>
-                     <string>campus_app</string>
-                     <key>CFBundleURLSchemes</key>
-                     <array>
-                           <string>app</string>
-                     </array>
-                </dict>
-        </array>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-        <true/>
-        <key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
-        <array>
-              <string>D2760000850100</string>
-        </array>
-	<key>NSPhotoLibraryUsageDescription</key>
-        <string>The Campus App requires access to your photo library to retrieve your ticket</string>
-	<key>NFCReaderUsageDescription</key>
-        <string>Allows the app to scan Mensa cards</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allows the built-in Pathfinder feature of the app to access the user's location</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Allow the built-in Pathfinder feature of the app to access the user's location</string>
+	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
+	<array>
+		<string>D2760000850100</string>
+	</array>
 </dict>
 </plist>
