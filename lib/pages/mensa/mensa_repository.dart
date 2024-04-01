@@ -50,7 +50,7 @@ class MensaRepository {
             'date',
             today.subtract(Duration(days: today.weekday - 1)),
             today.add(Duration(days: 14 - today.weekday)),
-          )
+          ),
         ],
       );
 
