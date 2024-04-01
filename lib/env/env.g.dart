@@ -169,14 +169,11 @@ final class _Env {
     1270653875,
   ];
 
-  static final String firebaseAndroidApiKey = String.fromCharCodes(
-      List<int>.generate(
+  static final String firebaseAndroidApiKey = String.fromCharCodes(List<int>.generate(
     _envieddatafirebaseAndroidApiKey.length,
     (int i) => i,
     growable: false,
-  ).map((int i) =>
-          _envieddatafirebaseAndroidApiKey[i] ^
-          _enviedkeyfirebaseAndroidApiKey[i]));
+  ).map((int i) => _envieddatafirebaseAndroidApiKey[i] ^ _enviedkeyfirebaseAndroidApiKey[i]));
 
   static const List<int> _enviedkeyfirebaseIosApiKey = <int>[
     2506337707,
@@ -262,13 +259,11 @@ final class _Env {
     202399814,
   ];
 
-  static final String firebaseIosApiKey = String.fromCharCodes(
-      List<int>.generate(
+  static final String firebaseIosApiKey = String.fromCharCodes(List<int>.generate(
     _envieddatafirebaseIosApiKey.length,
     (int i) => i,
     growable: false,
-  ).map((int i) =>
-          _envieddatafirebaseIosApiKey[i] ^ _enviedkeyfirebaseIosApiKey[i]));
+  ).map((int i) => _envieddatafirebaseIosApiKey[i] ^ _enviedkeyfirebaseIosApiKey[i]));
 
   static const List<int> _enviedkeyappwriteCreateUserKey = <int>[
     1025363171,
@@ -370,14 +365,11 @@ final class _Env {
     2047853346,
   ];
 
-  static final String appwriteCreateUserKey = String.fromCharCodes(
-      List<int>.generate(
+  static final String appwriteCreateUserKey = String.fromCharCodes(List<int>.generate(
     _envieddataappwriteCreateUserKey.length,
     (int i) => i,
     growable: false,
-  ).map((int i) =>
-          _envieddataappwriteCreateUserKey[i] ^
-          _enviedkeyappwriteCreateUserKey[i]));
+  ).map((int i) => _envieddataappwriteCreateUserKey[i] ^ _enviedkeyappwriteCreateUserKey[i]));
 
   static const List<int> _enviedkeysentryDsn = <int>[
     2093328549,

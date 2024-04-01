@@ -23,11 +23,14 @@ class CampusTextField extends StatefulWidget {
 
   late final CampusTextFieldType type;
 
+  late final void Function()? onTap;
+
   CampusTextField({
     Key? key,
     required this.textFieldController,
     this.textFieldText = 'Confirm Password',
     this.obscuredInput = false,
+    this.onTap,
   }) : super(key: key) {
     type = CampusTextFieldType.normal;
   }
@@ -58,6 +61,10 @@ class CampusTextFieldState extends State<CampusTextField> {
       () => setState(() {
         if (_focusNode.hasFocus) {
           hint = '';
+          if (widget.onTap != null) {
+            // ignore: prefer_null_aware_method_calls
+            widget.onTap!();
+          }
         } else {
           hint = widget.textFieldText;
         }

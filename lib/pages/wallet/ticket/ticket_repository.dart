@@ -13,6 +13,7 @@ class TicketRepository {
     required this.ticketDataSource,
   });
 
+  /// Load the semester ticket
   Future<void> loadTicket() async {
     Map<String, dynamic>? ticket;
 
@@ -35,6 +36,54 @@ class TicketRepository {
     await saveTicket(ticket);
   }
 
+  /// Load the qr code file from storage
+  Future<File> getQRCodeFile() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    // Define the image file
+    final File qrCodeFile = File('$directoryPath/ticket.png');
+
+    return qrCodeFile;
+  }
+
+  /// Load the ticket details file from storage
+  Future<File> getTicketDetailsFile() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    // Define the ticket details file
+    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
+
+    return ticketDetailsFile;
+  }
+
+  /// Checks whether the qr code file exists
+  Future<bool> qrCodeFileExists() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    // Define the image file
+    final File qrCodeFile = File('$directoryPath/ticket.png');
+
+    final bool exists = qrCodeFile.existsSync();
+
+    return exists;
+  }
+
+  /// Checks whether the ticket details file exists
+  Future<bool> ticketDetailsFileExists() async {
+    final Directory saveDirectory = await getApplicationDocumentsDirectory();
+    final String directoryPath = saveDirectory.path;
+
+    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
+
+    final bool exists = ticketDetailsFile.existsSync();
+
+    return exists;
+  }
+
+  /// Save both the QR code and it's details to storage
   Future<void> saveTicket(Map<String, dynamic> ticket) async {
     final Directory saveDirectory = await getApplicationDocumentsDirectory();
     final String directoryPath = saveDirectory.path;
@@ -47,6 +96,7 @@ class TicketRepository {
     await ticketDetailsFile.writeAsString(jsonEncode(ticket));
   }
 
+  /// Delete the ticket files
   Future<void> deleteTicket() async {
     final Directory saveDirectory = await getApplicationDocumentsDirectory();
     final String directoryPath = saveDirectory.path;
@@ -62,48 +112,5 @@ class TicketRepository {
     if (await ticketDetailsFileExists()) {
       await ticketDetailsFile.delete();
     }
-  }
-
-  Future<File> getQRCodeFile() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    // Define the image file
-    final File qrCodeFile = File('$directoryPath/ticket.png');
-
-    return qrCodeFile;
-  }
-
-  Future<File> getTicketDetailsFile() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
-
-    return ticketDetailsFile;
-  }
-
-  Future<bool> qrCodeFileExists() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    // Define the image file
-    final File qrCodeFile = File('$directoryPath/ticket.png');
-
-    // If the images were parsed and saved in the past, they're loaded
-    final bool exists = qrCodeFile.existsSync();
-
-    return exists;
-  }
-
-  Future<bool> ticketDetailsFileExists() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
-
-    final bool exists = ticketDetailsFile.existsSync();
-
-    return exists;
   }
 }

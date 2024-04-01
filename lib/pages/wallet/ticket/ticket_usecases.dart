@@ -14,6 +14,7 @@ class TicketUsecases {
     required this.ticketRepository,
   });
 
+  /// Render the QR code and resize it
   Future<Image?> renderQRCode() async {
     if (await ticketRepository.qrCodeFileExists() == false) return null;
 
@@ -29,6 +30,7 @@ class TicketUsecases {
     );
   }
 
+  /// Parse the content of the ticket details file
   Future<Map<String, dynamic>?> getTicketDetails() async {
     if (await ticketRepository.ticketDetailsFileExists() == false) return null;
 

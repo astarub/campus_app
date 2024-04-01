@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
-import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
-import 'package:campus_app/pages/wallet/widgets/ticket_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
+import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
+import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
 import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
@@ -33,9 +33,10 @@ class CampusWallet extends StatelessWidget {
       spaceBetweenItems: MediaQuery.of(context).size.shortestSide < 600 ? 400 : 500,
       items: [
         SizedBox(
-            width: MediaQuery.of(context).size.shortestSide < 600 ? MediaQuery.of(context).size.width - 70 : 330,
-            height: 217,
-            child: const BogestraTicket()),
+          width: MediaQuery.of(context).size.shortestSide < 600 ? MediaQuery.of(context).size.width - 70 : 330,
+          height: 217,
+          child: const BogestraTicket(),
+        ),
       ],
     );
   }
@@ -60,8 +61,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   TicketRepository ticketRepository = sl<TicketRepository>();
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
 
-  /// Loads the previously saved image of the semester ticket and
-  /// the corresponding aztec-code
+  /// Loads the previously saved image of the semester ticket and the corresponding ticket details
   Future<void> renderTicket() async {
     final Image? qrCodeImage = await ticketUsecases.renderQRCode();
     final Map<String, dynamic>? ticketDetails = await ticketUsecases.getTicketDetails();
@@ -158,60 +158,62 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                             const Expanded(child: SizedBox()),
                             Padding(
                               padding: const EdgeInsets.only(right: 10, left: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Deutschlandsemesterticket',
-                                    style: Provider.of<ThemesNotifier>(context)
-                                        .currentThemeData
-                                        .textTheme
-                                        .headlineSmall!
-                                        .copyWith(color: Colors.black, fontSize: 12.5),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    ticketDetails['owner'],
-                                    style: Provider.of<ThemesNotifier>(context)
-                                        .currentThemeData
-                                        .textTheme
-                                        .headlineSmall!
-                                        .copyWith(color: Colors.black, fontSize: 12.5),
-                                  ),
-                                  Text(
-                                    'Geburtstag: ${ticketDetails['birthdate']}',
-                                    style: Provider.of<ThemesNotifier>(context)
-                                        .currentThemeData
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(color: Colors.black, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Von: ${ticketDetails['valid_from']}',
-                                    style: Provider.of<ThemesNotifier>(context)
-                                        .currentThemeData
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(color: Colors.black, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Bis: ${ticketDetails['valid_till']}',
-                                    style: Provider.of<ThemesNotifier>(context)
-                                        .currentThemeData
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(color: Colors.black, fontSize: 12),
-                                  ),
-                                  if (ticketDetails['validity_region'].toString().isNotEmpty)
+                              child: SizedBox(
+                                width: 200,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
                                     Text(
-                                      'Geltungsbereich: ${ticketDetails['validity_region']}',
+                                      'Deutschlandsemesterticket',
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .headlineSmall!
+                                          .copyWith(color: Colors.black, fontSize: 12.5),
+                                    ),
+                                    Text(
+                                      ticketDetails['owner'],
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .headlineSmall!
+                                          .copyWith(color: Colors.black, fontSize: 12.5),
+                                    ),
+                                    Text(
+                                      'Geburtstag: ${ticketDetails['birthdate']}',
                                       style: Provider.of<ThemesNotifier>(context)
                                           .currentThemeData
                                           .textTheme
                                           .bodyMedium!
                                           .copyWith(color: Colors.black, fontSize: 12),
                                     ),
-                                ],
+                                    Text(
+                                      'Von: ${ticketDetails['valid_from']}',
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(color: Colors.black, fontSize: 12),
+                                    ),
+                                    Text(
+                                      'Bis: ${ticketDetails['valid_till']}',
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(color: Colors.black, fontSize: 12),
+                                    ),
+                                    if (ticketDetails['validity_region'].toString().isNotEmpty)
+                                      Text(
+                                        'Geltungsbereich: ${ticketDetails['validity_region']}',
+                                        style: Provider.of<ThemesNotifier>(context)
+                                            .currentThemeData
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(color: Colors.black, fontSize: 12),
+                                      ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

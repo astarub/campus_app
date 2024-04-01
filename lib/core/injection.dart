@@ -1,8 +1,5 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:campus_app/pages/wallet/ticket/ticket_datasource.dart';
-import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
-import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
-import 'package:campus_app/utils/pages/main_utils.dart';
+import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -17,16 +14,17 @@ import 'package:campus_app/pages/mensa/mensa_datasource.dart';
 import 'package:campus_app/pages/mensa/mensa_repository.dart';
 import 'package:campus_app/pages/mensa/mensa_usecases.dart';
 
-//import 'package:campus_app/pages/ecampus/bloc/ecampus_bloc.dart';
-//import 'package:campus_app/pages/ecampus/ticket_datasource.dart';
-//import 'package:campus_app/pages/ecampus/ticket_repository.dart';
 import 'package:campus_app/pages/feed/news/news_datasource.dart';
 import 'package:campus_app/pages/feed/news/news_repository.dart';
 import 'package:campus_app/pages/feed/news/news_usecases.dart';
-import 'package:campus_app/utils/dio_utils.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_datasource.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
+import 'package:campus_app/utils/dio_utils.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:native_dio_adapter/native_dio_adapter.dart';
 
@@ -130,8 +128,8 @@ Future<void> init() async {
   sl.registerLazySingleton(CalendarUtils.new);
   sl.registerLazySingleton(FeedUtils.new);
   sl.registerLazySingleton(MensaUtils.new);
-
   sl.registerLazySingleton(MainUtils.new);
+  sl.registerLazySingleton(WalletUtils.new);
 
   //!
   //! External
