@@ -2,7 +2,7 @@
 
 # Campus App
 
-This app is developed & maintained by the General Student Committee of the Ruhr University Bochum.
+This app is developed & maintained by the [General Student Committee of the Ruhr University Bochum](https://asta-bochum.de/).
 
 The purpose of this app is to provide the students of the Ruhr University Bochum
 a tool that simplifies, improves and facilitates everyday students life.
@@ -14,16 +14,16 @@ Backend: [![Backend Status Badge](https://uptime.betterstack.com/status-badges/v
 
 
 ## Supported platforms
-The app aims to support all mobile platforms. For now, implementation is focused on Android and iOS.
+The project aims to support all mobile platforms. For now, implementation is focused on Android and iOS.
 
-**Supported:** The app is actively developed against these platforms.
+**Supported:** The app is being actively developed for these platforms.
 - Android
 - iOS
 
 **Unverified:** The app might work on these platforms, but is not tested on them.
 - Web
 
-**Not supported yet:** Due to the different input these platforms are not supported yet.
+**Not supported yet:** Due to the different input methods these platforms are not supported yet.
 - Windows
 - MacOS
 - Linux

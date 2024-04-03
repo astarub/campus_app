@@ -180,7 +180,6 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
                                       fit: BoxFit.cover,
                                     ),
                                     Align(
-                                      alignment: Alignment.center,
                                       child: Container(
                                         height: 60,
                                         width: 60,

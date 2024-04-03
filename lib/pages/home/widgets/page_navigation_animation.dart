@@ -58,12 +58,14 @@ class AnimatedEntryState extends State<AnimatedEntry> with TickerProviderStateMi
     );
 
     // Define the animations for fading in and the offset transformation
+    // ignore: prefer_int_literals
     _fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: widget.interval,
       ),
     );
+    // ignore: prefer_int_literals
     _positionAnimation = Tween(begin: widget.offset, end: 0.0).animate(
       CurvedAnimation(
         parent: _animationController,

@@ -332,7 +332,10 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       builder: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling
           ? null
           : (context, child) {
-              return MediaQuery(data: MediaQuery.of(context).copyWith(textScaleFactor: 1), child: child!);
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                child: child!,
+              );
             },
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
@@ -342,6 +345,7 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
             alignment: Alignment.center,
           );
         }
+        return null;
       },
       navigatorKey: mainNavigatorKey,
       debugShowCheckedModeBanner: false,

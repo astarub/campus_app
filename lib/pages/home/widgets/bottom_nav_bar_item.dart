@@ -105,8 +105,10 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
               child: AnimatedOpacity(
                 opacity: widget.isActive ? 1 : 0,
                 duration: animationDuration,
-                child: Text(widget.title,
-                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall),
+                child: Text(
+                  widget.title,
+                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
+                ),
               ),
             ),
           ],

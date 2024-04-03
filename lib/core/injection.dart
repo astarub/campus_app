@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';

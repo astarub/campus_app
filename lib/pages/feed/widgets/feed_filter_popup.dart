@@ -8,6 +8,7 @@ import 'package:campus_app/utils/widgets/campus_filter_selection.dart';
 import 'package:campus_app/utils/widgets/popup_sheet.dart';
 
 /// This widget displays the filter options that are available for the
+// ignore: comment_references
 /// personal news feed and is used in the [SnappingSheet] widget
 class FeedFilterPopup extends StatefulWidget {
   /// Can be given to show saved filters on build
