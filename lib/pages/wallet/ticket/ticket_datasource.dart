@@ -109,14 +109,17 @@ class TicketDataSource {
               url.endsWith('s2')) {
             Timer.periodic(const Duration(milliseconds: 100), (ti) async {
               loginTimer = ti;
-              await controller.evaluateJavascript(
-                source: """
+
+              if (headlessWebView != null && headlessWebView.isRunning()) {
+                await controller.evaluateJavascript(
+                  source: """
                 if(document.getElementsByClassName("form-error").length == 1) {
                   window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
                 }
                 document.getElementById('consentbutton_2').click();
                 """,
-              );
+                );
+              }
             });
           } else if (url.startsWith('https://abo.ride-ticketing.de')) {
             await controller.evaluateJavascript(

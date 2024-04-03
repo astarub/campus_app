@@ -50,7 +50,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     <h2>Verantwortliche Stelle im Sinne der Datenschutzgesetze, insbesondere der EU-Datenschutzgrundverordnung (DSGVO), ist:</h2><br>
                     <br>
                     AStA an der Ruhr-Universität Bochum<br>
-                    Hanife Demir (Vorsitzende)<br>
+                    Paul Hoffstiepel (Vorsitzender)<br>
                     <br>
                     Studierendenhaus 0/11<br>
                     Universitätsstr. 150<br>
