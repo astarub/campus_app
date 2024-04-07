@@ -23,11 +23,14 @@ class CampusTextField extends StatefulWidget {
 
   late final CampusTextFieldType type;
 
+  late final void Function()? onTap;
+
   CampusTextField({
     Key? key,
     required this.textFieldController,
     this.textFieldText = 'Confirm Password',
     this.obscuredInput = false,
+    this.onTap,
   }) : super(key: key) {
     type = CampusTextFieldType.normal;
   }
@@ -58,6 +61,10 @@ class CampusTextFieldState extends State<CampusTextField> {
       () => setState(() {
         if (_focusNode.hasFocus) {
           hint = '';
+          if (widget.onTap != null) {
+            // ignore: prefer_null_aware_method_calls
+            widget.onTap!();
+          }
         } else {
           hint = widget.textFieldText;
         }
@@ -76,22 +83,34 @@ class CampusTextFieldState extends State<CampusTextField> {
             focusNode: _focusNode,
             controller: widget.textFieldController,
             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
-                  color: const Color.fromARGB(255, 129, 129, 129),
+                  color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                      ? Colors.black
+                      : const Color.fromRGBO(184, 186, 191, 1),
                 ),
-            cursorColor: Colors.black,
+            cursorColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                ? Colors.black
+                : const Color.fromRGBO(184, 186, 191, 1),
             decoration: InputDecoration(
               filled: true,
-              fillColor: const Color.fromRGBO(245, 246, 250, 1),
+              fillColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? const Color.fromRGBO(245, 246, 250, 1)
+                  : const Color.fromRGBO(34, 40, 54, 1),
               hintText: hint,
               hintStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
-                    color: const Color.fromARGB(255, 146, 146, 146),
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                        ? Colors.black
+                        : const Color.fromRGBO(184, 186, 191, 1),
                   ),
               contentPadding: widget.type == CampusTextFieldType.normal
                   ? const EdgeInsets.symmetric(horizontal: 12, vertical: 24)
                   : const EdgeInsets.only(left: 65, right: 12, top: 24, bottom: 24),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(width: 2),
+                borderSide: BorderSide(
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? Colors.black
+                      : const Color.fromARGB(255, 129, 129, 129),
+                ),
               ),
               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
             ),
