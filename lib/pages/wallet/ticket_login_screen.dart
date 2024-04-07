@@ -66,7 +66,9 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                 children: [
                   Image.asset(
                     'assets/img/icons/rub-link.png',
-                    color: const Color.fromRGBO(0, 53, 96, 1),
+                    color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                        ? const Color.fromRGBO(0, 53, 96, 1)
+                        : Colors.white,
                     width: 80,
                     filterQuality: FilterQuality.high,
                   ),
