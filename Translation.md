@@ -1,12 +1,14 @@
 All translation files are located inside the `assets/l10n/`-folder and use the basic
 [ARB-syntax](https://localizely.com/flutter-arb/). The file `l10n.yaml` defines some general configuration to provide multi-language support.
 
+The naming convention for the language files is `l10n_` followed by the [ISO 639 language code](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) followed by `_yyy.arb` where `yyy` is an additional information like informal, formal, local slang, etc.
+
 ---
 
 ## Open-Call for Translator
 
-If you don't mind to handle JSON-like text documents, than feel free to add a translation
-to our project. It's pretty simple:
+If you speak any of the languages which are missing a translation feel free to add a translation to our app. 
+It's pretty simple:
 
 1. Copy & Paste the file `l10n_en.arb` and rename it to your language code. For example: `l10n_de.arb`.
 2. Open it with an text editor of your choice.
@@ -23,6 +25,4 @@ THANKS! :D
 |--------------|-----------------------------------|-|
 | English (US) | ![](https://progress-bar.dev/100) | |
 | German (DE) | ![](https://progress-bar.dev/100) | |
-| Portuguese (BR) | ![](https://progress-bar.dev/0) | Work in Progress (by BizarrePenguin) |
-| All Other | ![](https://progress-bar.dev/0) | |
 
