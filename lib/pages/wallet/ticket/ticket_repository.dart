@@ -25,8 +25,10 @@ class TicketRepository {
         throw MissingCredentialsException();
       } else if (e == 'Invalid credentials.') {
         throw InvalidLoginIDAndPasswordException();
-      } else if (e == 'Could not open ticket page.') {
+      } else if (e == 'Ticket removed.') {
         await deleteTicket();
+        throw TicketNotFoundException();
+      } else if (e == 'Could not open ticket page.') {
         throw TicketNotFoundException();
       }
     }

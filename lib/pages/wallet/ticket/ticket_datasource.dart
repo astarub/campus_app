@@ -153,6 +153,17 @@ class TicketDataSource {
           loginTimer!.cancel();
         }
         if (headlessWebView != null && headlessWebView.isRunning()) {
+          if (headlessWebView.webViewController!.getUrl().toString().startsWith('https://abo.ride-ticketing.de')) {
+            await headlessWebView.webViewController!.evaluateJavascript(
+              source: '''
+                const cardWrappers = document.getElementsByClassName("abo-card-wrapper");
+                if(cardWrappers.length == 0) {
+                  window.flutter_inappwebview.callHandler('error', "Ticket removed.");
+                  return;
+                }
+              ''',
+            );
+          }
           completer.completeError('Could not open ticket page.');
           await headlessWebView.dispose();
         }
