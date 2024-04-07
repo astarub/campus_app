@@ -1,16 +1,17 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_datasource.dart';
 
 class TicketRepository {
   final TicketDataSource ticketDataSource;
+  final FlutterSecureStorage secureStorage;
 
   TicketRepository({
     required this.ticketDataSource,
+    required this.secureStorage,
   });
 
   /// Load the semester ticket
@@ -29,88 +30,36 @@ class TicketRepository {
         throw TicketNotFoundException();
       }
     }
-    if (ticket == null || ticket['barcode'].toString().isEmpty) {
+    if (ticket == null || ticket['aztec_code'].toString().isEmpty) {
       throw TicketNotFoundException();
     }
 
     await saveTicket(ticket);
   }
 
-  /// Load the qr code file from storage
-  Future<File> getQRCodeFile() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
+  /// Loads the Aztec code from secure storage
+  Future<String?> getAztecCode() async {
+    final String? aztecCode = await secureStorage.read(key: 'ticket_aztec_code');
 
-    // Define the image file
-    final File qrCodeFile = File('$directoryPath/ticket.png');
-
-    return qrCodeFile;
+    return aztecCode;
   }
 
-  /// Load the ticket details file from storage
-  Future<File> getTicketDetailsFile() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
+  /// Loads the ticket details from secure storage
+  Future<String?> getTicketDetails() async {
+    final String? ticketDetails = await secureStorage.read(key: 'ticket_details');
 
-    // Define the ticket details file
-    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
-
-    return ticketDetailsFile;
+    return ticketDetails;
   }
 
-  /// Checks whether the qr code file exists
-  Future<bool> qrCodeFileExists() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    // Define the image file
-    final File qrCodeFile = File('$directoryPath/ticket.png');
-
-    final bool exists = qrCodeFile.existsSync();
-
-    return exists;
-  }
-
-  /// Checks whether the ticket details file exists
-  Future<bool> ticketDetailsFileExists() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
-
-    final bool exists = ticketDetailsFile.existsSync();
-
-    return exists;
-  }
-
-  /// Save both the QR code and it's details to storage
+  /// Save both the Aztec code and it's details to storage
   Future<void> saveTicket(Map<String, dynamic> ticket) async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    // Save the given png file to the app directory
-    final File qrCodeFile = File('$directoryPath/ticket.png');
-    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
-
-    await qrCodeFile.writeAsBytes(base64Decode(ticket['barcode']));
-    await ticketDetailsFile.writeAsString(jsonEncode(ticket));
+    await secureStorage.write(key: 'ticket_aztec_code', value: ticket['aztec_code']);
+    await secureStorage.write(key: 'ticket_details', value: jsonEncode(ticket));
   }
 
-  /// Delete the ticket files
+  /// Delete the stored ticket
   Future<void> deleteTicket() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    // Define the image file
-    final File qrCodeFile = File('$directoryPath/ticket.png');
-    final File ticketDetailsFile = File('$directoryPath/ticket_details.json');
-
-    if (await qrCodeFileExists()) {
-      await qrCodeFile.delete();
-    }
-
-    if (await ticketDetailsFileExists()) {
-      await ticketDetailsFile.delete();
-    }
+    await secureStorage.delete(key: 'ticket_aztec_code');
+    await secureStorage.delete(key: 'ticket_details');
   }
 }

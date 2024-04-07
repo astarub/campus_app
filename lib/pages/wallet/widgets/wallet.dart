@@ -53,23 +53,23 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   bool scanned = false;
   String scannedValue = '';
 
-  late Image qrCodeImage;
+  late Image aztecCodeImage;
   late Map<String, dynamic> ticketDetails;
 
-  bool showQrCode = false;
+  bool showAztecCode = false;
 
   TicketRepository ticketRepository = sl<TicketRepository>();
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
 
   /// Loads the previously saved image of the semester ticket and the corresponding ticket details
   Future<void> renderTicket() async {
-    final Image? qrCodeImage = await ticketUsecases.renderQRCode();
+    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode();
     final Map<String, dynamic>? ticketDetails = await ticketUsecases.getTicketDetails();
 
-    if (qrCodeImage != null && ticketDetails != null) {
+    if (aztecCodeImage != null && ticketDetails != null) {
       setState(() {
         scanned = true;
-        this.qrCodeImage = qrCodeImage;
+        this.aztecCodeImage = aztecCodeImage;
         this.ticketDetails = ticketDetails;
       });
     }
@@ -123,8 +123,8 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                     ),
                   );
                 } else {
-                  setState(() => showQrCode = !showQrCode);
-                  if (showQrCode) {
+                  setState(() => showAztecCode = !showAztecCode);
+                  if (showAztecCode) {
                     setBrightness(1);
                   } else {
                     resetBrightness();
@@ -132,8 +132,8 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                 }
               },
               onLongPress: addTicket,
-              child: showQrCode
-                  ? qrCodeImage
+              child: showAztecCode
+                  ? aztecCodeImage
                   : Column(
                       children: [
                         Padding(
@@ -152,14 +152,14 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                               child: SizedBox(
                                 width: 130,
                                 height: 130,
-                                child: qrCodeImage,
+                                child: aztecCodeImage,
                               ),
                             ),
                             const Expanded(child: SizedBox()),
                             Padding(
                               padding: const EdgeInsets.only(right: 10, left: 5),
                               child: SizedBox(
-                                width: 200,
+                                width: 180,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

@@ -19,18 +19,18 @@ class BogestraTicketFullScreen extends StatefulWidget {
 }
 
 class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
-  Image? qrCodeImage;
+  Image? aztecCodeImage;
 
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
 
   /// Loads the previously saved image of the semester ticket and
   /// the corresponding aztec-code
   Future<void> renderTicket() async {
-    final Image? qrCodeImage = await ticketUsecases.renderQRCode();
+    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode();
 
-    if (qrCodeImage != null) {
+    if (aztecCodeImage != null) {
       setState(() {
-        this.qrCodeImage = qrCodeImage;
+        this.aztecCodeImage = aztecCodeImage;
       });
     }
   }
@@ -89,7 +89,7 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(bottom: Platform.isIOS ? 88 : 68),
                   child: Center(
-                    child: qrCodeImage ?? Container(),
+                    child: aztecCodeImage ?? Container(),
                   ),
                 ),
               ),

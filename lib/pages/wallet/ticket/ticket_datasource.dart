@@ -20,7 +20,7 @@ class TicketDataSource {
 
     // Define empty ticket
     final Map<String, dynamic> ticket = {
-      'barcode': '',
+      'aztec_code': '',
       'valid_from': '',
       'valid_till': '',
       'validity_region': '',
@@ -52,7 +52,7 @@ class TicketDataSource {
               final List<dynamic> arguments = List.of(args)[1];
               final String image = List<dynamic>.from(args)[0].toString().split(',')[1];
 
-              ticket['barcode'] = image;
+              ticket['aztec_code'] = image;
 
               if (arguments.length == 4) {
                 ticket['valid_from'] = arguments[0];

@@ -88,7 +88,7 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton(
-    () => TicketRepository(ticketDataSource: sl()),
+    () => TicketRepository(ticketDataSource: sl(), secureStorage: sl()),
   );
 
   //!

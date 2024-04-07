@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -14,13 +13,13 @@ class TicketUsecases {
     required this.ticketRepository,
   });
 
-  /// Render the QR code and resize it
-  Future<Image?> renderQRCode() async {
-    if (await ticketRepository.qrCodeFileExists() == false) return null;
+  /// Render the Aztec code and resize it
+  Future<Image?> renderAztecCode() async {
+    final String? aztecCode = await ticketRepository.getAztecCode();
 
-    final File ticketFile = await ticketRepository.getQRCodeFile();
+    if (aztecCode == null) return null;
 
-    Uint8List resizedData = ticketFile.readAsBytesSync();
+    Uint8List resizedData = base64Decode(aztecCode);
     final img.Image image = img.decodeImage(resizedData)!;
     final img.Image resized = img.copyResize(image, width: 200, height: 200);
     resizedData = img.encodePng(resized);
@@ -32,14 +31,14 @@ class TicketUsecases {
 
   /// Parse the content of the ticket details file
   Future<Map<String, dynamic>?> getTicketDetails() async {
-    if (await ticketRepository.ticketDetailsFileExists() == false) return null;
+    final String? ticketDetailsEncoded = await ticketRepository.getTicketDetails();
 
-    final File ticketDetailsFile = await ticketRepository.getTicketDetailsFile();
+    if (ticketDetailsEncoded == null) return null;
 
     Map<String, dynamic>? ticketDetails;
 
     try {
-      ticketDetails = jsonDecode(await ticketDetailsFile.readAsString());
+      ticketDetails = jsonDecode(ticketDetailsEncoded);
     } catch (e) {
       return null;
     }
