@@ -23,6 +23,6 @@ THANKS! :D
 |--------------|-----------------------------------|-|
 | English (US) | ![](https://progress-bar.dev/100) | |
 | German (DE) | ![](https://progress-bar.dev/100) | |
-| Portuguese (BR) | ![](https://progress-bar.dev/0) | Work in Progress (by BizarrePenguin) |
+| Portuguese (PT/BR) | ![](https://progress-bar.dev/100) | |
 | All Other | ![](https://progress-bar.dev/0) | |
 
