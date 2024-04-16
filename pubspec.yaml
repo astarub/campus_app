@@ -68,6 +68,7 @@ dependencies:
   sentry: ^7.14.0
   video_thumbnail: ^0.5.3
   image: ^4.1.7
+  dismissible_page: ^1.0.2
   
 dev_dependencies:
   flutter_test:

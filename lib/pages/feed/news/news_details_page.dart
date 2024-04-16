@@ -13,6 +13,8 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 
+import 'package:dismissible_page/dismissible_page.dart';
+
 class NewsDetailsPage extends StatefulWidget {
   final String title;
   final DateTime date;
@@ -62,146 +64,159 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
       } catch (e) {}
     }
 
-    return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
-      floatingActionButton: ScrollToTopButton(scrollController: scrollController),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Back button
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12, left: 20, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CampusIconButton(
-                    iconPath: 'assets/img/icons/arrow-left.svg',
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  CampusIconButton(
-                    iconPath: 'assets/img/icons/share.svg',
-                    onTap: () {
-                      // Required for iPad, otherwise the Ui crashes
-                      final box = context.findRenderObject() as RenderBox?;
+    return DismissiblePage(
+      dismissThresholds: const {DismissiblePageDismissDirection.endToStart : 0.3},
+      dragSensitivity: 0.5,
+      minScale: 1,
+      key: UniqueKey(),
+      direction: DismissiblePageDismissDirection.endToStart,
+      onDismissed: () {
+        Navigator.pop(context);
+      },
+      child: Scaffold(
+        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        floatingActionButton: ScrollToTopButton(scrollController: scrollController),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Back button
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12, left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CampusIconButton(
+                      iconPath: 'assets/img/icons/arrow-left.svg',
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    CampusIconButton(
+                      iconPath: 'assets/img/icons/share.svg',
+                      onTap: () {
+                        // Required for iPad, otherwise the Ui crashes
+                        final box = context.findRenderObject() as RenderBox?;
 
-                      Share.share(
-                        'Campus App Article: ${widget.title}\nURL: ${widget.link}',
-                        subject: widget.title,
-                        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                controller: scrollController,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  // Image & Date
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        // Image
-                        if (widget.image != null || widget.videoUrl != null)
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: widget.videoUrl != null
-                                ? FeedVideoPlayer(
-                                    url: widget.videoUrl!,
-                                    autoplay: true,
-                                  )
-                                : widget.image,
-                          ),
-                        // Date
-                        if (widget.isEvent)
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            margin: const EdgeInsets.only(right: 4, bottom: 5),
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  month,
-                                  style: Provider.of<ThemesNotifier>(context)
-                                      .currentThemeData
-                                      .textTheme
-                                      .headlineMedium
-                                      ?.copyWith(fontSize: 14),
-                                ),
-                                Text(
-                                  day,
-                                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
-                                ),
-                              ],
-                            ),
-                          ),
-                      ],
+                        Share.share(
+                          'Campus App Article: ${widget.title}\nURL: ${widget.link}',
+                          subject: widget.title,
+                          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                        );
+                      },
                     ),
-                  ),
-                  if (widget.image != null && !widget.isEvent && widget.copyright != '')
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ListView(
+                  controller: scrollController,
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    // Image & Date
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          // Image
+                          if (widget.image != null || widget.videoUrl != null)
+                            Hero(
+                              tag: 'news_details_page_hero_tag',
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: widget.videoUrl != null
+                                    ? FeedVideoPlayer(
+                                  url: widget.videoUrl!,
+                                  autoplay: true,
+                                )
+                                    : widget.image,
+                              ),
+                            ),
+                          // Date
+                          if (widget.isEvent)
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                              margin: const EdgeInsets.only(right: 4, bottom: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    month,
+                                    style: Provider.of<ThemesNotifier>(context)
+                                        .currentThemeData
+                                        .textTheme
+                                        .headlineMedium
+                                        ?.copyWith(fontSize: 14),
+                                  ),
+                                  Text(
+                                    day,
+                                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    if (widget.image != null && !widget.isEvent && widget.copyright != '')
                     // Copyright
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
-                      child: Text(
-                        widget.copyright,
-                        style: const TextStyle(fontSize: 12.5),
-                        textAlign: TextAlign.left,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
+                        child: Text(
+                          widget.copyright,
+                          style: const TextStyle(fontSize: 12.5),
+                          textAlign: TextAlign.left,
+                        ),
                       ),
-                    ),
-                  if (widget.videoUrl != null && widget.author != 0)
+                    if (widget.videoUrl != null && widget.author != 0)
                     // Copyright for Videos
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
+                        child: Text(
+                          '© $authorName',
+                          style: const TextStyle(fontSize: 12.5),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    // Title
                     Padding(
-                      padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
+                      padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 20),
                       child: Text(
-                        '© $authorName',
-                        style: const TextStyle(fontSize: 12.5),
+                        parseFragment(widget.title).text != null ? parseFragment(widget.title).text! : '',
+                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                         textAlign: TextAlign.left,
                       ),
                     ),
-                  // Title
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6, bottom: 6, left: 20, right: 20),
-                    child: Text(
-                      parseFragment(widget.title).text != null ? parseFragment(widget.title).text! : '',
-                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                      textAlign: TextAlign.left,
+                    // Content
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10, left: 12, right: 12),
+                      child: StyledHTML(
+                        context: context,
+                        text: widget.content,
+                        textAlign: TextAlign.justify,
+                      ),
                     ),
-                  ),
-                  // Content
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10, left: 12, right: 12),
-                    child: StyledHTML(
-                      context: context,
-                      text: widget.content,
-                      textAlign: TextAlign.justify,
+                    // Credits
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
+                      child: StyledHTML(
+                        context: context,
+                        text: 'Quelle: <a href="${widget.link}">${Uri.parse(widget.link).host}</a>',
+                        textAlign: TextAlign.justify,
+                      ),
                     ),
-                  ),
-                  // Credits
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
-                    child: StyledHTML(
-                      context: context,
-                      text: 'Quelle: <a href="${widget.link}">${Uri.parse(widget.link).host}</a>',
-                      textAlign: TextAlign.justify,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
