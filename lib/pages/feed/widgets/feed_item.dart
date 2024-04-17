@@ -1,10 +1,8 @@
 import 'dart:io';
 
 import 'package:dismissible_page/dismissible_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -122,20 +120,22 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
       generateVideoThumbnail(widget.videoUrl);
     }
 
-    void openDetailsPage () {
+    void openDetailsPage() {
       if (widget.event != null) {
         context.pushTransparentRoute(CalendarDetailPage(event: widget.event!));
       } else {
-        context.pushTransparentRoute(NewsDetailsPage(
-          title: widget.title,
-          date: widget.date,
-          image: widget.image,
-          link: widget.link,
-          content: widget.content,
-          copyright: widget.copyright,
-          videoUrl: widget.videoUrl,
-          author: widget.author,
-        ));
+        context.pushTransparentRoute(
+          NewsDetailsPage(
+            title: widget.title,
+            date: widget.date,
+            image: widget.image,
+            link: widget.link,
+            content: widget.content,
+            copyright: widget.copyright,
+            videoUrl: widget.videoUrl,
+            author: widget.author,
+          ),
+        );
       }
     }
 
@@ -160,7 +160,7 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
               alignment: Alignment.bottomRight,
               children: [
                 if (widget.image != null || widget.videoUrl != null)
-                // Image
+                  // Image
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: widget.image == null && videoThumbnailFile != null ? 230 : null,
@@ -170,33 +170,32 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
                         borderRadius: BorderRadius.circular(15),
                         child: widget.image == null && videoThumbnailFile != null
                             ? Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            Image.file(
-                              videoThumbnailFile!,
-                              fit: BoxFit.cover,
-                            ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                  color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-                                      ? const Color.fromRGBO(245, 246, 250, 0.5)
-                                      : const Color.fromRGBO(34, 40, 54, 0.5),
-                                  borderRadius: const BorderRadius.all(Radius.circular(30)),
-                                ),
-                                child: Icon(
-                                  Icons.play_arrow_sharp,
-                                  color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-                                      ? const Color.fromRGBO(34, 40, 54, 1)
-                                      : const Color.fromRGBO(245, 246, 250, 1),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
+                                fit: StackFit.expand,
+                                children: [
+                                  Image.file(
+                                    videoThumbnailFile!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Align(
+                                    child: Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                                            ? const Color.fromRGBO(245, 246, 250, 0.5)
+                                            : const Color.fromRGBO(34, 40, 54, 0.5),
+                                        borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                      ),
+                                      child: Icon(
+                                        Icons.play_arrow_sharp,
+                                        color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                                            ? const Color.fromRGBO(34, 40, 54, 1)
+                                            : const Color.fromRGBO(245, 246, 250, 1),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
                             : widget.image,
                       ),
                     ),

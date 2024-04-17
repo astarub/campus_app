@@ -13,8 +13,6 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 
-import 'package:dismissible_page/dismissible_page.dart';
-
 class NewsDetailsPage extends StatefulWidget {
   final String title;
   final DateTime date;
@@ -64,20 +62,8 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
       } catch (e) {}
     }
 
-      ///for DismissiblePage
-    // return DismissiblePage(
-    //   dismissThresholds: const {DismissiblePageDismissDirection.endToStart : 0.3},
-    //   dragSensitivity: 0.5,
-    //   minScale: 1,
-    //   key: UniqueKey(),
-    //   direction: DismissiblePageDismissDirection.endToStart,
-    //   onDismissed: () {
-    //     Navigator.pop(context);
-    //   },
-
-      ///for Dismissible
     return Dismissible(
-      dismissThresholds: const {DismissDirection.endToStart : 0.3},
+      dismissThresholds: const {DismissDirection.endToStart: 0.3},
       key: UniqueKey(),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
@@ -139,9 +125,9 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                                 borderRadius: BorderRadius.circular(15),
                                 child: widget.videoUrl != null
                                     ? FeedVideoPlayer(
-                                  url: widget.videoUrl!,
-                                  autoplay: true,
-                                )
+                                        url: widget.videoUrl!,
+                                        autoplay: true,
+                                      )
                                     : widget.image,
                               ),
                             ),
@@ -167,7 +153,8 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                                   ),
                                   Text(
                                     day,
-                                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                                    style:
+                                        Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
                                   ),
                                 ],
                               ),
@@ -176,7 +163,7 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                       ),
                     ),
                     if (widget.image != null && !widget.isEvent && widget.copyright != '')
-                    // Copyright
+                      // Copyright
                       Padding(
                         padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
                         child: Text(
@@ -186,7 +173,7 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                         ),
                       ),
                     if (widget.videoUrl != null && widget.author != 0)
-                    // Copyright for Videos
+                      // Copyright for Videos
                       Padding(
                         padding: const EdgeInsets.only(top: 12, left: 20, right: 20),
                         child: Text(
