@@ -64,13 +64,23 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
       } catch (e) {}
     }
 
-    return DismissiblePage(
-      dismissThresholds: const {DismissiblePageDismissDirection.endToStart : 0.3},
-      dragSensitivity: 0.5,
-      minScale: 1,
+      ///for DismissiblePage
+    // return DismissiblePage(
+    //   dismissThresholds: const {DismissiblePageDismissDirection.endToStart : 0.3},
+    //   dragSensitivity: 0.5,
+    //   minScale: 1,
+    //   key: UniqueKey(),
+    //   direction: DismissiblePageDismissDirection.endToStart,
+    //   onDismissed: () {
+    //     Navigator.pop(context);
+    //   },
+
+      ///for Dismissible
+    return Dismissible(
+      dismissThresholds: const {DismissDirection.endToStart : 0.3},
       key: UniqueKey(),
-      direction: DismissiblePageDismissDirection.endToStart,
-      onDismissed: () {
+      direction: DismissDirection.endToStart,
+      onDismissed: (direction) {
         Navigator.pop(context);
       },
       child: Scaffold(
