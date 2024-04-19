@@ -1,3 +1,5 @@
+import 'package:dismissible_page/dismissible_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:animations/animations.dart';
@@ -34,19 +36,38 @@ class CalendarEventWidget extends StatelessWidget {
     this.openable = true,
   }) : super(key: key);
 
+  // void pushTransparentRouteWithAnimation(BuildContext context) {
+  //   Navigator.of(context).push(
+  //     PageRouteBuilder(
+  //       opaque: false,
+  //       pageBuilder: (_, __, ___) => CalendarDetailPage(event: event),
+  //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
+  //         const begin = Offset(1, 0);
+  //         const end = Offset.zero;
+  //         const curve = Curves.ease;
+  //
+  //         final tween = Tween(begin: begin, end: end);
+  //         final curvedAnimation = CurvedAnimation(
+  //           parent: animation,
+  //           curve: curve,
+  //         );
+  //
+  //         return SlideTransition(
+  //           position: tween.animate(curvedAnimation),
+  //           child: child,
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     final startingTime = DateFormat('Hm').format(event.startDate);
     final month = DateFormat('LLL').format(event.startDate);
     final day = DateFormat('dd').format(event.startDate);
 
-    return OpenContainer(
-      middleColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
-      closedColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
-      closedElevation: 0,
-      transitionDuration: const Duration(milliseconds: 250),
-      openBuilder: (context, _) => CalendarDetailPage(event: event),
-      closedBuilder: (context, VoidCallback openDetailsPage) => Container(
+    return Container(
         margin:
             openable ? const EdgeInsets.only(bottom: 14, left: 7, right: 7, top: 5) : const EdgeInsets.only(bottom: 10),
         padding: padding,
@@ -63,7 +84,8 @@ class CalendarEventWidget extends StatelessWidget {
           splashColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
               ? const Color.fromRGBO(0, 0, 0, 0.04)
               : const Color.fromRGBO(255, 255, 255, 0.04),
-          tapHandler: openable ? openDetailsPage : () {},
+          tapHandler: openable ? () => context.pushTransparentRoute(CalendarDetailPage(event: event)) : () {},
+          longPressHandler: openable ? () => context.pushTransparentRoute(CalendarDetailPage(event: event)) : () {},
           child: Row(
             children: [
               // Date
@@ -99,11 +121,14 @@ class CalendarEventWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      StyledHTML(
-                        context: context,
-                        text: event.title,
-                        textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                        textAlign: TextAlign.left,
+                      Hero(
+                        tag: 'calendar_detail_page_hero_tag',
+                        child: StyledHTML(
+                          context: context,
+                          text: event.title,
+                          textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                          textAlign: TextAlign.left,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 6),
@@ -135,7 +160,6 @@ class CalendarEventWidget extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
