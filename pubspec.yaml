@@ -1,7 +1,7 @@
 name: campus_app
 description: Simplifie, improve and facilitate everyday students life.
 publish_to: 'none'
-version: 2.2.2
+version: 2.3.0
 
 environment:
   sdk: ">=3.2.0 <4.0.0"
@@ -67,6 +67,7 @@ dependencies:
   sentry_flutter: ^7.14.0
   sentry: ^7.14.0
   video_thumbnail: ^0.5.3
+  image: ^4.1.7
   
 dev_dependencies:
   flutter_test:
@@ -126,6 +127,7 @@ flutter:
      - assets/img/icons/wallet-outlined.png
      - assets/img/icons/wallet-filled.png
      - assets/img/icons/vote.svg
+     - assets/img/icons/error.svg
      - assets/img/icons/more.png
      - assets/img/icons/settings.svg
      - assets/img/icons/info.svg

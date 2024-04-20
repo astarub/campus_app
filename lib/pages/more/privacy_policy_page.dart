@@ -50,7 +50,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     <h2>Verantwortliche Stelle im Sinne der Datenschutzgesetze, insbesondere der EU-Datenschutzgrundverordnung (DSGVO), ist:</h2><br>
                     <br>
                     AStA an der Ruhr-Universität Bochum<br>
-                    Hanife Demir (Vorsitzende)<br>
+                    Paul Hoffstiepel (Vorsitzender)<br>
                     <br>
                     Studierendenhaus 0/11<br>
                     Universitätsstr. 150<br>
@@ -103,6 +103,8 @@ class PrivacyPolicyPage extends StatelessWidget {
                     <br>
                     Bei der Nutzung des Raumfinders der Campus App, werden die aktuellen Standortdaten des Endgerätes verabeitet und bis zum Schließen der App zwischengespeichert.<br> 
                     Eine Einwilligung wird hierfür vom Betriebssystem eingeholt und kann jederzeit durch den Nutzer widerrufen werden.<br>
+                    <br>
+                    Bei der Nutzung der Funktion zum Anzeigen des Semestertickets werden die RUB Logindaten (LoginID, Passwort) lokal auf dem Gerät gespeichert, dies ist zum Abrufen des Tickets unabdingbar. Eine Übermittlung der Daten erfolgt nur an den offizielen SSO Provider der RUB.
                     <br>
                     <h2>Zweck der Datenverarbeitung</h2><br>
                     Die Verarbeitung der personenbezogenen Daten der Nutzer ist für den ordnungsgemäßen Betrieb der App erforderlich.<br> 

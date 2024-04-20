@@ -1,15 +1,13 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-import 'package:pdfx/pdfx.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
+import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
-
+import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -21,47 +19,19 @@ class BogestraTicketFullScreen extends StatefulWidget {
 }
 
 class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
-  Image? qrCodeImage;
+  Image? aztecCodeImage;
 
-  Future<Image> renderQRCode(String path) async {
-    final document = await PdfDocument.openFile(path);
-    final page = await document.getPage(1);
-    final pageImage = await page.render(
-      width: page.width * 2.4,
-      height: page.height * 2.4,
-      cropRect: Rect.fromLTWH(174, 250, page.width - 325, 269),
-    );
-    await page.close();
-
-    if (pageImage == null) {
-      return Image(image: MemoryImage(Uint8List.fromList([0])));
-    }
-
-    return Image(
-      image: MemoryImage(pageImage.bytes),
-    );
-  }
+  TicketUsecases ticketUsecases = sl<TicketUsecases>();
 
   /// Loads the previously saved image of the semester ticket and
   /// the corresponding aztec-code
-  Future<void> loadTicket() async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
+  Future<void> renderTicket() async {
+    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode();
 
-    // Define the image files
-    final File ticketFile = File('$directoryPath/ticket.pdf');
-
-    // If the images were parsed and saved in the past, they're loaded
-    final bool tickedSaved = ticketFile.existsSync();
-    if (tickedSaved) {
-      final Image qrCodeImage = await renderQRCode(ticketFile.path);
-
+    if (aztecCodeImage != null) {
       setState(() {
-        this.qrCodeImage = qrCodeImage;
+        this.aztecCodeImage = aztecCodeImage;
       });
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
     }
   }
 
@@ -71,7 +41,7 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
 
     setBrightness(1);
 
-    loadTicket();
+    renderTicket();
   }
 
   @override
@@ -119,7 +89,7 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(bottom: Platform.isIOS ? 88 : 68),
                   child: Center(
-                    child: qrCodeImage ?? Container(),
+                    child: aztecCodeImage ?? Container(),
                   ),
                 ),
               ),

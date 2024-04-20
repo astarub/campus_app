@@ -1,21 +1,18 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pdf_image_renderer/pdf_image_renderer.dart';
-import 'package:pdfx/pdfx.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart' as sync_pdf;
-import 'package:path_provider/path_provider.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screen_brightness/screen_brightness.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
+import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
+import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
@@ -24,16 +21,22 @@ class CampusWallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double initialWalletOffset = (MediaQuery.of(context).size.width - 325) / 2;
-    const double initialWalletOffsetTablet = (550 - 325) / 2;
+    final double initialWalletOffset =
+        (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width - 70)) / 2;
+    final double initialWalletOffsetTablet = (MediaQuery.of(context).size.width - 500) / 2;
 
     return StackedCardCarousel(
       cardAlignment: CardAlignment.center,
       scrollDirection: Axis.horizontal,
-      initialOffset: MediaQuery.of(context).size.shortestSide < 600 ? initialWalletOffset : initialWalletOffsetTablet,
+      initialOffset:
+          MediaQuery.of(context).size.shortestSide < 600 ? initialWalletOffset : initialWalletOffsetTablet + 30,
       spaceBetweenItems: MediaQuery.of(context).size.shortestSide < 600 ? 400 : 500,
-      items: const [
-        SizedBox(width: 325, height: 217, child: BogestraTicket()),
+      items: [
+        SizedBox(
+          width: MediaQuery.of(context).size.shortestSide < 600 ? MediaQuery.of(context).size.width - 70 : 330,
+          height: 217,
+          child: const BogestraTicket(),
+        ),
       ],
     );
   }
@@ -50,137 +53,39 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   bool scanned = false;
   String scannedValue = '';
 
-  late Image semesterTicketImage;
-  late Image qrCodeImage;
+  late Image aztecCodeImage;
+  late Map<String, dynamic> ticketDetails;
 
-  bool showQrCode = false;
+  bool showAztecCode = false;
 
-  /// Loads the previously saved image of the semester ticket and
-  /// the corresponding aztec-code
-  Future<void> loadTicket() async {
-    debugPrint('Loading semester ticket');
+  TicketRepository ticketRepository = sl<TicketRepository>();
+  TicketUsecases ticketUsecases = sl<TicketUsecases>();
 
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
+  /// Loads the previously saved image of the semester ticket and the corresponding ticket details
+  Future<void> renderTicket() async {
+    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode();
+    final Map<String, dynamic>? ticketDetails = await ticketUsecases.getTicketDetails();
 
-    // Define the image files
-    final File ticketFile = File('$directoryPath/ticket.pdf');
-
-    // If the images were parsed and saved in the past, they're loaded
-    final bool tickedSaved = ticketFile.existsSync();
-    if (tickedSaved) {
-      final Image semesterTicketImage = await renderSemesterTicket(ticketFile.path);
-      final Image qrCodeImage = await renderQRCode(ticketFile.path);
-
+    if (aztecCodeImage != null && ticketDetails != null) {
       setState(() {
         scanned = true;
-        this.semesterTicketImage = semesterTicketImage;
-        this.qrCodeImage = qrCodeImage;
+        this.aztecCodeImage = aztecCodeImage;
+        this.ticketDetails = ticketDetails;
       });
     }
-  }
-
-  /// Saves a loaded semester ticket and its corresponding aztec-code
-  Future<void> saveTicketPDF(File ticketPdf) async {
-    final Directory saveDirectory = await getApplicationDocumentsDirectory();
-    final String directoryPath = saveDirectory.path;
-
-    // Save the given pdf file to the apps directory
-    await ticketPdf.copy('$directoryPath/ticket.pdf');
-  }
-
-  Future<Image> renderSemesterTicket(String path) async {
-    final pdf = PdfImageRendererPdf(path: path);
-
-    await pdf.open();
-    await pdf.openPage(pageIndex: 0);
-
-    final size = await pdf.getPageSize(pageIndex: 0);
-
-    final bytes = await pdf.renderPage(
-      x: 71,
-      y: 66,
-      width: size.width - 353,
-      height: size.height - 690,
-      scale: 4,
-    );
-
-    await pdf.closePage(pageIndex: 0);
-    await pdf.close();
-
-    if (bytes == null) {
-      return Image(image: MemoryImage(Uint8List.fromList([0])));
-    }
-
-    return Image(image: MemoryImage(bytes));
-  }
-
-  Future<Image> renderQRCode(String path) async {
-    final document = await PdfDocument.openFile(path);
-    final page = await document.getPage(1);
-    final pageImage = await page.render(
-      width: page.width * 2.4,
-      height: page.height * 2.4,
-      cropRect: Rect.fromLTWH(174, 250, page.width - 325, 269),
-    );
-    await page.close();
-
-    if (pageImage == null) {
-      return Image(image: MemoryImage(Uint8List.fromList([0])));
-    }
-
-    return Image(image: MemoryImage(pageImage.bytes));
   }
 
   Future<void> addTicket() async {
-    FilePickerResult? result;
-
-    try {
-      result = await FilePicker.platform.pickFiles();
-    } catch (e) {
-      debugPrint('Access files permission not granted.');
-    }
-
-    if (result != null) {
-      final File file = File(result.files.single.path!);
-
-      final String fileType = file.path.substring(file.path.lastIndexOf('.'));
-
-      if (fileType != '.pdf') {
-        await Fluttertoast.showToast(msg: 'Ungültiges Ticket!', timeInSecForIosWeb: 3, gravity: ToastGravity.TOP);
-        return;
-      }
-
-      // Load the pdf file
-      final sync_pdf.PdfDocument document = sync_pdf.PdfDocument(inputBytes: await file.readAsBytes());
-
-      // Get the pdf text
-      final String pdfText = sync_pdf.PdfTextExtractor(document).extractText(startPageIndex: 0);
-
-      // Remove the pdf file from memory for efficiency reasons
-      document.dispose();
-
-      // Check if the pdf file is a valid ticket
-      if (!pdfText.contains('Ticket')) {
-        await Fluttertoast.showToast(msg: 'Ungültiges Ticket!', timeInSecForIosWeb: 3, gravity: ToastGravity.TOP);
-        return;
-      }
-
-      // Save the picked pdf file
-      unawaited(saveTicketPDF(file));
-
-      // Parse the picked pdf
-      final Image semesterTicketImage = await renderSemesterTicket(file.path);
-      final Image qrCodeImage = await renderQRCode(file.path);
-
-      setState(() {
-        scanned = true;
-        this.semesterTicketImage = semesterTicketImage;
-        this.qrCodeImage = qrCodeImage;
-      });
-    } else {
-      // User canceled the picker
-    }
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TicketLoginScreen(
+          onTicketLoaded: () async {
+            await renderTicket();
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -190,7 +95,10 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   void initState() {
     super.initState();
 
-    loadTicket();
+    ticketRepository.loadTicket().catchError((error) {
+      debugPrint('Wallet widget: $error');
+    });
+    renderTicket();
   }
 
   @override
@@ -215,8 +123,8 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                     ),
                   );
                 } else {
-                  setState(() => showQrCode = !showQrCode);
-                  if (showQrCode) {
+                  setState(() => showAztecCode = !showAztecCode);
+                  if (showAztecCode) {
                     setBrightness(1);
                   } else {
                     resetBrightness();
@@ -224,7 +132,94 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                 }
               },
               onLongPress: addTicket,
-              child: showQrCode ? qrCodeImage : semesterTicketImage,
+              child: showAztecCode
+                  ? aztecCodeImage
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: SvgPicture.asset(
+                            'assets/img/bogestra-logo.svg',
+                            height: 60,
+                            width: 30,
+                          ),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: SizedBox(
+                                width: 130,
+                                height: 130,
+                                child: aztecCodeImage,
+                              ),
+                            ),
+                            const Expanded(child: SizedBox()),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10, left: 5),
+                              child: SizedBox(
+                                width: 180,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Deutschlandsemesterticket',
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .headlineSmall!
+                                          .copyWith(color: Colors.black, fontSize: 12.5),
+                                    ),
+                                    Text(
+                                      ticketDetails['owner'],
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .headlineSmall!
+                                          .copyWith(color: Colors.black, fontSize: 12.5),
+                                    ),
+                                    Text(
+                                      'Geburtstag: ${ticketDetails['birthdate']}',
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(color: Colors.black, fontSize: 12),
+                                    ),
+                                    Text(
+                                      'Von: ${ticketDetails['valid_from']}',
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(color: Colors.black, fontSize: 12),
+                                    ),
+                                    Text(
+                                      'Bis: ${ticketDetails['valid_till']}',
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(color: Colors.black, fontSize: 12),
+                                    ),
+                                    if (ticketDetails['validity_region'].toString().isNotEmpty)
+                                      Text(
+                                        'Geltungsbereich: ${ticketDetails['validity_region']}',
+                                        style: Provider.of<ThemesNotifier>(context)
+                                            .currentThemeData
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(color: Colors.black, fontSize: 12),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
             )
           : CustomButton(
               tapHandler: addTicket,
