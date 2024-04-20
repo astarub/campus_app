@@ -49,13 +49,11 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   late List<DishEntity> unikidsDishes = [];
   late List<Failure> failures = [];
 
-  late int selectedDay;
+  // Weekday to show as selected
+  int selectedDay = -1;
 
-  DateTime selectedDate = DateTime.now().weekday == 6
-      ? DateTime.now().subtract(const Duration(days: 1))
-      : DateTime.now().weekday == 7
-          ? DateTime.now().subtract(const Duration(days: 2))
-          : DateTime.now();
+  // Weekday that is selected
+  DateTime selectedDate = DateTime.now();
 
   StreamController<DateTime> streamController = StreamController<DateTime>.broadcast();
 
@@ -258,28 +256,17 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   @override
   void initState() {
     super.initState();
+    final DateTime today = DateTime.now();
+    final DateTime startOfWeek = today.subtract(Duration(days: today.weekday - 1));
+
+    // Choose selected day: Mo -> 0 ... Fr -> 4, Sa & So -> 5 (next monday)
+    selectedDay = today.weekday > 5 ? today.weekday - 1 : 5;
+
+    // Choose selected date to load data: today or next monday on weekend
+    selectedDate = today.weekday > 5 ? today : startOfWeek.add(const Duration(days: 7));
 
     // Add observer in order to listen to `didChangeAppLifecycleState`
     WidgetsBinding.instance.addObserver(this);
-
-    switch (DateTime.now().weekday) {
-      case 1: // Monday
-        selectedDay = 0;
-        break;
-      case 2: // Tuesday
-        selectedDay = 1;
-        break;
-      case 3: // Wednesday
-        selectedDay = 2;
-        break;
-      case 4: // Thursday
-        selectedDay = 3;
-        break;
-      default: // Friday, Saturday or Sunday
-        selectedDay = 4;
-        break;
-    }
-
     loadData();
   }
 

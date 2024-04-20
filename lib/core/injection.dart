@@ -96,10 +96,9 @@ Future<void> init() async {
   //! Repositories
   //!
 
-  sl.registerLazySingleton(() {
-    final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
-    return BackendRepository(client: client);
-  });
+  sl.registerLazySingleton(
+    () => BackendRepository(client: sl()),
+  );
 
   sl.registerSingletonWithDependencies(
     () => NewsRepository(newsDatasource: sl()),
@@ -118,10 +117,6 @@ Future<void> init() async {
 
   sl.registerLazySingleton(
     () => TicketRepository(ticketDataSource: sl(), secureStorage: sl()),
-  );
-
-  sl.registerLazySingleton(
-    () => BackendRepository(client: sl()),
   );
 
   //!

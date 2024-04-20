@@ -4,6 +4,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
 import 'package:campus_app/utils/widgets/animated_expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 /// This widget displays one restaurant and its meals, which can be
@@ -179,7 +180,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
                         Text(
                           (status == RestaurantStatus.open && DateUtils.isSameDay(stateDate, DateTime.now()))
                               ? 'Verbleibende Zeit: $remainingTime'
-                              : 'Geschlossen / Speiseplan nicht von heute.',
+                              : 'Geschlossen / Speiseplan von ${DateFormat('dd.MM.yyyy').format(widget.selectedDate)}',
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                         ),
                       ],
