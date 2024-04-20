@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-
 class WalletUtils {
   Future<bool> hasNetwork() async {
     try {

@@ -4,6 +4,9 @@ import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
 
 class MensaUtils {
+  // name = how to display the name inside the app
+  // openingHours = map of days and hours. 1-5 = Mo-Fr, 6 = Sa, 7 = So
+  // imagePath = path to the asset that is displayed in the light theme
   final List<Map<String, dynamic>> restaurantConfig = [
     {
       'name': 'KulturCafé',
@@ -24,75 +27,13 @@ class MensaUtils {
       'name': 'Q-West',
       'openingHours': {'1-5': '11:15-22:00', '6': '', '7': ''},
       'imagePath': 'assets/img/qwest.png',
+    },
+    {
+      'name': 'Unikids',
+      'openingHours': {'1-5': '', '6': '', '7': ''},
+      'imagePath': 'assets/img/qwest.png',
     }
   ];
-
-  bool isUppercase(String str) {
-    return str == str.toUpperCase();
-  }
-
-  /// check if the string contains only numbers
-  bool isNumeric(String str) {
-    final RegExp numeric = RegExp(r'^-?[0-9]+$');
-    return numeric.hasMatch(str);
-  }
-
-  /// Parse a list of DishEntity to widget list of type MealCategory.
-  List<MealCategory> fromDishListToMealCategoryList({
-    required List<DishEntity> entities,
-    required int day,
-    required void Function(String) onPreferenceTap,
-    List<String> mensaPreferences = const [],
-    List<String> mensaAllergenes = const [],
-  }) {
-    // Create a separate list to not edit the one of the SettingsHandler
-    final List<String> filteredMensaPreferences = [];
-    filteredMensaPreferences.addAll(mensaPreferences);
-
-    // Also show vegan meals, when vegetarian preference is selected
-    if (filteredMensaPreferences.contains('V')) {
-      filteredMensaPreferences.add('VG');
-    }
-
-    final mealCategories = <MealCategory>[];
-
-    // create a set for unique categories
-    final categories = <String>{};
-    for (final DishEntity dish in entities) {
-      categories.add(dish.category);
-    }
-
-    for (final category in categories) {
-      final meals = <MealItem>[];
-      for (final dish in entities.where((dish) => dish.date == day && dish.category == category)) {
-        // Do not show meal if user doesn't want this
-        if (mensaAllergenes.any(dish.allergenes.contains)) continue;
-        if (filteredMensaPreferences.any((e) => dish.infos.contains(e) && !['V', 'VG', 'H'].contains(e))) continue;
-
-        if (!(['V', 'VG', 'H'].any(filteredMensaPreferences.contains) &&
-                filteredMensaPreferences.any(dish.infos.contains)) &&
-            filteredMensaPreferences.where((e) => e == 'V' || e == 'VG' || e == 'H').isNotEmpty) continue;
-
-        meals.add(
-          MealItem(
-            name: dish.title,
-            price: dish.price,
-            infos: dish.infos,
-            allergenes: dish.allergenes,
-            onPreferenceTap: onPreferenceTap,
-          ),
-        );
-      }
-      if (meals.isEmpty) continue;
-      mealCategories.add(MealCategory(categoryName: category, meals: meals));
-    }
-
-    if (mealCategories.isEmpty) {
-      mealCategories.add(const MealCategory(categoryName: 'Kein Speiseplan verfügbar.'));
-    }
-
-    return mealCategories;
-  }
 
   /// Hardcoded KulturCafé.
   List<MealCategory> buildKulturCafeRestaurant({
@@ -490,5 +431,147 @@ class MensaUtils {
         ],
       ),
     ];
+  }
+
+  /// Parse a list of DishEntity to widget list of type MealCategory.
+  List<MealCategory> fromDishListToMealCategoryList({
+    required List<DishEntity> entities,
+    required int day,
+    required void Function(String) onPreferenceTap,
+    List<String> mensaPreferences = const [],
+    List<String> mensaAllergenes = const [],
+  }) {
+    // Create a separate list to not edit the one of the SettingsHandler
+    final List<String> filteredMensaPreferences = [];
+    filteredMensaPreferences.addAll(mensaPreferences);
+
+    // Also show vegan meals, when vegetarian preference is selected
+    if (filteredMensaPreferences.contains('V')) {
+      filteredMensaPreferences.add('VG');
+    }
+
+    final mealCategories = <MealCategory>[];
+
+    // create a set for unique categories
+    final categories = <String>{};
+    for (final DishEntity dish in entities) {
+      categories.add(dish.category);
+    }
+
+    for (final category in categories) {
+      final meals = <MealItem>[];
+      for (final dish in entities.where((dish) => dish.date == day && dish.category == category)) {
+        // Do not show meal if user doesn't want this
+        if (mensaAllergenes.any(dish.allergenes.contains)) continue;
+        if (filteredMensaPreferences.any((e) => dish.infos.contains(e) && !['V', 'VG', 'H'].contains(e))) continue;
+
+        if (!(['V', 'VG', 'H'].any(filteredMensaPreferences.contains) &&
+                filteredMensaPreferences.any(dish.infos.contains)) &&
+            filteredMensaPreferences.where((e) => e == 'V' || e == 'VG' || e == 'H').isNotEmpty) continue;
+
+        meals.add(
+          MealItem(
+            name: dish.title,
+            price: dish.price,
+            infos: dish.infos,
+            allergenes: dish.allergenes,
+            onPreferenceTap: onPreferenceTap,
+          ),
+        );
+      }
+      if (meals.isEmpty) continue;
+      mealCategories.add(MealCategory(categoryName: category, meals: meals));
+    }
+
+    if (mealCategories.isEmpty) {
+      mealCategories.add(const MealCategory(categoryName: 'Kein Speiseplan verfügbar.'));
+    }
+
+    return mealCategories;
+  }
+
+  String getAWRestaurantId(int restaurant) {
+    switch (restaurant) {
+      case 1:
+        return 'mensa_rub';
+      case 2:
+        return 'rote_bete';
+      case 3:
+        return 'qwest';
+      case 4:
+        return 'henkelmann';
+      case 5:
+        return 'unikids';
+      default:
+        return 'mensa_rub';
+    }
+  }
+
+  /// check if the string contains only numbers
+  bool isNumeric(String str) {
+    final RegExp numeric = RegExp(r'^-?[0-9]+$');
+    return numeric.hasMatch(str);
+  }
+
+  bool isUppercase(String str) {
+    return str == str.toUpperCase();
+  }
+
+  List<String> readListOfAdditives(List<dynamic> awList) {
+    final retVal = <String>[];
+
+    for (final additiv in awList) {
+      if (additiv is String) {
+        retVal.add(additiv);
+      }
+    }
+
+    return retVal;
+  }
+
+  int dishDateToInt(DateTime dishDate) {
+    late int date;
+
+    final DateTime lastDayOfWeek = DateTime.now().add(Duration(days: DateTime.daysPerWeek - DateTime.now().weekday));
+
+    switch (dishDate.weekday) {
+      case 1: // Monday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 5;
+        } else {
+          date = 0;
+        }
+        break;
+      case 2: // Tuesday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 6;
+        } else {
+          date = 1;
+        }
+        break;
+      case 3: // Wednesday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 7;
+        } else {
+          date = 2;
+        }
+        break;
+      case 4: // Thursday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 8;
+        } else {
+          date = 3;
+        }
+        break;
+      default: // Friday, Saturday or Sunday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 9;
+        } else {
+          date = 4;
+        }
+        break;
+    }
+
+    return date;
   }
 }

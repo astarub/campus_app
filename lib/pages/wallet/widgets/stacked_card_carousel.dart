@@ -63,6 +63,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
     final bool vertical = widget.scrollDirection == Axis.vertical;
 
     if (widget.applyTextScaleFactor) {
+      // ignore: deprecated_member_use
       final double mediaQueryFactor = MediaQuery.of(context).textScaleFactor;
       if (mediaQueryFactor > 1.0) {
         textScaleFactor = mediaQueryFactor;
