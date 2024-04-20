@@ -18,6 +18,7 @@ import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -60,6 +61,7 @@ Future<void> init() async {
   sl.registerLazySingleton(FeedUtils.new);
   sl.registerLazySingleton(MensaUtils.new);
   sl.registerLazySingleton(MainUtils.new);
+  sl.registerLazySingleton(WalletUtils.new);
 
   //!
   //! Datasources

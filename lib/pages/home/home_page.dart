@@ -200,8 +200,8 @@ class HomePageState extends State<HomePage> {
           : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? lightTabletSystemUiStyle
               : darkTabletSystemUiStyle,
-      child: WillPopScope(
-        onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
+      child: NavigatorPopHandler(
+        onPop: () => navigatorKeys[currentPage]!.currentState!.pop(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
