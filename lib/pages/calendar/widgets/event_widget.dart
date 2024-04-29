@@ -2,7 +2,6 @@ import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:animations/animations.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -35,31 +34,6 @@ class CalendarEventWidget extends StatelessWidget {
     this.boxShadow = const BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 3)),
     this.openable = true,
   }) : super(key: key);
-
-  // void pushTransparentRouteWithAnimation(BuildContext context) {
-  //   Navigator.of(context).push(
-  //     PageRouteBuilder(
-  //       opaque: false,
-  //       pageBuilder: (_, __, ___) => CalendarDetailPage(event: event),
-  //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-  //         const begin = Offset(1, 0);
-  //         const end = Offset.zero;
-  //         const curve = Curves.ease;
-  //
-  //         final tween = Tween(begin: begin, end: end);
-  //         final curvedAnimation = CurvedAnimation(
-  //           parent: animation,
-  //           curve: curve,
-  //         );
-  //
-  //         return SlideTransition(
-  //           position: tween.animate(curvedAnimation),
-  //           child: child,
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -121,14 +95,11 @@ class CalendarEventWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Hero(
-                        tag: 'calendar_detail_page_hero_tag',
-                        child: StyledHTML(
-                          context: context,
-                          text: event.title,
-                          textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                          textAlign: TextAlign.left,
-                        ),
+                      StyledHTML(
+                        context: context,
+                        text: event.title,
+                        textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                        textAlign: TextAlign.left,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 6),
