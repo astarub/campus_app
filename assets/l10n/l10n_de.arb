@@ -18,5 +18,7 @@
   "login_error": "Ungültige Eingabe!",
   "login_success": "Erfolgreich angemeldet!",
   "login_already": "Du bist bereits angemeldet.",
-  "enter_totp": "Bitte gib deinen Einmalcode (TOTP) ein."
+  "enter_totp": "Bitte gib deinen Einmalcode (TOTP) ein.",
+
+  "feed": "Feed (Deutsch)"
 }

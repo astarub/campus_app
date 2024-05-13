@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:campus_app/l10n/l10n.dart';
 
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
@@ -249,7 +250,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Text(
-                          'Feed',
+                          AppLocalizations.of(context)!.helloWorld,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                         ),
                       ),

@@ -18,5 +18,7 @@
   "login_error": "Invalid input!",
   "login_success": "Successfully logged in!",
   "login_already": "Allready logged in.",
-  "enter_totp": "Please enter your TOTP."
+  "enter_totp": "Please enter your TOTP.",
+
+  "feed": "Feed"
 }
