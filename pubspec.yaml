@@ -52,15 +52,10 @@ dependencies:
       url: https://github.com/henry-herrmann/flutter_nfc_kit
   lottie: ^3.0.0
   file_picker: ^6.1.1
-  pdfx:
-    git:
-      url: 'https://github.com/ScerIO/packages.flutter'
-      path: packages/pdfx
-  pdf_image_renderer: ^0.7.0
   syncfusion_flutter_pdf: ^23.2.7
   screen_brightness: ^0.2.2+1
   fluttertoast: ^8.2.4
-  appwrite: ^11.0.1
+  appwrite: 12.0.2
   slugid: ^1.1.2
   visibility_detector: ^0.4.0+2
   appinio_video_player: ^1.2.2
@@ -77,6 +72,7 @@ dev_dependencies:
   mockito: ^5.4.3
   envied_generator: ^0.5.3 
   flutter_launcher_icons: ^0.13.1
+  aptabase_flutter: ^0.2.0
 
 flutter_native_splash:
   image: "assets/img/Android-RUB_Campus_App_Logo.png"
