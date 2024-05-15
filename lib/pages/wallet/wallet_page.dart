@@ -115,7 +115,7 @@ class _WalletPageState extends State<WalletPage>
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 16),
                                 child: Text(
-                                  'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen in die App zu integrieren.',
+                                  'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt um nützliche Hilfen in die App zu integrieren.',
                                   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                                   overflow: TextOverflow.visible,
                                 ),
