@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:campus_app/core/backend/analytics/aptabase.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,9 @@ import 'package:campus_app/utils/pages/mensa_utils.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // Initialize Aptabase for analytics with our app key
+  await Aptabase.init('A-SH-3787488994', const InitOptions(host: 'https://analytics.app.asta-bochum.de'));
+
   // Keeps the native splash screen onscreen until all loading is done
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
@@ -106,6 +110,8 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   Settings? loadedSettings;
 
   Stopwatch loadingTimer = Stopwatch();
+
+  DateTime _appStartTime = DateTime.now();
 
   final BackendRepository backendRepository = ic.sl<BackendRepository>();
   final MainUtils mainUtils = ic.sl<MainUtils>();
@@ -307,8 +313,21 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     precacheAssets(context);
   }
 
+  void _sendTimeInAppToAptabase() {
+    final Duration usageTime = DateTime.now().difference(_appStartTime);
+    Aptabase.instance.trackEvent('usage_time', {'seconds': usageTime.inSeconds.toString()});
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // start new time measurement of time in app (resumed, called everytime when
+    // entering the app) or send spent time to Aptabase (inactive, called everytime,
+    // when exiting the app)
+    switch(state) {
+      case AppLifecycleState.inactive: _sendTimeInAppToAptabase(); break;
+      case AppLifecycleState.resumed: _appStartTime = DateTime.now(); break;
+      default: break;
+    }
     super.didChangeAppLifecycleState(state);
 
     precacheAssets(context);
