@@ -14,6 +14,7 @@ import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:campus_app/core/backend/analytics/aptabase.dart';
 
 class CalendarDetailPage extends StatefulWidget {
   final Event event;
@@ -39,7 +40,9 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
     setState(() {
       savedEvent = !savedEvent;
     });
-
+    if (savedEvent) {
+      await Aptabase.instance.trackEvent('saved_event', {'name': widget.event.title});
+    }
     try {
       final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
