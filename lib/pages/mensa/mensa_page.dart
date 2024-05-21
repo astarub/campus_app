@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' show Platform;
+import 'package:campus_app/core/backend/analytics/aptabase.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -115,6 +116,8 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
 
     // Add observer in order to listen to `didChangeAppLifecycleState`
     WidgetsBinding.instance.addObserver(this);
+
+    Aptabase.instance.trackEvent('init_mensa_page');
 
     switch (DateTime.now().weekday) {
       case 1: // Monday

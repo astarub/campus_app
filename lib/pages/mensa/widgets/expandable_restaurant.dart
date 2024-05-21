@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/animated_expandable.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
+import 'package:campus_app/core/backend/analytics/aptabase.dart';
 
 enum RestaurantStatus { open, closed, unknown }
 
@@ -271,6 +272,9 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
                     if (widget.meals.isNotEmpty) {
                       setState(() => _isExpanded = !_isExpanded);
                       restaurantExpandableKey.currentState!.toggleExpand();
+                    }
+                    if (_isExpanded) {
+                      Aptabase.instance.trackEvent('selected_a_mensa', {'name': widget.name});
                     }
                   },
                   child: Column(
