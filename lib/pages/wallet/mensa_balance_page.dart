@@ -222,7 +222,10 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
+                        if (tagScanned) Padding(
+                          // am Sichersten wäre alles in ein SingleChildScrollView, auf jedenfall notwendig,
+                          // wenn wir querformat supporten wollen
+                          // wenn wir das so lassen sind alle tagScanned ? hierunter unnötig
                           padding: EdgeInsets.only(bottom: tagScanned ? 100 : 0),
                           child: AnimatedOpacity(
                             opacity: tagScanned ? 1 : 0,
@@ -274,14 +277,14 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                               ],
                             ),
                           ),
-                        ),
-                        // Scan card notification
-                        if (!tagScanned) ...[
+                        ) else ...[
                           Padding(
                             padding: EdgeInsets.only(
                               bottom: Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null
-                                  ? 100
-                                  : 180,
+                                  ? 0
+                                  : 80,
+                                  // würde nicht mit absoluten werten arbeiten, sondern mit relativen oder einfach niedrige werte
+                                  // Problem: kleine Bildschirme!
                             ),
                             child: Column(
                               children: [
@@ -315,10 +318,10 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                 child: Column(
                   children: [
                     Text(
-                      'Letztes Guthaben: ${Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance} €',
+                      'Letztes Guthaben: ${Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance?.toStringAsFixed(2)} €',
                     ),
                     Text(
-                      'Letzte gescannte Abbuchung: -${Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction} €',
+                      'Letzte gescannte Abbuchung: -${Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction?.toStringAsFixed(2)} €',
                     ),
                   ],
                 ),
