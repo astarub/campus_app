@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -193,6 +194,196 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your TOTP.'**
   String get enter_totp;
+
+  String get close;
+
+  String get done;
+
+  String get feedTitle;
+
+  String get feedLeft;
+
+  String get feedRight;
+
+  String get feedFilter;
+
+  String get eventFilter;
+
+  String get calendarEventLocationToBeAnnounced;
+
+  String get calendarEventNoDescriptionGiven;
+
+  String get calendarEventHost;
+
+  String get calendarEventVenue;
+
+  String get calendarEventNotificationOff;
+
+  String get calendarEventNotificationOn;
+
+  String get calendarPageUpcoming;
+
+  String get calendarPageSaved;
+
+  String get calendarPageNoEventsUpcomingTitle;
+
+  String get calendarPageNoEventsUpcomingText;
+
+  String get calendarPageNoEventsSavedTitle;
+
+  String get calendarPageNoEventsSavedText;
+
+  String get eventsTitle;
+
+  String get navBarFeed;
+
+  String get navBarEvents;
+
+  String get navBarMensa;
+
+  String get navBarWallet;
+
+  String get navBarMore;
+
+  String get navBarCalendar;
+
+  String get firebaseDecisionPopup;
+
+  String get firebaseDecisionPopupSlim;
+
+  String get firebaseDecisionAccept;
+
+  String get firebaseDecisionDecline;
+
+  String get chooseStudyProgram;
+
+  String get onboardingAppName;
+
+  String get onboardingPresentedBy;
+
+  String get onboardingStudyProgram;
+
+  String get onboardingStudyProgramDetailed;
+
+  String get onboardingPrivacy;
+
+  String get onboardingNotifications;
+
+  String get onboardingConfirm;
+
+  String get onboardingDeny;
+
+  String get onboardingTheme;
+
+  String get onboardingThemeDescription;
+
+  String get onboardingThemeSystem;
+
+  String get onboardingThemeLight;
+
+  String get onboardingThemeDark;
+
+  String get onboardingFeedback;
+
+  String get allergens;
+
+  String get allergensAvoid;
+
+  String get allergensGluten;
+
+  String get allergensWheat;
+
+  String get allergensRye;
+
+  String get allergensBarley;
+
+  String get allergensOats;
+
+  String get allergensSpelt;
+
+  String get allergensKamut;
+
+  String get allergensCrustaceans;
+
+  String get allergensEggs;
+
+  String get allergensFish;
+
+  String get allergensPeanuts;
+
+  String get allergensSoybeans;
+
+  String get allergensMilk;
+
+  String get allergensNuts;
+
+  String get allergensAlmond;
+
+  String get allergensHazelnut;
+
+  String get allergensWalnut;
+
+  String get allergensCashewnut;
+
+  String get allergensPecan;
+
+  String get allergensBrazilNut;
+
+  String get allergensPistachio;
+
+  String get allergensMacadamia;
+
+  String get allergensCelery;
+
+  String get allergensMustard;
+
+  String get allergensSesame;
+
+  String get allergensSulfur;
+
+  String get allergensLupins;
+
+  String get allergensMolluscs;
+
+  String get mondayShort;
+
+  String get tuesdayShort;
+
+  String get wednesdayShort;
+
+  String get thursdayShort;
+
+  String get fridayShort;
+
+  String get saturdayShort;
+
+  String get sundayShort;
+
+  String get mealPreferences;
+
+  String get preferencesExclusive;
+
+  String get preferencesVegetarian;
+
+  String get preferencesVegan;
+
+  String get preferencesHalal;
+
+  String get preferencesAvoid;
+
+  String get preferencesAlcohol;
+
+  String get preferencesFish;
+
+  String get preferencesPoultry;
+
+  String get preferencesLamb;
+
+  String get preferencesBeef;
+
+  String get preferencesPork;
+
+  String get preferencesGame;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

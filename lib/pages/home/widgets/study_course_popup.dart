@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
@@ -191,7 +192,7 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 18),
                         child: Text(
-                          'Wähle deinen Studiengang',
+                          AppLocalizations.of(context)!.chooseStudyProgram,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displaySmall,
                         ),
                       ),
@@ -237,7 +238,7 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 15),
                   child: CampusButton(
-                    text: 'Schließen',
+                    text: AppLocalizations.of(context)!.close,
                     onTap: () {
                       saveSelections();
                       closePopup();

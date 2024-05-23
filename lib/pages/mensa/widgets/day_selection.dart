@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 
 /// This widget displays 5 buttons in order to pick between the weekdays.
@@ -178,31 +179,31 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
             shrinkWrap: true,
             children: [
               MensaDaySelectionItem(
-                day: 'Mo',
+                day: AppLocalizations.of(context)!.mondayShort,
                 date: weekDates[0],
                 onTap: () => selectDay(0),
                 isActive: selectedDay == 0,
               ),
               MensaDaySelectionItem(
-                day: 'Di',
+                day: AppLocalizations.of(context)!.tuesdayShort,
                 date: weekDates[1],
                 onTap: () => selectDay(1),
                 isActive: selectedDay == 1,
               ),
               MensaDaySelectionItem(
-                day: 'Mi',
+                day: AppLocalizations.of(context)!.wednesdayShort,
                 date: weekDates[2],
                 onTap: () => selectDay(2),
                 isActive: selectedDay == 2,
               ),
               MensaDaySelectionItem(
-                day: 'Do',
+                day: AppLocalizations.of(context)!.thursdayShort,
                 date: weekDates[3],
                 onTap: () => selectDay(3),
                 isActive: selectedDay == 3,
               ),
               MensaDaySelectionItem(
-                day: 'Fr',
+                day: AppLocalizations.of(context)!.fridayShort,
                 date: weekDates[4],
                 onTap: () => selectDay(4),
                 isActive: selectedDay == 4,
@@ -211,31 +212,31 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
                 color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
               ),
               MensaDaySelectionItem(
-                day: 'Mo',
+                day: AppLocalizations.of(context)!.mondayShort,
                 date: weekDates[5],
                 onTap: () => selectDay(5),
                 isActive: selectedDay == 5,
               ),
               MensaDaySelectionItem(
-                day: 'Di',
+                day: AppLocalizations.of(context)!.tuesdayShort,
                 date: weekDates[6],
                 onTap: () => selectDay(6),
                 isActive: selectedDay == 6,
               ),
               MensaDaySelectionItem(
-                day: 'Mi',
+                day: AppLocalizations.of(context)!.wednesdayShort,
                 date: weekDates[7],
                 onTap: () => selectDay(7),
                 isActive: selectedDay == 7,
               ),
               MensaDaySelectionItem(
-                day: 'Do',
+                day: AppLocalizations.of(context)!.thursdayShort,
                 date: weekDates[8],
                 onTap: () => selectDay(8),
                 isActive: selectedDay == 8,
               ),
               MensaDaySelectionItem(
-                day: 'Fr',
+                day: AppLocalizations.of(context)!.fridayShort,
                 date: weekDates[9],
                 onTap: () => selectDay(9),
                 isActive: selectedDay == 9,

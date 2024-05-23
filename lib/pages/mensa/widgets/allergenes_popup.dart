@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/popup_sheet.dart';
 
@@ -46,7 +47,7 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
   @override
   Widget build(BuildContext context) {
     return PopupSheet(
-      title: 'Allergene',
+      title: AppLocalizations.of(context)!.allergens,
       openPositionFactor: 0.6,
       onClose: () {
         widget.onClose(_selectedAllergenes);
@@ -62,7 +63,7 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 10),
               child: Text(
-                'Vermeiden von',
+                AppLocalizations.of(context)!.allergensAvoid,
                 textAlign: TextAlign.left,
                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
               ),
@@ -73,94 +74,142 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
                 physics: const BouncingScrollPhysics(),
                 children: [
                   AllergenesListItem(
-                      name: 'Gluten', shortcut: 'a', onTap: selectItem, isActive: _selectedAllergenes.contains('a')),
+                      name: AppLocalizations.of(context)!.allergensGluten,
+                      shortcut: 'a',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('a')),
                   AllergenesListItem(
-                      name: 'Weizen', shortcut: 'a1', onTap: selectItem, isActive: _selectedAllergenes.contains('a1')),
+                      name: AppLocalizations.of(context)!.allergensWheat,
+                      shortcut: 'a1',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('a1')),
                   AllergenesListItem(
-                      name: 'Roggen', shortcut: 'a2', onTap: selectItem, isActive: _selectedAllergenes.contains('a2')),
+                      name: AppLocalizations.of(context)!.allergensRye,
+                      shortcut: 'a2',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('a2')),
                   AllergenesListItem(
-                      name: 'Gerste', shortcut: 'a3', onTap: selectItem, isActive: _selectedAllergenes.contains('a3')),
+                      name: AppLocalizations.of(context)!.allergensBarley,
+                      shortcut: 'a3',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('a3')),
                   AllergenesListItem(
-                      name: 'Hafer', shortcut: 'a4', onTap: selectItem, isActive: _selectedAllergenes.contains('a4')),
+                      name: AppLocalizations.of(context)!.allergensOats,
+                      shortcut: 'a4',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('a4')),
                   AllergenesListItem(
-                      name: 'Dinkel', shortcut: 'a5', onTap: selectItem, isActive: _selectedAllergenes.contains('a5')),
+                      name: AppLocalizations.of(context)!.allergensSpelt,
+                      shortcut: 'a5',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('a5')),
                   AllergenesListItem(
-                      name: 'Kamut', shortcut: 'a6', onTap: selectItem, isActive: _selectedAllergenes.contains('a6')),
+                      name: AppLocalizations.of(context)!.allergensKamut,
+                      shortcut: 'a6',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('a6')),
                   AllergenesListItem(
-                      name: 'Krebstiere',
+                      name: AppLocalizations.of(context)!.allergensCrustaceans,
                       shortcut: 'b',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('b')),
                   AllergenesListItem(
-                      name: 'Eier', shortcut: 'c', onTap: selectItem, isActive: _selectedAllergenes.contains('c')),
+                      name: AppLocalizations.of(context)!.allergensEggs,
+                      shortcut: 'c',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('c')),
                   AllergenesListItem(
-                      name: 'Fisch', shortcut: 'd', onTap: selectItem, isActive: _selectedAllergenes.contains('d')),
+                      name: AppLocalizations.of(context)!.allergensFish,
+                      shortcut: 'd',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('d')),
                   AllergenesListItem(
-                      name: 'Erdnüsse', shortcut: 'e', onTap: selectItem, isActive: _selectedAllergenes.contains('e')),
+                      name: AppLocalizations.of(context)!.allergensPeanuts,
+                      shortcut: 'e',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('e')),
                   AllergenesListItem(
-                      name: 'Sojabohnen',
+                      name: AppLocalizations.of(context)!.allergensSoybeans,
                       shortcut: 'f',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('f')),
                   AllergenesListItem(
-                      name: 'Milch', shortcut: 'g', onTap: selectItem, isActive: _selectedAllergenes.contains('g')),
+                      name: AppLocalizations.of(context)!.allergensMilk,
+                      shortcut: 'g',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('g')),
                   AllergenesListItem(
-                      name: 'Schalenfrüchte',
+                      name: AppLocalizations.of(context)!.allergensNuts,
                       shortcut: 'h',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('h')),
                   AllergenesListItem(
-                      name: 'Mandel', shortcut: 'h1', onTap: selectItem, isActive: _selectedAllergenes.contains('h1')),
+                      name: AppLocalizations.of(context)!.allergensAlmond,
+                      shortcut: 'h1',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('h1')),
                   AllergenesListItem(
-                      name: 'Haselnuss',
+                      name: AppLocalizations.of(context)!.allergensHazelnut,
                       shortcut: 'h2',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('h2')),
                   AllergenesListItem(
-                      name: 'Walnuss', shortcut: 'h3', onTap: selectItem, isActive: _selectedAllergenes.contains('h3')),
+                      name: AppLocalizations.of(context)!.allergensWalnut,
+                      shortcut: 'h3',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('h3')),
                   AllergenesListItem(
-                      name: 'Cashewnuss',
+                      name: AppLocalizations.of(context)!.allergensCashewnut,
                       shortcut: 'h4',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('h4')),
                   AllergenesListItem(
-                      name: 'Pecanuss',
+                      name: AppLocalizations.of(context)!.allergensPecan,
                       shortcut: 'h5',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('h5')),
                   AllergenesListItem(
-                      name: 'Paranuss',
+                      name: AppLocalizations.of(context)!.allergensBrazilNut,
                       shortcut: 'h6',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('h6')),
                   AllergenesListItem(
-                      name: 'Pistazie',
+                      name: AppLocalizations.of(context)!.allergensPistachio,
                       shortcut: 'h7',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('h7')),
                   AllergenesListItem(
-                      name: 'Macadamia/Quennslandnuss',
+                      name: AppLocalizations.of(context)!.allergensMacadamia,
                       shortcut: 'h8',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('h8')),
                   AllergenesListItem(
-                      name: 'Sellerie', shortcut: 'i', onTap: selectItem, isActive: _selectedAllergenes.contains('i')),
+                      name: AppLocalizations.of(context)!.allergensCelery,
+                      shortcut: 'i',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('i')),
                   AllergenesListItem(
-                      name: 'Senf', shortcut: 'j', onTap: selectItem, isActive: _selectedAllergenes.contains('j')),
+                      name: AppLocalizations.of(context)!.allergensMustard,
+                      shortcut: 'j',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('j')),
                   AllergenesListItem(
-                      name: 'Sesamsamen',
+                      name: AppLocalizations.of(context)!.allergensSesame,
                       shortcut: 'k',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('k')),
                   AllergenesListItem(
-                      name: 'Schwefeldioxis',
+                      name: AppLocalizations.of(context)!.allergensSulfur,
                       shortcut: 'l',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('l')),
                   AllergenesListItem(
-                      name: 'Lupinen', shortcut: 'm', onTap: selectItem, isActive: _selectedAllergenes.contains('m')),
+                      name: AppLocalizations.of(context)!.allergensLupins,
+                      shortcut: 'm',
+                      onTap: selectItem,
+                      isActive: _selectedAllergenes.contains('m')),
                   AllergenesListItem(
-                      name: 'Weichtiere',
+                      name: AppLocalizations.of(context)!.allergensMolluscs,
                       shortcut: 'n',
                       onTap: selectItem,
                       isActive: _selectedAllergenes.contains('n')),
