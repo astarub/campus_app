@@ -151,9 +151,10 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                               margin: const EdgeInsets.only(right: 10),
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                               decoration: BoxDecoration(
-                                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                                    ? Colors.black
-                                    : const Color.fromRGBO(34, 40, 54, 1),
+                                color:
+                                    Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                        ? Colors.black
+                                        : const Color.fromRGBO(34, 40, 54, 1),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Column(
@@ -169,7 +170,8 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                   ),
                                   Text(
                                     DateFormat('dd').format(widget.event.startDate),
-                                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                                    style:
+                                        Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
                                   ),
                                 ],
                               ),

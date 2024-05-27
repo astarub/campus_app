@@ -1,5 +1,4 @@
 import 'package:dismissible_page/dismissible_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -42,95 +41,95 @@ class CalendarEventWidget extends StatelessWidget {
     final day = DateFormat('dd').format(event.startDate);
 
     return Container(
-        margin:
-            openable ? const EdgeInsets.only(bottom: 14, left: 7, right: 7, top: 5) : const EdgeInsets.only(bottom: 10),
-        padding: padding,
-        decoration: BoxDecoration(
-          color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [boxShadow],
-        ),
-        child: CustomButton(
-          borderRadius: BorderRadius.circular(15),
-          highlightColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-              ? const Color.fromRGBO(0, 0, 0, 0.03)
-              : const Color.fromRGBO(255, 255, 255, 0.03),
-          splashColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-              ? const Color.fromRGBO(0, 0, 0, 0.04)
-              : const Color.fromRGBO(255, 255, 255, 0.04),
-          tapHandler: openable ? () => context.pushTransparentRoute(CalendarDetailPage(event: event)) : () {},
-          longPressHandler: openable ? () => context.pushTransparentRoute(CalendarDetailPage(event: event)) : () {},
-          child: Row(
-            children: [
-              // Date
-              Container(
-                margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(15),
-                ),
+      margin:
+          openable ? const EdgeInsets.only(bottom: 14, left: 7, right: 7, top: 5) : const EdgeInsets.only(bottom: 10),
+      padding: padding,
+      decoration: BoxDecoration(
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [boxShadow],
+      ),
+      child: CustomButton(
+        borderRadius: BorderRadius.circular(15),
+        highlightColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+            ? const Color.fromRGBO(0, 0, 0, 0.03)
+            : const Color.fromRGBO(255, 255, 255, 0.03),
+        splashColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+            ? const Color.fromRGBO(0, 0, 0, 0.04)
+            : const Color.fromRGBO(255, 255, 255, 0.04),
+        tapHandler: openable ? () => context.pushTransparentRoute(CalendarDetailPage(event: event)) : () {},
+        longPressHandler: openable ? () => context.pushTransparentRoute(CalendarDetailPage(event: event)) : () {},
+        child: Row(
+          children: [
+            // Date
+            Container(
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    month,
+                    style: Provider.of<ThemesNotifier>(context)
+                        .currentThemeData
+                        .textTheme
+                        .headlineMedium
+                        ?.copyWith(fontSize: 14),
+                  ),
+                  Text(
+                    day,
+                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                  ),
+                ],
+              ),
+            ),
+            // Title & Times
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      month,
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .headlineMedium
-                          ?.copyWith(fontSize: 14),
+                    StyledHTML(
+                      context: context,
+                      text: event.title,
+                      textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                      textAlign: TextAlign.left,
                     ),
-                    Text(
-                      day,
-                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 6),
+                      child: Flex(
+                        direction: Axis.horizontal,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Beginn: $startingTime Uhr\t',
+                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            ),
+                          ),
+                          Expanded(
+                            child: StyledHTML(
+                              context: context,
+                              text: event.cost == null
+                                  ? ''
+                                  : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",
+                              textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-              // Title & Times
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      StyledHTML(
-                        context: context,
-                        text: event.title,
-                        textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                        textAlign: TextAlign.left,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 6),
-                        child: Flex(
-                          direction: Axis.horizontal,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Beginn: $startingTime Uhr\t',
-                                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                              ),
-                            ),
-                            Expanded(
-                              child: StyledHTML(
-                                context: context,
-                                text: event.cost == null
-                                    ? ''
-                                    : "\tKosten: ${event.cost!['value']} ${event.cost!['currency']}",
-                                textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
