@@ -27,12 +27,12 @@ class PopupSheet extends StatefulWidget {
   final Widget child;
 
   const PopupSheet({
-    Key? key,
+    super.key,
     this.title = 'Popup',
     this.openPositionFactor = 0.5,
     required this.onClose,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<PopupSheet> createState() => _PopupSheetState();
@@ -80,7 +80,7 @@ class _PopupSheetState extends State<PopupSheet> {
         child: Container(
           width: MediaQuery.of(context).size.shortestSide < 600 ? double.infinity : 700,
           decoration: BoxDecoration(
-            color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+            color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(15),
               topRight: Radius.circular(15),

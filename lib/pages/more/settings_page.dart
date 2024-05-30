@@ -19,7 +19,7 @@ import 'package:campus_app/utils/widgets/animated_conditional.dart';
 
 /// This page displays the app settings
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => SettingsPageState();
@@ -43,7 +43,7 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       body: Padding(
         padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0, left: 20, right: 20),
         child: Column(
@@ -256,9 +256,9 @@ class SectionHeadline extends StatelessWidget {
   final String headline;
 
   const SectionHeadline({
-    Key? key,
+    super.key,
     required this.headline,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

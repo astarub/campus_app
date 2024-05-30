@@ -15,10 +15,10 @@ class ExpandableFaqItem extends StatefulWidget {
   final String content;
 
   const ExpandableFaqItem({
-    Key? key,
+    super.key,
     required this.title,
     required this.content,
-  }) : super(key: key);
+  });
 
   @override
   State<ExpandableFaqItem> createState() => _ExpandableFaqItemState();

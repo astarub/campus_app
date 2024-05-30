@@ -4,7 +4,7 @@ import 'package:campus_app/l10n/l10n.dart';
 
 /// The translations for English (`en`).
 class AppLocalizationsEn extends AppLocalizations {
-  AppLocalizationsEn([String locale = 'en']) : super(locale);
+  AppLocalizationsEn([super.locale = 'en']);
 
   @override
   String get helloWorld => 'Hello World!';

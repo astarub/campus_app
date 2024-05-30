@@ -16,10 +16,10 @@ class AllergenesPopup extends StatefulWidget {
   final void Function(List<String>) onClose;
 
   const AllergenesPopup({
-    Key? key,
+    super.key,
     this.allergenes = const [],
     required this.onClose,
-  }) : super(key: key);
+  });
 
   @override
   State<AllergenesPopup> createState() => _AllergenesPopupState();
@@ -54,7 +54,7 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -181,12 +181,12 @@ class AllergenesListItem extends StatelessWidget {
   final bool isActive;
 
   const AllergenesListItem({
-    Key? key,
+    super.key,
     required this.name,
     required this.shortcut,
     required this.onTap,
     this.isActive = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +197,7 @@ class AllergenesListItem extends StatelessWidget {
             ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                 ? const Color.fromRGBO(245, 246, 250, 1)
                 : const Color.fromRGBO(34, 40, 54, 1)
-            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         borderRadius: BorderRadius.circular(6),
         child: InkWell(
           splashColor: const Color.fromRGBO(0, 0, 0, 0.06),

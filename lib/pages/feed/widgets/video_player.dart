@@ -17,12 +17,12 @@ class FeedVideoPlayer extends StatefulWidget {
   final VoidCallback? tabHandler;
 
   const FeedVideoPlayer({
-    Key? key,
+    super.key,
     required this.url,
     this.autoplay = false,
     this.muted = false,
     this.tabHandler,
-  }) : super(key: key);
+  });
 
   @override
   State<FeedVideoPlayer> createState() => _FeedVideoPlayerState();

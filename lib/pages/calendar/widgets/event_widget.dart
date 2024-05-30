@@ -27,12 +27,12 @@ class CalendarEventWidget extends StatelessWidget {
   final bool openable;
 
   const CalendarEventWidget({
-    Key? key,
+    super.key,
     required this.event,
     this.padding = EdgeInsets.zero,
     this.boxShadow = const BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 3)),
     this.openable = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

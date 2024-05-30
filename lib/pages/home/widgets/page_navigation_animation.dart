@@ -23,13 +23,13 @@ class AnimatedEntry extends StatefulWidget {
   final Widget child;
 
   const AnimatedEntry({
-    required Key? key,
+    required super.key,
     this.duration = const Duration(milliseconds: 750),
     this.interval = const Interval(0, 1, curve: Curves.easeOutCubic),
     this.offset = 10,
     this.offsetDuration = const Duration(milliseconds: 100),
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedEntry> createState() => AnimatedEntryState();
@@ -124,12 +124,12 @@ class AnimatedExit extends StatefulWidget {
   final Widget child;
 
   const AnimatedExit({
-    required Key? key,
+    required super.key,
     this.duration = const Duration(milliseconds: 200),
     this.curve = Curves.easeOut,
     this.delayAfterAnimation = const Duration(milliseconds: 100),
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedExit> createState() => AnimatedExitState();

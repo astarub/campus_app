@@ -18,12 +18,12 @@ class CampusTextButton extends StatefulWidget {
   final VoidCallback onTap;
 
   const CampusTextButton({
-    Key? key,
+    super.key,
     required this.buttonText,
     this.width = 330,
     this.height = 58,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   State<CampusTextButton> createState() => CampusTextButtonState();

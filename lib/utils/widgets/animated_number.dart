@@ -30,10 +30,10 @@ class AnimatedNumberText<T extends num> extends ImplicitlyAnimatedWidget {
 
   const AnimatedNumberText(
     this.data, {
-    Key? key,
+    super.key,
     this.formatter,
-    Curve curve = Curves.linear,
-    VoidCallback? onEnd,
+    super.curve,
+    super.onEnd,
     this.style,
     this.strutStyle,
     this.textAlign,
@@ -47,13 +47,8 @@ class AnimatedNumberText<T extends num> extends ImplicitlyAnimatedWidget {
     this.textWidthBasis,
     this.textHeightBehavior,
     this.selectionColor,
-    required Duration duration,
-  }) : super(
-          key: key,
-          duration: duration,
-          curve: curve,
-          onEnd: onEnd,
-        );
+    required super.duration,
+  });
 
   @override
   ImplicitlyAnimatedWidgetState<AnimatedNumberText<T>> createState() {

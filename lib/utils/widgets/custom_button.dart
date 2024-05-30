@@ -9,7 +9,7 @@ class CustomButton extends StatelessWidget {
   final Widget child;
 
   const CustomButton({
-    Key? key,
+    super.key,
     this.splashColor = const Color.fromRGBO(0, 0, 0, 0.03),
     this.highlightColor = const Color.fromRGBO(0, 0, 0, 0.05),
     this.borderRadius = const BorderRadius.only(
@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
     required this.tapHandler,
     this.longPressHandler,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

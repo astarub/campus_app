@@ -11,9 +11,9 @@ class MensaDaySelection extends StatefulWidget {
   final void Function(int, DateTime) onChanged;
 
   const MensaDaySelection({
-    Key? key,
+    super.key,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<MensaDaySelection> createState() => _MensaDaySelectionState();
@@ -298,12 +298,12 @@ class MensaDaySelectionItem extends StatelessWidget {
   final bool isActive;
 
   const MensaDaySelectionItem({
-    Key? key,
+    super.key,
     required this.day,
     required this.date,
     required this.onTap,
     this.isActive = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -29,11 +29,11 @@ class CalendarPage extends StatefulWidget {
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const CalendarPage({
-    Key? key,
+    super.key,
     required this.mainNavigatorKey,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
-  }) : super(key: key);
+  });
 
   @override
   State<CalendarPage> createState() => _CalendarPageState();
@@ -274,7 +274,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     if (showsavedEventWidgets) unawaited(updateSavedEventWidgets());
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       floatingActionButton: ScrollToTopButton(scrollController: scrollController),
       body: Center(
         child: AnimatedExit(
@@ -334,7 +334,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                 // Header
                 Container(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

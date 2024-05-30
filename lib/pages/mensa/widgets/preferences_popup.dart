@@ -16,10 +16,10 @@ class PreferencesPopup extends StatefulWidget {
   final void Function(List<String>) onClose;
 
   const PreferencesPopup({
-    Key? key,
+    super.key,
     this.preferences = const [],
     required this.onClose,
-  }) : super(key: key);
+  });
 
   @override
   State<PreferencesPopup> createState() => _PreferencesPopupState();
@@ -53,7 +53,7 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         child: ListView(
           padding: EdgeInsets.zero,
           physics: const BouncingScrollPhysics(),
@@ -137,12 +137,12 @@ class SelectionItemRow extends StatelessWidget {
   final void Function(String) onSelected;
 
   const SelectionItemRow({
-    Key? key,
+    super.key,
     required this.selectionItemTitles,
     required this.selectionItemShortcut,
     this.selections = const [false, false, false],
     required this.onSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

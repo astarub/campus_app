@@ -3,6 +3,7 @@
 /// https://asta-bochum.de/wp-json/tribe/events/v1/events/
 /// at 16.09.2022 ~06:30 p.m.
 ///
+library;
 // ignore_for_file: unnecessary_string_escapes
 
 const List<Map<String, dynamic>> calendarSamplesEventList = [

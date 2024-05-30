@@ -19,16 +19,16 @@ class CampusMultiSelection extends StatelessWidget {
   final void Function(String) onSelected;
 
   const CampusMultiSelection({
-    Key? key,
+    super.key,
     required this.selectionItemTitles,
     this.selections = const [false, false, false],
     required this.onSelected,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       child: Flex(
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

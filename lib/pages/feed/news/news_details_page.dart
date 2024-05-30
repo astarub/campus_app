@@ -25,7 +25,7 @@ class NewsDetailsPage extends StatefulWidget {
   final String? videoUrl;
 
   const NewsDetailsPage({
-    Key? key,
+    super.key,
     required this.title,
     required this.date,
     this.image,
@@ -35,7 +35,7 @@ class NewsDetailsPage extends StatefulWidget {
     this.copyright = '',
     this.author = 0,
     this.videoUrl,
-  }) : super(key: key);
+  });
 
   @override
   State<NewsDetailsPage> createState() => NewsDetailsPageState();
@@ -70,7 +70,7 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
         Navigator.pop(context);
       },
       child: Scaffold(
-        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         floatingActionButton: ScrollToTopButton(scrollController: scrollController),
         body: Padding(
           padding: const EdgeInsets.only(top: 20),
