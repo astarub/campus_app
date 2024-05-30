@@ -1,7 +1,7 @@
 name: campus_app
 description: Simplifie, improve and facilitate everyday students life.
 publish_to: 'none'
-version: 2.3.0
+version: 2.3.1
 
 environment:
   sdk: ">=3.2.0 <4.0.0"
@@ -61,6 +61,7 @@ dependencies:
   sentry: ^8.2.0
   video_thumbnail: ^0.5.3
   image: ^4.2.0
+  dismissible_page: ^1.0.2
   
 dev_dependencies:
   flutter_test:
