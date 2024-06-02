@@ -15,6 +15,8 @@ import 'package:campus_app/pages/feed/news/news_usecases.dart';
 import 'package:campus_app/pages/feed/widgets/feed_item.dart';
 import 'package:campus_app/pages/feed/widgets/feed_filter_popup.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
+import 'package:campus_app/pages/more/widgets/external_link_button.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
@@ -140,6 +142,14 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     });
   }
 
+  //use in App WebView
+  void openLink(BuildContext context, String url) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -251,6 +261,15 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                         child: Text(
                           'Feed',
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                        ),
+                      ),
+                      //Banner Placeholder
+                      ExternalLinkButton(
+                        title: 'Test',
+                        leadingIconPath: 'assets/img/asta_logo.png',
+                        onTap: () => openLink(
+                          context,
+                          'https://survey.asta-bochum.de/index.php/988728?lang=de',
                         ),
                       ),
                       // FeedPicker & filter

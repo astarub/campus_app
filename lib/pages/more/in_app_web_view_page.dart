@@ -105,6 +105,17 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                     },
                   ),
                 ),
+                //Close Button
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 80, right: 20),
+                  child: CampusIconButton(
+                    iconPath: 'assets/img/icons/x.svg',
+                    onTap: () {
+                      webViewController?.clearHistory();
+                      Navigator.maybePop(context);
+                    },
+                  ),
+                ),
               ],
             ),
           ),
