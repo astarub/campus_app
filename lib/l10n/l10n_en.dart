@@ -130,10 +130,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navBarWallet => 'Wallet';
 
   @override
-  String get navBarMore => 'Mehr';
+  String get navBarMore => 'More';
 
   @override
-  String get navBarCalendar => 'Kalender';
+  String get navBarCalendar => 'Calendar';
 
   @override
   String get firebaseDecisionPopup => '''
@@ -985,7 +985,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walletPageWallet => 'Wallet';
 
   @override
-  String get walletPageBalance => 'Dinign Hall Balance';
+  String get walletPageBalance => 'Dining Hall Balance';
 
   @override
   String get walletPageCampusABC => 'Campus ABC';
