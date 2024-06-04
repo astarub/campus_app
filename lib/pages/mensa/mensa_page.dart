@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/injection.dart';
@@ -180,7 +181,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                       Padding(
                         padding: const EdgeInsets.only(bottom: 24),
                         child: Text(
-                          'Mensa',
+                          AppLocalizations.of(context)!.mensaPageTitle,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                         ),
                       ),
@@ -227,7 +228,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 5),
                                     child: CampusButton.light(
-                                      text: 'Präferenzen',
+                                      text: AppLocalizations.of(context)!.mensaPagePreferences,
                                       width: null,
                                       onTap: () {
                                         widget.mainNavigatorKey.currentState?.push(
@@ -249,7 +250,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: CampusButton.light(
-                                      text: 'Allergene',
+                                      text: AppLocalizations.of(context)!.mensaPageAllergens,
                                       width: null,
                                       onTap: () {
                                         widget.mainNavigatorKey.currentState?.push(
