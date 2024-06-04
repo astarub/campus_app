@@ -180,17 +180,6 @@ class MensaUtils {
         ],
       ),
       MealCategory(
-        categoryName: 'Überbackene Baguettes',
-        meals: [
-          MealItem(name: 'Tomaten und Mozzarella', price: '4,40€', onPreferenceTap: onPreferenceTap),
-          MealItem(name: 'Schinken und Mozzarella', price: '4,40€', onPreferenceTap: onPreferenceTap),
-          MealItem(name: 'Salami und Mozzarella', price: '4,40€', onPreferenceTap: onPreferenceTap),
-          MealItem(name: 'Thunfisch und Mozzarella', price: '4,40€', onPreferenceTap: onPreferenceTap),
-          MealItem(name: 'Ofenfrische Laugenbrezel', price: '1,20€', onPreferenceTap: onPreferenceTap),
-          MealItem(name: 'Sesamring', price: '1,20€', onPreferenceTap: onPreferenceTap),
-        ],
-      ),
-      MealCategory(
         categoryName: 'Sandwich-Toasties',
         meals: [
           MealItem(name: 'Tomate, Ei, Käse und Remoulade', price: '3,80€', onPreferenceTap: onPreferenceTap),
