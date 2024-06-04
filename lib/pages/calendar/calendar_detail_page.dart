@@ -223,14 +223,16 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                         padding: const EdgeInsets.only(top: 10, bottom: 40),
                         child: StyledHTML(
                           context: context,
-                          text: widget.event.description != '' ? widget.event.description : 'No description given.',
+                          text: widget.event.description != ''
+                              ? widget.event.description
+                              : AppLocalizations.of(context)!.calendarEventNoDescriptionGiven,
                           textAlign: TextAlign.justify,
                         ),
                       ),
                       // Hosts
                       if (widget.event.organizers.isNotEmpty)
                         Text(
-                          'Host',
+                          AppLocalizations.of(context)!.calendarEventHost,
                           textAlign: TextAlign.left,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                         ),
@@ -245,7 +247,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       // Venue
                       if (widget.event.venue.name != '')
                         Text(
-                          'Veranstaltungsort',
+                          AppLocalizations.of(context)!.calendarEventVenue,
                           textAlign: TextAlign.left,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                         ),
@@ -262,9 +264,10 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                         padding: const EdgeInsets.only(top: 10, bottom: 30),
                         child: Center(
                           child: CampusButton(
-                            savedEvent
-                              ? AppLocalizations.of(context)!.calendarEventNotificationOff
-                              : AppLocalizations.of(context)!.calendarEventNotificationOn,
+                            text: savedEvent
+                                ? AppLocalizations.of(context)!.calendarEventNotificationOff
+                                : AppLocalizations.of(context)!.calendarEventNotificationOn,
+                            onTap: saveEventAndShowMessage,
                           ),
                         ),
                       ),
