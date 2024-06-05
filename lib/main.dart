@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:campus_app/core/backend/analytics/aptabase.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +16,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:campus_app/l10n/l10n.dart';
 
 import 'package:campus_app/core/backend/backend_repository.dart';
+import 'package:campus_app/core/backend/analytics/aptabase.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';

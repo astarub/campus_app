@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io' show Platform;
-import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dartz/dartz.dart' as dartz;
@@ -21,6 +20,7 @@ import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_search_bar.dart';
+import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 import 'package:campus_app/pages/calendar/widgets/calendar_filter_popup.dart';
 
 class CalendarPage extends StatefulWidget {

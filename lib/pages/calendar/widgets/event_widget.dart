@@ -1,8 +1,8 @@
-import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
