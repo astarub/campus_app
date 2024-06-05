@@ -269,7 +269,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                         leadingIconPath: 'assets/img/asta_logo.png',
                         onTap: () => openLink(
                           context,
-                          'https://survey.asta-bochum.de/index.php/988728?lang=de',
+                          'https://survey.asta-bochum.de/Test_Nachhaltigkeitsumfrage',
                         ),
                       ),
                       // FeedPicker & filter
