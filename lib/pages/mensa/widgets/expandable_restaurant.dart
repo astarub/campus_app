@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/backend/analytics/aptabase.dart';
 import 'package:campus_app/utils/widgets/animated_expandable.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
-import 'package:campus_app/core/backend/analytics/aptabase.dart';
 
 enum RestaurantStatus { open, closed, unknown }
 
@@ -49,6 +49,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
   /// Key to acess the state of the AnimatedExpandable() for showing & hiding the meals
   final GlobalKey<AnimatedExpandableState> restaurantExpandableKey = GlobalKey();
 
+  static List _sentToAptabase = [];
   bool _isExpanded = false;
 
   RestaurantStatus status = RestaurantStatus.unknown;
@@ -189,6 +190,19 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
     }
   }
 
+  void reportOpenedMensaToAptabase() {
+    // Only report if the mensa has been opened, not closed
+    if (!_isExpanded) {
+      return;
+    }
+    // Do nothing if this mensa has been reported already to avoid counting spam
+    if (_sentToAptabase.contains(widget.name)) {
+      return;
+    }
+    Aptabase.instance.trackEvent('selected_a_mensa', {'name': widget.name});
+    _sentToAptabase.add(widget.name);
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
@@ -273,9 +287,7 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
                       setState(() => _isExpanded = !_isExpanded);
                       restaurantExpandableKey.currentState!.toggleExpand();
                     }
-                    if (_isExpanded) {
-                      Aptabase.instance.trackEvent('selected_a_mensa', {'name': widget.name});
-                    }
+                    reportOpenedMensaToAptabase();
                   },
                   child: Column(
                     children: <Widget>[
