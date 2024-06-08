@@ -31,14 +31,14 @@ class ExpandableRestaurant extends StatefulWidget {
   final Stream<DateTime> stream;
 
   const ExpandableRestaurant({
-    Key? key,
+    super.key,
     required this.name,
     required this.imagePath,
     required this.meals,
     required this.openingHours,
     required this.date,
     required this.stream,
-  }) : super(key: key);
+  });
 
   @override
   State<ExpandableRestaurant> createState() => _ExpandableRestaurantState();

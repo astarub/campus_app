@@ -18,13 +18,13 @@ class LeadingButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const LeadingButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.buttonText,
     this.width = 330,
     this.height = 58,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

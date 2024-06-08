@@ -153,7 +153,7 @@ class CampusSwitch extends StatefulWidget {
   final bool disabled;
 
   const CampusSwitch({
-    Key? key,
+    super.key,
     required this.value,
     required this.onToggle,
     this.activeColor = const Color.fromRGBO(255, 107, 1, 1),
@@ -195,8 +195,7 @@ class CampusSwitch extends StatefulWidget {
             (toggleBorder == null || activeToggleBorder == null) &&
                 (toggleBorder == null || inactiveToggleBorder == null),
             'Cannot provide toggleBorder when an activeToggleBorder or inactiveToggleBorder was given\n'
-            'To give the toggle a border, use "activeToggleBorder: color" or "inactiveToggleBorder: color".'),
-        super(key: key);
+            'To give the toggle a border, use "activeToggleBorder: color" or "inactiveToggleBorder: color".');
 
   @override
   CampusSwitchState createState() => CampusSwitchState();

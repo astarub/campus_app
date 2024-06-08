@@ -14,10 +14,10 @@ class MealCategory extends StatelessWidget {
   final List<MealItem> meals;
 
   const MealCategory({
-    Key? key,
+    super.key,
     required this.categoryName,
     this.meals = const [],
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +51,13 @@ class MealItem extends StatelessWidget {
   final void Function(String) onPreferenceTap;
 
   const MealItem({
-    Key? key,
+    super.key,
     required this.name,
     this.price = '0.0',
     this.infos = const [],
     this.allergenes = const [],
     required this.onPreferenceTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

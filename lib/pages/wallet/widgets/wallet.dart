@@ -17,7 +17,7 @@ import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
 class CampusWallet extends StatelessWidget {
-  const CampusWallet({Key? key}) : super(key: key);
+  const CampusWallet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class CampusWallet extends StatelessWidget {
 }
 
 class BogestraTicket extends StatefulWidget {
-  const BogestraTicket({Key? key}) : super(key: key);
+  const BogestraTicket({super.key});
 
   @override
   State<BogestraTicket> createState() => _BogestraTicketState();

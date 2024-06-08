@@ -17,10 +17,10 @@ class CampusSelection extends StatefulWidget {
   int currentSelected;
 
   CampusSelection({
-    Key? key,
+    super.key,
     required this.selectionItemTitles,
     this.currentSelected = 0,
-  }) : super(key: key);
+  });
 
   @override
   State<CampusSelection> createState() => _CampusSelectionState();
@@ -104,12 +104,12 @@ class SelectionItem extends StatelessWidget {
   double paddingVertical;
 
   SelectionItem({
-    Key? key,
+    super.key,
     required this.text,
     required this.onTap,
     this.isActive = false,
     this.paddingVertical = 10,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

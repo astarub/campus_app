@@ -13,10 +13,10 @@ class SideNavBar extends StatefulWidget {
   final Function(PageItem) onSelectedPage;
 
   const SideNavBar({
-    Key? key,
+    super.key,
     required this.currentPage,
     required this.onSelectedPage,
-  }) : super(key: key);
+  });
 
   @override
   State<SideNavBar> createState() => _SideNavBarState();

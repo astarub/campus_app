@@ -16,11 +16,11 @@ class LeadingTextSwitch extends StatelessWidget {
   final ValueChanged<bool> onToggle;
 
   const LeadingTextSwitch({
-    Key? key,
+    super.key,
     required this.text,
     required this.isActive,
     required this.onToggle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

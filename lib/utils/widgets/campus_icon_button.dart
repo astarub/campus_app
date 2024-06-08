@@ -20,7 +20,7 @@ class CampusIconButton extends StatelessWidget {
   final bool transparent;
 
   const CampusIconButton({
-    Key? key,
+    super.key,
     required this.iconPath,
     required this.onTap,
     this.backgroundColorLight,
@@ -28,7 +28,7 @@ class CampusIconButton extends StatelessWidget {
     this.borderColorLight,
     this.borderColorDark,
     this.transparent = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class CampusIconButton extends StatelessWidget {
       width: 42,
       height: 42,
       decoration: BoxDecoration(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         borderRadius: BorderRadius.circular(15),
         border: !transparent
             ? Border.all(
