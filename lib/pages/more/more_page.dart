@@ -19,11 +19,11 @@ class MorePage extends StatefulWidget {
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const MorePage({
-    Key? key,
+    super.key,
     required this.mainNavigatorKey,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
-  }) : super(key: key);
+  });
 
   static const String privacy = 'Tbd.';
 
@@ -59,7 +59,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
     super.build(context);
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       body: Center(
         child: AnimatedExit(
           key: widget.pageExitAnimationKey,

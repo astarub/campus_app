@@ -38,7 +38,7 @@ class StackedCardCarousel extends StatefulWidget {
   final CardAlignment cardAlignment;
 
   const StackedCardCarousel({
-    Key? key,
+    super.key,
     required this.items,
     this.type = StackedCardCarouselType.cardsStack,
     this.initialOffset = 40.0,
@@ -48,7 +48,7 @@ class StackedCardCarousel extends StatefulWidget {
     this.onPageChanged,
     this.scrollDirection = Axis.vertical,
     this.cardAlignment = CardAlignment.start,
-  }) : super(key: key);
+  });
 
   @override
   State<StackedCardCarousel> createState() => _StackedCardCarouselState();
@@ -63,7 +63,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
     final bool vertical = widget.scrollDirection == Axis.vertical;
 
     if (widget.applyTextScaleFactor) {
-      final double mediaQueryFactor = MediaQuery.of(context).textScaleFactor;
+      final double mediaQueryFactor = MediaQuery.of(context).textScaler.scale(1);
       if (mediaQueryFactor > 1.0) {
         textScaleFactor = mediaQueryFactor;
       }
@@ -169,7 +169,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
 /// To allow all gestures detections to go through
 /// https://stackoverflow.com/questions/57466767/how-to-make-a-gesturedetector-capture-taps-inside-a-stack
 class ClickThroughStack extends Stack {
-  const ClickThroughStack({Key? key, required List<Widget> children}) : super(key: key, children: children);
+  const ClickThroughStack({super.key, required super.children});
 
   @override
   ClickThroughRenderStack createRenderObject(BuildContext context) {
@@ -183,14 +183,10 @@ class ClickThroughStack extends Stack {
 
 class ClickThroughRenderStack extends RenderStack {
   ClickThroughRenderStack({
-    required AlignmentGeometry alignment,
-    TextDirection? textDirection,
-    required StackFit fit,
-  }) : super(
-          alignment: alignment,
-          textDirection: textDirection,
-          fit: fit,
-        );
+    required super.alignment,
+    super.textDirection,
+    required super.fit,
+  });
 
   @override
   bool hitTestChildren(BoxHitTestResult result, {Offset? position}) {

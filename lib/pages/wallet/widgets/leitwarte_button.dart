@@ -7,7 +7,7 @@ import 'package:campus_app/core/themes.dart';
 
 /// This widget displays a button to quickly call the emergency number of the university
 class LeitwarteButton extends StatelessWidget {
-  const LeitwarteButton({Key? key}) : super(key: key);
+  const LeitwarteButton({super.key});
 
   void call() {
     final Uri parsedLink = Uri.parse('tel:+492343223333');

@@ -16,10 +16,10 @@ class BottomNavBar extends StatefulWidget {
   final Function(PageItem) onSelectedPage;
 
   const BottomNavBar({
-    Key? key,
+    super.key,
     required this.currentPage,
     required this.onSelectedPage,
-  }) : super(key: key);
+  });
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();

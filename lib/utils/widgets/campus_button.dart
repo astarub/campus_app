@@ -21,22 +21,22 @@ class CampusButton extends StatelessWidget {
   late final CampusButtonType type;
 
   CampusButton({
-    Key? key,
+    super.key,
     required this.text,
     this.width = 330,
     this.height = 58,
     required this.onTap,
-  }) : super(key: key) {
+  }) {
     type = CampusButtonType.normal;
   }
 
   CampusButton.light({
-    Key? key,
+    super.key,
     required this.text,
     this.width = 330,
     this.height = 58,
     required this.onTap,
-  }) : super(key: key) {
+  }) {
     type = CampusButtonType.light;
   }
 

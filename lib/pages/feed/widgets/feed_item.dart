@@ -54,7 +54,7 @@ class FeedItem extends StatefulWidget {
 
   /// Creates a NewsFeed-item with an expandable content
   const FeedItem({
-    Key? key,
+    super.key,
     required this.title,
     this.description = '',
     required this.date,
@@ -66,11 +66,11 @@ class FeedItem extends StatefulWidget {
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
-  }) : super(key: key);
+  });
 
   /// Creates a NewsFeed-item with an external link
   const FeedItem.link({
-    Key? key,
+    super.key,
     required this.title,
     this.description = '',
     required this.date,
@@ -82,7 +82,7 @@ class FeedItem extends StatefulWidget {
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
-  }) : super(key: key);
+  });
 
   @override
   State<FeedItem> createState() => FeedItemState();

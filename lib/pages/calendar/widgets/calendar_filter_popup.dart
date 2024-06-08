@@ -19,10 +19,10 @@ class CalendarFilterPopup extends StatefulWidget {
   final void Function(List<Publisher>) onClose;
 
   const CalendarFilterPopup({
-    Key? key,
+    super.key,
     this.selectedFilters = const [],
     required this.onClose,
-  }) : super(key: key);
+  });
 
   @override
   State<CalendarFilterPopup> createState() => _CalendarFilterPopupState();
@@ -68,7 +68,7 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
         Navigator.pop(context);
       },
       child: Container(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Column(

@@ -34,7 +34,7 @@ class SideNavBarItem extends StatefulWidget {
   final bool isActive;
 
   const SideNavBarItem({
-    Key? key,
+    super.key,
     required this.imagePathActive,
     required this.imagePathInactive,
     this.iconHeight = 26,
@@ -43,7 +43,7 @@ class SideNavBarItem extends StatefulWidget {
     required this.title,
     required this.onTap,
     this.isActive = false,
-  }) : super(key: key);
+  });
 
   @override
   State<SideNavBarItem> createState() => _SideNavBarItemState();
