@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 
@@ -52,6 +53,12 @@ class FeedItem extends StatefulWidget {
   /// Copyright of the news image
   final String copyright;
 
+  // Open a webview on click
+  final bool webview;
+
+  // Pinned items appear at the very top of the feed.
+  final bool pinned;
+
   /// Creates a NewsFeed-item with an expandable content
   const FeedItem({
     super.key,
@@ -66,6 +73,8 @@ class FeedItem extends StatefulWidget {
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
+    this.webview = false,
+    this.pinned = false,
   });
 
   /// Creates a NewsFeed-item with an external link
@@ -82,6 +91,8 @@ class FeedItem extends StatefulWidget {
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
+    this.webview = false,
+    this.pinned = false,
   });
 
   @override
@@ -121,21 +132,28 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
     }
 
     void openDetailsPage() {
-      if (widget.event != null) {
-        context.pushTransparentRoute(CalendarDetailPage(event: widget.event!));
-      } else {
-        context.pushTransparentRoute(
-          NewsDetailsPage(
-            title: widget.title,
-            date: widget.date,
-            image: widget.image,
-            link: widget.link,
-            content: widget.content,
-            copyright: widget.copyright,
-            videoUrl: widget.videoUrl,
-            author: widget.author,
-          ),
+      if (widget.webview) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.link)),
         );
+      } else {
+        if (widget.event != null) {
+          context.pushTransparentRoute(CalendarDetailPage(event: widget.event!));
+        } else {
+          context.pushTransparentRoute(
+            NewsDetailsPage(
+              title: widget.title,
+              date: widget.date,
+              image: widget.image,
+              link: widget.link,
+              content: widget.content,
+              copyright: widget.copyright,
+              videoUrl: widget.videoUrl,
+              author: widget.author,
+            ),
+          );
+        }
       }
     }
 
@@ -153,16 +171,14 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image & Date
             Stack(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.center,
               children: [
                 if (widget.image != null || widget.videoUrl != null)
                   // Image
                   SizedBox(
-                    width: MediaQuery.of(context).size.width,
                     height: widget.image == null && videoThumbnailFile != null ? 230 : null,
                     child: Hero(
                       tag: 'news_details_page_hero_tag',

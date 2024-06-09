@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -142,14 +143,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     });
   }
 
-  //use in App WebView
-  void openLink(BuildContext context, String url) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -202,7 +195,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     final filters = Provider.of<SettingsHandler>(context, listen: false).currentSettings.feedFilter;
     final explore = Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore;
 
-    final List<Widget> filteredFeedItems = !explore
+    List<Widget> filteredFeedItems = !explore
         ? _feedUtils.filterFeedWidgets(
             filters,
             searchWord != '' ? searchNewsWidgets : parsedNewsWidgets,
@@ -261,15 +254,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                         child: Text(
                           'Feed',
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
-                        ),
-                      ),
-                      //Banner Placeholder
-                      ExternalLinkButton(
-                        title: 'Test',
-                        leadingIconPath: 'assets/img/asta_logo.png',
-                        onTap: () => openLink(
-                          context,
-                          'https://survey.asta-bochum.de/Test_Nachhaltigkeitsumfrage',
                         ),
                       ),
                       // FeedPicker & filter

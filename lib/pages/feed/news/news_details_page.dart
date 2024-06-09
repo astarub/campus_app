@@ -115,7 +115,7 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Stack(
-                        alignment: Alignment.bottomRight,
+                        alignment: Alignment.center,
                         children: [
                           // Image
                           if (widget.image != null || widget.videoUrl != null)
