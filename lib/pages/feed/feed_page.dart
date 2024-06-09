@@ -1,5 +1,4 @@
 import 'dart:io' show Platform;
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -16,8 +15,6 @@ import 'package:campus_app/pages/feed/news/news_usecases.dart';
 import 'package:campus_app/pages/feed/widgets/feed_item.dart';
 import 'package:campus_app/pages/feed/widgets/feed_filter_popup.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/more/in_app_web_view_page.dart';
-import 'package:campus_app/pages/more/widgets/external_link_button.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
@@ -195,7 +192,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     final filters = Provider.of<SettingsHandler>(context, listen: false).currentSettings.feedFilter;
     final explore = Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore;
 
-    List<Widget> filteredFeedItems = !explore
+    final List<Widget> filteredFeedItems = !explore
         ? _feedUtils.filterFeedWidgets(
             filters,
             searchWord != '' ? searchNewsWidgets : parsedNewsWidgets,
