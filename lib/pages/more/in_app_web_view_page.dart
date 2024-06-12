@@ -95,15 +95,31 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                     webViewController = controller;
                   },
                 ),
-                // Back button
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                  child: CampusIconButton(
-                    iconPath: 'assets/img/icons/arrow-left.svg',
-                    onTap: () {
-                      Navigator.maybePop(context);
-                    },
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //backbutton
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 20),
+                      child: CampusIconButton(
+                        iconPath: 'assets/img/icons/arrow-left.svg',
+                        onTap: () {
+                          Navigator.maybePop(context);
+                        },
+                      ),
+                    ),
+                    //closeButton
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20, top: 20),
+                      child: CampusIconButton(
+                        iconPath: 'assets/img/icons/x.svg',
+                        onTap: () {
+                          webViewController?.clearHistory();
+                          Navigator.maybePop(context);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

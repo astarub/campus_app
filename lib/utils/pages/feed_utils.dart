@@ -29,12 +29,19 @@ class FeedUtils {
       final String formattedDescription =
           n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
 
+      bool fotolia = false;
+
+      for (final c in n.copyright) {
+        if (c.toLowerCase().contains('fotolia')) {
+          fotolia = true;
+        }
+      }
+
       feedItems.add(
         FeedItem(
           title: n.title,
           date: n.pubDate,
-          image: n.imageUrl != 'false' &&
-                  (n.copyright.isNotEmpty && !n.copyright.map((e) => e.toLowerCase()).toList().contains('fotolia'))
+          image: n.imageUrl != 'false' && (n.copyright.isNotEmpty && !fotolia)
               ? CachedNetworkImage(
                   imageUrl: n.imageUrl,
                 )
@@ -84,6 +91,24 @@ class FeedUtils {
       feedItemOrEventWidget.sort(sortFeedDesc);
     }
 
+    if (DateTime.now().compareTo(DateTime.parse('2024-07-07 00:00:01')) < 0) {
+      widgets.add(
+        FeedItem.link(
+          title: 'Nachhaltigkeit auf dem Campus der RUB: Wahrnehmung und Erwartungen',
+          date: DateTime.parse('2024-06-19 00:00:01'),
+          link: 'https://survey.asta-bochum.de/index.php/739883',
+          image: CachedNetworkImage(
+            imageUrl:
+                'https://app.asta-bochum.de/wp-content/uploads/2024/06/nachhaltigkeitsumfrage-thumbnail-logos.png',
+          ),
+          webview: true,
+          pinned: true,
+          description:
+              'Der AStA und das AKAFÖ möchten gemeinsam die nachhaltige Entwicklung auf dem Campus vorantreiben. Bitte fülle diese Umfrage aus, um die Nachhaltigkeitsentwicklung auf dem Campus auf deine Bedürfnisse abzustimmen.',
+        ) as Widget,
+      );
+    }
+
     // add all FeedItems or CalendarEventWidgets to list of Widget
     for (final widget in feedItemOrEventWidget) {
       widgets.add(widget as Widget);
@@ -101,6 +126,9 @@ class FeedUtils {
     final List<String> filterNames = filters.map((e) => e.name).toList();
 
     for (final Widget f in parsedFeedItems) {
+      if (f is FeedItem && f.pinned) {
+        filteredFeedItems.add(f);
+      }
       if (f is FeedItem) {
         if (f.link.startsWith('https://news.rub.de') && filterNames.contains('RUB')) {
           filteredFeedItems.add(f);
