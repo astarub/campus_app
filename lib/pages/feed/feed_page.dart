@@ -59,6 +59,8 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   String searchWord = '';
   bool showSearchBar = false;
 
+  Locale appLocale = Locale('de');
+
   /// Function that call usecase and parse widgets into the corresponding
   /// lists of events, news and failures.
   Future<void> updateStateWithFeed({bool withAnimation = false}) async {
@@ -69,7 +71,10 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
       // ignore: empty_catches
     } catch (e) {}
 
-    final newsData = await _newsUsecases.updateFeedAndFailures();
+    if (mounted) {
+      appLocale = Localizations.localeOf(context);
+    }
+    final newsData = await _newsUsecases.updateFeedAndFailuresAndTranslate(appLocale: appLocale);
 
     try {
       setState(() {

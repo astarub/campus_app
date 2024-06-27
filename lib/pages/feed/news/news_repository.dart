@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/feed/news/news_datasource.dart';
+import 'package:campus_app/utils/libre_translate_requests.dart';
 
 class NewsRepository {
   final NewsDatasource newsDatasource;
@@ -14,7 +17,14 @@ class NewsRepository {
   NewsRepository({required this.newsDatasource});
 
   /// Return a list of web news or a failure.
-  Future<Either<Failure, List<NewsEntity>>> getRemoteNewsfeed() async {
+  Future<Either<Failure, List<NewsEntity>>> getRemoteNewsfeed() {
+    return getRemoteNewsfeedAndTranslate(translate: false);
+  }
+
+  Future<Either<Failure, List<NewsEntity>>> getRemoteNewsfeedAndTranslate({
+    Locale appLocale = const Locale('de'),
+    bool translate = true,
+  }) async {
     try {
       final newsXml = await newsDatasource.getNewsfeedAsXml();
       final astaFeed = await newsDatasource.getAStAFeedAsJson();
@@ -47,7 +57,11 @@ class NewsRepository {
 
         entities.add(NewsEntity.fromXML(e, imageData));
       });
-
+      if (translate) {
+        for (final e in entities) {
+          translateNewsEntity(e, appLocale);
+        }
+      }
       // write entities to cache
       unawaited(newsDatasource.clearNewsEntityCache().then((_) => newsDatasource.writeNewsEntitiesToCache(entities)));
 
@@ -71,5 +85,33 @@ class NewsRepository {
     } catch (e) {
       return Left(CachFailure());
     }
+  }
+
+  NewsEntity translateNewsEntity(NewsEntity entity, Locale appLocale) {
+    String translatedTitle = entity.title;
+    translateText(entity.title, 'auto', appLocale.languageCode).then((String result) {
+      translatedTitle = result;
+    });
+    String translatedDescription = entity.description;
+    translateText(entity.description, 'auto', appLocale.languageCode).then((String result) {
+      translatedDescription = result;
+    });
+    String translatedContent = entity.content;
+    translateText(entity.content, 'auto', appLocale.languageCode).then((String result) {
+      translatedContent = result;
+    });
+    final translatedEntity = NewsEntity(
+      title: translatedTitle,
+      description: translatedDescription,
+      pubDate: entity.pubDate,
+      imageUrl: entity.imageUrl,
+      url: entity.url,
+      content: translatedContent,
+      author: entity.author,
+      categoryIds: entity.categoryIds,
+      copyright: entity.copyright,
+      videoUrl: entity.videoUrl,
+    );
+    return translatedEntity;
   }
 }
