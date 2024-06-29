@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 
 /// This widget displays a button to quickly call the emergency number of the university
@@ -60,7 +61,7 @@ class LeitwarteButton extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Leitwarte der RUB',
+                      AppLocalizations.of(context)!.controlRoomButton,
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
                             color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                 ? const Color.fromRGBO(207, 0, 0, 1)
@@ -76,7 +77,7 @@ class LeitwarteButton extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 5),
             child: Text(
-              ' 24/7 besetzt, für jegliche Notfälle',
+              AppLocalizations.of(context)!.controlRoomButtonDescription,
               style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium?.copyWith(
                     fontSize: 12,
                     color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light

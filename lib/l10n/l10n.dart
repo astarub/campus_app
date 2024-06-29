@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -90,7 +91,7 @@ abstract class AppLocalizations {
   ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('de'), Locale('en')];
+  static const List<Locale> supportedLocales = <Locale>[Locale('de'), Locale('en'), Locale('pt')];
 
   /// No description provided for @helloWorld.
   ///
@@ -193,6 +194,426 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your TOTP.'**
   String get enter_totp;
+
+  String get close;
+
+  String get done;
+
+  String get feedTitle;
+
+  String get feedLeft;
+
+  String get feedRight;
+
+  String get feedFilter;
+
+  String get eventFilter;
+
+  String get calendarEventLocationToBeAnnounced;
+
+  String get calendarEventNoDescriptionGiven;
+
+  String get calendarEventHost;
+
+  String get calendarEventVenue;
+
+  String get calendarEventNotificationOff;
+
+  String get calendarEventNotificationOn;
+
+  String get calendarPageUpcoming;
+
+  String get calendarPageSaved;
+
+  String get calendarPageNoEventsUpcomingTitle;
+
+  String get calendarPageNoEventsUpcomingText;
+
+  String get calendarPageNoEventsSavedTitle;
+
+  String get calendarPageNoEventsSavedText;
+
+  String get eventsTitle;
+
+  String get navBarFeed;
+
+  String get navBarEvents;
+
+  String get navBarMensa;
+
+  String get navBarWallet;
+
+  String get navBarMore;
+
+  String get navBarCalendar;
+
+  String get firebaseDecisionPopup;
+
+  String get firebaseDecisionPopupSlim;
+
+  String get firebaseDecisionAccept;
+
+  String get firebaseDecisionDecline;
+
+  String get chooseStudyProgram;
+
+  String get onboardingAppName;
+
+  String get onboardingPresentedBy;
+
+  String get onboardingStudyProgram;
+
+  String get onboardingStudyProgramDetailed;
+
+  String get onboardingPrivacy;
+
+  String get onboardingNotifications;
+
+  String get onboardingConfirm;
+
+  String get onboardingDeny;
+
+  String get onboardingTheme;
+
+  String get onboardingThemeDescription;
+
+  String get onboardingThemeSystem;
+
+  String get onboardingThemeLight;
+
+  String get onboardingThemeDark;
+
+  String get onboardingFeedback;
+
+  String get allergens;
+
+  String get allergensAvoid;
+
+  String get allergensGluten;
+
+  String get allergensWheat;
+
+  String get allergensRye;
+
+  String get allergensBarley;
+
+  String get allergensOats;
+
+  String get allergensSpelt;
+
+  String get allergensKamut;
+
+  String get allergensCrustaceans;
+
+  String get allergensEggs;
+
+  String get allergensFish;
+
+  String get allergensPeanuts;
+
+  String get allergensSoybeans;
+
+  String get allergensMilk;
+
+  String get allergensNuts;
+
+  String get allergensAlmond;
+
+  String get allergensHazelnut;
+
+  String get allergensWalnut;
+
+  String get allergensCashewnut;
+
+  String get allergensPecan;
+
+  String get allergensBrazilNut;
+
+  String get allergensPistachio;
+
+  String get allergensMacadamia;
+
+  String get allergensCelery;
+
+  String get allergensMustard;
+
+  String get allergensSesame;
+
+  String get allergensSulfur;
+
+  String get allergensLupins;
+
+  String get allergensMolluscs;
+
+  String get mondayShort;
+
+  String get tuesdayShort;
+
+  String get wednesdayShort;
+
+  String get thursdayShort;
+
+  String get fridayShort;
+
+  String get saturdayShort;
+
+  String get sundayShort;
+
+  String get mealPreferences;
+
+  String get preferencesExclusive;
+
+  String get preferencesVegetarian;
+
+  String get preferencesVegan;
+
+  String get preferencesHalal;
+
+  String get preferencesAvoid;
+
+  String get preferencesAlcohol;
+
+  String get preferencesFish;
+
+  String get preferencesPoultry;
+
+  String get preferencesLamb;
+
+  String get preferencesBeef;
+
+  String get preferencesPork;
+
+  String get preferencesGame;
+
+  String get mensaPageTitle;
+
+  String get mensaPagePreferences;
+
+  String get mensaPageAllergens;
+
+  String get imprintPageLegalNotice;
+
+  String get imprintPageLegalNoticeText;
+
+  String get morePageTitle;
+
+  String get morePageAstaA;
+
+  String get morePageKulturCafe;
+
+  String get morePageBikeWorkshop;
+
+  String get morePageRepairCafe;
+
+  String get morePageSocialCounseling;
+
+  String get morePageDancingGroup;
+
+  String get morePageGamingHub;
+
+  String get morePageUsefulLinks;
+
+  String get morePageRubMail;
+
+  String get morePageMoodle;
+
+  String get morePageECampus;
+
+  String get morePageFlexNow;
+
+  String get morePageUniSports;
+
+  String get morePageOther;
+
+  String get morePageSettings;
+
+  String get morePagePrivacy;
+
+  String get morePageLegalNotice;
+
+  String get morePageUsedResources;
+
+  String get morePageFeedback;
+
+  String get privacyPolicyPrivacy;
+
+  String get privacyPolicyText;
+
+  String get settingsSettings;
+
+  String get settingsHeadlineTheming;
+
+  String get settingsSystemDarkmode;
+
+  String get settingsDarkmode;
+
+  String get settingsHeadlineCoreData;
+
+  String get settingsStudyProgram;
+
+  String get settingsStudyProgramChange;
+
+  String get settingsHeadlineBehaviour;
+
+  String get settingsUseExternalBrowser;
+
+  String get settingsTextSize;
+
+  String get settingsTicketFullscreen;
+
+  String get settingsHeadlinePrivacy;
+
+  String get settingsGoogleServices;
+
+  String get settingsHeadlinePushNotifications;
+
+  String get settingsPushNotificationsEvents;
+
+  String get controlRoomButton;
+
+  String get controlRoomButtonDescription;
+
+  String get walletAddStudentTicket;
+
+  String get faqCampusABC;
+
+  String get faqMandatoryAttendance;
+
+  String get faqMandatoryAttendanceText;
+
+  String get faqAStAMessenger;
+
+  String get faqAStAMessengerText;
+
+  String get faqAccessibility;
+
+  String get faqAccessibilityText;
+
+  String get faqLibraries;
+
+  String get faqLibrariesText;
+
+  String get faqCreditPoints;
+
+  String get faqCreditPointsText;
+
+  String get faqeECampus;
+
+  String get faqeECampusText;
+
+  String get faqECTS;
+
+  String get faqECTSText;
+
+  String get faqInclusion;
+
+  String get faqInclusionText;
+
+  String get faqLabInternships;
+
+  String get faqLabInternshipsText;
+
+  String get faqCompensation;
+
+  String get faqCompensationText;
+
+  String get faqOptional;
+
+  String get faqOptionalText;
+
+  String get faqExamWork;
+
+  String get faqExamWorkText;
+
+  String get faqExamRegulations;
+
+  String get faqExamRegulationsText;
+
+  String get faqRoomOfSilence;
+
+  String get faqRoomOfSilenceText;
+
+  String get faqSemesterTicket;
+
+  String get faqSemesterTicketText;
+
+  String get faqSozialbeitrag;
+
+  String get faqSozialbeitragText;
+
+  String get faqStudentSecretariat;
+
+  String get faqStudentSecretariatText;
+
+  String get faqTeamspeak;
+
+  String get faqTeamspeakText;
+
+  String get faqUNIC;
+
+  String get faqUNICText;
+
+  String get faqEvents;
+
+  String get faqEventsText;
+
+  String get faqAccomodation;
+
+  String get faqAccomodationText;
+
+  String get faqZoom;
+
+  String get faqZoomText;
+
+  String get faqEmergencyNumber;
+
+  String get faqEmergencyNumberText;
+
+  String get balanceMultipleTags;
+
+  String get balanceIOSScanCard;
+
+  String get balanceMensaBalance;
+
+  String get balanceBalance;
+
+  String get balanceLastTransaction;
+
+  String get balanceScanCard;
+
+  String get balanceScanCardDetailed;
+
+  String get balanceNFCOff;
+
+  String get balanceNFCOffDetailed;
+
+  String get balanceLastBalance;
+
+  String get balanceLastScanned;
+
+  String get ticketLoginLoginID;
+
+  String get ticketLoginPasswort;
+
+  String get ticketLoginLogin;
+
+  String get ticketLoginBothFieldsError;
+
+  String get ticketLoginInternetError;
+
+  String get ticketLoginWrongDataError;
+
+  String get ticketLoginLoadingError;
+
+  String get ticketLoginEncryptedInfo;
+
+  String get walletPageWallet;
+
+  String get walletPageBalance;
+
+  String get walletPageCampusABC;
+
+  String get walletPageComingInFuture;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -204,7 +625,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['de', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['de', 'en', 'pt'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;

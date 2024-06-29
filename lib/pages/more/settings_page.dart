@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/main.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/themes.dart';
@@ -63,7 +64,7 @@ class SettingsPageState extends State<SettingsPage> {
                     ),
                     Align(
                       child: Text(
-                        'Einstellungen',
+                        AppLocalizations.of(context)!.settingsSettings,
                         style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       ),
                     ),
@@ -76,10 +77,10 @@ class SettingsPageState extends State<SettingsPage> {
               child: ListView(
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  const SectionHeadline(headline: 'Theming'),
+                  SectionHeadline(headline: AppLocalizations.of(context)!.settingsHeadlineTheming),
                   // System Darkmode
                   LeadingTextSwitch(
-                    text: 'System Darkmode',
+                    text: AppLocalizations.of(context)!.settingsSystemDarkmode,
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.useSystemDarkmode,
                     onToggle: (switchValue) {
                       // Notify the UI that the ThemeMode has changed
@@ -119,7 +120,7 @@ class SettingsPageState extends State<SettingsPage> {
                     child: AnimatedConditional(
                       key: _darkmodeAnimationKey,
                       child: LeadingTextSwitch(
-                        text: 'Darkmode',
+                        text: AppLocalizations.of(context)!.settingsDarkmode,
                         isActive: Provider.of<SettingsHandler>(context).currentSettings.useDarkmode,
                         onToggle: (switchValue) {
                           Provider.of<SettingsHandler>(context, listen: false).currentSettings =
@@ -135,10 +136,10 @@ class SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                   ),
-                  const SectionHeadline(headline: 'Stammdaten'),
+                  SectionHeadline(headline: AppLocalizations.of(context)!.settingsHeadlineCoreData),
                   LeadingButton(
-                    text: 'Studiengang',
-                    buttonText: 'Ändern',
+                    text: AppLocalizations.of(context)!.settingsStudyProgram,
+                    buttonText: AppLocalizations.of(context)!.settingsStudyProgramChange,
                     onTap: () => campusAppKey.currentState?.mainNavigatorKey.currentState?.push(
                       PageRouteBuilder(
                         opaque: false,
@@ -148,10 +149,10 @@ class SettingsPageState extends State<SettingsPage> {
                     height: 45,
                     width: 80,
                   ),
-                  const SectionHeadline(headline: 'Verhalten'),
+                  SectionHeadline(headline: AppLocalizations.of(context)!.settingsHeadlineBehaviour),
                   // External Browser
                   LeadingTextSwitch(
-                    text: 'Verwende externen Browser für Links',
+                    text: AppLocalizations.of(context)!.settingsUseExternalBrowser,
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.useExternalBrowser,
                     onToggle: (switchValue) {
                       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
@@ -160,7 +161,7 @@ class SettingsPageState extends State<SettingsPage> {
                   ),
                   // Apply app to system text scaling
                   LeadingTextSwitch(
-                    text: 'Verwende Textgröße vom System',
+                    text: AppLocalizations.of(context)!.settingsTextSize,
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling,
                     onToggle: (switchValue) {
                       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
@@ -169,17 +170,17 @@ class SettingsPageState extends State<SettingsPage> {
                   ),
                   // Display semester ticket on a separate page
                   LeadingTextSwitch(
-                    text: 'Vollbildschirmmodus QR-Code Semesterticket',
+                    text: AppLocalizations.of(context)!.settingsTicketFullscreen,
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.displayFullscreenTicket,
                     onToggle: (switchValue) {
                       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
                           settings.copyWith(displayFullscreenTicket: switchValue);
                     },
                   ),
-                  const SectionHeadline(headline: 'Datenschutz'),
+                  SectionHeadline(headline: AppLocalizations.of(context)!.settingsHeadlinePrivacy),
                   // Use Google services
                   LeadingTextSwitch(
-                    text: 'Google Services für Benachrichtigungen',
+                    text: AppLocalizations.of(context)!.settingsGoogleServices,
                     isActive:
                         Provider.of<SettingsHandler>(context).currentSettings.useFirebase == FirebaseStatus.permitted,
                     onToggle: (switchValue) async {
@@ -212,9 +213,9 @@ class SettingsPageState extends State<SettingsPage> {
                       }
                     },
                   ),
-                  const SectionHeadline(headline: 'Push-Benachrichtigungen'),
+                  SectionHeadline(headline: AppLocalizations.of(context)!.settingsHeadlinePushNotifications),
                   LeadingTextSwitch(
-                    text: 'Benachrichtigungen für gespeicherte Events',
+                    text: AppLocalizations.of(context)!.settingsPushNotificationsEvents,
                     isActive: Provider.of<SettingsHandler>(context).currentSettings.savedEventsNotifications,
                     onToggle: (switchValue) async {
                       if (switchValue) {

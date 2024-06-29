@@ -100,7 +100,7 @@ class CampusApp extends StatefulWidget {
 }
 
 class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
-  final GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey();
+  GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>();
 
   String _directoryPath = '';
   Settings? loadedSettings;

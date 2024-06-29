@@ -2,12 +2,14 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/pages/wallet/widgets/expandable_faq_item.dart';
 import 'package:campus_app/pages/wallet/guide_content.dart';
 
 class FaqPage extends StatelessWidget {
+  final GlobalKey<NavigatorState> ourNavigatorKey = GlobalKey<NavigatorState>();
   final List<Widget> faqExpandables = [];
 
   FaqPage({super.key}) {
@@ -54,7 +56,7 @@ class FaqPage extends StatelessWidget {
                     ),
                     Align(
                       child: Text(
-                        'Campus ABC',
+                        AppLocalizations.of(context)!.faqCampusABC,
                         style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       ),
                     ),

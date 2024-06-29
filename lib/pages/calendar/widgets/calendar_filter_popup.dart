@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
@@ -61,7 +62,7 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
     }
 
     return PopupSheet(
-      title: 'Event Filter',
+      title: AppLocalizations.of(context)!.eventFilter,
       openPositionFactor: 0.6,
       onClose: () {
         widget.onClose(_selectedFilters);
