@@ -53,8 +53,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   late List<Widget> parsedEventWidgets = [];
   late List<Widget> savedEventWidgets = [];
   late List<Widget> searchEventWidgets = [];
-
-  late final CampusSegmentedControl upcomingSavedSwitch;
   bool showsavedEventWidgets = false;
 
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
@@ -217,21 +215,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   void initState() {
     super.initState();
 
-    upcomingSavedSwitch = CampusSegmentedControl(
-      leftTitle: AppLocalizations.of(context)!.calendarPageUpcoming,
-      rightTitle: AppLocalizations.of(context)!.calendarPageSaved,
-      onChanged: (int selected) async {
-        if (selected == 0) {
-          setState(() => showsavedEventWidgets = false);
-        } else {
-          // Update the saved events list when changing tabs
-          await updateSavedEventWidgets();
-
-          setState(() => showsavedEventWidgets = true);
-        }
-      },
-    );
-
     // Request an update for the calendar and show the refresh indicator
     Future.delayed(const Duration(milliseconds: 200)).then((_) {
       refreshIndicatorKey.currentState?.show();
@@ -377,7 +360,20 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                                     // FeedPicker
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                                      child: upcomingSavedSwitch,
+                                      child: CampusSegmentedControl(
+                                        leftTitle: AppLocalizations.of(context)!.calendarPageUpcoming,
+                                        rightTitle: AppLocalizations.of(context)!.calendarPageSaved,
+                                        onChanged: (int selected) async {
+                                          if (selected == 0) {
+                                            setState(() => showsavedEventWidgets = false);
+                                          } else {
+                                            // Update the saved events list when changing tabs
+                                            await updateSavedEventWidgets();
+
+                                            setState(() => showsavedEventWidgets = true);
+                                          }
+                                        },
+                                      ),
                                     ),
                                     // Filter button
                                     CampusIconButton(
