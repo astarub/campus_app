@@ -50,8 +50,6 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
             settingsHandler,
             widget.event,
           );
-
-          print(settingsHandler.currentSettings.backendAccount.savedEvents);
         } else {
           await backendRepository.removeSavedEvent(
             settingsHandler,

@@ -75,8 +75,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
             FirebaseStatus.uncofigured) {
       return;
     }
-
-    print(savedEvents.map((event) => event.id));
     final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
     // Copy the list of saved events in order to remove elements from the original list while iterating over the cloned one
@@ -90,7 +88,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     for (final Map<String, dynamic> accountEvent in tempAccountSavedEvents) {
       // Remove events that were removed without an internet connection
       if (!savedEvents.map((e) => e.id).toList().contains(accountEvent['eventId'])) {
-        print(accountEvent);
         await backendRepository.removeSavedEvent(settingsHandler, accountEvent['eventId'], accountEvent['host']);
       }
 
