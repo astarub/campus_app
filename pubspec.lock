@@ -606,12 +606,11 @@ packages:
   flutter_nfc_kit:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "51b3d0eb7e68259a3e96bec1c428c07f5ea62e85"
-      url: "https://github.com/henry-herrmann/flutter_nfc_kit"
-    source: git
-    version: "3.4.1"
+      name: flutter_nfc_kit
+      sha256: fe0b86f4883e4a0ebeb6d1fbbc5a86123b95969a4d225bc5a760acda5e3f42e8
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.5.2"
   flutter_onboarding:
     dependency: "direct main"
     description:
@@ -832,13 +831,13 @@ packages:
     source: hosted
     version: "0.7.3"
   js:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: js
-      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.7"
+    version: "0.7.1"
   json_annotation:
     dependency: transitive
     description:
