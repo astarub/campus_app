@@ -160,22 +160,26 @@ class CalendarDatasource {
     late int cntEntities;
     final List<Event> entities = [];
 
-    if (saved) {
-      cntEntities = eventCache.get(keyCntSaved) ?? 0;
-    } else if (app) {
-      cntEntities = eventCache.get(keyCntApp) ?? 0;
-    } else {
-      cntEntities = eventCache.get(keyCnt) ?? 0;
-    }
-
-    for (int i = 0; i < cntEntities; i++) {
+    try {
       if (saved) {
-        entities.add(eventCache.get('saved$i') as Event);
+        cntEntities = eventCache.get(keyCntSaved) ?? 0;
       } else if (app) {
-        entities.add(eventCache.get('app$i') as Event);
+        cntEntities = eventCache.get(keyCntApp) ?? 0;
       } else {
-        entities.add(eventCache.get(i) as Event);
+        cntEntities = eventCache.get(keyCnt) ?? 0;
       }
+
+      for (int i = 0; i < cntEntities; i++) {
+        if (saved) {
+          entities.add(eventCache.get('saved$i') as Event);
+        } else if (app) {
+          entities.add(eventCache.get('app$i') as Event);
+        } else {
+          entities.add(eventCache.get(i) as Event);
+        }
+      }
+    } catch (e) {
+      print("exception!!");
     }
 
     return entities;
