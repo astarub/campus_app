@@ -75,7 +75,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
             FirebaseStatus.uncofigured) {
       return;
     }
-
     final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
     // Copy the list of saved events in order to remove elements from the original list while iterating over the cloned one
@@ -173,7 +172,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
     try {
       await calendarUsecases.updateEventsAndFailures().then(
-        (data) {
+        (data) async {
           setState(() {
             events = data['events']! as List<Event>;
             savedEvents = data['saved']! as List<Event>;
@@ -187,6 +186,9 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
             eventWidgetOpacity = 1;
             savedWidgetOpacity = 1;
           });
+
+          // Sync saved events
+          await syncSavedEventWidgets();
         },
         onError: (e) {
           throw Exception('Failed to load parsed Events: $e');
@@ -195,9 +197,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     } catch (e) {
       debugPrint('Error: $e');
     }
-
-    // Sync saved events
-    await syncSavedEventWidgets();
 
     debugPrint('Events aktualisiert.');
 

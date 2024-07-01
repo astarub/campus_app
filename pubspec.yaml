@@ -47,9 +47,7 @@ dependencies:
     git:
       url: https://github.com/C4s4r/flutter_onboarding
       ref: 9d74464
-  flutter_nfc_kit:
-    git:
-      url: https://github.com/henry-herrmann/flutter_nfc_kit
+  flutter_nfc_kit: ^3.5.2
   lottie: ^3.0.0
   screen_brightness: ^1.0.1
   fluttertoast: ^8.2.5
@@ -71,6 +69,10 @@ dev_dependencies:
   mockito: ^5.4.3
   envied_generator: ^0.5.3 
   flutter_launcher_icons: ^0.13.1
+
+# Override js version as flutter_inappwebview depends on flutter_inappwebview_web which uses js version ^0.6.4 but as the web package is not used, this is risk-free
+dependency_overrides:
+  js: ^0.7.1
 
 flutter_native_splash:
   image: "assets/img/Android-RUB_Campus_App_Logo.png"

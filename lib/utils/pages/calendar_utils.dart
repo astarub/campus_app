@@ -10,16 +10,22 @@ class CalendarUtils {
   /// For Padding insert at first position a SizedBox with heigth := 80 or given heigth.
   List<Widget> getEventWidgetList({required List<Event> events, double heigth = 80}) {
     final eventWidgets = <CalendarEventWidget>[];
+    final List<Event> pinnedEvents = events.where((e) => e.pinned).toList();
+    final List<CalendarEventWidget> pinnedEventWidgets =
+        pinnedEvents.map((e) => CalendarEventWidget(event: e)).toList();
 
     for (final Event e in events) {
+      if (e.pinned) continue;
       eventWidgets.add(CalendarEventWidget(event: e));
     }
 
     // sort widgets according to date: new -> old
     eventWidgets.sort((a, b) => a.event.startDate.compareTo(b.event.startDate));
+    pinnedEventWidgets.sort((a, b) => a.event.startDate.compareTo(b.event.startDate));
 
     // add SizedBox as padding
     final List<Widget> widgets = [SizedBox(height: heigth)];
+    widgets.addAll(pinnedEventWidgets);
     widgets.addAll(eventWidgets);
 
     return widgets;
