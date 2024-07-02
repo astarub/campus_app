@@ -79,7 +79,7 @@ class Event {
   @HiveField(15)
   final String author;
 
-  @HiveField(16)
+  @HiveField(16, defaultValue: false)
   final bool pinned;
 
   const Event({
