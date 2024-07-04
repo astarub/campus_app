@@ -132,7 +132,7 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
     }
 
     void openDetailsPage() {
-      if (widget.webViewUrl != null) {
+      if (widget.webViewUrl != null && widget.webViewUrl!.isNotEmpty) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)),
