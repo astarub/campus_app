@@ -49,11 +49,11 @@ class NewsEntity {
   final String? videoUrl;
 
   /// Pinned
-  @HiveField(10)
+  @HiveField(10, defaultValue: false)
   final bool pinned;
 
   /// URL for a webview
-  @HiveField(11)
+  @HiveField(11, defaultValue: null)
   final String? webViewUrl;
 
   const NewsEntity({
