@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 Future<String> translateText(String text, String sourceLang, String targetLang) async {
   final response = await http.post(
-    Uri.parse('https://translate.app.asta-bochum.de/'),
+    Uri.parse('https://translate.app.asta-bochum.de/translate'),
     headers: {
       'Content-Type': 'application/json',
     },

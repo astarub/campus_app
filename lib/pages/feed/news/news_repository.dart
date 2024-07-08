@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:dartz/dartz.dart';
+import 'package:dartz/dartz_unsafe.dart';
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart';
 
@@ -28,7 +29,7 @@ class NewsRepository {
     try {
       final newsXml = await newsDatasource.getNewsfeedAsXml();
       final astaFeed = await newsDatasource.getAStAFeedAsJson();
-      final appFeed = await newsDatasource.getAppFeedAsJson();
+      //final appFeed = await newsDatasource.getAppFeedAsJson();
       final newsXmlList = newsXml.findAllElements('item');
 
       final List<NewsEntity> entities = [];
@@ -42,14 +43,14 @@ class NewsRepository {
         }
       }
 
-      for (final e in appFeed) {
-        final entity = NewsEntity.fromJSON(json: e, copyright: ['© AStA']);
-        final past = DateTime.now().subtract(const Duration(days: 21));
+      //for (final e in appFeed) {
+      //final entity = NewsEntity.fromJSON(json: e, copyright: ['© AStA']);
+      //final past = DateTime.now().subtract(const Duration(days: 21));
 
-        if (entity.pubDate.compareTo(past) > 0) {
-          entities.add(entity);
-        }
-      }
+      //if (entity.pubDate.compareTo(past) > 0) {
+      //entities.add(entity);
+      //}
+      //}
 
       await Future.forEach(newsXmlList.map((news) => news), (XmlElement e) async {
         final link = e.getElement('link')!.innerText;
@@ -58,14 +59,22 @@ class NewsRepository {
         entities.add(NewsEntity.fromXML(e, imageData));
       });
       if (translate) {
-        for (final e in entities) {
-          translateNewsEntity(e, appLocale);
+        final List<NewsEntity> translatedEntities = [];
+        for (NewsEntity e in entities) {
+          translatedEntities.add(translateNewsEntity(e, appLocale));
         }
-      }
-      // write entities to cache
-      unawaited(newsDatasource.clearNewsEntityCache().then((_) => newsDatasource.writeNewsEntitiesToCache(entities)));
+        // write entities to cache
+        unawaited(newsDatasource
+            .clearNewsEntityCache()
+            .then((_) => newsDatasource.writeNewsEntitiesToCache(translatedEntities)));
 
-      return Right(entities);
+        return Right(translatedEntities);
+      } else {
+        // write entities to cache
+        unawaited(newsDatasource.clearNewsEntityCache().then((_) => newsDatasource.writeNewsEntitiesToCache(entities)));
+
+        return Right(entities);
+      }
     } catch (e) {
       switch (e.runtimeType) {
         case const (ServerException):
@@ -92,14 +101,23 @@ class NewsRepository {
     translateText(entity.title, 'auto', appLocale.languageCode).then((String result) {
       translatedTitle = result;
     });
+
     String translatedDescription = entity.description;
-    translateText(entity.description, 'auto', appLocale.languageCode).then((String result) {
-      translatedDescription = result;
-    });
+    final List<String> descriptionChunks = chunk(translatedDescription);
+    for (var i = 0; i < descriptionChunks.length; i++) {
+      translateText(descriptionChunks[i], 'auto', appLocale.languageCode).then((String result) {
+        translatedDescription = result;
+      });
+    }
+
     String translatedContent = entity.content;
-    translateText(entity.content, 'auto', appLocale.languageCode).then((String result) {
-      translatedContent = result;
-    });
+    final List<String> contentChunks = chunk(translatedContent);
+    for (var i = 0; i < contentChunks.length; i++) {
+      translateText(contentChunks[i], 'auto', appLocale.languageCode).then((String result) {
+        translatedContent = result;
+      });
+    }
+
     final translatedEntity = NewsEntity(
       title: translatedTitle,
       description: translatedDescription,
@@ -113,5 +131,25 @@ class NewsRepository {
       videoUrl: entity.videoUrl,
     );
     return translatedEntity;
+  }
+
+  List<String> chunk(String str) {
+    final List<String> list = [];
+    if (str.length <= 500) {
+      list.add(str);
+      return list;
+    }
+    const divisionIndex = 500;
+    for (int i = 0; i < str.length; i++) {
+      if (i % divisionIndex == 0) {
+        try {
+          final tempString = str.substring(i, i + divisionIndex);
+          list.add(tempString);
+        } catch (e) {
+          break;
+        }
+      }
+    }
+    return list;
   }
 }

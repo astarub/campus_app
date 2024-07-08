@@ -75,6 +75,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
       appLocale = Localizations.localeOf(context);
     }
     final newsData = await _newsUsecases.updateFeedAndFailuresAndTranslate(appLocale: appLocale);
+    // final newsData = await _newsUsecases.updateFeedAndFailures();
 
     try {
       setState(() {
