@@ -61,7 +61,7 @@ class NewsRepository {
       if (translate) {
         final List<NewsEntity> translatedEntities = [];
         for (NewsEntity e in entities) {
-          translatedEntities.add(translateNewsEntity(e, appLocale));
+          translatedEntities.add(await translateNewsEntity(e, appLocale));
         }
         // write entities to cache
         unawaited(newsDatasource
@@ -96,27 +96,27 @@ class NewsRepository {
     }
   }
 
-  NewsEntity translateNewsEntity(NewsEntity entity, Locale appLocale) {
+  Future<NewsEntity> translateNewsEntity(NewsEntity entity, Locale appLocale) async {
     String translatedTitle = entity.title;
-    translateText(entity.title, 'auto', appLocale.languageCode).then((String result) {
+    await translateText(entity.title, 'auto', appLocale.languageCode).then((String result) {
       translatedTitle = result;
     });
 
     String translatedDescription = entity.description;
     final List<String> descriptionChunks = chunk(translatedDescription);
+    final List<String> translatedDescriptionChunks = [];
     for (var i = 0; i < descriptionChunks.length; i++) {
-      translateText(descriptionChunks[i], 'auto', appLocale.languageCode).then((String result) {
-        translatedDescription = result;
-      });
+      await translateText(descriptionChunks[i], 'auto', appLocale.languageCode).then(translatedDescriptionChunks.add);
     }
+    translatedDescription = translatedDescriptionChunks.join();
 
     String translatedContent = entity.content;
     final List<String> contentChunks = chunk(translatedContent);
+    final List<String> translatedContentChunks = [];
     for (var i = 0; i < contentChunks.length; i++) {
-      translateText(contentChunks[i], 'auto', appLocale.languageCode).then((String result) {
-        translatedContent = result;
-      });
+      await translateText(contentChunks[i], 'auto', appLocale.languageCode).then(translatedContentChunks.add);
     }
+    translatedContent = translatedContentChunks.join();
 
     final translatedEntity = NewsEntity(
       title: translatedTitle,
