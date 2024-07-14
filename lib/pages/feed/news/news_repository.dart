@@ -59,11 +59,10 @@ class NewsRepository {
         entities.add(NewsEntity.fromXML(e, imageData));
       });
       if (translate) {
-        final List<NewsEntity> translatedEntities = [];
-        for (NewsEntity e in entities) {
-          translatedEntities.add(await translateNewsEntity(e, appLocale));
-        }
-        // write entities to cache
+        final translatedEntitiesFutures = entities.map((e) => translateNewsEntity(e, appLocale)).toList();
+        final translatedEntities = await Future.wait(translatedEntitiesFutures);
+
+        // Write entities to cache
         unawaited(newsDatasource
             .clearNewsEntityCache()
             .then((_) => newsDatasource.writeNewsEntitiesToCache(translatedEntities)));
@@ -97,26 +96,26 @@ class NewsRepository {
   }
 
   Future<NewsEntity> translateNewsEntity(NewsEntity entity, Locale appLocale) async {
-    String translatedTitle = entity.title;
-    await translateText(entity.title, 'auto', appLocale.languageCode).then((String result) {
-      translatedTitle = result;
-    });
+    // Translate title
+    final translatedTitle = await translateText(entity.title, 'auto', appLocale.languageCode);
 
-    String translatedDescription = entity.description;
-    final List<String> descriptionChunks = chunk(translatedDescription);
-    final List<String> translatedDescriptionChunks = [];
-    for (var i = 0; i < descriptionChunks.length; i++) {
-      await translateText(descriptionChunks[i], 'auto', appLocale.languageCode).then(translatedDescriptionChunks.add);
-    }
-    translatedDescription = translatedDescriptionChunks.join();
+    // Translate description
+    final descriptionChunks = chunk(entity.description);
+    final translatedDescriptionChunks = await Future.wait(
+      descriptionChunks.map((chunk) {
+        return translateText(chunk, 'auto', appLocale.languageCode);
+      }),
+    );
+    final translatedDescription = translatedDescriptionChunks.join();
 
-    String translatedContent = entity.content;
-    final List<String> contentChunks = chunk(translatedContent);
-    final List<String> translatedContentChunks = [];
-    for (var i = 0; i < contentChunks.length; i++) {
-      await translateText(contentChunks[i], 'auto', appLocale.languageCode).then(translatedContentChunks.add);
-    }
-    translatedContent = translatedContentChunks.join();
+    // Translate content
+    final contentChunks = chunk(entity.content);
+    final translatedContentChunks = await Future.wait(
+      contentChunks.map((chunk) {
+        return translateText(chunk, 'auto', appLocale.languageCode);
+      }),
+    );
+    final translatedContent = translatedContentChunks.join();
 
     final translatedEntity = NewsEntity(
       title: translatedTitle,
@@ -140,14 +139,14 @@ class NewsRepository {
       return list;
     }
     const divisionIndex = 500;
-    for (int i = 0; i < str.length; i++) {
-      if (i % divisionIndex == 0) {
-        try {
-          final tempString = str.substring(i, i + divisionIndex);
-          list.add(tempString);
-        } catch (e) {
-          break;
-        }
+    for (int i = 0; i < str.length; i += divisionIndex) {
+      try {
+        final tempString = str.substring(i, i + divisionIndex);
+        list.add(tempString);
+      } catch (e) {
+        final tempString = str.substring(i);
+        list.add(tempString);
+        break;
       }
     }
     return list;
