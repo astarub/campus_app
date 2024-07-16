@@ -64,6 +64,7 @@ class Settings {
   final BackendAccount backendAccount;
   final String latestVersion;
   final bool displayFullscreenTicket;
+  final bool translateNews;
   final double? lastMensaBalance;
   final double? lastMensaTransaction;
   final List<Map<String, dynamic>>? mensaRestaurantConfig;
@@ -88,6 +89,7 @@ class Settings {
     this.backendAccount = const BackendAccount.empty(),
     this.latestVersion = '',
     this.displayFullscreenTicket = false,
+    this.translateNews = false,
     this.lastMensaBalance,
     this.lastMensaTransaction,
   });
@@ -112,6 +114,7 @@ class Settings {
     BackendAccount? backendAccount,
     String? latestVersion,
     bool? displayFullscreenTicket,
+    bool? translateNews,
     double? lastMensaBalance,
     double? lastMensaTransaction,
   }) =>
@@ -134,6 +137,7 @@ class Settings {
         backendAccount: backendAccount ?? this.backendAccount,
         latestVersion: latestVersion ?? this.latestVersion,
         displayFullscreenTicket: displayFullscreenTicket ?? this.displayFullscreenTicket,
+        translateNews: translateNews ?? this.translateNews,
         lastMensaBalance: lastMensaBalance ?? this.lastMensaBalance,
         lastMensaTransaction: lastMensaTransaction ?? this.lastMensaTransaction,
         mensaRestaurantConfig: mensaRestaurantConfig ?? this.mensaRestaurantConfig,
@@ -183,6 +187,7 @@ class Settings {
           : const BackendAccount.empty(),
       latestVersion: json['latestVersion'] ?? '',
       displayFullscreenTicket: json['displayFullscreenTicket'] ?? false,
+      translateNews: json['translateNews'] ?? false,
       lastMensaBalance: json['lastMensaBalance'],
       lastMensaTransaction: json['lastMensaTransaction'],
     );
@@ -213,6 +218,7 @@ class Settings {
       'backendAccount': backendAccount.toInternalJson(),
       'latestVersion': latestVersion,
       'displayFullscreenTicket': displayFullscreenTicket,
+      'translateNews': translateNews,
       'lastMensaBalance': lastMensaBalance,
       'lastMensaTransaction': lastMensaTransaction,
     };

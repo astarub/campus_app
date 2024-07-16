@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:dartz/dartz.dart';
@@ -58,27 +59,38 @@ class NewsRepository {
 
         entities.add(NewsEntity.fromXML(e, imageData));
       });
+      // Cache untranslated News in case translation fails
+      unawaited(newsDatasource.clearNewsEntityCache().then((_) => newsDatasource.writeNewsEntitiesToCache(entities)));
+
       if (translate) {
-        final translatedEntitiesFutures = entities.map((e) => translateNewsEntity(e, appLocale)).toList();
-        final translatedEntities = await Future.wait(translatedEntitiesFutures);
+        try {
+          final translatedEntitiesFutures = entities.map((e) => translateNewsEntity(e, appLocale)).toList();
+          final translatedEntities = await Future.wait(translatedEntitiesFutures);
 
-        // Write entities to cache
-        unawaited(newsDatasource
-            .clearNewsEntityCache()
-            .then((_) => newsDatasource.writeNewsEntitiesToCache(translatedEntities)));
+          // Write entities to cache
+          unawaited(newsDatasource
+              .clearNewsEntityCache()
+              .then((_) => newsDatasource.writeNewsEntitiesToCache(translatedEntities)));
 
-        return Right(translatedEntities);
+          return Right(translatedEntities);
+        } catch (e) {
+          switch (e.runtimeType) {
+            case const (HandshakeException):
+              debugPrint('Translation failed, using untranslated news.');
+              return Right(entities);
+            default:
+              return Left(GeneralFailure());
+          }
+        }
       } else {
-        // write entities to cache
-        unawaited(newsDatasource.clearNewsEntityCache().then((_) => newsDatasource.writeNewsEntitiesToCache(entities)));
-
         return Right(entities);
       }
     } catch (e) {
       switch (e.runtimeType) {
         case const (ServerException):
           return Left(ServerFailure());
-
+        case const (HandshakeException):
+          return Left(TranslationFailure());
         default:
           return Left(GeneralFailure());
       }
