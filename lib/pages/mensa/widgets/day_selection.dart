@@ -255,30 +255,6 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
       ],
     );
   }
-}
-
-/// This widget represents one of the five items in the [MensaDaySelection] widget.
-class MensaDaySelectionItem extends StatelessWidget {
-  /// The weekday that is displayed in the top of the button
-  final String day;
-
-  /// The exact date that is displayed below the weekday
-  final String date;
-
-  /// The function that is executed when the button is pressed.
-  /// Usually this updates a variable in the parent widget.
-  final VoidCallback onTap;
-
-  /// Wether the SelectionItem is the currently active one or not
-  final bool isActive;
-
-  const MensaDaySelectionItem({
-    super.key,
-    required this.day,
-    required this.date,
-    required this.onTap,
-    this.isActive = false,
-  });
 
   @override
   void initState() {

@@ -422,6 +422,52 @@ class MensaUtils {
     ];
   }
 
+  int dishDateToInt(DateTime dishDate) {
+    late int date;
+
+    final DateTime lastDayOfWeek = DateTime.now().add(Duration(days: DateTime.daysPerWeek - DateTime.now().weekday));
+
+    switch (dishDate.weekday) {
+      case 1: // Monday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 5;
+        } else {
+          date = 0;
+        }
+        break;
+      case 2: // Tuesday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 6;
+        } else {
+          date = 1;
+        }
+        break;
+      case 3: // Wednesday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 7;
+        } else {
+          date = 2;
+        }
+        break;
+      case 4: // Thursday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 8;
+        } else {
+          date = 3;
+        }
+        break;
+      default: // Friday, Saturday or Sunday
+        if (dishDate.compareTo(lastDayOfWeek) > 0) {
+          date = 9;
+        } else {
+          date = 4;
+        }
+        break;
+    }
+
+    return date;
+  }
+
   /// Parse a list of DishEntity to widget list of type MealCategory.
   List<MealCategory> fromDishListToMealCategoryList({
     required List<DishEntity> entities,
@@ -516,51 +562,5 @@ class MensaUtils {
     }
 
     return retVal;
-  }
-
-  int dishDateToInt(DateTime dishDate) {
-    late int date;
-
-    final DateTime lastDayOfWeek = DateTime.now().add(Duration(days: DateTime.daysPerWeek - DateTime.now().weekday));
-
-    switch (dishDate.weekday) {
-      case 1: // Monday
-        if (dishDate.compareTo(lastDayOfWeek) > 0) {
-          date = 5;
-        } else {
-          date = 0;
-        }
-        break;
-      case 2: // Tuesday
-        if (dishDate.compareTo(lastDayOfWeek) > 0) {
-          date = 6;
-        } else {
-          date = 1;
-        }
-        break;
-      case 3: // Wednesday
-        if (dishDate.compareTo(lastDayOfWeek) > 0) {
-          date = 7;
-        } else {
-          date = 2;
-        }
-        break;
-      case 4: // Thursday
-        if (dishDate.compareTo(lastDayOfWeek) > 0) {
-          date = 8;
-        } else {
-          date = 3;
-        }
-        break;
-      default: // Friday, Saturday or Sunday
-        if (dishDate.compareTo(lastDayOfWeek) > 0) {
-          date = 9;
-        } else {
-          date = 4;
-        }
-        break;
-    }
-
-    return date;
   }
 }

@@ -39,6 +39,27 @@ class AnimatedConditionalState extends State<AnimatedConditional> with TickerPro
   }
 
   @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, _) => Transform.scale(
+          scale: _scaleAnimation.value,
+          child: widget.child,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
 
@@ -61,27 +82,6 @@ class AnimatedConditionalState extends State<AnimatedConditional> with TickerPro
       CurvedAnimation(
         parent: _animationController,
         curve: widget.interval,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: AnimatedBuilder(
-        animation: _scaleAnimation,
-        builder: (context, _) => Transform.scale(
-          scale: _scaleAnimation.value,
-          child: widget.child,
-        ),
       ),
     );
   }

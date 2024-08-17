@@ -25,100 +25,6 @@ class PreferencesPopup extends StatefulWidget {
   State<PreferencesPopup> createState() => _PreferencesPopupState();
 }
 
-class _PreferencesPopupState extends State<PreferencesPopup> {
-  late List<String> _selectedPreferences;
-
-  void selectItem(String selected) {
-    if (_selectedPreferences.contains(selected)) {
-      setState(() => _selectedPreferences.removeWhere((preference) => preference == selected));
-    } else {
-      setState(() => _selectedPreferences.add(selected));
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _selectedPreferences = widget.preferences;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupSheet(
-      title: 'Präferenzen',
-      onClose: () {
-        widget.onClose(_selectedPreferences);
-        Navigator.pop(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          physics: const BouncingScrollPhysics(),
-          children: [
-            // Title
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 10),
-              child: Text(
-                'Ausschließlich',
-                textAlign: TextAlign.left,
-                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-              ),
-            ),
-            SelectionItemRow(
-              selectionItemTitles: const ['Vegetarisch', 'Vegan', 'Halal'],
-              selectionItemShortcut: const ['V', 'VG', 'H'],
-              selections: [
-                _selectedPreferences.contains('V'),
-                _selectedPreferences.contains('VG'),
-                _selectedPreferences.contains('H'),
-              ],
-              onSelected: selectItem,
-            ),
-            // Title
-            Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 10),
-              child: Text(
-                'Vermeiden von',
-                textAlign: TextAlign.left,
-                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-              ),
-            ),
-            SelectionItemRow(
-              selectionItemTitles: const ['Alkohol', 'Fisch', 'Geflügel'],
-              selectionItemShortcut: const ['A', 'F', 'G'],
-              selections: [
-                _selectedPreferences.contains('A'),
-                _selectedPreferences.contains('F'),
-                _selectedPreferences.contains('G'),
-              ],
-              onSelected: selectItem,
-            ),
-            SelectionItemRow(
-              selectionItemTitles: const ['Lamm', 'Rind', 'Schwein'],
-              selectionItemShortcut: const ['L', 'R', 'S'],
-              selections: [
-                _selectedPreferences.contains('L'),
-                _selectedPreferences.contains('R'),
-                _selectedPreferences.contains('S'),
-              ],
-              onSelected: selectItem,
-            ),
-            SelectionItemRow(
-              selectionItemTitles: const ['Wild'],
-              selectionItemShortcut: const ['W'],
-              selections: [_selectedPreferences.contains('W')],
-              onSelected: selectItem,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 /// This widget is similar to the [CampusSelection] widget and shows 3 buttons in a Row
 /// that can be active at the same time.
 ///
@@ -208,7 +114,7 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         child: ListView(
           padding: EdgeInsets.zero,
           physics: const BouncingScrollPhysics(),

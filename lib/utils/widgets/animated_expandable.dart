@@ -32,42 +32,20 @@ class AnimatedExpandableState extends State<AnimatedExpandable> with SingleTicke
   late final Animation<double> _animation;
   late bool _isExpanded;
 
-  /// Can be used to open or close the expandable widget from outside
-  void toggleExpand() {
-    setState(() => _isExpanded = !_isExpanded);
-    _animateExpand();
-  }
-
-  void _animateExpand() {
-    if (_isExpanded) {
-      _expandController.forward();
-    } else {
-      _expandController.reverse();
-    }
-  }
-
   @override
-  void initState() {
-    super.initState();
-
-    // Initializing the controller used for the expand animation
-    _expandController = AnimationController(
-      vsync: this,
-      duration: widget.animationDuration,
+  Widget build(BuildContext context) {
+    return SizeTransition(
+      //axisAlignment: 1, // looks like moving to top instead of collapsing
+      sizeFactor: _animation,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const ScrollPhysics(),
+        itemCount: widget.children.length,
+        itemBuilder: (context, index) {
+          return widget.children[index];
+        },
+      ),
     );
-
-    // Defining the expand animation
-    final Animation<double> curvedAnimation = CurvedAnimation(
-      parent: _expandController,
-      curve: widget.animationCurve,
-    );
-    
-    // ignore: prefer_int_literals
-    _animation = Tween(begin: 0.0, end: 1.0).animate(curvedAnimation);
-
-    // Applying initial state of sectionExpanded value
-    _isExpanded = widget.expandedAtStart;
-    _animateExpand();
   }
 
   @override
@@ -86,18 +64,40 @@ class AnimatedExpandableState extends State<AnimatedExpandable> with SingleTicke
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SizeTransition(
-      //axisAlignment: 1, // looks like moving to top instead of collapsing
-      sizeFactor: _animation,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const ScrollPhysics(),
-        itemCount: widget.children.length,
-        itemBuilder: (context, index) {
-          return widget.children[index];
-        },
-      ),
+  void initState() {
+    super.initState();
+
+    // Initializing the controller used for the expand animation
+    _expandController = AnimationController(
+      vsync: this,
+      duration: widget.animationDuration,
     );
+
+    // Defining the expand animation
+    final Animation<double> curvedAnimation = CurvedAnimation(
+      parent: _expandController,
+      curve: widget.animationCurve,
+    );
+
+    // ignore: prefer_int_literals
+    _animation = Tween(begin: 0.0, end: 1.0).animate(curvedAnimation);
+
+    // Applying initial state of sectionExpanded value
+    _isExpanded = widget.expandedAtStart;
+    _animateExpand();
+  }
+
+  /// Can be used to open or close the expandable widget from outside
+  void toggleExpand() {
+    setState(() => _isExpanded = !_isExpanded);
+    _animateExpand();
+  }
+
+  void _animateExpand() {
+    if (_isExpanded) {
+      _expandController.forward();
+    } else {
+      _expandController.reverse();
+    }
   }
 }

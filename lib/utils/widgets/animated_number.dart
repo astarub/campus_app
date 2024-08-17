@@ -63,6 +63,27 @@ class _AnimatedNumberTextState<T extends num> extends AnimatedWidgetBaseState<An
   TextStyleTween? _styleTween;
 
   @override
+  Widget build(BuildContext context) {
+    _updateValues();
+    return Text(
+      _data,
+      style: _style,
+      strutStyle: widget.strutStyle,
+      textAlign: widget.textAlign,
+      textDirection: widget.textDirection,
+      locale: widget.locale,
+      softWrap: widget.softWrap,
+      overflow: widget.overflow,
+      textScaler: widget.textScaleFactor == null ? TextScaler.linear(widget.textScaleFactor!) : null,
+      textHeightBehavior: widget.textHeightBehavior,
+      maxLines: widget.maxLines,
+      semanticsLabel: widget.semanticsLabel,
+      textWidthBasis: widget.textWidthBasis,
+      selectionColor: widget.selectionColor,
+    );
+  }
+
+  @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
     // ignore: unnecessary_lambdas
     _numTween = visitor(_numTween, widget.data, (value) => _createTween(value)) as Tween<T>?;
@@ -86,26 +107,5 @@ class _AnimatedNumberTextState<T extends num> extends AnimatedWidgetBaseState<An
   void _updateValues() {
     _data = _toStringFormatted(_numTween?.evaluate(animation));
     _style = _styleTween?.evaluate(animation);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _updateValues();
-    return Text(
-      _data,
-      style: _style,
-      strutStyle: widget.strutStyle,
-      textAlign: widget.textAlign,
-      textDirection: widget.textDirection,
-      locale: widget.locale,
-      softWrap: widget.softWrap,
-      overflow: widget.overflow,
-      textScaler: widget.textScaleFactor == null ? TextScaler.linear(widget.textScaleFactor!) : null,
-      textHeightBehavior: widget.textHeightBehavior,
-      maxLines: widget.maxLines,
-      semanticsLabel: widget.semanticsLabel,
-      textWidthBasis: widget.textWidthBasis,
-      selectionColor: widget.selectionColor,
-    );
   }
 }

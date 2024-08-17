@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class CampusFilterSelection extends StatefulWidget {
   /// Holds all available filters
@@ -21,22 +20,6 @@ class CampusFilterSelection extends StatefulWidget {
 
   @override
   State<CampusFilterSelection> createState() => _CampusFilterSelectionState();
-}
-
-class _CampusFilterSelectionState extends State<CampusFilterSelection> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      physics: const BouncingScrollPhysics(),
-      itemCount: widget.filters.length,
-      itemBuilder: (context, index) => CampusFilterSelectionItem(
-        publisher: widget.filters[index],
-        onTap: widget.onSelected,
-        isActive: widget.selections[index],
-      ),
-    );
-  }
 }
 
 /// This widget displays one selectable option in a list
@@ -130,6 +113,22 @@ class CampusFilterSelectionItem extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _CampusFilterSelectionState extends State<CampusFilterSelection> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      physics: const BouncingScrollPhysics(),
+      itemCount: widget.filters.length,
+      itemBuilder: (context, index) => CampusFilterSelectionItem(
+        publisher: widget.filters[index],
+        onTap: widget.onSelected,
+        isActive: widget.selections[index],
       ),
     );
   }

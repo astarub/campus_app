@@ -1,7 +1,6 @@
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:campus_app/core/themes.dart';
 
 class ButtonGroup extends StatelessWidget {
   final String headline;

@@ -90,7 +90,7 @@ dependencies {
     //
     // Actually, the developers provided a more seamless way for using embedded
     // Cronet by using the Dart environment variable "cronetHttpNoPlay" but while 
-    // testing these, this changed anything for our Campus App. 
+    // testing these, this didn't work for our Campus App. 
     //
     // Note: https://github.com/cfug/dio/issues/2042
     // Note: https://github.com/dart-lang/http/blob/master/pkgs/cronet_http/android/build.gradle

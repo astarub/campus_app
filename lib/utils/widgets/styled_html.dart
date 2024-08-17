@@ -1,10 +1,9 @@
 import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:campus_app/core/themes.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// This widget extends the default HTML widget and add a custom style.

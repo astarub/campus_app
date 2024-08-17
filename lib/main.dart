@@ -1,34 +1,33 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:convert';
-
-import 'package:campus_app/utils/constants.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:campus_app/l10n/l10n.dart';
+import 'dart:io';
 
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/home/home_page.dart';
-import 'package:campus_app/pages/home/onboarding.dart';
-import 'package:campus_app/pages/feed/news/news_entity.dart';
-import 'package:campus_app/pages/mensa/dish_entity.dart';
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
+import 'package:campus_app/pages/feed/news/news_entity.dart';
+import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/pages/home/onboarding.dart';
+import 'package:campus_app/pages/mensa/dish_entity.dart';
+import 'package:campus_app/utils/constants.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -110,6 +109,119 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   final BackendRepository backendRepository = ic.sl<BackendRepository>();
   final MainUtils mainUtils = ic.sl<MainUtils>();
   final MensaUtils mensaUtils = ic.sl<MensaUtils>();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,
+      darkTheme: Provider.of<ThemesNotifier>(context, listen: false).darkThemeData,
+      themeMode: Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode,
+      builder: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling
+          ? null
+          : (context, child) {
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                child: child!,
+              );
+            },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/') {
+          return PageTransition(
+            child: HomePage(key: homeKey, mainNavigatorKey: mainNavigatorKey),
+            type: PageTransitionType.scale,
+            alignment: Alignment.center,
+          );
+        }
+        return null;
+      },
+      navigatorKey: mainNavigatorKey,
+      debugShowCheckedModeBanner: false,
+    );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    precacheAssets(context);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    precacheAssets(context);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    super.dispose();
+  }
+
+  Future<void> initializeBackendConnection() async {
+    final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
+
+    // Set the initial publishers for users who weren't connected to the backend in the past
+    if (settingsHandler.currentSettings.latestVersion == '') {
+      await mainUtils.setInitialPublishers(Provider.of<SettingsHandler>(context, listen: false));
+    }
+
+    try {
+      await backendRepository.login(
+        settingsHandler,
+      );
+    } catch (e) {
+      debugPrint('Could not connect to the backend. Retrying next restart.');
+    }
+
+    if (settingsHandler.currentSettings.savedEventsNotifications == false) {
+      try {
+        await backendRepository.removeAllSavedEvents(
+          settingsHandler,
+        );
+        await backendRepository.unsubscribeFromAllSavedEvents(
+          settingsHandler,
+        );
+      } catch (e) {
+        debugPrint(
+          'Could not remove all saved events from the backend. Retrying next restart.',
+        );
+      }
+    }
+
+    try {
+      if (await backendRepository.updateAvailable(settingsHandler)) {}
+
+      await backendRepository.loadStudyCourses(settingsHandler);
+      await backendRepository.loadMensaRestaurantConfig(settingsHandler);
+    } catch (e) {
+      debugPrint('Could not lead filters. Exception $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (!Platform.isIOS) {
+      FlutterDisplayMode.setHighRefreshRate();
+    }
+
+    // Add observer in order to listen to `didChangeAppLifecycleState`
+    WidgetsBinding.instance.addObserver(this);
+
+    // load saved settings
+    loadingTimer.start();
+    loadSettings();
+
+    // Handle deep links
+    mainUtils.handleIncomingLink();
+    mainUtils.handleInitialUri();
+  }
 
   /// Load the saved settings and parse them to the [SettingsHandler]
   void loadSettings() {
@@ -207,23 +319,6 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     });
   }
 
-  /// Given the loaded settings, listen to the system brightness mode and apply the theme
-  void setTheme({
-    required BuildContext contextForThemeProvider,
-    bool useSystemDarkmode = true,
-    bool useDarkmode = false,
-  }) {
-    if (useSystemDarkmode) {
-      Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
-    } else {
-      if (useDarkmode) {
-        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
-      } else {
-        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.light;
-      }
-    }
-  }
-
   void precacheAssets(BuildContext context) {
     // Precache images to prevent a visual glitch when they're loaded the first time
     precacheImage(Image.asset('assets/img/icons/home-outlined.png').image, context);
@@ -239,116 +334,20 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     precacheImage(Image.asset('assets/img/icons/more.png').image, context);
   }
 
-  Future<void> initializeBackendConnection() async {
-    final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
-
-    // Set the initial publishers for users who weren't connected to the backend in the past
-    if (settingsHandler.currentSettings.latestVersion == '') {
-      await mainUtils.setInitialPublishers(Provider.of<SettingsHandler>(context, listen: false));
-    }
-
-    try {
-      await backendRepository.login(
-        settingsHandler,
-      );
-    } catch (e) {
-      debugPrint('Could not connect to the backend. Retrying next restart.');
-    }
-
-    if (settingsHandler.currentSettings.savedEventsNotifications == false) {
-      try {
-        await backendRepository.removeAllSavedEvents(
-          settingsHandler,
-        );
-        await backendRepository.unsubscribeFromAllSavedEvents(
-          settingsHandler,
-        );
-      } catch (e) {
-        debugPrint(
-          'Could not remove all saved events from the backend. Retrying next restart.',
-        );
+  /// Given the loaded settings, listen to the system brightness mode and apply the theme
+  void setTheme({
+    required BuildContext contextForThemeProvider,
+    bool useSystemDarkmode = true,
+    bool useDarkmode = false,
+  }) {
+    if (useSystemDarkmode) {
+      Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
+    } else {
+      if (useDarkmode) {
+        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
+      } else {
+        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.light;
       }
     }
-
-    try {
-      if (await backendRepository.updateAvailable(settingsHandler)) {}
-
-      await backendRepository.loadStudyCourses(settingsHandler);
-      await backendRepository.loadMensaRestaurantConfig(settingsHandler);
-    } catch (e) {
-      debugPrint('Could not lead filters. Exception $e');
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (!Platform.isIOS) {
-      FlutterDisplayMode.setHighRefreshRate();
-    }
-
-    // Add observer in order to listen to `didChangeAppLifecycleState`
-    WidgetsBinding.instance.addObserver(this);
-
-    // load saved settings
-    loadingTimer.start();
-    loadSettings();
-
-    // Handle deep links
-    mainUtils.handleIncomingLink();
-    mainUtils.handleInitialUri();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    precacheAssets(context);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-
-    precacheAssets(context);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,
-      darkTheme: Provider.of<ThemesNotifier>(context, listen: false).darkThemeData,
-      themeMode: Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode,
-      builder: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling
-          ? null
-          : (context, child) {
-              return MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-                child: child!,
-              );
-            },
-      onGenerateRoute: (settings) {
-        if (settings.name == '/') {
-          return PageTransition(
-            child: HomePage(key: homeKey, mainNavigatorKey: mainNavigatorKey),
-            type: PageTransitionType.scale,
-            alignment: Alignment.center,
-          );
-        }
-        return null;
-      },
-      navigatorKey: mainNavigatorKey,
-      debugShowCheckedModeBanner: false,
-    );
   }
 }

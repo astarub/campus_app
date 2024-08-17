@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_selection.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// This widget is similar to the [CampusSelection] widget and shows 3 buttons in a Row
 /// that can be active at the same time.

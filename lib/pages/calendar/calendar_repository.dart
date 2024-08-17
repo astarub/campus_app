@@ -12,24 +12,18 @@ class CalendarRepository {
   CalendarRepository({required this.calendarDatasource});
 
   /// Return a list of events or a failure
-  Future<Either<Failure, List<Event>>> getAStAEvents() async {
+  Future<Either<Failure, List<Event>>> getAppEvents() async {
     try {
-      final astaEventsJson = await calendarDatasource.getAStAEventsAsJsonArray();
+      final astaEventsJson = await calendarDatasource.getAppEventsAsJsonArray();
 
       final List<Event> entities = [];
 
-      for (final Map<String, dynamic> eventJson in astaEventsJson) {
-        final Event event = Event.fromExternalJson(eventJson);
-
-        if (event.categories.map((cat) => cat.name).contains('UFO')) continue;
-
-        entities.add(event);
+      for (final Map<String, dynamic> event in astaEventsJson) {
+        entities.add(Event.fromExternalJson(event));
       }
 
-      // write entities to cach
-      unawaited(
-        calendarDatasource.clearEventEntityCache().then((_) => calendarDatasource.writeEventsToCache(entities)),
-      );
+      // write entities to cache
+      unawaited(calendarDatasource.writeEventsToCache(entities, app: true));
 
       return Right(entities);
     } catch (e) {
@@ -50,18 +44,24 @@ class CalendarRepository {
   }
 
   /// Return a list of events or a failure
-  Future<Either<Failure, List<Event>>> getAppEvents() async {
+  Future<Either<Failure, List<Event>>> getAStAEvents() async {
     try {
-      final astaEventsJson = await calendarDatasource.getAppEventsAsJsonArray();
+      final astaEventsJson = await calendarDatasource.getAStAEventsAsJsonArray();
 
       final List<Event> entities = [];
 
-      for (final Map<String, dynamic> event in astaEventsJson) {
-        entities.add(Event.fromExternalJson(event));
+      for (final Map<String, dynamic> eventJson in astaEventsJson) {
+        final Event event = Event.fromExternalJson(eventJson);
+
+        if (event.categories.map((cat) => cat.name).contains('UFO')) continue;
+
+        entities.add(event);
       }
 
-      // write entities to cache
-      unawaited(calendarDatasource.writeEventsToCache(entities, app: true));
+      // write entities to cach
+      unawaited(
+        calendarDatasource.clearEventEntityCache().then((_) => calendarDatasource.writeEventsToCache(entities)),
+      );
 
       return Right(entities);
     } catch (e) {

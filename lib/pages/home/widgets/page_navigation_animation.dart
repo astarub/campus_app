@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
 
 /// Wrap a child with this widget in order to animate the child on build.
 /// Can be used in combination by setting a different offset.
@@ -40,12 +41,25 @@ class AnimatedEntryState extends State<AnimatedEntry> with TickerProviderStateMi
   late Animation<double> _fadeAnimation;
   late Animation<double> _positionAnimation;
 
-  /// Can be called from outside in order to manually start the entry animation (again).
-  Future<bool> startEntryAnimation() async {
-    _animationController.reset();
-    await _animationController.forward();
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: AnimatedBuilder(
+        animation: _positionAnimation,
+        builder: (_, __) => Transform.translate(
+          offset: Offset(0, _positionAnimation.value * (-1)),
+          child: widget.child,
+        ),
+      ),
+    );
+  }
 
-    return true;
+  @override
+  void dispose() {
+    _animationController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -90,25 +104,12 @@ class AnimatedEntryState extends State<AnimatedEntry> with TickerProviderStateMi
     });
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
+  /// Can be called from outside in order to manually start the entry animation (again).
+  Future<bool> startEntryAnimation() async {
+    _animationController.reset();
+    await _animationController.forward();
 
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: AnimatedBuilder(
-        animation: _positionAnimation,
-        builder: (_, __) => Transform.translate(
-          offset: Offset(0, _positionAnimation.value * (-1)),
-          child: widget.child,
-        ),
-      ),
-    );
+    return true;
   }
 }
 
@@ -144,21 +145,24 @@ class AnimatedExitState extends State<AnimatedExit> with TickerProviderStateMixi
 
   double _animationOpacity = 1;
 
-  /// Can be called from outside in order to manually start the exit animation (again).
-  Future<bool> startExitAnimation() async {
-    setState(() => _animationOpacity = 0);
-    await _animationController.reverse();
-
-    // Optional delay
-    if (widget.delayAfterAnimation != Duration.zero) await Future.delayed(widget.delayAfterAnimation);
-
-    return true;
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      opacity: _animationOpacity,
+      duration: widget.duration,
+      curve: widget.curve,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: widget.child,
+      ),
+    );
   }
 
-  /// Must be called everytime the animation should be started again.
-  void resetExitAnimation() {
-    setState(() => _animationOpacity = 1);
-    _animationController.reset();
+  @override
+  void dispose() {
+    _animationController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -179,23 +183,20 @@ class AnimatedExitState extends State<AnimatedExit> with TickerProviderStateMixi
     );
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-
-    super.dispose();
+  /// Must be called everytime the animation should be started again.
+  void resetExitAnimation() {
+    setState(() => _animationOpacity = 1);
+    _animationController.reset();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: _animationOpacity,
-      duration: widget.duration,
-      curve: widget.curve,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: widget.child,
-      ),
-    );
+  /// Can be called from outside in order to manually start the exit animation (again).
+  Future<bool> startExitAnimation() async {
+    setState(() => _animationOpacity = 0);
+    await _animationController.reverse();
+
+    // Optional delay
+    if (widget.delayAfterAnimation != Duration.zero) await Future.delayed(widget.delayAfterAnimation);
+
+    return true;
   }
 }
