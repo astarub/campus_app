@@ -86,7 +86,7 @@ class BackendRepository {
     }
 
     try {
-      await accountService.createEmailSession(
+      await accountService.createEmailPasswordSession(
         email: '${settingsHandler.currentSettings.backendAccount.id}@app.asta-bochum.de',
         password: settingsHandler.currentSettings.backendAccount.password,
       );

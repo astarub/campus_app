@@ -14,12 +14,12 @@ class CampusSearchBar extends StatelessWidget {
   final void Function(String) onChange;
 
   const CampusSearchBar({
-    Key? key,
+    super.key,
     this.arrowHidden = false,
     this.horizontalPadding = 20,
     required this.onBack,
     required this.onChange,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

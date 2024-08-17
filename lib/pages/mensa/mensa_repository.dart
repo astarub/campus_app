@@ -160,10 +160,10 @@ class MensaRepository {
       return Right(entities);
     } catch (e) {
       switch (e.runtimeType) {
-        case ServerException:
+        case const (ServerException):
           return Left(ServerFailure());
 
-        case JsonException:
+        case const (JsonException):
           return Left(ServerFailure());
 
         default:

@@ -18,7 +18,7 @@ import 'package:campus_app/utils/widgets/campus_button.dart';
 /// The [SnappingSheet] package handles the animations and layout.
 class StudyCoursePopup extends StatefulWidget {
   final Function(List<StudyCourse>)? callback;
-  const StudyCoursePopup({Key? key, this.callback}) : super(key: key);
+  const StudyCoursePopup({super.key, this.callback});
 
   @override
   State<StudyCoursePopup> createState() => StudyCoursePopupState();
@@ -160,7 +160,7 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
           child: Container(
             width: MediaQuery.of(context).size.shortestSide < 600 ? double.infinity : 700,
             decoration: BoxDecoration(
-              color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+              color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15),
                 topRight: Radius.circular(15),

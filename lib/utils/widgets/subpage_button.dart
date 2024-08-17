@@ -26,13 +26,13 @@ class SubPageButton extends StatelessWidget {
   final bool disabled;
 
   const SubPageButton({
-    Key? key,
+    super.key,
     required this.title,
     required this.leadingIconPath,
     this.trailingIconPath = 'assets/img/icons/external-link.svg',
     required this.onTap,
     this.disabled = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +47,11 @@ class SubPageButton extends StatelessWidget {
       //width: 330,
       height: 58,
       decoration: BoxDecoration(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Material(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         borderRadius: BorderRadius.circular(15),
         child: InkWell(
           onTap: disabled ? null : onTap,

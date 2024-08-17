@@ -34,7 +34,7 @@ class BottomNavBarItem extends StatefulWidget {
   final bool isActive;
 
   const BottomNavBarItem({
-    Key? key,
+    super.key,
     required this.imagePathActive,
     required this.imagePathInactive,
     required this.title,
@@ -43,7 +43,7 @@ class BottomNavBarItem extends StatefulWidget {
     this.iconPaddingRight = 14,
     required this.onTap,
     this.isActive = false,
-  }) : super(key: key);
+  });
 
   @override
   State<BottomNavBarItem> createState() => _BottomNavBarItemState();
@@ -105,7 +105,8 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
               child: AnimatedOpacity(
                 opacity: widget.isActive ? 1 : 0,
                 duration: animationDuration,
-                child: Text(widget.title,
+                child: Text(
+                  widget.title,
                   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
                 ),
               ),

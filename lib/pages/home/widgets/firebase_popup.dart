@@ -11,9 +11,9 @@ class FirebasePopup extends StatelessWidget {
   final void Function({bool permissionGranted}) onClose;
 
   const FirebasePopup({
-    Key? key,
+    super.key,
     required this.onClose,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

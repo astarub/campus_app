@@ -15,7 +15,7 @@ import 'package:campus_app/pages/home/widgets/side_nav_bar.dart';
 class HomePage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
 
-  const HomePage({Key? key, required this.mainNavigatorKey}) : super(key: key);
+  const HomePage({super.key, required this.mainNavigatorKey});
 
   @override
   State<HomePage> createState() => HomePageState();
@@ -204,7 +204,7 @@ class HomePageState extends State<HomePage> {
         onPop: () => navigatorKeys[currentPage]!.currentState!.pop(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
           body: MediaQuery.of(context).size.shortestSide < 600
               // Phone layout
               ? SafeArea(
@@ -287,7 +287,7 @@ class HomePageState extends State<HomePage> {
                                 child: Container(
                                   padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
-                                    color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+                                    color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   child: Center(

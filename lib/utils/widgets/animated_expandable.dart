@@ -15,12 +15,12 @@ class AnimatedExpandable extends StatefulWidget {
   final Curve animationCurve;
 
   const AnimatedExpandable({
-    Key? key,
+    super.key,
     required this.children,
     this.expandedAtStart = false,
     this.animationDuration = const Duration(milliseconds: 250),
     this.animationCurve = Curves.fastOutSlowIn,
-  }) : super(key: key);
+  });
 
   @override
   AnimatedExpandableState createState() => AnimatedExpandableState();

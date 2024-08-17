@@ -1,8 +1,9 @@
 import 'dart:io';
 
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 
-import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -52,9 +53,15 @@ class FeedItem extends StatefulWidget {
   /// Copyright of the news image
   final String copyright;
 
+  // Open a webview on click
+  final String? webViewUrl;
+
+  // Pinned items appear at the very top of the feed.
+  final bool pinned;
+
   /// Creates a NewsFeed-item with an expandable content
   const FeedItem({
-    Key? key,
+    super.key,
     required this.title,
     this.description = '',
     required this.date,
@@ -66,11 +73,13 @@ class FeedItem extends StatefulWidget {
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
-  }) : super(key: key);
+    this.webViewUrl = '',
+    this.pinned = false,
+  });
 
   /// Creates a NewsFeed-item with an external link
   const FeedItem.link({
-    Key? key,
+    super.key,
     required this.title,
     this.description = '',
     required this.date,
@@ -82,7 +91,9 @@ class FeedItem extends StatefulWidget {
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
-  }) : super(key: key);
+    this.webViewUrl = '',
+    this.pinned = false,
+  });
 
   @override
   State<FeedItem> createState() => FeedItemState();
@@ -120,135 +131,152 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
       generateVideoThumbnail(widget.videoUrl);
     }
 
-    return OpenContainer(
-      transitionType: ContainerTransitionType.fadeThrough,
-      transitionDuration: const Duration(milliseconds: 250),
-      openBuilder: (context, _) {
+    void openDetailsPage() {
+      if (widget.webViewUrl != null && widget.webViewUrl!.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)),
+        );
+      } else {
         if (widget.event != null) {
-          return CalendarDetailPage(event: widget.event!);
+          context.pushTransparentRoute(CalendarDetailPage(event: widget.event!));
         } else {
-          return NewsDetailsPage(
-            title: widget.title,
-            date: widget.date,
-            image: widget.image,
-            link: widget.link,
-            content: widget.content,
-            copyright: widget.copyright,
-            videoUrl: widget.videoUrl,
-            author: widget.author,
+          context.pushTransparentRoute(
+            NewsDetailsPage(
+              title: widget.title,
+              date: widget.date,
+              image: widget.image,
+              link: widget.link,
+              content: widget.content,
+              copyright: widget.copyright,
+              videoUrl: widget.videoUrl,
+              author: widget.author,
+            ),
           );
         }
-      },
-      middleColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
-      closedColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
-      closedElevation: 0,
-      closedBuilder: (context, VoidCallback openDetailsPage) => Padding(
-        padding: const EdgeInsets.only(bottom: 14),
-        child: CustomButton(
-          borderRadius: BorderRadius.circular(15),
-          highlightColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-              ? const Color.fromRGBO(0, 0, 0, 0.03)
-              : const Color.fromRGBO(255, 255, 255, 0.03),
-          splashColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-              ? const Color.fromRGBO(0, 0, 0, 0.04)
-              : const Color.fromRGBO(255, 255, 255, 0.04),
-          tapHandler: openDetailsPage,
-          longPressHandler: openDetailsPage,
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      }
+    }
+
+    return CustomButton(
+      borderRadius: BorderRadius.circular(15),
+      highlightColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+          ? const Color.fromRGBO(0, 0, 0, 0.03)
+          : const Color.fromRGBO(255, 255, 255, 0.03),
+      splashColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+          ? const Color.fromRGBO(0, 0, 0, 0.04)
+          : const Color.fromRGBO(255, 255, 255, 0.04),
+      tapHandler: openDetailsPage,
+      longPressHandler: openDetailsPage,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          children: [
+            // Image & Date
+            Stack(
+              alignment: Alignment.center,
               children: [
-                // Image & Date
-                Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    if (widget.image != null || widget.videoUrl != null)
-                      // Image
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: widget.image == null && videoThumbnailFile != null ? 230 : null,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: widget.image == null && videoThumbnailFile != null
-                              ? Stack(
-                                  fit: StackFit.expand,
-                                  children: [
-                                    Image.file(
-                                      videoThumbnailFile!,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Align(
-                                      child: Container(
-                                        height: 60,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                          color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-                                              ? const Color.fromRGBO(245, 246, 250, 0.5)
-                                              : const Color.fromRGBO(34, 40, 54, 0.5),
-                                          borderRadius: const BorderRadius.all(Radius.circular(30)),
-                                        ),
-                                        child: Icon(
-                                          Icons.play_arrow_sharp,
-                                          color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-                                              ? const Color.fromRGBO(34, 40, 54, 1)
-                                              : const Color.fromRGBO(245, 246, 250, 1),
-                                        ),
+                if (widget.image != null || widget.videoUrl != null)
+                  // Image
+                  SizedBox(
+                    height: widget.image == null && videoThumbnailFile != null ? 230 : null,
+                    child: Hero(
+                      tag: 'news_details_page_hero_tag',
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: widget.image == null && videoThumbnailFile != null
+                            ? Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  Image.file(
+                                    videoThumbnailFile!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Align(
+                                    child: Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                                            ? const Color.fromRGBO(245, 246, 250, 0.5)
+                                            : const Color.fromRGBO(34, 40, 54, 0.5),
+                                        borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                      ),
+                                      child: Icon(
+                                        Icons.play_arrow_sharp,
+                                        color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                                            ? const Color.fromRGBO(34, 40, 54, 1)
+                                            : const Color.fromRGBO(245, 246, 250, 1),
                                       ),
                                     ),
-                                  ],
-                                )
-                              : widget.image,
-                        ),
+                                  ),
+                                ],
+                              )
+                            : widget.image,
                       ),
-                    // Date
-                    if (widget.event != null)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                        margin: const EdgeInsets.only(right: 4, bottom: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              month,
-                              style: Provider.of<ThemesNotifier>(context)
-                                  .currentThemeData
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(fontSize: 14),
-                            ),
-                            Text(
-                              day,
-                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                  ],
-                ),
-                // Title
-                Padding(
-                  padding: const EdgeInsets.only(top: 6),
-                  child: StyledHTML(
-                    context: context,
-                    text: widget.title,
-                    textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                    ),
                   ),
-                ),
-                // Description
-                StyledHTML(
-                  context: context,
-                  text: widget.description,
-                  textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                ),
+                // Date
+                if (widget.event != null)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    margin: const EdgeInsets.only(right: 4, bottom: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          month,
+                          style: Provider.of<ThemesNotifier>(context)
+                              .currentThemeData
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(fontSize: 14),
+                        ),
+                        Text(
+                          day,
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
-          ),
+            // Title
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Row(
+                children: [
+                  if (widget.pinned) ...[
+                    Icon(
+                      Icons.push_pin,
+                      color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                          ? const Color.fromRGBO(34, 40, 54, 1)
+                          : const Color.fromRGBO(245, 246, 250, 1),
+                    ),
+                  ],
+                  SizedBox(
+                    width:
+                        widget.pinned ? MediaQuery.of(context).size.width - 65 : MediaQuery.of(context).size.width - 40,
+                    child: StyledHTML(
+                      context: context,
+                      text: widget.title,
+                      textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Description
+            StyledHTML(
+              context: context,
+              text: widget.description,
+              textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+            ),
+          ],
         ),
       ),
     );

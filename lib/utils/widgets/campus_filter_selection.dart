@@ -13,11 +13,11 @@ class CampusFilterSelection extends StatefulWidget {
   final void Function(Publisher) onSelected;
 
   const CampusFilterSelection({
-    Key? key,
+    super.key,
     required this.filters,
     required this.onSelected,
     this.selections = const [],
-  }) : super(key: key);
+  });
 
   @override
   State<CampusFilterSelection> createState() => _CampusFilterSelectionState();
@@ -50,11 +50,11 @@ class CampusFilterSelectionItem extends StatelessWidget {
   final bool isActive;
 
   const CampusFilterSelectionItem({
-    Key? key,
+    super.key,
     required this.publisher,
     required this.onTap,
     this.isActive = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class CampusFilterSelectionItem extends StatelessWidget {
             ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                 ? const Color.fromRGBO(245, 246, 250, 1)
                 : const Color.fromRGBO(34, 40, 54, 1)
-            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         borderRadius: BorderRadius.circular(6),
         child: InkWell(
           splashColor: const Color.fromRGBO(0, 0, 0, 0.06),

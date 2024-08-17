@@ -6,7 +6,7 @@ import 'package:campus_app/core/themes.dart';
 /// This widget displays an animated illustration for
 /// making the theme selection visually more appealing.
 class ThemeSelection extends StatefulWidget {
-  const ThemeSelection({Key? key}) : super(key: key);
+  const ThemeSelection({super.key});
 
   @override
   State<ThemeSelection> createState() => ThemeSelectionState();
@@ -92,7 +92,7 @@ class ThemeSelectionState extends State<ThemeSelection> with SingleTickerProvide
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
                 ),
               ),
             ),

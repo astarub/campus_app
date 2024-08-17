@@ -22,12 +22,12 @@ class CampusSegmentedControl extends StatefulWidget {
   int selected;
 
   CampusSegmentedControl({
-    Key? key,
+    super.key,
     required this.leftTitle,
     required this.rightTitle,
     required this.onChanged,
     this.selected = 0,
-  }) : super(key: key);
+  });
 
   @override
   State<CampusSegmentedControl> createState() => _CampusSegmentedControlState();
@@ -61,7 +61,7 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
             decoration: BoxDecoration(
               color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? const Color.fromRGBO(245, 246, 250, 1)
-                  : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+                  : const Color.fromRGBO(17, 25, 38, 1),
               borderRadius: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? BorderRadius.circular(6)
                   : BorderRadius.circular(10),

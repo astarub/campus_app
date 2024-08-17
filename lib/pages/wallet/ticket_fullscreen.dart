@@ -12,7 +12,7 @@ import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class BogestraTicketFullScreen extends StatefulWidget {
-  const BogestraTicketFullScreen({Key? key}) : super(key: key);
+  const BogestraTicketFullScreen({super.key});
 
   @override
   State<BogestraTicketFullScreen> createState() => _BogestraTicketFullScreenState();
@@ -65,7 +65,7 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         body: Padding(
           padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0),
           child: Column(

@@ -19,7 +19,10 @@ class FeedUtils {
     bool shuffle = false,
   }) {
     List<dynamic> feedItemOrEventWidget = <dynamic>[];
-    final widgets = <Widget>[];
+
+    List<Widget> widgets = <Widget>[];
+
+    final List<Widget> pinnedWidgets = <Widget>[];
 
     final feedItems = <FeedItem>[];
 
@@ -29,12 +32,19 @@ class FeedUtils {
       final String formattedDescription =
           n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
 
+      bool fotolia = false;
+
+      for (final c in n.copyright) {
+        if (c.toLowerCase().contains('fotolia')) {
+          fotolia = true;
+        }
+      }
+
       feedItems.add(
         FeedItem(
           title: n.title,
           date: n.pubDate,
-          image: n.imageUrl != 'false' &&
-                  (n.copyright.isNotEmpty && !n.copyright.map((e) => e.toLowerCase()).toList().contains('fotolia'))
+          image: n.imageUrl != 'false' && (n.copyright.isNotEmpty && !fotolia)
               ? CachedNetworkImage(
                   imageUrl: n.imageUrl,
                 )
@@ -46,6 +56,8 @@ class FeedUtils {
           categoryIds: n.categoryIds,
           copyright: n.copyright.isNotEmpty ? n.copyright[0] : '',
           videoUrl: n.videoUrl != 'false' ? n.videoUrl : null,
+          webViewUrl: n.webViewUrl,
+          pinned: n.pinned,
         ),
       );
     }
@@ -86,8 +98,14 @@ class FeedUtils {
 
     // add all FeedItems or CalendarEventWidgets to list of Widget
     for (final widget in feedItemOrEventWidget) {
-      widgets.add(widget as Widget);
+      if (widget is FeedItem && widget.pinned) {
+        pinnedWidgets.add(widget as Widget);
+      } else {
+        widgets.add(widget as Widget);
+      }
     }
+
+    widgets = pinnedWidgets + widgets;
 
     // add a SizedBox as padding
     widgets.insert(0, SizedBox(height: heigth ?? 80));

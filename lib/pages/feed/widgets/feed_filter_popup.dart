@@ -18,10 +18,10 @@ class FeedFilterPopup extends StatefulWidget {
   final void Function(List<Publisher>) onClose;
 
   const FeedFilterPopup({
-    Key? key,
+    super.key,
     this.selectedFilters = const [],
     required this.onClose,
-  }) : super(key: key);
+  });
 
   @override
   State<FeedFilterPopup> createState() => _FeedFilterPopupState();
@@ -54,7 +54,7 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
       },
       openPositionFactor: 0.6,
       child: Container(
-        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Column(

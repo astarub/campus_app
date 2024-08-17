@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class CalendarErrorMessage extends StatelessWidget {
   final String message;
 
-  const CalendarErrorMessage({Key? key, required this.message})
-      : super(key: key);
+  const CalendarErrorMessage({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {

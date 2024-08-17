@@ -26,22 +26,22 @@ class CampusTextField extends StatefulWidget {
   late final void Function()? onTap;
 
   CampusTextField({
-    Key? key,
+    super.key,
     required this.textFieldController,
     this.textFieldText = 'Confirm Password',
     this.obscuredInput = false,
     this.onTap,
-  }) : super(key: key) {
+  }) {
     type = CampusTextFieldType.normal;
   }
 
   CampusTextField.icon({
-    Key? key,
+    super.key,
     required this.textFieldController,
     this.textFieldText = 'Confirm Password',
     this.obscuredInput = false,
     required this.pathToIcon,
-  }) : super(key: key) {
+  }) {
     type = CampusTextFieldType.icon;
   }
 

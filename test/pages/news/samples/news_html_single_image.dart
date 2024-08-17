@@ -1,6 +1,7 @@
 ///
 /// Test HTML Response data for RUB news of rubnewsTestNewsUrlSingleImage
 ///
+library;
 // ignore_for_file: unnecessary_string_escapes
 
 const String rubnewsSampleNewsHTMLSingleImage = '''

@@ -93,7 +93,7 @@ final GlobalKey<CampusAppState> campusAppKey = GlobalKey();
 final GlobalKey<HomePageState> homeKey = GlobalKey();
 
 class CampusApp extends StatefulWidget {
-  const CampusApp({Key? key}) : super(key: key);
+  const CampusApp({super.key});
 
   @override
   State<CampusApp> createState() => CampusAppState();
@@ -333,10 +333,7 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
           ? null
           : (context, child) {
               return MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  // ignore: use_named_constants
-                  textScaler: const TextScaler.linear(1),
-                ),
+                data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
                 child: child!,
               );
             },

@@ -14,10 +14,10 @@ class MealInfoButton extends StatelessWidget {
   late final Color? iconColor;
 
   MealInfoButton({
-    Key? key,
+    super.key,
     required this.info,
     required this.onTap,
-  }) : super(key: key) {
+  }) {
     switch (info) {
       case 'A':
         iconPath = 'assets/img/icons/mensa-alcohol.png';
