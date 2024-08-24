@@ -15,6 +15,7 @@ import 'package:campus_app/pages/mensa/widgets/preferences_popup.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,12 +48,16 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   late List<DishEntity> qwestDishes = [];
   late List<DishEntity> henkelmannDishes = [];
   late List<DishEntity> unikidsDishes = [];
+  late List<DishEntity> whsMensaDishes = [];
+  late List<DishEntity> bocholtDishes = [];
+  late List<DishEntity> recklinghausenDishes = [];
   late List<Failure> failures = [];
 
   // Weekday to show as selected
   int selectedDay = -1;
 
   // Weekday that is selected
+  // Initialize with current date or next monday on weekends
   DateTime selectedDate = DateTime.now();
 
   StreamController<DateTime> streamController = StreamController<DateTime>.broadcast();
@@ -65,7 +70,9 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   Widget build(BuildContext context) {
     super.build(context);
 
-    final restaurantConfig = Provider.of<SettingsHandler>(context).currentSettings.mensaRestaurantConfig!;
+    final restaurantConfig = !kDebugMode
+        ? Provider.of<SettingsHandler>(context).currentSettings.mensaRestaurantConfig!
+        : mensaUtils.restaurantConfig;
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
@@ -188,6 +195,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                       controller: scrollController,
                       itemCount: restaurantConfig.length,
                       itemBuilder: (context, index) {
+                        final dishes = getDishesFromIndex(index);
                         return ExpandableRestaurant(
                           // index = place in list
                           name: restaurantConfig[index]['name'],
@@ -205,14 +213,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                                       .mensaPreferences,
                                 )
                               : mensaUtils.fromDishListToMealCategoryList(
-                                  // TODO: Refactor instead of endless if-else
-                                  entities: index == 1
-                                      ? mensaDishes
-                                      : index == 2
-                                          ? roteBeeteDishes
-                                          : index == 3
-                                              ? qwestDishes
-                                              : unikidsDishes,
+                                  entities: dishes,
                                   day: selectedDay,
                                   onPreferenceTap: singlePreferenceSelected,
                                   mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
@@ -253,17 +254,44 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
     settings = Provider.of<SettingsHandler>(context).currentSettings;
   }
 
+  /// Return correct list of dishes (RUB Mensa, QWest, etc.) based on
+  /// the index inside the restaurant config. The index should the same
+  /// as the repository.
+  List<DishEntity> getDishesFromIndex(int index) {
+    switch (index) {
+      // case 0:
+      //   return kulturcafeDishes
+      case 1:
+        return mensaDishes;
+      case 2:
+        return roteBeeteDishes;
+      case 3:
+        return qwestDishes;
+      case 4:
+        return henkelmannDishes;
+      case 5:
+        return unikidsDishes;
+      case 6:
+        return whsMensaDishes;
+      case 7:
+        return bocholtDishes;
+      case 8:
+        return recklinghausenDishes;
+      default:
+        return <DishEntity>[];
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     final DateTime today = DateTime.now();
-    final DateTime startOfWeek = today.subtract(Duration(days: today.weekday - 1));
 
     // Choose selected day: Mo -> 0 ... Fr -> 4, Sa & So -> 5 (next monday)
     selectedDay = today.weekday > 5 ? today.weekday - 1 : 5;
 
     // Choose selected date to load data: today or next monday on weekend
-    selectedDate = today.weekday > 5 ? today : startOfWeek.add(const Duration(days: 7));
+    selectedDate = today.weekday > 5 ? today.add(Duration(days: 8 - today.weekday)) : today;
 
     // Add observer in order to listen to `didChangeAppLifecycleState`
     WidgetsBinding.instance.addObserver(this);
@@ -282,6 +310,9 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
           qwestDishes = data['qwest'] != null ? data['qwest']! as List<DishEntity> : [];
           henkelmannDishes = data['henkelmann'] != null ? data['henkelmann']! as List<DishEntity> : [];
           unikidsDishes = data['unikids'] != null ? data['unikids']! as List<DishEntity> : [];
+          whsMensaDishes = data['whs_mensa'] != null ? data['whs_mensa']! as List<DishEntity> : [];
+          whsMensaDishes = data['bocholt'] != null ? data['bocholt']! as List<DishEntity> : [];
+          recklinghausenDishes = data['recklinghausen'] != null ? data['recklinghausen']! as List<DishEntity> : [];
           failures = data['failures'] != null ? data['failures']! as List<Failure> : [];
         }),
       );

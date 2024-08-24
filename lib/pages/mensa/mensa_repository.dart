@@ -29,6 +29,9 @@ class MensaRepository {
   ///   * 3: AKAFÖ Qwest
   ///   * 4: AKAFÖ Pfannengericht
   ///   * 5: AKAFÖ Unikids / Unizwerge
+  ///   * 6: AKAFÖ WHS Gelsenkirchen
+  ///   * 7: AKAFÖ WHS Bocholt
+  ///   * 8: AKAFÖ WHS Recklinghausen
   Future<Either<Failure, List<DishEntity>>> getAWDishes(int restaurant) async {
     try {
       final List<DishEntity> dishes = [];
@@ -48,8 +51,11 @@ class MensaRepository {
           // Request only dishes that should displayed inside the app (2 weeks)
           Query.between(
             'date',
-            today.subtract(Duration(days: today.weekday - 1)),
-            today.add(Duration(days: 14 - today.weekday)),
+            // UTC and ISO 8601 is required to ensure correct data format AppWrite can handle.
+            // Also, adding / substracting one more hour ensures that the time is alway after / before 12am
+            // because the dishes time stamp is set to modnight by default.
+            today.subtract(Duration(days: today.weekday - 1, hours: today.hour + 1)).toUtc().toIso8601String(),
+            today.add(Duration(days: 14 - today.weekday, hours: 25 - today.hour)).toUtc().toIso8601String(),
           ),
         ],
       );
@@ -79,7 +85,7 @@ class MensaRepository {
       return Right(dishes);
     } catch (e) {
       switch (e.runtimeType) {
-        case AppwriteException:
+        case AppwriteException _:
           return Left(ServerFailure());
 
         default:

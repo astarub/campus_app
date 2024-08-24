@@ -16,25 +16,67 @@ class MensaUsecases {
       'mensa': <DishEntity>[],
       'roteBeete': <DishEntity>[],
       'qwest': <DishEntity>[],
+      'henkelmann': <DishEntity>[],
+      'unikids': <DishEntity>[],
+      'bochult': <DishEntity>[],
+      'whs_mensa': <DishEntity>[],
     };
 
     final Either<Failure, List<DishEntity>> mensaCachedDishes = mensaRepository.getCachedDishes(1);
     final Either<Failure, List<DishEntity>> roteBeeteCachedDishes = mensaRepository.getCachedDishes(2);
     final Either<Failure, List<DishEntity>> qwestCachedDishes = mensaRepository.getCachedDishes(3);
+    final Either<Failure, List<DishEntity>> henkelmannCachedDishes = mensaRepository.getCachedDishes(4);
+    final Either<Failure, List<DishEntity>> unikidsCachedDishes = mensaRepository.getCachedDishes(5);
+    final Either<Failure, List<DishEntity>> whsCachedDishes = mensaRepository.getCachedDishes(6);
+    final Either<Failure, List<DishEntity>> bocholtCachedDishes = mensaRepository.getCachedDishes(7);
+    final Either<Failure, List<DishEntity>> recklinghausenCachedDishes = mensaRepository.getCachedDishes(8);
 
+    // Q-West
+    qwestCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['qwest'] = dishes,
+    );
+
+    // RUB Mensa
     mensaCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['mensa'] = dishes,
     );
 
+    // Rote Beete
     roteBeeteCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['roteBeete'] = dishes,
     );
 
-    qwestCachedDishes.fold(
+    // Henkelmann
+    henkelmannCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
-      (dishes) => data['qwest'] = dishes,
+      (dishes) => data['henkelmann'] = dishes,
+    );
+
+    // Unikids
+    unikidsCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['unikids'] = dishes,
+    );
+
+    // WHS Mensa Gelsenkirchen
+    whsCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['whs_mensa'] = dishes,
+    );
+
+    // WHS Bocholt
+    bocholtCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['whs_mensa'] = dishes,
+    );
+
+    // WHS Recklinghausen
+    recklinghausenCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['whs_mensa'] = dishes,
     );
 
     return data;
@@ -48,6 +90,8 @@ class MensaUsecases {
       'qwest': <DishEntity>[],
       'henkelmann': <DishEntity>[],
       'unikids': <DishEntity>[],
+      'bochult': <DishEntity>[],
+      'whs_mensa': <DishEntity>[],
     };
 
     // Get remote and cached dishes
@@ -61,23 +105,20 @@ class MensaUsecases {
     final Either<Failure, List<DishEntity>> qwestRemoteDishes = await mensaRepository.getAWDishes(3);
     final Either<Failure, List<DishEntity>> henkelmannRemoteDishes = await mensaRepository.getAWDishes(4);
     final Either<Failure, List<DishEntity>> unikidsRemoteDishes = await mensaRepository.getAWDishes(5);
+    final Either<Failure, List<DishEntity>> whsRemoteDishes = await mensaRepository.getAWDishes(6);
+    final Either<Failure, List<DishEntity>> bocholtRemoteDishes = await mensaRepository.getAWDishes(7);
+    final Either<Failure, List<DishEntity>> recklinghausenRemoteDishes = await mensaRepository.getAWDishes(8);
 
     final Either<Failure, List<DishEntity>> mensaCachedDishes = mensaRepository.getCachedDishes(1);
     final Either<Failure, List<DishEntity>> roteBeeteCachedDishes = mensaRepository.getCachedDishes(2);
     final Either<Failure, List<DishEntity>> qwestCachedDishes = mensaRepository.getCachedDishes(3);
     final Either<Failure, List<DishEntity>> henkelmannCachedDishes = mensaRepository.getCachedDishes(4);
     final Either<Failure, List<DishEntity>> unikidsCachedDishes = mensaRepository.getCachedDishes(5);
+    final Either<Failure, List<DishEntity>> whsCachedDishes = mensaRepository.getCachedDishes(6);
+    final Either<Failure, List<DishEntity>> bocholtCachedDishes = mensaRepository.getCachedDishes(7);
+    final Either<Failure, List<DishEntity>> recklinghausenCachedDishes = mensaRepository.getCachedDishes(8);
 
-    mensaCachedDishes.fold(
-      (failure) => data['failures']!.add(failure),
-      (dishes) => data['mensa'] = dishes,
-    );
-
-    roteBeeteCachedDishes.fold(
-      (failure) => data['failures']!.add(failure),
-      (dishes) => data['roteBeete'] = dishes,
-    );
-
+    // Q-West
     qwestCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['qwest'] = dishes,
@@ -88,9 +129,21 @@ class MensaUsecases {
       (dishes) => data['qwest'] = dishes,
     );
 
+    // RUB Mensa
+    mensaCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['mensa'] = dishes,
+    );
+
     mensaRemoteDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['mensa'] = dishes,
+    );
+
+    // Rote Beete
+    roteBeeteCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['roteBeete'] = dishes,
     );
 
     roteBeeteRemoteDishes.fold(
@@ -98,6 +151,7 @@ class MensaUsecases {
       (dishes) => data['roteBeete'] = dishes,
     );
 
+    // Henkelmann
     henkelmannCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['henkelmann'] = dishes,
@@ -108,6 +162,7 @@ class MensaUsecases {
       (dishes) => data['henkelmann'] = dishes,
     );
 
+    // Unikids
     unikidsCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['unikids'] = dishes,
@@ -116,6 +171,39 @@ class MensaUsecases {
     unikidsRemoteDishes.fold(
       (failure) => data['failures']!.add(failure),
       (dishes) => data['unikids'] = dishes,
+    );
+
+    // WHS Mensa Gelsenkirchen
+    whsCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['whs_mensa'] = dishes,
+    );
+
+    whsRemoteDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['whs_mensa'] = dishes,
+    );
+
+    // WHS Bocholt
+    bocholtCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['whs_mensa'] = dishes,
+    );
+
+    bocholtRemoteDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['bocholt'] = dishes,
+    );
+
+    // WHS Recklinghausen
+    recklinghausenCachedDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['whs_mensa'] = dishes,
+    );
+
+    recklinghausenRemoteDishes.fold(
+      (failure) => data['failures']!.add(failure),
+      (dishes) => data['bocholt'] = dishes,
     );
 
     // Add Henkelmann to Mensa

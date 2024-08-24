@@ -34,12 +34,12 @@ class MensaDaySelectionItem extends StatelessWidget {
   final bool isActive;
 
   const MensaDaySelectionItem({
-    Key? key,
+    super.key,
     required this.day,
     required this.date,
     required this.onTap,
     this.isActive = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

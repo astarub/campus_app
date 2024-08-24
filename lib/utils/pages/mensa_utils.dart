@@ -29,10 +29,25 @@ class MensaUtils {
       'imagePath': 'assets/img/qwest.png',
     },
     {
-      'name': 'Unikids',
-      'openingHours': {'1-5': '', '6': '', '7': ''},
-      'imagePath': 'assets/img/qwest.png',
-    }
+      'name': 'Unikids / Unizwerge',
+      'openingHours': {'6': '', '7': '', '1-5': '07:30-17:30'},
+      'imagePath': 'assets/img/mensa.png',
+    },
+    {
+      'name': 'WHS Gelsenkirchen',
+      'openingHours': {'6': '', '7': '', '1-5': '11:00-14:00'},
+      'imagePath': 'assets/img/mensa.png',
+    },
+    {
+      'name': 'WHS Bocholt',
+      'openingHours': {'6': '', '7': '', '1-5': '07:30-14:30'},
+      'imagePath': 'assets/img/mensa.png',
+    },
+    {
+      'name': 'WHS Recklinghausen',
+      'openingHours': {'6': '', '7': '', '1-4': '11:00-13:45', '5': '11:00-13:30'},
+      'imagePath': 'assets/img/mensa.png',
+    },
   ];
 
   /// Hardcoded KulturCafé.
@@ -537,6 +552,12 @@ class MensaUtils {
         return 'henkelmann';
       case 5:
         return 'unikids';
+      case 6:
+        return 'whs_mensa';
+      case 7:
+        return 'bocholt';
+      case 8:
+        return 'recklinghausen';
       default:
         return 'mensa_rub';
     }
