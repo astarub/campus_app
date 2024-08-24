@@ -50,6 +50,65 @@ class MensaUtils {
     },
   ];
 
+  final Map<String, String> dishInfos = {
+    'Halal': 'H',
+    'Geflügel': 'G',
+    'Schwein': 'S',
+    'Rind': 'R',
+    'Lamm': 'L',
+    'Wild': 'W',
+    'Alkohol': 'A',
+    'Vegan': 'VG',
+    'Vegetarisch': 'V',
+  };
+
+  final Map<String, String> dishAdditives = {
+    'Farbstoff': '1',
+    'Konservierungsstoff': '2',
+    'Antioxidationsmittel': '3',
+    'geschwefelt': '5',
+    'geschwärzt': '6',
+    'Phosphat': '8',
+    'Süßungsmittel': '9',
+    'Phenylalaninquelle': '10',
+    'Schwefeldioxid': 'E220',
+    'koffeinhaltig': '12',
+    'Gelatine': 'EG',
+    'Geschmacksverstärker': '4',
+  };
+
+  final Map<String, String> dishAllergenes = {
+    'Gluten': 'a',
+    'Weizen': 'a1',
+    'Roggen': 'a2',
+    'Gerste': 'a3',
+    'Hafer': 'a4',
+    'Dinkel': 'a5',
+    'Kamut': 'a6',
+    'Krebstiere': 'b',
+    'Eier': 'c',
+    'Fisch': 'd',
+    'Erdnüsse': 'e',
+    'Sojabohnen': 'f',
+    'Milch': 'g',
+    'Spuren von Schalenfrüchte': 'u',
+    'Schalenfrucht(e)': 'h',
+    'Mandel': 'h1',
+    'Haselnuss': 'h2',
+    'Walnuss': 'h3',
+    'Cashewnuss': 'h4',
+    'Pecanuss': 'h5',
+    'Paranuss': 'h6',
+    'Pistazie': 'h7',
+    'Macadamia': 'h8',
+    'Sellerie': 'i',
+    'Senf': 'j',
+    'Sesamsamen': 'k',
+    'Schwefeldioxis': 'l',
+    'Lupine': 'm',
+    'Weichtiere': 'n',
+  };
+
   /// Hardcoded KulturCafé.
   List<MealCategory> buildKulturCafeRestaurant({
     required void Function(String) onPreferenceTap,
@@ -578,7 +637,31 @@ class MensaUtils {
 
     for (final additiv in awList) {
       if (additiv is String) {
-        retVal.add(additiv);
+        if (dishAdditives.containsValue(additiv)) retVal.add(additiv);
+      }
+    }
+
+    return retVal;
+  }
+
+  List<String> readListOfAllergenes(List<dynamic> awList) {
+    final retVal = <String>[];
+
+    for (final allergene in awList) {
+      if (allergene is String) {
+        if (dishAllergenes.containsValue(allergene)) retVal.add(allergene);
+      }
+    }
+
+    return retVal;
+  }
+
+  List<String> readListOfInfos(List<dynamic> awList) {
+    final retVal = <String>[];
+
+    for (final info in awList) {
+      if (info is String) {
+        if (dishInfos.containsValue(info)) retVal.add(info);
       }
     }
 

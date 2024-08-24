@@ -262,20 +262,18 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
       // case 0:
       //   return kulturcafeDishes
       case 1:
-        return mensaDishes;
+        return mensaDishes; // mensa + henkelmann
       case 2:
         return roteBeeteDishes;
       case 3:
         return qwestDishes;
       case 4:
-        return henkelmannDishes;
-      case 5:
         return unikidsDishes;
-      case 6:
+      case 5:
         return whsMensaDishes;
-      case 7:
+      case 6:
         return bocholtDishes;
-      case 8:
+      case 7:
         return recklinghausenDishes;
       default:
         return <DishEntity>[];

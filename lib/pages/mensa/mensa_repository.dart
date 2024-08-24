@@ -68,11 +68,11 @@ class MensaRepository {
             category: dishData['menuName'],
             title: dishData['dishName'],
             price: dishData['dishPrice'] ?? 'Preis vor Ort',
-            infos: utils.readListOfAdditives(dishData['dishAdditives']),
             // Difference between these three lists is
             // not present in XML / AppWrite data
-            // allergenes: utils.readListOfAdditives(dishData['dishAdditives']),
-            // additives: utils.readListOfAdditives(dishData['dishAdditives']),
+            infos: utils.readListOfInfos(dishData['dishAdditives']),
+            allergenes: utils.readListOfAllergenes(dishData['dishAdditives']),
+            additives: utils.readListOfAdditives(dishData['dishAdditives']),
           ),
         );
       }
