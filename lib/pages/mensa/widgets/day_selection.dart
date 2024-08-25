@@ -321,7 +321,7 @@ class _MensaDaySelectionState extends State<MensaDaySelection> {
     }
 
     // Choose selected day: Mo -> 0 ... Fr -> 4, Sa & So -> 5 (next monday)
-    selectedDay = today.weekday > 5 ? today.weekday - 1 : 5;
+    selectedDay = today.weekday > 5 ? 5 : today.weekday - 1;
 
     return calculatedDates;
   }

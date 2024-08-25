@@ -111,6 +111,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                           },
                         ),
                       ),
+                      // Hint
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                         child: Column(
@@ -285,9 +286,6 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
     super.initState();
     final DateTime today = DateTime.now();
 
-    // Choose selected day: Mo -> 0 ... Fr -> 4, Sa & So -> 5 (next monday)
-    selectedDay = today.weekday > 5 ? today.weekday - 1 : 5;
-
     // Choose selected date to load data: today or next monday on weekend
     selectedDate = today.weekday > 5 ? today.add(Duration(days: 8 - today.weekday)) : today;
 
@@ -309,7 +307,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
           henkelmannDishes = data['henkelmann'] != null ? data['henkelmann']! as List<DishEntity> : [];
           unikidsDishes = data['unikids'] != null ? data['unikids']! as List<DishEntity> : [];
           whsMensaDishes = data['whs_mensa'] != null ? data['whs_mensa']! as List<DishEntity> : [];
-          whsMensaDishes = data['bocholt'] != null ? data['bocholt']! as List<DishEntity> : [];
+          bocholtDishes = data['bocholt'] != null ? data['bocholt']! as List<DishEntity> : [];
           recklinghausenDishes = data['recklinghausen'] != null ? data['recklinghausen']! as List<DishEntity> : [];
           failures = data['failures'] != null ? data['failures']! as List<Failure> : [];
         }),

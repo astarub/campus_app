@@ -187,7 +187,7 @@ class MensaUsecases {
     // WHS Bocholt
     bocholtCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
-      (dishes) => data['whs_mensa'] = dishes,
+      (dishes) => data['bocholt'] = dishes,
     );
 
     bocholtRemoteDishes.fold(
@@ -198,12 +198,12 @@ class MensaUsecases {
     // WHS Recklinghausen
     recklinghausenCachedDishes.fold(
       (failure) => data['failures']!.add(failure),
-      (dishes) => data['whs_mensa'] = dishes,
+      (dishes) => data['recklinghausen'] = dishes,
     );
 
     recklinghausenRemoteDishes.fold(
       (failure) => data['failures']!.add(failure),
-      (dishes) => data['bocholt'] = dishes,
+      (dishes) => data['recklinghausen'] = dishes,
     );
 
     // Add Henkelmann to Mensa
