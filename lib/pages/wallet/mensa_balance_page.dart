@@ -15,7 +15,7 @@ import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
 import 'package:campus_app/utils/widgets/animated_number.dart';
 
 class MensaBalancePage extends StatefulWidget {
-  const MensaBalancePage({Key? key}) : super(key: key);
+  const MensaBalancePage({super.key});
 
   @override
   State<MensaBalancePage> createState() => _MensaBalancePageState();
@@ -127,7 +127,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
           );
         } catch (e) {
           switch (e.runtimeType) {
-            case PlatformException:
+            case const (PlatformException):
               {
                 debugPrint('Timeout while waiting for a nfc scan.');
               }
@@ -151,7 +151,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
             );
           } catch (e) {
             switch (e.runtimeType) {
-              case PlatformException:
+              case const (PlatformException):
                 {
                   debugPrint('Timeout while waiting for a nfc scan.');
                 }
@@ -192,7 +192,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       body: Padding(
         padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0),
         child: Column(

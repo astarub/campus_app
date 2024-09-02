@@ -162,22 +162,34 @@ const List<Map<String, String>> faqEntries = [
   {
     'title': 'Semesterticket',
     'content': '''
-      Der Geltungsbereich des Semestertickets erstreckt sich auf den gesamten VRR-Bereich und mittlerweile auch nach Venlo. 
-      Zudem ist das Ticket in ganz NRW gültig. Beachte hierbei, dass es nur ausgedruckt oder per PDF mit einem amtlichen 
-      Lichtbildausweis (Perso oder Reisepass) gültig ist. Das Ticket kann über eCampus abgerufen werden.
-      Für einen Aufschlag von 12,33 € kannst du dein Semesterticket zu einem Deutschlandticket aufwerten. Beachte, dass
-      du bei Nutzung des Deutschlandtickets, den QR-Code des Deutschlandtickets, dein Semesterticket und ein Lichtbildausweis
-      mitführen musst. 
-      <a href="https://studium.ruhr-uni-bochum.de/de/vom-semesterticket-zum-deutschlandticket">Buchung/Infos</a>
+      Das Deutschland-Semesterticket gilt deutschlandweit für den öffentlichen Nahverkehr. 
+      Es können alle Verkehrsmittel des ÖPNV (alle Fahrzeuge des Nahverkehrs, Busse, Straßen-, Stadt- und U-Bahnen sowie S-Bahnen, Regionalbahnen und Regionalexpresse der 2. Klasse) benutzt werden. 
+      Es ist keine Fahrrad- und Personenmitnahme möglich.
+      IC/EC, ICE, dürfen grundsätzlich nicht benutzt werden, es sei denn diese Züge werden aufgrund außergewöhnlicher Verspätungen der REs und RBs für Deutschland-Semestertickets freigegeben.
+      Das Deutschland-Semesterticket ist jeweils gültig vom 01.04. bis zum 30.09. für ein Sommersemester und vom 01.10. bis zum 31.03. für ein Wintersemester. Also denk daran, dich rechtzeitig zurückzumelden und den Fahrausweis verlängern zu lassen.
+
+      Dein Ticket ist nur in Verbindung mit einem amtlichen Lichtbildausweis wie Personalausweis oder Reisepass gültig. Aufgrund der bundesweiten Tarifbestimmung ist das Ticket ausschließlich in digitaler Form gültig, und zwar als Download, den du in deinem Handy-Wallet mitführst oder online aufgerufen im RIDE Ticketing Campusportal.
+      
+      Für das Mitführen des Tickets auf einem digitalen Endgerät (z.B. Smartphone, Tablet, Laptop) gilt:
+      Das Gerät muss bei Nutzung der Angebote geladen und voll funktionsfähig sein
+      Bestimmte Ticketmerkmale müssen darstellbar sein: Name, Geburtsdatum, QR-Code
+      Falls du dein Ticket vergessen hast und kontrolliert wirst, so gilt dies nicht als Schwarzfahren. Du musst später dein Deutschland-Semesterticket vorzeigen und eine Verwaltungsgebühr zahlen. Die Gebühr ist abhängig vom jeweiligen Verkehrsbetrieb und liegt in der Regel zwischen 4 und 8 Euro. Das gültige Ticket muss dann meist innerhalb von 7 Tagen nach gezeigt werden.
+      
+      Es ist keine Fahrrad- und Personenmitnahme möglich. 
+      Für die Fahrradmitnahme muss eine Erweiterung hinzugebucht werden (z.B. Fahrradticket für 24h, NRWupgrade Fahrrad für die Nutzung in NRW).
+
+      <a href="https://asta-bochum.de/informationen-zum-deutschland-semesterticket-ab-dem-sommersemester-2024/">Weitere Infos</a>
+
+      <a href="https://abo.ride-ticketing.de/app/login?partnerId=61b1cbf4604e623aef325ef0e4226cea">Buchung/Infos</a>
     ''',
   },
   {
     'title': 'Sozialbeitrag',
     'content': '''
       Der Sozialbeitrag ist ein von jedem Studierenden für jedes Semester erneut zu entrichtender Pflichtbeitrag. 
-      Der Betrag beläuft sich im Sommersemester 2023 auf insgesamt 362,62 €. 
-      Enthalten sind 120 € für das Akademische Förderungswerk (AKAFÖ), welches z.B. für die Mensa und Wohnheime zuständig 
-      ist, 220,02 € (regulär) für das Semesterticket sowie 20,1 € für die Studierendenschaft der RUB (AStA).
+      Der Betrag beläuft sich im Sommersemester 2024 auf insgesamt 325 €. 
+      Enthalten sind 125 € für das Akademische Förderungswerk (AKAFÖ), welches z.B. für die Mensa und Wohnheime zuständig 
+      ist, 176,4 € (regulär) für das Semesterticket sowie 23,6 € für die Studierendenschaft der RUB (AStA).
       ''',
   },
   {

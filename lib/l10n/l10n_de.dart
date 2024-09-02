@@ -2,7 +2,7 @@ import 'l10n.dart';
 
 /// The translations for German (`de`).
 class AppLocalizationsDe extends AppLocalizations {
-  AppLocalizationsDe([String locale = 'de']) : super(locale);
+  AppLocalizationsDe([super.locale = 'de']);
 
   @override
   String get helloWorld => 'Hallo Welt!';

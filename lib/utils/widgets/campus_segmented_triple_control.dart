@@ -20,12 +20,12 @@ class CampusSegmentedTripleControl extends StatefulWidget {
   final void Function(int) onChanged;
 
   const CampusSegmentedTripleControl({
-    Key? key,
+    super.key,
     required this.leftTitle,
     required this.centerTitle,
     required this.rightTitle,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<CampusSegmentedTripleControl> createState() => CampusSegmentedTripleControlState();
@@ -94,7 +94,7 @@ class CampusSegmentedTripleControlState extends State<CampusSegmentedTripleContr
             decoration: BoxDecoration(
               color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? const Color.fromRGBO(245, 246, 250, 1)
-                  : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+                  : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
               borderRadius: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? BorderRadius.circular(6)
                   : BorderRadius.circular(10),

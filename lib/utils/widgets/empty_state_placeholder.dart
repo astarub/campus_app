@@ -21,11 +21,11 @@ class EmptyStatePlaceholder extends StatelessWidget {
   final String illustrationPath;
 
   const EmptyStatePlaceholder({
-    Key? key,
+    super.key,
     required this.title,
     required this.text,
     this.illustrationPath = '',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

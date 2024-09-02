@@ -20,13 +20,12 @@ class StyledHTML extends Html {
   final TextAlign? textAlign;
 
   StyledHTML({
-    Key? key,
+    super.key,
     required this.context,
     required this.text,
     this.textStyle,
     this.textAlign,
   }) : super(
-          key: key,
           data: text,
           style: {
             'h4': Style(

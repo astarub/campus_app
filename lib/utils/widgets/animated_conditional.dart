@@ -15,11 +15,11 @@ class AnimatedConditional extends StatefulWidget {
   final Widget child;
 
   const AnimatedConditional({
-    Key? key,
+    super.key,
     this.duration = const Duration(milliseconds: 200),
     this.interval = const Interval(0, 1, curve: Curves.ease),
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedConditional> createState() => AnimatedConditionalState();

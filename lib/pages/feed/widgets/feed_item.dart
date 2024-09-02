@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 
@@ -52,9 +53,15 @@ class FeedItem extends StatefulWidget {
   /// Copyright of the news image
   final String copyright;
 
+  // Open a webview on click
+  final String? webViewUrl;
+
+  // Pinned items appear at the very top of the feed.
+  final bool pinned;
+
   /// Creates a NewsFeed-item with an expandable content
   const FeedItem({
-    Key? key,
+    super.key,
     required this.title,
     this.description = '',
     required this.date,
@@ -66,11 +73,13 @@ class FeedItem extends StatefulWidget {
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
-  }) : super(key: key);
+    this.webViewUrl = '',
+    this.pinned = false,
+  });
 
   /// Creates a NewsFeed-item with an external link
   const FeedItem.link({
-    Key? key,
+    super.key,
     required this.title,
     this.description = '',
     required this.date,
@@ -82,7 +91,9 @@ class FeedItem extends StatefulWidget {
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
-  }) : super(key: key);
+    this.webViewUrl = '',
+    this.pinned = false,
+  });
 
   @override
   State<FeedItem> createState() => FeedItemState();
@@ -121,21 +132,28 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
     }
 
     void openDetailsPage() {
-      if (widget.event != null) {
-        context.pushTransparentRoute(CalendarDetailPage(event: widget.event!));
-      } else {
-        context.pushTransparentRoute(
-          NewsDetailsPage(
-            title: widget.title,
-            date: widget.date,
-            image: widget.image,
-            link: widget.link,
-            content: widget.content,
-            copyright: widget.copyright,
-            videoUrl: widget.videoUrl,
-            author: widget.author,
-          ),
+      if (widget.webViewUrl != null && widget.webViewUrl!.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)),
         );
+      } else {
+        if (widget.event != null) {
+          context.pushTransparentRoute(CalendarDetailPage(event: widget.event!));
+        } else {
+          context.pushTransparentRoute(
+            NewsDetailsPage(
+              title: widget.title,
+              date: widget.date,
+              image: widget.image,
+              link: widget.link,
+              content: widget.content,
+              copyright: widget.copyright,
+              videoUrl: widget.videoUrl,
+              author: widget.author,
+            ),
+          );
+        }
       }
     }
 
@@ -153,16 +171,14 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image & Date
             Stack(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.center,
               children: [
                 if (widget.image != null || widget.videoUrl != null)
                   // Image
                   SizedBox(
-                    width: MediaQuery.of(context).size.width,
                     height: widget.image == null && videoThumbnailFile != null ? 230 : null,
                     child: Hero(
                       tag: 'news_details_page_hero_tag',
@@ -232,10 +248,26 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
             // Title
             Padding(
               padding: const EdgeInsets.only(top: 6),
-              child: StyledHTML(
-                context: context,
-                text: widget.title,
-                textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+              child: Row(
+                children: [
+                  if (widget.pinned) ...[
+                    Icon(
+                      Icons.push_pin,
+                      color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                          ? const Color.fromRGBO(34, 40, 54, 1)
+                          : const Color.fromRGBO(245, 246, 250, 1),
+                    ),
+                  ],
+                  SizedBox(
+                    width:
+                        widget.pinned ? MediaQuery.of(context).size.width - 65 : MediaQuery.of(context).size.width - 40,
+                    child: StyledHTML(
+                      context: context,
+                      text: widget.title,
+                      textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                    ),
+                  ),
+                ],
               ),
             ),
             // Description

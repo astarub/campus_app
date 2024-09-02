@@ -34,13 +34,13 @@ class CalendarRepository {
       return Right(entities);
     } catch (e) {
       switch (e.runtimeType) {
-        case ServerException:
+        case const (ServerException):
           return Left(ServerFailure());
 
-        case JsonException:
+        case const (JsonException):
           return Left(ServerFailure());
 
-        case EmptyResponseException:
+        case const (EmptyResponseException):
           return Left(NoDataFailure());
 
         default:
@@ -66,13 +66,13 @@ class CalendarRepository {
       return Right(entities);
     } catch (e) {
       switch (e.runtimeType) {
-        case ServerException:
+        case const (ServerException):
           return Left(ServerFailure());
 
-        case JsonException:
+        case const (JsonException):
           return Left(ServerFailure());
 
-        case EmptyResponseException:
+        case const (EmptyResponseException):
           return Left(NoDataFailure());
 
         default:

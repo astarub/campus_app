@@ -12,7 +12,7 @@ class FaqPage extends StatelessWidget {
   final GlobalKey<NavigatorState> ourNavigatorKey = GlobalKey<NavigatorState>();
   final List<Widget> faqExpandables = [];
 
-  FaqPage({Key? key}) : super(key: key) {
+  FaqPage({super.key}) {
     // Sort the Entries Alphabetically before Adding them
     final List<Map<String, String>> faqList = _sortFaqList(List.from(faqEntries), 'title');
 
@@ -38,7 +38,7 @@ class FaqPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       body: Padding(
         padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0),
         child: Column(

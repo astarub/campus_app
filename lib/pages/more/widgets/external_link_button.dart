@@ -22,12 +22,12 @@ class ExternalLinkButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const ExternalLinkButton({
-    Key? key,
+    super.key,
     required this.title,
     required this.leadingIconPath,
     this.trailingIconPath = 'assets/img/icons/external-link.svg',
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -125,10 +125,10 @@ class SocialMediaButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const SocialMediaButton({
-    Key? key,
+    super.key,
     required this.iconPath,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

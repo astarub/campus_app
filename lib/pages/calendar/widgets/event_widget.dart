@@ -27,12 +27,12 @@ class CalendarEventWidget extends StatelessWidget {
   final bool openable;
 
   const CalendarEventWidget({
-    Key? key,
+    super.key,
     required this.event,
     this.padding = EdgeInsets.zero,
     this.boxShadow = const BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 3)),
     this.openable = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -94,11 +94,28 @@ class CalendarEventWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StyledHTML(
-                      context: context,
-                      text: event.title,
-                      textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                      textAlign: TextAlign.left,
+                    Row(
+                      children: [
+                        if (event.pinned) ...[
+                          Icon(
+                            Icons.push_pin,
+                            color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                                ? const Color.fromRGBO(34, 40, 54, 1)
+                                : const Color.fromRGBO(245, 246, 250, 1),
+                          ),
+                        ],
+                        SizedBox(
+                          width: event.pinned
+                              ? MediaQuery.of(context).size.width - 150
+                              : MediaQuery.of(context).size.width - 130,
+                          child: StyledHTML(
+                            context: context,
+                            text: event.title,
+                            textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 6),

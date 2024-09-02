@@ -12,10 +12,10 @@ class StudySelection extends StatefulWidget {
   final List<StudyCourse> selectedStudies;
 
   const StudySelection({
-    Key? key,
+    super.key,
     required this.availableStudies,
     required this.selectedStudies,
-  }) : super(key: key);
+  });
 
   @override
   State<StudySelection> createState() => _StudySelectionState();
@@ -56,11 +56,11 @@ class StudySelectionItem extends StatelessWidget {
   final bool isActive;
 
   const StudySelectionItem({
-    Key? key,
+    super.key,
     required this.course,
     required this.onTap,
     this.isActive = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class StudySelectionItem extends StatelessWidget {
             ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                 ? const Color.fromRGBO(245, 246, 250, 1)
                 : const Color.fromRGBO(34, 40, 54, 1)
-            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         borderRadius: BorderRadius.circular(6),
         child: InkWell(
           splashColor: const Color.fromRGBO(0, 0, 0, 0.06),

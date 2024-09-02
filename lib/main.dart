@@ -93,7 +93,7 @@ final GlobalKey<CampusAppState> campusAppKey = GlobalKey();
 final GlobalKey<HomePageState> homeKey = GlobalKey();
 
 class CampusApp extends StatefulWidget {
-  const CampusApp({Key? key}) : super(key: key);
+  const CampusApp({super.key});
 
   @override
   State<CampusApp> createState() => CampusAppState();

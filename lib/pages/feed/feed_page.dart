@@ -28,11 +28,11 @@ class FeedPage extends StatefulWidget {
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const FeedPage({
-    Key? key,
+    super.key,
     required this.mainNavigatorKey,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
-  }) : super(key: key);
+  });
 
   @override
   State<FeedPage> createState() => FeedPageState();
@@ -201,7 +201,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
         : (searchWord != '' ? searchNewsWidgets : parsedNewsWidgets);
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       floatingActionButton: ScrollToTopButton(scrollController: _scrollController),
       body: Center(
         child: AnimatedExit(
@@ -241,7 +241,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                     bottom: 20,
                   ),
                   color: headerOpacity == 1
-                      ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background
+                      ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface
                       : Colors.transparent,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,

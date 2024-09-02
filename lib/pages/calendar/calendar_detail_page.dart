@@ -20,9 +20,9 @@ class CalendarDetailPage extends StatefulWidget {
   final Event event;
 
   const CalendarDetailPage({
-    Key? key,
+    super.key,
     required this.event,
-  }) : super(key: key);
+  });
 
   @override
   State<CalendarDetailPage> createState() => _CalendarDetailState();
@@ -90,7 +90,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
         Navigator.pop(context);
       },
       child: Scaffold(
-        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         body: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

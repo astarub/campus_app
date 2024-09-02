@@ -38,7 +38,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       body: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(

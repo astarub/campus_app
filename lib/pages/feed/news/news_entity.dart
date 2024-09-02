@@ -48,6 +48,14 @@ class NewsEntity {
   @HiveField(9)
   final String? videoUrl;
 
+  /// Pinned
+  @HiveField(10, defaultValue: false)
+  final bool pinned;
+
+  /// URL for a webview
+  @HiveField(11, defaultValue: null)
+  final String? webViewUrl;
+
   const NewsEntity({
     required this.title,
     this.description = '',
@@ -59,6 +67,8 @@ class NewsEntity {
     this.categoryIds = const [],
     this.copyright = const [],
     this.videoUrl,
+    this.pinned = false,
+    this.webViewUrl = '',
   });
 
   /// Returns a NewsEntity based on a single XML element given by the web server
@@ -128,6 +138,8 @@ class NewsEntity {
       copyright: copyright,
       imageUrl: json['fimg_url'] != null ? json['fimg_url'].toString() : 'false',
       videoUrl: json['fvideo_url'] != null ? json['fvideo_url'].toString() : 'false',
+      pinned: json['pinned'] ?? false,
+      webViewUrl: json['webview_url'] != null && json['webview_url'] != '' ? json['webview_url'] : null,
     );
   }
 }

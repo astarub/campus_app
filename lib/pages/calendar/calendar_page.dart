@@ -30,11 +30,11 @@ class CalendarPage extends StatefulWidget {
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const CalendarPage({
-    Key? key,
+    super.key,
     required this.mainNavigatorKey,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
-  }) : super(key: key);
+  });
 
   @override
   State<CalendarPage> createState() => _CalendarPageState();
@@ -74,7 +74,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
             FirebaseStatus.uncofigured) {
       return;
     }
-
     final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
     // Copy the list of saved events in order to remove elements from the original list while iterating over the cloned one
@@ -172,7 +171,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
     try {
       await calendarUsecases.updateEventsAndFailures().then(
-        (data) {
+        (data) async {
           setState(() {
             events = data['events']! as List<Event>;
             savedEvents = data['saved']! as List<Event>;
@@ -186,6 +185,9 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
             eventWidgetOpacity = 1;
             savedWidgetOpacity = 1;
           });
+
+          // Sync saved events
+          await syncSavedEventWidgets();
         },
         onError: (e) {
           throw Exception('Failed to load parsed Events: $e');
@@ -194,9 +196,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     } catch (e) {
       debugPrint('Error: $e');
     }
-
-    // Sync saved events
-    await syncSavedEventWidgets();
 
     debugPrint('Events aktualisiert.');
 
@@ -258,7 +257,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     if (showsavedEventWidgets) unawaited(updateSavedEventWidgets());
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       floatingActionButton: ScrollToTopButton(scrollController: scrollController),
       body: Center(
         child: AnimatedExit(
@@ -318,7 +317,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                 // Header
                 Container(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 20),
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

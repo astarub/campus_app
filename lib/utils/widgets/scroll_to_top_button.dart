@@ -8,7 +8,7 @@ import 'package:slugid/slugid.dart';
 class ScrollToTopButton extends StatefulWidget {
   final ScrollController scrollController;
 
-  const ScrollToTopButton({Key? key, required this.scrollController}) : super(key: key);
+  const ScrollToTopButton({super.key, required this.scrollController});
 
   @override
   State<ScrollToTopButton> createState() => ScrollToTopButtonState();

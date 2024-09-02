@@ -8,10 +8,10 @@ class ButtonGroup extends StatelessWidget {
   final List<Widget> buttons;
 
   const ButtonGroup({
-    Key? key,
+    super.key,
     required this.headline,
     required this.buttons,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

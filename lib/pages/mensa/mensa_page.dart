@@ -25,11 +25,11 @@ class MensaPage extends StatefulWidget {
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const MensaPage({
-    Key? key,
+    super.key,
     required this.mainNavigatorKey,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
-  }) : super(key: key);
+  });
 
   @override
   State<MensaPage> createState() => MensaPageState();
@@ -162,7 +162,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
     final restaurantConfig = Provider.of<SettingsHandler>(context).currentSettings.mensaRestaurantConfig!;
 
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       floatingActionButton: ScrollToTopButton(scrollController: scrollController),
       body: Center(
         child: AnimatedExit(
@@ -174,7 +174,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                 // Header
                 Container(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 30),
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
                   child: Column(
                     children: [
                       // Title

@@ -45,7 +45,7 @@ class DecisionPopup extends StatefulWidget {
   final VoidCallback onDecline;
 
   const DecisionPopup({
-    Key? key,
+    super.key,
     required this.leadingTitle,
     required this.title,
     required this.content,
@@ -54,7 +54,7 @@ class DecisionPopup extends StatefulWidget {
     this.height = 420,
     required this.onAccept,
     required this.onDecline,
-  }) : super(key: key);
+  });
 
   @override
   State<DecisionPopup> createState() => DecisionPopupState();
@@ -153,7 +153,7 @@ class DecisionPopupState extends State<DecisionPopup> {
           child: Container(
             width: MediaQuery.of(context).size.shortestSide < 600 ? double.infinity : 700,
             decoration: BoxDecoration(
-              color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+              color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15),
                 topRight: Radius.circular(15),

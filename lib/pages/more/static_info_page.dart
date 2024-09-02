@@ -20,18 +20,18 @@ class StaticInfoPage extends StatefulWidget {
   final String? url;
 
   const StaticInfoPage({
-    Key? key,
+    super.key,
     required this.title,
     required this.content,
     this.url = '',
-  }) : super(key: key);
+  });
 
   const StaticInfoPage.external({
-    Key? key,
+    super.key,
     required this.title,
     this.content = '',
     required this.url,
-  }) : super(key: key);
+  });
 
   @override
   State<StaticInfoPage> createState() => StaticInfoPageState();
@@ -51,7 +51,7 @@ class StaticInfoPageState extends State<StaticInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       body: Padding(
         padding: const EdgeInsets.only(top: 40),
         child: Column(

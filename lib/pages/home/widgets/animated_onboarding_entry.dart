@@ -25,13 +25,13 @@ class AnimatedOnboardingEntry extends StatefulWidget {
   final Widget child;
 
   const AnimatedOnboardingEntry({
-    Key? key,
+    super.key,
     this.duration = const Duration(milliseconds: 850),
     this.interval = const Interval(0, 1, curve: Curves.easeOutCubic),
     this.offset = 10,
     this.offsetDuration = Duration.zero,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   AnimatedOnboardingEntryState createState() => AnimatedOnboardingEntryState();
@@ -107,10 +107,10 @@ class AnimatedOnboardingLogo extends StatefulWidget {
   final Widget logo;
 
   const AnimatedOnboardingLogo({
-    Key? key,
+    super.key,
     this.offsetDuration = Duration.zero,
     required this.logo,
-  }) : super(key: key);
+  });
 
   @override
   AnimatedOnboardingLogoState createState() => AnimatedOnboardingLogoState();
