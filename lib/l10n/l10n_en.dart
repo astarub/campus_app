@@ -443,6 +443,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsStudyProgram => 'Study Program';
 
   @override
+  String get settingsLanguage => 'Language';
+
+  @override
   String get settingsStudyProgramChange => 'Change';
 
   @override

@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 
+import 'package:campus_app/pages/more/widgets/language_selection_popup.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -144,6 +145,18 @@ class SettingsPageState extends State<SettingsPage> {
                       PageRouteBuilder(
                         opaque: false,
                         pageBuilder: (context, _, __) => const StudyCoursePopup(),
+                      ),
+                    ),
+                    height: 45,
+                    width: 80,
+                  ),
+                  LeadingButton(
+                    text: AppLocalizations.of(context)!.settingsLanguage,
+                    buttonText: AppLocalizations.of(context)!.settingsStudyProgramChange,
+                    onTap: () => campusAppKey.currentState?.mainNavigatorKey.currentState?.push(
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (context, _, __) => const LanguageSelectionPopup(),
                       ),
                     ),
                     height: 45,
