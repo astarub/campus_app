@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
@@ -244,7 +245,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      'Füge dein Semesterticket hinzu',
+                      AppLocalizations.of(context)!.walletAddStudentTicket,
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                     ),
                   ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
@@ -71,7 +72,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                 Padding(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 40),
                   child: Text(
-                    'Einstellungen & Mehr',
+                    AppLocalizations.of(context)!.morePageTitle,
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                   ),
                 ),
@@ -83,35 +84,35 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                     children: [
                       // AStA links
                       ButtonGroup(
-                        headline: 'AStA',
+                        headline: AppLocalizations.of(context)!.morePageAstaA,
                         buttons: [
                           ExternalLinkButton(
-                            title: 'KulturCafé',
+                            title: AppLocalizations.of(context)!.morePageKulturCafe,
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/kulturcafe/'),
                           ),
                           ExternalLinkButton(
-                            title: 'Fahrradwerkstatt',
+                            title: AppLocalizations.of(context)!.morePageBikeWorkshop,
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/fahrradwerkstatt/'),
                           ),
                           ExternalLinkButton(
-                            title: 'Repair Café',
+                            title: AppLocalizations.of(context)!.morePageRepairCafe,
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/repair-cafe/'),
                           ),
                           ExternalLinkButton(
-                            title: 'Sozialberatung',
+                            title: AppLocalizations.of(context)!.morePageSocialCounseling,
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/sozialberatung/'),
                           ),
                           ExternalLinkButton(
-                            title: 'Tanzkreis',
+                            title: AppLocalizations.of(context)!.morePageDancingGroup,
                             leadingIconPath: 'assets/img/asta_logo.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/tanzkreis/'),
                           ),
                           ExternalLinkButton(
-                            title: 'Gaming Hub',
+                            title: AppLocalizations.of(context)!.morePageGamingHub,
                             leadingIconPath: 'assets/img/asta-gaming-hub.png',
                             onTap: () => openLink(context, 'https://asta-bochum.de/gaming_hub/'),
                           ),
@@ -148,10 +149,10 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                       ),
                       // RUB links
                       ButtonGroup(
-                        headline: 'Nützliche Links',
+                        headline: AppLocalizations.of(context)!.morePageUsefulLinks,
                         buttons: [
                           ExternalLinkButton(
-                            title: 'RubMail',
+                            title: AppLocalizations.of(context)!.morePageRubMail,
                             leadingIconPath: 'assets/img/icons/mail-link.png',
                             onTap: () => openLink(
                               context,
@@ -159,7 +160,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             ),
                           ),
                           ExternalLinkButton(
-                            title: 'Moodle',
+                            title: AppLocalizations.of(context)!.morePageMoodle,
                             leadingIconPath: 'assets/img/icons/moodle-link.png',
                             onTap: () => openLink(
                               context,
@@ -167,7 +168,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             ),
                           ),
                           ExternalLinkButton(
-                            title: 'eCampus',
+                            title: AppLocalizations.of(context)!.morePageECampus,
                             leadingIconPath: 'assets/img/icons/rub-link.png',
                             onTap: () => openLink(
                               context,
@@ -175,7 +176,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             ),
                           ),
                           ExternalLinkButton(
-                            title: 'FlexNow',
+                            title: AppLocalizations.of(context)!.morePageFlexNow,
                             leadingIconPath: 'assets/img/icons/flexnow-link.png',
                             onTap: () => openLink(
                               context,
@@ -183,7 +184,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             ),
                           ),
                           ExternalLinkButton(
-                            title: 'Hochschulsport',
+                            title: AppLocalizations.of(context)!.morePageUniSports,
                             leadingIconPath: 'assets/img/icons/hochschulsport_icon.png',
                             onTap: () => openLink(
                               context,
@@ -194,10 +195,10 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                       ),
                       // Additional sites and links
                       ButtonGroup(
-                        headline: 'Sonstiges',
+                        headline: AppLocalizations.of(context)!.morePageOther,
                         buttons: [
                           ExternalLinkButton(
-                            title: 'Einstellungen',
+                            title: AppLocalizations.of(context)!.morePageSettings,
                             leadingIconPath: 'assets/img/icons/settings.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
                             onTap: () {
@@ -211,7 +212,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                           ),
                           // Privacy
                           ExternalLinkButton(
-                            title: 'Datenschutz',
+                            title: AppLocalizations.of(context)!.morePagePrivacy,
                             leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
                             onTap: () {
@@ -225,7 +226,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                           ),
                           // Imprint
                           ExternalLinkButton(
-                            title: 'Impressum',
+                            title: AppLocalizations.of(context)!.morePageLegalNotice,
                             leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
                             onTap: () {
@@ -236,14 +237,14 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             },
                           ),
                           ExternalLinkButton(
-                            title: 'Verwendete Ressourcen',
+                            title: AppLocalizations.of(context)!.morePageUsedResources,
                             leadingIconPath: 'assets/img/icons/info.svg',
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
                             onTap: () => showLicensePage(context: context),
                           ),
                           // Feedback
                           ExternalLinkButton(
-                            title: 'Feedback',
+                            title: AppLocalizations.of(context)!.morePageFeedback,
                             leadingIconPath: 'assets/img/icons/message-square.svg',
                             onTap: () =>
                                 openLink(context, 'https://next.asta-bochum.de/index.php/apps/forms/jb2Z4mge9yj2z56E'),
