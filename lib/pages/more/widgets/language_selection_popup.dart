@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'package:campus_app/pages/more/widgets/language_selection.dart';
-import 'package:campus_app/utils/widgets/campus_search_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localized_locales/flutter_localized_locales.dart';
+import 'package:locale_names/locale_names.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 
@@ -10,6 +8,8 @@ import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/pages/more/widgets/language_selection.dart';
+import 'package:campus_app/utils/widgets/campus_search_bar.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 
@@ -83,8 +83,10 @@ class LanguageSelectionPopupState extends State<LanguageSelectionPopup> {
     } else {
       filteredLocales = AppLocalizations.supportedLocales
           .where(
-            (locale) =>
-                LocaleNames.of(context)!.nameOf(locale.languageCode)!.toLowerCase().contains(search.toLowerCase()),
+            (locale) => locale
+                .displayLanguageIn(Provider.of<SettingsHandler>(context, listen: false).currentSettings.locale)
+                .toLowerCase()
+                .contains(search.toLowerCase()),
           )
           .toList();
     }

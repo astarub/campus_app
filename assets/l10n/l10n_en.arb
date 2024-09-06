@@ -52,6 +52,8 @@
   "chooseStudyProgram": "Choose your study program.",
   "onboardingAppName": "Campus App",
   "onboardingPresentedBy": "Presented by your AStA",
+  "onboardingLanguage": "Language",
+  "onboardingLanguageDetailed": "Choose your preferred language.",
   "onboardingStudyProgram": "Study Program",
   "onboardingStudyProgramDetailed": "Choose your study program to see curated events and news.",
   "onboardingPrivacy": "Privacy",

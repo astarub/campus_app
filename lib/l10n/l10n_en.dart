@@ -2,7 +2,7 @@ import 'l10n.dart';
 
 /// The translations for English (`en`).
 class AppLocalizationsEn extends AppLocalizations {
-  AppLocalizationsEn([super.locale = 'en']);
+  AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
   String get helloWorld => 'Hello World!';
@@ -156,6 +156,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingPresentedBy => 'Presented by your AStA';
+
+  @override
+  String get onboardingLanguage => 'Language';
+
+  @override
+  String get onboardingLanguageDetailed => 'Choose your preferred language.';
 
   @override
   String get onboardingStudyProgram => 'Study Program';

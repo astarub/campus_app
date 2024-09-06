@@ -60,7 +60,7 @@ dependencies:
   video_thumbnail: ^0.5.3
   image: ^4.2.0
   dismissible_page: ^1.0.2
-  flutter_localized_locales: ^2.0.5
+  locale_names: ^1.1.1
   
 dev_dependencies:
   flutter_test:

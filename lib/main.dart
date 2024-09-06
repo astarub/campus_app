@@ -12,7 +12,6 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 
 import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
@@ -325,7 +324,7 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates + [const LocaleNamesLocalizationsDelegate()],
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: Provider.of<SettingsHandler>(context).currentSettings.locale,
       theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localized_locales/flutter_localized_locales.dart';
+import 'package:locale_names/locale_names.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 
 // ignore: must_be_immutable
@@ -59,11 +60,11 @@ class LanguageSelectionItem extends StatelessWidget {
   final bool isActive;
 
   const LanguageSelectionItem({
-    Key? key,
+    super.key,
     required this.locale,
     required this.onTap,
     this.isActive = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +120,7 @@ class LanguageSelectionItem extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16),
                     child: Text(
-                      LocaleNames.of(context)!.nameOf(locale.languageCode)!,
+                      locale.displayLanguageIn(Provider.of<SettingsHandler>(context).currentSettings.locale),
                       style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                           ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
                                 fontSize: 15,

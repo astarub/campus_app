@@ -52,6 +52,8 @@
   "chooseStudyProgram": "Wähle deinen Studiengang",
   "onboardingAppName": "Campus App",
   "onboardingPresentedBy": "Präsentiert von deinem AStA",
+  "onboardingLanguage": "Sprache",
+  "onboardingLanguageDetailed": "Wähle deine bevorzugte Sprache aus.",
   "onboardingStudyProgram": "Studiengang",
   "onboardingStudyProgramDetailed": "Wähle deinen aktuellen Studiengang, um für dich passende Events und News anzuzeigen.",
   "onboardingPrivacy": "Datenschutz",

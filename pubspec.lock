@@ -595,14 +595,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_localized_locales:
-    dependency: "direct main"
-    description:
-      name: flutter_localized_locales
-      sha256: "478d10535edf07292e34cb4c757882edeeaf96d5e3dbb04b42733038bd41dd3f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.5"
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -894,6 +886,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  locale_names:
+    dependency: "direct main"
+    description:
+      name: locale_names
+      sha256: "7a89ca54072f4f13d0f5df5a9ba69337554bf2fd057d1dd2a238898f3f159374"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   logging:
     dependency: transitive
     description:
