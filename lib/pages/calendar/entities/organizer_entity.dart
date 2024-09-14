@@ -59,6 +59,18 @@ class Organizer {
     );
   }
 
+  factory Organizer.fromInternalJson({required Map<String, dynamic> json}) {
+    return Organizer(
+      id: json['id'],
+      url: json['url'],
+      name: json['name'],
+      slug: json['slug'],
+      phone: json['phone'],
+      website: json['website'],
+      email: json['email'],
+    );
+  }
+
   @override
   String toString() => name;
 }

@@ -37,22 +37,19 @@ Future<void> init() async {
 
   //! Datasources
   sl.registerSingletonAsync(() async {
-    final client = Dio();
-    client.httpClientAdapter = NativeAdapter();
-
-    return MensaDataSource(client: client, mensaCache: await Hive.openBox('mensaCache'));
+    return MensaDataSource(client: sl(), mensaCache: await Hive.openBox('mensaCache'));
   });
 
   sl.registerSingletonAsync(
     () async => NewsDatasource(
-      client: sl(),
+      appwriteClient: sl(),
       rubnewsCache: await Hive.openBox('postsCache'),
     ),
   );
 
   sl.registerSingletonAsync(
     () async => CalendarDatasource(
-      client: sl(),
+      appwriteClient: sl(),
       eventCache: await Hive.openBox('eventsCache'),
     ),
   );
@@ -68,8 +65,7 @@ Future<void> init() async {
   //!
 
   sl.registerLazySingleton(() {
-    final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
-    return BackendRepository(client: client);
+    return BackendRepository(client: sl());
   });
 
   sl.registerSingletonWithDependencies(
@@ -134,9 +130,17 @@ Future<void> init() async {
   //!
   //! External
   //!
+  sl.registerLazySingleton(() {
+    final client = Dio();
+    client.httpClientAdapter = NativeAdapter();
 
-  //sl.registerLazySingleton(http.Client.new);
-  sl.registerLazySingleton(Dio.new);
+    return client;
+  });
+  sl.registerLazySingleton(() {
+    final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
+
+    return client;
+  });
   sl.registerLazySingleton(CookieJar.new);
   sl.registerLazySingleton(
     () => const FlutterSecureStorage(

@@ -68,6 +68,8 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   bool showSearchBar = false;
   String search = '';
 
+  Locale appLocale = const Locale('de');
+
   /// Checks for events that were saved locally or removed from the server-side
   Future<void> syncSavedEventWidgets() async {
     if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase == FirebaseStatus.forbidden ||
@@ -171,8 +173,12 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
       // ignore: empty_catches
     } catch (e) {}
 
+    if (mounted) {
+      appLocale = Localizations.localeOf(context);
+    }
+
     try {
-      await calendarUsecases.updateEventsAndFailures().then(
+      await calendarUsecases.updateEventsAndFailures(appLocale.languageCode).then(
         (data) {
           setState(() {
             events = data['events']! as List<Event>;

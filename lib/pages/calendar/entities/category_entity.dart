@@ -46,6 +46,16 @@ class Category {
     );
   }
 
+  factory Category.fromInternalJson({required Map<String, dynamic> json}) {
+    return Category(
+      id: json['id'],
+      url: json['url'],
+      name: json['name'],
+      description: json['name'],
+      isCategory: json['isCategory'],
+    );
+  }
+
   @override
   String toString() => name;
 }

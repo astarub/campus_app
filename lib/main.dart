@@ -1,3 +1,5 @@
+// ignore_for_file: unawaited_futures
+
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
@@ -114,7 +116,7 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   /// Load the saved settings and parse them to the [SettingsHandler]
   void loadSettings() {
     debugPrint('LoadSettings initalized.');
-    getApplicationDocumentsDirectory().then((Directory directory) {
+    getApplicationDocumentsDirectory().then((Directory directory) async {
       _directoryPath = directory.path;
       debugPrint('Save location: $_directoryPath');
 
@@ -127,7 +129,7 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       if (existing) {
         debugPrint('Settings-file already exists. Initialize loading of settings.');
         // Load settings and parse it
-        settingsJsonFile.readAsString().then((String rawFileContent) {
+        settingsJsonFile.readAsString().then((String rawFileContent) async {
           if (rawFileContent != '') {
             try {
               final dynamic rawData = json.decode(rawFileContent);
@@ -157,20 +159,22 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
               useDarkmode: loadedSettings!.useDarkmode,
             );
 
+            // Initialize the backend connection
+            await initializeBackendConnection();
+
             loadingTimer.stop();
             debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
 
             // Start the app
             FlutterNativeSplash.remove();
 
-            // Check whether the user agreed to use Firebase
-            mainUtils.checkFirebasePermission(
-              context,
-              mainNavigatorKey,
-            );
-
-            // Initialize the backend connection
-            initializeBackendConnection();
+            if (mounted) {
+              // Check whether the user agreed to use Firebase
+              mainUtils.checkFirebasePermission(
+                context,
+                mainNavigatorKey,
+              );
+            }
           }
         });
       } else {
@@ -191,18 +195,21 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
         setTheme(contextForThemeProvider: context);
 
         // Initialize the backend connection
-        initializeBackendConnection();
+        await initializeBackendConnection();
 
         loadingTimer.stop();
         debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
 
         // Start the app and show the onboarding experience
         FlutterNativeSplash.remove();
-        Navigator.of(mainNavigatorKey.currentState!.context).push(
-          MaterialPageRoute(
-            builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey),
-          ),
-        );
+
+        if (mounted) {
+          Navigator.of(mainNavigatorKey.currentState!.context).push(
+            MaterialPageRoute(
+              builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey),
+            ),
+          );
+        }
       }
     });
   }

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:dartz/dartz.dart';
@@ -15,14 +14,7 @@ class NewsUsecases {
   /// Return a JSON object `data` that contains failures and news.
   ///
   /// data := { 'failures': List\<Failure>, 'news': List\<NewsEntity> }
-  Future<Map<String, List<dynamic>>> updateFeedAndFailures() {
-    return updateFeedAndFailuresAndTranslate(translate: false);
-  }
-
-  Future<Map<String, List<dynamic>>> updateFeedAndFailuresAndTranslate({
-    Locale appLocale = const Locale('de'),
-    bool translate = true,
-  }) async {
+  Future<Map<String, List<dynamic>>> updateFeedAndFailures({Locale appLocale = const Locale('de')}) async {
     // return data
     final Map<String, List<dynamic>> data = {
       'failures': <Failure>[],
@@ -30,12 +22,8 @@ class NewsUsecases {
     };
 
     // get remote and cached news feed
-    Either<Failure, List<NewsEntity>> remoteFeed;
-    if (translate) {
-      remoteFeed = await newsRepository.getRemoteNewsfeedAndTranslate(appLocale: appLocale);
-    } else {
-      remoteFeed = await newsRepository.getRemoteNewsfeed();
-    }
+    final Either<Failure, List<NewsEntity>> remoteFeed = await newsRepository.getRemoteNewsFeed(appLocale: appLocale);
+
     final Either<Failure, List<NewsEntity>> cachedFeed = newsRepository.getCachedNewsfeed();
 
     // fold cachedFeed

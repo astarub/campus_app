@@ -10,6 +10,8 @@ import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
 enum PageItem { feed, events, coupons, mensa, wallet, more }
 
+final GlobalKey<FeedPageState> feedKey = GlobalKey();
+
 class PageNavigatorRoutes {
   /// The root-page is shown initially when this navbar-tab is the active one.
   static const String root = '/';
@@ -54,6 +56,7 @@ class NavBarNavigator extends StatelessWidget {
     switch (pageItem) {
       case PageItem.feed:
         rootPage = FeedPage(
+          key: feedKey,
           mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,

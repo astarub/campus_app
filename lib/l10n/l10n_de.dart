@@ -1,10 +1,8 @@
-// ignore_for_file: non_constant_identifier_names
-
-import 'package:campus_app/l10n/l10n.dart';
+import 'l10n.dart';
 
 /// The translations for German (`de`).
 class AppLocalizationsDe extends AppLocalizations {
-  AppLocalizationsDe([super.locale = 'de']);
+  AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
   String get helloWorld => 'Hallo Welt!';

@@ -60,7 +60,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   bool showSearchBar = false;
 
   Locale appLocale = const Locale('de');
-  bool translateNews = false;
 
   /// Function that call usecase and parse widgets into the corresponding
   /// lists of events, news and failures.
@@ -74,15 +73,11 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
 
     if (mounted) {
       appLocale = Localizations.localeOf(context);
-      translateNews = Provider.of<SettingsHandler>(context, listen: false).currentSettings.translateNews;
     }
-    final Map<String, List<dynamic>> newsData;
-    debugPrint('Detected Locale as $appLocale.');
-    if (translateNews) {
-      newsData = await _newsUsecases.updateFeedAndFailuresAndTranslate(appLocale: appLocale);
-    } else {
-      newsData = await _newsUsecases.updateFeedAndFailures();
-    }
+
+    final Map<String, List<dynamic>> newsData = await _newsUsecases.updateFeedAndFailures(appLocale: appLocale);
+
+    debugPrint('Detected Locale $appLocale.');
 
     try {
       setState(() {

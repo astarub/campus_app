@@ -5,6 +5,7 @@ import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/calendar/calendar_datasource.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 
 class CalendarRepository {
   final CalendarDatasource calendarDatasource;
@@ -12,16 +13,14 @@ class CalendarRepository {
   CalendarRepository({required this.calendarDatasource});
 
   /// Return a list of events or a failure
-  Future<Either<Failure, List<Event>>> getAStAEvents() async {
+  Future<Either<Failure, List<Event>>> getEvents(String locale) async {
     try {
-      final astaEventsJson = await calendarDatasource.getAStAEventsAsJsonArray();
+      final astaEventsJson = await calendarDatasource.getEvents(locale);
 
       final List<Event> entities = [];
 
       for (final Map<String, dynamic> eventJson in astaEventsJson) {
-        final Event event = Event.fromExternalJson(eventJson);
-
-        if (event.categories.map((cat) => cat.name).contains('UFO')) continue;
+        final Event event = Event.fromAppwriteJson(json: eventJson);
 
         entities.add(event);
       }
@@ -32,39 +31,8 @@ class CalendarRepository {
       );
 
       return Right(entities);
-    } catch (e) {
-      switch (e.runtimeType) {
-        case const (ServerException):
-          return Left(ServerFailure());
-
-        case const (JsonException):
-          return Left(ServerFailure());
-
-        case const (EmptyResponseException):
-          return Left(NoDataFailure());
-
-        default:
-          return Left(GeneralFailure());
-      }
-    }
-  }
-
-  /// Return a list of events or a failure
-  Future<Either<Failure, List<Event>>> getAppEvents() async {
-    try {
-      final astaEventsJson = await calendarDatasource.getAppEventsAsJsonArray();
-
-      final List<Event> entities = [];
-
-      for (final Map<String, dynamic> event in astaEventsJson) {
-        entities.add(Event.fromExternalJson(event));
-      }
-
-      // write entities to cache
-      unawaited(calendarDatasource.writeEventsToCache(entities, app: true));
-
-      return Right(entities);
-    } catch (e) {
+    } catch (e, stacktrace) {
+      debugPrint(stacktrace.toString());
       switch (e.runtimeType) {
         case const (ServerException):
           return Left(ServerFailure());

@@ -176,15 +176,6 @@ class SettingsPageState extends State<SettingsPage> {
                           settings.copyWith(displayFullscreenTicket: switchValue);
                     },
                   ),
-                  // Translate news into device language
-                  LeadingTextSwitch(
-                    text: 'News in Gerätsprache übersetzen',
-                    isActive: Provider.of<SettingsHandler>(context).currentSettings.translateNews,
-                    onToggle: (switchValue) {
-                      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-                          settings.copyWith(translateNews: switchValue);
-                    },
-                  ),
                   const SectionHeadline(headline: 'Datenschutz'),
                   // Use Google services
                   LeadingTextSwitch(
