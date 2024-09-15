@@ -40,7 +40,11 @@ class CalendarDatasource {
     final List<Map<String, dynamic>> result = [];
 
     try {
-      list = await databaseService.listDocuments(databaseId: 'calendar', collectionId: locale);
+      list = await databaseService.listDocuments(
+        databaseId: 'calendar',
+        collectionId: locale,
+        queries: [Query.limit(500)],
+      );
     } catch (e) {
       debugPrint('Failed to list appwrite news documents. Exception: $e');
       throw ServerException();

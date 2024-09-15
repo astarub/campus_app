@@ -31,7 +31,11 @@ class NewsDatasource {
     final List<Map<String, dynamic>> result = [];
 
     try {
-      list = await databaseService.listDocuments(databaseId: 'feed', collectionId: locale);
+      list = await databaseService.listDocuments(
+        databaseId: 'feed',
+        collectionId: locale,
+        queries: [Query.limit(500)],
+      );
     } catch (e) {
       debugPrint('Failed to list appwrite news documents. Exception: $e');
       throw ServerException();
