@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:xml/xml.dart';
@@ -99,7 +97,7 @@ class NewsEntity {
       pubDate: pubDate,
       author: json['author'] ?? 0,
       categoryIds: List<int>.from(json['categoryIds']),
-      copyright: List<String>.from(json['copyright']) ?? [],
+      copyright: List<String>.from(json['copyright']),
       imageUrl: json['imageUrl'] != null ? json['imageUrl'].toString() : 'false',
       videoUrl: json['videoUrl'] != null ? json['videoUrl'].toString() : 'false',
     );
