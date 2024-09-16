@@ -114,8 +114,7 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
                       child: CampusIconButton(
                         iconPath: 'assets/img/icons/x.svg',
                         onTap: () {
-                          webViewController?.clearHistory();
-                          Navigator.maybePop(context);
+                          Navigator.pop(context);
                         },
                       ),
                     ),

@@ -54,7 +54,7 @@ class FeedItem extends StatefulWidget {
   final String copyright;
 
   // Open a webview on click
-  final bool webview;
+  final String? webViewUrl;
 
   // Pinned items appear at the very top of the feed.
   final bool pinned;
@@ -73,7 +73,7 @@ class FeedItem extends StatefulWidget {
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
-    this.webview = false,
+    this.webViewUrl = '',
     this.pinned = false,
   });
 
@@ -91,7 +91,7 @@ class FeedItem extends StatefulWidget {
     this.author = 0,
     this.categoryIds = const [],
     this.copyright = '',
-    this.webview = false,
+    this.webViewUrl = '',
     this.pinned = false,
   });
 
@@ -132,10 +132,10 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
     }
 
     void openDetailsPage() {
-      if (widget.webview) {
+      if (widget.webViewUrl != null && widget.webViewUrl!.isNotEmpty) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.link)),
+          MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)),
         );
       } else {
         if (widget.event != null) {
@@ -248,10 +248,26 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
             // Title
             Padding(
               padding: const EdgeInsets.only(top: 6),
-              child: StyledHTML(
-                context: context,
-                text: widget.title,
-                textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+              child: Row(
+                children: [
+                  if (widget.pinned) ...[
+                    Icon(
+                      Icons.push_pin,
+                      color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                          ? const Color.fromRGBO(34, 40, 54, 1)
+                          : const Color.fromRGBO(245, 246, 250, 1),
+                    ),
+                  ],
+                  SizedBox(
+                    width:
+                        widget.pinned ? MediaQuery.of(context).size.width - 65 : MediaQuery.of(context).size.width - 40,
+                    child: StyledHTML(
+                      context: context,
+                      text: widget.title,
+                      textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+                    ),
+                  ),
+                ],
               ),
             ),
             // Description

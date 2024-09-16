@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:campus_app/utils/widgets/campus_search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:locale_names/locale_names.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 
@@ -8,8 +8,8 @@ import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/core/backend/entities/study_course_entity.dart';
-import 'package:campus_app/pages/home/widgets/study_selection.dart';
+import 'package:campus_app/pages/more/widgets/language_selection.dart';
+import 'package:campus_app/utils/widgets/campus_search_bar.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 
@@ -17,15 +17,14 @@ import 'package:campus_app/utils/widgets/campus_button.dart';
 /// animated, but can't be dragged outside the screen by the user.
 ///
 /// The [SnappingSheet] package handles the animations and layout.
-class StudyCoursePopup extends StatefulWidget {
-  final Function(List<StudyCourse>)? callback;
-  const StudyCoursePopup({super.key, this.callback});
+class LanguageSelectionPopup extends StatefulWidget {
+  const LanguageSelectionPopup({Key? key}) : super(key: key);
 
   @override
-  State<StudyCoursePopup> createState() => StudyCoursePopupState();
+  State<LanguageSelectionPopup> createState() => LanguageSelectionPopupState();
 }
 
-class StudyCoursePopupState extends State<StudyCoursePopup> {
+class LanguageSelectionPopupState extends State<LanguageSelectionPopup> {
   /// Controls the SnappingSheet
   late final SnappingSheetController popupController;
 
@@ -46,16 +45,16 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
 
   final MainUtils mainUtils = sl<MainUtils>();
 
-  List<StudyCourse> availableCourses = [];
+  List<Locale> availableLocales = AppLocalizations.supportedLocales;
   // Selected study courses
-  List<StudyCourse> selectedStudies = [];
+  Locale selectedLocale = const Locale('de');
 
   /// Starts the closing animation for the popup.
   void closePopup() {
     setState(
       () => snapPositions = [
         const SnappingPosition.pixels(
-          positionPixels: 630,
+          positionPixels: 420,
         ),
         const SnappingPosition.pixels(
           positionPixels: -60,
@@ -72,44 +71,44 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
         snappingDuration: Duration(milliseconds: 350),
       ),
     );
-
-    if (widget.callback != null) {
-      // ignore: prefer_null_aware_method_calls
-      widget.callback!(selectedStudies);
-    }
     Navigator.pop(context);
   }
 
   /// Filters the feed based on the search input of the user
   void onSearch(String search) {
-    List<StudyCourse> filteredCourses = [];
+    List<Locale> filteredLocales = [];
 
     if (search == '') {
-      filteredCourses = Provider.of<SettingsHandler>(context, listen: false).currentSettings.studyCourses;
+      filteredLocales = AppLocalizations.supportedLocales;
     } else {
-      filteredCourses = Provider.of<SettingsHandler>(context, listen: false)
-          .currentSettings
-          .studyCourses
-          .where((course) => course.name.toLowerCase().contains(search.toLowerCase()))
+      filteredLocales = AppLocalizations.supportedLocales
+          .where(
+            (locale) => locale
+                .displayLanguageIn(Provider.of<SettingsHandler>(context, listen: false).currentSettings.locale)
+                .toLowerCase()
+                .contains(search.toLowerCase()),
+          )
           .toList();
     }
 
     setState(() {
-      availableCourses = filteredCourses;
+      availableLocales = filteredLocales;
     });
   }
 
   void saveSelections() {
     final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
-          studyCoursePopup: true,
-          selectedStudyCourses: selectedStudies,
+          locale: selectedLocale,
         );
 
-    debugPrint('Saved study courses. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
+    debugPrint('Saved locale. Locale: ${selectedLocale.languageCode}');
 
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
 
-    mainUtils.setIntialStudyCoursePublishers(Provider.of<SettingsHandler>(context, listen: false), selectedStudies);
+  // ignore: use_setters_to_change_properties
+  void setSelectedItem(Locale selected) {
+    selectedLocale = selected;
   }
 
   @override
@@ -117,10 +116,6 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
     super.initState();
 
     popupController = SnappingSheetController();
-
-    availableCourses = Provider.of<SettingsHandler>(context, listen: false).currentSettings.studyCourses;
-    selectedStudies = [];
-    selectedStudies.addAll(Provider.of<SettingsHandler>(context, listen: false).currentSettings.selectedStudyCourses);
 
     // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
     Timer(
@@ -133,6 +128,8 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
         ),
       ),
     );
+
+    selectedLocale = Provider.of<SettingsHandler>(context, listen: false).currentSettings.locale;
   }
 
   @override
@@ -161,7 +158,7 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
           child: Container(
             width: MediaQuery.of(context).size.shortestSide < 600 ? double.infinity : 700,
             decoration: BoxDecoration(
-              color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
+              color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15),
                 topRight: Radius.circular(15),
@@ -192,7 +189,7 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
                       Padding(
                         padding: const EdgeInsets.only(top: 10, bottom: 18),
                         child: Text(
-                          AppLocalizations.of(context)!.chooseStudyProgram,
+                          AppLocalizations.of(context)!.settingsLanguage,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displaySmall,
                         ),
                       ),
@@ -207,30 +204,14 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
                           ),
                         ),
                       ),
-                      if (Provider.of<SettingsHandler>(context, listen: false)
-                          .currentSettings
-                          .studyCourses
-                          .isNotEmpty) ...[
-                        SizedBox(
-                          height: 370,
-                          child: StudySelection(
-                            availableStudies: availableCourses,
-                            selectedStudies: selectedStudies,
-                          ),
+                      SizedBox(
+                        height: 370,
+                        child: LanguageSelection(
+                          availableLocales: availableLocales,
+                          saveSelection: setSelectedItem,
+                          selectedLocale: selectedLocale,
                         ),
-                      ] else ...[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 50),
-                          child: SizedBox(
-                            height: 35,
-                            child: CircularProgressIndicator(
-                              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-                              color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
-                              strokeWidth: 3,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ],
                   ),
                 ),

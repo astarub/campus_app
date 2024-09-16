@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -257,7 +258,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Text(
-                          'Feed',
+                          AppLocalizations.of(context)!.feedTitle,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                         ),
                       ),
@@ -297,8 +298,8 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                                       Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 24),
                                         child: CampusSegmentedControl(
-                                          leftTitle: 'Feed',
-                                          rightTitle: 'Explore',
+                                          leftTitle: AppLocalizations.of(context)!.feedLeft,
+                                          rightTitle: AppLocalizations.of(context)!.feedRight,
                                           onChanged: saveFeedExplore,
                                           selected:
                                               Provider.of<SettingsHandler>(context).currentSettings.newsExplore == false

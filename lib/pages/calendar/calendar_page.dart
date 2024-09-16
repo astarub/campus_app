@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/injection.dart';
@@ -52,8 +53,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   late List<Widget> parsedEventWidgets = [];
   late List<Widget> savedEventWidgets = [];
   late List<Widget> searchEventWidgets = [];
-
-  late final CampusSegmentedControl upcomingSavedSwitch;
   bool showsavedEventWidgets = false;
 
   final GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
@@ -77,7 +76,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
             FirebaseStatus.uncofigured) {
       return;
     }
-
     final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
     // Copy the list of saved events in order to remove elements from the original list while iterating over the cloned one
@@ -222,21 +220,6 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
   void initState() {
     super.initState();
 
-    upcomingSavedSwitch = CampusSegmentedControl(
-      leftTitle: 'Upcoming',
-      rightTitle: 'Saved',
-      onChanged: (int selected) async {
-        if (selected == 0) {
-          setState(() => showsavedEventWidgets = false);
-        } else {
-          // Update the saved events list when changing tabs
-          await updateSavedEventWidgets();
-
-          setState(() => showsavedEventWidgets = true);
-        }
-      },
-    );
-
     // Request an update for the calendar and show the refresh indicator
     Future.delayed(const Duration(milliseconds: 200)).then((_) {
       refreshIndicatorKey.currentState?.show();
@@ -295,15 +278,15 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                   margin: EdgeInsets.only(top: Platform.isAndroid ? 70 : 60),
                   child: !showsavedEventWidgets && showUpcomingPlaceholder
                       // Placeholder for no upcoming events
-                      ? const EmptyStatePlaceholder(
-                          title: 'Keine Events in Sicht',
-                          text: 'Es sind gerade keine Events geplant. Schau am besten später nochmal vorbei.',
+                      ? EmptyStatePlaceholder(
+                          title: AppLocalizations.of(context)!.calendarPageNoEventsUpcomingTitle,
+                          text: AppLocalizations.of(context)!.calendarPageNoEventsUpcomingText,
                         )
                       : showsavedEventWidgets && showSavedPlaceholder
                           // Placeholder for no saved events
-                          ? const EmptyStatePlaceholder(
-                              title: 'Keine gemerkten Events',
-                              text: 'Merke dir Events, um sie hier zu sehen.',
+                          ? EmptyStatePlaceholder(
+                              title: AppLocalizations.of(context)!.calendarPageNoEventsSavedTitle,
+                              text: AppLocalizations.of(context)!.calendarPageNoEventsSavedText,
                             )
                           : RefreshIndicator(
                               key: refreshIndicatorKey,
@@ -348,7 +331,7 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: Text(
-                          'Events',
+                          AppLocalizations.of(context)!.eventsTitle,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                         ),
                       ),
@@ -382,7 +365,20 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                                     // FeedPicker
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                                      child: upcomingSavedSwitch,
+                                      child: CampusSegmentedControl(
+                                        leftTitle: AppLocalizations.of(context)!.calendarPageUpcoming,
+                                        rightTitle: AppLocalizations.of(context)!.calendarPageSaved,
+                                        onChanged: (int selected) async {
+                                          if (selected == 0) {
+                                            setState(() => showsavedEventWidgets = false);
+                                          } else {
+                                            // Update the saved events list when changing tabs
+                                            await updateSavedEventWidgets();
+
+                                            setState(() => showsavedEventWidgets = true);
+                                          }
+                                        },
+                                      ),
                                     ),
                                     // Filter button
                                     CampusIconButton(

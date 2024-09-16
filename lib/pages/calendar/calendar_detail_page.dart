@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
@@ -201,7 +202,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                       child: StyledHTML(
                                         context: context,
                                         text: widget.event.venue.name == ''
-                                            ? 'Veranstaltungsort wird noch bekannt gegeben.'
+                                            ? AppLocalizations.of(context)!.calendarEventLocationToBeAnnounced
                                             : '${widget.event.venue}<br> ${DateFormat('Hm').format(widget.event.startDate)} Uhr - ${DateFormat('Hm').format(widget.event.endDate)} Uhr',
                                         textStyle: Provider.of<ThemesNotifier>(context)
                                             .currentThemeData
@@ -222,14 +223,16 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                         padding: const EdgeInsets.only(top: 10, bottom: 40),
                         child: StyledHTML(
                           context: context,
-                          text: widget.event.description != '' ? widget.event.description : 'No description given.',
+                          text: widget.event.description != ''
+                              ? widget.event.description
+                              : AppLocalizations.of(context)!.calendarEventNoDescriptionGiven,
                           textAlign: TextAlign.justify,
                         ),
                       ),
                       // Hosts
                       if (widget.event.organizers.isNotEmpty)
                         Text(
-                          'Host',
+                          AppLocalizations.of(context)!.calendarEventHost,
                           textAlign: TextAlign.left,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                         ),
@@ -244,7 +247,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       // Venue
                       if (widget.event.venue.name != '')
                         Text(
-                          'Veranstaltungsort',
+                          AppLocalizations.of(context)!.calendarEventVenue,
                           textAlign: TextAlign.left,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                         ),
@@ -261,7 +264,9 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                         padding: const EdgeInsets.only(top: 10, bottom: 30),
                         child: Center(
                           child: CampusButton(
-                            text: savedEvent ? 'Nicht mehr merken' : 'Merken',
+                            text: savedEvent
+                                ? AppLocalizations.of(context)!.calendarEventNotificationOff
+                                : AppLocalizations.of(context)!.calendarEventNotificationOn,
                             onTap: saveEventAndShowMessage,
                           ),
                         ),

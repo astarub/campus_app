@@ -78,6 +78,9 @@ class Event {
   @HiveField(15)
   final String author;
 
+  @HiveField(16, defaultValue: false)
+  final bool pinned;
+
   const Event({
     required this.id,
     required this.url,
@@ -95,6 +98,7 @@ class Event {
     required this.venue,
     this.organizers = const <Organizer>[],
     this.author = '',
+    this.pinned = false,
   });
 
   factory Event.fromInternalJson(Map<String, dynamic> json) {
@@ -115,6 +119,7 @@ class Event {
       venue: json['venue'],
       organizers: json['organizers'],
       author: json['author'],
+      pinned: json['pinned'],
     );
   }
 
@@ -136,6 +141,7 @@ class Event {
       'venue': venue,
       'organizers': organizers,
       'author': author,
+      'pinned': pinned,
     };
   }
 
