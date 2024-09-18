@@ -185,7 +185,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Hero(
-                                      tag: 'calendar_detail_page_hero_tag',
+                                      tag: UniqueKey(),
                                       child: StyledHTML(
                                         context: context,
                                         text: widget.event.title,

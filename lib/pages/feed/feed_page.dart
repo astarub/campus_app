@@ -6,6 +6,7 @@ import 'package:snapping_sheet_2/snapping_sheet.dart';
 
 import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/failures.dart';
+import 'package:campus_app/core/global.dart' as global;
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
@@ -177,10 +178,11 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     news = newsData['news']! as List<NewsEntity>; // empty when no data was cached before
     failures = newsData['failures']! as List<Failure>; // CachFailure when no data was cached before
 
-    // Request an update for the feed and show the refresh indicator
     Future.delayed(const Duration(milliseconds: 200)).then((_) {
       refreshIndicatorKey.currentState?.show();
     });
+
+    global.languageChangedFeed = false;
   }
 
   @override
@@ -207,6 +209,13 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
             searchWord != '' ? searchNewsWidgets : parsedNewsWidgets,
           )
         : (searchWord != '' ? searchNewsWidgets : parsedNewsWidgets);
+
+    if (mounted && global.languageChangedFeed) {
+      Future.delayed(const Duration(milliseconds: 1000)).then((_) {
+        refreshIndicatorKey.currentState?.show();
+        global.languageChangedFeed = false;
+      });
+    }
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,

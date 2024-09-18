@@ -7,6 +7,7 @@ import 'package:dartz/dartz.dart' as dartz;
 
 import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/failures.dart';
+import 'package:campus_app/core/global.dart' as global;
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -224,6 +225,8 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     Future.delayed(const Duration(milliseconds: 200)).then((_) {
       refreshIndicatorKey.currentState?.show();
     });
+
+    global.languageChangedCalendar = false;
   }
 
   /// Filters the events based on the search input of the user
@@ -261,6 +264,13 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
     // Update the saved events list in case a user just saved an event
     if (showsavedEventWidgets) unawaited(updateSavedEventWidgets());
+
+    if (mounted && global.languageChangedCalendar) {
+      Future.delayed(const Duration(milliseconds: 1000)).then((_) {
+        refreshIndicatorKey.currentState?.show();
+        global.languageChangedCalendar = false;
+      });
+    }
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,

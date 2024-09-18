@@ -20,9 +20,13 @@ class CalendarRepository {
       final List<Event> entities = [];
 
       for (final Map<String, dynamic> eventJson in astaEventsJson) {
-        final Event event = Event.fromAppwriteJson(json: eventJson);
+        try {
+          final Event event = Event.fromAppwriteJson(json: eventJson);
 
-        entities.add(event);
+          entities.add(event);
+        } catch (e) {
+          debugPrint('Error while parsing event entity. Exception: $e');
+        }
       }
 
       // write entities to cach

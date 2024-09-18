@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'package:campus_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:locale_names/locale_names.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 
 import 'package:campus_app/l10n/l10n.dart';
+import 'package:campus_app/core/global.dart' as global;
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
@@ -71,7 +73,7 @@ class LanguageSelectionPopupState extends State<LanguageSelectionPopup> {
         snappingDuration: Duration(milliseconds: 350),
       ),
     );
-    Navigator.pop(context);
+    campusAppKey.currentState?.mainNavigatorKey.currentState!.pop();
   }
 
   /// Filters the feed based on the search input of the user
@@ -104,6 +106,9 @@ class LanguageSelectionPopupState extends State<LanguageSelectionPopup> {
     debugPrint('Saved locale. Locale: ${selectedLocale.languageCode}');
 
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+
+    global.languageChangedFeed = true;
+    global.languageChangedCalendar = true;
   }
 
   // ignore: use_setters_to_change_properties

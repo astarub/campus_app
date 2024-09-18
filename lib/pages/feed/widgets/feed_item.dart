@@ -181,7 +181,7 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
                   SizedBox(
                     height: widget.image == null && videoThumbnailFile != null ? 230 : null,
                     child: Hero(
-                      tag: 'news_details_page_hero_tag',
+                      tag: UniqueKey(),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: widget.image == null && videoThumbnailFile != null

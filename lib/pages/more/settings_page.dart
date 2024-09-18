@@ -138,18 +138,7 @@ class SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   SectionHeadline(headline: AppLocalizations.of(context)!.settingsHeadlineCoreData),
-                  LeadingButton(
-                    text: AppLocalizations.of(context)!.settingsStudyProgram,
-                    buttonText: AppLocalizations.of(context)!.settingsStudyProgramChange,
-                    onTap: () => campusAppKey.currentState?.mainNavigatorKey.currentState?.push(
-                      PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (context, _, __) => const StudyCoursePopup(),
-                      ),
-                    ),
-                    height: 45,
-                    width: 80,
-                  ),
+                  // Language
                   LeadingButton(
                     text: AppLocalizations.of(context)!.settingsLanguage,
                     buttonText: AppLocalizations.of(context)!.settingsStudyProgramChange,
@@ -157,6 +146,19 @@ class SettingsPageState extends State<SettingsPage> {
                       PageRouteBuilder(
                         opaque: false,
                         pageBuilder: (context, _, __) => const LanguageSelectionPopup(),
+                      ),
+                    ),
+                    height: 45,
+                    width: 80,
+                  ),
+                  // Study course
+                  LeadingButton(
+                    text: AppLocalizations.of(context)!.settingsStudyProgram,
+                    buttonText: AppLocalizations.of(context)!.settingsStudyProgramChange,
+                    onTap: () => campusAppKey.currentState?.mainNavigatorKey.currentState?.push(
+                      PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (context, _, __) => const StudyCoursePopup(),
                       ),
                     ),
                     height: 45,

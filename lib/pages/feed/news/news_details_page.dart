@@ -120,7 +120,7 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                           // Image
                           if (widget.image != null || widget.videoUrl != null)
                             Hero(
-                              tag: 'news_details_page_hero_tag',
+                              tag: UniqueKey(),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: widget.videoUrl != null

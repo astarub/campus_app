@@ -55,7 +55,7 @@ class Event {
   /// The costs of the event as JSON.
   /// e.g. cost = { 'currency': '€', 'value': '20.5' }
   @HiveField(10)
-  final Map<String, String>? cost;
+  final Map<String, dynamic>? cost;
 
   /// An external website if the event has one.
   /// Otherwise it is an empty string.
