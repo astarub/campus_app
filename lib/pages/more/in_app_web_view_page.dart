@@ -1,13 +1,13 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/main.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 /// This page shows an [InAppWebView] in order to display external
@@ -36,22 +36,6 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
     allowsInlineMediaPlayback: true,
     useHybridComposition: false,
   );
-
-  @override
-  void initState() {
-    super.initState();
-
-    pullToRefreshController = PullToRefreshController(
-      settings: PullToRefreshSettings(color: Colors.black),
-      onRefresh: () async {
-        if (Platform.isAndroid) {
-          await webViewController?.reload();
-        } else if (Platform.isIOS) {
-          await webViewController?.loadUrl(urlRequest: URLRequest(url: await webViewController?.getUrl()));
-        }
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +109,22 @@ class _InAppWebViewPageState extends State<InAppWebViewPage> {
           ),
         ),
       ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    pullToRefreshController = PullToRefreshController(
+      settings: PullToRefreshSettings(color: Colors.black),
+      onRefresh: () async {
+        if (Platform.isAndroid) {
+          await webViewController?.reload();
+        } else if (Platform.isIOS) {
+          await webViewController?.loadUrl(urlRequest: URLRequest(url: await webViewController?.getUrl()));
+        }
+      },
     );
   }
 }

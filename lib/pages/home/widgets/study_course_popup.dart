@@ -1,16 +1,16 @@
 import 'dart:async';
+
+import 'package:campus_app/core/backend/entities/study_course_entity.dart';
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/home/widgets/study_selection.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
+import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
-
-import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/core/backend/entities/study_course_entity.dart';
-import 'package:campus_app/pages/home/widgets/study_selection.dart';
-import 'package:campus_app/utils/pages/main_utils.dart';
-import 'package:campus_app/utils/widgets/campus_button.dart';
 
 /// This widget allows to push a popup to the navigator-stack that is fully
 /// animated, but can't be dragged outside the screen by the user.
@@ -48,91 +48,6 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
   List<StudyCourse> availableCourses = [];
   // Selected study courses
   List<StudyCourse> selectedStudies = [];
-
-  /// Starts the closing animation for the popup.
-  void closePopup() {
-    setState(
-      () => snapPositions = [
-        const SnappingPosition.pixels(
-          positionPixels: 630,
-        ),
-        const SnappingPosition.pixels(
-          positionPixels: -60,
-          snappingCurve: Curves.easeOutExpo,
-          snappingDuration: Duration(milliseconds: 350),
-        ),
-      ],
-    );
-
-    popupController.snapToPosition(
-      const SnappingPosition.pixels(
-        positionPixels: -60,
-        snappingCurve: Curves.easeOutExpo,
-        snappingDuration: Duration(milliseconds: 350),
-      ),
-    );
-
-    if (widget.callback != null) {
-      // ignore: prefer_null_aware_method_calls
-      widget.callback!(selectedStudies);
-    }
-    Navigator.pop(context);
-  }
-
-  /// Filters the feed based on the search input of the user
-  void onSearch(String search) {
-    List<StudyCourse> filteredCourses = [];
-
-    if (search == '') {
-      filteredCourses = Provider.of<SettingsHandler>(context, listen: false).currentSettings.studyCourses;
-    } else {
-      filteredCourses = Provider.of<SettingsHandler>(context, listen: false)
-          .currentSettings
-          .studyCourses
-          .where((course) => course.name.toLowerCase().contains(search.toLowerCase()))
-          .toList();
-    }
-
-    setState(() {
-      availableCourses = filteredCourses;
-    });
-  }
-
-  void saveSelections() {
-    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
-          studyCoursePopup: true,
-          selectedStudyCourses: selectedStudies,
-        );
-
-    debugPrint('Saved study courses. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
-
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-
-    mainUtils.setIntialStudyCoursePublishers(Provider.of<SettingsHandler>(context, listen: false), selectedStudies);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    popupController = SnappingSheetController();
-
-    availableCourses = Provider.of<SettingsHandler>(context, listen: false).currentSettings.studyCourses;
-    selectedStudies = [];
-    selectedStudies.addAll(Provider.of<SettingsHandler>(context, listen: false).currentSettings.selectedStudyCourses);
-
-    // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
-    Timer(
-      const Duration(milliseconds: 50),
-      () => popupController.snapToPosition(
-        const SnappingPosition.pixels(
-          positionPixels: 630,
-          snappingCurve: Curves.easeOutExpo,
-          snappingDuration: Duration(milliseconds: 350),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -265,5 +180,90 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
         ),
       ),
     );
+  }
+
+  /// Starts the closing animation for the popup.
+  void closePopup() {
+    setState(
+      () => snapPositions = [
+        const SnappingPosition.pixels(
+          positionPixels: 630,
+        ),
+        const SnappingPosition.pixels(
+          positionPixels: -60,
+          snappingCurve: Curves.easeOutExpo,
+          snappingDuration: Duration(milliseconds: 350),
+        ),
+      ],
+    );
+
+    popupController.snapToPosition(
+      const SnappingPosition.pixels(
+        positionPixels: -60,
+        snappingCurve: Curves.easeOutExpo,
+        snappingDuration: Duration(milliseconds: 350),
+      ),
+    );
+
+    if (widget.callback != null) {
+      // ignore: prefer_null_aware_method_calls
+      widget.callback!(selectedStudies);
+    }
+    Navigator.pop(context);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    popupController = SnappingSheetController();
+
+    availableCourses = Provider.of<SettingsHandler>(context, listen: false).currentSettings.studyCourses;
+    selectedStudies = [];
+    selectedStudies.addAll(Provider.of<SettingsHandler>(context, listen: false).currentSettings.selectedStudyCourses);
+
+    // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
+    Timer(
+      const Duration(milliseconds: 50),
+      () => popupController.snapToPosition(
+        const SnappingPosition.pixels(
+          positionPixels: 630,
+          snappingCurve: Curves.easeOutExpo,
+          snappingDuration: Duration(milliseconds: 350),
+        ),
+      ),
+    );
+  }
+
+  /// Filters the feed based on the search input of the user
+  void onSearch(String search) {
+    List<StudyCourse> filteredCourses = [];
+
+    if (search == '') {
+      filteredCourses = Provider.of<SettingsHandler>(context, listen: false).currentSettings.studyCourses;
+    } else {
+      filteredCourses = Provider.of<SettingsHandler>(context, listen: false)
+          .currentSettings
+          .studyCourses
+          .where((course) => course.name.toLowerCase().contains(search.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      availableCourses = filteredCourses;
+    });
+  }
+
+  void saveSelections() {
+    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
+          studyCoursePopup: true,
+          selectedStudyCourses: selectedStudies,
+        );
+
+    debugPrint('Saved study courses. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
+
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+
+    mainUtils.setIntialStudyCoursePublishers(Provider.of<SettingsHandler>(context, listen: false), selectedStudies);
   }
 }

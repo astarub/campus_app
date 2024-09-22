@@ -1,18 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import 'package:campus_app/core/themes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// This widget displays a button to quickly call the emergency number of the university
 class LeitwarteButton extends StatelessWidget {
   const LeitwarteButton({super.key});
-
-  void call() {
-    final Uri parsedLink = Uri.parse('tel:+492343223333');
-    launchUrl(parsedLink, mode: LaunchMode.externalApplication);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,5 +82,10 @@ class LeitwarteButton extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void call() {
+    final Uri parsedLink = Uri.parse('tel:+492343223333');
+    launchUrl(parsedLink, mode: LaunchMode.externalApplication);
   }
 }

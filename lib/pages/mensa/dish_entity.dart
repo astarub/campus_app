@@ -1,7 +1,5 @@
-import 'package:hive/hive.dart';
-
-import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:hive/hive.dart';
 
 part 'dish_entity.g.dart';
 
@@ -50,9 +48,8 @@ class DishEntity {
     required int date,
     required String category,
     required Map<String, dynamic> json,
+    required MensaUtils utils,
   }) {
-    final utils = sl<MensaUtils>();
-
     late final List<String> uppercase = [];
     late final List<String> lowercase = [];
     late final List<String> numbers = [];

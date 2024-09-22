@@ -1,11 +1,9 @@
-import 'package:flutter/widgets.dart';
-
-import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
-
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 
 part 'event_entity.g.dart';
 
@@ -191,6 +189,13 @@ class Event {
     );
   }
 
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Event && runtimeType == other.runtimeType && id == other.id;
+
   Map<String, dynamic> toInternalJson() {
     return {
       'id': id,
@@ -212,11 +217,4 @@ class Event {
       'pinned': pinned,
     };
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is Event && runtimeType == other.runtimeType && id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
 }

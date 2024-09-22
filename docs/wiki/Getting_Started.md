@@ -92,7 +92,7 @@ Last but not least we will provide a small cheat sheet about all Flutter command
 
 ### Create Mocks
 
-`flutter packages run build_runner build --delete-conflicting-outputs`
+`dart run build_runner build --delete-conflicting-outputs`
 
 ### Generate language files
 

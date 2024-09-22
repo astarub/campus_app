@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:campus_app/core/themes.dart';
-
-enum CampusTextFieldType { normal, icon }
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 /// This widget adds a custom [TextField] that uses the CampusApp design language
 class CampusTextField extends StatefulWidget {
@@ -52,25 +49,6 @@ class CampusTextField extends StatefulWidget {
 class CampusTextFieldState extends State<CampusTextField> {
   final FocusNode _focusNode = FocusNode();
   late String hint = widget.textFieldText;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _focusNode.addListener(
-      () => setState(() {
-        if (_focusNode.hasFocus) {
-          hint = '';
-          if (widget.onTap != null) {
-            // ignore: prefer_null_aware_method_calls
-            widget.onTap!();
-          }
-        } else {
-          hint = widget.textFieldText;
-        }
-      }),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,4 +116,25 @@ class CampusTextFieldState extends State<CampusTextField> {
       ),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _focusNode.addListener(
+      () => setState(() {
+        if (_focusNode.hasFocus) {
+          hint = '';
+          if (widget.onTap != null) {
+            // ignore: prefer_null_aware_method_calls
+            widget.onTap!();
+          }
+        } else {
+          hint = widget.textFieldText;
+        }
+      }),
+    );
+  }
 }
+
+enum CampusTextFieldType { normal, icon }

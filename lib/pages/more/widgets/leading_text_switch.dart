@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_switch.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// This widget displays a [Text] and a [CampusSwitch] widget in a row.
 class LeadingTextSwitch extends StatelessWidget {

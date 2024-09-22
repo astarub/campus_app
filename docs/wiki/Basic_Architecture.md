@@ -84,20 +84,20 @@ Let's start with a visualization of this architecture:
 
 ```mermaid
 graph BT;
-subgraph <h3>Infrastructure Layer
+subgraph Infrastructure Layer
  api{API} -->|Raw Data| rds(Remote Datasource)
  db{DB} -->|Raw Data| lds(Local Datasource)
 end
-subgraph <h3>Domain Layer
+subgraph Domain Layer
  rds -->|Model| repo
  lds -->|Model| repo
  repo(Repository) -->|Entity| uc(Use Cases)
 end
-subgraph <h3>Application Layer
+subgraph Application Layer
  uc --> appl(Presentation <br> Logic Holder)
  repo -.->|Entity| appl
 end
-subgraph <h3>Presentation Layer
+subgraph Presentation Layer
  appl --> wid(Widgets)
 end
 ```

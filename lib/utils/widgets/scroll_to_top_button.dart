@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:campus_app/core/themes.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:slugid/slugid.dart';
 
 class ScrollToTopButton extends StatefulWidget {
@@ -16,23 +14,6 @@ class ScrollToTopButton extends StatefulWidget {
 
 class ScrollToTopButtonState extends State<ScrollToTopButton> {
   bool showBacktoTopButton = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    widget.scrollController.addListener(() {
-      if (widget.scrollController.offset > 20) {
-        setState(() {
-          showBacktoTopButton = true;
-        });
-      } else {
-        setState(() {
-          showBacktoTopButton = false;
-        });
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,5 +38,22 @@ class ScrollToTopButtonState extends State<ScrollToTopButton> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget.scrollController.addListener(() {
+      if (widget.scrollController.offset > 20) {
+        setState(() {
+          showBacktoTopButton = true;
+        });
+      } else {
+        setState(() {
+          showBacktoTopButton = false;
+        });
+      }
+    });
   }
 }

@@ -39,25 +39,15 @@ class AnimatedConditionalState extends State<AnimatedConditional> with TickerPro
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    _animationController = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    );
-
-    // Define the animations for fading in and the scale transformation
-    _fadeAnimation = Tween(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: widget.interval,
-      ),
-    );
-    _scaleAnimation = Tween(begin: 1.0, end: 0.98).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: widget.interval,
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, _) => Transform.scale(
+          scale: _scaleAnimation.value,
+          child: widget.child,
+        ),
       ),
     );
   }
@@ -70,15 +60,28 @@ class AnimatedConditionalState extends State<AnimatedConditional> with TickerPro
   }
 
   @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: AnimatedBuilder(
-        animation: _scaleAnimation,
-        builder: (context, _) => Transform.scale(
-          scale: _scaleAnimation.value,
-          child: widget.child,
-        ),
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    );
+
+    // Define the animations for fading in and the scale transformation
+    // ignore: prefer_int_literals
+    _fadeAnimation = Tween(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: widget.interval,
+      ),
+    );
+
+    // ignore: prefer_int_literals
+    _scaleAnimation = Tween(begin: 1.0, end: 0.98).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: widget.interval,
       ),
     );
   }

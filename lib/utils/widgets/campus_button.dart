@@ -1,9 +1,6 @@
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:campus_app/core/themes.dart';
-
-enum CampusButtonType { normal, light }
 
 /// This widget adds a custom Button that uses the CampusApp design language
 class CampusButton extends StatelessWidget {
@@ -85,3 +82,5 @@ class CampusButton extends StatelessWidget {
     );
   }
 }
+
+enum CampusButtonType { normal, light }

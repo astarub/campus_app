@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:campus_app/core/themes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 /// This widget displays a button with a title, leading and trailing icon
 /// in order to open external websites or services

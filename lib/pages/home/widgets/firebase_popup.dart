@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:campus_app/utils/widgets/decision_popup.dart';
+import 'package:flutter/material.dart';
 
 /// This widget shows a popup to let the user decide wether or not he wants
 /// to use the Google services (Firebase) to receive notifications.

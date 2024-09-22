@@ -1,12 +1,11 @@
+import 'package:campus_app/core/backend/entities/publisher_entity.dart';
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/utils/widgets/campus_filter_selection.dart';
+import 'package:campus_app/utils/widgets/popup_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
-
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/core/backend/entities/publisher_entity.dart';
-import 'package:campus_app/utils/widgets/campus_filter_selection.dart';
-import 'package:campus_app/utils/widgets/popup_sheet.dart';
 
 /// This widget displays the filter options that are available for the
 /// personal news feed and is used in the [SnappingSheet] widget
@@ -30,21 +29,6 @@ class CalendarFilterPopup extends StatefulWidget {
 
 class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
   late List<Publisher> _selectedFilters;
-
-  void onFilterSelected(Publisher selectedFilter) {
-    if (_selectedFilters.map((e) => e.name).toList().contains(selectedFilter.name)) {
-      setState(() => _selectedFilters.removeWhere((filter) => filter.name == selectedFilter.name));
-    } else {
-      setState(() => _selectedFilters.add(selectedFilter));
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _selectedFilters = widget.selectedFilters;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,5 +69,20 @@ class _CalendarFilterPopupState extends State<CalendarFilterPopup> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedFilters = widget.selectedFilters;
+  }
+
+  void onFilterSelected(Publisher selectedFilter) {
+    if (_selectedFilters.map((e) => e.name).toList().contains(selectedFilter.name)) {
+      setState(() => _selectedFilters.removeWhere((filter) => filter.name == selectedFilter.name));
+    } else {
+      setState(() => _selectedFilters.add(selectedFilter));
+    }
   }
 }

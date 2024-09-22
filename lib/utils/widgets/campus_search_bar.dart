@@ -1,9 +1,7 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// This widget displays a search bar that can be hidden via a button
 /// and is used to search the news feed and events.

@@ -71,32 +71,6 @@ class NewsEntity {
     this.webViewUrl = '',
   });
 
-  /// Returns a NewsEntity based on a single XML element given by the web server
-  factory NewsEntity.fromXML(XmlElement xml, Map<String, dynamic> imageData) {
-    final content = xml.getElement('content')!.innerText;
-    final title = xml.getElement('title')!.innerText;
-    final url = xml.getElement('link')!.innerText;
-    final description = xml.getElement('description')!.innerText;
-    final pubDate = DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse(xml.getElement('pubDate')!.innerText);
-
-    /// Regular Expression to remove unwanted HTML-Tags
-    final RegExp htmlTags = RegExp(
-      // r'''(<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\>)|(<[^>]a>)|([^>]*])''';
-      '([^>]*])',
-      multiLine: true,
-    );
-
-    return NewsEntity(
-      content: content.replaceAll(htmlTags, ''),
-      title: title,
-      url: url,
-      description: description,
-      pubDate: pubDate,
-      imageUrl: List.castFrom(imageData['imageUrls'])[0],
-      copyright: imageData['copyright'],
-    );
-  }
-
   /// Returns a NewsEntity from a JSON object provided by an external webserver
   factory NewsEntity.fromJSON({required Map<String, dynamic> json, required List<String> copyright}) {
     final title = Map<String, dynamic>.from(json['title'])['rendered'] as String;
@@ -140,6 +114,32 @@ class NewsEntity {
       videoUrl: json['fvideo_url'] != null ? json['fvideo_url'].toString() : 'false',
       pinned: json['pinned'] ?? false,
       webViewUrl: json['webview_url'] != null && json['webview_url'] != '' ? json['webview_url'] : null,
+    );
+  }
+
+  /// Returns a NewsEntity based on a single XML element given by the web server
+  factory NewsEntity.fromXML(XmlElement xml, Map<String, dynamic> imageData) {
+    final content = xml.getElement('content')!.innerText;
+    final title = xml.getElement('title')!.innerText;
+    final url = xml.getElement('link')!.innerText;
+    final description = xml.getElement('description')!.innerText;
+    final pubDate = DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse(xml.getElement('pubDate')!.innerText);
+
+    /// Regular Expression to remove unwanted HTML-Tags
+    final RegExp htmlTags = RegExp(
+      // r'''(<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\>)|(<[^>]a>)|([^>]*])''';
+      '([^>]*])',
+      multiLine: true,
+    );
+
+    return NewsEntity(
+      content: content.replaceAll(htmlTags, ''),
+      title: title,
+      url: url,
+      description: description,
+      pubDate: pubDate,
+      imageUrl: List.castFrom(imageData['imageUrls'])[0],
+      copyright: imageData['copyright'],
     );
   }
 }

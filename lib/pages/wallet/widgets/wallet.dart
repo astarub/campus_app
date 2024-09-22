@@ -1,20 +1,41 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:screen_brightness/screen_brightness.dart';
-
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
-import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
 import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
+import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:screen_brightness/screen_brightness.dart';
+
+Future<void> resetBrightness() async {
+  try {
+    await ScreenBrightness().resetScreenBrightness();
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
+
+Future<void> setBrightness(double brightness) async {
+  try {
+    await ScreenBrightness().setScreenBrightness(brightness);
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
+
+class BogestraTicket extends StatefulWidget {
+  const BogestraTicket({super.key});
+
+  @override
+  State<BogestraTicket> createState() => _BogestraTicketState();
+}
 
 class CampusWallet extends StatelessWidget {
   const CampusWallet({super.key});
@@ -42,13 +63,6 @@ class CampusWallet extends StatelessWidget {
   }
 }
 
-class BogestraTicket extends StatefulWidget {
-  const BogestraTicket({super.key});
-
-  @override
-  State<BogestraTicket> createState() => _BogestraTicketState();
-}
-
 class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAliveClientMixin<BogestraTicket> {
   bool scanned = false;
   String scannedValue = '';
@@ -61,19 +75,8 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   TicketRepository ticketRepository = sl<TicketRepository>();
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
 
-  /// Loads the previously saved image of the semester ticket and the corresponding ticket details
-  Future<void> renderTicket() async {
-    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode();
-    final Map<String, dynamic>? ticketDetails = await ticketUsecases.getTicketDetails();
-
-    if (aztecCodeImage != null && ticketDetails != null) {
-      setState(() {
-        scanned = true;
-        this.aztecCodeImage = aztecCodeImage;
-        this.ticketDetails = ticketDetails;
-      });
-    }
-  }
+  @override
+  bool get wantKeepAlive => true;
 
   Future<void> addTicket() async {
     await Navigator.push(
@@ -86,19 +89,6 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
         ),
       ),
     );
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    ticketRepository.loadTicket().catchError((error) {
-      debugPrint('Wallet widget: $error');
-    });
-    renderTicket();
   }
 
   @override
@@ -253,20 +243,28 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
             ),
     );
   }
-}
 
-Future<void> setBrightness(double brightness) async {
-  try {
-    await ScreenBrightness().setScreenBrightness(brightness);
-  } catch (e) {
-    debugPrint(e.toString());
+  @override
+  void initState() {
+    super.initState();
+
+    ticketRepository.loadTicket().catchError((error) {
+      debugPrint('Wallet widget: $error');
+    });
+    renderTicket();
   }
-}
 
-Future<void> resetBrightness() async {
-  try {
-    await ScreenBrightness().resetScreenBrightness();
-  } catch (e) {
-    debugPrint(e.toString());
+  /// Loads the previously saved image of the semester ticket and the corresponding ticket details
+  Future<void> renderTicket() async {
+    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode();
+    final Map<String, dynamic>? ticketDetails = await ticketUsecases.getTicketDetails();
+
+    if (aztecCodeImage != null && ticketDetails != null) {
+      setState(() {
+        scanned = true;
+        this.aztecCodeImage = aztecCodeImage;
+        this.ticketDetails = ticketDetails;
+      });
+    }
   }
 }

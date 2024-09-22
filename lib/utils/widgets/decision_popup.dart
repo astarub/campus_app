@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:snapping_sheet_2/snapping_sheet.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_text_button.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
 
 /// This widget allows to push a popup to the navigator-stack that is fully
 /// animated, but can't be dragged outside the screen by the user.
@@ -78,61 +78,6 @@ class DecisionPopupState extends State<DecisionPopup> {
 
   /// Animated half-transparent background color
   Color backgroundColor = const Color.fromRGBO(0, 0, 0, 0);
-
-  /// Starts the closing animation for the popup.
-  void closePopup() {
-    setState(
-      () => snapPositions = [
-        const SnappingPosition.pixels(
-          positionPixels: 420,
-        ),
-        const SnappingPosition.pixels(
-          positionPixels: -60,
-          snappingCurve: Curves.easeOutExpo,
-          snappingDuration: Duration(milliseconds: 350),
-        ),
-      ],
-    );
-
-    popupController.snapToPosition(
-      const SnappingPosition.pixels(
-        positionPixels: -60,
-        snappingCurve: Curves.easeOutExpo,
-        snappingDuration: Duration(milliseconds: 350),
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    popupController = SnappingSheetController();
-
-    // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
-    Timer(
-      const Duration(milliseconds: 50),
-      () => popupController.snapToPosition(
-        SnappingPosition.pixels(
-          positionPixels: widget.height,
-          snappingCurve: Curves.easeOutExpo,
-          snappingDuration: const Duration(milliseconds: 350),
-        ),
-      ),
-    );
-
-    // Remove the second [SnappingPosition] after opening the popup
-    Timer(
-      const Duration(milliseconds: 500),
-      () => setState(
-        () => snapPositions = [
-          SnappingPosition.pixels(
-            positionPixels: widget.height,
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -239,6 +184,61 @@ class DecisionPopupState extends State<DecisionPopup> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 50),
         color: backgroundColor,
+      ),
+    );
+  }
+
+  /// Starts the closing animation for the popup.
+  void closePopup() {
+    setState(
+      () => snapPositions = [
+        const SnappingPosition.pixels(
+          positionPixels: 420,
+        ),
+        const SnappingPosition.pixels(
+          positionPixels: -60,
+          snappingCurve: Curves.easeOutExpo,
+          snappingDuration: Duration(milliseconds: 350),
+        ),
+      ],
+    );
+
+    popupController.snapToPosition(
+      const SnappingPosition.pixels(
+        positionPixels: -60,
+        snappingCurve: Curves.easeOutExpo,
+        snappingDuration: Duration(milliseconds: 350),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    popupController = SnappingSheetController();
+
+    // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
+    Timer(
+      const Duration(milliseconds: 50),
+      () => popupController.snapToPosition(
+        SnappingPosition.pixels(
+          positionPixels: widget.height,
+          snappingCurve: Curves.easeOutExpo,
+          snappingDuration: const Duration(milliseconds: 350),
+        ),
+      ),
+    );
+
+    // Remove the second [SnappingPosition] after opening the popup
+    Timer(
+      const Duration(milliseconds: 500),
+      () => setState(
+        () => snapPositions = [
+          SnappingPosition.pixels(
+            positionPixels: widget.height,
+          ),
+        ],
       ),
     );
   }
