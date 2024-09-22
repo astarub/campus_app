@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_int_literals
 
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 /// This widget animates its child with a fade- and position-animation in.
@@ -43,6 +44,27 @@ class AnimatedOnboardingEntryState extends State<AnimatedOnboardingEntry> with S
   late Animation<double> _positionAnimation;
 
   @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: AnimatedBuilder(
+        animation: _positionAnimation,
+        builder: (_, __) => Transform.translate(
+          offset: Offset(0, _positionAnimation.value * (-1)),
+          child: widget.child,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
 
@@ -74,27 +96,6 @@ class AnimatedOnboardingEntryState extends State<AnimatedOnboardingEntry> with S
       }
     });
   }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: AnimatedBuilder(
-        animation: _positionAnimation,
-        builder: (_, __) => Transform.translate(
-          offset: Offset(0, _positionAnimation.value * (-1)),
-          child: widget.child,
-        ),
-      ),
-    );
-  }
 }
 
 /// This widget animates its child with a fade-, scale- and position-animation.
@@ -121,6 +122,30 @@ class AnimatedOnboardingLogoState extends State<AnimatedOnboardingLogo> with Sin
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
   late Animation<double> _positionAnimation;
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: AnimatedBuilder(
+          animation: _positionAnimation,
+          builder: (_, __) => Transform.translate(
+            offset: Offset(0, _positionAnimation.value),
+            child: widget.logo,
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -159,29 +184,5 @@ class AnimatedOnboardingLogoState extends State<AnimatedOnboardingLogo> with Sin
         Timer(widget.offsetDuration, _animationController.forward);
       }
     });
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: AnimatedBuilder(
-          animation: _positionAnimation,
-          builder: (_, __) => Transform.translate(
-            offset: Offset(0, _positionAnimation.value),
-            child: widget.logo,
-          ),
-        ),
-      ),
-    );
   }
 }

@@ -16,8 +16,30 @@ import 'package:campus_app/pages/home/widgets/study_course_popup.dart';
 import 'package:campus_app/pages/more/widgets/leading_button.dart';
 import 'package:campus_app/pages/more/widgets/leading_text_switch.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
-import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/animated_conditional.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+
+/// This widget displays a single section headline in the settings page
+class SectionHeadline extends StatelessWidget {
+  final String headline;
+
+  const SectionHeadline({
+    super.key,
+    required this.headline,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15, bottom: 10),
+      child: Text(
+        headline,
+        textAlign: TextAlign.left,
+        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
+      ),
+    );
+  }
+}
 
 /// This page displays the app settings
 class SettingsPage extends StatefulWidget {
@@ -34,13 +56,6 @@ class SettingsPageState extends State<SettingsPage> {
 
   final BackendRepository backendRepository = sl<BackendRepository>();
   final MainUtils mainUtils = sl<MainUtils>();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    settings = Provider.of<SettingsHandler>(context).currentSettings;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -265,26 +280,11 @@ class SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
-}
-
-/// This widget displays a single section headline in the settings page
-class SectionHeadline extends StatelessWidget {
-  final String headline;
-
-  const SectionHeadline({
-    super.key,
-    required this.headline,
-  });
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15, bottom: 10),
-      child: Text(
-        headline,
-        textAlign: TextAlign.left,
-        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-      ),
-    );
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    settings = Provider.of<SettingsHandler>(context).currentSettings;
   }
 }

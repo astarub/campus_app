@@ -16,12 +16,12 @@ import 'package:campus_app/pages/more/widgets/language_selection.dart';
 import 'package:campus_app/pages/home/widgets/animated_onboarding_entry.dart';
 import 'package:campus_app/pages/home/widgets/study_selection.dart';
 import 'package:campus_app/pages/home/widgets/theme_selection.dart';
-import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/onboarding_data.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
-import 'package:campus_app/utils/widgets/campus_text_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_triple_control.dart';
+import 'package:campus_app/utils/widgets/campus_text_button.dart';
 
 class OnboardingPage extends StatefulWidget {
   final GlobalKey<HomePageState> homePageKey;
@@ -84,61 +84,6 @@ class OnboardingPageState extends State<OnboardingPage> {
     systemNavigationBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
     systemNavigationBarIconBrightness: Brightness.light, // Android
   );
-
-  void saveSelections() {
-    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
-          useSystemDarkmode: selectedTheme == 0,
-          useDarkmode: selectedTheme == 2,
-          selectedStudyCourses: selectedStudies,
-          studyCoursePopup: true,
-          useFirebase: firebaseAccepted ? FirebaseStatus.permitted : FirebaseStatus.forbidden,
-        );
-
-    if (firebaseAccepted) mainUtils.initializeFirebase(widget.homePageKey.currentContext!);
-
-    debugPrint('Onboarding completed. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
-
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-
-    mainUtils.setIntialStudyCoursePublishers(Provider.of<SettingsHandler>(context, listen: false), selectedStudies);
-  }
-
-  // ignore: use_setters_to_change_properties
-  void setSelectedLocale(Locale selected) {
-    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
-          locale: selected,
-        );
-
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-
-    selectedLocale = selected;
-  }
-
-  void openLink(BuildContext context, String url) {
-    debugPrint('Opening external ressource: $url');
-
-    // Open in external browser
-    launchUrl(
-      Uri.parse(url),
-      mode: LaunchMode.externalApplication,
-    );
-  }
-
-  void changeTheme(int selectedThemeMode) {
-    selectedTheme = selectedThemeMode;
-    themeSelectionKey.currentState?.changeTheme(selectedThemeMode);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    backendRepository.loadStudyCourses(
-      Provider.of<SettingsHandler>(context, listen: false),
-    );
-
-    selectedLocale = Provider.of<SettingsHandler>(context, listen: false).currentSettings.locale;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -534,5 +479,60 @@ class OnboardingPageState extends State<OnboardingPage> {
         ),
       ),
     );
+  }
+
+  void changeTheme(int selectedThemeMode) {
+    selectedTheme = selectedThemeMode;
+    themeSelectionKey.currentState?.changeTheme(selectedThemeMode);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    backendRepository.loadStudyCourses(
+      Provider.of<SettingsHandler>(context, listen: false),
+    );
+
+    selectedLocale = Provider.of<SettingsHandler>(context, listen: false).currentSettings.locale;
+  }
+
+  void openLink(BuildContext context, String url) {
+    debugPrint('Opening external ressource: $url');
+
+    // Open in external browser
+    launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  void saveSelections() {
+    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
+          useSystemDarkmode: selectedTheme == 0,
+          useDarkmode: selectedTheme == 2,
+          selectedStudyCourses: selectedStudies,
+          studyCoursePopup: true,
+          useFirebase: firebaseAccepted ? FirebaseStatus.permitted : FirebaseStatus.forbidden,
+        );
+
+    if (firebaseAccepted) mainUtils.initializeFirebase(widget.homePageKey.currentContext!);
+
+    debugPrint('Onboarding completed. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
+
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+
+    mainUtils.setIntialStudyCoursePublishers(Provider.of<SettingsHandler>(context, listen: false), selectedStudies);
+  }
+
+  // ignore: use_setters_to_change_properties
+  void setSelectedLocale(Locale selected) {
+    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
+          locale: selected,
+        );
+
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+
+    selectedLocale = selected;
   }
 }

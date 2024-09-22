@@ -29,10 +29,8 @@ class CalendarRepository {
         }
       }
 
-      // write entities to cach
-      unawaited(
-        calendarDatasource.clearEventEntityCache().then((_) => calendarDatasource.writeEventsToCache(entities)),
-      );
+      // write entities to cache
+      unawaited(calendarDatasource.writeEventsToCache(entities, app: true));
 
       return Right(entities);
     } catch (e, stacktrace) {

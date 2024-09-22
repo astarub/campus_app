@@ -1,9 +1,10 @@
-import 'package:dio/dio.dart';
-import 'package:hive/hive.dart';
+import 'dart:convert';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/utils/constants.dart';
+import 'package:dio/dio.dart';
+import 'package:hive/hive.dart';
 
 class MensaDataSource {
   /// Key to identify count of news in Hive box / Cach
@@ -31,9 +32,27 @@ class MensaDataSource {
 
     if (response.statusCode != 200) {
       throw ServerException();
-    } else {
-      return response.data as Map<String, dynamic>;
     }
+
+    // response could be parsed by dart
+    if (response.data is Map<String, dynamic>) {
+      return response.data;
+    }
+
+    // response is string
+    return json.decode(response.data);
+  }
+
+  /// Read cache of DishEntities and return them
+  List<DishEntity> readDishEntitiesFromCache(int restaurant) {
+    final cntEntities = mensaCache.get('$_keyCnt$restaurant') as int;
+    final List<DishEntity> entities = [];
+
+    for (int i = 0; i < cntEntities; i++) {
+      entities.add(mensaCache.get('$restaurant$i') as DishEntity);
+    }
+
+    return entities;
   }
 
   /// Write given list of DishEntities to Hive.Box
@@ -47,17 +66,5 @@ class MensaDataSource {
       await mensaCache.put('$restaurant$index', entity);
       index++;
     }
-  }
-
-  /// Read cache of DishEntities and return them
-  List<DishEntity> readDishEntitiesFromCache(int restaurant) {
-    final cntEntities = mensaCache.get('$_keyCnt$restaurant') as int;
-    final List<DishEntity> entities = [];
-
-    for (int i = 0; i < cntEntities; i++) {
-      entities.add(mensaCache.get('$restaurant$i') as DishEntity);
-    }
-
-    return entities;
   }
 }

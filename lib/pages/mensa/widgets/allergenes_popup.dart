@@ -8,6 +8,101 @@ import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/popup_sheet.dart';
 
+class AllergenesListItem extends StatelessWidget {
+  final String name;
+  final String shortcut;
+  final void Function(String) onTap;
+  final bool isActive;
+
+  const AllergenesListItem({
+    super.key,
+    required this.name,
+    required this.shortcut,
+    required this.onTap,
+    this.isActive = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Material(
+        color: isActive
+            ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                ? const Color.fromRGBO(245, 246, 250, 1)
+                : const Color.fromRGBO(34, 40, 54, 1)
+            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
+        borderRadius: BorderRadius.circular(6),
+        child: InkWell(
+          splashColor: const Color.fromRGBO(0, 0, 0, 0.06),
+          highlightColor: const Color.fromRGBO(0, 0, 0, 0.04),
+          borderRadius: BorderRadius.circular(6),
+          onTap: () => onTap(shortcut),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              children: [
+                // Checkbox
+                Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                        ? isActive
+                            ? Colors.black
+                            : Colors.white
+                        : const Color.fromRGBO(18, 24, 38, 1),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                          ? isActive
+                              ? Colors.black
+                              : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!
+                          : const Color.fromRGBO(34, 40, 54, 1),
+                    ),
+                  ),
+                  child: isActive
+                      ? SvgPicture.asset(
+                          'assets/img/icons/x.svg',
+                          colorFilter: const ColorFilter.mode(
+                            Colors.white,
+                            BlendMode.srcIn,
+                          ),
+                        )
+                      : Container(),
+                ),
+                // Name
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text(
+                    name,
+                    style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                        ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
+                              fontSize: 15,
+                              color: Colors.black,
+                            )
+                        : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    '($shortcut)',
+                    textAlign: TextAlign.end,
+                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class AllergenesPopup extends StatefulWidget {
   /// Can be given to show saved preferences on build
   final List<String> allergenes;
@@ -28,21 +123,6 @@ class AllergenesPopup extends StatefulWidget {
 
 class _AllergenesPopupState extends State<AllergenesPopup> {
   late List<String> _selectedAllergenes;
-
-  void selectItem(String selected) {
-    if (_selectedAllergenes.contains(selected)) {
-      setState(() => _selectedAllergenes.removeWhere((allergene) => allergene == selected));
-    } else {
-      setState(() => _selectedAllergenes.add(selected));
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _selectedAllergenes = widget.allergenes;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -221,99 +301,19 @@ class _AllergenesPopupState extends State<AllergenesPopup> {
       ),
     );
   }
-}
-
-class AllergenesListItem extends StatelessWidget {
-  final String name;
-  final String shortcut;
-  final void Function(String) onTap;
-  final bool isActive;
-
-  const AllergenesListItem({
-    super.key,
-    required this.name,
-    required this.shortcut,
-    required this.onTap,
-    this.isActive = false,
-  });
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Material(
-        color: isActive
-            ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                ? const Color.fromRGBO(245, 246, 250, 1)
-                : const Color.fromRGBO(34, 40, 54, 1)
-            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
-        borderRadius: BorderRadius.circular(6),
-        child: InkWell(
-          splashColor: const Color.fromRGBO(0, 0, 0, 0.06),
-          highlightColor: const Color.fromRGBO(0, 0, 0, 0.04),
-          borderRadius: BorderRadius.circular(6),
-          onTap: () => onTap(shortcut),
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                // Checkbox
-                Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? isActive
-                            ? Colors.black
-                            : Colors.white
-                        : const Color.fromRGBO(18, 24, 38, 1),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                          ? isActive
-                              ? Colors.black
-                              : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!
-                          : const Color.fromRGBO(34, 40, 54, 1),
-                    ),
-                  ),
-                  child: isActive
-                      ? SvgPicture.asset(
-                          'assets/img/icons/x.svg',
-                          colorFilter: const ColorFilter.mode(
-                            Colors.white,
-                            BlendMode.srcIn,
-                          ),
-                        )
-                      : Container(),
-                ),
-                // Name
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    name,
-                    style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
-                              fontSize: 15,
-                              color: Colors.black,
-                            )
-                        : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    '($shortcut)',
-                    textAlign: TextAlign.end,
-                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+
+    _selectedAllergenes = widget.allergenes;
+  }
+
+  void selectItem(String selected) {
+    if (_selectedAllergenes.contains(selected)) {
+      setState(() => _selectedAllergenes.removeWhere((allergene) => allergene == selected));
+    } else {
+      setState(() => _selectedAllergenes.add(selected));
+    }
   }
 }

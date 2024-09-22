@@ -1,10 +1,10 @@
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:campus_app/core/themes.dart';
-
 /// This widget allows the user to pick between two options.
 /// It is a linear set of two segments, each of which functions as a button.
+/// ignore: must_be_immutable
 class CampusSegmentedControl extends StatefulWidget {
   /// The displayed text on the left button of the SegmentedControl
   final String leftTitle;
@@ -34,18 +34,6 @@ class CampusSegmentedControl extends StatefulWidget {
 
 class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
   static const double _pickerWidth = 200;
-
-  void _picked(int newSelected) {
-    if (newSelected != widget.selected) {
-      // Execute the `onChanged()` callback
-      widget.onChanged(newSelected);
-
-      // Update the visuals
-      setState(() {
-        widget.selected = newSelected;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,5 +128,17 @@ class _CampusSegmentedControlState extends State<CampusSegmentedControl> {
         ],
       ),
     );
+  }
+
+  void _picked(int newSelected) {
+    if (newSelected != widget.selected) {
+      // Execute the `onChanged()` callback
+      widget.onChanged(newSelected);
+
+      // Update the visuals
+      setState(() {
+        widget.selected = newSelected;
+      });
+    }
   }
 }

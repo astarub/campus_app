@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +12,7 @@ import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
+import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CalendarDetailPage extends StatefulWidget {
@@ -33,54 +32,6 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
   final BackendRepository backendRepository = sl<BackendRepository>();
 
   bool savedEvent = false;
-
-  /// Function that updates the saved event state and shows an info
-  /// message inside a [SnackBar]
-  Future<void> saveEventAndShowMessage() async {
-    setState(() {
-      savedEvent = !savedEvent;
-    });
-
-    try {
-      final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
-
-      if (settingsHandler.currentSettings.useFirebase != FirebaseStatus.forbidden &&
-          settingsHandler.currentSettings.useFirebase != FirebaseStatus.uncofigured) {
-        if (savedEvent) {
-          await backendRepository.addSavedEvent(
-            settingsHandler,
-            widget.event,
-          );
-        } else {
-          await backendRepository.removeSavedEvent(
-            settingsHandler,
-            widget.event.id,
-            Uri.parse(widget.event.url).host,
-          );
-        }
-      }
-    } catch (e) {
-      debugPrint(
-        'Could not save event on the backend. Retrying when connection is re-established.',
-      );
-    }
-
-    // Remove the event from the saved event cache
-    await calendarRepository.updateSavedEvents(event: widget.event);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    calendarRepository.updateSavedEvents().then((savedEvents) {
-      savedEvents.fold((failure) => null, (list) {
-        if (list.contains(widget.event)) {
-          setState(() => savedEvent = true);
-        }
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -282,5 +233,53 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    calendarRepository.updateSavedEvents().then((savedEvents) {
+      savedEvents.fold((failure) => null, (list) {
+        if (list.contains(widget.event)) {
+          setState(() => savedEvent = true);
+        }
+      });
+    });
+  }
+
+  /// Function that updates the saved event state and shows an info
+  /// message inside a [SnackBar]
+  Future<void> saveEventAndShowMessage() async {
+    setState(() {
+      savedEvent = !savedEvent;
+    });
+
+    try {
+      final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
+
+      if (settingsHandler.currentSettings.useFirebase != FirebaseStatus.forbidden &&
+          settingsHandler.currentSettings.useFirebase != FirebaseStatus.uncofigured) {
+        if (savedEvent) {
+          await backendRepository.addSavedEvent(
+            settingsHandler,
+            widget.event,
+          );
+        } else {
+          await backendRepository.removeSavedEvent(
+            settingsHandler,
+            widget.event.id,
+            Uri.parse(widget.event.url).host,
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint(
+        'Could not save event on the backend. Retrying when connection is re-established.',
+      );
+    }
+
+    // Remove the event from the saved event cache
+    await calendarRepository.updateSavedEvents(event: widget.event);
   }
 }

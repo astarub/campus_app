@@ -7,13 +7,23 @@ import 'package:flutter/material.dart';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/feed/news/news_datasource.dart';
+import 'package:campus_app/pages/feed/news/news_entity.dart';
 
 class NewsRepository {
   final NewsDatasource newsDatasource;
 
   NewsRepository({required this.newsDatasource});
+
+  /// Return a list of cached news or a failure.
+  Either<Failure, List<NewsEntity>> getCachedNewsfeed() {
+    try {
+      final cachedNewsfeed = newsDatasource.readNewsEntitiesFromCach();
+      return Right(cachedNewsfeed);
+    } catch (e) {
+      return Left(CachFailure());
+    }
+  }
 
   /// Return a list of web news or a failure.
   Future<Either<Failure, List<NewsEntity>>> getRemoteNewsFeed({
@@ -42,16 +52,6 @@ class NewsRepository {
         default:
           return Left(GeneralFailure());
       }
-    }
-  }
-
-  /// Return a list of cached news or a failure.
-  Either<Failure, List<NewsEntity>> getCachedNewsfeed() {
-    try {
-      final cachedNewsfeed = newsDatasource.readNewsEntitiesFromCach();
-      return Right(cachedNewsfeed);
-    } catch (e) {
-      return Left(CachFailure());
     }
   }
 }

@@ -1,17 +1,17 @@
+import 'package:campus_app/core/exceptions.dart';
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
+import 'package:campus_app/utils/pages/wallet_utils.dart';
+import 'package:campus_app/utils/widgets/campus_button.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/utils/widgets/campus_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/l10n/l10n.dart';
-import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/exceptions.dart';
-import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
-import 'package:campus_app/utils/pages/wallet_utils.dart';
-import 'package:campus_app/utils/widgets/campus_icon_button.dart';
-import 'package:campus_app/utils/widgets/campus_textfield.dart';
-import 'package:campus_app/utils/widgets/campus_button.dart';
 
 class TicketLoginScreen extends StatefulWidget {
   final void Function() onTicketLoaded;

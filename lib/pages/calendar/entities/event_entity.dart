@@ -123,6 +123,13 @@ class Event {
     );
   }
 
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Event && runtimeType == other.runtimeType && id == other.id;
+
   Map<String, dynamic> toInternalJson() {
     return {
       'id': id,
@@ -169,11 +176,4 @@ class Event {
       author: json['author'] ?? '',
     );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is Event && runtimeType == other.runtimeType && id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
 }

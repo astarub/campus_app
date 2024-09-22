@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/backend/entities/study_course_entity.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class StudySelection extends StatefulWidget {
   final List<StudyCourse> availableStudies;
@@ -19,30 +18,6 @@ class StudySelection extends StatefulWidget {
 
   @override
   State<StudySelection> createState() => _StudySelectionState();
-}
-
-class _StudySelectionState extends State<StudySelection> {
-  void selectItem(StudyCourse selected) {
-    if (widget.selectedStudies.map((e) => e.name).contains(selected.name)) {
-      setState(() => widget.selectedStudies.removeWhere((preference) => preference.name == selected.name));
-    } else {
-      setState(() => widget.selectedStudies.add(selected));
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      physics: const BouncingScrollPhysics(),
-      itemCount: widget.availableStudies.length,
-      itemBuilder: (context, index) => StudySelectionItem(
-        course: widget.availableStudies[index],
-        onTap: selectItem,
-        isActive: widget.selectedStudies.contains(widget.availableStudies[index]),
-      ),
-    );
-  }
 }
 
 /// This widget displays one selectable option in a list
@@ -138,5 +113,29 @@ class StudySelectionItem extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _StudySelectionState extends State<StudySelection> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      physics: const BouncingScrollPhysics(),
+      itemCount: widget.availableStudies.length,
+      itemBuilder: (context, index) => StudySelectionItem(
+        course: widget.availableStudies[index],
+        onTap: selectItem,
+        isActive: widget.selectedStudies.contains(widget.availableStudies[index]),
+      ),
+    );
+  }
+
+  void selectItem(StudyCourse selected) {
+    if (widget.selectedStudies.map((e) => e.name).contains(selected.name)) {
+      setState(() => widget.selectedStudies.removeWhere((preference) => preference.name == selected.name));
+    } else {
+      setState(() => widget.selectedStudies.add(selected));
+    }
   }
 }

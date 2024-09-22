@@ -3,13 +3,15 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i7;
 
-import 'package:campus_app/core/failures.dart' as _i6;
-import 'package:campus_app/pages/mensa/dish_entity.dart' as _i7;
+import 'package:appwrite/appwrite.dart' as _i3;
+import 'package:campus_app/core/failures.dart' as _i8;
+import 'package:campus_app/pages/mensa/dish_entity.dart' as _i9;
 import 'package:campus_app/pages/mensa/mensa_datasource.dart' as _i2;
-import 'package:campus_app/pages/mensa/mensa_repository.dart' as _i4;
-import 'package:dartz/dartz.dart' as _i3;
+import 'package:campus_app/pages/mensa/mensa_repository.dart' as _i6;
+import 'package:campus_app/utils/pages/mensa_utils.dart' as _i4;
+import 'package:dartz/dartz.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -36,8 +38,28 @@ class _FakeMensaDataSource_0 extends _i1.SmartFake
         );
 }
 
-class _FakeEither_1<L, R> extends _i1.SmartFake implements _i3.Either<L, R> {
-  _FakeEither_1(
+class _FakeClient_1 extends _i1.SmartFake implements _i3.Client {
+  _FakeClient_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeMensaUtils_2 extends _i1.SmartFake implements _i4.MensaUtils {
+  _FakeMensaUtils_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeEither_3<L, R> extends _i1.SmartFake implements _i5.Either<L, R> {
+  _FakeEither_3(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -49,7 +71,7 @@ class _FakeEither_1<L, R> extends _i1.SmartFake implements _i3.Either<L, R> {
 /// A class which mocks [MensaRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMensaRepository extends _i1.Mock implements _i4.MensaRepository {
+class MockMensaRepository extends _i1.Mock implements _i6.MensaRepository {
   MockMensaRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -64,38 +86,75 @@ class MockMensaRepository extends _i1.Mock implements _i4.MensaRepository {
       ) as _i2.MensaDataSource);
 
   @override
-  _i5.Future<_i3.Either<_i6.Failure, List<_i7.DishEntity>>> getRemoteDishes(
+  _i3.Client get awClient => (super.noSuchMethod(
+        Invocation.getter(#awClient),
+        returnValue: _FakeClient_1(
+          this,
+          Invocation.getter(#awClient),
+        ),
+      ) as _i3.Client);
+
+  @override
+  _i4.MensaUtils get utils => (super.noSuchMethod(
+        Invocation.getter(#utils),
+        returnValue: _FakeMensaUtils_2(
+          this,
+          Invocation.getter(#utils),
+        ),
+      ) as _i4.MensaUtils);
+
+  @override
+  _i7.Future<_i5.Either<_i8.Failure, List<_i9.DishEntity>>> getAWDishes(
           int? restaurant) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getRemoteDishes,
+          #getAWDishes,
           [restaurant],
         ),
         returnValue:
-            _i5.Future<_i3.Either<_i6.Failure, List<_i7.DishEntity>>>.value(
-                _FakeEither_1<_i6.Failure, List<_i7.DishEntity>>(
+            _i7.Future<_i5.Either<_i8.Failure, List<_i9.DishEntity>>>.value(
+                _FakeEither_3<_i8.Failure, List<_i9.DishEntity>>(
           this,
           Invocation.method(
-            #getRemoteDishes,
+            #getAWDishes,
             [restaurant],
           ),
         )),
-      ) as _i5.Future<_i3.Either<_i6.Failure, List<_i7.DishEntity>>>);
+      ) as _i7.Future<_i5.Either<_i8.Failure, List<_i9.DishEntity>>>);
 
   @override
-  _i3.Either<_i6.Failure, List<_i7.DishEntity>> getCachedDishes(
+  _i5.Either<_i8.Failure, List<_i9.DishEntity>> getCachedDishes(
           int? restaurant) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCachedDishes,
           [restaurant],
         ),
-        returnValue: _FakeEither_1<_i6.Failure, List<_i7.DishEntity>>(
+        returnValue: _FakeEither_3<_i8.Failure, List<_i9.DishEntity>>(
           this,
           Invocation.method(
             #getCachedDishes,
             [restaurant],
           ),
         ),
-      ) as _i3.Either<_i6.Failure, List<_i7.DishEntity>>);
+      ) as _i5.Either<_i8.Failure, List<_i9.DishEntity>>);
+
+  @override
+  _i7.Future<_i5.Either<_i8.Failure, List<_i9.DishEntity>>> getScrappedDishes(
+          int? restaurant) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getScrappedDishes,
+          [restaurant],
+        ),
+        returnValue:
+            _i7.Future<_i5.Either<_i8.Failure, List<_i9.DishEntity>>>.value(
+                _FakeEither_3<_i8.Failure, List<_i9.DishEntity>>(
+          this,
+          Invocation.method(
+            #getScrappedDishes,
+            [restaurant],
+          ),
+        )),
+      ) as _i7.Future<_i5.Either<_i8.Failure, List<_i9.DishEntity>>>);
 }

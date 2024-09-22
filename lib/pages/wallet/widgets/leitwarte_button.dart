@@ -10,11 +10,6 @@ import 'package:campus_app/core/themes.dart';
 class LeitwarteButton extends StatelessWidget {
   const LeitwarteButton({super.key});
 
-  void call() {
-    final Uri parsedLink = Uri.parse('tel:+492343223333');
-    launchUrl(parsedLink, mode: LaunchMode.externalApplication);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -89,5 +84,10 @@ class LeitwarteButton extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void call() {
+    final Uri parsedLink = Uri.parse('tel:+492343223333');
+    launchUrl(parsedLink, mode: LaunchMode.externalApplication);
   }
 }

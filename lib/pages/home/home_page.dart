@@ -1,14 +1,14 @@
 import 'dart:io' show Platform;
+
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/home/page_navigator.dart';
+import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/home/widgets/side_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/pages/home/page_navigator.dart';
-import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
-import 'package:campus_app/pages/home/widgets/side_nav_bar.dart';
 
 /// The [HomePage] displays all general UI elements like the bottom nav-menu and
 /// handles the switching between the different pages.
@@ -90,106 +90,6 @@ class HomePageState extends State<HomePage> {
   /// Indicates whether swiping is disabled
   bool swipeDisabled = false;
 
-  /// Temporarily disable swiping for certain pages e.g. in app web view
-  void setSwipeDisabled({bool disableSwipe = false}) {
-    setState(() {
-      swipeDisabled = disableSwipe;
-    });
-  }
-
-  /// Switches to another page when selected in the nav-menu on phones
-  Future<bool> selectedPage(PageItem selectedPageItem) async {
-    if (selectedPageItem == currentPage) return true;
-
-    // Phone Layout
-    if (MediaQuery.of(context).size.shortestSide < 600) {
-      // Get all pages as list and find the corresponding element
-      final List<PageItem> pages = navigatorKeys.keys.toList();
-      final int indexNewPage = pages.indexWhere((element) => element == selectedPageItem);
-
-      // Switch to the selected page
-      await pageController.animateToPage(
-        indexNewPage,
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-      );
-
-      // Tablet Layout
-    } else {
-      // Reset the exit animation of the new page to make the content visible again
-      exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
-      // Start the exit animation of the old page
-      await exitAnimationKeys[currentPage]?.currentState?.startExitAnimation();
-      // Switch to the new page
-      setState(() => currentPage = selectedPageItem);
-      // Start the entry animation of the new page
-      await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
-    }
-
-    // Enable swiping upon navigation
-    setSwipeDisabled();
-
-    return true;
-  }
-
-  /// Returns the [NavBarNavigator] for the specified PageItem on phones
-  Widget buildNavigator(PageItem tabItem) {
-    return NavBarNavigator(
-      mainNavigatorKey: widget.mainNavigatorKey,
-      navigatorKey: navigatorKeys[tabItem]!,
-      pageItem: tabItem,
-      pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
-      pageExitAnimationKey: exitAnimationKeys[tabItem]!,
-    );
-  }
-
-  /// Wraps the [NavBarNavigator] that holds the displayed page in an [Offstage] widget
-  /// in order to stack them and show only the active page.
-  /// Only used for tablets.
-  Widget buildOffstateNavigator(PageItem tabItem) {
-    return Offstage(
-      offstage: currentPage != tabItem,
-      child: NavBarNavigator(
-        mainNavigatorKey: widget.mainNavigatorKey,
-        navigatorKey: navigatorKeys[tabItem]!,
-        pageItem: tabItem,
-        pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
-        pageExitAnimationKey: exitAnimationKeys[tabItem]!,
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Theme von System auslesen & Callback erstellen
-    final window = WidgetsBinding.instance.platformDispatcher;
-
-    window.onPlatformBrightnessChanged = () {
-      final brightness = window.platformBrightness;
-
-      // Callback wird ausgeführt, sofern System-Darkmode verwendet werden soll
-      if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useSystemDarkmode) {
-        if (brightness == Brightness.light) {
-          debugPrint('System ändert zu LightMode.');
-          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark) {
-            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.light;
-          }
-        } else if (brightness == Brightness.dark) {
-          debugPrint('System ändert zu DarkMode.');
-          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light) {
-            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.dark;
-          }
-        }
-      }
-    };
-
-    pageController.addListener(() {
-      setState(() => pagePosition = pageController.page ?? 0);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -200,8 +100,8 @@ class HomePageState extends State<HomePage> {
           : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? lightTabletSystemUiStyle
               : darkTabletSystemUiStyle,
-      child: WillPopScope(
-        onWillPop: () async => !await navigatorKeys[currentPage]!.currentState!.maybePop(),
+      child: NavigatorPopHandler(
+        onPop: () => navigatorKeys[currentPage]!.currentState!.pop(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
@@ -331,5 +231,105 @@ class HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  /// Returns the [NavBarNavigator] for the specified PageItem on phones
+  Widget buildNavigator(PageItem tabItem) {
+    return NavBarNavigator(
+      mainNavigatorKey: widget.mainNavigatorKey,
+      navigatorKey: navigatorKeys[tabItem]!,
+      pageItem: tabItem,
+      pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
+      pageExitAnimationKey: exitAnimationKeys[tabItem]!,
+    );
+  }
+
+  /// Wraps the [NavBarNavigator] that holds the displayed page in an [Offstage] widget
+  /// in order to stack them and show only the active page.
+  /// Only used for tablets.
+  Widget buildOffstateNavigator(PageItem tabItem) {
+    return Offstage(
+      offstage: currentPage != tabItem,
+      child: NavBarNavigator(
+        mainNavigatorKey: widget.mainNavigatorKey,
+        navigatorKey: navigatorKeys[tabItem]!,
+        pageItem: tabItem,
+        pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
+        pageExitAnimationKey: exitAnimationKeys[tabItem]!,
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Theme von System auslesen & Callback erstellen
+    final window = WidgetsBinding.instance.platformDispatcher;
+
+    window.onPlatformBrightnessChanged = () {
+      final brightness = window.platformBrightness;
+
+      // Callback wird ausgeführt, sofern System-Darkmode verwendet werden soll
+      if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useSystemDarkmode) {
+        if (brightness == Brightness.light) {
+          debugPrint('System ändert zu LightMode.');
+          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark) {
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.light;
+          }
+        } else if (brightness == Brightness.dark) {
+          debugPrint('System ändert zu DarkMode.');
+          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light) {
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.dark;
+          }
+        }
+      }
+    };
+
+    pageController.addListener(() {
+      setState(() => pagePosition = pageController.page ?? 0);
+    });
+  }
+
+  /// Switches to another page when selected in the nav-menu on phones
+  Future<bool> selectedPage(PageItem selectedPageItem) async {
+    if (selectedPageItem == currentPage) return true;
+
+    // Phone Layout
+    if (MediaQuery.of(context).size.shortestSide < 600) {
+      // Get all pages as list and find the corresponding element
+      final List<PageItem> pages = navigatorKeys.keys.toList();
+      final int indexNewPage = pages.indexWhere((element) => element == selectedPageItem);
+
+      // Switch to the selected page
+      await pageController.animateToPage(
+        indexNewPage,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+
+      // Tablet Layout
+    } else {
+      // Reset the exit animation of the new page to make the content visible again
+      exitAnimationKeys[selectedPageItem]?.currentState?.resetExitAnimation();
+      // Start the exit animation of the old page
+      await exitAnimationKeys[currentPage]?.currentState?.startExitAnimation();
+      // Switch to the new page
+      setState(() => currentPage = selectedPageItem);
+      // Start the entry animation of the new page
+      await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
+    }
+
+    // Enable swiping upon navigation
+    setSwipeDisabled();
+
+    return true;
+  }
+
+  /// Temporarily disable swiping for certain pages e.g. in app web view
+  void setSwipeDisabled({bool disableSwipe = false}) {
+    setState(() {
+      swipeDisabled = disableSwipe;
+    });
   }
 }

@@ -69,6 +69,26 @@ class NewsEntity {
     this.webViewUrl = '',
   });
 
+  /// Returns a NewsEntity from a JSON object provided by an external webserver
+  factory NewsEntity.fromInternalJSON({required Map<String, dynamic> json}) {
+    final pubDate = DateTime.parse(json['pubDate']);
+
+    return NewsEntity(
+      content: json['content'] ?? '',
+      title: json['title'] ?? '',
+      url: json['url'] ?? '',
+      description: json['description'] ?? '',
+      pubDate: pubDate,
+      author: json['author'] ?? 0,
+      categoryIds: List<int>.from(json['categoryIds']),
+      copyright: List<String>.from(json['copyright']),
+      imageUrl: json['imageUrl'] != null ? json['imageUrl'].toString() : 'false',
+      videoUrl: json['videoUrl'] != null ? json['videoUrl'].toString() : 'false',
+      pinned: json['pinned'] ?? false,
+      webViewUrl: json['webview_url'] != null && json['webview_url'] != '' ? json['webview_url'] : null,
+    );
+  }
+
   /// Returns a NewsEntity based on a single XML element given by the web server
   factory NewsEntity.fromXML(XmlElement xml, Map<String, dynamic> imageData) {
     final content = xml.getElement('content')!.innerText;
@@ -92,26 +112,6 @@ class NewsEntity {
       pubDate: pubDate,
       imageUrl: List.castFrom(imageData['imageUrls'])[0],
       copyright: imageData['copyright'],
-    );
-  }
-
-  /// Returns a NewsEntity from a JSON object provided by an external webserver
-  factory NewsEntity.fromInternalJSON({required Map<String, dynamic> json}) {
-    final pubDate = DateTime.parse(json['pubDate']);
-
-    return NewsEntity(
-      content: json['content'] ?? '',
-      title: json['title'] ?? '',
-      url: json['url'] ?? '',
-      description: json['description'] ?? '',
-      pubDate: pubDate,
-      author: json['author'] ?? 0,
-      categoryIds: List<int>.from(json['categoryIds']),
-      copyright: List<String>.from(json['copyright']),
-      imageUrl: json['imageUrl'] != null ? json['imageUrl'].toString() : 'false',
-      videoUrl: json['videoUrl'] != null ? json['videoUrl'].toString() : 'false',
-      pinned: json['pinned'] ?? false,
-      webViewUrl: json['webview_url'] != null && json['webview_url'] != '' ? json['webview_url'] : null,
     );
   }
 }

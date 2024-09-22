@@ -1,9 +1,5 @@
 import 'dart:async';
 import 'dart:io' show Platform;
-import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:dartz/dartz.dart' as dartz;
 
 import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/failures.dart';
@@ -16,14 +12,18 @@ import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 import 'package:campus_app/pages/calendar/calendar_repository.dart';
 import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/calendar/widgets/calendar_filter_popup.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
-import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
-import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_search_bar.dart';
-import 'package:campus_app/pages/calendar/widgets/calendar_filter_popup.dart';
+import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
+import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
+import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
+import 'package:dartz/dartz.dart' as dartz;
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CalendarPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -70,184 +70,9 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
 
   Locale appLocale = const Locale('de');
 
-  /// Checks for events that were saved locally or removed from the server-side
-  Future<void> syncSavedEventWidgets() async {
-    if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase == FirebaseStatus.forbidden ||
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
-            FirebaseStatus.uncofigured) {
-      return;
-    }
-    final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
-
-    // Copy the list of saved events in order to remove elements from the original list while iterating over the cloned one
-    final List<Map<String, dynamic>> accountSavedEvents = settingsHandler.currentSettings.backendAccount.savedEvents;
-    final List<Map<String, dynamic>> tempAccountSavedEvents = [];
-    tempAccountSavedEvents.addAll(accountSavedEvents);
-
-    // Get all saved events identified by the device's FCM token
-    final List<Map<String, dynamic>> remoteSavedEvents = await backendRepository.getSavedEvents(settingsHandler);
-
-    for (final Map<String, dynamic> accountEvent in tempAccountSavedEvents) {
-      // Remove events that were removed without an internet connection
-      if (!savedEvents.map((e) => e.id).toList().contains(accountEvent['eventId'])) {
-        await backendRepository.removeSavedEvent(settingsHandler, accountEvent['eventId'], accountEvent['host']);
-      }
-
-      // Remove events that were removed on the backend
-      try {
-        remoteSavedEvents.firstWhere(
-          (remoteEvent) =>
-              remoteEvent['eventId'] == accountEvent['eventId'] && remoteEvent['host'] == accountEvent['host'],
-        );
-      } catch (e) {
-        // Remove the event from the saved events widget list
-        try {
-          final Event savedEvent = savedEvents.firstWhere(
-            (event) => event.id == accountEvent['eventId'] && Uri.parse(event.url).host == accountEvent['host'],
-          );
-
-          await updateSavedEventWidgets(
-            event: savedEvent,
-          );
-          // ignore: empty_catches
-        } catch (e) {}
-
-        // Remove the event from the mirrored local saved events list
-        try {
-          accountSavedEvents.removeWhere((element) => element['documentId'] == accountEvent['documentId']);
-          // ignore: empty_catches
-        } catch (e) {}
-      }
-    }
-
-    // Update the local saved events list
-    settingsHandler.currentSettings = settingsHandler.currentSettings.copyWith(
-      backendAccount: settingsHandler.currentSettings.backendAccount.copyWith(savedEvents: accountSavedEvents),
-    );
-
-    // Add events to the backend that were added without an internet connection
-    for (final Event event in savedEvents) {
-      try {
-        accountSavedEvents.firstWhere(
-          (element) => element['eventId'] == event.id && element['host'] == Uri.parse(event.url).host,
-        );
-      } catch (e) {
-        await backendRepository.addSavedEvent(
-          settingsHandler,
-          event,
-        );
-      }
-    }
-  }
-
-  /// Update the saved event widget list
-  Future<void> updateSavedEventWidgets({Event? event}) async {
-    final dartz.Either<Failure, List<Event>> updatedsavedEventWidgets =
-        await calendarRepository.updateSavedEvents(event: event);
-
-    List<Event> saved = [];
-
-    updatedsavedEventWidgets.fold(
-      (failure) => failures.add(failure),
-      (events) => saved = events,
-    );
-
-    setState(() {
-      savedEventWidgets = calendarUtils.getEventWidgetList(events: saved);
-      savedEvents = saved;
-      showSavedPlaceholder = saved.isEmpty;
-    });
-  }
-
-  /// Function that calls usecase and parses widgets into the corresponding
-  /// lists of events or failures.
-  Future<List<Widget>> updateStateWithEvents() async {
-    setState(() {
-      eventWidgetOpacity = 0;
-      savedWidgetOpacity = 0;
-    });
-
-    try {
-      await backendRepository.loadPublishers(Provider.of<SettingsHandler>(context, listen: false));
-      // ignore: empty_catches
-    } catch (e) {}
-
-    if (mounted) {
-      appLocale = Localizations.localeOf(context);
-    }
-
-    try {
-      await calendarUsecases.updateEventsAndFailures(appLocale.languageCode).then(
-        (data) {
-          setState(() {
-            events = data['events']! as List<Event>;
-            savedEvents = data['saved']! as List<Event>;
-            failures = data['failures']! as List<Failure>;
-
-            parsedEventWidgets = calendarUtils.getEventWidgetList(events: events);
-            savedEventWidgets = calendarUtils.getEventWidgetList(events: savedEvents);
-
-            showUpcomingPlaceholder = events.isEmpty;
-            showSavedPlaceholder = savedEvents.isEmpty;
-            eventWidgetOpacity = 1;
-            savedWidgetOpacity = 1;
-          });
-        },
-        onError: (e) {
-          throw Exception('Failed to load parsed Events: $e');
-        },
-      );
-    } catch (e) {
-      debugPrint('Error: $e');
-    }
-
-    // Sync saved events
-    await syncSavedEventWidgets();
-
-    debugPrint('Events aktualisiert.');
-
-    return parsedEventWidgets;
-  }
-
-  void saveChangedFilters(List<Publisher> newFilters) {
-    final Settings newSettings =
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(eventsFilter: newFilters);
-
-    debugPrint('Saving new event filters: ${newSettings.eventsFilter.map((e) => e.name).toList()}');
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-  }
-
+  // Keep state alive
   @override
-  void initState() {
-    super.initState();
-
-    // Request an update for the calendar and show the refresh indicator
-    Future.delayed(const Duration(milliseconds: 200)).then((_) {
-      refreshIndicatorKey.currentState?.show();
-    });
-
-    global.languageChangedCalendar = false;
-  }
-
-  /// Filters the events based on the search input of the user
-  void onSearch(String search) {
-    final List<Widget> filteredWidgets = [];
-
-    for (final Widget e in parsedEventWidgets) {
-      if (e is CalendarEventWidget) {
-        if (e.event.title.toUpperCase().contains(search.toUpperCase())) {
-          filteredWidgets.add(e);
-        }
-      } else {
-        filteredWidgets.add(e);
-      }
-    }
-
-    setState(() {
-      searchEventWidgets = filteredWidgets;
-      this.search = search;
-    });
-  }
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -424,7 +249,182 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
     );
   }
 
-  // Keep state alive
   @override
-  bool get wantKeepAlive => true;
+  void initState() {
+    super.initState();
+
+    // Request an update for the calendar and show the refresh indicator
+    Future.delayed(const Duration(milliseconds: 200)).then((_) {
+      refreshIndicatorKey.currentState?.show();
+    });
+
+    global.languageChangedCalendar = false;
+  }
+
+  /// Filters the events based on the search input of the user
+  void onSearch(String search) {
+    final List<Widget> filteredWidgets = [];
+
+    for (final Widget e in parsedEventWidgets) {
+      if (e is CalendarEventWidget) {
+        if (e.event.title.toUpperCase().contains(search.toUpperCase())) {
+          filteredWidgets.add(e);
+        }
+      } else {
+        filteredWidgets.add(e);
+      }
+    }
+
+    setState(() {
+      searchEventWidgets = filteredWidgets;
+      this.search = search;
+    });
+  }
+
+  void saveChangedFilters(List<Publisher> newFilters) {
+    final Settings newSettings =
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(eventsFilter: newFilters);
+
+    debugPrint('Saving new event filters: ${newSettings.eventsFilter.map((e) => e.name).toList()}');
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
+
+  /// Checks for events that were saved locally or removed from the server-side
+  Future<void> syncSavedEventWidgets() async {
+    if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase == FirebaseStatus.forbidden ||
+        Provider.of<SettingsHandler>(context, listen: false).currentSettings.useFirebase ==
+            FirebaseStatus.uncofigured) {
+      return;
+    }
+    final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
+
+    // Copy the list of saved events in order to remove elements from the original list while iterating over the cloned one
+    final List<Map<String, dynamic>> accountSavedEvents = settingsHandler.currentSettings.backendAccount.savedEvents;
+    final List<Map<String, dynamic>> tempAccountSavedEvents = [];
+    tempAccountSavedEvents.addAll(accountSavedEvents);
+
+    // Get all saved events identified by the device's FCM token
+    final List<Map<String, dynamic>> remoteSavedEvents = await backendRepository.getSavedEvents(settingsHandler);
+
+    for (final Map<String, dynamic> accountEvent in tempAccountSavedEvents) {
+      // Remove events that were removed without an internet connection
+      if (!savedEvents.map((e) => e.id).toList().contains(accountEvent['eventId'])) {
+        await backendRepository.removeSavedEvent(settingsHandler, accountEvent['eventId'], accountEvent['host']);
+      }
+
+      // Remove events that were removed on the backend
+      try {
+        remoteSavedEvents.firstWhere(
+          (remoteEvent) =>
+              remoteEvent['eventId'] == accountEvent['eventId'] && remoteEvent['host'] == accountEvent['host'],
+        );
+      } catch (e) {
+        // Remove the event from the saved events widget list
+        try {
+          final Event savedEvent = savedEvents.firstWhere(
+            (event) => event.id == accountEvent['eventId'] && Uri.parse(event.url).host == accountEvent['host'],
+          );
+
+          await updateSavedEventWidgets(
+            event: savedEvent,
+          );
+          // ignore: empty_catches
+        } catch (e) {}
+
+        // Remove the event from the mirrored local saved events list
+        try {
+          accountSavedEvents.removeWhere((element) => element['documentId'] == accountEvent['documentId']);
+          // ignore: empty_catches
+        } catch (e) {}
+      }
+    }
+
+    // Update the local saved events list
+    settingsHandler.currentSettings = settingsHandler.currentSettings.copyWith(
+      backendAccount: settingsHandler.currentSettings.backendAccount.copyWith(savedEvents: accountSavedEvents),
+    );
+
+    // Add events to the backend that were added without an internet connection
+    for (final Event event in savedEvents) {
+      try {
+        accountSavedEvents.firstWhere(
+          (element) => element['eventId'] == event.id && element['host'] == Uri.parse(event.url).host,
+        );
+      } catch (e) {
+        await backendRepository.addSavedEvent(
+          settingsHandler,
+          event,
+        );
+      }
+    }
+  }
+
+  /// Update the saved event widget list
+  Future<void> updateSavedEventWidgets({Event? event}) async {
+    final dartz.Either<Failure, List<Event>> updatedsavedEventWidgets =
+        await calendarRepository.updateSavedEvents(event: event);
+
+    List<Event> saved = [];
+
+    updatedsavedEventWidgets.fold(
+      (failure) => failures.add(failure),
+      (events) => saved = events,
+    );
+
+    setState(() {
+      savedEventWidgets = calendarUtils.getEventWidgetList(events: saved);
+      savedEvents = saved;
+      showSavedPlaceholder = saved.isEmpty;
+    });
+  }
+
+  /// Function that calls usecase and parses widgets into the corresponding
+  /// lists of events or failures.
+  Future<List<Widget>> updateStateWithEvents() async {
+    setState(() {
+      eventWidgetOpacity = 0;
+      savedWidgetOpacity = 0;
+    });
+
+    try {
+      await backendRepository.loadPublishers(Provider.of<SettingsHandler>(context, listen: false));
+      // ignore: empty_catches
+    } catch (e) {}
+
+    if (mounted) {
+      appLocale = Localizations.localeOf(context);
+    }
+
+    try {
+      await calendarUsecases.updateEventsAndFailures(appLocale.languageCode).then(
+        (data) {
+          setState(() {
+            events = data['events']! as List<Event>;
+            savedEvents = data['saved']! as List<Event>;
+            failures = data['failures']! as List<Failure>;
+
+            parsedEventWidgets = calendarUtils.getEventWidgetList(events: events);
+            savedEventWidgets = calendarUtils.getEventWidgetList(events: savedEvents);
+
+            showUpcomingPlaceholder = events.isEmpty;
+            showSavedPlaceholder = savedEvents.isEmpty;
+            eventWidgetOpacity = 1;
+            savedWidgetOpacity = 1;
+          });
+        },
+        onError: (e) {
+          throw Exception('Failed to load parsed Events: $e');
+        },
+      );
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+
+    // Sync saved events
+    await syncSavedEventWidgets();
+
+    debugPrint('Events aktualisiert.');
+
+    return parsedEventWidgets;
+  }
 }
