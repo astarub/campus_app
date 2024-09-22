@@ -60,6 +60,7 @@ dependencies:
   video_thumbnail: ^0.5.3
   image: ^4.2.0
   dismissible_page: ^1.0.2
+  locale_names: ^1.1.1
   
 dev_dependencies:
   flutter_test:
@@ -109,7 +110,6 @@ flutter:
      - assets/img/mensa.png
      - assets/img/qwest.png
      - assets/img/rotebeete.png
-     - assets/img/henkelmann.png
      - assets/img/asta-gaming-hub.png
      - assets/img/icons/hochschulsport_icon.png
      - assets/img/icons/home-outlined.png

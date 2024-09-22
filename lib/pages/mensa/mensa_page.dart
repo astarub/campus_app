@@ -48,9 +48,6 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   late List<DishEntity> qwestDishes = [];
   late List<DishEntity> henkelmannDishes = [];
   late List<DishEntity> unikidsDishes = [];
-  late List<DishEntity> whsMensaDishes = [];
-  late List<DishEntity> bocholtDishes = [];
-  late List<DishEntity> recklinghausenDishes = [];
   late List<Failure> failures = [];
 
   // Weekday to show as selected
@@ -113,7 +110,11 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                       ),
                       // Hint
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        padding: const EdgeInsets.only(
+                          top: 15,
+                          left: 20,
+                          right: 20,
+                        ), //const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                         child: Column(
                           children: [
                             Row(
@@ -270,12 +271,6 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
         return qwestDishes;
       case 4:
         return unikidsDishes;
-      case 5:
-        return whsMensaDishes;
-      case 6:
-        return bocholtDishes;
-      case 7:
-        return recklinghausenDishes;
       default:
         return <DishEntity>[];
     }
@@ -306,9 +301,6 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
           qwestDishes = data['qwest'] != null ? data['qwest']! as List<DishEntity> : [];
           henkelmannDishes = data['henkelmann'] != null ? data['henkelmann']! as List<DishEntity> : [];
           unikidsDishes = data['unikids'] != null ? data['unikids']! as List<DishEntity> : [];
-          whsMensaDishes = data['whs_mensa'] != null ? data['whs_mensa']! as List<DishEntity> : [];
-          bocholtDishes = data['bocholt'] != null ? data['bocholt']! as List<DishEntity> : [];
-          recklinghausenDishes = data['recklinghausen'] != null ? data['recklinghausen']! as List<DishEntity> : [];
           failures = data['failures'] != null ? data['failures']! as List<Failure> : [];
         }),
       );
