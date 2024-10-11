@@ -76,7 +76,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   Timer? fieldTimer;
 
   void startFieldTimer() {
-    fieldTimer = Timer(const Duration(milliseconds: 200), _validateAndPerformAction);
+    fieldTimer = Timer(const Duration(milliseconds: 200), () {
+      _validateAndPerformAction();
+      FocusScope.of(context).unfocus();
+    });
   }
 
   void resetTimer() {
