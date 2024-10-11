@@ -23,118 +23,19 @@ class IndoorNavigation extends StatefulWidget {
 }
 
 class _IndoorNavigationState extends State<IndoorNavigation> {
+  int currentIndex = 0;
+  Timer? fieldTimer;
+  (String, String, String) from = ('SH', '0', 'Haupteingang');
   List<Uint8List> images = [];
   List<List<Offset>> pointsList = [];
-  int currentIndex = 0;
+  List<String> suggestions = [];
   Map testkarte = {};
-  (String, String, String) from = ('SH', '0', 'Haupteingang');
   (String, String, String) to = ('SH', '0', 'Kultur-Cafe');
 
   final TransformationController controller = TransformationController();
-
   final PathfinderUtils utils = sl<PathfinderUtils>();
-
-  @override
-  void initState() {
-    super.initState();
-
-    for (final key in graph.keys) {
-      final Map x = {};
-      for (var i = 0; i < graph[key]?['Connections'].length; i++) {
-        final (y, z) = graph[key]?['Connections'][i];
-        x[y] = z;
-      }
-      testkarte[key] = x;
-    }
-
-    fill();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      homeKey.currentState!.setSwipeDisabled(disableSwipe: true);
-    });
-  }
-
-  Future<List<Uint8List>> computeImagesForMap(Map karte) async {
-    debugPrint('New page opened.');
-
-    final List<dynamic> shortestPath = Dijkstra.findPathFromGraph(karte, from, to);
-
-    final List<Uint8List> loadedImages = await utils.loadImages(
-      context: context,
-      shortestPath: shortestPath,
-      pointsList: pointsList,
-    );
-
-    return loadedImages;
-  }
-
-  //-------------------------------------------------------------------------
-
-  final TextEditingController _startController = TextEditingController();
-  final TextEditingController _zielController = TextEditingController();
-
-  Timer? fieldTimer;
-
-  void startFieldTimer() {
-    fieldTimer = Timer(const Duration(milliseconds: 200), () {
-      _validateAndPerformAction();
-      FocusScope.of(context).unfocus();
-    });
-  }
-
-  void resetTimer() {
-    fieldTimer?.cancel();
-    startFieldTimer();
-  }
-
-  Future<void> _validateAndPerformAction() async {
-    final String startText = _startController.text;
-    final String zielText = _zielController.text;
-
-    if (startText.isNotEmpty && zielText.isNotEmpty) {
-      final List<String> components = startText.split(' ');
-      final String building = components[0];
-      final String levelAndRoom = components[1];
-      final List<String> levelAndRoomComponents = levelAndRoom.split('/');
-      final String level = levelAndRoomComponents[0];
-      final String room = levelAndRoomComponents[1];
-      final start = (building, level, room);
-
-      final List<String> components2 = zielText.split(' ');
-      final String building2 = components2[0];
-      final String levelAndRoom2 = components2[1];
-      final List<String> levelAndRoomComponents2 = levelAndRoom2.split('/');
-      final String level2 = levelAndRoomComponents2[0];
-      final String room2 = levelAndRoomComponents2[1];
-      final ziel = (building2, level2, room2);
-
-      setState(() {
-        from = start;
-        to = ziel;
-        images = [];
-        pointsList = [];
-        currentIndex = 0;
-      });
-
-      final List<Uint8List> images2 = await computeImagesForMap(testkarte);
-
-      setState(() {
-        images = images2;
-      });
-    } else {
-      debugPrint('Both fields must be filled.');
-    }
-  }
-
-  List<String> suggestions = [];
-
-  void fill() {
-    for (final key in testkarte.keys) {
-      final (x1, x2, x3) = key;
-      final x4 = '$x1 $x2/$x3';
-      suggestions.add(x4);
-    }
-  }
+  final TextEditingController startController = TextEditingController();
+  final TextEditingController zielController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +107,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                         });
                       },
                       onSelected: (String selection) {
-                        _startController.text = selection;
+                        startController.text = selection;
                         resetTimer();
                       },
                       fieldViewBuilder: (
@@ -215,13 +116,13 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                         FocusNode focusNode,
                         VoidCallback onFieldSubmitted,
                       ) {
-                        _startController.text = textEditingController.text;
+                        startController.text = textEditingController.text;
                         return TextField(
                           controller: textEditingController,
                           focusNode: focusNode,
                           onSubmitted: (value) {
                             onFieldSubmitted();
-                            _validateAndPerformAction();
+                            validateAndPerformAction();
                           },
                           decoration: InputDecoration(
                             hintText: 'Start: zB. SH 0/05',
@@ -260,7 +161,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                         });
                       },
                       onSelected: (String selection) {
-                        _zielController.text = selection;
+                        zielController.text = selection;
 
                         resetTimer();
                       },
@@ -270,13 +171,13 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                         FocusNode focusNode,
                         VoidCallback onFieldSubmitted,
                       ) {
-                        _startController.text = textEditingController.text;
+                        startController.text = textEditingController.text;
                         return TextField(
                           controller: textEditingController,
                           focusNode: focusNode,
                           onSubmitted: (value) {
                             onFieldSubmitted();
-                            _validateAndPerformAction();
+                            validateAndPerformAction();
                           },
                           decoration: InputDecoration(
                             hintText: 'Ziel: zB. SH 0/81',
@@ -390,5 +291,100 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
         ),
       ),
     );
+  }
+
+  Future<List<Uint8List>> computeImagesForMap(Map karte) async {
+    debugPrint('New page opened.');
+
+    final List<dynamic> shortestPath = Dijkstra.findPathFromGraph(karte, from, to);
+
+    final List<Uint8List> loadedImages = await utils.loadImages(
+      context: context,
+      shortestPath: shortestPath,
+      pointsList: pointsList,
+    );
+
+    return loadedImages;
+  }
+
+  void fill() {
+    for (final key in testkarte.keys) {
+      final (x1, x2, x3) = key;
+      final x4 = '$x1 $x2/$x3';
+      suggestions.add(x4);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    for (final key in graph.keys) {
+      final Map x = {};
+      // ignore: avoid_dynamic_calls
+      for (var i = 0; i < graph[key]?['Connections'].length; i++) {
+        // ignore: avoid_dynamic_calls
+        final (y, z) = graph[key]?['Connections'][i];
+        x[y] = z;
+      }
+      testkarte[key] = x;
+    }
+
+    fill();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      homeKey.currentState!.setSwipeDisabled(disableSwipe: true);
+    });
+  }
+
+  void resetTimer() {
+    fieldTimer?.cancel();
+    startFieldTimer();
+  }
+
+  void startFieldTimer() {
+    fieldTimer = Timer(const Duration(milliseconds: 200), () {
+      validateAndPerformAction();
+      FocusScope.of(context).unfocus();
+    });
+  }
+
+  Future<void> validateAndPerformAction() async {
+    final String startText = startController.text;
+    final String zielText = zielController.text;
+
+    if (startText.isNotEmpty && zielText.isNotEmpty) {
+      final List<String> components = startText.split(' ');
+      final String building = components[0];
+      final String levelAndRoom = components[1];
+      final List<String> levelAndRoomComponents = levelAndRoom.split('/');
+      final String level = levelAndRoomComponents[0];
+      final String room = levelAndRoomComponents[1];
+      final start = (building, level, room);
+
+      final List<String> components2 = zielText.split(' ');
+      final String building2 = components2[0];
+      final String levelAndRoom2 = components2[1];
+      final List<String> levelAndRoomComponents2 = levelAndRoom2.split('/');
+      final String level2 = levelAndRoomComponents2[0];
+      final String room2 = levelAndRoomComponents2[1];
+      final ziel = (building2, level2, room2);
+
+      setState(() {
+        from = start;
+        to = ziel;
+        images = [];
+        pointsList = [];
+        currentIndex = 0;
+      });
+
+      final List<Uint8List> images2 = await computeImagesForMap(testkarte);
+
+      setState(() {
+        images = images2;
+      });
+    } else {
+      debugPrint('Both fields must be filled.');
+    }
   }
 }
