@@ -51,6 +51,8 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   late List<DishEntity> unikidsDishes = [];
   late List<Failure> failures = [];
 
+  Locale appLocale = const Locale('de');
+
   // Weekday to show as selected
   int selectedDay = -1;
 
@@ -292,6 +294,10 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
 
   /// This function initiates the loading of the mensa data (and caching)
   Future<void> loadData() async {
+    if (mounted) {
+      appLocale = Localizations.localeOf(context);
+    }
+
     final Future<Map<String, List<dynamic>>> updatedDishes = mensaUsecases.updateDishesAndFailures();
 
     try {

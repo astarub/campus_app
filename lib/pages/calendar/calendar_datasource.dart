@@ -16,9 +16,6 @@ class CalendarDatasource {
   /// Key to identify savedEvents in Hive box / Cach
   static const String keyCntSaved = 'cntSaved';
 
-  /// Key to identify events of our own WP instance in Hive box / Cach
-  static const String keyCntApp = 'cntApp';
-
   /// Dio client to perfrom network operations
   final Client appwriteClient;
 
@@ -67,13 +64,11 @@ class CalendarDatasource {
 
   /// Write given list of Events to Hive.Box 'eventCache'.
   /// The put()-call is awaited to make sure that the write operations are successful.
-  Future<void> writeEventsToCache(List<Event> entities, {bool saved = false, bool app = false}) async {
+  Future<void> writeEventsToCache(List<Event> entities, {bool saved = false}) async {
     final cntEntities = entities.length;
 
     if (saved) {
       await eventCache.put(keyCntSaved, cntEntities);
-    } else if (app) {
-      await eventCache.put(keyCntApp, cntEntities);
     } else {
       await eventCache.put(keyCnt, cntEntities);
     }
@@ -82,8 +77,6 @@ class CalendarDatasource {
     for (final entity in entities) {
       if (saved) {
         await eventCache.put('saved$i', entity);
-      } else if (app) {
-        await eventCache.put('app$i', entity);
       } else {
         await eventCache.put(i, entity);
       }
@@ -91,17 +84,11 @@ class CalendarDatasource {
     }
 
     if (entities.isEmpty) {
-      final int tempCntEntities = saved
-          ? eventCache.get(keyCntSaved) ?? 0
-          : app
-              ? eventCache.get(keyCntApp) ?? 0
-              : eventCache.get(keyCnt) ?? 0;
+      final int tempCntEntities = saved ? eventCache.get(keyCntSaved) ?? 0 : eventCache.get(keyCnt) ?? 0;
 
       for (int i = 0; i < tempCntEntities; i++) {
         if (saved) {
           await eventCache.delete('saved$i');
-        } else if (app) {
-          await eventCache.delete('app$i');
         } else {
           await eventCache.delete(i);
         }
@@ -111,18 +98,20 @@ class CalendarDatasource {
 
   /// Clears the cache
   Future<void> clearEventEntityCache() async {
-    await eventCache.clear();
+    final int tempCntEntities = eventCache.get(keyCnt) ?? 0;
+
+    for (int i = 0; i < tempCntEntities; i++) {
+      await eventCache.delete(i);
+    }
   }
 
   /// Read cache of event entities and return them.
-  List<Event> readEventsFromCache({bool saved = false, bool app = false}) {
+  List<Event> readEventsFromCache({bool saved = false}) {
     late int cntEntities;
     final List<Event> entities = [];
 
     if (saved) {
       cntEntities = eventCache.get(keyCntSaved) ?? 0;
-    } else if (app) {
-      cntEntities = eventCache.get(keyCntApp) ?? 0;
     } else {
       cntEntities = eventCache.get(keyCnt) ?? 0;
     }
@@ -130,8 +119,6 @@ class CalendarDatasource {
     for (int i = 0; i < cntEntities; i++) {
       if (saved) {
         entities.add(eventCache.get('saved$i') as Event);
-      } else if (app) {
-        entities.add(eventCache.get('app$i') as Event);
       } else {
         entities.add(eventCache.get(i) as Event);
       }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:appwrite/appwrite.dart';
 import 'package:campus_app/core/exceptions.dart';
@@ -32,15 +33,18 @@ class MensaRepository {
   ///   * 6: AKAFÖ WHS Gelsenkirchen
   ///   * 7: AKAFÖ WHS Bocholt
   ///   * 8: AKAFÖ WHS Recklinghausen
-  Future<Either<Failure, List<DishEntity>>> getAWDishes(int restaurant) async {
+  Future<Either<Failure, List<DishEntity>>> getAWDishes({
+    int restaurant = 1,
+    ui.Locale locale = const ui.Locale('de'),
+  }) async {
     try {
       final List<DishEntity> dishes = [];
       final today = DateTime.now();
 
       final dbServ = Databases(awClient);
       final mensaDocs = await dbServ.listDocuments(
-        databaseId: 'data',
-        collectionId: 'mensa',
+        databaseId: 'mensa',
+        collectionId: locale.languageCode,
         queries: [
           // Limit is set to 250 to ensure downloading the full collection.
           // In production, the value should be far less than this value for

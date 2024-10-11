@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:ui';
+
+import 'package:dartz/dartz.dart';
 
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_repository.dart';
-import 'package:dartz/dartz.dart';
 
 class MensaUsecases {
   final MensaRepository mensaRepository;
@@ -82,7 +84,7 @@ class MensaUsecases {
     return data;
   }
 
-  Future<Map<String, List<dynamic>>> updateDishesAndFailures() async {
+  Future<Map<String, List<dynamic>>> updateDishesAndFailures({Locale locale = const Locale('de')}) async {
     final Map<String, List<dynamic>> data = {
       'failures': <Failure>[],
       'mensa': <DishEntity>[],
@@ -100,14 +102,35 @@ class MensaUsecases {
     // final Either<Failure, List<DishEntity>> roteBeeteRemoteDishes = await mensaRepository.getScrappedDishes(2);
     // final Either<Failure, List<DishEntity>> qwestRemoteDishes = await mensaRepository.getScrappedDishes(3);
 
-    final Either<Failure, List<DishEntity>> mensaRemoteDishes = await mensaRepository.getAWDishes(1);
-    final Either<Failure, List<DishEntity>> roteBeeteRemoteDishes = await mensaRepository.getAWDishes(2);
-    final Either<Failure, List<DishEntity>> qwestRemoteDishes = await mensaRepository.getAWDishes(3);
-    final Either<Failure, List<DishEntity>> henkelmannRemoteDishes = await mensaRepository.getAWDishes(4);
-    final Either<Failure, List<DishEntity>> unikidsRemoteDishes = await mensaRepository.getAWDishes(5);
-    final Either<Failure, List<DishEntity>> whsRemoteDishes = await mensaRepository.getAWDishes(6);
-    final Either<Failure, List<DishEntity>> bocholtRemoteDishes = await mensaRepository.getAWDishes(7);
-    final Either<Failure, List<DishEntity>> recklinghausenRemoteDishes = await mensaRepository.getAWDishes(8);
+    final Either<Failure, List<DishEntity>> mensaRemoteDishes = await mensaRepository.getAWDishes(locale: locale);
+    final Either<Failure, List<DishEntity>> roteBeeteRemoteDishes = await mensaRepository.getAWDishes(
+      restaurant: 2,
+      locale: locale,
+    );
+    final Either<Failure, List<DishEntity>> qwestRemoteDishes = await mensaRepository.getAWDishes(
+      restaurant: 3,
+      locale: locale,
+    );
+    final Either<Failure, List<DishEntity>> henkelmannRemoteDishes = await mensaRepository.getAWDishes(
+      restaurant: 4,
+      locale: locale,
+    );
+    final Either<Failure, List<DishEntity>> unikidsRemoteDishes = await mensaRepository.getAWDishes(
+      restaurant: 5,
+      locale: locale,
+    );
+    final Either<Failure, List<DishEntity>> whsRemoteDishes = await mensaRepository.getAWDishes(
+      restaurant: 6,
+      locale: locale,
+    );
+    final Either<Failure, List<DishEntity>> bocholtRemoteDishes = await mensaRepository.getAWDishes(
+      restaurant: 7,
+      locale: locale,
+    );
+    final Either<Failure, List<DishEntity>> recklinghausenRemoteDishes = await mensaRepository.getAWDishes(
+      restaurant: 8,
+      locale: locale,
+    );
 
     final Either<Failure, List<DishEntity>> mensaCachedDishes = mensaRepository.getCachedDishes(1);
     final Either<Failure, List<DishEntity>> roteBeeteCachedDishes = mensaRepository.getCachedDishes(2);

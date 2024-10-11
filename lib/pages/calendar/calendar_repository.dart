@@ -30,7 +30,9 @@ class CalendarRepository {
       }
 
       // write entities to cache
-      unawaited(calendarDatasource.writeEventsToCache(entities, app: true));
+      unawaited(
+        calendarDatasource.clearEventEntityCache().then((_) => calendarDatasource.writeEventsToCache(entities)),
+      );
 
       return Right(entities);
     } catch (e, stacktrace) {
@@ -55,21 +57,6 @@ class CalendarRepository {
   Either<Failure, List<Event>> getCachedEvents() {
     try {
       final cachedEvents = calendarDatasource.readEventsFromCache();
-      final cachedAppEvents = calendarDatasource.readEventsFromCache(app: true);
-
-      // Cache contains both app and asta events
-      if (cachedAppEvents.isNotEmpty && cachedEvents.isNotEmpty) {
-        return Right(
-          List<Event>.from(cachedEvents) + List<Event>.from(cachedAppEvents),
-        );
-      }
-
-      // Cache only contains app events
-      if (cachedAppEvents.isNotEmpty && cachedEvents.isEmpty) {
-        return Right(
-          List<Event>.from(cachedAppEvents),
-        );
-      }
 
       // Cache only contains asta events
       return Right(
