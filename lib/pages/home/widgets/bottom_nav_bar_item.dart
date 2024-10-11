@@ -39,8 +39,8 @@ class BottomNavBarItem extends StatefulWidget {
     required this.imagePathInactive,
     required this.title,
     this.iconVerticalPadding = 10,
-    this.iconPaddingLeft = 14,
-    this.iconPaddingRight = 14,
+    this.iconPaddingLeft = 10,
+    this.iconPaddingRight = 10,
     required this.onTap,
     this.isActive = false,
   });

@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:campus_app/l10n/l10n.dart';
 
 /// The translations for German (`de`).

@@ -53,7 +53,7 @@ class ScrollToTopButtonState extends State<ScrollToTopButton> {
           Icons.arrow_upward,
           color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? Colors.black
-              : Colors.white,
+              : const Color.fromRGBO(184, 186, 191, 1),
         ),
       ),
     );
