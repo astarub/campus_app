@@ -80,4 +80,21 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20"
     implementation('androidx.appcompat:appcompat:1.6.1')
     implementation("androidx.appcompat:appcompat-resources:1.6.1")
+
+    // Remove Campus App's requirement of Google Play Services
+    //
+    // The Dio packages uses [cronet_http] libary to perform network requests. 
+    // At default, this libary depends on Google Play services instead of 
+    // of the embedded version of Cronet. Setting the embedded version (based on
+    // native libaries) here will remove the dependency on Google Play services.
+    //
+    // Actually, the developers provided a more seamless way for using embedded
+    // Cronet by using the Dart environment variable "cronetHttpNoPlay" but while 
+    // testing these, this didn't work for our Campus App. 
+    //
+    // Note: https://github.com/cfug/dio/issues/2042
+    // Note: https://github.com/dart-lang/http/blob/master/pkgs/cronet_http/android/build.gradle
+    // Note: https://mvnrepository.com/artifact/org.chromium.net/cronet-embedded
+    //
+    implementation 'org.chromium.net:cronet-embedded:119.6045.31'
 }

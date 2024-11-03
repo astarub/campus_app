@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({super.key});

@@ -82,8 +82,5 @@ class EventAdapter extends TypeAdapter<Event> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is EventAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      identical(this, other) || other is EventAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

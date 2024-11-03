@@ -1,21 +1,19 @@
 import 'dart:io';
 
-import 'package:campus_app/pages/more/in_app_web_view_page.dart';
-import 'package:dismissible_page/dismissible_page.dart';
-import 'package:flutter/material.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
-
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/feed/news/news_details_page.dart';
-import 'package:campus_app/utils/widgets/styled_html.dart';
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+import 'package:campus_app/utils/widgets/styled_html.dart';
+import 'package:dismissible_page/dismissible_page.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 /// This widget displays a news item in the news feed page.
 
@@ -102,23 +100,8 @@ class FeedItem extends StatefulWidget {
 class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
   File? videoThumbnailFile;
 
-  /// Generate the thumbnail of a video
-  Future<void> generateVideoThumbnail(String? videoUrl) async {
-    if (videoUrl == null) return;
-
-    final file = await VideoThumbnail.thumbnailFile(
-      video: videoUrl,
-      thumbnailPath: (await getTemporaryDirectory()).path,
-      maxHeight: 250,
-      quality: 80,
-    );
-
-    if (file != null) {
-      setState(() {
-        videoThumbnailFile = File(file);
-      });
-    }
-  }
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -282,6 +265,21 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  /// Generate the thumbnail of a video
+  Future<void> generateVideoThumbnail(String? videoUrl) async {
+    if (videoUrl == null) return;
+
+    final file = await VideoThumbnail.thumbnailFile(
+      video: videoUrl,
+      thumbnailPath: (await getTemporaryDirectory()).path,
+      maxHeight: 250,
+      quality: 80,
+    );
+
+    if (file != null) {
+      setState(() {
+        videoThumbnailFile = File(file);
+      });
+    }
+  }
 }

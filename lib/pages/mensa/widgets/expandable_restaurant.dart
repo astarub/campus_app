@@ -1,13 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/utils/widgets/animated_expandable.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_category.dart';
-
-enum RestaurantStatus { open, closed, unknown }
+import 'package:campus_app/utils/widgets/animated_expandable.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 /// This widget displays one restaurant and its meals, which can be
 /// expanded and collapsed
@@ -26,7 +24,7 @@ class ExpandableRestaurant extends StatefulWidget {
   final Map<String, String> openingHours;
 
   /// Selected date
-  final DateTime date;
+  final DateTime selectedDate;
 
   final Stream<DateTime> stream;
 
@@ -36,13 +34,15 @@ class ExpandableRestaurant extends StatefulWidget {
     required this.imagePath,
     required this.meals,
     required this.openingHours,
-    required this.date,
+    required this.selectedDate,
     required this.stream,
   });
 
   @override
   State<ExpandableRestaurant> createState() => _ExpandableRestaurantState();
 }
+
+enum RestaurantStatus { open, closed, unknown }
 
 class _ExpandableRestaurantState extends State<ExpandableRestaurant> with WidgetsBindingObserver {
   /// Key to acess the state of the AnimatedExpandable() for showing & hiding the meals
@@ -55,177 +55,8 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
   int closingHourGlobal = 0;
   int closingMinuteGlobal = 0;
   String remainingTime = '';
-  DateTime date = DateTime.now();
+  DateTime stateDate = DateTime.now();
   Timer? timer;
-
-  /// Retrieves the opening hours for the current day based on either a range of weekday Integers or a single Integer
-  void setOpeningStatus(Map<String, String> openingHoursMap, DateTime now) {
-    // Get all opening/closed days
-    final List<String> days = openingHoursMap.keys.toList();
-
-    // Choose the right opening hours in accordance to the current weekday
-    for (final String weekday in days) {
-      final int weekdayInt = int.tryParse(weekday) != null ? int.tryParse(weekday)! : 0;
-
-      if (!weekday.contains('-') && weekdayInt == now.weekday) {
-        openingHours = openingHoursMap[weekday] != null ? openingHoursMap[weekday]! : '';
-        continue;
-      }
-      if (weekday.split('-').length < 2) continue;
-
-      final int lower = int.tryParse(weekday.split('-')[0]) != null ? int.tryParse(weekday.split('-')[0])! : 0;
-      final int upper = int.tryParse(weekday.split('-')[1]) != null ? int.tryParse(weekday.split('-')[1])! : 0;
-
-      if (now.weekday >= lower && now.weekday <= upper) {
-        openingHours = openingHoursMap[weekday] != null ? widget.openingHours[weekday]! : '';
-      }
-    }
-
-    RestaurantStatus tempStatus = RestaurantStatus.closed;
-
-    // Checks if any openingHours exist for the current weekday, otherwise the status will be closed
-    if (openingHours.isNotEmpty) {
-      if (openingHours != 'unknown') {
-        // Pick the individual number out of the hh:mm-hh:mm String
-        final String openingHour =
-            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(0, 2)) != null
-                ? openingHours.substring(0, 2)
-                : '0';
-        final String openingMinute =
-            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(3, 5)) != null
-                ? openingHours.substring(3, 5)
-                : '0';
-
-        final String closingHour =
-            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(6, 8)) != null
-                ? openingHours.substring(6, 8)
-                : '0';
-        final String closingMinute =
-            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(9)) != null
-                ? openingHours.substring(9)
-                : '0';
-
-        closingHourGlobal = int.tryParse(closingHour) != null ? int.tryParse(closingHour)! : 0;
-        closingMinuteGlobal = int.tryParse(closingMinute) != null ? int.tryParse(closingMinute)! : 0;
-
-        // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
-        final int openComb = int.tryParse(openingHour + openingMinute)!;
-        final int closeComb = int.tryParse(closingHour + closingMinute)!;
-
-        // Add a zero before the actual minute if it's lower than 10
-        final String nowMinuteString = now.minute < 10 ? '0${now.minute}' : now.minute.toString();
-
-        // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
-        final int nowComb = int.tryParse(now.hour.toString() + nowMinuteString)!;
-
-        // Checks if the weekday is lower than Saturday and if the current time is in the span of the opening and closing hours
-        if (now.weekday <= 6 && nowComb >= openComb && nowComb <= closeComb) {
-          tempStatus = RestaurantStatus.open;
-        }
-      } else {
-        tempStatus = RestaurantStatus.unknown;
-      }
-    }
-    setState(() {
-      status = tempStatus;
-    });
-  }
-
-  // Checks whether the current restaurant is open and then runs a periodic timer to update the remaining time
-  void setTimer() {
-    final DateTime now = DateTime.now();
-
-    if (status == RestaurantStatus.open && DateUtils.isSameDay(date, now)) {
-      // Abort if a timer is already running
-      if (timer != null) return;
-
-      // Set a timer
-      Timer.periodic(const Duration(seconds: 1), (t) {
-        timer = t;
-        final DateTime now = DateTime.now();
-        final DateTime closingDate = now.copyWith(
-          hour: closingHourGlobal,
-          minute: closingMinuteGlobal,
-          second: 0,
-          millisecond: 0,
-          microsecond: 0,
-        );
-
-        final Duration difference = closingDate.difference(now);
-
-        if (difference.inSeconds == 0) {
-          t.cancel();
-          timer = null;
-
-          if (!mounted) return;
-
-          setState(() {
-            status = RestaurantStatus.closed;
-            remainingTime = '';
-          });
-        } else {
-          final int hours = difference.inHours % 24;
-          final int minutes = difference.inMinutes % 60;
-          final int seconds = difference.inSeconds % 60;
-
-          if (!mounted) {
-            t.cancel();
-            return;
-          }
-
-          if (hours == 0) {
-            setState(() {
-              remainingTime = '${minutes >= 10 ? minutes : "0$minutes"}:${seconds >= 10 ? seconds : "0$seconds"}';
-            });
-          } else {
-            setState(() {
-              remainingTime =
-                  '${hours >= 10 ? hours : "0$hours"}:${minutes >= 10 ? minutes : "0$minutes"}:${seconds >= 10 ? seconds : "0$seconds"}';
-            });
-          }
-        }
-      });
-    }
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-
-    // Updates the opening state of the current restaurant and sets the remaining time timer
-    if (state == AppLifecycleState.resumed) {
-      setOpeningStatus(widget.openingHours, date);
-
-      setTimer();
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Set the initial date
-    date = widget.date;
-
-    // Get the current restaurant status
-    setOpeningStatus(widget.openingHours, date);
-
-    // Set the remaining time timer
-    setTimer();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Listen for new day selections
-      widget.stream.listen((streamedDate) {
-        if (mounted) {
-          setState(() {
-            date = streamedDate;
-          });
-          setOpeningStatus(widget.openingHours, streamedDate);
-          setTimer();
-        }
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -341,20 +172,17 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          status == RestaurantStatus.closed
-                              ? (openingHours.isEmpty
-                                  ? 'Öffnungszeiten: Geschlossen'
-                                  : 'Öffnungszeiten: ${openingHours.split("-")[0]} - ${openingHours.split("-")[1]} Uhr')
-                              : 'Geöffnet: ${openingHours.split("-")[0]} - ${openingHours.split("-")[1]} Uhr',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                        ),
-                        if (status == RestaurantStatus.open && DateUtils.isSameDay(date, DateTime.now())) ...[
+                        if (getOpeningHours(stateDate).isNotEmpty)
                           Text(
-                            'Verbleibende Zeit: $remainingTime',
+                            'Reguläre Öffnungszeiten: ${getOpeningHours(stateDate)} Uhr',
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                           ),
-                        ],
+                        Text(
+                          (status == RestaurantStatus.open && DateUtils.isSameDay(stateDate, DateTime.now()))
+                              ? 'Verbleibende Zeit: $remainingTime'
+                              : 'Geschlossen / Speiseplan von ${DateFormat('dd.MM.yyyy').format(widget.selectedDate)}',
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                        ),
                       ],
                     ),
                   ),
@@ -364,5 +192,199 @@ class _ExpandableRestaurantState extends State<ExpandableRestaurant> with Widget
         ],
       ),
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // Updates the opening state of the current restaurant and sets the remaining time timer
+    if (state == AppLifecycleState.resumed) {
+      setOpeningStatus(stateDate);
+      setTimer();
+    }
+  }
+
+  /// Get opening hours of specific weekday.
+  /// Returns the opening hours as definied at creation of the widget itself (restaurant config)
+  /// or an empty string. An empty string indicates some malformed restaurant configuration.
+  String getOpeningHours(DateTime weekdayDate) {
+    // Get all opening/closed days
+    // dayRanges: 1-7, 1-5, 6, 7 etc. depending on openening hour definition
+    final List<String> dayRanges = widget.openingHours.keys.toList();
+
+    try {
+      // Choose the right opening hours in accordance to the current weekday
+      for (final String dayRange in dayRanges) {
+        // If dayRange is a single day (= a single integer)
+        final weekdayInt = int.tryParse(dayRange) ?? -1; // avoid null -> failed parsing -1
+        if (weekdayInt == weekdayDate.weekday) {
+          return widget.openingHours[dayRange]!;
+        } else if (weekdayInt != -1) {
+          // Isn't the selected day
+          continue;
+        }
+
+        // If dayRange has format $INT-$INT, e.g. 1-5 or 1-7
+        final int? lower = int.tryParse(dayRange.split('-')[0]);
+        final int? upper = int.tryParse(dayRange.split('-')[1]);
+        if (weekdayDate.weekday >= lower! && weekdayDate.weekday <= upper!) {
+          return widget.openingHours[dayRange]!;
+        }
+      }
+    } catch (_) {
+      // openingHours are malformed
+      // e.g. 1- or -5 instead of 1-5 or 5
+      return '';
+    }
+
+    // selectedDay isn't in map or restaurant is closed
+    return '';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Set the initial date
+    stateDate = widget.selectedDate;
+
+    // Get the current restaurant status
+    setOpeningStatus(stateDate);
+
+    // Set the remaining time timer
+    setTimer();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Listen for new day selections
+      widget.stream.listen((streamedDate) {
+        if (mounted) {
+          setState(() {
+            stateDate = streamedDate;
+          });
+          setOpeningStatus(streamedDate);
+          setTimer();
+        }
+      });
+    });
+  }
+
+  /// Retrieves the opening hours for the current day based on either a range of weekday Integers or a single Integer
+  void setOpeningStatus(DateTime selectedDate) {
+    // Default is closed state
+    var tempStatus = RestaurantStatus.closed;
+
+    // Set the status to closed on any selection beside the current date
+    final now = DateTime.now();
+    if (now.day != selectedDate.day) {
+      setState(() => status = tempStatus);
+      return;
+    }
+
+    // get opening hours from restaurant config that is hold inside the widget
+    openingHours = getOpeningHours(selectedDate);
+
+    // Checks if any openingHours exist for the current weekday, otherwise the status will be closed
+    if (openingHours.isNotEmpty) {
+      if (openingHours != 'unknown') {
+        // Pick the individual number out of the hh:mm-hh:mm String
+        final String openingHour =
+            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(0, 2)) != null
+                ? openingHours.substring(0, 2)
+                : '0';
+        final String openingMinute =
+            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(3, 5)) != null
+                ? openingHours.substring(3, 5)
+                : '0';
+
+        final String closingHour =
+            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(6, 8)) != null
+                ? openingHours.substring(6, 8)
+                : '0';
+        final String closingMinute =
+            openingHours.split(':').isNotEmpty && int.tryParse(openingHours.substring(9)) != null
+                ? openingHours.substring(9)
+                : '0';
+
+        // Set closing time globally for timer
+        closingHourGlobal = int.tryParse(closingHour) ?? 0;
+        closingMinuteGlobal = int.tryParse(closingMinute) ?? 0;
+
+        // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
+        final int openComb = int.tryParse(openingHour + openingMinute)!;
+        final int closeComb = int.tryParse(closingHour + closingMinute)!;
+
+        // Combine both the hour and the minute to get an integer. Example: 14:30 becomes 1430
+        final int nowComb = int.tryParse(now.hour.toString().padLeft(2, '0') + now.minute.toString().padLeft(2, '0'))!;
+
+        // Checks if the weekday is lower than Saturday and if the current time is in the span of the opening and closing hours
+        if (now.weekday <= 5 && nowComb >= openComb && nowComb <= closeComb) {
+          tempStatus = RestaurantStatus.open;
+        }
+      } else {
+        tempStatus = RestaurantStatus.unknown;
+      }
+    }
+
+    setState(() {
+      status = tempStatus;
+    });
+  }
+
+  // Checks whether the current restaurant is open and then runs a periodic timer to update the remaining time
+  void setTimer() {
+    final DateTime now = DateTime.now();
+
+    if (status == RestaurantStatus.open && DateUtils.isSameDay(stateDate, now)) {
+      // Abort if a timer is already running
+      if (timer != null) return;
+
+      // Set a timer
+      Timer.periodic(const Duration(seconds: 1), (t) {
+        timer = t;
+        final DateTime now = DateTime.now();
+        final DateTime closingDate = now.copyWith(
+          hour: closingHourGlobal,
+          minute: closingMinuteGlobal,
+          second: 0,
+          millisecond: 0,
+          microsecond: 0,
+        );
+
+        final Duration difference = closingDate.difference(now);
+
+        if (difference.inSeconds == 0) {
+          t.cancel();
+          timer = null;
+
+          if (!mounted) return;
+
+          setState(() {
+            status = RestaurantStatus.closed;
+            remainingTime = '';
+          });
+        } else {
+          final int hours = difference.inHours % 24;
+          final int minutes = difference.inMinutes % 60;
+          final int seconds = difference.inSeconds % 60;
+
+          if (!mounted) {
+            t.cancel();
+            return;
+          }
+
+          if (hours == 0) {
+            setState(() {
+              remainingTime = '${minutes.toString().padLeft(2, '0')}m ${seconds.toString().padLeft(2, '0')}s';
+            });
+          } else {
+            setState(() {
+              remainingTime =
+                  '${hours.toString().padLeft(2, '0')}h ${minutes.toString().padLeft(2, '0')}m ${seconds.toString().padLeft(2, '0')}s';
+            });
+          }
+        }
+      });
+    }
   }
 }

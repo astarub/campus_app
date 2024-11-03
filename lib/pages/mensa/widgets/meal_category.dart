@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/mensa/widgets/meal_info_button.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// This widget shows a title and the corresponding meals that
 /// are related to this category (e.g. "Komponentenessen")

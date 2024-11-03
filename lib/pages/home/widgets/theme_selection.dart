@@ -1,7 +1,6 @@
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:campus_app/core/themes.dart';
 
 /// This widget displays an animated illustration for
 /// making the theme selection visually more appealing.
@@ -14,49 +13,6 @@ class ThemeSelection extends StatefulWidget {
 
 class ThemeSelectionState extends State<ThemeSelection> with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
-
-  void changeTheme(int selectedThemeMode) {
-    // Control animation
-    final Brightness currentBrightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
-    if (selectedThemeMode == 0 &&
-        Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
-        currentBrightness == Brightness.light) {
-      _animationController.reverse(from: 1);
-    } else if (selectedThemeMode == 0 &&
-        Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light &&
-        currentBrightness == Brightness.dark) {
-      _animationController.forward(from: 0);
-    } else if (selectedThemeMode == 1 &&
-        Provider.of<ThemesNotifier>(context, listen: false).currentTheme != AppThemes.light) {
-      _animationController.reverse(from: 1);
-    } else if (selectedThemeMode == 2 &&
-        Provider.of<ThemesNotifier>(context, listen: false).currentTheme != AppThemes.dark) {
-      _animationController.forward(from: 0);
-    }
-
-    // Switch theme
-    switch (selectedThemeMode) {
-      case 0:
-        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
-        break;
-      case 1:
-        Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.light;
-        break;
-      case 2:
-        Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.dark;
-        break;
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +55,49 @@ class ThemeSelectionState extends State<ThemeSelection> with SingleTickerProvide
           ),
         ],
       ),
+    );
+  }
+
+  void changeTheme(int selectedThemeMode) {
+    // Control animation
+    final Brightness currentBrightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    if (selectedThemeMode == 0 &&
+        Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark &&
+        currentBrightness == Brightness.light) {
+      _animationController.reverse(from: 1);
+    } else if (selectedThemeMode == 0 &&
+        Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light &&
+        currentBrightness == Brightness.dark) {
+      _animationController.forward(from: 0);
+    } else if (selectedThemeMode == 1 &&
+        Provider.of<ThemesNotifier>(context, listen: false).currentTheme != AppThemes.light) {
+      _animationController.reverse(from: 1);
+    } else if (selectedThemeMode == 2 &&
+        Provider.of<ThemesNotifier>(context, listen: false).currentTheme != AppThemes.dark) {
+      _animationController.forward(from: 0);
+    }
+
+    // Switch theme
+    switch (selectedThemeMode) {
+      case 0:
+        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
+        break;
+      case 1:
+        Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.light;
+        break;
+      case 2:
+        Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.dark;
+        break;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
     );
   }
 }

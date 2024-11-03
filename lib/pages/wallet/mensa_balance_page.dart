@@ -1,17 +1,17 @@
-import 'dart:io' show Platform;
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
-import 'package:lottie/lottie.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:io' show Platform;
 
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/utils/widgets/animated_number.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
-import 'package:campus_app/utils/widgets/animated_number.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class MensaBalancePage extends StatefulWidget {
   const MensaBalancePage({super.key});
@@ -27,166 +27,6 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
   double lastTransaction = 0;
 
   late AnimationController successAnimationController;
-
-  void saveMensaCardData(double scannedBalance, double lastTransaction) {
-    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
-          lastMensaBalance: scannedBalance,
-          lastMensaTransaction: lastTransaction,
-        );
-
-    debugPrint(
-      'Saving scanned mensa card data: Balance=${newSettings.lastMensaBalance}, Last Transaction: ${newSettings.lastMensaTransaction}',
-    );
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-  }
-
-  double byteArrayToDouble(Uint8List b, int offset, int length) {
-    double value = 0;
-    for (int i = 0; i < length; i++) {
-      final int shift = (length - 1 - i) * 8;
-      value += (b[i + offset] & 0x000000FF) << shift;
-    }
-    return value;
-  }
-
-  Future<void> transceiveMensaBalance() async {
-    try {
-      // Select application
-      await FlutterNfcKit.transceive(
-        Uint8List.fromList(
-          [0x90, 0x5A, 0x00, 0x00, 3, (0x5F8415 & 0xFF0000) >> 16, (0x5F8415 & 0xFF00) >> 8, 0x5F8415 & 0xFF, 0x00],
-        ),
-      );
-
-      // Get the transaction history file
-      final transactionFile = await FlutterNfcKit.transceive(
-        Uint8List.fromList([0x90, 0xF5, 0x00, 0x00, 1, 1, 0x00]),
-      );
-
-      // Read value from mensa card
-      final result = Uint8List.fromList(
-        await FlutterNfcKit.transceive(
-          Uint8List.fromList([0x90, 0x6C, 0x00, 0x00, 1, 1, 0x00]),
-        ),
-      ).reversed.toList();
-
-      // Mensa card data
-      setState(() {
-        tagScanned = true;
-
-        // Get all bytes that represent the mensa card value
-        cardBalance = byteArrayToDouble(
-              Uint8List.fromList(result.getRange(4, result.length).toList()),
-              0,
-              result.length - 4,
-            ).toInt() /
-            1000;
-
-        // Get the last transaction from the scanned mensa card
-        lastTransaction = byteArrayToDouble(
-              Uint8List.fromList(
-                transactionFile.getRange(12, 16).toList().reversed.toList(),
-              ),
-              0,
-              4,
-            ).toInt() /
-            1000;
-      });
-      debugPrint('Scanned mensa card nfc tag parsed: $cardBalance');
-
-      saveMensaCardData(cardBalance, lastTransaction);
-
-      if (Platform.isIOS) await FlutterNfcKit.finish(iosAlertMessage: 'Mensakarte erkannt!');
-    } catch (e) {
-      debugPrint('Error while scanning mensa card. Trying again...');
-      await Fluttertoast.showToast(msg: 'Fehler beim Auslesen!', timeInSecForIosWeb: 3, gravity: ToastGravity.BOTTOM);
-    }
-  }
-
-  /// Initialises the NFC session and starts scanning for a tag, if NFC is activated on the device.
-  /// If a tag was scanned, it's parsed to display the current card balance.
-  Future<void> initialiseNFC() async {
-    final NFCAvailability availability = await FlutterNfcKit.nfcAvailability;
-    if (availability != NFCAvailability.available) {
-      debugPrint('NFC not activated on device.');
-      setState(() => nfcAvailable = false);
-    } else {
-      debugPrint('NFC is activated on device. Start scanning for a card...');
-
-      // Differentiate between Android and iOS as constant NFC polling is impossible on iOS
-      if (Platform.isIOS) {
-        // Start scanning for a NFC tag
-        NFCTag scannedTag;
-        try {
-          scannedTag = await FlutterNfcKit.poll(
-            timeout: const Duration(seconds: 10),
-            readIso15693: false,
-            iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
-            iosAlertMessage: 'Scanne deine Karte.',
-          );
-        } catch (e) {
-          switch (e.runtimeType) {
-            case const (PlatformException):
-              {
-                debugPrint('Timeout while waiting for a nfc scan.');
-              }
-          }
-          return;
-        }
-
-        debugPrint('Scanned mensa card: ${jsonEncode(scannedTag)}');
-
-        await transceiveMensaBalance();
-      } else if (Platform.isAndroid) {
-        while (mounted) {
-          // Start scanning for a NFC tag
-          NFCTag scannedTag;
-          try {
-            scannedTag = await FlutterNfcKit.poll(
-              timeout: const Duration(seconds: 10),
-              readIso15693: false,
-              iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
-              iosAlertMessage: 'Scanne deine Karte.',
-            );
-          } catch (e) {
-            switch (e.runtimeType) {
-              case const (PlatformException):
-                {
-                  debugPrint('Timeout while waiting for a nfc scan.');
-                }
-            }
-            continue;
-          }
-
-          debugPrint('Scanned mensa card: ${jsonEncode(scannedTag)}');
-
-          await transceiveMensaBalance();
-        }
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    successAnimationController = AnimationController(vsync: this);
-
-    initialiseNFC();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    successAnimationController.dispose();
-    try {
-      FlutterNfcKit.finish();
-      // ignore: empty_catches
-    } catch (e) {
-      debugPrint('Exception while finishing NFC adapter.');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -327,5 +167,165 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
         ),
       ),
     );
+  }
+
+  double byteArrayToDouble(Uint8List b, int offset, int length) {
+    double value = 0;
+    for (int i = 0; i < length; i++) {
+      final int shift = (length - 1 - i) * 8;
+      value += (b[i + offset] & 0x000000FF) << shift;
+    }
+    return value;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    successAnimationController.dispose();
+    try {
+      FlutterNfcKit.finish();
+      // ignore: empty_catches
+    } catch (e) {
+      debugPrint('Exception while finishing NFC adapter.');
+    }
+  }
+
+  /// Initialises the NFC session and starts scanning for a tag, if NFC is activated on the device.
+  /// If a tag was scanned, it's parsed to display the current card balance.
+  Future<void> initialiseNFC() async {
+    final NFCAvailability availability = await FlutterNfcKit.nfcAvailability;
+    if (availability != NFCAvailability.available) {
+      debugPrint('NFC not activated on device.');
+      setState(() => nfcAvailable = false);
+    } else {
+      debugPrint('NFC is activated on device. Start scanning for a card...');
+
+      // Differentiate between Android and iOS as constant NFC polling is impossible on iOS
+      if (Platform.isIOS) {
+        // Start scanning for a NFC tag
+        NFCTag scannedTag;
+        try {
+          scannedTag = await FlutterNfcKit.poll(
+            timeout: const Duration(seconds: 10),
+            readIso15693: false,
+            iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
+            iosAlertMessage: 'Scanne deine Karte.',
+          );
+        } catch (e) {
+          switch (e.runtimeType) {
+            case const (PlatformException):
+              {
+                debugPrint('Timeout while waiting for a nfc scan.');
+              }
+          }
+          return;
+        }
+
+        debugPrint('Scanned mensa card: ${jsonEncode(scannedTag)}');
+
+        await transceiveMensaBalance();
+      } else if (Platform.isAndroid) {
+        while (mounted) {
+          // Start scanning for a NFC tag
+          NFCTag scannedTag;
+          try {
+            scannedTag = await FlutterNfcKit.poll(
+              timeout: const Duration(seconds: 10),
+              readIso15693: false,
+              iosMultipleTagMessage: 'Mehrere NFC-Tags gefunden! Versuche es noch einmal.',
+              iosAlertMessage: 'Scanne deine Karte.',
+            );
+          } catch (e) {
+            switch (e.runtimeType) {
+              case const (PlatformException):
+                {
+                  debugPrint('Timeout while waiting for a nfc scan.');
+                }
+            }
+            continue;
+          }
+
+          debugPrint('Scanned mensa card: ${jsonEncode(scannedTag)}');
+
+          await transceiveMensaBalance();
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    successAnimationController = AnimationController(vsync: this);
+
+    initialiseNFC();
+  }
+
+  void saveMensaCardData(double scannedBalance, double lastTransaction) {
+    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
+          lastMensaBalance: scannedBalance,
+          lastMensaTransaction: lastTransaction,
+        );
+
+    debugPrint(
+      'Saving scanned mensa card data: Balance=${newSettings.lastMensaBalance}, Last Transaction: ${newSettings.lastMensaTransaction}',
+    );
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+  }
+
+  Future<void> transceiveMensaBalance() async {
+    try {
+      // Select application
+      await FlutterNfcKit.transceive(
+        Uint8List.fromList(
+          [0x90, 0x5A, 0x00, 0x00, 3, (0x5F8415 & 0xFF0000) >> 16, (0x5F8415 & 0xFF00) >> 8, 0x5F8415 & 0xFF, 0x00],
+        ),
+      );
+
+      // Get the transaction history file
+      final transactionFile = await FlutterNfcKit.transceive(
+        Uint8List.fromList([0x90, 0xF5, 0x00, 0x00, 1, 1, 0x00]),
+      );
+
+      // Read value from mensa card
+      final result = Uint8List.fromList(
+        await FlutterNfcKit.transceive(
+          Uint8List.fromList([0x90, 0x6C, 0x00, 0x00, 1, 1, 0x00]),
+        ),
+      ).reversed.toList();
+
+      // Mensa card data
+      setState(() {
+        tagScanned = true;
+
+        // Get all bytes that represent the mensa card value
+        cardBalance = byteArrayToDouble(
+              Uint8List.fromList(result.getRange(4, result.length).toList()),
+              0,
+              result.length - 4,
+            ).toInt() /
+            1000;
+
+        // Get the last transaction from the scanned mensa card
+        lastTransaction = byteArrayToDouble(
+              Uint8List.fromList(
+                transactionFile.getRange(12, 16).toList().reversed.toList(),
+              ),
+              0,
+              4,
+            ).toInt() /
+            1000;
+      });
+      debugPrint('Scanned mensa card nfc tag parsed: $cardBalance');
+
+      saveMensaCardData(cardBalance, lastTransaction);
+
+      if (Platform.isIOS) await FlutterNfcKit.finish(iosAlertMessage: 'Mensakarte erkannt!');
+    } catch (e) {
+      debugPrint('Error while scanning mensa card. Trying again...');
+      await Fluttertoast.showToast(msg: 'Fehler beim Auslesen!', timeInSecForIosWeb: 3, gravity: ToastGravity.BOTTOM);
+    }
   }
 }

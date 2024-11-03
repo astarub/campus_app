@@ -1,7 +1,6 @@
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:campus_app/core/themes.dart';
 
 /// This widget adds a custom Button that uses the CampusApp design language
 class LeadingButton extends StatelessWidget {
