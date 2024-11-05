@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/exceptions.dart';
@@ -75,7 +76,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                   const Padding(padding: EdgeInsets.only(top: 30)),
                   CampusTextField(
                     textFieldController: usernameController,
-                    textFieldText: 'RUB LoginID',
+                    textFieldText: AppLocalizations.of(context)!.ticketLoginLoginID,
                     onTap: () {
                       setState(() {
                         showErrorMessage = false;
@@ -86,7 +87,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                   CampusTextField(
                     textFieldController: passwordController,
                     obscuredInput: true,
-                    textFieldText: 'RUB Passwort',
+                    textFieldText: AppLocalizations.of(context)!.ticketLoginPasswort,
                     onTap: () {
                       setState(() {
                         showErrorMessage = false;
@@ -120,13 +121,13 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                   ],
                   const Padding(padding: EdgeInsets.only(top: 15)),
                   CampusButton(
-                    text: 'Login',
+                    text: AppLocalizations.of(context)!.ticketLoginLogin,
                     onTap: () async {
                       final NavigatorState navigator = Navigator.of(context);
 
                       if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
                         setState(() {
-                          errorMessage = 'Bitte fülle beide Felder aus!';
+                          errorMessage = AppLocalizations.of(context)!.ticketLoginBothFieldsError;
                           showErrorMessage = true;
                         });
                         return;
@@ -134,7 +135,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
 
                       if (await walletUtils.hasNetwork() == false) {
                         setState(() {
-                          errorMessage = 'Überprüfe deine Internetverbindung!';
+                          errorMessage = AppLocalizations.of(context)!.ticketLoginInternetError;
                           showErrorMessage = true;
                         });
                         return;
@@ -158,12 +159,12 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                       } catch (e) {
                         if (e is InvalidLoginIDAndPasswordException) {
                           setState(() {
-                            errorMessage = 'Falsche LoginID und/oder Passwort!';
+                            errorMessage = AppLocalizations.of(context)!.ticketLoginWrongDataError;
                             showErrorMessage = true;
                           });
                         } else {
                           setState(() {
-                            errorMessage = 'Fehler beim Laden des Tickets!';
+                            errorMessage = AppLocalizations.of(context)!.ticketLoginLoadingError;
                             showErrorMessage = true;
                           });
                         }
@@ -198,7 +199,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                       SizedBox(
                         width: 320,
                         child: Text(
-                          'Deine Daten werden verschlüsselt auf deinem Gerät gespeichert und nur bei der Anmeldung an die RUB gesendet.',
+                          AppLocalizations.of(context)!.ticketLoginEncryptedInfo,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall!.copyWith(
                                 color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
                                     ? Colors.black

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/utils/widgets/decision_popup.dart';
 
 /// This widget shows a popup to let the user decide wether or not he wants
@@ -21,20 +22,10 @@ class FirebasePopup extends StatelessWidget {
       leadingTitle: 'Datenschutz',
       title: 'Google Services',
       content: MediaQuery.of(context).size.shortestSide < 600
-          ? '''
-        Um dir Benachrichtigungen über spontane Events und Termine rund um die Uni schicken zu können,
-        verwenden wir derzeit Firebase, einen Service von Google.
-        
-        Solltest du dies nicht wollen, respektieren wir das.
-        Im Januar werden wir dafür eine Google-freie Alternative einführen.'''
-          : '''
-        Um dir Benachrichtigungen über spontane Events und Termine rund um die Uni
-        schicken zu können, verwenden wir derzeit Firebase, einen Service von Google.
-        
-        Solltest du dies nicht wollen, respektieren wir das.
-        Im Januar werden wir dafür eine Google-freie Alternative einführen.''',
-      acceptButtonText: 'Ja, kein Problem',
-      declineButtonText: 'Nein, möchte ich nicht.',
+          ? AppLocalizations.of(context)!.firebaseDecisionPopup
+          : AppLocalizations.of(context)!.firebaseDecisionPopupSlim,
+      acceptButtonText: AppLocalizations.of(context)!.firebaseDecisionAccept,
+      declineButtonText: AppLocalizations.of(context)!.firebaseDecisionDecline,
       height: 450,
       onAccept: () {
         onClose(permissionGranted: true);

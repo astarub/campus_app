@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
@@ -62,7 +63,7 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
     }
 
     return PopupSheet(
-      title: 'Feed Filter',
+      title: AppLocalizations.of(context)!.feedFilter,
       onClose: () {
         widget.onClose(_selectedFilters);
         Navigator.pop(context);

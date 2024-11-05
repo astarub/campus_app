@@ -1,3 +1,5 @@
+// TODO: Translate without context.
+
 const List<Map<String, String>> faqEntries = [
   {
     'title': 'Anwesenheitspflicht',

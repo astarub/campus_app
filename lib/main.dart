@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +12,8 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:campus_app/l10n/l10n.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
@@ -29,6 +28,7 @@ import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:campus_app/utils/constants.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -100,7 +100,7 @@ class CampusApp extends StatefulWidget {
 }
 
 class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
-  final GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey();
+  GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>();
 
   String _directoryPath = '';
   Settings? loadedSettings;
@@ -326,6 +326,7 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      locale: Provider.of<SettingsHandler>(context).currentSettings.locale,
       theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,
       darkTheme: Provider.of<ThemesNotifier>(context, listen: false).darkThemeData,
       themeMode: Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode,
