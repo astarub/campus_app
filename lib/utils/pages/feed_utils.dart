@@ -135,6 +135,7 @@ class FeedUtils {
         filteredFeedItems.add(f);
       }
     }
+
     return filteredFeedItems;
   }
 

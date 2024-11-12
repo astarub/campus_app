@@ -52,29 +52,30 @@ class NewsDatasource {
       throw ServerException();
     } else {
       final document = html.parse(response.data);
-      final htmlClass = document.getElementsByClassName('field-std-bild-artikel');
 
-      // some news has multiple images with different HTML paths
-      if (htmlClass.isEmpty) {
-        // multiple image
-        final images = document.getElementsByClassName('bst-bild');
-        for (int i = 0; i < images.length; i++) {
-          final copyright = document.getElementsByClassName('bildzeile-copyright')[i].text;
+      final media = document.getElementsByClassName('text-media__media');
+      final copyright = document.getElementsByClassName('rub-media__caption-author');
 
-          List.castFrom(data['copyright']).add(copyright);
-          List.castFrom(data['imageUrls']).add(images[i].getElementsByTagName('img')[0].attributes['src'].toString());
+      // Differentiate between two types of images
+      if (media.isNotEmpty) {
+        final figure = media[0].children;
+        if (figure.first.attributes['src'] == null) {
+          if (figure.first.children.length == 2) {
+            if (figure.first.children[1].children.isNotEmpty &&
+                figure.first.children[1].children.first.attributes['src'] != null) {
+              List.castFrom(data['imageUrls'])
+                  .add('https://news.rub.de/${figure.first.children[1].children.first.attributes['src']}');
+            }
+          }
+        } else {
+          if (figure.isNotEmpty && figure.first.attributes['src'] != null) {
+            List.castFrom(data['imageUrls']).add(figure.first.attributes['src']);
+          }
         }
-      } else {
-        final copyright = document.getElementsByClassName('bildzeile-copyright')[0].text;
+      }
 
-        List.castFrom(data['copyright']).add(copyright);
-        List.castFrom(data['imageUrls']).add(
-          document
-              .getElementsByClassName('field-std-bild-artikel')[0]
-              .getElementsByTagName('img')[0]
-              .attributes['src']
-              .toString(),
-        );
+      if (copyright.isNotEmpty && copyright.first.text.isNotEmpty) {
+        List.castFrom(data['copyright']).add(copyright.first.text);
       }
 
       return data;
