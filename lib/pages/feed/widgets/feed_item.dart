@@ -131,12 +131,6 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
       generateVideoThumbnail(widget.videoUrl);
     }
 
-    /*print(widget.title);
-
-    if (widget.image != null) {
-      print(widget.image!.imageUrl);
-    }*/
-
     void openDetailsPage() {
       if (widget.webViewUrl != null && widget.webViewUrl!.isNotEmpty) {
         Navigator.push(
