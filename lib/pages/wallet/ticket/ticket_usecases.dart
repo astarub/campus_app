@@ -14,14 +14,14 @@ class TicketUsecases {
   });
 
   /// Render the Aztec code and resize it
-  Future<Image?> renderAztecCode() async {
+  Future<Image?> renderAztecCode({int width = 200, int height = 200}) async {
     final String? aztecCode = await ticketRepository.getAztecCode();
 
     if (aztecCode == null) return null;
 
     Uint8List resizedData = base64Decode(aztecCode);
     final img.Image image = img.decodeImage(resizedData)!;
-    final img.Image resized = img.copyResize(image, width: 200, height: 200);
+    final img.Image resized = img.copyResize(image, width: width, height: width);
     resizedData = img.encodePng(resized);
 
     return Image(

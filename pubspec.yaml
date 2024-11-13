@@ -1,10 +1,10 @@
 name: campus_app
 description: Simplifie, improve and facilitate everyday students life.
 publish_to: 'none'
-version: 2.3.2
+version: 2.3.3
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
+  sdk: ">=3.5.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -12,63 +12,62 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   envied: ^0.5.4+1
-  flutter_native_splash: ^2.4.0
+  flutter_native_splash: ^2.4.2
   flutter_html: ^3.0.0-alpha.5
   flutter_secure_storage: ^9.2.2
   provider: ^6.1.1
-  flutter_svg: ^2.0.9
+  flutter_svg: ^2.0.14
   xml: ^6.3.0
   animations: ^2.0.8
   page_transition: ^2.1.0
-  cached_network_image: ^3.3.1
+  cached_network_image: ^3.4.1
   cookie_jar: ^4.0.8
   dartz: ^0.10.1
-  dio: ^5.4.3+1
+  dio: ^5.7.0
   dio_cookie_manager: ^3.1.1
   native_dio_adapter: ^1.3.0
-  get_it: ^7.7.0
+  get_it: ^8.0.2
   html: ^0.15.4
-  http: ^1.2.1
+  http: ^1.2.2
   intl: ^0.19.0
-  path_provider: ^2.1.2
+  path_provider: ^2.1.5
   snapping_sheet_2: ^3.1.5
   flutter_displaymode: ^0.6.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.1
-  url_launcher: ^6.2.3 
-  flutter_inappwebview: ^6.0.0
-  firebase_core: ^2.32.0 
-  firebase_messaging: ^14.9.4
-  flutter_local_notifications: ^17.1.2 
-  share_plus: ^9.0.0
+  url_launcher: ^6.3.1
+  flutter_inappwebview: ^6.1.5
+  firebase_core: ^3.7.0
+  firebase_messaging: ^15.1.4
+  flutter_local_notifications: ^18.0.1
+  share_plus: ^10.1.2
   uni_links: ^0.5.1
   flutter_onboarding:
     git:
       url: https://github.com/C4s4r/flutter_onboarding
       ref: 9d74464
   flutter_nfc_kit: ^3.5.2
-  lottie: ^3.0.0
-  screen_brightness: ^1.0.1
-  fluttertoast: ^8.2.5
-  appwrite: ^12.0.4
+  lottie: ^3.1.3
+  screen_brightness: ^2.0.0+2
+  fluttertoast: ^8.2.8
+  appwrite: ^13.0.0
   slugid: ^1.1.2
   visibility_detector: ^0.4.0+2
   appinio_video_player: ^1.2.2
-  sentry_flutter: ^8.2.0
-  sentry: ^8.2.0
+  sentry_flutter: ^8.10.1
   video_thumbnail: ^0.5.3
-  image: ^4.2.0
+  image: ^4.3.0
   dismissible_page: ^1.0.2
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.4.10  
-  flutter_lints: ^4.0.0
+  build_runner: ^2.4.13 
+  flutter_lints: ^5.0.0
   mockito: ^5.4.3
   envied_generator: ^0.5.3 
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.1
 
 # Override js version as flutter_inappwebview depends on flutter_inappwebview_web which uses js version ^0.6.4 but as the web package is not used, this is risk-free
 dependency_overrides:
