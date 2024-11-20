@@ -1,7 +1,7 @@
 name: campus_app
 description: Simplifie, improve and facilitate everyday students life.
 publish_to: 'none'
-version: 2.3.3
+version: 2.3.4
 
 environment:
   sdk: ">=3.5.0 <4.0.0"
