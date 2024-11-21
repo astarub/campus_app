@@ -90,6 +90,9 @@ class HomePageState extends State<HomePage> {
   /// Indicates whether swiping is disabled
   bool swipeDisabled = false;
 
+  /// BottomNavBar visibility
+  bool _bottomNavBarVisibility = true;
+
   /// Temporarily disable swiping for certain pages e.g. in app web view
   void setSwipeDisabled({bool disableSwipe = false}) {
     setState(() {
@@ -130,6 +133,16 @@ class HomePageState extends State<HomePage> {
     setSwipeDisabled();
 
     return true;
+  }
+
+  /// Setter for _bottomNavBarVisibility
+  void setBottomNavBarVisibility(bool visibility) {
+    if (_bottomNavBarVisibility != visibility) {
+      setState(() {
+        _bottomNavBarVisibility = visibility;
+      });
+      print('bottomNavBarVisibility switched to $visibility');
+    }
   }
 
   /// Returns the [NavBarNavigator] for the specified PageItem on phones
@@ -254,9 +267,12 @@ class HomePageState extends State<HomePage> {
                       // BottomNavigationBar
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: BottomNavBar(
-                          currentPage: currentPage,
-                          onSelectedPage: selectedPage,
+                        child: Visibility(
+                          visible: _bottomNavBarVisibility,
+                          child: BottomNavBar(
+                            currentPage: currentPage,
+                            onSelectedPage: selectedPage,
+                          ),
                         ),
                       ),
                     ],

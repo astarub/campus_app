@@ -5,6 +5,7 @@ import 'package:location/location.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -13,6 +14,7 @@ import 'package:campus_app/pages/pathfinder/data.dart';
 import 'package:campus_app/pages/pathfinder/indoor_nav_page.dart';
 import 'package:campus_app/utils/pages/pathfinder_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/pages/pathfinder/pathfinder_onboarding.dart';
 
 class RaumfinderPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -37,217 +39,241 @@ class RaumfinderPageState extends State<RaumfinderPage> {
   LatLng? symbolPosition;
   final PathfinderUtils utils = sl<PathfinderUtils>();
   List<LatLng> waypoints = [];
+  bool _isFirstTime = false;
+
+  Future<void> _checkFirstTimeUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool isFirstTime = prefs.getBool('isFirstTimeRaumfinder') ?? true;
+
+    if (isFirstTime) {
+      // Mark as not first time for future visits
+      await prefs.setBool('isFirstTimeRaumfinder', false);
+      setState(() {
+        _isFirstTime = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    TileLayer buildTileLayer() {
-      try {
-        return TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        );
-      } catch (e) {
-        debugPrint('An exception occurred: $e');
+    // Display guide if first time use
+    if (_isFirstTime) {
+      return PathfinderOnboardingPage(
+        mainNavigatorKey: GlobalKey<NavigatorState>(),
+        pageEntryAnimationKey: widget.pageEntryAnimationKey,
+        pageExitAnimationKey: widget.pageExitAnimationKey,
+        donePage: widget,
+      );
+    } else {
+      TileLayer buildTileLayer() {
+        try {
+          return TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          );
+        } catch (e) {
+          debugPrint('An exception occurred: $e');
 
-        return TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        );
+          return TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          );
+        }
       }
-    }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          FlutterMap(
-            options: MapOptions(
-              initialCenter: currentLocation != null
-                  ? LatLng(
-                      currentLocation!.latitude!,
-                      currentLocation!.longitude!,
-                    )
-                  : const LatLng(51.442887, 7.262413),
-              initialZoom: 15,
-            ),
-            children: [
-              buildTileLayer(),
-              if (waypoints.isNotEmpty)
-                PolylineLayer(
-                  polylines: [
-                    Polyline(
-                      points: waypoints,
-                      color: const Color.fromARGB(169, 33, 149, 243),
-                      strokeWidth: 3,
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            FlutterMap(
+              options: MapOptions(
+                initialCenter: currentLocation != null
+                    ? LatLng(
+                        currentLocation!.latitude!,
+                        currentLocation!.longitude!,
+                      )
+                    : const LatLng(51.442887, 7.262413),
+                initialZoom: 15,
+              ),
+              children: [
+                buildTileLayer(),
+                if (waypoints.isNotEmpty)
+                  PolylineLayer(
+                    polylines: [
+                      Polyline(
+                        points: waypoints,
+                        color: const Color.fromARGB(169, 33, 149, 243),
+                        strokeWidth: 3,
+                      ),
+                    ],
+                  ),
+                if (showCurrentLocation)
+                  CurrentLocationLayer(
+                    style: LocationMarkerStyle(
+                      marker: const DefaultLocationMarker(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      markerSize: const Size.square(40),
+                      accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withOpacity(0.1),
+                      headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withOpacity(0.8),
+                      headingSectorRadius: 120,
                     ),
+                    moveAnimationDuration: Duration.zero,
+                  ),
+                MarkerLayer(
+                  markers: [
+                    if (symbolPosition != null)
+                      Marker(
+                        width: 50,
+                        height: 50,
+                        point: symbolPosition!,
+                        rotate: true,
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.location_on,
+                          color: Color.fromARGB(255, 0, 174, 255),
+                          size: 20,
+                        ),
+                      ),
                   ],
                 ),
-              if (showCurrentLocation)
-                CurrentLocationLayer(
-                  style: LocationMarkerStyle(
-                    marker: const DefaultLocationMarker(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    markerSize: const Size.square(40),
-                    accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withOpacity(0.1),
-                    headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withOpacity(0.8),
-                    headingSectorRadius: 120,
-                  ),
-                  moveAnimationDuration: Duration.zero,
+              ],
+            ),
+            Positioned(
+              top: 30,
+              left: 10,
+              right: 10,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                      ? const Color.fromRGBO(245, 246, 250, 1)
+                      : const Color.fromRGBO(34, 40, 54, 1),
+                  borderRadius: BorderRadius.circular(15),
                 ),
-              MarkerLayer(
-                markers: [
-                  if (symbolPosition != null)
-                    Marker(
-                      width: 50,
-                      height: 50,
-                      point: symbolPosition!,
-                      rotate: true,
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        Icons.location_on,
-                        color: Color.fromARGB(255, 0, 174, 255),
-                        size: 20,
-                      ),
-                    ),
-                ],
-              ),
-            ],
-          ),
-          Positioned(
-            top: 30,
-            left: 10,
-            right: 10,
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? const Color.fromRGBO(245, 246, 250, 1)
-                    : const Color.fromRGBO(34, 40, 54, 1),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Autocomplete<String>(
-                        optionsBuilder: (TextEditingValue textEditingValue) {
-                          return predefinedLocations.keys.where(
-                            (String option) => option.toLowerCase().contains(textEditingValue.text.toLowerCase()),
-                          );
-                        },
-                        onSelected: changeSelectedLocation,
-                        optionsViewBuilder: (
-                          BuildContext context,
-                          AutocompleteOnSelected<String> onSelected,
-                          Iterable<String> options,
-                        ) {
-                          final int itemCount = options.length;
-                          final double containerHeight = itemCount * 80.0;
-                          return Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                              constraints: BoxConstraints(
-                                maxWidth: 300,
-                                maxHeight: containerHeight,
-                              ),
-                              child: Material(
-                                elevation: 4,
-                                child: ListView(
-                                  children: options
-                                      .map(
-                                        (String option) => GestureDetector(
-                                          onTap: () {
-                                            onSelected(option);
-                                          },
-                                          child: ListTile(
-                                            title: Text(option),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Autocomplete<String>(
+                          optionsBuilder: (TextEditingValue textEditingValue) {
+                            return predefinedLocations.keys.where(
+                              (String option) => option.toLowerCase().contains(textEditingValue.text.toLowerCase()),
+                            );
+                          },
+                          onSelected: changeSelectedLocation,
+                          optionsViewBuilder: (
+                            BuildContext context,
+                            AutocompleteOnSelected<String> onSelected,
+                            Iterable<String> options,
+                          ) {
+                            final int itemCount = options.length;
+                            final double containerHeight = itemCount * 80.0;
+                            return Align(
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                constraints: BoxConstraints(
+                                  maxWidth: 300,
+                                  maxHeight: containerHeight,
+                                ),
+                                child: Material(
+                                  elevation: 4,
+                                  child: ListView(
+                                    children: options
+                                        .map(
+                                          (String option) => GestureDetector(
+                                            onTap: () {
+                                              onSelected(option);
+                                            },
+                                            child: ListTile(
+                                              title: Text(option),
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                      .toList(),
+                                        )
+                                        .toList(),
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                        fieldViewBuilder: (
-                          BuildContext context,
-                          TextEditingController textEditingController,
-                          FocusNode focusNode,
-                          VoidCallback onFieldSubmitted,
-                        ) {
-                          focusNode = focusNode;
+                            );
+                          },
+                          fieldViewBuilder: (
+                            BuildContext context,
+                            TextEditingController textEditingController,
+                            FocusNode focusNode,
+                            VoidCallback onFieldSubmitted,
+                          ) {
+                            focusNode = focusNode;
 
-                          return TextField(
-                            controller: textEditingController,
-                            focusNode: focusNode,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Nach Gebäude Suchen',
-                              hintStyle: TextStyle(
-                                color:
-                                    Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                                        ? Colors.black
-                                        : null,
+                            return TextField(
+                              controller: textEditingController,
+                              focusNode: focusNode,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Nach Gebäude Suchen',
+                                hintStyle: TextStyle(
+                                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                          AppThemes.light
+                                      ? Colors.black
+                                      : null,
+                                ),
                               ),
-                            ),
-                            onChanged: (value) {
-                              //_updateSuggestions(value);
-                            },
-                          );
+                              onChanged: (value) {
+                                //_updateSuggestions(value);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      CampusIconButton(
+                        iconPath: 'assets/img/icons/search.svg',
+                        backgroundColorDark:
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                ? const Color.fromRGBO(245, 246, 250, 1)
+                                : const Color.fromRGBO(34, 40, 54, 1),
+                        backgroundColorLight:
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                ? const Color.fromRGBO(245, 246, 250, 1)
+                                : const Color.fromRGBO(34, 40, 54, 1),
+                        borderColorDark:
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                ? const Color.fromRGBO(245, 246, 250, 1)
+                                : const Color.fromRGBO(34, 40, 54, 1),
+                        transparent: true,
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
                         },
                       ),
-                    ),
-                    CampusIconButton(
-                      iconPath: 'assets/img/icons/search.svg',
-                      backgroundColorDark:
-                          Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                              ? const Color.fromRGBO(245, 246, 250, 1)
-                              : const Color.fromRGBO(34, 40, 54, 1),
-                      backgroundColorLight:
-                          Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                              ? const Color.fromRGBO(245, 246, 250, 1)
-                              : const Color.fromRGBO(34, 40, 54, 1),
-                      borderColorDark:
-                          Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                              ? const Color.fromRGBO(245, 246, 250, 1)
-                              : const Color.fromRGBO(34, 40, 54, 1),
-                      transparent: true,
-                      onTap: () {
-                        FocusScope.of(context).unfocus();
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const IndoorNavigation()),
-          );
-        },
-        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-        child: SvgPicture.asset(
-          'assets/img/icons/door-closed.svg',
-          colorFilter: ColorFilter.mode(
-            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                ? Colors.black
-                : const Color.fromRGBO(184, 186, 191, 1),
-            BlendMode.srcIn,
-          ),
-          width: 24,
+          ],
         ),
-      ),
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const IndoorNavigation()),
+            );
+          },
+          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+          child: SvgPicture.asset(
+            'assets/img/icons/door-closed.svg',
+            colorFilter: ColorFilter.mode(
+              Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  ? Colors.black
+                  : const Color.fromRGBO(184, 186, 191, 1),
+              BlendMode.srcIn,
+            ),
+            width: 24,
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> setShortestPath(LatLng start, LatLng end) async {
@@ -272,6 +298,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
     super.initState();
 
     setInitialLocation();
+    _checkFirstTimeUser();
   }
 
   void placeSymbol(String locationKey) {
