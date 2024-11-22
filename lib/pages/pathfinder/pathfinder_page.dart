@@ -1,6 +1,8 @@
+import 'package:campus_app/core/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:location/location.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -39,25 +41,12 @@ class RaumfinderPageState extends State<RaumfinderPage> {
   LatLng? symbolPosition;
   final PathfinderUtils utils = sl<PathfinderUtils>();
   List<LatLng> waypoints = [];
-  bool _isFirstTime = false;
-
-  Future<void> _checkFirstTimeUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isFirstTime = prefs.getBool('isFirstTimeRaumfinder') ?? true;
-
-    if (isFirstTime) {
-      // Mark as not first time for future visits
-      await prefs.setBool('isFirstTimeRaumfinder', false);
-      setState(() {
-        _isFirstTime = true;
-      });
-    }
-  }
+  bool isFirstTime = false;
 
   @override
   Widget build(BuildContext context) {
     // Display guide if first time use
-    if (_isFirstTime) {
+    if (isFirstTime) {
       return PathfinderOnboardingPage(
         mainNavigatorKey: GlobalKey<NavigatorState>(),
         pageEntryAnimationKey: widget.pageEntryAnimationKey,
@@ -142,7 +131,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
               ],
             ),
             Positioned(
-              top: 30,
+              top: 20,
               left: 10,
               right: 10,
               child: Container(
@@ -276,20 +265,36 @@ class RaumfinderPageState extends State<RaumfinderPage> {
     }
   }
 
-  Future<void> setShortestPath(LatLng start, LatLng end) async {
+  Future<void> changeSelectedLocation(String selectedOption) async {
+    searchController.text = selectedOption;
+    placeSymbol(selectedOption);
+    try {
+      if (currentLocation == null) return;
+
+      final LatLng startLocation = LatLng(
+        currentLocation!.latitude!,
+        currentLocation!.longitude!,
+      );
+      final LatLng endLocation = predefinedLocations[selectedOption]!;
+
+      await setShortestPath(startLocation, endLocation);
+
+      setState(() {
+        showCurrentLocation = true;
+      });
+    } catch (e, stacktrace) {
+      debugPrint('Error $stacktrace');
+    }
+  }
+
+  Future<void> checkFirstTimeUser() async {
     setState(() {
-      waypoints = [];
+      isFirstTime = Provider.of<SettingsHandler>(context, listen: false).currentSettings.firstTimePathfinder;
     });
 
-    final List<LatLng> newWaypoints = await utils.getShortestPath(start, end);
-
-    setState(() {
-      waypoints = newWaypoints;
-      focusNode.unfocus();
-    });
-
-    if (suggestions.isNotEmpty) {
-      searchController.text = suggestions.first;
+    if (isFirstTime) {
+      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+          Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(firstTimePathfinder: false);
     }
   }
 
@@ -298,7 +303,10 @@ class RaumfinderPageState extends State<RaumfinderPage> {
     super.initState();
 
     setInitialLocation();
-    _checkFirstTimeUser();
+    checkFirstTimeUser();
+
+    predefinedLocations =
+        Map.fromEntries(predefinedLocations.entries.toList()..sort((e1, e2) => e1.key.compareTo(e2.key)));
   }
 
   void placeSymbol(String locationKey) {
@@ -327,25 +335,20 @@ class RaumfinderPageState extends State<RaumfinderPage> {
     }
   }
 
-  Future<void> changeSelectedLocation(String selectedOption) async {
-    searchController.text = selectedOption;
-    placeSymbol(selectedOption);
-    try {
-      if (currentLocation == null) return;
+  Future<void> setShortestPath(LatLng start, LatLng end) async {
+    setState(() {
+      waypoints = [];
+    });
 
-      final LatLng startLocation = LatLng(
-        currentLocation!.latitude!,
-        currentLocation!.longitude!,
-      );
-      final LatLng endLocation = predefinedLocations[selectedOption]!;
+    final List<LatLng> newWaypoints = await utils.getShortestPath(start, end);
 
-      await setShortestPath(startLocation, endLocation);
+    setState(() {
+      waypoints = newWaypoints;
+      focusNode.unfocus();
+    });
 
-      setState(() {
-        showCurrentLocation = true;
-      });
-    } catch (e, stacktrace) {
-      debugPrint('Error $stacktrace');
+    if (suggestions.isNotEmpty) {
+      searchController.text = suggestions.first;
     }
   }
 }

@@ -2,7 +2,7 @@
 
 import 'package:latlong2/latlong.dart';
 
-final Map<String, LatLng> predefinedLocations = {
+Map<String, LatLng> predefinedLocations = {
   'UFO': const LatLng(51.448051, 7.259111),
   'U35-Haltestelle': const LatLng(51.447198, 7.259043),
   'UNICENTER': const LatLng(51.447985, 7.258623),
@@ -11,10 +11,10 @@ final Map<String, LatLng> predefinedLocations = {
   'SSC': const LatLng(51.446138, 7.260922),
   'UV': const LatLng(51.445772, 7.260552),
   'UB': const LatLng(51.445127, 7.260327),
-  'GAMINGHUB': const LatLng(51.445211, 7.259726),
-  'REPAIR CAFE': const LatLng(51.445029, 7.259882),
+  'GamingHub': const LatLng(51.445211, 7.259726),
+  'Repair Café': const LatLng(51.445029, 7.259882),
   'AUDIMAX': const LatLng(51.444118, 7.261505),
-  'MENSA': const LatLng(51.443282, 7.262258),
+  'Mensa': const LatLng(51.443282, 7.262258),
   'VZ': const LatLng(51.442925, 7.262552),
   'CASPO': const LatLng(51.442723, 7.262436),
   'MA': const LatLng(51.444993, 7.258908),
@@ -23,7 +23,7 @@ final Map<String, LatLng> predefinedLocations = {
   'MAFO': const LatLng(51.444733, 7.259557),
   'MABF': const LatLng(51.445159, 7.258016),
   'HMA': const LatLng(51.444392, 7.258677),
-  'KULTUR CAFE': const LatLng(51.445886, 7.259654),
+  'KulturCafé': const LatLng(51.445886, 7.259654),
   'FNO': const LatLng(51.445254, 7.261878),
   'HZO': const LatLng(51.44478, 7.262698),
   'IA': const LatLng(51.445949, 7.262607),
@@ -38,7 +38,7 @@ final Map<String, LatLng> predefinedLocations = {
   'HIC': const LatLng(51.446461, 7.26581),
   'HID': const LatLng(51.446809, 7.266467),
   'CC': const LatLng(51.443973, 7.259845),
-  'Q-WEST': const LatLng(51.44403, 7.258903),
+  'Q-West': const LatLng(51.44403, 7.258903),
   'GA': const LatLng(51.443491, 7.25955),
   'GB': const LatLng(51.443106, 7.25845),
   'GC': const LatLng(51.442715, 7.257316),
