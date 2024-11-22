@@ -37,6 +37,9 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   final TextEditingController startController = TextEditingController();
   final TextEditingController zielController = TextEditingController();
 
+  String startText = '';
+  String zielText = '';
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -108,6 +111,9 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                       },
                       onSelected: (String selection) {
                         startController.text = selection;
+                        setState(() {
+                          startText = selection;
+                        });
                         resetTimer();
                       },
                       fieldViewBuilder: (
@@ -162,6 +168,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                       },
                       onSelected: (String selection) {
                         zielController.text = selection;
+
+                        setState(() {
+                          zielText = selection;
+                        });
 
                         resetTimer();
                       },
@@ -350,9 +360,6 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   }
 
   Future<void> validateAndPerformAction() async {
-    final String startText = startController.text;
-    final String zielText = zielController.text;
-
     if (startText.isNotEmpty && zielText.isNotEmpty) {
       final List<String> components = startText.split(' ');
       final String building = components[0];

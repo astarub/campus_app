@@ -134,7 +134,7 @@ class PathfinderUtils {
     }
 
     for (int i = 0; i < filenames.length; i++) {
-      final ByteData data = await DefaultAssetBundle.of(context!).load('lib/pages/pathfinder/maps/${filenames[i]}');
+      final ByteData data = await DefaultAssetBundle.of(context!).load('assets/maps/${filenames[i]}');
       final Uint8List bytes = data.buffer.asUint8List();
       final img.Image image = img.decodeImage(bytes)!;
 
