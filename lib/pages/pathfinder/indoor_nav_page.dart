@@ -14,6 +14,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/pathfinder/data.dart';
 import 'package:campus_app/utils/pages/pathfinder_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/pages/pathfinder/pathfinder_page.dart';
 
 class IndoorNavigation extends StatefulWidget {
   const IndoorNavigation({super.key});
@@ -203,6 +204,8 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                         VoidCallback onFieldSubmitted,
                       ) {
                         startController.text = textEditingController.text;
+                        // Ensure the controller reflects the default value
+                        textEditingController.text = zielController.text;
                         return TextField(
                           controller: textEditingController,
                           focusNode: focusNode,
@@ -381,6 +384,12 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
     });
 
     fill();
+
+// Set the default value for zielController if selectedLocationGlobal is not empty
+    if (selectedLocationGlobal != null && selectedLocationGlobal!.isNotEmpty) {
+      zielController.text = selectedLocationGlobal!;
+      zielText = selectedLocationGlobal!;
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       homeKey.currentState!.setSwipeDisabled(disableSwipe: true);
