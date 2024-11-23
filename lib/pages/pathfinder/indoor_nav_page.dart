@@ -236,6 +236,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                   onScaleStart: (details) {
                     controller.value = Matrix4.identity();
                   },
+                  /*
                   onHorizontalDragUpdate: (details) {
                     if (controller.value.getMaxScaleOnAxis() == 1.0) {
                       if (details.delta.dx > 0) {
@@ -255,7 +256,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                         });
                       }
                     }
-                  },
+                  },*/
                   child: images.isNotEmpty
                       ? InteractiveViewer(
                           transformationController: controller,
