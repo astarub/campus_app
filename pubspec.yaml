@@ -59,6 +59,12 @@ dependencies:
   image: ^4.3.0
   dismissible_page: ^1.0.2
   app_links: ^6.1.4
+  dijkstra: ^0.0.4
+  flutter_map: ^7.0.2
+  location: ^7.0.1
+  latlong2: ^0.9.1
+  flutter_polyline_points: ^2.1.0
+  flutter_map_location_marker: ^9.1.1
   
 dev_dependencies:
   flutter_test:
@@ -166,6 +172,7 @@ flutter:
      - assets/animations/coin-flip.json
      - assets/img/bogestra-logo.svg
      - assets/img/icons/file-plus.svg
+     - lib/pages/pathfinder/maps/
 
   fonts:
     - family: SF-Pro

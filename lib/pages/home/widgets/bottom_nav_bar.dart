@@ -30,14 +30,18 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Container(
       height: Platform.isIOS ? 88 : 68,
-      padding: Platform.isIOS ? const EdgeInsets.only(bottom: 20, left: 5) : const EdgeInsets.only(left: 7),
+      padding: Platform.isIOS
+          ? const EdgeInsets.only(bottom: 20, left: 5)
+          : const EdgeInsets.only(left: 7),
       decoration: BoxDecoration(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(15),
           topRight: Radius.circular(15),
         ),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))
+        ],
       ),
       child: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -68,6 +72,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
               imagePathInactive: 'assets/img/icons/mensa-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.mensa),
               isActive: widget.currentPage == PageItem.mensa,
+            ),
+            // Raumfinder
+            BottomNavBarItem(
+              title: 'Karte',
+              imagePathActive: 'assets/img/icons/map-filled.png',
+              imagePathInactive: 'assets/img/icons/map-outlined.png',
+              onTap: () => widget.onSelectedPage(PageItem.pathfinder),
+              isActive: widget.currentPage == PageItem.pathfinder,
             ),
             // Wallet
             BottomNavBarItem(
