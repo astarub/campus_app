@@ -26,8 +26,8 @@ class HomePageState extends State<HomePage> {
   Map<PageItem, GlobalKey<NavigatorState>> navigatorKeys = {
     PageItem.feed: GlobalKey<NavigatorState>(),
     PageItem.events: GlobalKey<NavigatorState>(),
-    PageItem.pathfinder: GlobalKey<NavigatorState>(),
     PageItem.mensa: GlobalKey<NavigatorState>(),
+    PageItem.pathfinder: GlobalKey<NavigatorState>(),
     PageItem.wallet: GlobalKey<NavigatorState>(),
     PageItem.more: GlobalKey<NavigatorState>(),
   };
@@ -37,16 +37,16 @@ class HomePageState extends State<HomePage> {
   Map<PageItem, GlobalKey<AnimatedExitState>> exitAnimationKeys = {
     PageItem.feed: GlobalKey<AnimatedExitState>(),
     PageItem.events: GlobalKey<AnimatedExitState>(),
-    PageItem.pathfinder: GlobalKey<AnimatedExitState>(),
     PageItem.mensa: GlobalKey<AnimatedExitState>(),
+    PageItem.pathfinder: GlobalKey<AnimatedExitState>(),
     PageItem.wallet: GlobalKey<AnimatedExitState>(),
     PageItem.more: GlobalKey<AnimatedExitState>(),
   };
   Map<PageItem, GlobalKey<AnimatedEntryState>> entryAnimationKeys = {
     PageItem.feed: GlobalKey<AnimatedEntryState>(),
     PageItem.events: GlobalKey<AnimatedEntryState>(),
-    PageItem.pathfinder: GlobalKey<AnimatedEntryState>(),
     PageItem.mensa: GlobalKey<AnimatedEntryState>(),
+    PageItem.pathfinder: GlobalKey<AnimatedEntryState>(),
     PageItem.wallet: GlobalKey<AnimatedEntryState>(),
     PageItem.more: GlobalKey<AnimatedEntryState>(),
   };
@@ -268,7 +268,8 @@ class HomePageState extends State<HomePage> {
                                           : 1 - (pagePosition - index),
                               duration: const Duration(milliseconds: 100),
                               child: buildNavigator(
-                                  navigatorKeys.keys.toList()[index]),
+                                navigatorKeys.keys.toList()[index],
+                              ),
                             );
                           },
                         ),
@@ -328,20 +329,14 @@ class HomePageState extends State<HomePage> {
                                   ),
                                   child: Center(
                                     child: SizedBox(
-                                      width: currentPage != PageItem.pathfinder
-                                          ? 550
-                                          : null,
+                                      width: currentPage != PageItem.pathfinder ? 550 : null,
                                       child: Stack(
                                         children: [
                                           buildOffstateNavigator(PageItem.feed),
-                                          buildOffstateNavigator(
-                                              PageItem.events),
-                                          buildOffstateNavigator(
-                                              PageItem.pathfinder),
-                                          buildOffstateNavigator(
-                                              PageItem.mensa),
-                                          buildOffstateNavigator(
-                                              PageItem.wallet),
+                                          buildOffstateNavigator(PageItem.events),
+                                          buildOffstateNavigator(PageItem.pathfinder),
+                                          buildOffstateNavigator(PageItem.mensa),
+                                          buildOffstateNavigator(PageItem.wallet),
                                           buildOffstateNavigator(PageItem.more),
                                         ],
                                       ),

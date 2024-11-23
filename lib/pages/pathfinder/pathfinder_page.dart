@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_dynamic_calls, avoid_print, prefer_single_quotes, require_trailing_commas, unused_local_variable, use_super_parameters, library_private_types_in_public_api, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, prefer_final_locals, type_annotate_public_apis, no_leading_underscores_for_local_identifiers
 
 import 'dart:convert';
-import 'package:campus_app/pages/pathfinder/maps/indoor_nav_page.dart';
+import 'package:campus_app/pages/pathfinder/indoor_nav_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
@@ -298,7 +298,9 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                             setState(() {
                               showCurrentLocation = true;
                             });
-                          } catch (e) {}
+                          } catch (e) {
+                            debugPrint('Error getting location: $e');
+                          }
                         },
                         optionsViewBuilder: (BuildContext context,
                             AutocompleteOnSelected<String> onSelected,
@@ -373,7 +375,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NewPage()),
+              MaterialPageRoute(builder: (context) => IndoorNavigation()),
             );
           },
           backgroundColor: const Color.fromARGB(255, 20, 20, 39),
@@ -384,5 +386,3 @@ class RaumfinderPageState extends State<RaumfinderPage> {
         ));
   }
 }
-
-//-----------------------------------------------------------------------------------------------------------

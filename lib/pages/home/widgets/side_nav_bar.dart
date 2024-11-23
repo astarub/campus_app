@@ -63,8 +63,8 @@ class _SideNavBarState extends State<SideNavBar> {
           ),
           SideNavBarItem(
             title: 'Karte',
-            imagePathActive: 'assets/img/icons/map-filled.png',
-            imagePathInactive: 'assets/img/icons/map-filled.png',
+            imagePathActive: 'assets/img/icons/mensa-filled.png',
+            imagePathInactive: 'assets/img/icons/mensa-outlined.png',
             onTap: () => widget.onSelectedPage(PageItem.pathfinder),
             isActive: widget.currentPage == PageItem.pathfinder,
           ),

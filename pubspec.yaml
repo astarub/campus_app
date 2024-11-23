@@ -11,8 +11,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  envied: ^0.5.4+1
-  flutter_native_splash: ^2.4.2
+  envied: ^1.0.0
+  flutter_native_splash: ^2.4.0
   flutter_html: ^3.0.0-alpha.5
   flutter_secure_storage: ^9.2.2
   provider: ^6.1.1
@@ -36,25 +36,27 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.1
-  url_launcher: ^6.3.1
-  flutter_inappwebview: ^6.1.5
-  firebase_core: ^3.7.0
-  firebase_messaging: ^15.1.4
-  flutter_local_notifications: ^18.0.1
+  url_launcher: ^6.2.3 
+  flutter_inappwebview: ^6.0.0
+  firebase_core: ^3.8.0 
+  firebase_messaging: ^15.1.5
+  flutter_local_notifications: ^18.0.1 
   share_plus: ^10.1.2
+  uni_links: ^0.5.1
   flutter_onboarding:
     git:
       url: https://github.com/C4s4r/flutter_onboarding
       ref: 9d74464
   flutter_nfc_kit: ^3.5.2
-  lottie: ^3.1.3
+  lottie: ^3.0.0
   screen_brightness: ^2.0.0+2
-  fluttertoast: ^8.2.8
+  fluttertoast: ^8.2.5
   appwrite: ^13.0.0
   slugid: ^1.1.2
   visibility_detector: ^0.4.0+2
-  appinio_video_player: ^1.2.2
-  sentry_flutter: ^8.10.1
+  appinio_video_player: ^1.3.0
+  sentry_flutter: ^8.2.0
+  sentry: ^8.2.0
   video_thumbnail: ^0.5.3
   image: ^4.3.0
   dismissible_page: ^1.0.2
@@ -65,14 +67,21 @@ dependencies:
   latlong2: ^0.9.1
   flutter_polyline_points: ^2.1.0
   flutter_map_location_marker: ^9.1.1
+  geolocator: ^13.0.2
+  photo_view: ^0.15.0
+       
+  image_editor: ^1.3.0
+  flutter_animate: ^4.5.0
+  video_player: ^2.6.0
+  shared_preferences: ^2.3.3
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.4.13 
+  build_runner: ^2.4.10 
   flutter_lints: ^5.0.0
   mockito: ^5.4.3
-  envied_generator: ^0.5.3 
+  envied_generator: ^1.0.0 
   flutter_launcher_icons: ^0.14.1
 
 # Override js version as flutter_inappwebview depends on flutter_inappwebview_web which uses js version ^0.6.4 but as the web package is not used, this is risk-free
@@ -120,6 +129,7 @@ flutter:
      - assets/img/icons/home-filled.png
      - assets/img/icons/calendar-outlined.png
      - assets/img/icons/calendar-filled.png
+     - assets/img/icons/door-closed.svg
      - assets/img/icons/mensa-outlined.png
      - assets/img/icons/mensa-filled.png
      - assets/img/icons/help-outlined.png
@@ -173,6 +183,13 @@ flutter:
      - assets/img/bogestra-logo.svg
      - assets/img/icons/file-plus.svg
      - lib/pages/pathfinder/maps/
+     - assets/maps/SH0.jpg
+     - assets/maps/SH1.jpg
+     - assets/videos/pathfinder_onboarding_cover_video.mp4
+     - assets/videos/pathfinder_onboarding_step_1.mp4
+     - assets/videos/pathfinder_onboarding_step_2.mp4
+     - assets/videos/pathfinder_onboarding_step_3.mp4
+     - assets/videos/pathfinder_onboarding_step_4.mp4
 
   fonts:
     - family: SF-Pro
