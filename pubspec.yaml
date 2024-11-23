@@ -182,7 +182,7 @@ flutter:
      - assets/animations/coin-flip.json
      - assets/img/bogestra-logo.svg
      - assets/img/icons/file-plus.svg
-     - lib/pages/pathfinder/maps/
+     - assets/maps/
      - assets/maps/SH0.jpg
      - assets/maps/SH1.jpg
      - assets/videos/pathfinder_onboarding_cover_video.mp4
