@@ -1,6 +1,6 @@
 import 'package:latlong2/latlong.dart';
 
-final Map<String, LatLng> predefinedLocations = {
+Map<String, LatLng> predefinedLocations = {
   'UFO': const LatLng(51.448051, 7.259111),
   'U35-Haltestelle': const LatLng(51.447198, 7.259043),
   'UNICENTER': const LatLng(51.447985, 7.258623),
@@ -129,7 +129,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [1782, 1353],
     'Connections': [
       (('SH', '0', 'EN_10'), 117),
-      (('RUB', '0', 'Campus'), 1000),
+      (('RUB', '0', 'Campus'), 1000000),
     ]
   },
   ('SH', '0', '004'): {
@@ -648,7 +648,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     ]
   },
   ('SH', '1', '105'): {
-    'Coordinates': [1000, 1578],
+    'Coordinates': [1000000, 1578],
     'Connections': [
       (('SH', '1', 'EN_54'), 59),
     ]
@@ -1546,8 +1546,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('RUB', '0', 'Campus'): {
     'Coordinates': [770, 375],
     'Connections': [
-      (('SH', '0', 'Haupteingang(West)'), 1000),
-      (('ND', '05', 'Eingang-Nordstr.'), 1000),
+      (('SH', '0', 'Haupteingang(West)'), 1000000),
+      (('ND', '05', 'Eingang-Nordstr.'), 1000000),
     ]
   },
 
