@@ -50,6 +50,8 @@
 	<string>Allows the app to scan Mensa cards</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>The Campus App requires access to your photo library to retrieve your ticket</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>The Campus App requires access to the device's location as the interactive pathfinder uses it to the find the optimal path on campus.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

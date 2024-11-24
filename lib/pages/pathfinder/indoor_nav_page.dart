@@ -62,20 +62,18 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
           }
         },
         child: Scaffold(
-          backgroundColor: Provider.of<ThemesNotifier>(context)
-              .currentThemeData
-              .colorScheme
-              .surface,
+          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Back button & page title
               Padding(
                 padding: EdgeInsets.only(
-                    top: Platform.isAndroid ? 20 : 0,
-                    left: 20,
-                    right: 20,
-                    bottom: 20),
+                  top: Platform.isAndroid ? 20 : 0,
+                  left: 20,
+                  right: 20,
+                  bottom: 20,
+                ),
                 child: SizedBox(
                   width: double.infinity,
                   child: Stack(
@@ -89,10 +87,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                       Align(
                         child: Text(
                           'Navigation',
-                          style: Provider.of<ThemesNotifier>(context)
-                              .currentThemeData
-                              .textTheme
-                              .displayMedium,
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                         ),
                       ),
                     ],
@@ -104,9 +99,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Provider.of<ThemesNotifier>(context, listen: false)
-                                .currentTheme ==
-                            AppThemes.light
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                         ? const Color.fromRGBO(245, 246, 250, 1)
                         : const Color.fromRGBO(34, 40, 54, 1),
                     borderRadius: BorderRadius.circular(15),
@@ -119,9 +112,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           return suggestions;
                         }
                         return suggestions.where((String option) {
-                          return option
-                              .toLowerCase()
-                              .contains(textEditingValue.text.toLowerCase());
+                          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
                         });
                       },
                       onSelected: (String selection) {
@@ -148,10 +139,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           decoration: InputDecoration(
                             hintText: 'Start: zB. SH 0/05',
                             hintStyle: TextStyle(
-                              color: Provider.of<ThemesNotifier>(context,
-                                              listen: false)
-                                          .currentTheme ==
-                                      AppThemes.light
+                              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                   ? Colors.black
                                   : null,
                             ),
@@ -168,9 +156,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Provider.of<ThemesNotifier>(context, listen: false)
-                                .currentTheme ==
-                            AppThemes.light
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                         ? const Color.fromRGBO(245, 246, 250, 1)
                         : const Color.fromRGBO(34, 40, 54, 1),
                     borderRadius: BorderRadius.circular(15),
@@ -183,9 +169,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           return suggestions;
                         }
                         return suggestions.where((String option) {
-                          return option
-                              .toLowerCase()
-                              .contains(textEditingValue.text.toLowerCase());
+                          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
                         });
                       },
                       onSelected: (String selection) {
@@ -216,10 +200,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           decoration: InputDecoration(
                             hintText: 'Ziel: zB. SH 0/81',
                             hintStyle: TextStyle(
-                              color: Provider.of<ThemesNotifier>(context,
-                                              listen: false)
-                                          .currentTheme ==
-                                      AppThemes.light
+                              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                   ? Colors.black
                                   : null,
                             ),
@@ -266,8 +247,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height,
-                            child: Image.memory(images[currentIndex],
-                                fit: BoxFit.contain),
+                            child: Image.memory(images[currentIndex], fit: BoxFit.contain),
                           ),
                         )
                       : Center(
@@ -276,10 +256,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                             child: SvgPicture.asset(
                               'assets/img/icons/search.svg',
                               colorFilter: ColorFilter.mode(
-                                Provider.of<ThemesNotifier>(context,
-                                                listen: false)
-                                            .currentTheme ==
-                                        AppThemes.light
+                                Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                     ? Colors.black
                                     : const Color.fromRGBO(184, 186, 191, 1),
                                 BlendMode.srcIn,
@@ -296,9 +273,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FloatingActionButton(
-                backgroundColor: Provider.of<ThemesNotifier>(context)
-                    .currentThemeData
-                    .cardColor,
+                backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                 onPressed: () {
                   setState(() {
                     if (currentIndex > 0) {
@@ -308,18 +283,14 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                 },
                 child: Icon(
                   Icons.arrow_back,
-                  color: Provider.of<ThemesNotifier>(context, listen: false)
-                              .currentTheme ==
-                          AppThemes.light
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                       ? Colors.black
                       : const Color.fromRGBO(184, 186, 191, 1),
                 ),
               ),
               const SizedBox(width: 10),
               FloatingActionButton(
-                backgroundColor: Provider.of<ThemesNotifier>(context)
-                    .currentThemeData
-                    .cardColor,
+                backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                 onPressed: () async {
                   setState(() {
                     if (currentIndex < images.length - 1) {
@@ -329,9 +300,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                 },
                 child: Icon(
                   Icons.arrow_forward,
-                  color: Provider.of<ThemesNotifier>(context, listen: false)
-                              .currentTheme ==
-                          AppThemes.light
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                       ? Colors.black
                       : const Color.fromRGBO(184, 186, 191, 1),
                 ),
@@ -346,8 +315,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   Future<List<Uint8List>> computeImagesForMap(Map karte) async {
     debugPrint('New page opened.');
 
-    final List<dynamic> shortestPath =
-        Dijkstra.findPathFromGraph(karte, from, to);
+    final List<dynamic> shortestPath = Dijkstra.findPathFromGraph(karte, from, to);
 
     final List<Uint8List> loadedImages = await utils.loadImages(
       context: context,
@@ -362,6 +330,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
     for (final key in testkarte.keys) {
       final (x1, x2, x3) = key;
       final x4 = '$x1 $x2/$x3';
+      if (x3.contains('EN')) continue;
       suggestions.add(x4);
     }
   }
