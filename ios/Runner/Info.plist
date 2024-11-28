@@ -52,6 +52,8 @@
 	<string>The Campus App requires access to your photo library to retrieve your ticket</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>The Campus App requires access to the device's location as the interactive pathfinder uses it to the find the optimal path on campus.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>The Campus App only uses the location when in foreground, for the pathfinder to find the optimal path on campus.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
