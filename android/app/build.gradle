@@ -50,7 +50,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "de.asta_bochum.campus_app"
         minSdkVersion 26
-        targetSdkVersion 34
+        targetSdkVersion 35
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

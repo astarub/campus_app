@@ -2,12 +2,10 @@ import 'package:campus_app/core/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get_it/get_it.dart';
 import 'package:location/location.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -107,12 +105,8 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                         ),
                       ),
                       markerSize: const Size.square(40),
-                      accuracyCircleColor:
-                          const Color.fromARGB(255, 113, 143, 243)
-                              .withOpacity(0.1),
-                      headingSectorColor:
-                          const Color.fromARGB(255, 118, 221, 247)
-                              .withOpacity(0.8),
+                      accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withOpacity(0.1),
+                      headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withOpacity(0.8),
                       headingSectorRadius: 120,
                     ),
                     moveAnimationDuration: Duration.zero,
@@ -143,9 +137,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Provider.of<ThemesNotifier>(context, listen: false)
-                              .currentTheme ==
-                          AppThemes.light
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                       ? const Color.fromRGBO(245, 246, 250, 1)
                       : const Color.fromRGBO(34, 40, 54, 1),
                   borderRadius: BorderRadius.circular(15),
@@ -158,8 +150,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                         child: Autocomplete<String>(
                           optionsBuilder: (TextEditingValue textEditingValue) {
                             return predefinedLocations.keys.where(
-                              (String option) => option.toLowerCase().contains(
-                                  textEditingValue.text.toLowerCase()),
+                              (String option) => option.toLowerCase().contains(textEditingValue.text.toLowerCase()),
                             );
                           },
                           onSelected: changeSelectedLocation,
@@ -212,9 +203,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                                 border: InputBorder.none,
                                 hintText: 'Nach Gebäude Suchen',
                                 hintStyle: TextStyle(
-                                  color: Provider.of<ThemesNotifier>(context,
-                                                  listen: false)
-                                              .currentTheme ==
+                                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
                                           AppThemes.light
                                       ? Colors.black
                                       : null,
@@ -223,6 +212,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                               onChanged: (value) {
                                 //_updateSuggestions(value);
                               },
+                              onSubmitted: changeSelectedLocation,
                             );
                           },
                         ),
@@ -230,21 +220,15 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                       CampusIconButton(
                         iconPath: 'assets/img/icons/search.svg',
                         backgroundColorDark:
-                            Provider.of<ThemesNotifier>(context, listen: false)
-                                        .currentTheme ==
-                                    AppThemes.light
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                 ? const Color.fromRGBO(245, 246, 250, 1)
                                 : const Color.fromRGBO(34, 40, 54, 1),
                         backgroundColorLight:
-                            Provider.of<ThemesNotifier>(context, listen: false)
-                                        .currentTheme ==
-                                    AppThemes.light
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                 ? const Color.fromRGBO(245, 246, 250, 1)
                                 : const Color.fromRGBO(34, 40, 54, 1),
                         borderColorDark:
-                            Provider.of<ThemesNotifier>(context, listen: false)
-                                        .currentTheme ==
-                                    AppThemes.light
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                 ? const Color.fromRGBO(245, 246, 250, 1)
                                 : const Color.fromRGBO(34, 40, 54, 1),
                         transparent: true,
@@ -266,14 +250,11 @@ class RaumfinderPageState extends State<RaumfinderPage> {
               MaterialPageRoute(builder: (context) => const IndoorNavigation()),
             );
           },
-          backgroundColor:
-              Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
           child: SvgPicture.asset(
             'assets/img/icons/door-closed.svg',
             colorFilter: ColorFilter.mode(
-              Provider.of<ThemesNotifier>(context, listen: false)
-                          .currentTheme ==
-                      AppThemes.light
+              Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? Colors.black
                   : const Color.fromRGBO(184, 186, 191, 1),
               BlendMode.srcIn,
@@ -286,11 +267,13 @@ class RaumfinderPageState extends State<RaumfinderPage> {
   }
 
   Future<void> changeSelectedLocation(String selectedOption) async {
+    final String buildingName = selectedOption.split(' ')[0];
+
     searchController.text = selectedOption;
     selectedLocationGlobal = selectedOption;
 
     searchController.text = selectedOption;
-    placeSymbol(selectedOption);
+    placeSymbol(buildingName);
     try {
       if (currentLocation == null) return;
 
@@ -298,7 +281,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
         currentLocation!.latitude!,
         currentLocation!.longitude!,
       );
-      final LatLng endLocation = predefinedLocations[selectedOption]!;
+      final LatLng endLocation = predefinedLocations[buildingName]!;
 
       await setShortestPath(startLocation, endLocation);
 
@@ -312,16 +295,12 @@ class RaumfinderPageState extends State<RaumfinderPage> {
 
   Future<void> checkFirstTimeUser() async {
     setState(() {
-      isFirstTime = Provider.of<SettingsHandler>(context, listen: false)
-          .currentSettings
-          .firstTimePathfinder;
+      isFirstTime = Provider.of<SettingsHandler>(context, listen: false).currentSettings.firstTimePathfinder;
     });
 
     if (isFirstTime) {
       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-          Provider.of<SettingsHandler>(context, listen: false)
-              .currentSettings
-              .copyWith(firstTimePathfinder: false);
+          Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(firstTimePathfinder: false);
     }
   }
 
@@ -333,8 +312,8 @@ class RaumfinderPageState extends State<RaumfinderPage> {
     checkFirstTimeUser();
     addGraphEntriesToPredefinedLocations();
 
-    predefinedLocations = Map.fromEntries(predefinedLocations.entries.toList()
-      ..sort((e1, e2) => e1.key.compareTo(e2.key)));
+    predefinedLocations =
+        Map.fromEntries(predefinedLocations.entries.toList()..sort((e1, e2) => e1.key.compareTo(e2.key)));
   }
 
   void placeSymbol(String locationKey) {
@@ -383,7 +362,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
   void addGraphEntriesToPredefinedLocations() {
     String findClosestMatch(String target, List<String> candidates) {
       int computeSimilarity(String a, String b) {
-        int minLength = a.length < b.length ? a.length : b.length;
+        final int minLength = a.length < b.length ? a.length : b.length;
         int matches = 0;
 
         for (int i = 0; i < minLength; i++) {
@@ -398,7 +377,7 @@ class RaumfinderPageState extends State<RaumfinderPage> {
       int maxSimilarity = 0;
 
       for (final candidate in candidates) {
-        int similarity = computeSimilarity(target, candidate);
+        final int similarity = computeSimilarity(target, candidate);
         if (similarity > maxSimilarity) {
           maxSimilarity = similarity;
           closest = candidate;

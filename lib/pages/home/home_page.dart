@@ -301,7 +301,7 @@ class HomePageState extends State<HomePage> {
                         Container(
                           height: 20,
                           color: Provider.of<ThemesNotifier>(context,
-                                          listen: false)
+                                          listen: false,)
                                       .currentTheme ==
                                   AppThemes.light
                               ? const Color.fromRGBO(245, 246, 250, 1)
@@ -348,7 +348,7 @@ class HomePageState extends State<HomePage> {
                               Container(
                                 width: 20,
                                 color: Provider.of<ThemesNotifier>(context,
-                                                listen: false)
+                                                listen: false,)
                                             .currentTheme ==
                                         AppThemes.light
                                     ? const Color.fromRGBO(245, 246, 250, 1)
@@ -362,7 +362,7 @@ class HomePageState extends State<HomePage> {
                         Container(
                           height: 20,
                           color: Provider.of<ThemesNotifier>(context,
-                                          listen: false)
+                                          listen: false,)
                                       .currentTheme ==
                                   AppThemes.light
                               ? const Color.fromRGBO(245, 246, 250, 1)

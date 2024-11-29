@@ -73,10 +73,11 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
               // Back button & page title
               Padding(
                 padding: EdgeInsets.only(
-                    top: Platform.isAndroid ? 20 : 0,
-                    left: 20,
-                    right: 20,
-                    bottom: 20),
+                  top: Platform.isAndroid ? 20 : 0,
+                  left: 20,
+                  right: 20,
+                  bottom: 20,
+                ),
                 child: SizedBox(
                   width: double.infinity,
                   child: Stack(

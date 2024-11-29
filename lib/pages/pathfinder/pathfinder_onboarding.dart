@@ -25,8 +25,7 @@ class PathfinderOnboardingPage extends StatefulWidget {
   });
 
   @override
-  State<PathfinderOnboardingPage> createState() =>
-      _PathfinderOnboardingPageState();
+  State<PathfinderOnboardingPage> createState() => _PathfinderOnboardingPageState();
 }
 
 class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
@@ -58,24 +57,19 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
 
     // Initialize the video controllers
     _coverVideoController = VideoPlayerController.asset(paths[0]);
-    _initializeVideoPlayerFutureForCoverVideo =
-        _coverVideoController.initialize();
+    _initializeVideoPlayerFutureForCoverVideo = _coverVideoController.initialize();
 
     _stepOneVideoController = VideoPlayerController.asset(paths[1]);
-    _initializeVideoPlayerFutureForStepOneVideo =
-        _stepOneVideoController.initialize();
+    _initializeVideoPlayerFutureForStepOneVideo = _stepOneVideoController.initialize();
 
     _stepTwoVideoController = VideoPlayerController.asset(paths[2]);
-    _initializeVideoPlayerFutureForStepTwoVideo =
-        _stepTwoVideoController.initialize();
+    _initializeVideoPlayerFutureForStepTwoVideo = _stepTwoVideoController.initialize();
 
     _stepThreeVideoController = VideoPlayerController.asset(paths[3]);
-    _initializeVideoPlayerFutureForStepThreeVideo =
-        _stepThreeVideoController.initialize();
+    _initializeVideoPlayerFutureForStepThreeVideo = _stepThreeVideoController.initialize();
 
     _stepFourVideoController = VideoPlayerController.asset(paths[4]);
-    _initializeVideoPlayerFutureForStepFourVideo =
-        _stepFourVideoController.initialize();
+    _initializeVideoPlayerFutureForStepFourVideo = _stepFourVideoController.initialize();
   }
 
   @override
@@ -106,13 +100,14 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                         logo: Container(
                           height: 300,
                           width: 300,
-                          margin: const EdgeInsets.only(top: 80, bottom: 50),
+                          margin: const EdgeInsets.only(top: 80, bottom: 10),
                           child: Image.asset(
                             'assets/img/icons/map-filled.png',
                             height: 300,
-                            color: Provider.of<ThemesNotifier>(context,
-                                            listen: false)
-                                        .currentTheme ==
+                            color: Provider.of<ThemesNotifier>(
+                                      context,
+                                      listen: false,
+                                    ).currentTheme ==
                                     AppThemes.light
                                 ? Colors.black
                                 : const Color.fromRGBO(184, 186, 191, 1),
@@ -125,25 +120,34 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                           padding: const EdgeInsets.only(bottom: 10),
                           child: Text(
                             'Raumfinder',
-                            style: Provider.of<ThemesNotifier>(context)
-                                .currentThemeData
-                                .textTheme
-                                .displayMedium,
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                           ),
                         ),
                       ),
                       AnimatedOnboardingEntry(
                         offsetDuration: const Duration(milliseconds: 1700),
-                        interval:
-                            const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                        interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                         child: Padding(
                           padding: const EdgeInsets.all(20),
                           child: Text(
                             'Willkommen beim Raumfinder, \ndie einfachste Art, dich auf dem Campus zurechtzufinden.',
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      AnimatedOnboardingEntry(
+                        offsetDuration: const Duration(milliseconds: 1700),
+                        interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 50),
+                          child: Text(
+                            'Dies ist die Alpha Version des Raumfinders. Aktuell steht die Gebäudeinterne Navigation nur für wenige Gebäude zur Verfügung.',
                             style: Provider.of<ThemesNotifier>(context)
                                 .currentThemeData
                                 .textTheme
-                                .labelSmall,
+                                .labelSmall!
+                                .copyWith(color: Colors.red),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -164,10 +168,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                     child: Text(
                       'Die RUB',
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .displayMedium,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -179,10 +180,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     padding: const EdgeInsets.all(8),
                     child: Text(
                       'Deine RUB-Karte: Orientierung leicht gemacht',
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .labelSmall,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -190,33 +188,29 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                 Expanded(
                   child: AnimatedOnboardingEntry(
                     offsetDuration: const Duration(milliseconds: 700),
-                    interval:
-                        const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                    interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                     child: VisibilityDetector(
                       key: const Key('pathfinder_onboarding_cover_video'),
                       onVisibilityChanged: (VisibilityInfo info) async {
                         final temp = await _coverVideoController.position;
-                        if (info.visibleFraction > 0.5 &&
-                            temp == Duration.zero) {
+                        if (info.visibleFraction > 0.5 && temp == Duration.zero) {
                           await _coverVideoController.play();
                         } else {
-                          unawaited(_coverVideoController
-                              .seekTo(_coverVideoController.value.duration));
+                          unawaited(
+                            _coverVideoController.seekTo(_coverVideoController.value.duration),
+                          );
                         }
                       },
                       child: FutureBuilder(
                         future: _initializeVideoPlayerFutureForCoverVideo,
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
+                          if (snapshot.connectionState == ConnectionState.done) {
                             // If the VideoPlayerController has finished initialization, use
                             // the data it provides to limit the aspect ratio of the video.
                             return Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(57, 20, 57, 75),
+                              padding: const EdgeInsets.fromLTRB(57, 20, 57, 75),
                               child: AspectRatio(
-                                aspectRatio:
-                                    _coverVideoController.value.aspectRatio,
+                                aspectRatio: _coverVideoController.value.aspectRatio,
                                 // Use the VideoPlayer widget to display the video.
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
@@ -249,10 +243,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     padding: const EdgeInsets.only(bottom: 10, top: 20),
                     child: Text(
                       'Schritt 1: Gebäude suchen',
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .displayMedium,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -264,10 +255,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                     child: Text(
                       'Gib den Namen des Gebäudes in die Suchleiste ein.',
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .labelSmall,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -275,33 +263,29 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                 Expanded(
                   child: AnimatedOnboardingEntry(
                     offsetDuration: const Duration(milliseconds: 700),
-                    interval:
-                        const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                    interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                     child: VisibilityDetector(
                       key: const Key('pathfinder_onboarding_step_1_video'),
                       onVisibilityChanged: (VisibilityInfo info) async {
                         final temp = await _stepOneVideoController.position;
-                        if (info.visibleFraction > 0.5 &&
-                            temp == Duration.zero) {
+                        if (info.visibleFraction > 0.5 && temp == Duration.zero) {
                           unawaited(_stepOneVideoController.play());
                         } else {
-                          unawaited(_stepOneVideoController
-                              .seekTo(_stepOneVideoController.value.duration));
+                          unawaited(
+                            _stepOneVideoController.seekTo(_stepOneVideoController.value.duration),
+                          );
                         }
                       },
                       child: FutureBuilder(
                         future: _initializeVideoPlayerFutureForStepOneVideo,
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
+                          if (snapshot.connectionState == ConnectionState.done) {
                             // If the VideoPlayerController has finished initialization, use
                             // the data it provides to limit the aspect ratio of the video.
                             return Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(30, 20, 30, 75),
+                              padding: const EdgeInsets.fromLTRB(30, 20, 30, 75),
                               child: AspectRatio(
-                                aspectRatio:
-                                    _stepOneVideoController.value.aspectRatio,
+                                aspectRatio: _stepOneVideoController.value.aspectRatio,
                                 // Use the VideoPlayer widget to display the video.
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
@@ -334,10 +318,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     padding: const EdgeInsets.only(bottom: 10, top: 20),
                     child: Text(
                       'Schritt 2: Wegbeschreibung',
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .displayMedium,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -349,10 +330,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                     child: Text(
                       'Die App zeigt dir un die beste Route zum gewünschten Gebäude an.',
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .labelSmall,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -360,33 +338,29 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                 Expanded(
                   child: AnimatedOnboardingEntry(
                     offsetDuration: const Duration(milliseconds: 700),
-                    interval:
-                        const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                    interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                     child: VisibilityDetector(
                       key: const Key('pathfinder_onboarding_step_2_video'),
                       onVisibilityChanged: (VisibilityInfo info) async {
                         final temp = await _stepTwoVideoController.position;
-                        if (info.visibleFraction > 0.5 &&
-                            temp == Duration.zero) {
+                        if (info.visibleFraction > 0.5 && temp == Duration.zero) {
                           unawaited(_stepTwoVideoController.play());
                         } else {
-                          unawaited(_stepTwoVideoController
-                              .seekTo(_stepTwoVideoController.value.duration));
+                          unawaited(
+                            _stepTwoVideoController.seekTo(_stepTwoVideoController.value.duration),
+                          );
                         }
                       },
                       child: FutureBuilder(
                         future: _initializeVideoPlayerFutureForStepTwoVideo,
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
+                          if (snapshot.connectionState == ConnectionState.done) {
                             // If the VideoPlayerController has finished initialization, use
                             // the data it provides to limit the aspect ratio of the video.
                             return Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(30, 20, 30, 75),
+                              padding: const EdgeInsets.fromLTRB(30, 20, 30, 75),
                               child: AspectRatio(
-                                aspectRatio:
-                                    _stepTwoVideoController.value.aspectRatio,
+                                aspectRatio: _stepTwoVideoController.value.aspectRatio,
                                 // Use the VideoPlayer widget to display the video.
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
@@ -419,10 +393,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     padding: const EdgeInsets.only(bottom: 10, top: 20),
                     child: Text(
                       'Schritt 3: Indoor-Navigation',
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .displayMedium,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -434,10 +405,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                     child: Text(
                       'Klicke auf das Symbol unten rechts, um die Navigation innehalb eines Gebäudes zu starten.',
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .labelSmall,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -445,33 +413,31 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                 Expanded(
                   child: AnimatedOnboardingEntry(
                     offsetDuration: const Duration(milliseconds: 700),
-                    interval:
-                        const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                    interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                     child: VisibilityDetector(
                       key: const Key('pathfinder_onboarding_step_3_video'),
                       onVisibilityChanged: (VisibilityInfo info) async {
                         final temp = await _stepThreeVideoController.position;
-                        if (info.visibleFraction > 0.5 &&
-                            temp == Duration.zero) {
+                        if (info.visibleFraction > 0.5 && temp == Duration.zero) {
                           unawaited(_stepThreeVideoController.play());
                         } else {
-                          unawaited(_stepThreeVideoController.seekTo(
-                              _stepThreeVideoController.value.duration));
+                          unawaited(
+                            _stepThreeVideoController.seekTo(
+                              _stepThreeVideoController.value.duration,
+                            ),
+                          );
                         }
                       },
                       child: FutureBuilder(
                         future: _initializeVideoPlayerFutureForStepThreeVideo,
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
+                          if (snapshot.connectionState == ConnectionState.done) {
                             // If the VideoPlayerController has finished initialization, use
                             // the data it provides to limit the aspect ratio of the video.
                             return Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(30, 20, 30, 75),
+                              padding: const EdgeInsets.fromLTRB(30, 20, 30, 75),
                               child: AspectRatio(
-                                aspectRatio:
-                                    _stepThreeVideoController.value.aspectRatio,
+                                aspectRatio: _stepThreeVideoController.value.aspectRatio,
                                 // Use the VideoPlayer widget to display the video.
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
@@ -504,10 +470,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     padding: const EdgeInsets.only(bottom: 10, top: 20),
                     child: Text(
                       'Schritt 4: Ziel auswählen',
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .displayMedium,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -519,10 +482,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                     child: Text(
                       'Achtung: Nicht alle Gebäude und Ebenen sind aktuell verfügbar! \n Wähle den gewünschten Eingang oder Startraum sowie den Zielraum aus, um die Navigation abzuschließen. Falls du nicht weißt, wo du bist, nutze die Raumnummer des nächsten Raums. Die Ebenen der Geäude kannst du mit den Tasten unten rechts wechseln.',
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .labelSmall,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -530,33 +490,29 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                 Expanded(
                   child: AnimatedOnboardingEntry(
                     offsetDuration: const Duration(milliseconds: 700),
-                    interval:
-                        const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                    interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                     child: VisibilityDetector(
                       key: const Key('pathfinder_onboarding_step_4_video'),
                       onVisibilityChanged: (VisibilityInfo info) async {
                         final temp = await _stepFourVideoController.position;
-                        if (info.visibleFraction > 0.5 &&
-                            temp == Duration.zero) {
+                        if (info.visibleFraction > 0.5 && temp == Duration.zero) {
                           unawaited(_stepFourVideoController.play());
                         } else {
-                          unawaited(_stepFourVideoController
-                              .seekTo(_stepFourVideoController.value.duration));
+                          unawaited(
+                            _stepFourVideoController.seekTo(_stepFourVideoController.value.duration),
+                          );
                         }
                       },
                       child: FutureBuilder(
                         future: _initializeVideoPlayerFutureForStepFourVideo,
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
+                          if (snapshot.connectionState == ConnectionState.done) {
                             // If the VideoPlayerController has finished initialization, use
                             // the data it provides to limit the aspect ratio of the video.
                             return Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(30, 20, 30, 75),
+                              padding: const EdgeInsets.fromLTRB(30, 20, 30, 75),
                               child: AspectRatio(
-                                aspectRatio:
-                                    _stepFourVideoController.value.aspectRatio,
+                                aspectRatio: _stepFourVideoController.value.aspectRatio,
                                 // Use the VideoPlayer widget to display the video.
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
@@ -590,12 +546,11 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                       padding: const EdgeInsets.only(bottom: 10, top: 20),
                       child: Text(
                         'Hinweis zu Fehlern',
-                        style: Provider.of<ThemesNotifier>(context)
-                                .currentThemeData
-                                .textTheme
-                                .displayMedium ??
+                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium ??
                             const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -605,13 +560,12 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                     offsetDuration: const Duration(milliseconds: 700),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
                       child: Text(
                         'Der Raumfinder befindet sich aktuell noch in der Entwicklungsphase, weswegen Fehler leider nicht ausgeschlossen werden können. Aktuell sind auch noch nicht alle Gebäude in der App verfügbar. Falls du auf Fehler stößt, bitten wir darum diese zu melden.',
-                        style: Provider.of<ThemesNotifier>(context)
-                                .currentThemeData
-                                .textTheme
-                                .labelSmall ??
+                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall ??
                             const TextStyle(fontSize: 14),
                         textAlign: TextAlign.center,
                       ),
@@ -624,19 +578,15 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                       padding: const EdgeInsets.all(20),
                       child: Text(
                         'Schreibe uns dafür eine E-Mail an:\n\ndev@asta-bochum.de',
-                        style: (Provider.of<ThemesNotifier>(context)
-                                    .currentThemeData
-                                    .textTheme
-                                    .labelMedium ??
+                        style: (Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium ??
                                 const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold))
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ))
                             .copyWith(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: Provider.of<ThemesNotifier>(context)
-                              .currentThemeData
-                              .colorScheme
-                              .onSurface,
+                          color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.onSurface,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -650,10 +600,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                       child: Icon(
                         Icons.bug_report,
                         size: 60,
-                        color: Provider.of<ThemesNotifier>(context)
-                            .currentThemeData
-                            .colorScheme
-                            .primary,
+                        color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.primary,
                       ),
                     ),
                   ),
@@ -664,34 +611,21 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
         ],
         donePage: widget.donePage,
         doneButtonText: 'Zum Raumfinder',
-        buttonTextStyle: Provider.of<ThemesNotifier>(context)
-            .currentThemeData
-            .textTheme
-            .labelMedium,
-        backgroundColor: Provider.of<ThemesNotifier>(context)
-            .currentThemeData
-            .colorScheme
-            .surface,
-        buttonColor:
-            Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-                    AppThemes.light
-                ? Colors.black
-                : const Color.fromRGBO(34, 40, 54, 1),
-        pageIndicatorColor:
-            Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-                    AppThemes.light
-                ? Colors.black
-                : const Color.fromRGBO(184, 186, 191, 1),
-        inactivePageIndicatorColor:
-            Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-                    AppThemes.light
-                ? const Color.fromARGB(255, 228, 228, 228)
-                : const Color.fromRGBO(34, 40, 54, 1),
+        buttonTextStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
+        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
+        buttonColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+            ? Colors.black
+            : const Color.fromRGBO(34, 40, 54, 1),
+        pageIndicatorColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+            ? Colors.black
+            : const Color.fromRGBO(184, 186, 191, 1),
+        inactivePageIndicatorColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+            ? const Color.fromARGB(255, 228, 228, 228)
+            : const Color.fromRGBO(34, 40, 54, 1),
         nextButtonIcon: SvgPicture.asset(
           'assets/img/icons/arrow-right.svg',
           colorFilter: ColorFilter.mode(
-            Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-                    AppThemes.light
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                 ? Colors.white
                 : const Color.fromRGBO(184, 186, 191, 1),
             BlendMode.srcIn,
