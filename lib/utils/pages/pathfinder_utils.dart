@@ -33,8 +33,10 @@ class PathfinderUtils {
             final List<dynamic> steps = leg['steps'];
             for (final step in steps) {
               final String geometry = step['geometry'];
-              final List<LatLng> coordinates =
-                  PolylinePoints().decodePolyline(geometry).map((e) => LatLng(e.latitude, e.longitude)).toList();
+              final List<LatLng> coordinates = PolylinePoints()
+                  .decodePolyline(geometry)
+                  .map((e) => LatLng(e.latitude, e.longitude))
+                  .toList();
               newWaypoints.addAll(coordinates);
             }
           }
@@ -42,7 +44,8 @@ class PathfinderUtils {
 
         return newWaypoints;
       } else {
-        debugPrint('Error while finding shortest path: ${response.statusCode}. ${response.body}');
+        debugPrint(
+            'Error while finding shortest path: ${response.statusCode}. ${response.body}');
       }
     } catch (e) {
       debugPrint('Error while finding shortest path: $e');
@@ -79,7 +82,8 @@ class PathfinderUtils {
     }
   }
 
-  void drawLine(img.Image image, Offset p1, Offset p2, img.Color color, int thickness) {
+  void drawLine(
+      img.Image image, Offset p1, Offset p2, img.Color color, int thickness) {
     final double dx = p2.dx - p1.dx;
     final double dy = p2.dy - p1.dy;
     final double length = dx.abs() > dy.abs() ? dx.abs() : dy.abs();
@@ -97,6 +101,85 @@ class PathfinderUtils {
         }
       }
     }
+  }
+
+  void drawTextWithBox(
+      img.Image image, Offset position, String text, img.Color textColor) {
+    if (text.contains("EN_")) return;
+
+    const int fontWidth = 7;
+    const int fontHeight = 16;
+    const int boxPadding = 8;
+    const int borderRadius = 8;
+
+    final int textWidth = fontWidth * text.length;
+    const int textHeight = fontHeight;
+
+    final int boxWidth = textWidth + boxPadding * 2;
+    final int boxHeight = textHeight + boxPadding * 2;
+
+    final int x = position.dx.toInt();
+    final int y = position.dy.toInt();
+    final int boxLeft = x - boxWidth ~/ 2;
+    final int boxTop = y - boxHeight ~/ 2;
+
+    for (int i = boxTop; i < boxTop + boxHeight; i++) {
+      for (int j = boxLeft; j < boxLeft + boxWidth; j++) {
+        final int dx = j - boxLeft;
+        final int dy = i - boxTop;
+
+        if ((dx < borderRadius &&
+                dy < borderRadius &&
+                (dx - borderRadius) * (dx - borderRadius) +
+                        (dy - borderRadius) * (dy - borderRadius) >
+                    borderRadius * borderRadius) ||
+            (dx >= boxWidth - borderRadius &&
+                dy < borderRadius &&
+                (dx - (boxWidth - borderRadius)) *
+                            (dx - (boxWidth - borderRadius)) +
+                        (dy - borderRadius) * (dy - borderRadius) >
+                    borderRadius * borderRadius) ||
+            (dx < borderRadius &&
+                dy >= boxHeight - borderRadius &&
+                (dx - borderRadius) * (dx - borderRadius) +
+                        (dy - (boxHeight - borderRadius)) *
+                            (dy - (boxHeight - borderRadius)) >
+                    borderRadius * borderRadius) ||
+            (dx >= boxWidth - borderRadius &&
+                dy >= boxHeight - borderRadius &&
+                (dx - (boxWidth - borderRadius)) *
+                            (dx - (boxWidth - borderRadius)) +
+                        (dy - (boxHeight - borderRadius)) *
+                            (dy - (boxHeight - borderRadius)) >
+                    borderRadius * borderRadius)) {
+          continue;
+        }
+
+        if (j >= 0 && j < image.width && i >= 0 && i < image.height) {
+          image.setPixel(j, i, img.ColorRgba8(255, 255, 255, 200));
+        }
+      }
+    }
+
+    for (int i = boxTop - 1; i <= boxTop + boxHeight; i++) {
+      for (int j = boxLeft - 1; j <= boxLeft + boxWidth; j++) {
+        final int dx = j - boxLeft;
+        final int dy = i - boxTop;
+
+        if ((dx == 0 || dx == boxWidth || dy == 0 || dy == boxHeight) &&
+            j >= 0 &&
+            j < image.width &&
+            i >= 0 &&
+            i < image.height) {
+          image.setPixel(j, i, img.ColorRgb8(0, 0, 0));
+        }
+      }
+    }
+
+    final int textX = boxLeft + boxPadding;
+    final int textY = boxTop + boxPadding;
+    img.drawString(image, text,
+        font: img.arial14, x: textX, y: textY, color: textColor);
   }
 
   Future<List<Uint8List>> loadImages({
@@ -127,19 +210,37 @@ class PathfinderUtils {
         if (filenames[j] == name) {
           final dynamic key = shortestPath[i];
           final List<int> coordinates = graph[key]!['Coordinates'];
-          final Offset offset = Offset(coordinates[0].toDouble(), coordinates[1].toDouble());
+          final Offset offset =
+              Offset(coordinates[0].toDouble(), coordinates[1].toDouble());
           pointsList[j].add(offset);
         }
       }
     }
 
     for (int i = 0; i < filenames.length; i++) {
-      final ByteData data = await DefaultAssetBundle.of(context!).load('assets/maps/${filenames[i]}');
+      final ByteData data = await DefaultAssetBundle.of(context!)
+          .load('assets/maps/${filenames[i]}');
       final Uint8List bytes = data.buffer.asUint8List();
       final img.Image image = img.decodeImage(bytes)!;
 
+      graph.forEach((key, value) {
+        final (building, level, roomName) = key;
+        if (filenames[i] == '$building$level.jpg') {
+          final List<int> coordinates = value["Coordinates"];
+          final Offset position =
+              Offset(coordinates[0].toDouble(), coordinates[1].toDouble());
+          drawTextWithBox(
+              image,
+              position,
+              roomName,
+              img.ColorRgb8(0, 0,
+                  0)); // #TODO: Replace with static approach later -> reduce time rendering 25%
+        }
+      });
+
       for (int j = 0; j < pointsList[i].length - 1; j++) {
-        drawLine(image, pointsList[i][j], pointsList[i][j + 1], img.ColorRgb8(0, 255, 255), 10);
+        drawLine(image, pointsList[i][j], pointsList[i][j + 1],
+            img.ColorRgb8(0, 255, 255), 10);
       }
 
       drawPoint(image, pointsList[i].last, img.ColorRgb8(255, 0, 0), 20);

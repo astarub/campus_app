@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dijkstra/dijkstra.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -346,14 +347,18 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   Future<List<Uint8List>> computeImagesForMap(Map karte) async {
     debugPrint('New page opened.');
 
+    final stopwatch1 = Stopwatch()..start();
     final List<dynamic> shortestPath =
         Dijkstra.findPathFromGraph(karte, from, to);
+    debugPrint('Dijkstra execution time: ${stopwatch1.elapsedMilliseconds}ms');
 
+    final stopwatch2 = Stopwatch()..start();
     final List<Uint8List> loadedImages = await utils.loadImages(
       context: context,
       shortestPath: shortestPath,
       pointsList: pointsList,
     );
+    debugPrint('Image loading time: ${stopwatch2.elapsedMilliseconds}ms');
 
     return loadedImages;
   }
@@ -362,7 +367,9 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
     for (final key in testkarte.keys) {
       final (x1, x2, x3) = key;
       final x4 = '$x1 $x2/$x3';
-      suggestions.add(x4);
+      if (!x4.contains('EN_')) {
+        suggestions.add(x4);
+      }
     }
   }
 
