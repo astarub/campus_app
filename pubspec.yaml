@@ -59,6 +59,7 @@ dependencies:
   image: ^4.3.0
   dismissible_page: ^1.0.2
   app_links: ^6.1.4
+  barcode_widget: ^2.0.4
   
 dev_dependencies:
   flutter_test:
@@ -166,6 +167,10 @@ flutter:
      - assets/animations/coin-flip.json
      - assets/img/bogestra-logo.svg
      - assets/img/icons/file-plus.svg
+     - assets/img/iphone_coupon.jpg
+     - assets/img/food_coupon.jpg
+     - assets/img/mode_coupon.jpg
+     - assets/img/reisen_coupon.jpg
 
   fonts:
     - family: SF-Pro
