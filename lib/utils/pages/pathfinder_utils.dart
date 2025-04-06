@@ -90,15 +90,15 @@ class PathfinderUtils {
 
     final double xIncrement = dx / length;
     final double yIncrement = dy / length;
+    final double xo = -yIncrement;
+    final double yo = xIncrement;
+    final int thick = (thickness / 2).toInt();
 
     for (int i = 0; i < length; i++) {
-      for (int j = 0; j < thickness; j++) {
-        final int x = (p1.dx + i * xIncrement).toInt();
-        final int y = (p1.dy + i * yIncrement).toInt();
-
-        for (int k = 0; k < thickness; k++) {
-          image.setPixel(x + k, y + j, color);
-        }
+      final double x = p1.dx + i * xIncrement;
+      final double y = p1.dy + i * yIncrement;
+      for (int k = -thick; k < thick; k++) {
+        image.setPixel((x + k * xo).toInt(), (y + k * yo).toInt(), color);
       }
     }
   }
