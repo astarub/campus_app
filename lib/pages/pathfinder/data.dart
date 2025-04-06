@@ -52532,6 +52532,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ID', '03', 'HID'), 598),
       (('ID', '03', 'EN_6646'), 88),
       (('ID', '03', '139'), 536),
+      (('ID', '04', 'EN_6650'),0),
+      
     ]
   },
   ('ID', '03', 'HID'): {
@@ -53037,6 +53039,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ID', '04', '471'), 359),
       (('ID', '04', 'EN_6651'), 164),
+      (('RUB', '0', 'Campus'),0),
+      (('ID', '03', 'EN_6647'),0),
     ]
   },
   ('ID', '04', 'EN_6651'): {
@@ -81913,6 +81917,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '1', 'Treppenhaus-IA-8'),0),
       (('IB', '01', 'Treppenhaus-01-8'),0),
       (('IC', '04', 'Treppe-233'),0),
+      (('ID', '04', 'EN_6650'),0),
 
     ]
   },
