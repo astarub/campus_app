@@ -9,7 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:app_links/app_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:campus_app/main.dart';
@@ -58,6 +58,7 @@ class FGBGEvents {
 class MainUtils {
   // Deep link handling
   bool initialUriHandled = false;
+  final AppLinks appLinks = AppLinks();
   // ignore: cancel_subscriptions
   StreamSubscription? subscription;
 
@@ -86,7 +87,7 @@ class MainUtils {
     initialUriHandled = true;
 
     try {
-      final uri = await getInitialUri();
+      final uri = await appLinks.getInitialLink();
 
       if (uri == null) return;
       // Distinguish between news and potentially other categories
@@ -141,7 +142,7 @@ class MainUtils {
   /// Handle incoming app/universal link
   void handleIncomingLink() {
     // Subscribe to the link stream
-    subscription = uriLinkStream.listen(
+    subscription = appLinks.uriLinkStream.listen(
       (Uri? uri) async {
         if (uri == null) return;
         // Distinguish between news and potentially other categories

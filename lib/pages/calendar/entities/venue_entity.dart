@@ -68,10 +68,10 @@ class Venue {
     final phone = json.containsKey('phone') ? json['phone'] : null;
 
     return Venue(
-      id: json['id'],
-      name: json['venue'],
-      url: json['url'],
-      slug: json['slug'],
+      id: json['id'] ?? '',
+      name: json['venue'] ?? '',
+      url: json['url'] ?? '',
+      slug: json['slug'] ?? '',
       address: address,
       city: city,
       country: country,

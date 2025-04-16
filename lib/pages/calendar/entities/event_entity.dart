@@ -166,13 +166,11 @@ class Event {
       allDay: json['allDay'] ?? false,
       cost: json['cost'],
       website: json['website'],
-      categories: List<Map<String, dynamic>>.from(
-        json['categories'],
-      ).map((e) => Category.fromInternalJson(json: e)).toList(),
+      categories:
+          List<Map<String, dynamic>>.from(json['categories']).map((e) => Category.fromInternalJson(json: e)).toList(),
       venue: Venue.fromInternalJson(json: json['venue']),
-      organizers: List<Map<String, dynamic>>.from(
-        json['organizers'],
-      ).map((e) => Organizer.fromInternalJson(json: e)).toList(),
+      organizers:
+          List<Map<String, dynamic>>.from(json['organizers']).map((e) => Organizer.fromInternalJson(json: e)).toList(),
       author: json['author'] ?? '',
     );
   }

@@ -96,6 +96,7 @@ class NewsEntity {
     final url = xml.getElement('link')!.innerText;
     final description = xml.getElement('description')!.innerText;
     final pubDate = DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse(xml.getElement('pubDate')!.innerText);
+    final imageDataList = List.castFrom(imageData['imageUrls']);
 
     /// Regular Expression to remove unwanted HTML-Tags
     final RegExp htmlTags = RegExp(
@@ -110,7 +111,7 @@ class NewsEntity {
       url: url,
       description: description,
       pubDate: pubDate,
-      imageUrl: List.castFrom(imageData['imageUrls'])[0],
+      imageUrl: imageDataList.isNotEmpty ? imageDataList[0] : 'false',
       copyright: imageData['copyright'],
     );
   }

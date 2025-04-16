@@ -17,10 +17,7 @@ class NewsDatasource {
   /// Hive.Box to store news entities inside
   final Box rubnewsCache;
 
-  NewsDatasource({
-    required this.appwriteClient,
-    required this.rubnewsCache,
-  });
+  NewsDatasource({required this.appwriteClient, required this.rubnewsCache});
 
   /// Load the news documents from the appwrite backend, by the corresponding locale
   Future<List<Map<String, dynamic>>> getNewsFeed(String locale) async {
@@ -31,11 +28,7 @@ class NewsDatasource {
     final List<Map<String, dynamic>> result = [];
 
     try {
-      list = await databaseService.listDocuments(
-        databaseId: 'feed',
-        collectionId: locale,
-        queries: [Query.limit(500)],
-      );
+      list = await databaseService.listDocuments(databaseId: 'feed', collectionId: locale, queries: [Query.limit(500)]);
     } catch (e) {
       debugPrint('Failed to list appwrite news documents. Exception: $e');
       throw ServerException();

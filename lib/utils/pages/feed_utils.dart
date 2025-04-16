@@ -36,11 +36,7 @@ class FeedUtils {
 
   /// Parse a list of NewsEntity and a list of Events to a widget list of type FeedItem sorted by date.
   /// For Padding insert at first position a SizedBox with heigth := 80 or given heigth.
-  List<Widget> fromEntitiesToWidgetList({
-    required List<NewsEntity> news,
-    double? heigth,
-    bool shuffle = false,
-  }) {
+  List<Widget> fromEntitiesToWidgetList({required List<NewsEntity> news, double? heigth, bool shuffle = false}) {
     List<dynamic> feedItemOrEventWidget = <dynamic>[];
 
     List<Widget> widgets = <Widget>[];
@@ -52,8 +48,9 @@ class FeedUtils {
     // parse news in widget
     for (final n in news) {
       // Removes empty lines and white spaces
-      final String formattedDescription =
-          n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
+      final String formattedDescription = n.description
+          .replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '')
+          .replaceAll(RegExp(' {2,}'), '');
 
       bool fotolia = false;
 
@@ -67,11 +64,10 @@ class FeedUtils {
         FeedItem(
           title: n.title,
           date: n.pubDate,
-          image: n.imageUrl != 'false' && (n.copyright.isNotEmpty && !fotolia)
-              ? CachedNetworkImage(
-                  imageUrl: n.imageUrl,
-                )
-              : null,
+          image:
+              n.imageUrl != 'false' && (n.copyright.isNotEmpty && !fotolia)
+                  ? CachedNetworkImage(imageUrl: n.imageUrl)
+                  : null,
           content: n.content,
           link: n.url,
           description: formattedDescription,

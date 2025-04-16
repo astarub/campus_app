@@ -27,7 +27,7 @@ class EventAdapter extends TypeAdapter<Event> {
       startDate: fields[7] as DateTime,
       endDate: fields[8] as DateTime,
       allDay: fields[9] as bool,
-      cost: (fields[10] as Map?)?.cast<String, String>(),
+      cost: (fields[10] as Map?)?.cast<String, dynamic>(),
       website: fields[11] as String?,
       categories: (fields[12] as List).cast<Category>(),
       venue: fields[13] as Venue,
@@ -82,5 +82,8 @@ class EventAdapter extends TypeAdapter<Event> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is EventAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is EventAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

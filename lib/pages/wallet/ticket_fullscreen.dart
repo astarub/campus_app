@@ -58,9 +58,7 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(bottom: Platform.isIOS ? 88 : 68),
-                  child: Center(
-                    child: aztecCodeImage ?? Container(),
-                  ),
+                  child: Center(child: aztecCodeImage ?? Container()),
                 ),
               ),
             ],
@@ -89,7 +87,7 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
   /// Loads the previously saved image of the semester ticket and
   /// the corresponding aztec-code
   Future<void> renderTicket() async {
-    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode();
+    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode(width: 280, height: 280);
 
     if (aztecCodeImage != null) {
       setState(() {

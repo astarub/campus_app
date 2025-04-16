@@ -10,10 +10,10 @@ import 'package:campus_app/utils/widgets/custom_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get_thumbnail_video/video_thumbnail.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 /// This widget displays a news item in the news feed page.
 
@@ -116,10 +116,7 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
 
     void openDetailsPage() {
       if (widget.webViewUrl != null && widget.webViewUrl!.isNotEmpty) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)),
-        );
+        Navigator.push(context, MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)));
       } else {
         if (widget.event != null) {
           context.pushTransparentRoute(CalendarDetailPage(event: widget.event!));
@@ -171,10 +168,7 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
                             ? Stack(
                                 fit: StackFit.expand,
                                 children: [
-                                  Image.file(
-                                    videoThumbnailFile!,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  Image.file(videoThumbnailFile!, fit: BoxFit.cover),
                                   Align(
                                     child: Container(
                                       height: 60,
@@ -204,20 +198,15 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     margin: const EdgeInsets.only(right: 4, bottom: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+                    decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(15)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           month,
-                          style: Provider.of<ThemesNotifier>(context)
-                              .currentThemeData
-                              .textTheme
-                              .headlineMedium
-                              ?.copyWith(fontSize: 14),
+                          style: Provider.of<ThemesNotifier>(
+                            context,
+                          ).currentThemeData.textTheme.headlineMedium?.copyWith(fontSize: 14),
                         ),
                         Text(
                           day,
@@ -276,10 +265,8 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
       quality: 80,
     );
 
-    if (file != null) {
-      setState(() {
-        videoThumbnailFile = File(file);
-      });
-    }
+    setState(() {
+      videoThumbnailFile = File(file.path);
+    });
   }
 }

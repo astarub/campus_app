@@ -1,6 +1,6 @@
-import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_videoplayer/flutter_videoplayer.dart';
 import 'package:provider/provider.dart';
 
 class FeedVideoPlayer extends StatefulWidget {
@@ -16,13 +16,7 @@ class FeedVideoPlayer extends StatefulWidget {
   /// Disable Pause / Play / Replay Button
   final VoidCallback? tabHandler;
 
-  const FeedVideoPlayer({
-    super.key,
-    required this.url,
-    this.autoplay = false,
-    this.muted = false,
-    this.tabHandler,
-  });
+  const FeedVideoPlayer({super.key, required this.url, this.autoplay = false, this.muted = false, this.tabHandler});
 
   @override
   State<FeedVideoPlayer> createState() => _FeedVideoPlayerState();
@@ -30,7 +24,7 @@ class FeedVideoPlayer extends StatefulWidget {
 
 class _FeedVideoPlayerState extends State<FeedVideoPlayer> {
   /// The controller object to handle video player
-  late CachedVideoPlayerController _videoPlayerController;
+  late CachedVideoPlayerPlusController _videoPlayerController;
   late CustomVideoPlayerController _customVideoPlayerController;
 
   // Show replay instead of pause / play button
@@ -93,7 +87,7 @@ class _FeedVideoPlayerState extends State<FeedVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _videoPlayerController = CachedVideoPlayerController.network(widget.url)..initialize();
+    _videoPlayerController = CachedVideoPlayerPlusController.networkUrl(Uri.parse(widget.url))..initialize();
     _customVideoPlayerController = CustomVideoPlayerController(
       context: context,
       videoPlayerController: _videoPlayerController,

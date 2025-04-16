@@ -61,18 +61,17 @@ Future<void> main() async {
         // We recommend adjusting this value in production.
         options.tracesSampleRate = 0.3;
       },
-      appRunner: () => runApp(
-        MultiProvider(
-          providers: [
-            // Initializes the provider that handles the app-theme, authentication and other things
-            ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
-            ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-          ],
-          child: CampusApp(
-            key: campusAppKey,
+      appRunner:
+          () => runApp(
+            MultiProvider(
+              providers: [
+                // Initializes the provider that handles the app-theme, authentication and other things
+                ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
+                ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+              ],
+              child: CampusApp(key: campusAppKey),
+            ),
           ),
-        ),
-      ),
     );
   } else {
     runApp(
@@ -82,9 +81,7 @@ Future<void> main() async {
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
         ],
-        child: CampusApp(
-          key: campusAppKey,
-        ),
+        child: CampusApp(key: campusAppKey),
       ),
     );
   }
@@ -121,14 +118,15 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,
       darkTheme: Provider.of<ThemesNotifier>(context, listen: false).darkThemeData,
       themeMode: Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode,
-      builder: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling
-          ? null
-          : (context, child) {
-              return MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-                child: child!,
-              );
-            },
+      builder:
+          Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling
+              ? null
+              : (context, child) {
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                  child: child!,
+                );
+              },
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
           return PageTransition(
@@ -174,25 +172,17 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     }
 
     try {
-      await backendRepository.login(
-        settingsHandler,
-      );
+      await backendRepository.login(settingsHandler);
     } catch (e) {
       debugPrint('Could not connect to the backend. Retrying next restart.');
     }
 
     if (settingsHandler.currentSettings.savedEventsNotifications == false) {
       try {
-        await backendRepository.removeAllSavedEvents(
-          settingsHandler,
-        );
-        await backendRepository.unsubscribeFromAllSavedEvents(
-          settingsHandler,
-        );
+        await backendRepository.removeAllSavedEvents(settingsHandler);
+        await backendRepository.unsubscribeFromAllSavedEvents(settingsHandler);
       } catch (e) {
-        debugPrint(
-          'Could not remove all saved events from the backend. Retrying next restart.',
-        );
+        debugPrint('Could not remove all saved events from the backend. Retrying next restart.');
       }
     }
 
@@ -283,10 +273,7 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
 
             if (mounted) {
               // Check whether the user agreed to use Firebase
-              mainUtils.checkFirebasePermission(
-                context,
-                mainNavigatorKey,
-              );
+              mainUtils.checkFirebasePermission(context, mainNavigatorKey);
             }
           }
         });
