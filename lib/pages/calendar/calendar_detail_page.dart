@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
@@ -13,6 +12,7 @@ import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
+import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
 class CalendarDetailPage extends StatefulWidget {
@@ -32,54 +32,6 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
   final BackendRepository backendRepository = sl<BackendRepository>();
 
   bool savedEvent = false;
-
-  /// Function that updates the saved event state and shows an info
-  /// message inside a [SnackBar]
-  Future<void> saveEventAndShowMessage() async {
-    setState(() {
-      savedEvent = !savedEvent;
-    });
-
-    try {
-      final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
-
-      if (settingsHandler.currentSettings.useFirebase != FirebaseStatus.forbidden &&
-          settingsHandler.currentSettings.useFirebase != FirebaseStatus.uncofigured) {
-        if (savedEvent) {
-          await backendRepository.addSavedEvent(
-            settingsHandler,
-            widget.event,
-          );
-        } else {
-          await backendRepository.removeSavedEvent(
-            settingsHandler,
-            widget.event.id,
-            Uri.parse(widget.event.url).host,
-          );
-        }
-      }
-    } catch (e) {
-      debugPrint(
-        'Could not save event on the backend. Retrying when connection is re-established.',
-      );
-    }
-
-    // Remove the event from the saved event cache
-    await calendarRepository.updateSavedEvents(event: widget.event);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    calendarRepository.updateSavedEvents().then((savedEvents) {
-      savedEvents.fold((failure) => null, (list) {
-        if (list.contains(widget.event)) {
-          setState(() => savedEvent = true);
-        }
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +136,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Hero(
-                                      tag: 'calendar_detail_page_hero_tag',
+                                      tag: UniqueKey(),
                                       child: StyledHTML(
                                         context: context,
                                         text: widget.event.title,
@@ -201,7 +153,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                                       child: StyledHTML(
                                         context: context,
                                         text: widget.event.venue.name == ''
-                                            ? 'Veranstaltungsort wird noch bekannt gegeben.'
+                                            ? AppLocalizations.of(context)!.calendarEventLocationToBeAnnounced
                                             : '${widget.event.venue}<br> ${DateFormat('Hm').format(widget.event.startDate)} Uhr - ${DateFormat('Hm').format(widget.event.endDate)} Uhr',
                                         textStyle: Provider.of<ThemesNotifier>(context)
                                             .currentThemeData
@@ -222,14 +174,16 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                         padding: const EdgeInsets.only(top: 10, bottom: 40),
                         child: StyledHTML(
                           context: context,
-                          text: widget.event.description != '' ? widget.event.description : 'No description given.',
+                          text: widget.event.description != ''
+                              ? widget.event.description
+                              : AppLocalizations.of(context)!.calendarEventNoDescriptionGiven,
                           textAlign: TextAlign.justify,
                         ),
                       ),
                       // Hosts
                       if (widget.event.organizers.isNotEmpty)
                         Text(
-                          'Host',
+                          AppLocalizations.of(context)!.calendarEventHost,
                           textAlign: TextAlign.left,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                         ),
@@ -244,7 +198,7 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                       // Venue
                       if (widget.event.venue.name != '')
                         Text(
-                          'Veranstaltungsort',
+                          AppLocalizations.of(context)!.calendarEventVenue,
                           textAlign: TextAlign.left,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                         ),
@@ -261,7 +215,9 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
                         padding: const EdgeInsets.only(top: 10, bottom: 30),
                         child: Center(
                           child: CampusButton(
-                            text: savedEvent ? 'Nicht mehr merken' : 'Merken',
+                            text: savedEvent
+                                ? AppLocalizations.of(context)!.calendarEventNotificationOff
+                                : AppLocalizations.of(context)!.calendarEventNotificationOn,
                             onTap: saveEventAndShowMessage,
                           ),
                         ),
@@ -277,5 +233,53 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    calendarRepository.updateSavedEvents().then((savedEvents) {
+      savedEvents.fold((failure) => null, (list) {
+        if (list.contains(widget.event)) {
+          setState(() => savedEvent = true);
+        }
+      });
+    });
+  }
+
+  /// Function that updates the saved event state and shows an info
+  /// message inside a [SnackBar]
+  Future<void> saveEventAndShowMessage() async {
+    setState(() {
+      savedEvent = !savedEvent;
+    });
+
+    try {
+      final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
+
+      if (settingsHandler.currentSettings.useFirebase != FirebaseStatus.forbidden &&
+          settingsHandler.currentSettings.useFirebase != FirebaseStatus.uncofigured) {
+        if (savedEvent) {
+          await backendRepository.addSavedEvent(
+            settingsHandler,
+            widget.event,
+          );
+        } else {
+          await backendRepository.removeSavedEvent(
+            settingsHandler,
+            widget.event.id,
+            Uri.parse(widget.event.url).host,
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint(
+        'Could not save event on the backend. Retrying when connection is re-established.',
+      );
+    }
+
+    // Remove the event from the saved event cache
+    await calendarRepository.updateSavedEvents(event: widget.event);
   }
 }

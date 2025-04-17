@@ -1,8 +1,8 @@
-import 'dart:async';
+// ignore_for_file: unawaited_futures
+
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,20 +13,21 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:campus_app/l10n/l10n.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/home/home_page.dart';
-import 'package:campus_app/pages/home/onboarding.dart';
-import 'package:campus_app/pages/feed/news/news_entity.dart';
-import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
+import 'package:campus_app/pages/feed/news/news_entity.dart';
+import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/pages/home/onboarding.dart';
+import 'package:campus_app/pages/mensa/dish_entity.dart';
+import 'package:campus_app/utils/constants.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 
@@ -60,18 +61,17 @@ Future<void> main() async {
         // We recommend adjusting this value in production.
         options.tracesSampleRate = 0.3;
       },
-      appRunner: () => runApp(
-        MultiProvider(
-          providers: [
-            // Initializes the provider that handles the app-theme, authentication and other things
-            ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
-            ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-          ],
-          child: CampusApp(
-            key: campusAppKey,
+      appRunner:
+          () => runApp(
+            MultiProvider(
+              providers: [
+                // Initializes the provider that handles the app-theme, authentication and other things
+                ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
+                ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+              ],
+              child: CampusApp(key: campusAppKey),
+            ),
           ),
-        ),
-      ),
     );
   } else {
     runApp(
@@ -81,9 +81,7 @@ Future<void> main() async {
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
         ],
-        child: CampusApp(
-          key: campusAppKey,
-        ),
+        child: CampusApp(key: campusAppKey),
       ),
     );
   }
@@ -100,7 +98,7 @@ class CampusApp extends StatefulWidget {
 }
 
 class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
-  final GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey();
+  GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>();
 
   String _directoryPath = '';
   Settings? loadedSettings;
@@ -111,132 +109,58 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   final MainUtils mainUtils = ic.sl<MainUtils>();
   final MensaUtils mensaUtils = ic.sl<MensaUtils>();
 
-  /// Load the saved settings and parse them to the [SettingsHandler]
-  void loadSettings() {
-    debugPrint('LoadSettings initalized.');
-    getApplicationDocumentsDirectory().then((Directory directory) {
-      _directoryPath = directory.path;
-      debugPrint('Save location: $_directoryPath');
-
-      // Load settings async
-      final File settingsJsonFile = File('$_directoryPath/settings.json');
-
-      final bool existing = settingsJsonFile.existsSync();
-
-      // Check if settings file already exists
-      if (existing) {
-        debugPrint('Settings-file already exists. Initialize loading of settings.');
-        // Load settings and parse it
-        settingsJsonFile.readAsString().then((String rawFileContent) {
-          if (rawFileContent != '') {
-            try {
-              final dynamic rawData = json.decode(rawFileContent);
-              loadedSettings = Settings.fromJson(rawData);
-            } catch (e) {
-              debugPrint('Settings file corrupted. Creating a new settings file.');
-
-              settingsJsonFile.deleteSync();
-              settingsJsonFile.create();
-
-              loadedSettings = Settings(
-                mensaRestaurantConfig: mensaUtils.restaurantConfig,
-                mensaPreferences: [],
-                mensaAllergenes: [],
-              );
-
-              settingsJsonFile.writeAsString(json.encode(loadedSettings!.toJson()));
-            }
-
-            debugPrint('Settings loaded.');
-            Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(loadedSettings!);
-
-            // Set theme
-            setTheme(
-              contextForThemeProvider: context,
-              useSystemDarkmode: loadedSettings!.useSystemDarkmode,
-              useDarkmode: loadedSettings!.useDarkmode,
-            );
-
-            loadingTimer.stop();
-            debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
-
-            // Start the app
-            FlutterNativeSplash.remove();
-
-            // Check whether the user agreed to use Firebase
-            mainUtils.checkFirebasePermission(
-              context,
-              mainNavigatorKey,
-            );
-
-            // Initialize the backend connection
-            initializeBackendConnection();
-          }
-        });
-      } else {
-        // Create settings file for the first time, if it doesnt exist
-        debugPrint('Settings-file created.');
-        settingsJsonFile.create();
-        final Settings initialSettings = Settings(
-          mensaAllergenes: [],
-          mensaPreferences: [],
-          mensaRestaurantConfig: mensaUtils.restaurantConfig,
-        );
-        settingsJsonFile.writeAsString(json.encode(initialSettings.toJson()));
-
-        // Apply the inital settings
-        Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(initialSettings);
-
-        // Set theme (defaults to current system brightness)
-        setTheme(contextForThemeProvider: context);
-
-        // Initialize the backend connection
-        initializeBackendConnection();
-
-        loadingTimer.stop();
-        debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
-
-        // Start the app and show the onboarding experience
-        FlutterNativeSplash.remove();
-        Navigator.of(mainNavigatorKey.currentState!.context).push(
-          MaterialPageRoute(
-            builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey),
-          ),
-        );
-      }
-    });
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: Provider.of<SettingsHandler>(context).currentSettings.locale,
+      theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,
+      darkTheme: Provider.of<ThemesNotifier>(context, listen: false).darkThemeData,
+      themeMode: Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode,
+      builder:
+          Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling
+              ? null
+              : (context, child) {
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                  child: child!,
+                );
+              },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/') {
+          return PageTransition(
+            child: HomePage(key: homeKey, mainNavigatorKey: mainNavigatorKey),
+            type: PageTransitionType.scale,
+            alignment: Alignment.center,
+          );
+        }
+        return null;
+      },
+      navigatorKey: mainNavigatorKey,
+      debugShowCheckedModeBanner: false,
+    );
   }
 
-  /// Given the loaded settings, listen to the system brightness mode and apply the theme
-  void setTheme({
-    required BuildContext contextForThemeProvider,
-    bool useSystemDarkmode = true,
-    bool useDarkmode = false,
-  }) {
-    if (useSystemDarkmode) {
-      Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
-    } else {
-      if (useDarkmode) {
-        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
-      } else {
-        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.light;
-      }
-    }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    precacheAssets(context);
   }
 
-  void precacheAssets(BuildContext context) {
-    // Precache images to prevent a visual glitch when they're loaded the first time
-    precacheImage(Image.asset('assets/img/icons/home-outlined.png').image, context);
-    precacheImage(Image.asset('assets/img/icons/home-filled.png').image, context);
-    precacheImage(Image.asset('assets/img/icons/calendar-outlined.png').image, context);
-    precacheImage(Image.asset('assets/img/icons/calendar-filled.png').image, context);
-    precacheImage(Image.asset('assets/img/icons/map-outlined.png').image, context);
-    precacheImage(Image.asset('assets/img/icons/map-filled.png').image, context);
-    precacheImage(Image.asset('assets/img/icons/mensa-outlined.png').image, context);
-    precacheImage(Image.asset('assets/img/icons/mensa-filled.png').image, context);
-    precacheImage(Image.asset('assets/img/icons/wallet-outlined.png').image, context);
-    precacheImage(Image.asset('assets/img/icons/wallet-filled.png').image, context);
-    precacheImage(Image.asset('assets/img/icons/more.png').image, context);
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    precacheAssets(context);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    super.dispose();
   }
 
   Future<void> initializeBackendConnection() async {
@@ -248,25 +172,17 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     }
 
     try {
-      await backendRepository.login(
-        settingsHandler,
-      );
+      await backendRepository.login(settingsHandler);
     } catch (e) {
       debugPrint('Could not connect to the backend. Retrying next restart.');
     }
 
     if (settingsHandler.currentSettings.savedEventsNotifications == false) {
       try {
-        await backendRepository.removeAllSavedEvents(
-          settingsHandler,
-        );
-        await backendRepository.unsubscribeFromAllSavedEvents(
-          settingsHandler,
-        );
+        await backendRepository.removeAllSavedEvents(settingsHandler);
+        await backendRepository.unsubscribeFromAllSavedEvents(settingsHandler);
       } catch (e) {
-        debugPrint(
-          'Could not remove all saved events from the backend. Retrying next restart.',
-        );
+        debugPrint('Could not remove all saved events from the backend. Retrying next restart.');
       }
     }
 
@@ -300,56 +216,133 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
     mainUtils.handleInitialUri();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  /// Load the saved settings and parse them to the [SettingsHandler]
+  void loadSettings() {
+    debugPrint('LoadSettings initalized.');
+    getApplicationDocumentsDirectory().then((Directory directory) async {
+      _directoryPath = directory.path;
+      debugPrint('Save location: $_directoryPath');
 
-    precacheAssets(context);
-  }
+      // Load settings async
+      final File settingsJsonFile = File('$_directoryPath/settings.json');
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
+      final bool existing = settingsJsonFile.existsSync();
 
-    precacheAssets(context);
-  }
+      // Check if settings file already exists
+      if (existing) {
+        debugPrint('Settings-file already exists. Initialize loading of settings.');
+        // Load settings and parse it
+        settingsJsonFile.readAsString().then((String rawFileContent) async {
+          if (rawFileContent != '') {
+            try {
+              final dynamic rawData = json.decode(rawFileContent);
+              loadedSettings = Settings.fromJson(rawData);
+            } catch (e) {
+              debugPrint('Settings file corrupted. Creating a new settings file.');
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+              settingsJsonFile.deleteSync();
+              settingsJsonFile.create();
 
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,
-      darkTheme: Provider.of<ThemesNotifier>(context, listen: false).darkThemeData,
-      themeMode: Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode,
-      builder: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling
-          ? null
-          : (context, child) {
-              return MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-                child: child!,
+              loadedSettings = Settings(
+                mensaRestaurantConfig: mensaUtils.restaurantConfig,
+                mensaPreferences: [],
+                mensaAllergenes: [],
               );
-            },
-      onGenerateRoute: (settings) {
-        if (settings.name == '/') {
-          return PageTransition(
-            child: HomePage(key: homeKey, mainNavigatorKey: mainNavigatorKey),
-            type: PageTransitionType.scale,
-            alignment: Alignment.center,
+
+              settingsJsonFile.writeAsString(json.encode(loadedSettings!.toJson()));
+            }
+
+            debugPrint('Settings loaded.');
+            Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(loadedSettings!);
+
+            // Set theme
+            setTheme(
+              contextForThemeProvider: context,
+              useSystemDarkmode: loadedSettings!.useSystemDarkmode,
+              useDarkmode: loadedSettings!.useDarkmode,
+            );
+
+            // Initialize the backend connection
+            await initializeBackendConnection();
+
+            loadingTimer.stop();
+            debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
+
+            // Start the app
+            FlutterNativeSplash.remove();
+
+            if (mounted) {
+              // Check whether the user agreed to use Firebase
+              mainUtils.checkFirebasePermission(context, mainNavigatorKey);
+            }
+          }
+        });
+      } else {
+        // Create settings file for the first time, if it doesnt exist
+        debugPrint('Settings-file created.');
+        settingsJsonFile.create();
+        final Settings initialSettings = Settings(
+          mensaAllergenes: [],
+          mensaPreferences: [],
+          mensaRestaurantConfig: mensaUtils.restaurantConfig,
+        );
+        settingsJsonFile.writeAsString(json.encode(initialSettings.toJson()));
+
+        // Apply the inital settings
+        Provider.of<SettingsHandler>(context, listen: false).setLoadedSettings(initialSettings);
+
+        // Set theme (defaults to current system brightness)
+        setTheme(contextForThemeProvider: context);
+
+        // Initialize the backend connection
+        await initializeBackendConnection();
+
+        loadingTimer.stop();
+        debugPrint('-- loading time: ${loadingTimer.elapsedMilliseconds} ms');
+
+        // Start the app and show the onboarding experience
+        FlutterNativeSplash.remove();
+
+        if (mounted) {
+          Navigator.of(mainNavigatorKey.currentState!.context).push(
+            MaterialPageRoute(
+              builder: (context) => OnboardingPage(homePageKey: homeKey, mainNavigatorKey: mainNavigatorKey),
+            ),
           );
         }
+      }
+    });
+  }
 
-        return null;
-      },
-      navigatorKey: mainNavigatorKey,
-      debugShowCheckedModeBanner: false,
-    );
+  void precacheAssets(BuildContext context) {
+    // Precache images to prevent a visual glitch when they're loaded the first time
+    precacheImage(Image.asset('assets/img/icons/home-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/home-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/calendar-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/calendar-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/map-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/map-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/mensa-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/mensa-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/wallet-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/wallet-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/more.png').image, context);
+  }
+
+  /// Given the loaded settings, listen to the system brightness mode and apply the theme
+  void setTheme({
+    required BuildContext contextForThemeProvider,
+    bool useSystemDarkmode = true,
+    bool useDarkmode = false,
+  }) {
+    if (useSystemDarkmode) {
+      Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.system;
+    } else {
+      if (useDarkmode) {
+        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.dark;
+      } else {
+        Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode = ThemeMode.light;
+      }
+    }
   }
 }

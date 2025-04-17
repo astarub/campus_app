@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 import 'package:campus_app/utils/widgets/campus_filter_selection.dart';
 import 'package:campus_app/utils/widgets/popup_sheet.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
 
 /// This widget displays the filter options that are available for the
 /// personal news feed and is used in the [SnappingSheet] widget
@@ -30,21 +32,6 @@ class FeedFilterPopup extends StatefulWidget {
 class _FeedFilterPopupState extends State<FeedFilterPopup> {
   late List<Publisher> _selectedFilters;
 
-  void onFilterSelected(Publisher selectedFilter) {
-    if (_selectedFilters.map((e) => e.name).toList().contains(selectedFilter.name)) {
-      setState(() => _selectedFilters.removeWhere((filter) => filter.name == selectedFilter.name));
-    } else {
-      setState(() => _selectedFilters.add(selectedFilter));
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _selectedFilters = widget.selectedFilters;
-  }
-
   @override
   Widget build(BuildContext context) {
     final List<Publisher> publishers =
@@ -62,7 +49,7 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
     }
 
     return PopupSheet(
-      title: 'Feed Filter',
+      title: AppLocalizations.of(context)!.feedFilter,
       onClose: () {
         widget.onClose(_selectedFilters);
         Navigator.pop(context);
@@ -86,5 +73,20 @@ class _FeedFilterPopupState extends State<FeedFilterPopup> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedFilters = widget.selectedFilters;
+  }
+
+  void onFilterSelected(Publisher selectedFilter) {
+    if (_selectedFilters.map((e) => e.name).toList().contains(selectedFilter.name)) {
+      setState(() => _selectedFilters.removeWhere((filter) => filter.name == selectedFilter.name));
+    } else {
+      setState(() => _selectedFilters.add(selectedFilter));
+    }
   }
 }

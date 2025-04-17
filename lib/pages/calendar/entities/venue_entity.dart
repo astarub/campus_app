@@ -81,6 +81,25 @@ class Venue {
     );
   }
 
+  factory Venue.fromInternalJson({required Map<String, dynamic> json}) {
+    if (json['id'] == -1) {
+      return Venue.emptyPlaceholder();
+    }
+
+    return Venue(
+      id: json['id'],
+      url: json['url'],
+      name: json['name'],
+      slug: json['slug'],
+      address: json['address'],
+      city: json['city'],
+      country: json['country'],
+      province: json['province'],
+      zip: json['zip'],
+      phone: json['phone'],
+    );
+  }
+
   /// Return an empty Venue object
   factory Venue.emptyPlaceholder() {
     return const Venue(

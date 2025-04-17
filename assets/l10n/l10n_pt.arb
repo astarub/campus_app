@@ -1,0 +1,92 @@
+{
+  "@@locale": "pt",
+
+  "helloWorld": "Oi monde!",
+
+  "serverFailureMessage": "Os dados do servidor não puderam ser carregados.",
+  "generalFailureMessage": "Ocorreu um erro.",
+  "errorMessage": "Erro.",
+  "unexpectedError": "Ocorreu um erro inesperado...",
+  "invalid2FATokenFailureMessage": "Seu código de uso único (TOTP) é inválido. Por favor, tente novamente!",
+  "invalidLoginIDAndPasswordFailureMessage": "Os dados de login são inválidos!",
+  "welcome": "Bem-vindo!",
+  "login_prompt": "Faça o login com seu RUB-ID e senha.",
+  "rubid": "Login-ID de sua conta RUB.",
+  "password": "Senha",
+  "login": "Login",
+  "empty_input_field": "Digite seus detalhes de login!",
+  "login_error": "Entrada inválida!",
+  "login_success": "Logado com sucesso!",
+  "login_already": "Já está logado.",
+  "enter_totp": "Digite seu TOTP.",
+  "event_startingTime": "Começa':' {time}\n",
+  "@event_startingTime": {
+    "placeholders": { 
+      "time": {
+        "type": "DateTime",
+        "format" : "Hm"
+      } 
+    }
+  },
+  "event_cost" : "\nCusto':' {value} {currency}",
+  "@event_cost" : {
+    "placeholders": {
+      "value" : { "type" : "String?" },
+      "currency" : { "type" : "String?" }
+    }
+  },
+  "event_missingVenue" : "Local a ser anunciado.",
+  "event_timeRange" : "{start} - {end}",
+  "@event_timeRange": {
+    "placeholders": {
+      "start": {
+        "type" : "DateTime", 
+        "format" : "Hm"
+      },
+      "end": {
+        "type" : "DateTime", 
+        "format" : "Hm"
+      }
+    }
+  },
+  "event_missingDescription": "Nenhuma descrição foi fornecida.",
+  "event_Venue": "Local do evento",
+  "event_follow": "seguir",
+  "event_unfollow": "parar de seguir",
+  "event_noUpcomingEvents_title": "Nenhum evento em vista",
+  "event_noUpcomingEvents_text": "Não há eventos futuros no momento. Tente novamente mais tarde.",
+  "event_noFollowedEvent_title": "Nenhum evento seguido",
+  "event_noFollowedEvent_text": "Siga os eventos para vê-los aqui.",
+  "event_upcoming": "Em breve",
+  "event_followed": "Seguido",
+  "feed_searchUnimplemented": "Ainda não há nada para pesquisar aqui ':'D",
+  "feed_explore": "Descubra",
+  "feed": "Feed",
+  "events": "Eventos",
+  "cafeteria": "Cafeteria",
+  "wallet": "Carteira",
+  "more": "Mais",
+  "firebase_leadingTitle": "Privacidade",
+  "firebase_title": "Serviços do Google",
+  "firebase_text": "\nPara enviar notificações sobre eventos espontâneos e compromissos na universidade,\nusamos atualmente o Firebase, um serviço do Google.\n\nSe você não quiser isso, nós respeitamos.\nEm janeiro, apresentaremos uma alternativa sem o Google.",
+  "firebase_text600": "\nPara enviar notificações sobre eventos espontâneos e compromissos na universidade,\nusamos atualmente o Firebase, um serviço do Google.\n\nSe você não quiser isso, nós respeitamos.\nEm janeiro, apresentaremos uma alternativa sem o Google.",
+  "firebase_accept": "Sim, sem problemas",
+  "firebase_decline": "Não, eu não quero isso",
+  "onboarding_finish": "Termine",
+  "onboarding_presented": "Apresentado por sua AStA",
+  "onboarding_studyProgram": "Programa de estudos",
+  "onboarding_choseStudyProgram": "Selecione seu programa de estudos atual para ver os eventos e as notícias que são adequados para você.",
+  "onboarding_privacy": "Privacidade",
+  "onboarding_firebaseDescription": "\nPara enviar notificações sobre eventos espontâneos e compromissos na universidade,\nusamos atualmente o Firebase, um serviço do Google.\n\nSe você não quiser isso, nós respeitamos.\nEm janeiro, apresentaremos uma alternativa sem o Google.",
+  "onboarding_firebaseAccept": "Sim, sem problemas",
+  "onboarding_firebaseDecline": "Não, eu não quero isso",
+  "onboarding_activatePushNotifications": "Ativar notificações push",
+  "onboarding_firebaseAccept": "Sim, sem problemas",
+  "onboarding_firebaseDecline": "Não, eu não quero isso",
+  "onboarding_themeSubtext": "Alto contraste ou perfil baixo. Dia ou noite.\nEscolha seu design.",
+  "onboarding_designSystem": "Sistema",
+  "onboarding_designLight": "Claro",
+  "onboarding_designDark": "Escuro",
+  "onboarding_privacyText": "Para receber notificações push do Campus APP, concordo\nque os dados pessoais (endereço IP, tópicos inscritos) sejam enviados\naos servidores do Google nos EUA.\nEstou ciente de que um nível adequado de proteção de dados\nnão é garantido nos EUA e que é possível\nque as autoridades americanas acessem esses dados e que eu não seja informado sobre esse acesso.\nVocê pode encontrar mais informações em nossa política de privacidade.\nEsse consentimento pode ser revogado a qualquer momento em ''Configurações''.",
+  "onboarding_feedbackDescription": "Você tem uma ideia de como podemos fazer algo melhor?\nEstá faltando alguma coisa no aplicativo? Então escreva para nós!\n\nAjude-nos a moldar seu Campus App, seja por meio de comentários,\nsugestões ou até mesmo participando ativamente do desenvolvimento.\n\nOs seguintes canais estão disponíveis para você entrar em contato conosco:"
+}

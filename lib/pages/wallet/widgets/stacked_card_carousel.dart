@@ -1,10 +1,58 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-enum StackedCardCarouselType { cardsStack, fadeOutStack }
-
 enum CardAlignment { start, center }
+
+class ClickThroughRenderStack extends RenderStack {
+  ClickThroughRenderStack({
+    required super.alignment,
+    super.textDirection,
+    required super.fit,
+  });
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {Offset? position}) {
+    bool stackHit = false;
+
+    final List<RenderBox> children = getChildrenAsList();
+
+    for (final RenderBox child in children) {
+      final StackParentData childParentData = child.parentData! as StackParentData;
+
+      final bool childHit = result.addWithPaintOffset(
+        offset: childParentData.offset,
+        position: position!,
+        hitTest: (BoxHitTestResult result, Offset transformed) {
+          assert(transformed == position - childParentData.offset, 'Assertion for stacked card carousel failed.');
+          return child.hitTest(result, position: transformed);
+        },
+      );
+
+      if (childHit) {
+        stackHit = true;
+      }
+    }
+
+    return stackHit;
+  }
+}
+
+/// To allow all gestures detections to go through
+/// https://stackoverflow.com/questions/57466767/how-to-make-a-gesturedetector-capture-taps-inside-a-stack
+class ClickThroughStack extends Stack {
+  const ClickThroughStack({super.key, required super.children});
+
+  @override
+  ClickThroughRenderStack createRenderObject(BuildContext context) {
+    return ClickThroughRenderStack(
+      alignment: alignment,
+      textDirection: textDirection ?? Directionality.of(context),
+      fit: fit,
+    );
+  }
+}
 
 /// A widget that creates a vertical or horizontal carousel with stacked cards.
 class StackedCardCarousel extends StatefulWidget {
@@ -54,9 +102,39 @@ class StackedCardCarousel extends StatefulWidget {
   State<StackedCardCarousel> createState() => _StackedCardCarouselState();
 }
 
+enum StackedCardCarouselType { cardsStack, fadeOutStack }
+
 class _StackedCardCarouselState extends State<StackedCardCarousel> {
   late final PageController pageController;
   double pageValue = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClickThroughStack(
+      children: <Widget>[
+        stackedCards(context),
+        PageView.builder(
+          scrollDirection: widget.scrollDirection,
+          controller: pageController,
+          itemCount: widget.items.length,
+          onPageChanged: widget.onPageChanged,
+          itemBuilder: (BuildContext context, int index) {
+            return Container();
+          },
+        ),
+      ],
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    pageController = widget.pageController ?? PageController();
+    pageController.addListener(() {
+      if (mounted) setState(() => pageValue = pageController.page!);
+    });
+  }
 
   Widget stackedCards(BuildContext context) {
     double textScaleFactor = 1;
@@ -135,82 +213,5 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
     ).toList();
 
     return Stack(alignment: Alignment.center, fit: StackFit.passthrough, children: positionedCards);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    pageController = widget.pageController ?? PageController();
-    pageController.addListener(() {
-      if (mounted) setState(() => pageValue = pageController.page!);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ClickThroughStack(
-      children: <Widget>[
-        stackedCards(context),
-        PageView.builder(
-          scrollDirection: widget.scrollDirection,
-          controller: pageController,
-          itemCount: widget.items.length,
-          onPageChanged: widget.onPageChanged,
-          itemBuilder: (BuildContext context, int index) {
-            return Container();
-          },
-        ),
-      ],
-    );
-  }
-}
-
-/// To allow all gestures detections to go through
-/// https://stackoverflow.com/questions/57466767/how-to-make-a-gesturedetector-capture-taps-inside-a-stack
-class ClickThroughStack extends Stack {
-  const ClickThroughStack({super.key, required super.children});
-
-  @override
-  ClickThroughRenderStack createRenderObject(BuildContext context) {
-    return ClickThroughRenderStack(
-      alignment: alignment,
-      textDirection: textDirection ?? Directionality.of(context),
-      fit: fit,
-    );
-  }
-}
-
-class ClickThroughRenderStack extends RenderStack {
-  ClickThroughRenderStack({
-    required super.alignment,
-    super.textDirection,
-    required super.fit,
-  });
-
-  @override
-  bool hitTestChildren(BoxHitTestResult result, {Offset? position}) {
-    bool stackHit = false;
-
-    final List<RenderBox> children = getChildrenAsList();
-
-    for (final RenderBox child in children) {
-      final StackParentData childParentData = child.parentData! as StackParentData;
-
-      final bool childHit = result.addWithPaintOffset(
-        offset: childParentData.offset,
-        position: position!,
-        hitTest: (BoxHitTestResult result, Offset transformed) {
-          assert(transformed == position - childParentData.offset, 'Assertion for stacked card carousel failed.');
-          return child.hitTest(result, position: transformed);
-        },
-      );
-
-      if (childHit) {
-        stackHit = true;
-      }
-    }
-
-    return stackHit;
   }
 }

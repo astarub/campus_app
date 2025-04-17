@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:campus_app/pages/home/widgets/study_course_popup.dart';
 import 'package:flutter/material.dart';
@@ -100,8 +101,14 @@ class MainUtils {
           }
         case 'termin':
           {
+            if (homeKey.currentState == null) {
+              debugPrint('Home state null');
+              return;
+            }
+            Locale locale = Localizations.localeOf(homeKey.currentState!.context);
+
             // Fetch all events from the AStA event calendar
-            final eventData = await calendarUsecases.updateEventsAndFailures();
+            final eventData = await calendarUsecases.updateEventsAndFailures(locale.languageCode);
             final events = eventData['events']! as List<Event>;
 
             if (homeKey.currentState == null) return;
@@ -149,8 +156,14 @@ class MainUtils {
             }
           case 'termin':
             {
+              if (homeKey.currentState == null) {
+                debugPrint('Home state null');
+                return;
+              }
+              Locale locale = Localizations.localeOf(homeKey.currentState!.context);
+
               // Fetch all events from the AStA event calendar
-              final eventData = await calendarUsecases.updateEventsAndFailures();
+              final eventData = await calendarUsecases.updateEventsAndFailures(locale.languageCode);
               final events = eventData['events']! as List<Event>;
 
               final url = 'https://${uri.host}${uri.path}';
@@ -237,8 +250,15 @@ class MainUtils {
 
               final List<dynamic> interactionData = interaction['data'];
 
+              if (homeKey.currentState == null) {
+                debugPrint('Home state null');
+                return;
+              }
+              Locale locale = Localizations.localeOf(homeKey.currentState!.context);
+
               // Retrieves all events from the calendar
-              final Map<String, List<dynamic>> eventsAndFailures = await calendarUsecases.updateEventsAndFailures();
+              final Map<String, List<dynamic>> eventsAndFailures =
+                  await calendarUsecases.updateEventsAndFailures(locale.languageCode);
               final List<Event> events = eventsAndFailures['events']! as List<Event>;
 
               if (interactionData[0] == null || List<Map<String, dynamic>>.from(interactionData)[0]['event'] == null) {
@@ -545,9 +565,16 @@ class MainUtils {
 
           final List<dynamic> interactionData = interaction['data'];
 
+          if (homeKey.currentState == null) {
+            debugPrint('Home state null');
+            return;
+          }
+          Locale locale = Localizations.localeOf(homeKey.currentState!.context);
+
           // Retrieves all events from the calendar
           final calendarUsecase = sl<CalendarUsecases>();
-          final Map<String, List<dynamic>> eventsAndFailures = await calendarUsecase.updateEventsAndFailures();
+          final Map<String, List<dynamic>> eventsAndFailures =
+              await calendarUsecase.updateEventsAndFailures(locale.languageCode);
           final List<Event> events = eventsAndFailures['events']! as List<Event>;
 
           if (interactionData[0] == null || List<Map<String, dynamic>>.from(interactionData)[0]['event'] == null) {

@@ -46,6 +46,7 @@ class SettingsHandler with ChangeNotifier {
 }
 
 class Settings {
+  final Locale locale;
   final bool useSystemDarkmode;
   final bool useDarkmode;
   final List<Publisher> feedFilter;
@@ -69,6 +70,7 @@ class Settings {
   final List<Map<String, dynamic>>? mensaRestaurantConfig;
 
   Settings({
+    this.locale = const Locale('de'),
     this.useSystemDarkmode = true,
     this.useDarkmode = false,
     this.feedFilter = const [],
@@ -93,6 +95,7 @@ class Settings {
   });
 
   Settings copyWith({
+    Locale? locale,
     bool? useSystemDarkmode,
     bool? useDarkmode,
     List<Publisher>? feedFilter,
@@ -116,6 +119,7 @@ class Settings {
     double? lastMensaTransaction,
   }) =>
       Settings(
+        locale: locale ?? this.locale,
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
         useDarkmode: useDarkmode ?? this.useDarkmode,
         feedFilter: feedFilter ?? this.feedFilter,
@@ -141,6 +145,7 @@ class Settings {
 
   factory Settings.fromJson(Map<String, dynamic> json) {
     return Settings(
+      locale: Locale(json['locale'] ?? 'de'),
       useSystemDarkmode: json['useSystemDarkmode'] ?? true,
       useDarkmode: json['useDarkmode'] ?? false,
       feedFilter: json['newFeedFilter'] != null
@@ -190,6 +195,7 @@ class Settings {
 
   Map<String, dynamic> toJson() {
     return {
+      'locale': locale.languageCode.toLowerCase(),
       'useSystemDarkmode': useSystemDarkmode,
       'useDarkmode': useDarkmode,
       'newFeedFilter': feedFilter.map((p) => p.toInternalJson()).toList(),

@@ -66,35 +66,19 @@ class MockCalendarRepository extends _i1.Mock
       ) as _i2.CalendarDatasource);
 
   @override
-  _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>> getAStAEvents() =>
+  _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>> getEvents(
+          String? locale) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getAStAEvents,
-          [],
+          #getEvents,
+          [locale],
         ),
         returnValue: _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>>.value(
             _FakeEither_1<_i6.Failure, List<_i7.Event>>(
           this,
           Invocation.method(
-            #getAStAEvents,
-            [],
-          ),
-        )),
-      ) as _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>>);
-
-  @override
-  _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>> getAppEvents() =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getAppEvents,
-          [],
-        ),
-        returnValue: _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>>.value(
-            _FakeEither_1<_i6.Failure, List<_i7.Event>>(
-          this,
-          Invocation.method(
-            #getAppEvents,
-            [],
+            #getEvents,
+            [locale],
           ),
         )),
       ) as _i5.Future<_i3.Either<_i6.Failure, List<_i7.Event>>>);

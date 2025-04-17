@@ -6,6 +6,28 @@
 library;
 // ignore_for_file: unnecessary_string_escapes
 
+import 'package:appwrite/models.dart' as models;
+
+models.DocumentList calendarSampleAppwriteList = models.DocumentList(
+  documents: [
+    models.Document(
+      $databaseId: 'calendar',
+      $collectionId: 'de',
+      $createdAt: 'now',
+      $updatedAt: 'now',
+      $id: '1',
+      $permissions: [
+        {'any': 'read'},
+      ],
+      data: {
+        'json':
+            '{"id":19940,"url":"https://asta-bochum.de/termin/11-asta-sitzung-2/","title":"11. AStA Sitzung","description":"<p><span style=\"font-size: 17px;\">10. AStA-Sitzung am Mittwoch, den 02.10.24 um 18:00 Uhr im Weltraum.</span></p>\n<p><span style=\"font-size: 17px;\">Die vorläufige TO lautet:</span></p>\n<p><span style=\"font-size: 17px;\">TOP 1: Begrüßung durch den Vorsitzenden des AStA</span><br />\n<span style=\"font-size: 17px;\">TOP 2: Benennung einer Protokollführerin</span><br />\n<span style=\"font-size: 17px;\">TOP 3: Feststellung der Beschlussfähigkeit</span><br />\n<span style=\"font-size: 17px;\">TOP 4: Festlegung der Tagesordnung</span><br />\n<span style=\"font-size: 17px;\">TOP 5: Genehmigung des Protokolls der letzten Sitzung</span><br />\n<span style=\"font-size: 17px;\">TOP 6: Bericht des Vorstands</span><br />\n<span style=\"font-size: 17px;\">TOP 7: Bericht aus den Referaten</span><br />\n<span style=\"font-size: 17px;\">TOP 8: Berichte aus den Gremien</span><br />\n<span style=\"font-size: 17px;\">TOP 9: Anträge und Gäste</span><br />\n<span style=\"font-size: 17px;\">TOP 10: Verschiedenes</span><!--/data/user/0/com.samsung.android.app.notes/files/clipdata/clipdata_bodytext_240611_205759_515.sdocx--></p>","slug":"11-asta-sitzung-2","hasImage":false,"imageUrl":null,"startDate":"2024-10-02T18:00:00.000","endDate":"2024-10-02T20:00:00.000","allDay":false,"cost":null,"website":"","categories":[],"venue":{"id":16089,"name":"WeltRaum UFO 01/38","url":"https://asta-bochum.de/venue/weltraum-ufo-01-38/","slug":"weltraum-ufo-01-38","address":null,"city":null,"country":null,"province":null,"zip":null,"phone":null},"organizers":[{"id":19696,"url":"https://asta-bochum.de/organizer/asta-3/","name":"AStA","slug":"asta-3","phone":null,"website":null,"email":null}],"author":"16"}',
+      },
+    ),
+  ],
+  total: 1,
+);
+
 const List<Map<String, dynamic>> calendarSamplesEventList = [
   {
     'id': 12071,

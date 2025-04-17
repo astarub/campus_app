@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:mockito/annotations.dart';
@@ -13,7 +13,6 @@ import 'package:campus_app/utils/constants.dart';
 
 import 'calendar_datasource_test.mocks.dart';
 import 'samples/event_list.dart';
-import 'samples/eventfeed_response.dart';
 
 /// Create an empty Event
 Event emptyEvent({String title = 'Title'}) {
@@ -31,55 +30,32 @@ Event emptyEvent({String title = 'Title'}) {
   );
 }
 
-@GenerateMocks([Dio, Box])
+@GenerateMocks([Databases, Box])
 void main() {
   late CalendarDatasource calendarDatasource;
-  late Dio mockClient;
+  late Client mockClient;
+  late Databases mockDatabases;
   late Box mockCach;
 
   setUp(() async {
     mockClient = MockDio();
     mockCach = MockBox();
+    mockDatabases = MockDatabases();
 
-    calendarDatasource = CalendarDatasource(client: mockClient, eventCache: mockCach);
+    calendarDatasource = CalendarDatasource(appwriteClient: mockClient, eventCache: mockCach);
   });
 
   group('[getAStAEventsAsJsonArray]', () {
-    /// A Dio response on successfully request
-    final resSuccess = Response(
-      requestOptions: RequestOptions(path: astaEvents),
-      statusCode: 200,
-      data: calendarSampleEventfeedResponse,
-    );
-
-    /// A Dio response on failed request thougth connection error (statuscode 404)
-    final resFailure = Response(
-      requestOptions: RequestOptions(path: astaEvents),
-      statusCode: 404,
-    );
-
-    /// A Dio response that contains no data
-    final resInvalidJson = Response(
-      requestOptions: RequestOptions(path: astaEvents),
-      statusCode: 200,
-    );
-
-    /// A Dio response that contains no data
-    final resEmpty = Response(
-      requestOptions: RequestOptions(path: astaEvents),
-      statusCode: 200,
-      data: {'events': []},
-    );
-
     test('Should return a list of JSON objects after successfully GET request', () {
       // arrange: Dio respond with statuscode 200 and correct JSON data
-      when(mockClient.get(astaEvents)).thenAnswer((_) async => resSuccess);
+      when(mockDatabases.listDocuments(databaseId: 'calendar', collectionId: 'de'))
+          .thenAnswer((_) async => calendarSampleAppwriteList);
 
       // act: function call
-      final testReturn = calendarDatasource.getAStAEventsAsJsonArray();
+      final testReturn = calendarDatasource.getEvents('de');
 
       // assert: is testElement expected object? -> List of JSON
-      identical(testReturn, calendarSamplesEventList); // is the returned object the expected one?
+      identical(testReturn, calendarSampleAppwriteList); // is the returned object the expected one?
       verify(mockClient.get(astaEvents)); // was client function called?
       verifyNoMoreInteractions(mockClient); // no more interactions with client after get()
     });

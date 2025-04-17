@@ -1,15 +1,16 @@
 import 'dart:io' show Platform;
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/wallet/faq_page.dart';
 import 'package:campus_app/pages/wallet/mensa_balance_page.dart';
-import 'package:campus_app/utils/widgets/subpage_button.dart';
 import 'package:campus_app/pages/wallet/widgets/leitwarte_button.dart';
 import 'package:campus_app/pages/wallet/widgets/wallet.dart';
+import 'package:campus_app/utils/widgets/subpage_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class WalletPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -29,6 +30,10 @@ class _WalletPageState extends State<WalletPage>
     with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<WalletPage> {
   List<Widget> faqExpandables = [const LeitwarteButton()];
 
+  // Keep state alive
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -46,7 +51,7 @@ class _WalletPageState extends State<WalletPage>
                 Container(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 14 : 0, bottom: 40),
                   child: Text(
-                    'Wallet',
+                    AppLocalizations.of(context)!.walletPageWallet,
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                   ),
                 ),
@@ -69,7 +74,7 @@ class _WalletPageState extends State<WalletPage>
                           children: [
                             // AKAFÖ card balance
                             SubPageButton(
-                              title: 'Mensa Guthaben',
+                              title: AppLocalizations.of(context)!.walletPageBalance,
                               leadingIconPath: 'assets/img/icons/euro.svg',
                               trailingIconPath: 'assets/img/icons/chevron-right.svg',
                               onTap: () {
@@ -83,7 +88,7 @@ class _WalletPageState extends State<WalletPage>
                             ),
                             // FAQ
                             SubPageButton(
-                              title: 'Campus ABC',
+                              title: AppLocalizations.of(context)!.walletPageCampusABC,
                               leadingIconPath: 'assets/img/icons/help-circle.svg',
                               trailingIconPath: 'assets/img/icons/chevron-right.svg',
                               onTap: () {
@@ -115,7 +120,7 @@ class _WalletPageState extends State<WalletPage>
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 16),
                                 child: Text(
-                                  'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen in die App zu integrieren.',
+                                  AppLocalizations.of(context)!.walletPageComingInFuture,
                                   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                                   overflow: TextOverflow.visible,
                                 ),
@@ -134,8 +139,4 @@ class _WalletPageState extends State<WalletPage>
       ),
     );
   }
-
-  // Keep state alive
-  @override
-  bool get wantKeepAlive => true;
 }

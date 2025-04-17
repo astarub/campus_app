@@ -3,14 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i5;
 
-import 'package:campus_app/pages/feed/news/news_datasource.dart' as _i5;
-import 'package:campus_app/pages/feed/news/news_entity.dart' as _i7;
-import 'package:dio/dio.dart' as _i2;
+import 'package:appwrite/appwrite.dart' as _i2;
+import 'package:campus_app/pages/feed/news/news_datasource.dart' as _i4;
+import 'package:campus_app/pages/feed/news/news_entity.dart' as _i6;
 import 'package:hive/hive.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:xml/xml.dart' as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -26,8 +25,8 @@ import 'package:xml/xml.dart' as _i4;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeDio_0 extends _i1.SmartFake implements _i2.Dio {
-  _FakeDio_0(
+class _FakeClient_0 extends _i1.SmartFake implements _i2.Client {
+  _FakeClient_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -46,32 +45,22 @@ class _FakeBox_1<E> extends _i1.SmartFake implements _i3.Box<E> {
         );
 }
 
-class _FakeXmlDocument_2 extends _i1.SmartFake implements _i4.XmlDocument {
-  _FakeXmlDocument_2(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
 /// A class which mocks [NewsDatasource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNewsDatasource extends _i1.Mock implements _i5.NewsDatasource {
+class MockNewsDatasource extends _i1.Mock implements _i4.NewsDatasource {
   MockNewsDatasource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.Dio get client => (super.noSuchMethod(
-        Invocation.getter(#client),
-        returnValue: _FakeDio_0(
+  _i2.Client get appwriteClient => (super.noSuchMethod(
+        Invocation.getter(#appwriteClient),
+        returnValue: _FakeClient_0(
           this,
-          Invocation.getter(#client),
+          Invocation.getter(#appwriteClient),
         ),
-      ) as _i2.Dio);
+      ) as _i2.Client);
 
   @override
   _i3.Box<dynamic> get rubnewsCache => (super.noSuchMethod(
@@ -83,76 +72,43 @@ class MockNewsDatasource extends _i1.Mock implements _i5.NewsDatasource {
       ) as _i3.Box<dynamic>);
 
   @override
-  _i6.Future<_i4.XmlDocument> getNewsfeedAsXml() => (super.noSuchMethod(
-        Invocation.method(
-          #getNewsfeedAsXml,
-          [],
-        ),
-        returnValue: _i6.Future<_i4.XmlDocument>.value(_FakeXmlDocument_2(
-          this,
-          Invocation.method(
-            #getNewsfeedAsXml,
-            [],
-          ),
-        )),
-      ) as _i6.Future<_i4.XmlDocument>);
-
-  @override
-  _i6.Future<Map<String, dynamic>> getImageDataFromNewsUrl(String? url) =>
+  _i5.Future<List<Map<String, dynamic>>> getNewsFeed(String? locale) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getImageDataFromNewsUrl,
-          [url],
+          #getNewsFeed,
+          [locale],
         ),
-        returnValue:
-            _i6.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
-      ) as _i6.Future<Map<String, dynamic>>);
+        returnValue: _i5.Future<List<Map<String, dynamic>>>.value(
+            <Map<String, dynamic>>[]),
+      ) as _i5.Future<List<Map<String, dynamic>>>);
 
   @override
-  _i6.Future<List<dynamic>> getAStAFeedAsJson() => (super.noSuchMethod(
-        Invocation.method(
-          #getAStAFeedAsJson,
-          [],
-        ),
-        returnValue: _i6.Future<List<dynamic>>.value(<dynamic>[]),
-      ) as _i6.Future<List<dynamic>>);
-
-  @override
-  _i6.Future<List<dynamic>> getAppFeedAsJson() => (super.noSuchMethod(
-        Invocation.method(
-          #getAppFeedAsJson,
-          [],
-        ),
-        returnValue: _i6.Future<List<dynamic>>.value(<dynamic>[]),
-      ) as _i6.Future<List<dynamic>>);
-
-  @override
-  _i6.Future<void> writeNewsEntitiesToCache(List<_i7.NewsEntity>? entities) =>
+  _i5.Future<void> writeNewsEntitiesToCache(List<_i6.NewsEntity>? entities) =>
       (super.noSuchMethod(
         Invocation.method(
           #writeNewsEntitiesToCache,
           [entities],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 
   @override
-  _i6.Future<void> clearNewsEntityCache() => (super.noSuchMethod(
+  _i5.Future<void> clearNewsEntityCache() => (super.noSuchMethod(
         Invocation.method(
           #clearNewsEntityCache,
           [],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 
   @override
-  List<_i7.NewsEntity> readNewsEntitiesFromCach() => (super.noSuchMethod(
+  List<_i6.NewsEntity> readNewsEntitiesFromCach() => (super.noSuchMethod(
         Invocation.method(
           #readNewsEntitiesFromCach,
           [],
         ),
-        returnValue: <_i7.NewsEntity>[],
-      ) as List<_i7.NewsEntity>);
+        returnValue: <_i6.NewsEntity>[],
+      ) as List<_i6.NewsEntity>);
 }

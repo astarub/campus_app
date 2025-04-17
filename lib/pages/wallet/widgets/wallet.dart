@@ -1,20 +1,42 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:screen_brightness/screen_brightness.dart';
-
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
-import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
 import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
+import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:screen_brightness/screen_brightness.dart';
+
+Future<void> resetBrightness() async {
+  try {
+    await ScreenBrightness().resetScreenBrightness();
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
+
+Future<void> setBrightness(double brightness) async {
+  try {
+    await ScreenBrightness().setScreenBrightness(brightness);
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+}
+
+class BogestraTicket extends StatefulWidget {
+  const BogestraTicket({super.key});
+
+  @override
+  State<BogestraTicket> createState() => _BogestraTicketState();
+}
 
 class CampusWallet extends StatelessWidget {
   const CampusWallet({super.key});
@@ -42,13 +64,6 @@ class CampusWallet extends StatelessWidget {
   }
 }
 
-class BogestraTicket extends StatefulWidget {
-  const BogestraTicket({super.key});
-
-  @override
-  State<BogestraTicket> createState() => _BogestraTicketState();
-}
-
 class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAliveClientMixin<BogestraTicket> {
   bool scanned = false;
   String scannedValue = '';
@@ -61,19 +76,8 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   TicketRepository ticketRepository = sl<TicketRepository>();
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
 
-  /// Loads the previously saved image of the semester ticket and the corresponding ticket details
-  Future<void> renderTicket() async {
-    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode();
-    final Map<String, dynamic>? ticketDetails = await ticketUsecases.getTicketDetails();
-
-    if (aztecCodeImage != null && ticketDetails != null) {
-      setState(() {
-        scanned = true;
-        this.aztecCodeImage = aztecCodeImage;
-        this.ticketDetails = ticketDetails;
-      });
-    }
-  }
+  @override
+  bool get wantKeepAlive => true;
 
   Future<void> addTicket() async {
     await Navigator.push(
@@ -86,34 +90,6 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
         ),
       ),
     );
-  }
-
-  Future<void> loadAndRenderTicket() async {
-    // Pre-render ticket
-    await renderTicket();
-
-    final String? oldAztecCode = await ticketRepository.getAztecCode();
-
-    await ticketRepository.loadTicket().catchError((error) {
-      debugPrint('Wallet widget: $error');
-    });
-
-    final String? newAztecCode = await ticketRepository.getAztecCode();
-
-    // Compare aztec code from before re-loading the ticket with the new one
-    if (oldAztecCode != newAztecCode) {
-      await renderTicket();
-    }
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    loadAndRenderTicket();
   }
 
   @override
@@ -131,12 +107,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
           ? GestureDetector(
               onTap: () {
                 if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.displayFullscreenTicket) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const BogestraTicketFullScreen(),
-                    ),
-                  );
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const BogestraTicketFullScreen()));
                 } else {
                   setState(() => showAztecCode = !showAztecCode);
                   if (showAztecCode) {
@@ -153,22 +124,14 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(bottom: 5),
-                          child: SvgPicture.asset(
-                            'assets/img/bogestra-logo.svg',
-                            height: 60,
-                            width: 30,
-                          ),
+                          child: SvgPicture.asset('assets/img/bogestra-logo.svg', height: 60, width: 30),
                         ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
-                              child: SizedBox(
-                                width: 130,
-                                height: 130,
-                                child: aztecCodeImage,
-                              ),
+                              child: SizedBox(width: 130, height: 130, child: aztecCodeImage),
                             ),
                             const Expanded(child: SizedBox()),
                             Padding(
@@ -259,7 +222,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      'Füge dein Semesterticket hinzu',
+                      AppLocalizations.of(context)!.walletAddStudentTicket,
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                     ),
                   ),
@@ -268,20 +231,43 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
             ),
     );
   }
-}
 
-Future<void> setBrightness(double brightness) async {
-  try {
-    await ScreenBrightness().setScreenBrightness(brightness);
-  } catch (e) {
-    debugPrint(e.toString());
+  @override
+  void initState() {
+    super.initState();
+
+    loadAndRenderTicket();
   }
-}
 
-Future<void> resetBrightness() async {
-  try {
-    await ScreenBrightness().resetScreenBrightness();
-  } catch (e) {
-    debugPrint(e.toString());
+  Future<void> loadAndRenderTicket() async {
+    // Pre-render ticket
+    await renderTicket();
+
+    final String? oldAztecCode = await ticketRepository.getAztecCode();
+
+    await ticketRepository.loadTicket().catchError((error) {
+      debugPrint('Wallet widget: $error');
+    });
+
+    final String? newAztecCode = await ticketRepository.getAztecCode();
+
+    // Compare aztec code from before re-loading the ticket with the new one
+    if (oldAztecCode != newAztecCode) {
+      await renderTicket();
+    }
+  }
+
+  /// Loads the previously saved image of the semester ticket and the corresponding ticket details
+  Future<void> renderTicket() async {
+    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode();
+    final Map<String, dynamic>? ticketDetails = await ticketUsecases.getTicketDetails();
+
+    if (aztecCodeImage != null && ticketDetails != null) {
+      setState(() {
+        scanned = true;
+        this.aztecCodeImage = aztecCodeImage;
+        this.ticketDetails = ticketDetails;
+      });
+    }
   }
 }

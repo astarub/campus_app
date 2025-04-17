@@ -1,17 +1,15 @@
-import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/pages/feed/widgets/video_player.dart';
-import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
-import 'package:flutter/material.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/feed/widgets/video_player.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
+import 'package:campus_app/utils/widgets/styled_html.dart';
+import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:html/parser.dart';
-
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/utils/widgets/campus_icon_button.dart';
-import 'package:campus_app/utils/widgets/styled_html.dart';
 
 class NewsDetailsPage extends StatefulWidget {
   final String title;
@@ -120,7 +118,7 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                           // Image
                           if (widget.image != null || widget.videoUrl != null)
                             Hero(
-                              tag: 'news_details_page_hero_tag',
+                              tag: UniqueKey(),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: widget.videoUrl != null

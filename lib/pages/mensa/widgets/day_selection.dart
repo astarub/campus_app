@@ -1,8 +1,9 @@
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/l10n/l10n.dart';
 
 /// This widget displays 5 buttons in order to pick between the weekdays.
 class MensaDaySelection extends StatefulWidget {
@@ -17,269 +18,6 @@ class MensaDaySelection extends StatefulWidget {
 
   @override
   State<MensaDaySelection> createState() => _MensaDaySelectionState();
-}
-
-class _MensaDaySelectionState extends State<MensaDaySelection> {
-  int selectedDay = 0;
-  late final List<String> weekDates;
-
-  ScrollController controller = ScrollController();
-
-  bool leftArrowShown = false;
-  bool rightArrowShown = true;
-
-  /// This function calculates the dates depending on the current day `DateTime.now()`
-  /// to show the dates of this week in the [MensaDaySelection] widget
-  List<String> _generateDays() {
-    final calculatedDates = <String>[];
-
-    DateTime today = DateTime.now();
-
-    if (today.weekday == 6) {
-      today = today.add(const Duration(days: -1));
-    } else if (today.weekday == 7) {
-      today = today.add(const Duration(days: -2));
-    }
-
-    switch (today.weekday) {
-      case 1: // Monday
-        calculatedDates.add(DateFormat('dd.MM').format(today));
-
-        // Add days for this week
-        for (int i = 1; i <= 4; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-
-        // Add days for next week
-        for (int i = 7; i <= 11; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-        break;
-      case 2: // Tuesday
-        // Add the day before this day -> Monday
-        calculatedDates.add(DateFormat('dd.MM').format(today.add(const Duration(days: -1))));
-
-        // Add today's date
-        calculatedDates.add(DateFormat('dd.MM').format(today));
-
-        // Add the remaining dates of this week
-        for (int i = 1; i <= 3; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-
-        // Add the dates of next week
-        for (int i = 6; i <= 10; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-        selectedDay = 1;
-        break;
-      case 3: // Wednesday
-        // Same scheme as above
-        for (int i = -2; i <= -1; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-        calculatedDates.add(DateFormat('dd.MM').format(today));
-        for (int i = 1; i <= 2; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-        for (int i = 5; i <= 9; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-        selectedDay = 2;
-        break;
-      case 4: // Thursday
-        // Same scheme as above
-        for (int i = -3; i <= -1; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-        calculatedDates.add(DateFormat('dd.MM').format(today));
-        calculatedDates.add(DateFormat('dd.MM').format(today.add(const Duration(days: 1))));
-        for (int i = 4; i <= 8; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-        selectedDay = 3;
-        break;
-      default: // Friday, Saturday or Sunday
-        // Same scheme as above
-        for (int i = -4; i <= -1; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-        // Same scheme as above
-        calculatedDates.add(DateFormat('dd.MM').format(today));
-        for (int i = 3; i <= 7; i++) {
-          calculatedDates.add(DateFormat('dd.MM').format(today.add(Duration(days: i))));
-        }
-        selectedDay = 4;
-        break;
-    }
-
-    return calculatedDates;
-  }
-
-  void selectDay(int selected) {
-    final DateTime now = DateTime.now();
-
-    widget.onChanged(
-      selected,
-      DateFormat('dd.MM').parse(weekDates[selected]).copyWith(
-            year: now.year,
-            hour: now.hour,
-            minute: now.minute,
-            second: now.second,
-          ),
-    );
-
-    setState(() => selectedDay = selected);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    weekDates = _generateDays();
-
-    // Controller for the horizontal scroll direction arrows
-
-    controller.addListener(() {
-      if (controller.offset > 2) {
-        setState(() {
-          leftArrowShown = true;
-        });
-      } else {
-        setState(() {
-          leftArrowShown = false;
-        });
-      }
-
-      if (controller.offset > controller.position.maxScrollExtent - 2) {
-        setState(() {
-          rightArrowShown = false;
-        });
-      } else {
-        setState(() {
-          rightArrowShown = true;
-        });
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        SizedBox(
-          height: 65,
-          child: ListView(
-            controller: controller,
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            children: [
-              MensaDaySelectionItem(
-                day: 'Mo',
-                date: weekDates[0],
-                onTap: () => selectDay(0),
-                isActive: selectedDay == 0,
-              ),
-              MensaDaySelectionItem(
-                day: 'Di',
-                date: weekDates[1],
-                onTap: () => selectDay(1),
-                isActive: selectedDay == 1,
-              ),
-              MensaDaySelectionItem(
-                day: 'Mi',
-                date: weekDates[2],
-                onTap: () => selectDay(2),
-                isActive: selectedDay == 2,
-              ),
-              MensaDaySelectionItem(
-                day: 'Do',
-                date: weekDates[3],
-                onTap: () => selectDay(3),
-                isActive: selectedDay == 3,
-              ),
-              MensaDaySelectionItem(
-                day: 'Fr',
-                date: weekDates[4],
-                onTap: () => selectDay(4),
-                isActive: selectedDay == 4,
-              ),
-              VerticalDivider(
-                color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
-              ),
-              MensaDaySelectionItem(
-                day: 'Mo',
-                date: weekDates[5],
-                onTap: () => selectDay(5),
-                isActive: selectedDay == 5,
-              ),
-              MensaDaySelectionItem(
-                day: 'Di',
-                date: weekDates[6],
-                onTap: () => selectDay(6),
-                isActive: selectedDay == 6,
-              ),
-              MensaDaySelectionItem(
-                day: 'Mi',
-                date: weekDates[7],
-                onTap: () => selectDay(7),
-                isActive: selectedDay == 7,
-              ),
-              MensaDaySelectionItem(
-                day: 'Do',
-                date: weekDates[8],
-                onTap: () => selectDay(8),
-                isActive: selectedDay == 8,
-              ),
-              MensaDaySelectionItem(
-                day: 'Fr',
-                date: weekDates[9],
-                onTap: () => selectDay(9),
-                isActive: selectedDay == 9,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: leftArrowShown
-                    ? Icon(
-                        Icons.keyboard_arrow_left,
-                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                            ? Colors.black
-                            : Colors.white,
-                      )
-                    : null,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: rightArrowShown
-                    ? Icon(
-                        Icons.keyboard_arrow_right,
-                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                            ? Colors.black
-                            : Colors.white,
-                      )
-                    : null,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 /// This widget represents one of the five items in the [MensaDaySelection] widget.
@@ -390,5 +128,203 @@ class MensaDaySelectionItem extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _MensaDaySelectionState extends State<MensaDaySelection> {
+  int selectedDay = 0;
+  late final List<String> weekDates;
+
+  ScrollController controller = ScrollController();
+
+  bool leftArrowShown = false;
+  bool rightArrowShown = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        SizedBox(
+          height: 65,
+          child: ListView(
+            controller: controller,
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            children: [
+              MensaDaySelectionItem(
+                day: AppLocalizations.of(context)!.mondayShort,
+                date: weekDates[0],
+                onTap: () => selectDay(0),
+                isActive: selectedDay == 0,
+              ),
+              MensaDaySelectionItem(
+                day: AppLocalizations.of(context)!.tuesdayShort,
+                date: weekDates[1],
+                onTap: () => selectDay(1),
+                isActive: selectedDay == 1,
+              ),
+              MensaDaySelectionItem(
+                day: AppLocalizations.of(context)!.wednesdayShort,
+                date: weekDates[2],
+                onTap: () => selectDay(2),
+                isActive: selectedDay == 2,
+              ),
+              MensaDaySelectionItem(
+                day: AppLocalizations.of(context)!.thursdayShort,
+                date: weekDates[3],
+                onTap: () => selectDay(3),
+                isActive: selectedDay == 3,
+              ),
+              MensaDaySelectionItem(
+                day: AppLocalizations.of(context)!.fridayShort,
+                date: weekDates[4],
+                onTap: () => selectDay(4),
+                isActive: selectedDay == 4,
+              ),
+              VerticalDivider(
+                color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
+              ),
+              MensaDaySelectionItem(
+                day: AppLocalizations.of(context)!.mondayShort,
+                date: weekDates[5],
+                onTap: () => selectDay(5),
+                isActive: selectedDay == 5,
+              ),
+              MensaDaySelectionItem(
+                day: AppLocalizations.of(context)!.tuesdayShort,
+                date: weekDates[6],
+                onTap: () => selectDay(6),
+                isActive: selectedDay == 6,
+              ),
+              MensaDaySelectionItem(
+                day: AppLocalizations.of(context)!.wednesdayShort,
+                date: weekDates[7],
+                onTap: () => selectDay(7),
+                isActive: selectedDay == 7,
+              ),
+              MensaDaySelectionItem(
+                day: AppLocalizations.of(context)!.thursdayShort,
+                date: weekDates[8],
+                onTap: () => selectDay(8),
+                isActive: selectedDay == 8,
+              ),
+              MensaDaySelectionItem(
+                day: AppLocalizations.of(context)!.fridayShort,
+                date: weekDates[9],
+                onTap: () => selectDay(9),
+                isActive: selectedDay == 9,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: leftArrowShown
+                    ? Icon(
+                        Icons.keyboard_arrow_left,
+                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? Colors.black
+                            : Colors.white,
+                      )
+                    : null,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: rightArrowShown
+                    ? Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? Colors.black
+                            : Colors.white,
+                      )
+                    : null,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    weekDates = _generateDays();
+
+    // Controller for the horizontal scroll direction arrows
+    controller.addListener(() {
+      if (controller.offset > 2) {
+        setState(() {
+          leftArrowShown = true;
+        });
+      } else {
+        setState(() {
+          leftArrowShown = false;
+        });
+      }
+
+      if (controller.offset > controller.position.maxScrollExtent - 2) {
+        setState(() {
+          rightArrowShown = false;
+        });
+      } else {
+        setState(() {
+          rightArrowShown = true;
+        });
+      }
+    });
+  }
+
+  void selectDay(int selected) {
+    final DateTime now = DateTime.now();
+
+    widget.onChanged(
+      selected,
+      DateFormat('dd.MM').parse(weekDates[selected]).copyWith(
+            year: now.year,
+            hour: now.hour,
+            minute: now.minute,
+            second: now.second,
+          ),
+    );
+
+    setState(() => selectedDay = selected);
+  }
+
+  /// This function calculates the dates depending on the current day `DateTime.now()`
+  /// to show the dates of this week in the [MensaDaySelection] widget.
+  List<String> _generateDays() {
+    final calculatedDates = <String>[];
+
+    final DateTime today = DateTime.now();
+    final DateTime startOfWeek = today.subtract(Duration(days: today.weekday - 1));
+
+    // Add days for this week
+    for (int i = 0; i <= 4; i++) {
+      calculatedDates.add(DateFormat('dd.MM').format(startOfWeek.add(Duration(days: i))));
+    }
+
+    // Add the dates of next week
+    for (int i = 7; i <= 11; i++) {
+      calculatedDates.add(DateFormat('dd.MM').format(startOfWeek.add(Duration(days: i))));
+    }
+
+    // Choose selected day: Mo -> 0 ... Fr -> 4, Sa & So -> 5 (next monday)
+    selectedDay = today.weekday > 5 ? 5 : today.weekday - 1;
+
+    return calculatedDates;
   }
 }

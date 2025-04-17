@@ -12,7 +12,7 @@ class CalendarUsecases {
   /// Return a JSON object `data` that contains failures and events.
   ///
   /// data := { 'failures': List\<Failure>, 'events': List\<Event> }
-  Future<Map<String, List<dynamic>>> updateEventsAndFailures() async {
+  Future<Map<String, List<dynamic>>> updateEventsAndFailures(String locale) async {
     // return data
     final Map<String, List<dynamic>> data = {
       'failures': <Failure>[],
@@ -21,14 +21,9 @@ class CalendarUsecases {
     };
 
     // get events from AStA API and cached events
-    final Either<Failure, List<Event>> remoteEvents =
-        await calendarRepository.getAStAEvents();
-    final Either<Failure, List<Event>> remoteAppEvents =
-        await calendarRepository.getAppEvents();
-    final Either<Failure, List<Event>> cachedEvents =
-        calendarRepository.getCachedEvents();
-    final Either<Failure, List<Event>> savedEvents =
-        await calendarRepository.updateSavedEvents();
+    final Either<Failure, List<Event>> remoteEvents = await calendarRepository.getEvents(locale);
+    final Either<Failure, List<Event>> cachedEvents = calendarRepository.getCachedEvents();
+    final Either<Failure, List<Event>> savedEvents = await calendarRepository.updateSavedEvents();
 
     // fold cachedEvents
     cachedEvents.fold(
@@ -36,20 +31,16 @@ class CalendarUsecases {
       (events) => data['events'] = events,
     );
 
-    // fold remoteEvents
-    remoteEvents.fold(
-      (failure) => data['failures']!.add(failure),
-      (events) => data['events'] = events, // overwrite cached feed
-    );
-    remoteAppEvents.fold(
-      (failure) => data['failures']!.add(failure),
-      (events) => data['events'] = List<Event>.from(data['events']!) + List<Event>.from(events),
-    );
-
     // fold savedEvents
     savedEvents.fold(
       (failure) => data['failures']!.add(failure),
       (events) => data['saved'] = events,
+    );
+
+    // fold remoteEvents
+    remoteEvents.fold(
+      (failure) => data['failures']!.add(failure),
+      (events) => data['events'] = events, // overwrite cached feed
     );
 
     List<Event>.from(data['events']!).sort((a, b) {
@@ -75,8 +66,7 @@ class CalendarUsecases {
     };
 
     // get only cached events
-    final Either<Failure, List<Event>> cachedEvents =
-        calendarRepository.getCachedEvents();
+    final Either<Failure, List<Event>> cachedEvents = calendarRepository.getCachedEvents();
 
     // fold cachedEvents
     cachedEvents.fold(

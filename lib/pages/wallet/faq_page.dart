@@ -1,13 +1,15 @@
 import 'dart:io' show Platform;
+
+import 'package:campus_app/l10n/l10n.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/wallet/guide_content.dart';
+import 'package:campus_app/pages/wallet/widgets/expandable_faq_item.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/utils/widgets/campus_icon_button.dart';
-import 'package:campus_app/pages/wallet/widgets/expandable_faq_item.dart';
-import 'package:campus_app/pages/wallet/guide_content.dart';
-
 class FaqPage extends StatelessWidget {
+  final GlobalKey<NavigatorState> ourNavigatorKey = GlobalKey<NavigatorState>();
   final List<Widget> faqExpandables = [];
 
   FaqPage({super.key}) {
@@ -17,20 +19,6 @@ class FaqPage extends StatelessWidget {
     faqExpandables.addAll(
       faqList.map((faqEntry) => ExpandableFaqItem(title: faqEntry['title']!, content: faqEntry['content']!)).toList(),
     );
-  }
-
-  List<Map<String, String>> _sortFaqList(List<Map<String, String>> sortList, String byPara, {bool reverse = false}) {
-    if (!reverse) {
-      sortList.sort((a, b) {
-        return a[byPara]!.toLowerCase().compareTo(b[byPara]!.toLowerCase());
-      });
-    } else {
-      sortList.sort((a, b) {
-        return b[byPara]!.toLowerCase().compareTo(a[byPara]!.toLowerCase());
-      });
-    }
-
-    return sortList;
   }
 
   @override
@@ -54,7 +42,7 @@ class FaqPage extends StatelessWidget {
                     ),
                     Align(
                       child: Text(
-                        'Campus ABC',
+                        AppLocalizations.of(context)!.faqCampusABC,
                         style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       ),
                     ),
@@ -73,5 +61,19 @@ class FaqPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Map<String, String>> _sortFaqList(List<Map<String, String>> sortList, String byPara, {bool reverse = false}) {
+    if (!reverse) {
+      sortList.sort((a, b) {
+        return a[byPara]!.toLowerCase().compareTo(b[byPara]!.toLowerCase());
+      });
+    } else {
+      sortList.sort((a, b) {
+        return b[byPara]!.toLowerCase().compareTo(a[byPara]!.toLowerCase());
+      });
+    }
+
+    return sortList;
   }
 }

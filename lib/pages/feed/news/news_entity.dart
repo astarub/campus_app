@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:xml/xml.dart';
@@ -71,6 +69,26 @@ class NewsEntity {
     this.webViewUrl = '',
   });
 
+  /// Returns a NewsEntity from a JSON object provided by an external webserver
+  factory NewsEntity.fromInternalJSON({required Map<String, dynamic> json}) {
+    final pubDate = DateTime.parse(json['pubDate']);
+
+    return NewsEntity(
+      content: json['content'] ?? '',
+      title: json['title'] ?? '',
+      url: json['url'] ?? '',
+      description: json['description'] ?? '',
+      pubDate: pubDate,
+      author: json['author'] ?? 0,
+      categoryIds: List<int>.from(json['categoryIds']),
+      copyright: List<String>.from(json['copyright']),
+      imageUrl: json['imageUrl'] != null ? json['imageUrl'].toString() : 'false',
+      videoUrl: json['videoUrl'] != null ? json['videoUrl'].toString() : 'false',
+      pinned: json['pinned'] ?? false,
+      webViewUrl: json['webview_url'] != null && json['webview_url'] != '' ? json['webview_url'] : null,
+    );
+  }
+
   /// Returns a NewsEntity based on a single XML element given by the web server
   factory NewsEntity.fromXML(XmlElement xml, Map<String, dynamic> imageData) {
     final content = xml.getElement('content')!.innerText;
@@ -95,52 +113,6 @@ class NewsEntity {
       pubDate: pubDate,
       imageUrl: imageDataList.isNotEmpty ? imageDataList[0] : 'false',
       copyright: imageData['copyright'],
-    );
-  }
-
-  /// Returns a NewsEntity from a JSON object provided by an external webserver
-  factory NewsEntity.fromJSON({required Map<String, dynamic> json, required List<String> copyright}) {
-    final title = Map<String, dynamic>.from(json['title'])['rendered'] as String;
-    final pubDate = DateTime.parse(json['date']);
-    final url = json['link'];
-    final author = json['author'];
-    final categories = json['categories'];
-    final content = Bidi.stripHtmlIfNeeded(Map<String, dynamic>.from(json['content'])['rendered'] as String);
-    String description = '';
-
-    // Remove html and whitespaces from the content
-    final String formattedContent = content
-        .replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '')
-        .replaceAll(RegExp(' {2,}'), ' ')
-        .replaceAll('\n', ' ');
-    final List<String> descWords = formattedContent.split(' ');
-    final List<String> descriptionList = [];
-
-    // Get max 30 words in the description
-    for (int i = 0; i <= min(30, RegExp(' ').allMatches(formattedContent).length); i++) {
-      descriptionList.add(descWords[i]);
-    }
-
-    description = descriptionList.join(' ');
-
-    // Add "..." to the description if it was cut off
-    if (min(30, RegExp(' ').allMatches(formattedContent).length) == 30) {
-      description = '$description...';
-    }
-
-    return NewsEntity(
-      content: formattedContent,
-      title: title,
-      url: url,
-      description: description,
-      pubDate: pubDate,
-      author: author,
-      categoryIds: List<int>.from(categories),
-      copyright: copyright,
-      imageUrl: json['fimg_url'] != null ? json['fimg_url'].toString() : 'false',
-      videoUrl: json['fvideo_url'] != null ? json['fvideo_url'].toString() : 'false',
-      pinned: json['pinned'] ?? false,
-      webViewUrl: json['webview_url'] != null && json['webview_url'] != '' ? json['webview_url'] : null,
     );
   }
 }

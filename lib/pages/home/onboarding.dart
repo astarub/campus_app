@@ -5,21 +5,23 @@ import 'package:flutter_onboarding/flutter_onboarding.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 import 'package:campus_app/pages/home/home_page.dart';
+import 'package:campus_app/pages/more/widgets/language_selection.dart';
 import 'package:campus_app/pages/home/widgets/animated_onboarding_entry.dart';
 import 'package:campus_app/pages/home/widgets/study_selection.dart';
 import 'package:campus_app/pages/home/widgets/theme_selection.dart';
-import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/onboarding_data.dart';
+import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
-import 'package:campus_app/utils/widgets/campus_text_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_triple_control.dart';
+import 'package:campus_app/utils/widgets/campus_text_button.dart';
 
 class OnboardingPage extends StatefulWidget {
   final GlobalKey<HomePageState> homePageKey;
@@ -43,6 +45,10 @@ class OnboardingPageState extends State<OnboardingPage> {
 
   final BackendRepository backendRepository = sl<BackendRepository>();
   final MainUtils mainUtils = sl<MainUtils>();
+
+  List<Locale> availableLocales = AppLocalizations.supportedLocales;
+  // Selected study courses
+  Locale selectedLocale = const Locale('de');
 
   // Selected options during onboarding
   List<StudyCourse> selectedStudies = [];
@@ -79,48 +85,6 @@ class OnboardingPageState extends State<OnboardingPage> {
     systemNavigationBarIconBrightness: Brightness.light, // Android
   );
 
-  void saveSelections() {
-    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
-          useSystemDarkmode: selectedTheme == 0,
-          useDarkmode: selectedTheme == 2,
-          selectedStudyCourses: selectedStudies,
-          studyCoursePopup: true,
-          useFirebase: firebaseAccepted ? FirebaseStatus.permitted : FirebaseStatus.forbidden,
-        );
-
-    if (firebaseAccepted) mainUtils.initializeFirebase(widget.homePageKey.currentContext!);
-
-    debugPrint('Onboarding completed. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
-
-    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-
-    mainUtils.setIntialStudyCoursePublishers(Provider.of<SettingsHandler>(context, listen: false), selectedStudies);
-  }
-
-  void openLink(BuildContext context, String url) {
-    debugPrint('Opening external ressource: $url');
-
-    // Open in external browser
-    launchUrl(
-      Uri.parse(url),
-      mode: LaunchMode.externalApplication,
-    );
-  }
-
-  void changeTheme(int selectedThemeMode) {
-    selectedTheme = selectedThemeMode;
-    themeSelectionKey.currentState?.changeTheme(selectedThemeMode);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    backendRepository.loadStudyCourses(
-      Provider.of<SettingsHandler>(context, listen: false),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -140,7 +104,7 @@ class OnboardingPageState extends State<OnboardingPage> {
               key: onboardingSliderKey,
               donePage: HomePage(key: homeKey, mainNavigatorKey: widget.mainNavigatorKey),
               onDone: saveSelections,
-              doneButtonText: 'Abschließen',
+              doneButtonText: AppLocalizations.of(context)!.done,
               buttonTextStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium,
               backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
               buttonColor: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
@@ -181,7 +145,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: Text(
-                            'Campus App',
+                            AppLocalizations.of(context)!.onboardingAppName,
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                           ),
                         ),
@@ -190,11 +154,54 @@ class OnboardingPageState extends State<OnboardingPage> {
                         offsetDuration: const Duration(milliseconds: 2000),
                         interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                         child: Text(
-                          'Präsentiert von deinem AStA',
+                          AppLocalizations.of(context)!.onboardingPresentedBy,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
                         ),
                       ),
                     ],
+                  ),
+                ),
+                // Language Selection
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30, bottom: 100),
+                    child: Column(
+                      children: [
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 50, bottom: 10),
+                            child: Text(
+                              AppLocalizations.of(context)!.onboardingLanguage,
+                              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                            ),
+                          ),
+                        ),
+                        AnimatedOnboardingEntry(
+                          offsetDuration: const Duration(milliseconds: 500),
+                          interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
+                          child: Text(
+                            AppLocalizations.of(context)!.onboardingLanguageDetailed,
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Expanded(
+                          child: AnimatedOnboardingEntry(
+                            offsetDuration: const Duration(milliseconds: 500),
+                            interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 50),
+                              child: LanguageSelection(
+                                availableLocales: availableLocales,
+                                saveSelection: setSelectedLocale,
+                                selectedLocale: selectedLocale,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 // Choose study area
@@ -208,7 +215,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 50, bottom: 10),
                             child: Text(
-                              'Studiengang',
+                              AppLocalizations.of(context)!.onboardingStudyProgram,
                               style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                             ),
                           ),
@@ -217,7 +224,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.08, 1, curve: Curves.easeOutCubic),
                           child: Text(
-                            'Wähle deinen aktuellen Studiengang, um für dich passende Events und News anzuzeigen.',
+                            AppLocalizations.of(context)!.onboardingStudyProgramDetailed,
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                             textAlign: TextAlign.center,
                           ),
@@ -268,7 +275,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 50, bottom: 10),
                             child: Text(
-                              'Datenschutz',
+                              AppLocalizations.of(context)!.onboardingPrivacy,
                               style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                             ),
                           ),
@@ -290,7 +297,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Push-Benachrichtigungen aktivieren',
+                                AppLocalizations.of(context)!.onboardingNotifications,
                                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                               ),
                             ),
@@ -316,7 +323,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 30, bottom: 16),
                             child: CampusTextButton(
-                              buttonText: 'Nein, möchte ich nicht.',
+                              buttonText: AppLocalizations.of(context)!.onboardingDeny,
                               onTap: () {
                                 firebaseAccepted = false;
                                 onboardingSliderKey.currentState?.nextPage();
@@ -329,7 +336,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.40, 1, curve: Curves.easeOutCubic),
                           child: CampusButton(
-                            text: 'Ja, kein Problem',
+                            text: AppLocalizations.of(context)!.onboardingConfirm,
                             onTap: () {
                               firebaseAccepted = true;
                               onboardingSliderKey.currentState?.nextPage();
@@ -359,7 +366,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              'Theme',
+                              AppLocalizations.of(context)!.onboardingTheme,
                               style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                             ),
                           ),
@@ -368,7 +375,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                           offsetDuration: const Duration(milliseconds: 500),
                           interval: const Interval(0.16, 1, curve: Curves.easeOutCubic),
                           child: Text(
-                            'Kontrastreich oder unauffällig. Tag oder Nacht.\nWähle dein Design.',
+                            AppLocalizations.of(context)!.onboardingThemeDescription,
                             style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                             textAlign: TextAlign.center,
                           ),
@@ -380,9 +387,9 @@ class OnboardingPageState extends State<OnboardingPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 80),
                             child: CampusSegmentedTripleControl(
-                              leftTitle: 'System',
-                              centerTitle: 'Hell',
-                              rightTitle: 'Dunkel',
+                              leftTitle: AppLocalizations.of(context)!.onboardingThemeSystem,
+                              centerTitle: AppLocalizations.of(context)!.onboardingThemeLight,
+                              rightTitle: AppLocalizations.of(context)!.onboardingThemeDark,
                               onChanged: changeTheme,
                             ),
                           ),
@@ -402,7 +409,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 50, bottom: 10),
                             child: Text(
-                              'Feedback',
+                              AppLocalizations.of(context)!.onboardingFeedback,
                               style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                             ),
                           ),
@@ -472,5 +479,60 @@ class OnboardingPageState extends State<OnboardingPage> {
         ),
       ),
     );
+  }
+
+  void changeTheme(int selectedThemeMode) {
+    selectedTheme = selectedThemeMode;
+    themeSelectionKey.currentState?.changeTheme(selectedThemeMode);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    backendRepository.loadStudyCourses(
+      Provider.of<SettingsHandler>(context, listen: false),
+    );
+
+    selectedLocale = Provider.of<SettingsHandler>(context, listen: false).currentSettings.locale;
+  }
+
+  void openLink(BuildContext context, String url) {
+    debugPrint('Opening external ressource: $url');
+
+    // Open in external browser
+    launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  void saveSelections() {
+    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
+          useSystemDarkmode: selectedTheme == 0,
+          useDarkmode: selectedTheme == 2,
+          selectedStudyCourses: selectedStudies,
+          studyCoursePopup: true,
+          useFirebase: firebaseAccepted ? FirebaseStatus.permitted : FirebaseStatus.forbidden,
+        );
+
+    if (firebaseAccepted) mainUtils.initializeFirebase(widget.homePageKey.currentContext!);
+
+    debugPrint('Onboarding completed. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
+
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+
+    mainUtils.setIntialStudyCoursePublishers(Provider.of<SettingsHandler>(context, listen: false), selectedStudies);
+  }
+
+  // ignore: use_setters_to_change_properties
+  void setSelectedLocale(Locale selected) {
+    final Settings newSettings = Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(
+          locale: selected,
+        );
+
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
+
+    selectedLocale = selected;
   }
 }

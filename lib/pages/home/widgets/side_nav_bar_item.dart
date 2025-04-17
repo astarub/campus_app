@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SideNavBarItem extends StatefulWidget {
   /// Path to the image asset that should be shown when the menu item is active.

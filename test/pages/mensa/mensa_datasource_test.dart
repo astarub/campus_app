@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -18,6 +19,8 @@ import 'samples/mensa_dish_entities.dart';
 @GenerateMocks([Dio, Box])
 void main() {
   late MensaDataSource mensaDataSource;
+  final MensaUtils utils = MensaUtils();
+
   late Dio mockClient;
   late Box mockCach;
 
@@ -66,9 +69,9 @@ void main() {
 
   group('[Caching]', () {
     final samleNewsEntities = [
-      DishEntity.fromJSON(date: 0, category: 'Aktion', json: mensaSampleDish1),
-      DishEntity.fromJSON(date: 1, category: 'Beilage', json: mensaSampleDish2),
-      DishEntity.fromJSON(date: 2, category: 'Falafel Teller', json: mensaSampleDish3),
+      DishEntity.fromJSON(date: 0, category: 'Aktion', json: mensaSampleDish1, utils: utils),
+      DishEntity.fromJSON(date: 1, category: 'Beilage', json: mensaSampleDish2, utils: utils),
+      DishEntity.fromJSON(date: 2, category: 'Falafel Teller', json: mensaSampleDish3, utils: utils),
     ];
     test('Should return the same entities on read as writen befor', () async {
       when(mockCach.get('cnt1')).thenAnswer((_) => 3);

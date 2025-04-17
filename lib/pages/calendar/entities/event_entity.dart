@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 
 import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
@@ -56,7 +55,7 @@ class Event {
   /// The costs of the event as JSON.
   /// e.g. cost = { 'currency': '€', 'value': '20.5' }
   @HiveField(10)
-  final Map<String, String>? cost;
+  final Map<String, dynamic>? cost;
 
   /// An external website if the event has one.
   /// Otherwise it is an empty string.
@@ -102,73 +101,6 @@ class Event {
     this.pinned = false,
   });
 
-  factory Event.fromExternalJson(Map<String, dynamic> json) {
-    final List<Category> categories = [];
-    final List<Organizer> organizers = [];
-
-    // cost := null if no costs specified for event
-    Map<String, String>? cost = json['cost'] == ''
-        ? null
-        : {
-            'currency': ((json['cost_details'] as Map<String, dynamic>)['currency_symbol'] as String) != ''
-                ? (json['cost_details'] as Map<String, dynamic>)['currency_symbol'] as String
-                : '€',
-            'value': ((json['cost_details'] as Map<String, dynamic>)['values'] as List<dynamic>)[0] as String,
-          };
-    // maybe someone insert as value 0 then we want the cost to be null
-    if (cost != null) {
-      cost = cost['value'] == '0' ? null : cost;
-    }
-
-    // if json['image'] of type bool then has the event no image
-    final bool hasImage = json['image'] is! bool;
-
-    // read categories from JSON
-    for (final category in json['categories'] as List<dynamic>) {
-      categories.add(Category.fromJson(json: category));
-    }
-
-    // read tags from JSON
-    for (final tag in json['tags'] as List<dynamic>) {
-      categories.add(Category.fromJson(json: tag, isCategory: false));
-    }
-
-    // read organizers from JSON
-    for (final organizer in json['organizer'] as List<dynamic>) {
-      organizers.add(Organizer.fromJson(organizer));
-    }
-
-    // read venue from JSON
-    // ignore: avoid_dynamic_calls
-    final Venue venue = json['venue'].runtimeType == List
-        ? Venue.emptyPlaceholder()
-        : Venue.fromJson(json['venue'] as Map<String, dynamic>);
-
-    return Event(
-      id: json['id'],
-      url: json['url'],
-      title: json['title'],
-      description: json['description'] ?? '',
-      slug: json['slug'] ?? '',
-      hasImage: hasImage,
-      imageUrl: hasImage ? (json['image'] as Map<String, dynamic>)['url'] : null,
-      startDate: DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').parse(
-        "${json['start_date']} ${json['timezone']}",
-      ),
-      endDate: DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').parse(
-        "${json['end_date']} ${json['timezone']}",
-      ),
-      allDay: json['all_day'] ?? false,
-      cost: cost,
-      website: json['website'] ?? '',
-      categories: categories,
-      venue: venue,
-      organizers: organizers,
-      author: json['author'] ?? '',
-      pinned: json['pinned'] ?? false,
-    );
-  }
-
   factory Event.fromInternalJson(Map<String, dynamic> json) {
     return Event(
       id: json['id'],
@@ -190,6 +122,13 @@ class Event {
       pinned: json['pinned'],
     );
   }
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Event && runtimeType == other.runtimeType && id == other.id;
 
   Map<String, dynamic> toInternalJson() {
     return {
@@ -213,10 +152,26 @@ class Event {
     };
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is Event && runtimeType == other.runtimeType && id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
+  factory Event.fromAppwriteJson({required Map<String, dynamic> json}) {
+    return Event(
+      id: json['id'],
+      url: json['url'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      slug: json['slug'] ?? '',
+      hasImage: json['hasImage'] ?? false,
+      imageUrl: json['imageUrl'],
+      startDate: DateTime.parse(json['startDate']),
+      endDate: DateTime.parse(json['endDate']),
+      allDay: json['allDay'] ?? false,
+      cost: json['cost'],
+      website: json['website'],
+      categories:
+          List<Map<String, dynamic>>.from(json['categories']).map((e) => Category.fromInternalJson(json: e)).toList(),
+      venue: Venue.fromInternalJson(json: json['venue']),
+      organizers:
+          List<Map<String, dynamic>>.from(json['organizers']).map((e) => Organizer.fromInternalJson(json: e)).toList(),
+      author: json['author'] ?? '',
+    );
+  }
 }

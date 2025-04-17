@@ -1,14 +1,12 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:screen_brightness/screen_brightness.dart';
-
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class BogestraTicketFullScreen extends StatefulWidget {
@@ -22,34 +20,6 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
   Image? aztecCodeImage;
 
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
-
-  /// Loads the previously saved image of the semester ticket and
-  /// the corresponding aztec-code
-  Future<void> renderTicket() async {
-    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode(width: 280, height: 280);
-
-    if (aztecCodeImage != null) {
-      setState(() {
-        this.aztecCodeImage = aztecCodeImage;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    setBrightness(1);
-
-    renderTicket();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    resetBrightness();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,9 +58,7 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(bottom: Platform.isIOS ? 88 : 68),
-                  child: Center(
-                    child: aztecCodeImage ?? Container(),
-                  ),
+                  child: Center(child: aztecCodeImage ?? Container()),
                 ),
               ),
             ],
@@ -100,17 +68,45 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
     );
   }
 
-  Future<void> setBrightness(double brightness) async {
-    try {
-      await ScreenBrightness().setScreenBrightness(brightness);
-    } catch (e) {
-      debugPrint(e.toString());
+  @override
+  void dispose() {
+    super.dispose();
+
+    resetBrightness();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    setBrightness(1);
+
+    renderTicket();
+  }
+
+  /// Loads the previously saved image of the semester ticket and
+  /// the corresponding aztec-code
+  Future<void> renderTicket() async {
+    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode(width: 280, height: 280);
+
+    if (aztecCodeImage != null) {
+      setState(() {
+        this.aztecCodeImage = aztecCodeImage;
+      });
     }
   }
 
   Future<void> resetBrightness() async {
     try {
       await ScreenBrightness().resetScreenBrightness();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> setBrightness(double brightness) async {
+    try {
+      await ScreenBrightness().setScreenBrightness(brightness);
     } catch (e) {
       debugPrint(e.toString());
     }

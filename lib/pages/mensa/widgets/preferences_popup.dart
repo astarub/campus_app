@@ -1,9 +1,11 @@
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/utils/widgets/campus_selection.dart';
+import 'package:campus_app/utils/widgets/popup_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/utils/widgets/popup_sheet.dart';
-import 'package:campus_app/utils/widgets/campus_selection.dart';
+import 'package:campus_app/l10n/l10n.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
 
 /// This widget displays the preference options that are available for the mensa
 /// page and is used in the [SnappingSheet] widget.
@@ -46,7 +48,7 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
   @override
   Widget build(BuildContext context) {
     return PopupSheet(
-      title: 'Präferenzen',
+      title: AppLocalizations.of(context)!.mealPreferences,
       onClose: () {
         widget.onClose(_selectedPreferences);
         Navigator.pop(context);
@@ -62,13 +64,17 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 10),
               child: Text(
-                'Ausschließlich',
+                AppLocalizations.of(context)!.preferencesExclusive,
                 textAlign: TextAlign.left,
                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
               ),
             ),
             SelectionItemRow(
-              selectionItemTitles: const ['Vegetarisch', 'Vegan', 'Halal'],
+              selectionItemTitles: [
+                AppLocalizations.of(context)!.preferencesVegetarian,
+                AppLocalizations.of(context)!.preferencesVegan,
+                AppLocalizations.of(context)!.preferencesHalal,
+              ],
               selectionItemShortcut: const ['V', 'VG', 'H'],
               selections: [
                 _selectedPreferences.contains('V'),
@@ -81,13 +87,17 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
             Padding(
               padding: const EdgeInsets.only(top: 30, bottom: 10),
               child: Text(
-                'Vermeiden von',
+                AppLocalizations.of(context)!.preferencesAvoid,
                 textAlign: TextAlign.left,
                 style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
               ),
             ),
             SelectionItemRow(
-              selectionItemTitles: const ['Alkohol', 'Fisch', 'Geflügel'],
+              selectionItemTitles: [
+                AppLocalizations.of(context)!.preferencesAlcohol,
+                AppLocalizations.of(context)!.preferencesFish,
+                AppLocalizations.of(context)!.preferencesPoultry,
+              ],
               selectionItemShortcut: const ['A', 'F', 'G'],
               selections: [
                 _selectedPreferences.contains('A'),
@@ -97,7 +107,11 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
               onSelected: selectItem,
             ),
             SelectionItemRow(
-              selectionItemTitles: const ['Lamm', 'Rind', 'Schwein'],
+              selectionItemTitles: [
+                AppLocalizations.of(context)!.preferencesLamb,
+                AppLocalizations.of(context)!.preferencesBeef,
+                AppLocalizations.of(context)!.preferencesPork,
+              ],
               selectionItemShortcut: const ['L', 'R', 'S'],
               selections: [
                 _selectedPreferences.contains('L'),
@@ -107,7 +121,7 @@ class _PreferencesPopupState extends State<PreferencesPopup> {
               onSelected: selectItem,
             ),
             SelectionItemRow(
-              selectionItemTitles: const ['Wild'],
+              selectionItemTitles: [AppLocalizations.of(context)!.preferencesGame],
               selectionItemShortcut: const ['W'],
               selections: [_selectedPreferences.contains('W')],
               onSelected: selectItem,

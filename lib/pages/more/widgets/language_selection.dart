@@ -1,40 +1,67 @@
-import 'package:campus_app/core/backend/entities/publisher_entity.dart';
-import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:locale_names/locale_names.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class CampusFilterSelection extends StatefulWidget {
-  /// Holds all available filters
-  final List<Publisher> filters;
-  final List<bool> selections;
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/themes.dart';
 
-  final void Function(Publisher) onSelected;
+// ignore: must_be_immutable
+class LanguageSelection extends StatefulWidget {
+  final List<Locale> availableLocales;
 
-  const CampusFilterSelection({
-    super.key,
-    required this.filters,
-    required this.onSelected,
-    this.selections = const [],
-  });
+  final Function(Locale) saveSelection;
+
+  /// Can be given to show previously selected studies
+  Locale selectedLocale;
+
+  LanguageSelection({
+    Key? key,
+    required this.availableLocales,
+    required this.saveSelection,
+    this.selectedLocale = const Locale('de'),
+  }) : super(key: key);
 
   @override
-  State<CampusFilterSelection> createState() => _CampusFilterSelectionState();
+  State<LanguageSelection> createState() => _LanguageSelectionState();
+}
+
+class _LanguageSelectionState extends State<LanguageSelection> {
+  void selectItem(Locale selected) {
+    setState(() {
+      widget.selectedLocale = selected;
+    });
+    widget.saveSelection(selected);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      physics: const BouncingScrollPhysics(),
+      itemCount: widget.availableLocales.length,
+      itemBuilder: (context, index) => LanguageSelectionItem(
+        locale: widget.availableLocales[index],
+        onTap: selectItem,
+        isActive: widget.selectedLocale == widget.availableLocales[index],
+      ),
+    );
+  }
 }
 
 /// This widget displays one selectable option in a list
-class CampusFilterSelectionItem extends StatelessWidget {
-  final Publisher publisher;
+class LanguageSelectionItem extends StatelessWidget {
+  final Locale locale;
 
   /// The function that should be called when tapped
-  final void Function(Publisher) onTap;
+  final void Function(Locale) onTap;
 
   /// Wether the widget is selected or not
   final bool isActive;
 
-  const CampusFilterSelectionItem({
+  const LanguageSelectionItem({
     super.key,
-    required this.publisher,
+    required this.locale,
     required this.onTap,
     this.isActive = false,
   });
@@ -42,19 +69,19 @@ class CampusFilterSelectionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4, left: 12, right: 12),
+      padding: const EdgeInsets.only(bottom: 4),
       child: Material(
         color: isActive
             ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                 ? const Color.fromRGBO(245, 246, 250, 1)
                 : const Color.fromRGBO(34, 40, 54, 1)
-            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
+            : Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.background,
         borderRadius: BorderRadius.circular(6),
         child: InkWell(
           splashColor: const Color.fromRGBO(0, 0, 0, 0.06),
           highlightColor: const Color.fromRGBO(0, 0, 0, 0.04),
           borderRadius: BorderRadius.circular(6),
-          onTap: () => onTap(publisher),
+          onTap: () => onTap(locale),
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Row(
@@ -93,7 +120,7 @@ class CampusFilterSelectionItem extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16),
                     child: Text(
-                      publisher.name,
+                      locale.displayLanguageIn(Provider.of<SettingsHandler>(context).currentSettings.locale),
                       style: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                           ? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelMedium!.copyWith(
                                 fontSize: 15,
@@ -103,7 +130,7 @@ class CampusFilterSelectionItem extends StatelessWidget {
                                 fontSize: 15,
                                 color: Colors.white,
                               ),
-                      overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.fade,
                       maxLines: 1,
                       softWrap: false,
                     ),
@@ -113,22 +140,6 @@ class CampusFilterSelectionItem extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _CampusFilterSelectionState extends State<CampusFilterSelection> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      physics: const BouncingScrollPhysics(),
-      itemCount: widget.filters.length,
-      itemBuilder: (context, index) => CampusFilterSelectionItem(
-        publisher: widget.filters[index],
-        onTap: widget.onSelected,
-        isActive: widget.selections[index],
       ),
     );
   }

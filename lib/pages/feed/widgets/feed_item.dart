@@ -1,21 +1,19 @@
 import 'dart:io';
 
-import 'package:campus_app/pages/more/in_app_web_view_page.dart';
-import 'package:dismissible_page/dismissible_page.dart';
-import 'package:flutter/material.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:get_thumbnail_video/video_thumbnail.dart';
-
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/feed/news/news_details_page.dart';
-import 'package:campus_app/utils/widgets/styled_html.dart';
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+import 'package:campus_app/utils/widgets/styled_html.dart';
+import 'package:dismissible_page/dismissible_page.dart';
+import 'package:flutter/material.dart';
+import 'package:get_thumbnail_video/video_thumbnail.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 /// This widget displays a news item in the news feed page.
 
@@ -102,21 +100,8 @@ class FeedItem extends StatefulWidget {
 class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
   File? videoThumbnailFile;
 
-  /// Generate the thumbnail of a video
-  Future<void> generateVideoThumbnail(String? videoUrl) async {
-    if (videoUrl == null) return;
-
-    final file = await VideoThumbnail.thumbnailFile(
-      video: videoUrl,
-      thumbnailPath: (await getTemporaryDirectory()).path,
-      maxHeight: 250,
-      quality: 80,
-    );
-
-    setState(() {
-      videoThumbnailFile = File(file.path);
-    });
-  }
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -131,10 +116,7 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
 
     void openDetailsPage() {
       if (widget.webViewUrl != null && widget.webViewUrl!.isNotEmpty) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)),
-        );
+        Navigator.push(context, MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)));
       } else {
         if (widget.event != null) {
           context.pushTransparentRoute(CalendarDetailPage(event: widget.event!));
@@ -179,17 +161,14 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
                   SizedBox(
                     height: widget.image == null && videoThumbnailFile != null ? 230 : null,
                     child: Hero(
-                      tag: 'news_details_page_hero_tag',
+                      tag: UniqueKey(),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: widget.image == null && videoThumbnailFile != null
                             ? Stack(
                                 fit: StackFit.expand,
                                 children: [
-                                  Image.file(
-                                    videoThumbnailFile!,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  Image.file(videoThumbnailFile!, fit: BoxFit.cover),
                                   Align(
                                     child: Container(
                                       height: 60,
@@ -219,20 +198,15 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     margin: const EdgeInsets.only(right: 4, bottom: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+                    decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(15)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           month,
-                          style: Provider.of<ThemesNotifier>(context)
-                              .currentThemeData
-                              .textTheme
-                              .headlineMedium
-                              ?.copyWith(fontSize: 14),
+                          style: Provider.of<ThemesNotifier>(
+                            context,
+                          ).currentThemeData.textTheme.headlineMedium?.copyWith(fontSize: 14),
                         ),
                         Text(
                           day,
@@ -280,6 +254,19 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  /// Generate the thumbnail of a video
+  Future<void> generateVideoThumbnail(String? videoUrl) async {
+    if (videoUrl == null) return;
+
+    final file = await VideoThumbnail.thumbnailFile(
+      video: videoUrl,
+      thumbnailPath: (await getTemporaryDirectory()).path,
+      maxHeight: 250,
+      quality: 80,
+    );
+
+    setState(() {
+      videoThumbnailFile = File(file.path);
+    });
+  }
 }
