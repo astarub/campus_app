@@ -7,7 +7,7 @@ import 'package:flutter_onboarding/flutter_onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:video_player/video_player.dart';
+import 'package:flutter_videoplayer/flutter_videoplayer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class PathfinderOnboardingPage extends StatefulWidget {
@@ -32,15 +32,15 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
   final GlobalKey onboardingSliderKey = GlobalKey();
 
   // Declare controllers for the onboarding videos
-  late VideoPlayerController _coverVideoController;
+  late CachedVideoPlayerPlusController _coverVideoController;
   late Future<void> _initializeVideoPlayerFutureForCoverVideo;
-  late VideoPlayerController _stepOneVideoController;
+  late CachedVideoPlayerPlusController _stepOneVideoController;
   late Future<void> _initializeVideoPlayerFutureForStepOneVideo;
-  late VideoPlayerController _stepTwoVideoController;
+  late CachedVideoPlayerPlusController _stepTwoVideoController;
   late Future<void> _initializeVideoPlayerFutureForStepTwoVideo;
-  late VideoPlayerController _stepThreeVideoController;
+  late CachedVideoPlayerPlusController _stepThreeVideoController;
   late Future<void> _initializeVideoPlayerFutureForStepThreeVideo;
-  late VideoPlayerController _stepFourVideoController;
+  late CachedVideoPlayerPlusController _stepFourVideoController;
   late Future<void> _initializeVideoPlayerFutureForStepFourVideo;
   late List<String> paths;
 
@@ -56,19 +56,19 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
     ];
 
     // Initialize the video controllers
-    _coverVideoController = VideoPlayerController.asset(paths[0]);
+    _coverVideoController = CachedVideoPlayerPlusController.asset(paths[0]);
     _initializeVideoPlayerFutureForCoverVideo = _coverVideoController.initialize();
 
-    _stepOneVideoController = VideoPlayerController.asset(paths[1]);
+    _stepOneVideoController = CachedVideoPlayerPlusController.asset(paths[1]);
     _initializeVideoPlayerFutureForStepOneVideo = _stepOneVideoController.initialize();
 
-    _stepTwoVideoController = VideoPlayerController.asset(paths[2]);
+    _stepTwoVideoController = CachedVideoPlayerPlusController.asset(paths[2]);
     _initializeVideoPlayerFutureForStepTwoVideo = _stepTwoVideoController.initialize();
 
-    _stepThreeVideoController = VideoPlayerController.asset(paths[3]);
+    _stepThreeVideoController = CachedVideoPlayerPlusController.asset(paths[3]);
     _initializeVideoPlayerFutureForStepThreeVideo = _stepThreeVideoController.initialize();
 
-    _stepFourVideoController = VideoPlayerController.asset(paths[4]);
+    _stepFourVideoController = CachedVideoPlayerPlusController.asset(paths[4]);
     _initializeVideoPlayerFutureForStepFourVideo = _stepFourVideoController.initialize();
   }
 
@@ -205,21 +205,21 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                         future: _initializeVideoPlayerFutureForCoverVideo,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.done) {
-                            // If the VideoPlayerController has finished initialization, use
+                            // If the CachedVideoPlayerPlusController has finished initialization, use
                             // the data it provides to limit the aspect ratio of the video.
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(57, 20, 57, 75),
                               child: AspectRatio(
                                 aspectRatio: _coverVideoController.value.aspectRatio,
-                                // Use the VideoPlayer widget to display the video.
+                                // Use the CachedVideoPlayerPlus widget to display the video.
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: VideoPlayer(_coverVideoController),
+                                  child: CachedVideoPlayerPlus(_coverVideoController),
                                 ),
                               ),
                             );
                           } else {
-                            // If the VideoPlayerController is still initializing, show a
+                            // If the CachedVideoPlayerPlusController is still initializing, show a
                             // loading spinner.
                             return const Center(
                               child: CircularProgressIndicator(),
@@ -280,21 +280,21 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                         future: _initializeVideoPlayerFutureForStepOneVideo,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.done) {
-                            // If the VideoPlayerController has finished initialization, use
+                            // If the CachedVideoPlayerPlusController has finished initialization, use
                             // the data it provides to limit the aspect ratio of the video.
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(30, 20, 30, 75),
                               child: AspectRatio(
                                 aspectRatio: _stepOneVideoController.value.aspectRatio,
-                                // Use the VideoPlayer widget to display the video.
+                                // Use the CachedVideoPlayerPlus widget to display the video.
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: VideoPlayer(_stepOneVideoController),
+                                  child: CachedVideoPlayerPlus(_stepOneVideoController),
                                 ),
                               ),
                             );
                           } else {
-                            // If the VideoPlayerController is still initializing, show a
+                            // If the CachedVideoPlayerPlusController is still initializing, show a
                             // loading spinner.
                             return const Center(
                               child: CircularProgressIndicator(),
@@ -355,21 +355,21 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                         future: _initializeVideoPlayerFutureForStepTwoVideo,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.done) {
-                            // If the VideoPlayerController has finished initialization, use
+                            // If the CachedVideoPlayerPlusController has finished initialization, use
                             // the data it provides to limit the aspect ratio of the video.
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(30, 20, 30, 75),
                               child: AspectRatio(
                                 aspectRatio: _stepTwoVideoController.value.aspectRatio,
-                                // Use the VideoPlayer widget to display the video.
+                                // Use the CachedVideoPlayerPlus widget to display the video.
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: VideoPlayer(_stepTwoVideoController),
+                                  child: CachedVideoPlayerPlus(_stepTwoVideoController),
                                 ),
                               ),
                             );
                           } else {
-                            // If the VideoPlayerController is still initializing, show a
+                            // If the CachedVideoPlayerPlusController is still initializing, show a
                             // loading spinner.
                             return const Center(
                               child: CircularProgressIndicator(),
@@ -432,21 +432,21 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                         future: _initializeVideoPlayerFutureForStepThreeVideo,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.done) {
-                            // If the VideoPlayerController has finished initialization, use
+                            // If the CachedVideoPlayerPlusController has finished initialization, use
                             // the data it provides to limit the aspect ratio of the video.
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(30, 20, 30, 75),
                               child: AspectRatio(
                                 aspectRatio: _stepThreeVideoController.value.aspectRatio,
-                                // Use the VideoPlayer widget to display the video.
+                                // Use the CachedVideoPlayerPlus widget to display the video.
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: VideoPlayer(_stepThreeVideoController),
+                                  child: CachedVideoPlayerPlus(_stepThreeVideoController),
                                 ),
                               ),
                             );
                           } else {
-                            // If the VideoPlayerController is still initializing, show a
+                            // If the CachedVideoPlayerPlusController is still initializing, show a
                             // loading spinner.
                             return const Center(
                               child: CircularProgressIndicator(),
@@ -507,21 +507,21 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                         future: _initializeVideoPlayerFutureForStepFourVideo,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.done) {
-                            // If the VideoPlayerController has finished initialization, use
+                            // If the CachedVideoPlayerPlusController has finished initialization, use
                             // the data it provides to limit the aspect ratio of the video.
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(30, 20, 30, 75),
                               child: AspectRatio(
                                 aspectRatio: _stepFourVideoController.value.aspectRatio,
-                                // Use the VideoPlayer widget to display the video.
+                                // Use the CachedVideoPlayerPlus widget to display the video.
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: VideoPlayer(_stepFourVideoController),
+                                  child: CachedVideoPlayerPlus(_stepFourVideoController),
                                 ),
                               ),
                             );
                           } else {
-                            // If the VideoPlayerController is still initializing, show a
+                            // If the CachedVideoPlayerPlusController is still initializing, show a
                             // loading spinner.
                             return const Center(
                               child: CircularProgressIndicator(),
