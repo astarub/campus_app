@@ -26,9 +26,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
   /// Öffnet einen Link - übernimmt die Logik aus deinem `MorePage`-Beispiel
   /// (extern oder In-App).
   void openLink(BuildContext context, String url) async {
-    final useExternal = Provider.of<SettingsHandler>(context, listen: false)
-        .currentSettings
-        .useExternalBrowser;
+    final useExternal = Provider.of<SettingsHandler>(context, listen: false).currentSettings.useExternalBrowser;
 
     if (useExternal ||
         url.contains('instagram') ||
@@ -65,10 +63,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
           builder: (_, controller) {
             return Container(
               decoration: BoxDecoration(
-                color: Provider.of<ThemesNotifier>(this.context)
-                    .currentThemeData
-                    .colorScheme
-                    .surface,
+                color: Provider.of<ThemesNotifier>(this.context).currentThemeData.colorScheme.surface,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
               ),
               child: ListView(
@@ -79,7 +74,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                   Center(
                     child: BarcodeWidget(
                       data: qrData,
-                      barcode: Barcode.qrCode(),  // Generate QR code
+                      barcode: Barcode.qrCode(), // Generate QR code
                       width: 200,
                       height: 200,
                     ),
@@ -92,7 +87,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                       child: Column(
                         children: [
                           Text(
-                            'Zusätzlicher Link:', 
+                            'Zusätzlicher Link:',
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: 8),
@@ -132,6 +127,10 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
     final source = deal['source'];
     final url = deal['url']; // Link
     final qrCodeData = deal['qrCodeData']; // QR-Code
+    //Nutzungslogik
+    final int maxUses = deal['maxUses'] ?? 1;
+    final int usedCount = deal['usedCount'] ?? 0;
+    final bool isValid = usedCount < maxUses;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -237,36 +236,62 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                       'Hier könnte eine ausführlichere Beschreibung des Coupons oder '
                       'besondere Teilnahmebedingungen, Einlösevoraussetzungen etc. stehen.',
                     ),
+                    const SizedBox(height: 40),
+                    //Anzeige, ob Gutschein noch gültig ist (Nutzungsstatus)
+                    Text(
+                      isValid
+                          ? 'Gutschein gültig (${usedCount} von ${maxUses} verwendet)'
+                          : 'Gutschein nicht mehr gültig',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: isValid ? Colors.green : Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
 
                     const SizedBox(height: 40),
 
                     // --- Button-Bereich (Link / QR / beides) ---
                     Align(
                       alignment: Alignment.center,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // 1) Wenn beides vorhanden: QR BottomSheet mit Link darunter
-                          if (qrCodeData != null && url != null) {
-                            showQrCodeBottomSheet(context, qrCodeData, url: url);
+                      child: isValid //Wenn der Gutschein gültig ist ...
+                          ? ElevatedButton(
+                              onPressed: () {
+                                // 1. Aktion ausführen / Gutschein nutzen
+                                //Zeige QR-Code + Link
+                                if (qrCodeData != null && url != null) {
+                                  showQrCodeBottomSheet(context, qrCodeData, url: url);
+                                }
+                                //Nur QR-Code vorhanden
+                                else if (qrCodeData != null) {
+                                  showQrCodeBottomSheet(context, qrCodeData);
+                                }
+                                //Nur Link vorhanden
+                                else if (url != null) {
+                                  openLink(context, url);
+                                }
+                                //Weder QR-Code noch Link vorhanden
+                                else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Keine weiteren Informationen verfügbar.'),
+                                    ),
+                                  );
+                                }
 
-                            // 2) Nur QR-Code vorhanden: direkt QR BottomSheet
-                          } else if (qrCodeData != null && url == null) {
-                            showQrCodeBottomSheet(context, qrCodeData);
+                                // 2. Nutzung hochzählen
+                                setState(() {
+                                  deal['usedCount'] = usedCount + 1;
+                                });
+                              },
+                              child: const Text('Jetzt einlösen'),
+                            )
 
-                            // 3) Nur Link vorhanden: openLink
-                          } else if (url != null && qrCodeData == null) {
-                            openLink(context, url);
-                          } else {
-                            // Weder Link noch QR-Code
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Keine weiteren Informationen verfügbar.'),
-                              ),
-                            );
-                          }
-                        },
-                        child: const Text('Jetzt einlösen'),
-                      ),
+                          //Wenn der Gutschein nicht mehr gültig ist ...
+                          : const ElevatedButton(
+                              onPressed: null, //Button deaktivieren (grau & nicht klickbar)
+                              child: Text('Nicht mehr gültig'),
+                            ),
                     ),
                   ],
                 ),

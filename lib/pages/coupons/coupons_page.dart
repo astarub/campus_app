@@ -19,40 +19,36 @@ class _CouponsPageState extends State<CouponsPage> {
   bool showSearchBar = false;
   String searchWord = '';
 
-  List<String> categories = [
-    'Alle',
-    'Technik',
-    'Mode',
-    'Reisen',
-    'Essen',
-    'Sonstiges',
-    'Faiv'
-  ];
+  List<String> categories = ['Alle', 'Technik', 'Mode', 'Reisen', 'Essen', 'Sonstiges', 'Faiv'];
   String selectedCategory = 'Alle';
 
   List<Map<String, dynamic>> deals = [
-  {
-    'title': 'Handy Rabatt',
-    'oldPrice': 555.40,
-    'newPrice': 499.00,
-    'discount': '10%',
-    'image': 'assets/img/iphone_coupon.jpg',
-    'category': 'Technik',
-    'source': 'Markt',
-    'url': 'https://example.com/deal1',
-    'qrCodeData': 'https://example.com/deal1', // Beispiel: URL, die in QR-Code kodiert wird
-  },
-  {
-    'title': 'Hose und Hemd zu Sonderpreis',
-    'oldPrice': 50,
-    'newPrice': null,
-    'discount': '23%',
-    'image': 'assets/img/mode_coupon.jpg',
-    'category': 'Mode',
-    'source': 'Kleidungsladen',
-    'url': 'https://example.com/deal2',
-    'qrCodeData': null, // kein QR-Code vorhanden
-  },
+    {
+      'title': 'Handy Rabatt',
+      'oldPrice': 555.40,
+      'newPrice': 499.00,
+      'discount': '10%',
+      'image': 'assets/img/iphone_coupon.jpg',
+      'category': 'Technik',
+      'source': 'Markt',
+      'url': 'https://example.com/deal1',
+      'qrCodeData': 'https://example.com/deal1', // Beispiel: URL, die in QR-Code kodiert wird
+      'maxUses': 3,
+      'usedCount': 0,
+    },
+    {
+      'title': 'Hose und Hemd zu Sonderpreis',
+      'oldPrice': 50,
+      'newPrice': null,
+      'discount': '23%',
+      'image': 'assets/img/mode_coupon.jpg',
+      'category': 'Mode',
+      'source': 'Kleidungsladen',
+      'url': 'https://example.com/deal2',
+      'qrCodeData': null, // kein QR-Code vorhanden
+      'maxUses': 3,
+      'usedCount': 0,
+    },
     {
       'title': 'Gratis Pfankuchen zum Frühstück',
       'oldPrice': null, // No old price
@@ -63,6 +59,8 @@ class _CouponsPageState extends State<CouponsPage> {
       'source': 'Café XY',
       'url': 'https://example.com/deal3',
       'qrCodeData': null, // kein QR-Code vorhanden
+      'maxUses': 3,
+      'usedCount': 0,
     },
     {
       'title': 'Kostenlose Reise nach Spanien Gewinnen',
@@ -74,7 +72,21 @@ class _CouponsPageState extends State<CouponsPage> {
       'source': 'Reisebüro',
       'url': 'https://www.epicgames.com',
       'qrCodeData': null, // kein QR-Code vorhanden
+      'maxUses': 3,
+      'usedCount': 0,
     },
+    {
+      'title': 'Test-Coupon: schon verbraucht',
+      'source': 'Supermarkt',
+      'maxUses': 2,
+      'usedCount': 2,
+    },
+    {
+      'title': 'Test-Coupon: nur 1x nutzbar',
+      'source': 'Bäckerei XY',
+      'maxUses': 1,
+      'usedCount': 0,
+    }
   ];
 
   List<Map<String, dynamic>> favorites = [];
@@ -86,17 +98,11 @@ class _CouponsPageState extends State<CouponsPage> {
 
     List<Map<String, dynamic>> filtered = deals;
     if (selectedCategory != 'Alle') {
-      filtered =
-          filtered.where((d) => d['category'] == selectedCategory).toList();
+      filtered = filtered.where((d) => d['category'] == selectedCategory).toList();
     }
 
     if (searchWord.isNotEmpty) {
-      filtered = filtered
-          .where((d) => d['title']
-              .toString()
-              .toUpperCase()
-              .contains(searchWord.toUpperCase()))
-          .toList();
+      filtered = filtered.where((d) => d['title'].toString().toUpperCase().contains(searchWord.toUpperCase())).toList();
     }
 
     return filtered;
@@ -121,10 +127,7 @@ class _CouponsPageState extends State<CouponsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Provider.of<ThemesNotifier>(context)
-          .currentThemeData
-          .colorScheme
-          .surface,
+      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
@@ -146,10 +149,7 @@ class _CouponsPageState extends State<CouponsPage> {
                     Align(
                       child: Text(
                         'Coupons & Rabatte',
-                        style: Provider.of<ThemesNotifier>(context)
-                            .currentThemeData
-                            .textTheme
-                            .displayMedium,
+                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       ),
                     ),
                   ],
@@ -160,8 +160,7 @@ class _CouponsPageState extends State<CouponsPage> {
               duration: const Duration(milliseconds: 200),
               child: showSearchBar
                   ? Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       child: Row(
                         children: [
                           Expanded(
@@ -172,9 +171,7 @@ class _CouponsPageState extends State<CouponsPage> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                   borderSide: BorderSide(
-                                    color: Provider.of<ThemesNotifier>(context)
-                                        .currentThemeData
-                                        .dividerColor,
+                                    color: Provider.of<ThemesNotifier>(context).currentThemeData.dividerColor,
                                   ),
                                 ),
                                 suffixIcon: IconButton(
@@ -212,8 +209,7 @@ class _CouponsPageState extends State<CouponsPage> {
                               child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: categories.length,
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(width: 10),
+                                separatorBuilder: (context, index) => const SizedBox(width: 10),
                                 itemBuilder: (context, index) {
                                   final cat = categories[index];
                                   final isSelected = cat == selectedCategory;
@@ -224,16 +220,11 @@ class _CouponsPageState extends State<CouponsPage> {
                                       });
                                     },
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
                                         color: isSelected
-                                            ? Provider.of<ThemesNotifier>(
-                                                    context)
-                                                .currentThemeData
-                                                .primaryColor
-                                            : Provider.of<ThemesNotifier>(
-                                                    context)
+                                            ? Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor
+                                            : Provider.of<ThemesNotifier>(context)
                                                 .currentThemeData
                                                 .colorScheme
                                                 .surfaceContainerHighest,
@@ -243,13 +234,11 @@ class _CouponsPageState extends State<CouponsPage> {
                                         cat,
                                         style: TextStyle(
                                           color: isSelected
-                                              ? Provider.of<ThemesNotifier>(
-                                                      context)
+                                              ? Provider.of<ThemesNotifier>(context)
                                                   .currentThemeData
                                                   .colorScheme
                                                   .onPrimary
-                                              : Provider.of<ThemesNotifier>(
-                                                      context)
+                                              : Provider.of<ThemesNotifier>(context)
                                                   .currentThemeData
                                                   .colorScheme
                                                   .onSurfaceVariant,
@@ -285,102 +274,101 @@ class _CouponsPageState extends State<CouponsPage> {
   }
 
   Widget _buildDealCard(BuildContext context, Map<String, dynamic> deal) {
-  final theme = Provider.of<ThemesNotifier>(context).currentThemeData;
-  final isFavorite = favorites.contains(deal);
+    final theme = Provider.of<ThemesNotifier>(context).currentThemeData;
+    final isFavorite = favorites.contains(deal);
 
-  return Card(
-    elevation: 2,
-    margin: const EdgeInsets.only(bottom: 16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          children: [
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: deal['image'] != null
-                  ? Image.asset(
-                      deal['image'],
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    )
-                  : Container(
-                      color: theme.colorScheme.surfaceContainerHighest),
-            ),
-            Positioned(
-              top: 8,
-              right: 8,
-              child: IconButton(
-                icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: isFavorite ? Colors.blue : theme.colorScheme.onSurface,
-                ),
-                onPressed: () => toggleFavorite(deal),
-              ),
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            deal['title'] ?? '',
-            style: theme.textTheme.titleMedium,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
             children: [
-              Row(
-                children: [
-                  if (deal['newPrice'] != null) ...[
-                    if (deal['oldPrice'] != null)
-                      Text(
-                        '${deal['oldPrice']}€',
-                        style: TextStyle(
-                          decoration: TextDecoration.lineThrough,
-                          color: theme.colorScheme.onSurface.withOpacity(0.5),
-                        ),
-                      ),
-                    const SizedBox(width: 8),
-                    Text(
-                      '${deal['newPrice']}€',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
-                  ] else
-                    Text(
-                      deal['source'] ?? 'Unbekannte Quelle',
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color: theme.colorScheme.onSurface.withOpacity(0.7),
-                      ),
-                    ),
-                ],
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: deal['image'] != null
+                    ? Image.asset(
+                        deal['image'],
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      )
+                    : Container(color: theme.colorScheme.surfaceContainerHighest),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // Here we navigate to the detail page,
-                  // passing our `deal` as an argument
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CouponDetailPage(deal: deal),
-                    ),
-                  );
-                },
-                child: const Text('Zum Angebot'),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: IconButton(
+                  icon: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? Colors.blue : theme.colorScheme.onSurface,
+                  ),
+                  onPressed: () => toggleFavorite(deal),
+                ),
               ),
             ],
           ),
-        ),
-        const SizedBox(height: 8),
-      ],
-    ),
-  );
-}
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              deal['title'] ?? '',
+              style: theme.textTheme.titleMedium,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    if (deal['newPrice'] != null) ...[
+                      if (deal['oldPrice'] != null)
+                        Text(
+                          '${deal['oldPrice']}€',
+                          style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            color: theme.colorScheme.onSurface.withOpacity(0.5),
+                          ),
+                        ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${deal['newPrice']}€',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                    ] else
+                      Text(
+                        deal['source'] ?? 'Unbekannte Quelle',
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: theme.colorScheme.onSurface.withOpacity(0.7),
+                        ),
+                      ),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Here we navigate to the detail page,
+                    // passing our `deal` as an argument
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CouponDetailPage(deal: deal),
+                      ),
+                    );
+                  },
+                  child: const Text('Zum Angebot'),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
 }
