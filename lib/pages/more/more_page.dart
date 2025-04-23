@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:campus_app/pages/coupons/coupons_page.dart';
 import 'package:campus_app/pages/more/privacy_policy_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -210,6 +211,21 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             },
                           ),
                           // Privacy
+                          ExternalLinkButton(
+                                title: 'Coupons & Rabatte',
+                                leadingIconPath: 'assets/img/icons/info.svg',
+                                trailingIconPath: 'assets/img/icons/chevron-right.svg',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CouponsPage(
+                                      mainNavigatorKey: widget.mainNavigatorKey,
+                                     ),
+                                    ),
+                                  );
+                                },
+                              ),
                           ExternalLinkButton(
                             title: 'Datenschutz',
                             leadingIconPath: 'assets/img/icons/info.svg',
