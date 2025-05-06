@@ -32,7 +32,8 @@ class RaumfinderPage extends StatefulWidget {
   State<RaumfinderPage> createState() => RaumfinderPageState();
 }
 
-class RaumfinderPageState extends State<RaumfinderPage> {
+class RaumfinderPageState extends State<RaumfinderPage>
+    with AutomaticKeepAliveClientMixin {
   LocationData? currentLocation;
   FocusNode focusNode = FocusNode();
   final TextEditingController searchController = TextEditingController();
@@ -42,9 +43,12 @@ class RaumfinderPageState extends State<RaumfinderPage> {
   final PathfinderUtils utils = sl<PathfinderUtils>();
   List<LatLng> waypoints = [];
   bool isFirstTime = false;
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // <-- add this line
     // Display guide if first time use
     if (isFirstTime) {
       return PathfinderOnboardingPage(
@@ -105,8 +109,12 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                         ),
                       ),
                       markerSize: const Size.square(40),
-                      accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withOpacity(0.1),
-                      headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withOpacity(0.8),
+                      accuracyCircleColor:
+                          const Color.fromARGB(255, 113, 143, 243)
+                              .withOpacity(0.1),
+                      headingSectorColor:
+                          const Color.fromARGB(255, 118, 221, 247)
+                              .withOpacity(0.8),
                       headingSectorRadius: 120,
                     ),
                     moveAnimationDuration: Duration.zero,
@@ -137,7 +145,9 @@ class RaumfinderPageState extends State<RaumfinderPage> {
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  color: Provider.of<ThemesNotifier>(context, listen: false)
+                              .currentTheme ==
+                          AppThemes.light
                       ? const Color.fromRGBO(245, 246, 250, 1)
                       : const Color.fromRGBO(34, 40, 54, 1),
                   borderRadius: BorderRadius.circular(15),
@@ -150,7 +160,8 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                         child: Autocomplete<String>(
                           optionsBuilder: (TextEditingValue textEditingValue) {
                             return predefinedLocations.keys.where(
-                              (String option) => option.toLowerCase().contains(textEditingValue.text.toLowerCase()),
+                              (String option) => option.toLowerCase().contains(
+                                  textEditingValue.text.toLowerCase()),
                             );
                           },
                           onSelected: changeSelectedLocation,
@@ -203,7 +214,9 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                                 border: InputBorder.none,
                                 hintText: 'Nach Gebäude Suchen',
                                 hintStyle: TextStyle(
-                                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                  color: Provider.of<ThemesNotifier>(context,
+                                                  listen: false)
+                                              .currentTheme ==
                                           AppThemes.light
                                       ? Colors.black
                                       : null,
@@ -220,15 +233,21 @@ class RaumfinderPageState extends State<RaumfinderPage> {
                       CampusIconButton(
                         iconPath: 'assets/img/icons/search.svg',
                         backgroundColorDark:
-                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            Provider.of<ThemesNotifier>(context, listen: false)
+                                        .currentTheme ==
+                                    AppThemes.light
                                 ? const Color.fromRGBO(245, 246, 250, 1)
                                 : const Color.fromRGBO(34, 40, 54, 1),
                         backgroundColorLight:
-                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            Provider.of<ThemesNotifier>(context, listen: false)
+                                        .currentTheme ==
+                                    AppThemes.light
                                 ? const Color.fromRGBO(245, 246, 250, 1)
                                 : const Color.fromRGBO(34, 40, 54, 1),
                         borderColorDark:
-                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            Provider.of<ThemesNotifier>(context, listen: false)
+                                        .currentTheme ==
+                                    AppThemes.light
                                 ? const Color.fromRGBO(245, 246, 250, 1)
                                 : const Color.fromRGBO(34, 40, 54, 1),
                         transparent: true,
@@ -250,11 +269,14 @@ class RaumfinderPageState extends State<RaumfinderPage> {
               MaterialPageRoute(builder: (context) => const IndoorNavigation()),
             );
           },
-          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+          backgroundColor:
+              Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
           child: SvgPicture.asset(
             'assets/img/icons/door-closed.svg',
             colorFilter: ColorFilter.mode(
-              Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+              Provider.of<ThemesNotifier>(context, listen: false)
+                          .currentTheme ==
+                      AppThemes.light
                   ? Colors.black
                   : const Color.fromRGBO(184, 186, 191, 1),
               BlendMode.srcIn,
@@ -295,12 +317,16 @@ class RaumfinderPageState extends State<RaumfinderPage> {
 
   Future<void> checkFirstTimeUser() async {
     setState(() {
-      isFirstTime = Provider.of<SettingsHandler>(context, listen: false).currentSettings.firstTimePathfinder;
+      isFirstTime = Provider.of<SettingsHandler>(context, listen: false)
+          .currentSettings
+          .firstTimePathfinder;
     });
 
     if (isFirstTime) {
       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-          Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(firstTimePathfinder: false);
+          Provider.of<SettingsHandler>(context, listen: false)
+              .currentSettings
+              .copyWith(firstTimePathfinder: false);
     }
   }
 
@@ -312,8 +338,8 @@ class RaumfinderPageState extends State<RaumfinderPage> {
     checkFirstTimeUser();
     addGraphEntriesToPredefinedLocations();
 
-    predefinedLocations =
-        Map.fromEntries(predefinedLocations.entries.toList()..sort((e1, e2) => e1.key.compareTo(e2.key)));
+    predefinedLocations = Map.fromEntries(predefinedLocations.entries.toList()
+      ..sort((e1, e2) => e1.key.compareTo(e2.key)));
   }
 
   void placeSymbol(String locationKey) {

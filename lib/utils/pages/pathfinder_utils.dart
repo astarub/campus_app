@@ -107,10 +107,10 @@ class PathfinderUtils {
       img.Image image, Offset position, String text, img.Color textColor) {
     if (text.contains("EN_")) return;
 
-    const int fontWidth = 7;
-    const int fontHeight = 16;
-    const int boxPadding = 8;
-    const int borderRadius = 8;
+    const int fontWidth = 12;
+    const int fontHeight = 24;
+    const int boxPadding = 10;
+    const int borderRadius = 10;
 
     final int textWidth = fontWidth * text.length;
     const int textHeight = fontHeight;
