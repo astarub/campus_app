@@ -58,4 +58,64 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get enter_totp => 'Bitte gib deinen Einmalcode (TOTP) ein.';
+
+  @override
+  String get walletTitle => 'Wallet';
+
+  @override
+  String get addSemesterTicket => 'Füge dein Semesterticket hinzu';
+
+  @override
+  String get rubEmergencyButton => 'Leitwarte der RUB';
+
+  @override
+  String get rubEmergencyNote => '24/7 besetzt, für jegliche Notfälle';
+
+  @override
+  String get germanySemesterTicket => 'Deutschlandsemesterticket';
+
+  @override
+  String get mensaBalanceTitle => 'Mensa Guthaben';
+
+  @override
+  String get balanceLabel => 'Guthaben';
+
+  @override
+  String get euroSymbol => '€';
+
+  @override
+  String get lastTransactionLabel => 'Letzte Abbuchung';
+
+  @override
+  String get scanCardTitle => 'Karte scannen';
+
+  @override
+  String get scanCardText => 'Halte deinen Studierendenausweis an dein Smartphone, um ihn zu scannen.';
+
+  @override
+  String get nfcDisabledTitle => 'NFC deaktiviert';
+
+  @override
+  String get nfcDisabledText => 'Um dein AKAFÖ Guthaben auslesen zu können, muss NFC aktiviert sein.';
+
+  @override
+  String get lastSavedBalance => 'Letztes Guthaben';
+
+  @override
+  String get lastSavedTransaction => 'Letzte gescannte Abbuchung';
+
+  @override
+  String get navFeed => 'Feed';
+
+  @override
+  String get navEvents => 'Veranstaltungen';
+
+  @override
+  String get navMensa => 'Mensa';
+
+  @override
+  String get navWallet => 'Wallet';
+
+  @override
+  String get navMore => 'Mehr';
 }

@@ -18,5 +18,27 @@
   "login_error": "Invalid input!",
   "login_success": "Successfully logged in!",
   "login_already": "Allready logged in.",
-  "enter_totp": "Please enter your TOTP."
+  "enter_totp": "Please enter your TOTP.",
+  "walletTitle": "Wallet",
+  "addSemesterTicket": "Add your semester ticket",
+  "rubEmergencyButton": "RUB Emergency Center",
+  "rubEmergencyNote": "Available 24/7 for any emergency",
+  "germanySemesterTicket": "Germany Semester Ticket",
+  "mensaBalanceTitle": "Mensa Balance",
+  "balanceLabel": "Balance",
+  "euroSymbol": "€",
+  "lastTransactionLabel": "Last transaction",
+  "scanCardTitle": "Scan your card",
+  "scanCardText": "Hold your student ID near your smartphone to scan it.",
+  "nfcDisabledTitle": "NFC disabled",
+  "nfcDisabledText": "To read your AKAFÖ balance, NFC must be enabled.",
+  "lastSavedBalance": "Last saved balance",
+  "lastSavedTransaction": "Last scanned transaction",
+   "navFeed": "Feed",
+  "navEvents": "Events",
+  "navMensa": "Mensa",
+  "navWallet": "Wallet",
+  "navMore": "More"
+
+
 }

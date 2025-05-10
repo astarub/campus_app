@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'dart:convert';
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -209,7 +210,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                     ),
                     Align(
                       child: Text(
-                        'Mensa Guthaben',
+                        AppLocalizations.of(context)!.mensaBalanceTitle ,
                         style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                       ),
                     ),
@@ -244,7 +245,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Guthaben: ',
+                                      AppLocalizations.of(context)!.balanceLabel + ": ",
                                       style:
                                           Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                                     ),
@@ -260,7 +261,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                       },
                                     ),
                                     Text(
-                                      ' €',
+                                      " ${AppLocalizations.of(context)!.euroSymbol}",
                                       style:
                                           Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
                                     ),
@@ -269,7 +270,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                 // Last transaction
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10),
-                                  child: Text('Letzte Abbuchung: -${lastTransaction.toStringAsFixed(2)} €'),
+                                  child: Text("${AppLocalizations.of(context)!.lastTransactionLabel}: -${lastTransaction.toStringAsFixed(2)} ${AppLocalizations.of(context)!.euroSymbol}"),
                                 ),
                               ],
                             ),
@@ -292,9 +293,9 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                                   )
                                 else
                                   Lottie.asset('assets/animations/nfc-dark.json'),
-                                const EmptyStatePlaceholder(
-                                  title: 'Karte scannen',
-                                  text: 'Halte deinen Studierendenausweis an dein Smartphone, um ihn zu scannen.',
+                                EmptyStatePlaceholder(
+                                  title: AppLocalizations.of(context)!.scanCardTitle,
+                                  text: AppLocalizations.of(context)!.scanCardText,
                                 ),
                               ],
                             ),
@@ -302,9 +303,9 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                         ],
                       ],
                     )
-                  : const EmptyStatePlaceholder(
-                      title: 'NFC deaktiviert',
-                      text: 'Um dein AKAFÖ Guthaben auslesen zu können, muss NFC aktiviert sein.',
+                  : EmptyStatePlaceholder(
+                      title: AppLocalizations.of(context)!.nfcDisabledTitle,
+                      text: AppLocalizations.of(context)!.nfcDisabledText,
                     ),
             ),
             if (Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance != null &&
@@ -315,10 +316,10 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
                 child: Column(
                   children: [
                     Text(
-                      'Letztes Guthaben: ${Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance} €',
+                      "${AppLocalizations.of(context)!.lastSavedBalance}: ${Provider.of<SettingsHandler>(context).currentSettings.lastMensaBalance} ${AppLocalizations.of(context)!.euroSymbol}",
                     ),
                     Text(
-                      'Letzte gescannte Abbuchung: -${Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction} €',
+                      "${AppLocalizations.of(context)!.lastSavedTransaction}: -${Provider.of<SettingsHandler>(context).currentSettings.lastMensaTransaction} ${AppLocalizations.of(context)!.euroSymbol}",
                     ),
                   ],
                 ),

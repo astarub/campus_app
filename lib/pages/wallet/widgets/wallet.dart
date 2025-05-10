@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,7 @@ import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
 import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+
 
 class CampusWallet extends StatelessWidget {
   const CampusWallet({super.key});
@@ -179,7 +181,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Deutschlandsemesterticket',
+                                      AppLocalizations.of(context)!.germanySemesterTicket,
                                       style: Provider.of<ThemesNotifier>(context)
                                           .currentThemeData
                                           .textTheme
@@ -259,7 +261,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      'Füge dein Semesterticket hinzu',
+                      AppLocalizations.of(context)!.addSemesterTicket,
                       style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
                     ),
                   ),

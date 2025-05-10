@@ -324,6 +324,7 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: Provider.of<SettingsHandler>(context).appLocale, //i add this for translation 
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,

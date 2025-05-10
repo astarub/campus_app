@@ -58,4 +58,64 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enter_totp => 'Please enter your TOTP.';
+
+  @override
+  String get walletTitle => 'Wallet';
+
+  @override
+  String get addSemesterTicket => 'Add your semester ticket';
+
+  @override
+  String get rubEmergencyButton => 'RUB Emergency Center';
+
+  @override
+  String get rubEmergencyNote => 'Available 24/7 for any emergency';
+
+  @override
+  String get germanySemesterTicket => 'Germany Semester Ticket';
+
+  @override
+  String get mensaBalanceTitle => 'Mensa Balance';
+
+  @override
+  String get balanceLabel => 'Balance';
+
+  @override
+  String get euroSymbol => '€';
+
+  @override
+  String get lastTransactionLabel => 'Last transaction';
+
+  @override
+  String get scanCardTitle => 'Scan your card';
+
+  @override
+  String get scanCardText => 'Hold your student ID near your smartphone to scan it.';
+
+  @override
+  String get nfcDisabledTitle => 'NFC disabled';
+
+  @override
+  String get nfcDisabledText => 'To read your AKAFÖ balance, NFC must be enabled.';
+
+  @override
+  String get lastSavedBalance => 'Last saved balance';
+
+  @override
+  String get lastSavedTransaction => 'Last scanned transaction';
+
+  @override
+  String get navFeed => 'Feed';
+
+  @override
+  String get navEvents => 'Events';
+
+  @override
+  String get navMensa => 'Mensa';
+
+  @override
+  String get navWallet => 'Wallet';
+
+  @override
+  String get navMore => 'More';
 }

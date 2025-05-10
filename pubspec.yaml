@@ -108,6 +108,8 @@ flutter_icons:
 
 flutter:
   assets:
+    - assets/img/icons/translate.png
+    - assets/img/icons/translation-icon.svg
     - assets/img/SplashScreen-logo.png
     - assets/img/SplashScreen-AStA-branding.png
     - assets/img/asta_logo.png

@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 
+import 'package:campus_app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           children: [
             // News Feed
             BottomNavBarItem(
-              title: 'Feed',
+              title: AppLocalizations.of(context)!.navFeed,
               imagePathActive: 'assets/img/icons/home-filled.png',
               imagePathInactive: 'assets/img/icons/home-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.feed),
@@ -55,7 +56,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             // Calendar
             BottomNavBarItem(
-              title: 'Events',
+              title: AppLocalizations.of(context)!.navFeed,
               imagePathActive: 'assets/img/icons/calendar-filled.png',
               imagePathInactive: 'assets/img/icons/calendar-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.events),
@@ -63,7 +64,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             // Mensa
             BottomNavBarItem(
-              title: 'Mensa',
+              title: AppLocalizations.of(context)!.navEvents,
               imagePathActive: 'assets/img/icons/mensa-filled.png',
               imagePathInactive: 'assets/img/icons/mensa-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.mensa),
@@ -71,7 +72,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             // Wallet
             BottomNavBarItem(
-              title: 'Wallet',
+              title:  AppLocalizations.of(context)!.navMensa,
               imagePathActive: 'assets/img/icons/wallet-filled.png',
               imagePathInactive: 'assets/img/icons/wallet-outlined.png',
               onTap: () => widget.onSelectedPage(PageItem.wallet),
@@ -79,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
             // More
             BottomNavBarItem(
-              title: 'Mehr',
+              title: AppLocalizations.of(context)!.navWallet,
               imagePathActive: 'assets/img/icons/more.png',
               imagePathInactive: 'assets/img/icons/more.png',
               onTap: () => widget.onSelectedPage(PageItem.more),

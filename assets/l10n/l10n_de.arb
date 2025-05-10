@@ -2,7 +2,7 @@
   "@@locale": "de",
 
   "helloWorld": "Hallo Welt!",
-
+  
   "serverFailureMessage": "Serverdaten konnten nicht geladen werden.",
   "generalFailureMessage": "Ein Fehler ist aufgetreten.",
   "errorMessage": "Fehler.",
@@ -18,5 +18,27 @@
   "login_error": "Ungültige Eingabe!",
   "login_success": "Erfolgreich angemeldet!",
   "login_already": "Du bist bereits angemeldet.",
-  "enter_totp": "Bitte gib deinen Einmalcode (TOTP) ein."
+  "enter_totp": "Bitte gib deinen Einmalcode (TOTP) ein.",
+    "walletTitle": "Wallet",
+  "addSemesterTicket": "Füge dein Semesterticket hinzu",
+  "rubEmergencyButton": "Leitwarte der RUB",
+  "rubEmergencyNote": "24/7 besetzt, für jegliche Notfälle",
+  "germanySemesterTicket": "Deutschlandsemesterticket",
+   "mensaBalanceTitle": "Mensa Guthaben",
+  "balanceLabel": "Guthaben",
+  "euroSymbol": "€",
+  "lastTransactionLabel": "Letzte Abbuchung",
+  "scanCardTitle": "Karte scannen",
+  "scanCardText": "Halte deinen Studierendenausweis an dein Smartphone, um ihn zu scannen.",
+  "nfcDisabledTitle": "NFC deaktiviert",
+  "nfcDisabledText": "Um dein AKAFÖ Guthaben auslesen zu können, muss NFC aktiviert sein.",
+  "lastSavedBalance": "Letztes Guthaben",
+  "lastSavedTransaction": "Letzte gescannte Abbuchung",
+  "navFeed": "Feed",
+  "navEvents": "Veranstaltungen",
+  "navMensa": "Mensa",
+  "navWallet": "Wallet",
+  "navMore": "Mehr"
+
+
 }

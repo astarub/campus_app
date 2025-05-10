@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'l10n_ar.dart';
 import 'l10n_de.dart';
 import 'l10n_en.dart';
 
@@ -91,6 +92,7 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('ar'),
     Locale('de'),
     Locale('en')
   ];
@@ -196,6 +198,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your TOTP.'**
   String get enter_totp;
+
+  /// No description provided for @walletTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get walletTitle;
+
+  /// No description provided for @addSemesterTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your semester ticket'**
+  String get addSemesterTicket;
+
+  /// No description provided for @rubEmergencyButton.
+  ///
+  /// In en, this message translates to:
+  /// **'RUB Emergency Center'**
+  String get rubEmergencyButton;
+
+  /// No description provided for @rubEmergencyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Available 24/7 for any emergency'**
+  String get rubEmergencyNote;
+
+  /// No description provided for @germanySemesterTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Germany Semester Ticket'**
+  String get germanySemesterTicket;
+
+  /// No description provided for @mensaBalanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mensa Balance'**
+  String get mensaBalanceTitle;
+
+  /// No description provided for @balanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get balanceLabel;
+
+  /// No description provided for @euroSymbol.
+  ///
+  /// In en, this message translates to:
+  /// **'€'**
+  String get euroSymbol;
+
+  /// No description provided for @lastTransactionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last transaction'**
+  String get lastTransactionLabel;
+
+  /// No description provided for @scanCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan your card'**
+  String get scanCardTitle;
+
+  /// No description provided for @scanCardText.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold your student ID near your smartphone to scan it.'**
+  String get scanCardText;
+
+  /// No description provided for @nfcDisabledTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'NFC disabled'**
+  String get nfcDisabledTitle;
+
+  /// No description provided for @nfcDisabledText.
+  ///
+  /// In en, this message translates to:
+  /// **'To read your AKAFÖ balance, NFC must be enabled.'**
+  String get nfcDisabledText;
+
+  /// No description provided for @lastSavedBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Last saved balance'**
+  String get lastSavedBalance;
+
+  /// No description provided for @lastSavedTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Last scanned transaction'**
+  String get lastSavedTransaction;
+
+  /// No description provided for @navFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Feed'**
+  String get navFeed;
+
+  /// No description provided for @navEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get navEvents;
+
+  /// No description provided for @navMensa.
+  ///
+  /// In en, this message translates to:
+  /// **'Mensa'**
+  String get navMensa;
+
+  /// No description provided for @navWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get navWallet;
+
+  /// No description provided for @navMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get navMore;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -207,7 +329,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['de', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['ar', 'de', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -218,6 +340,7 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'ar': return AppLocalizationsAr();
     case 'de': return AppLocalizationsDe();
     case 'en': return AppLocalizationsEn();
   }

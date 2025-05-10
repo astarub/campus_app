@@ -41,6 +41,26 @@ class SettingsHandler with ChangeNotifier {
       settingsJsonFile.writeAsString(json.encode(newSettings.toJson()));
     }
   }
+  //i add this for translation 
+  Locale get appLocale => Locale(_currentSettings.appLocale);
+
+void setLocale(String languageCode) {
+  _currentSettings = _currentSettings.copyWith(appLocale: languageCode);
+  notifyListeners();
+
+  // Save updated settings
+  if (_directoryPath == '') {
+    getApplicationDocumentsDirectory().then((Directory directory) {
+      _directoryPath = directory.path;
+      final File settingsJsonFile = File('$_directoryPath/settings.json');
+      settingsJsonFile.writeAsString(json.encode(_currentSettings.toJson()));
+    });
+  } else {
+    final File settingsJsonFile = File('$_directoryPath/settings.json');
+    settingsJsonFile.writeAsString(json.encode(_currentSettings.toJson()));
+  }
+}
+// hier end
 
   Settings get currentSettings => _currentSettings;
 }
@@ -67,7 +87,7 @@ class Settings {
   final double? lastMensaBalance;
   final double? lastMensaTransaction;
   final List<Map<String, dynamic>>? mensaRestaurantConfig;
-
+  final String appLocale; //i add this for translation
   Settings({
     this.useSystemDarkmode = true,
     this.useDarkmode = false,
@@ -90,6 +110,7 @@ class Settings {
     this.displayFullscreenTicket = false,
     this.lastMensaBalance,
     this.lastMensaTransaction,
+    this.appLocale = 'en',//i add this for translation
   });
 
   Settings copyWith({
@@ -114,6 +135,7 @@ class Settings {
     bool? displayFullscreenTicket,
     double? lastMensaBalance,
     double? lastMensaTransaction,
+    String? appLocale, //i add this for translation
   }) =>
       Settings(
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
@@ -137,6 +159,7 @@ class Settings {
         lastMensaBalance: lastMensaBalance ?? this.lastMensaBalance,
         lastMensaTransaction: lastMensaTransaction ?? this.lastMensaTransaction,
         mensaRestaurantConfig: mensaRestaurantConfig ?? this.mensaRestaurantConfig,
+        appLocale: appLocale ?? this.appLocale,//i add this for translation
       );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
@@ -185,6 +208,7 @@ class Settings {
       displayFullscreenTicket: json['displayFullscreenTicket'] ?? false,
       lastMensaBalance: json['lastMensaBalance'],
       lastMensaTransaction: json['lastMensaTransaction'],
+      appLocale: json['appLocale'] ?? 'en',//i add this for translation
     );
   }
 
@@ -215,6 +239,7 @@ class Settings {
       'displayFullscreenTicket': displayFullscreenTicket,
       'lastMensaBalance': lastMensaBalance,
       'lastMensaTransaction': lastMensaTransaction,
+      'appLocale': appLocale,//i add this for translation
     };
   }
 }

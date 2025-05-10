@@ -12,6 +12,7 @@ import 'package:campus_app/pages/more/widgets/button_group.dart';
 import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/pages/more/settings_page.dart';
 import 'package:campus_app/pages/more/imprint_page.dart';
+import 'package:campus_app/pages/more/translation.dart';
 
 class MorePage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -209,6 +210,18 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                               );
                             },
                           ),
+                          //Translation
+                          ExternalLinkButton(
+                            title: 'Übersetzungen',
+                            leadingIconPath: 'assets/img/icons/translate.png', // Use an appropriate icon
+                            trailingIconPath: 'assets/img/icons/chevron-right.svg',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Translation()),
+                              );
+                            },
+                          ),
                           // Privacy
                           ExternalLinkButton(
                             title: 'Datenschutz',
@@ -241,6 +254,8 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             trailingIconPath: 'assets/img/icons/chevron-right.svg',
                             onTap: () => showLicensePage(context: context),
                           ),
+                          
+
                           // Feedback
                           ExternalLinkButton(
                             title: 'Feedback',

@@ -1,6 +1,6 @@
 {
     "debug.openDebug": "openOnDebugBreak",
-    "files.autoSave": "onFocusChange",
+    "files.autoSave": "afterDelay",
     "explorer.confirmDragAndDrop": false,
     "explorer.confirmDelete": false,
 
