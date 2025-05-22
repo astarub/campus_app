@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  photo_view: ^0.15.0
   flutter_localizations:
     sdk: flutter
   envied: ^1.1.1
@@ -62,6 +63,7 @@ dependencies:
   image: ^4.3.0
   dismissible_page: ^1.0.2
   app_links: ^6.4.0
+  barcode_widget: ^2.0.4
 
 dev_dependencies:
   flutter_test:
@@ -172,6 +174,17 @@ flutter:
     - assets/animations/coin-flip.json
     - assets/img/bogestra-logo.svg
     - assets/img/icons/file-plus.svg
+    - assets/img/iphone_coupon.jpg
+    - assets/img/food_coupon.jpg
+    - assets/img/mode_coupon.jpg
+    - assets/img/reisen_coupon.jpg
+    - assets/img/icons/arrow-up.png
+    - assets/img/icons/arrow-down.png
+    - assets/img/icons/coupon.png
+    - assets/animations/fire-effect.json
+    - assets/animations/fire-effect2.json
+    - assets/animations/snow-effect.json
+    - assets/animations/heart-effect.json
 
   fonts:
     - family: SF-Pro
