@@ -212,20 +212,20 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                           ),
                           // Privacy
                           ExternalLinkButton(
-                                title: 'Coupons & Rabatte',
-                                leadingIconPath: 'assets/img/icons/info.svg',
-                                trailingIconPath: 'assets/img/icons/chevron-right.svg',
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CouponsPage(
-                                      mainNavigatorKey: widget.mainNavigatorKey,
-                                     ),
-                                    ),
-                                  );
-                                },
-                              ),
+                            title: 'Coupons & Rabatte',
+                            leadingIconPath: 'assets/img/icons/coupon.png',
+                            trailingIconPath: 'assets/img/icons/chevron-right.svg',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CouponsPage(
+                                    mainNavigatorKey: widget.mainNavigatorKey,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                           ExternalLinkButton(
                             title: 'Datenschutz',
                             leadingIconPath: 'assets/img/icons/info.svg',

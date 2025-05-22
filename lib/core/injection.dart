@@ -1,4 +1,7 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:campus_app/core/backend/backend_repository.dart';
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/pages/coupons/coupon_backend/coupon_user_backend_repository.dart';
 import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -67,10 +70,11 @@ Future<void> init() async {
   //! Repositories
   //!
 
-  sl.registerLazySingleton(() {
-    final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
-    return BackendRepository(client: client);
-  });
+  sl.registerLazySingleton<Client>(
+    () => Client().setEndpoint('http://10.0.2.2/v1').setProject('681895f000356728d10a'),
+  );
+  sl.registerLazySingleton(() => BackendRepository(client: sl<Client>()));
+  sl.registerLazySingleton(() => CouponUserBackendRepository(client: sl<Client>()));
 
   sl.registerSingletonWithDependencies(
     () => NewsRepository(newsDatasource: sl()),
