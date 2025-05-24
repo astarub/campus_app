@@ -21,6 +21,8 @@ class DraftsPage extends StatelessWidget {
               separatorBuilder: (_, __) => const Divider(height: 1),
               itemBuilder: (_, index) => EmailTile(
                 email: draftEmails[index],
+                isSelected: false,
+                onLongPress: () {},
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(

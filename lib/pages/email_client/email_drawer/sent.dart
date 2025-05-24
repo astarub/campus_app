@@ -21,6 +21,8 @@ class SentPage extends StatelessWidget {
               separatorBuilder: (_, __) => const Divider(height: 1),
               itemBuilder: (_, index) => EmailTile(
                 email: sentEmails[index],
+                isSelected: false,
+                onLongPress: () {},
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(

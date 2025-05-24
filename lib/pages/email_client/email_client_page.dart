@@ -2,8 +2,8 @@ import 'package:campus_app/pages/email_client/email_drawer.dart';
 import 'package:campus_app/pages/email_client/email_view.dart';
 import 'package:campus_app/pages/email_client/compose_email_screen.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
-import 'package:campus_app/pages/email_client/widgets/search_bar.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
+import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 import 'package:flutter/material.dart';
 
 class EmailClientScreen extends StatefulWidget {
@@ -15,22 +15,71 @@ class EmailClientScreen extends StatefulWidget {
 
 class _EmailClientScreenState extends State<EmailClientScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  // Placeholder emails to work with untill backend is implemented
   final List<Email> _allEmails = List.generate(10, (i) => Email.dummy(i));
   late List<Email> _filteredEmails;
   final TextEditingController _searchController = TextEditingController();
   bool _isSearching = false;
+  late EmailSelectionController _selectionController;
 
-  // When initialized show emails that are in the inbox only.
   @override
   void initState() {
     super.initState();
     _filteredEmails = _allEmails.where((e) => e.folder == EmailFolder.inbox).toList();
+    _selectionController = EmailSelectionController(
+      onDelete: _deleteSelected,
+      onArchive: _archiveSelected,
+      onEmailUpdated: _updateEmail,
+    )..addListener(_onSelectionChanged);
   }
 
-  // logic for filtering Emails. If the query is Empty all inbox emails are shown.
-  // Otherwise the emails are filtered whilst handling case sensitivity and field matching logic
+  void _onSelectionChanged() {
+    setState(() {}); // Rebuild when selection changes
+  }
+
+  @override
+  void dispose() {
+    _selectionController.removeListener(_onSelectionChanged);
+    _selectionController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _updateEmail(Email updatedEmail) {
+    setState(() {
+      final index = _allEmails.indexWhere((e) => e.id == updatedEmail.id);
+      if (index != -1) {
+        _allEmails[index] = updatedEmail;
+        _filterEmails(_searchController.text);
+      }
+    });
+  }
+
+  Future<void> _deleteSelected(Set<Email> emails) async {
+    setState(() {
+      for (final email in emails) {
+        final index = _allEmails.indexWhere((e) => e.id == email.id);
+        if (index != -1) {
+          _allEmails[index] = email.copyWith(folder: EmailFolder.trash);
+        }
+      }
+      _selectionController.clearSelection();
+      _filterEmails(_searchController.text);
+    });
+  }
+
+  Future<void> _archiveSelected(Set<Email> emails) async {
+    setState(() {
+      for (final email in emails) {
+        final index = _allEmails.indexWhere((e) => e.id == email.id);
+        if (index != -1) {
+          _allEmails[index] = email.copyWith(folder: EmailFolder.archives);
+        }
+      }
+      _selectionController.clearSelection();
+      _filterEmails(_searchController.text);
+    });
+  }
+
   void _filterEmails(String query) {
     setState(() {
       if (query.isEmpty) {
@@ -46,104 +95,172 @@ class _EmailClientScreenState extends State<EmailClientScreen> {
     });
   }
 
-  //When an email is deleted it is moved to the Trash list and removed from inbox.
   void _moveToTrash(Email email) {
     setState(() {
       final index = _allEmails.indexWhere((e) => e.id == email.id);
       if (index != -1) {
         _allEmails[index] = email.copyWith(folder: EmailFolder.trash);
-        _filterEmails(_searchController.text); // Refresh filtered list
+        _filterEmails(_searchController.text);
       }
     });
   }
 
-  // with this I am trying to make it so that the back press closes things in the right order,
-  // however there are some issues with the order still.
-  // This will close the drawer if it's open while searching before closing the search:
   Future<void> _handlePop(BuildContext context) async {
-    final isDrawerOpen = _scaffoldKey.currentState?.isEndDrawerOpen ?? false;
-    if (isDrawerOpen) {
-      Navigator.of(context).maybePop();
-    } else if (_isSearching) {
+    if (_selectionController.isSelecting) {
+      _selectionController.clearSelection();
+      return;
+    }
+    if (_isSearching) {
       setState(() {
         _isSearching = false;
         _searchController.clear();
         _filterEmails('');
       });
-    } else {
-      Navigator.of(context).maybePop(); // Normal pop
+      return;
     }
+    if (_scaffoldKey.currentState?.isEndDrawerOpen ?? false) {
+      Navigator.of(context).pop();
+      return;
+    }
+    Navigator.of(context).maybePop();
   }
 
-  // onPopInvoked is depricated in the new flutter version.
-  // TODO: fix pop order.
-  // TODO: find another function to replace onPopInvoked.
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
       onPopInvoked: (didPop) async {
-        if (!didPop) {
-          await _handlePop(context);
-        }
+        if (!didPop) await _handlePop(context);
       },
       child: Scaffold(
         key: _scaffoldKey,
-
-        //Here we use the functionality implemented in '.../email_client/widgets/search_bar.dart'
-        //This code is UI layer it handles user interactionslike button press and text input.
-        //The logic behind the filtering is _filterEmails (see above)
-        appBar: SearchAppBar(
-          isSearching: _isSearching,
-          onStartSearch: () => setState(() => _isSearching = true),
-          onStopSearch: () {
-            setState(() {
-              _isSearching = false;
-              _searchController.clear();
-              _filterEmails('');
-            });
-          },
-          onSearchChanged: _filterEmails,
-          searchController: _searchController,
-        ),
-
-        // endDrawer add the drawer button on the right
-        endDrawer: EmailDrawer(allEmails: _allEmails),
-
-        body: RefreshIndicator(
-          //Waits 1 second then re_runs _filterEmails
-          onRefresh: () async {
-            await Future.delayed(const Duration(seconds: 1));
-            _filterEmails(_searchController.text);
-          },
-          // Scrollable email list
-          child: ListView.separated(
-            itemCount: _filteredEmails.length,
-            separatorBuilder: (_, __) => const Divider(height: 1),
-            itemBuilder: (_, index) => EmailTile(
-              email: _filteredEmails[index],
-              // Tapping opens the Email view and provides a delete functionality from there
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => EmailView(
-                    email: _filteredEmails[index],
-                    onDelete: _moveToTrash,
+        appBar: AppBar(
+          title: _isSearching
+              ? TextField(
+                  controller: _searchController,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Search emails...',
+                    border: InputBorder.none,
                   ),
+                  onChanged: _filterEmails,
+                )
+              : const Text('RubMail'),
+          leading: _isSearching
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = false;
+                      _searchController.clear();
+                      _filterEmails('');
+                    });
+                  },
+                )
+              : null,
+          actions: [
+            if (!_isSearching && !_selectionController.isSelecting)
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () => setState(() => _isSearching = true),
+              ),
+            if (_selectionController.isSelecting) ...[
+              IconButton(
+                icon: const Icon(Icons.select_all),
+                onPressed: () => _selectionController.selectAll(_filteredEmails),
+              ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: _selectionController.clearSelection,
+              ),
+            ],
+            if (!_isSearching && !_selectionController.isSelecting)
+              Builder(
+                builder: (context) => IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
                 ),
               ),
+          ],
+        ),
+        endDrawer: EmailDrawer(allEmails: _allEmails),
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: _selectionController.isSelecting ? _selectionController.clearSelection : null,
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await Future.delayed(const Duration(seconds: 1));
+              _filterEmails(_searchController.text);
+            },
+            child: ListView.separated(
+              itemCount: _filteredEmails.length,
+              separatorBuilder: (_, __) => const Divider(height: 1),
+              itemBuilder: (_, index) {
+                final email = _filteredEmails[index];
+                return InkWell(
+                  onLongPress: () {
+                    setState(() {
+                      _selectionController.toggleSelection(email);
+                    });
+                  },
+                  child: EmailTile(
+                    email: email,
+                    isSelected: _selectionController.isSelected(email),
+                    onTap: () {
+                      //if selecting tapping toggles selection
+                      if (_selectionController.isSelecting) {
+                        setState(() {
+                          _selectionController.toggleSelection(email);
+                        });
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => EmailView(
+                              email: email,
+                              onDelete: _moveToTrash,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    onLongPress: () {
+                      //bulk selection
+                      setState(() {
+                        _selectionController.toggleSelection(email);
+                      });
+                    },
+                  ),
+                );
+              },
             ),
           ),
         ),
-
-        //This button is for composing a new email
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const ComposeEmailScreen()),
-          ),
-          child: const Icon(Icons.edit),
-        ),
+        floatingActionButton: _selectionController.isSelecting
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    heroTag: 'delete',
+                    onPressed: () => _selectionController.onDelete?.call(_selectionController.selectedEmails),
+                    child: const Icon(Icons.delete),
+                  ),
+                  const SizedBox(width: 16),
+                  FloatingActionButton(
+                    heroTag: 'archive',
+                    onPressed: () => _selectionController.onArchive?.call(_selectionController.selectedEmails),
+                    child: const Icon(Icons.archive),
+                  ),
+                ],
+              )
+            : FloatingActionButton(
+                //button to compose emails
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ComposeEmailScreen()),
+                ),
+                child: const Icon(Icons.edit),
+              ),
       ),
     );
   }
@@ -155,6 +272,9 @@ class _EmailClientScreenState extends State<EmailClientScreen> {
 
 // TODO: add selection functionality, preferably as an independent file to be used anywhere.
 
-// TODO: Upload on a git branch.
-
 // TODO: extract _filterEmails as a separate component(maybe?)
+
+// Check: 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// Check: ticket_datasource
+// Use Login, make it go to Email
+// Check IMAP plugins (for dart/flutter): enough_mail?s

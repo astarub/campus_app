@@ -28,6 +28,8 @@ class ArchivesPage extends StatelessWidget {
                 final email = archivedEmails[index];
                 return EmailTile(
                   email: email,
+                  isSelected: false,
+                  onLongPress: () {},
                   onTap: () {
                     Navigator.push(
                       context,

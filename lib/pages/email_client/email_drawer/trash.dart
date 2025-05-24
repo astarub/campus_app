@@ -28,6 +28,8 @@ class _TrashPageState extends State<TrashPage> {
                 final email = trashEmails[index];
                 return EmailTile(
                   email: email,
+                  isSelected: false,
+                  onLongPress: () {},
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
