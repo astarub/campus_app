@@ -1,24 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:campus_app/pages/email_client/email_view.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
+import 'package:campus_app/pages/email_client/services/email_service.dart';
 
-class TrashPage extends StatefulWidget {
-  final List<Email> allEmails;
+class TrashPage extends StatelessWidget {
+  const TrashPage({super.key});
 
-  const TrashPage({super.key, required this.allEmails});
-
-  @override
-  State<TrashPage> createState() => _TrashPageState();
-}
-
-class _TrashPageState extends State<TrashPage> {
   @override
   Widget build(BuildContext context) {
-    final trashEmails = widget.allEmails.where((e) => e.folder == EmailFolder.trash).toList();
+    final emailService = Provider.of<EmailService>(context, listen: false);
+    final trashEmails = emailService.filterEmails('', EmailFolder.trash);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Trash')),
+      appBar: AppBar(
+        title: Text(
+          emailService.selectionController.isSelecting
+              ? '${emailService.selectionController.selectionCount} selected'
+              : 'Trash',
+        ),
+        actions: [
+          if (emailService.selectionController.isSelecting) ...[
+            IconButton(
+              icon: const Icon(Icons.restore),
+              onPressed: () {
+                emailService.moveEmailsToFolder(
+                  emailService.selectionController.selectedEmails,
+                  EmailFolder.inbox,
+                );
+                emailService.selectionController.clearSelection();
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete_forever),
+              onPressed: () {
+                emailService.deleteEmailsPermanently(
+                  emailService.selectionController.selectedEmails,
+                );
+              },
+            ),
+          ],
+        ],
+      ),
       body: trashEmails.isEmpty
           ? const Center(child: Text('Trash is empty.'))
           : ListView.separated(
@@ -28,30 +52,25 @@ class _TrashPageState extends State<TrashPage> {
                 final email = trashEmails[index];
                 return EmailTile(
                   email: email,
-                  isSelected: false,
-                  onLongPress: () {},
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => EmailView(
-                        email: email,
-                        isInTrash: true,
-                        onDelete: (Email emailToDelete) {
-                          setState(() {
-                            widget.allEmails.removeWhere((e) => e.id == emailToDelete.id);
-                          });
-                        },
-                        onRestore: (Email emailToRestore) {
-                          setState(() {
-                            final index = widget.allEmails.indexWhere((e) => e.id == emailToRestore.id);
-                            if (index != -1) {
-                              widget.allEmails[index] = widget.allEmails[index].copyWith(folder: EmailFolder.inbox);
-                            }
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                  isSelected: emailService.selectionController.isSelected(email),
+                  onTap: () {
+                    if (emailService.selectionController.isSelecting) {
+                      emailService.selectionController.toggleSelection(email);
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EmailView(
+                            email: email,
+                            isInTrash: true,
+                            onDelete: (email) => emailService.deleteEmailsPermanently([email]),
+                            onRestore: (email) => emailService.moveEmailsToFolder([email], EmailFolder.inbox),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  onLongPress: () => emailService.selectionController.toggleSelection(email),
                 );
               },
             ),

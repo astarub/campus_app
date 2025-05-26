@@ -30,6 +30,9 @@ import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 
+import 'package:campus_app/pages/email_client/services/email_service.dart';
+import 'package:campus_app/pages/email_client/models/email.dart';
+
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // Keeps the native splash screen onscreen until all loading is done
@@ -66,6 +69,7 @@ Future<void> main() async {
             // Initializes the provider that handles the app-theme, authentication and other things
             ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
             ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+            ChangeNotifierProvider<EmailService>(create: (_) => EmailService()),
           ],
           child: CampusApp(
             key: campusAppKey,
@@ -80,6 +84,7 @@ Future<void> main() async {
           // Initializes the provider that handles the app-theme, authentication and other things
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+          ChangeNotifierProvider<EmailService>(create: (_) => EmailService()),
         ],
         child: CampusApp(
           key: campusAppKey,

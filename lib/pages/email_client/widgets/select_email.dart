@@ -5,37 +5,28 @@ class EmailSelectionController extends ChangeNotifier {
   final Set<Email> _selectedEmails = {};
   final Future<void> Function(Set<Email>)? onDelete;
   final Future<void> Function(Set<Email>)? onArchive;
-  final void Function(Email updatedEmail)? onEmailUpdated;
+  final Future<void> Function(Email)? onEmailUpdated; // Changed to Future<void>
 
-  EmailSelectionController({this.onDelete, this.onArchive, this.onEmailUpdated});
+  EmailSelectionController({
+    this.onDelete,
+    this.onArchive,
+    this.onEmailUpdated,
+  });
 
-  // Public API
+  // Public API (unchanged)
   Set<Email> get selectedEmails => Set.unmodifiable(_selectedEmails);
   bool get isSelecting => _selectedEmails.isNotEmpty;
   bool isSelected(Email email) => _selectedEmails.contains(email);
   int get selectionCount => _selectedEmails.length;
 
-  // Selection management
+  // Selection management (unchanged)
   void toggleSelection(Email email) {
     _selectedEmails.contains(email) ? _selectedEmails.remove(email) : _selectedEmails.add(email);
     notifyListeners();
   }
 
-  void toggleSelections(Iterable<Email> emails) {
-    for (final email in emails) {
-      toggleSelection(email);
-    }
-  }
-
   void selectAll(Iterable<Email> emails) {
     _selectedEmails.addAll(emails);
-    notifyListeners();
-  }
-
-  void selectSingle(Email email) {
-    _selectedEmails
-      ..clear()
-      ..add(email);
     notifyListeners();
   }
 
@@ -44,11 +35,11 @@ class EmailSelectionController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Email state modifications
+  // Updated async methods
   Future<void> markAsReadSelected() async {
     for (final email in _selectedEmails) {
       final updatedEmail = email.copyWith(isUnread: false);
-      onEmailUpdated?.call(updatedEmail); // Notify parent
+      await onEmailUpdated?.call(updatedEmail); // Added await
     }
     notifyListeners();
   }
@@ -56,16 +47,31 @@ class EmailSelectionController extends ChangeNotifier {
   Future<void> markAsUnreadSelected() async {
     for (final email in _selectedEmails) {
       final updatedEmail = email.copyWith(isUnread: true);
-      onEmailUpdated?.call(updatedEmail);
+      await onEmailUpdated?.call(updatedEmail); // Added await
     }
     notifyListeners();
   }
 
-  void toggleReadState() {
+  Future<void> toggleReadState() async {
+    // Made async
     final allUnread = _selectedEmails.every((e) => e.isUnread);
     for (final email in _selectedEmails) {
-      onEmailUpdated?.call(email.copyWith(isUnread: !allUnread));
+      await onEmailUpdated?.call(email.copyWith(isUnread: !allUnread)); // Added await
     }
     notifyListeners();
+  }
+
+  // New method for batch operations
+  Future<void> performBatchOperation(Future<void> Function(Email) operation) async {
+    for (final email in _selectedEmails) {
+      await operation(email);
+    }
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _selectedEmails.clear();
+    super.dispose();
   }
 }

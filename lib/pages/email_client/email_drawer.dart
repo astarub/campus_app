@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/email_drawer/archives.dart';
 import 'package:campus_app/pages/email_client/email_drawer/drafts.dart';
 import 'package:campus_app/pages/email_client/email_drawer/sent.dart';
 import 'package:campus_app/pages/email_client/email_drawer/trash.dart';
 
 class EmailDrawer extends StatelessWidget {
-  final List<Email> allEmails;
-
-  const EmailDrawer({super.key, required this.allEmails});
+  const EmailDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,69 +40,76 @@ class EmailDrawer extends StatelessWidget {
                 ],
               ),
             ),
+
+            // Inbox without navigation for example:
             ListTile(
               leading: const Icon(Icons.inbox),
               title: const Text('Inbox'),
-              onTap: () {
-                Navigator.pop(context); // Just closes drawer (you're already in inbox)
-              },
+              onTap: () => Navigator.pop(context),
             ),
-            ListTile(
-              leading: const Icon(Icons.send),
-              title: const Text('Sent'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => SentPage(allEmails: allEmails)),
-                );
-              },
+
+            // Using helper method to reduce repetition:
+            _buildDrawerItem(
+              context,
+              icon: Icons.send,
+              title: 'Sent',
+              page: const SentPage(),
             ),
-            ListTile(
-              leading: const Icon(Icons.archive),
-              title: const Text('Archives'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => ArchivesPage(allEmails: allEmails)),
-                );
-              },
+            _buildDrawerItem(
+              context,
+              icon: Icons.archive,
+              title: 'Archives',
+              page: const ArchivesPage(),
             ),
-            ListTile(
-              leading: const Icon(Icons.drafts),
-              title: const Text('Drafts'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => DraftsPage(allEmails: allEmails)),
-                );
-              },
+            _buildDrawerItem(
+              context,
+              icon: Icons.drafts,
+              title: 'Drafts',
+              page: const DraftsPage(),
             ),
-            ListTile(
-              leading: const Icon(Icons.delete),
-              title: const Text('Trash'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => TrashPage(allEmails: allEmails)),
-                );
-              },
+            _buildDrawerItem(
+              context,
+              icon: Icons.delete,
+              title: 'Trash',
+              page: const TrashPage(),
             ),
+
             const Divider(),
+
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
-                // TODO: Add SettingsPage() later
+                // TODO: Add SettingsPage() navigation here later
               },
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDrawerItem(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required Widget page,
+  }) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: () {
+        Navigator.pop(context); // close the drawer first
+
+        // Delay navigation until after drawer closes
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => page),
+          );
+        });
+      },
     );
   }
 }
