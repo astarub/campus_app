@@ -31,7 +31,6 @@ import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 
 import 'package:campus_app/pages/email_client/services/email_service.dart';
-import 'package:campus_app/pages/email_client/models/email.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
