@@ -1515,7 +1515,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
 };
 */
 
-final Map<dynamic, Map<String, dynamic>> graph = {
+//Map<dynamic, Map<String, dynamic>> graph = {
+Graph graph = {
   ('GA', '04', '161'): {
     'Coordinates': [4272, 4720],
     'Connections': [

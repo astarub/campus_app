@@ -1,3 +1,4 @@
+/*
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart'; //Added to dependencies
@@ -67,3 +68,4 @@ Future<void> syncFromBackend() async {
     debugPrint('Firebase sync failed: $e');
   }
 }
+*/

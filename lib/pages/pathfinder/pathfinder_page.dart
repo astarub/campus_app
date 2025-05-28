@@ -15,6 +15,7 @@ import 'package:campus_app/pages/pathfinder/indoor_nav_page.dart';
 import 'package:campus_app/utils/pages/pathfinder_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/pages/pathfinder/pathfinder_onboarding.dart';
+import 'package:campus_app/pages/pathfinder/sync_maps.dart'; // --> Added
 
 String? selectedLocationGlobal;
 
@@ -263,7 +264,10 @@ class RaumfinderPageState extends State<RaumfinderPage>
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async { // Remove asynch after replacing function-call 1 and 2 
+            // Call functions to overwrite maps and graph structure if necessary 
+            await syncMapsWithServer(); // images (will silently fallback)
+            Graph graph = await syncGraphWithServer(graph);   // returns a safe map
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const IndoorNavigation()),
