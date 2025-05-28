@@ -96,7 +96,7 @@ class EmailTile extends StatelessWidget {
             fontWeight: email.isUnread ? FontWeight.bold : FontWeight.normal,
           ),
         ),
-        if (email.isStarred) const Icon(Icons.star, color: Colors.amber, size: 16),
+        //if (email.isStarred) const Icon(Icons.star, color: Colors.amber, size: 16),
       ],
     );
   }

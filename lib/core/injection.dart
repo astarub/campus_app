@@ -27,6 +27,7 @@ import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/dio_utils.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:native_dio_adapter/native_dio_adapter.dart';
+import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 
 final sl = GetIt.instance; // service locator
 
@@ -112,6 +113,14 @@ Future<void> init() async {
 
   sl.registerLazySingleton(
     () => TicketUsecases(ticketRepository: sl()),
+  );
+
+  //!
+  //! Services
+  //!
+
+  sl.registerLazySingleton(
+    () => EmailAuthService(secureStorage: sl()),
   );
 
   //!

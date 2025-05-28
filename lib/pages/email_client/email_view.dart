@@ -106,7 +106,7 @@ class EmailView extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -194,8 +194,8 @@ class EmailView extends StatelessWidget {
       floatingActionButton: !isInTrash
           ? FloatingActionButton(
               onPressed: () => _handleReply(context),
-              child: const Icon(Icons.reply),
               tooltip: 'Reply',
+              child: const Icon(Icons.reply),
             )
           : null,
     );

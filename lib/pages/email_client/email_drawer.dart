@@ -21,9 +21,9 @@ class EmailDrawer extends StatelessWidget {
               decoration: BoxDecoration(
                 color: theme.colorScheme.primaryContainer,
               ),
-              child: Column(
+              child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   CircleAvatar(
                     radius: 25,
                     child: Icon(Icons.person, size: 30),

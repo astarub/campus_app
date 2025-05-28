@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:campus_app/pages/email_client/email_client_page.dart';
+import 'package:campus_app/pages/email_client/email_client_screen.dart';
 import 'package:campus_app/pages/more/privacy_policy_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -147,11 +148,6 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                           ),
                         ],
                       ),
-                      // make a new page for this in the pages folder
-                      // Test group, better change it to a normal button, also only on tap move to new page
-                      // SMPT und IMAP client => API
-                      // UI und Backend separate, start with UI it is easier.
-                      // flutter secure storage login daten, take it from there
                       Container(
                         margin: const EdgeInsets.only(bottom: 30),
                         decoration: BoxDecoration(

@@ -8,8 +8,8 @@ import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
 import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 
-class EmailClientScreen extends StatelessWidget {
-  const EmailClientScreen({super.key});
+class EmailClientPage extends StatelessWidget {
+  const EmailClientPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,6 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     final filteredEmails = emailService.filterEmails(_searchController.text, EmailFolder.inbox);
 
     return PopScope(
-      canPop: true,
       onPopInvoked: (didPop) async {
         if (!didPop) await _handlePop(context);
       },
@@ -218,15 +217,15 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     );
   }
 }
-// Trash is fully implemented so far.
+// Trash is fully implemented so far(not anymore)
 // TODO: Sent, Archives, Drafts
-// TODO: Settings, so far I am unsure what to add in here.
-
-// TODO: add selection functionality, preferably as an independent file to be used anywhere.
-
-// TODO: extract _filterEmails as a separate component(maybe?)
+// TODO: Settings: I am unsure what to add in here.
 
 // Check: 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // Check: ticket_datasource(pages/wallet/ticket/) and injection.dart (in lib/core)
 // Use Login, make it go to Email
+
 // Check IMAP plugins (for dart/flutter): enough_mail?s
+                      // SMPT und IMAP client => API
+                      // UI und Backend separate, start with UI it is easier.
+                      // flutter secure storage login daten, take it from there
