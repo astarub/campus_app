@@ -11,10 +11,11 @@ import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
-import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
 import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+import 'package:campus_app/utils/widgets/login_screen.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CampusWallet extends StatelessWidget {
   const CampusWallet({super.key});
@@ -79,8 +80,18 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TicketLoginScreen(
-          onTicketLoaded: () async {
+        builder: (context) => LoginScreen(
+          loginType: LoginType.ticket,
+          onLogin: (username, password) async {
+            // Store credentials first, then load ticket
+            final secureStorage = sl<FlutterSecureStorage>();
+            await secureStorage.write(key: 'loginId', value: username);
+            await secureStorage.write(key: 'password', value: password);
+
+            // Load ticket with the stored credentials
+            await ticketRepository.loadTicket();
+          },
+          onLoginSuccess: () async {
             await renderTicket();
           },
         ),

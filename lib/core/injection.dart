@@ -120,7 +120,7 @@ Future<void> init() async {
   //!
 
   sl.registerLazySingleton(
-    () => EmailAuthService(secureStorage: sl()),
+    () => EmailAuthService(),
   );
 
   //!

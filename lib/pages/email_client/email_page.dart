@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/utils/widgets/login_screen.dart';
 import 'package:campus_app/pages/email_client/email_drawer.dart';
 import 'package:campus_app/pages/email_client/email_view.dart';
 import 'package:campus_app/pages/email_client/compose_email_screen.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
+import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
 import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 
-class EmailClientPage extends StatelessWidget {
-  const EmailClientPage({super.key});
+class EmailPage extends StatelessWidget {
+  const EmailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => EmailService(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => EmailService()),
+        ChangeNotifierProvider(create: (_) => EmailAuthService()),
+      ],
       child: const _EmailClientContent(),
     );
   }
@@ -30,13 +37,22 @@ class _EmailClientContent extends StatefulWidget {
 class _EmailClientContentState extends State<_EmailClientContent> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = TextEditingController();
+  final FlutterSecureStorage secureStorage = sl<FlutterSecureStorage>();
   bool _isSearching = false;
+  bool _isLoading = true;
+  bool _isAuthenticated = false;
   late EmailSelectionController _selectionController;
 
   @override
   void initState() {
     super.initState();
+    _initializeEmailClient();
+  }
+
+  Future<void> _initializeEmailClient() async {
+    final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
     final emailService = Provider.of<EmailService>(context, listen: false);
+
     _selectionController = EmailSelectionController(
       onDelete: (emails) async {
         emailService.moveEmailsToFolder(emails, EmailFolder.trash);
@@ -51,12 +67,64 @@ class _EmailClientContentState extends State<_EmailClientContent> {
         _search();
       },
     )..addListener(_onSelectionChanged);
+
+    // Check if user is already authenticated
+    final isAuthenticated = await emailAuthService.isAuthenticated();
+
+    if (isAuthenticated) {
+      // Initialize email service if authenticated
+      await emailService.initialize();
+      setState(() {
+        _isAuthenticated = true;
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   void _onSelectionChanged() => setState(() {});
 
   void _search() {
     setState(() {});
+  }
+
+  Future<void> _handleLogin() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(
+          loginType: LoginType.email,
+          customTitle: 'RubMail Login',
+          customDescription: 'Melde dich mit deinen RUB-Daten an, um auf deine E-Mails zuzugreifen.',
+          onLogin: (username, password) async {
+            final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
+            await emailAuthService.authenticate(username, password);
+          },
+          onLoginSuccess: () async {
+            final emailService = Provider.of<EmailService>(context, listen: false);
+            await emailService.initialize();
+            setState(() {
+              _isAuthenticated = true;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleLogout() async {
+    final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
+    final emailService = Provider.of<EmailService>(context, listen: false);
+
+    await emailAuthService.logout();
+    emailService.clear();
+
+    setState(() {
+      _isAuthenticated = false;
+    });
   }
 
   Future<void> _handlePop(BuildContext context) async {
@@ -88,6 +156,50 @@ class _EmailClientContentState extends State<_EmailClientContent> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (!_isAuthenticated) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('RubMail'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.email,
+                size: 64,
+                color: Theme.of(context).primaryColor,
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Willkommen bei RubMail',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Melde dich an, um auf deine E-Mails zuzugreifen',
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: _handleLogin,
+                child: const Text('Anmelden'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     final emailService = Provider.of<EmailService>(context);
     final filteredEmails = emailService.filterEmails(_searchController.text, EmailFolder.inbox);
 
@@ -103,7 +215,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                   controller: _searchController,
                   autofocus: true,
                   decoration: const InputDecoration(
-                    hintText: 'Search emails...',
+                    hintText: 'E-Mails durchsuchen...',
                     border: InputBorder.none,
                   ),
                   onChanged: (_) => _search(),
@@ -137,6 +249,11 @@ class _EmailClientContentState extends State<_EmailClientContent> {
               ),
             ],
             if (!_isSearching && !_selectionController.isSelecting)
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: _handleLogout,
+              ),
+            if (!_isSearching && !_selectionController.isSelecting)
               Builder(
                 builder: (context) => IconButton(
                   icon: const Icon(Icons.menu),
@@ -151,7 +268,8 @@ class _EmailClientContentState extends State<_EmailClientContent> {
           onTap: _selectionController.isSelecting ? _selectionController.clearSelection : null,
           child: RefreshIndicator(
             onRefresh: () async {
-              await Future.delayed(const Duration(seconds: 1));
+              final emailService = Provider.of<EmailService>(context, listen: false);
+              await emailService.refreshEmails();
               _search();
             },
             child: ListView.separated(
@@ -206,7 +324,6 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                 ],
               )
             : FloatingActionButton(
-                //button to compose emails
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const ComposeEmailScreen()),

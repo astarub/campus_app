@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
-import 'package:campus_app/pages/email_client/email_client_page.dart';
-import 'package:campus_app/pages/email_client/email_client_screen.dart';
+import 'package:campus_app/pages/email_client/email_page.dart';
 import 'package:campus_app/pages/more/privacy_policy_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -165,7 +164,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const EmailClientScreen(),
+                                    builder: (context) => const EmailPage(),
                                   ),
                                 );
                               },
