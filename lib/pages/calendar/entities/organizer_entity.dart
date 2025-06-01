@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'organizer_entity.g.dart';
 
-@HiveType(typeId: 3)
+@HiveType(typeId: 42)
 class Organizer {
   /// The unique id of the event
   @HiveField(0)

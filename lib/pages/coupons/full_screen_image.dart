@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class FullScreenImage extends StatefulWidget {
   final List<String> imageUrls;
@@ -14,9 +16,11 @@ class FullScreenImage extends StatefulWidget {
   State<FullScreenImage> createState() => _FullScreenImageState();
 }
 
+// A full-screen image gallery widget that allows users to view and zoom images
+// Ein Vollbild-Bildergalerie-Widget, das es Benutzern ermöglicht, Bilder anzuzeigen und zu zoomen
 class _FullScreenImageState extends State<FullScreenImage> {
-  late PageController _pageController;
   late int _currentIndex;
+  late PageController _pageController;
 
   @override
   void initState() {
@@ -28,72 +32,50 @@ class _FullScreenImageState extends State<FullScreenImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Set black background for the gallery view
       backgroundColor: Colors.black,
-
-      // App bar with transparent background
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        // Title showing current image index (e.g., "2/5")
+        elevation: 0,
         title: Text(
           '${_currentIndex + 1}/${widget.imageUrls.length}',
           style: const TextStyle(color: Colors.white),
         ),
-        // Back button in the app bar
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      // Main content area with PageView
-      body: PageView.builder(
-        // Controller for managing page transitions
-        controller: _pageController,
-        // Total number of images
+      body: PhotoViewGallery.builder(
+        pageController: _pageController,
         itemCount: widget.imageUrls.length,
-        // Callback when page changes
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index; // Update current index
-          });
-        },
-        // Builder for each page item
-        itemBuilder: (context, index) {
-          return InteractiveViewer(
-            // Zoom configuration
-            minScale: 0.5,
-            maxScale: 4,
-            child: Center(
-              child: AspectRatio(
-                // Maintain consistent aspect ratio for all images
-                aspectRatio: 18 / 12,
-                child: Image.network(
-                  // Image URL from the list
-                  widget.imageUrls[index],
-                  // How the image should fill the space
-                  fit: BoxFit.cover,
-                  // Loading state builder
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    // Show progress indicator while loading
-                    return Center(
-                      child: CircularProgressIndicator(
-                        // Calculate progress percentage if total bytes are known
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                            : null, // Indeterminate if total bytes unknown
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    color: Colors.grey[200],
-                    child: const Icon(Icons.broken_image, size: 50),
-                  ),
-                ),
-              ),
-            ),
+        onPageChanged: (index) => setState(() => _currentIndex = index),
+        builder: (context, index) {
+          return PhotoViewGalleryPageOptions(
+            imageProvider: NetworkImage(widget.imageUrls[index]),
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered * 4,
+            initialScale: PhotoViewComputedScale.contained,
+            heroAttributes: PhotoViewHeroAttributes(tag: widget.imageUrls[index]),
+            tightMode: false,
+            gestureDetectorBehavior: HitTestBehavior.opaque,
+            controller: PhotoViewController()..outputStateStream.listen((state) {}),
+            scaleStateCycle: (state) {
+              return state == PhotoViewScaleState.zoomedIn ? PhotoViewScaleState.initial : PhotoViewScaleState.zoomedIn;
+            },
           );
         },
+        // Show loading indicator while images are being downloaded
+        // Zeige Ladeindikator während Bilder heruntergeladen werden
+        loadingBuilder: (context, event) => Center(
+          child: SizedBox(
+            width: 50,
+            height: 50,
+            child: CircularProgressIndicator(
+              value: event == null ? 0 : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+            ),
+          ),
+        ),
+        backgroundDecoration: const BoxDecoration(color: Colors.black),
       ),
     );
   }

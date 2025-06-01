@@ -1,18 +1,24 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'dart:io' show Platform;
+import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/pages/coupons/coupon_backend/coupon_entity.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/pages/coupons/coupon_backend/coupon_user_backend_repository.dart';
 import 'package:campus_app/pages/coupons/coupon_backend/coupon_user_entity.dart';
+import 'package:campus_app/pages/coupons/scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:campus_app/pages/coupons/full_screen_image.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
+// CouponDetailPage widget that displays detailed information about a coupon
+// Widget, das detaillierte Informationen über einen Coupon anzeigt
 class CouponDetailPage extends StatefulWidget {
   final Map<String, dynamic> deal;
 
@@ -26,6 +32,17 @@ class CouponDetailPage extends StatefulWidget {
 }
 
 class _CouponDetailPageState extends State<CouponDetailPage> {
+  // State variables for managing UI states
+  // Zustandsvariablen für die Verwaltung von UI-Zuständen
+  bool showSuccessAnimation = false;
+  bool showNetworkError = false;
+  bool showInvalidCodeError = false;
+  int? _couponUsesCounter;
+  int? _availableCoupons;
+  List<String>? _userMaxCoupons;
+
+// Function to open external links
+  // Funktion zum Öffnen externer Links
   Future openLink(BuildContext context, String url) async {
     await launchUrl(
       Uri.parse(url),
@@ -33,8 +50,194 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
     );
   }
 
-  /// Zeigt ein BottomSheet, das einen QR-Code enthält (snapping sheet).
-  /// Unter dem QR-Code kann ggf. noch der Link stehen.
+  @override
+  void initState() {
+    super.initState();
+    // Initialize coupon data from widget
+    // Initialisiert Coupon-Daten aus dem Widget
+    final coupon = Coupon.fromMap(widget.deal);
+    _couponUsesCounter = coupon.couponUsesCounter;
+    _availableCoupons = coupon.availableCoupons;
+  }
+
+// Shows a success animation dialog when coupon is redeemed successfully
+  // Zeigt einen Erfolgsanimation-Dialog an, wenn der Coupon erfolgreich eingelöst wurde
+  void showSuccessAnimationDialog() {
+    showDialog(
+      context: context,
+      barrierColor: Theme.of(context).scaffoldBackgroundColor,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => true,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          body: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Animation Stack
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Celebration effect - background layer
+                        // Feiereffekt - Hintergrundebene
+                        Lottie.asset(
+                          'assets/animations/celebration-effect.json',
+                          width: 800,
+                          height: 400,
+                          fit: BoxFit.cover,
+                          repeat: false,
+                          onLoaded: (composition) {
+                            Future.delayed(composition.duration * 2, () {
+                              if (mounted) {
+                                Navigator.of(context).pop();
+                              }
+                            });
+                          },
+                        ),
+                        // Success effect - foreground layer
+                        // Erfolgseffekt - Vordergrundebene
+                        Lottie.asset(
+                          'assets/animations/success-effect.json',
+                          width: 400,
+                          height: 400,
+                          fit: BoxFit.contain,
+                          repeat: false,
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10),
+                    Text(
+                      'Gutschein erfolgreich eingelöst.',
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+// Shows a network error dialog when there's no internet connection
+  // Zeigt einen Netzwerkfehler-Dialog an, wenn keine Internetverbindung besteht
+  void showNetworkErrorDialog() {
+    showDialog(
+      context: context,
+      barrierColor: Theme.of(context).scaffoldBackgroundColor,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => true,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          body: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'assets/animations/networkError-effect.json',
+                    width: 250,
+                    height: 250,
+                    repeat: false,
+                    onLoaded: (composition) {
+                      Future.delayed(composition.duration * 1.7, () {
+                        if (mounted) Navigator.of(context).pop();
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Netzwerkfehler',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Bitte Internetverbindung überprüfen.',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Shows an error dialog when an invalid QR code is scanned
+  // Zeigt einen Fehlerdialog an, wenn ein ungültiger QR-Code gescannt wurde
+  void showInvalidCodeErrorDialog() {
+    showDialog(
+      context: context,
+      barrierColor: Theme.of(context).scaffoldBackgroundColor,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => true,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          body: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'assets/animations/errorX-effect.json',
+                    width: 200,
+                    height: 200,
+                    repeat: false,
+                    onLoaded: (composition) {
+                      Future.delayed(composition.duration * 1.7, () {
+                        if (mounted) Navigator.of(context).pop();
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Ungültiger QR-Code',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Bitte gültigen Coupon-QR-Code scannen.',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Shows a bottom sheet containing a QR code (snapping sheet)
+  // Optionally shows website/link below the QR code
+  // Zeigt ein BottomSheet mit einem QR-Code (snapping sheet)
+  // Zeigt optional eine Website/Verlinkung unter dem QR-Code an
   void showQrCodeBottomSheet(BuildContext context, String qrCode, {String? website, String? location}) {
     showModalBottomSheet(
       context: context,
@@ -113,6 +316,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                   ),
 
                   // URL with copy button
+                  // URL mit Kopier-Button
                   Column(
                     children: [
                       if (website != null && website.trim().isNotEmpty)
@@ -156,7 +360,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  'Location: ',
+                                  'Standort: ',
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -197,40 +401,105 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
     final theme = Provider.of<ThemesNotifier>(context).currentThemeData;
     final Coupon coupon = Coupon.fromMap(widget.deal);
     final couponUserBackend = sl<CouponUserBackendRepository>();
-    const userId = '6822fb140013c217724f';
-
-    Future<CouponUser> fetchUserData() async {
-      try {
-        return await couponUserBackend.getUserCoupons(userId);
-      } catch (e) {
-        debugPrint('Error fetching user data: $e');
-
-        return CouponUser(
-          userId: userId,
-        );
-      }
-    }
+    final couponBackend = sl<BackendRepository>();
 
     return FutureBuilder<CouponUser>(
-      future: fetchUserData(),
+      future: couponUserBackend.getUserCoupons(),
       builder: (context, snapshot) {
+        // Loading state
+        // Ladezustand
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-
+        // Error state
+        // Fehlerzustand
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Scaffold(
+            backgroundColor: theme.colorScheme.surface,
+            body: SafeArea(
+              child: Column(
+                children: [
+                  // AppBar
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: Platform.isAndroid ? 10 : 0,
+                      bottom: 10,
+                    ),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Stack(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                          Align(
+                            child: Text(
+                              'Coupon-Details',
+                              style: theme.textTheme.displayMedium,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Error message
+                  // Fehlermeldung
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.wifi_off,
+                            size: 64,
+                            color: theme.colorScheme.onSurface.withOpacity(0.5),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Keine Internetverbindung',
+                            style: theme.textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Bitte Verbindung prüfen und erneut versuchen',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: theme.colorScheme.primary,
+                              foregroundColor: theme.colorScheme.onPrimary,
+                              textStyle: theme.textTheme.labelMedium,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {});
+                            },
+                            child: const Text('Erneut versuchen'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
+        // Success state - display coupon details
+        // Erfolgszustand - Coupon-Details anzeigen
+        final user = snapshot.data!;
 
-        final user = snapshot.data ??
-            CouponUser(
-              userId: userId,
-              favoriteCoupons: [],
-              likedCoupons: [],
-              dislikedCoupons: [],
-              userMaxCoupons: [],
-            );
+        _userMaxCoupons ??= user.userMaxCoupons ?? [];
 
+        // Extract coupon data
+        // Coupon-Daten extrahieren
         final title = coupon.title;
         final description = coupon.description;
         final List<String>? images = coupon.images;
@@ -242,11 +511,15 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
         final website = coupon.website;
         final location = coupon.location;
         final qrCode = coupon.qrCode;
+        final hiddenQrCode = coupon.hiddenQrCode;
+        final couponUsesCounter = _couponUsesCounter ?? coupon.couponUsesCounter ?? 0;
+        final availableCoupons = _availableCoupons ?? coupon.availableCoupons;
 
-        final List<String> userMaxCoupons = user.userMaxCoupons ?? [];
+        final List<String> userMaxCoupons = _userMaxCoupons ?? [];
         final Map<String, int> couponLimits = {};
 
-        // Parse coupon limits from user data example : (asfwfqwf:30) = (userid:userMaxCoupons)
+        // Parse coupon limits from user data example: (asfwfqwf:30) = (userid:userMaxCoupons)
+        // Coupon-Limits aus Benutzerdaten parsen Beispiel: (asfwfqwf:30) = (userid:userMaxCoupons)
         for (final entry in userMaxCoupons) {
           final parts = entry.split(':');
           if (parts.length == 2) {
@@ -256,9 +529,9 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
           }
         }
 
-        int remainingUses = couponLimits[coupon.id] ?? coupon.availableCoupons ?? 1;
-
-        //Nutzungslogik
+// Calculate remaining uses for this coupon
+        // Verbleibende Nutzungen für diesen Coupon berechnen
+        final int remainingUses = couponLimits[coupon.id] ?? availableCoupons ?? 5;
 
         return Scaffold(
           backgroundColor: theme.colorScheme.surface,
@@ -278,6 +551,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                         child: Stack(
                           children: [
                             // Back button
+                            // Zurück-Button
                             IconButton(
                               icon: const Icon(Icons.arrow_back),
                               onPressed: () => Navigator.pop(context),
@@ -293,6 +567,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                       ),
                     ),
 
+                    // --- Main content ---
                     // --- Hauptinhalt ---
                     Expanded(
                       child: SingleChildScrollView(
@@ -301,8 +576,11 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // Image
                             // Bild
-                            if (images != null && images.isNotEmpty)
+                            if (images == null || images.isEmpty)
+                              const SizedBox.shrink()
+                            else
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 6),
                                 child: SizedBox(
@@ -317,7 +595,6 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                                           child: Stack(
                                             fit: StackFit.expand,
                                             children: [
-                                              // Tap to view full screen
                                               GestureDetector(
                                                 onTap: () {
                                                   Navigator.push(
@@ -337,14 +614,13 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                                                     fit: BoxFit.cover,
                                                     errorBuilder: (context, error, stackTrace) {
                                                       return Container(
-                                                        color: Colors.grey[200],
-                                                        child: const Icon(Icons.broken_image),
+                                                        color: Colors.grey[600],
+                                                        child: const Icon(Icons.image_not_supported),
                                                       );
                                                     },
                                                   ),
                                                 ),
                                               ),
-                                              // Image counter
                                               Positioned(
                                                 bottom: 6,
                                                 right: 8,
@@ -370,18 +646,11 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                                     },
                                   ),
                                 ),
-                              )
-                            // Placeholder when no images
-                            else
-                              Container(
-                                height: 200,
-                                color: Colors.grey[200],
-                                alignment: Alignment.center,
-                                child: const Icon(Icons.image_not_supported, size: 50),
                               ),
 
                             const SizedBox(height: 8),
 
+                            // Title
                             // Titel
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -405,21 +674,18 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                               ),
                             ),
                             const SizedBox(height: 12),
+
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: Row(
                                 children: [
                                   Expanded(
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        provider,
-                                        maxLines: 2,
-                                        style: theme.textTheme.titleMedium?.copyWith(
-                                          fontSize: 16,
-                                          color: theme.colorScheme.onSurface.withOpacity(0.7),
-                                        ),
+                                    child: Text(
+                                      provider,
+                                      maxLines: 2,
+                                      style: theme.textTheme.titleMedium?.copyWith(
+                                        fontSize: 16,
+                                        color: theme.colorScheme.onSurface.withOpacity(0.7),
                                       ),
                                     ),
                                   ),
@@ -427,7 +693,8 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                               ),
                             ),
                             const SizedBox(height: 12),
-                            // Preis / Discount oder Quelle
+                            // old Price
+                            // alterPreis
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: Row(
@@ -444,6 +711,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                                     const SizedBox(width: 6),
 
                                     // Discounted price
+                                    // Reduzierter Preis
                                     Padding(
                                       padding: EdgeInsets.zero,
                                       child: Text(
@@ -464,34 +732,41 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                                     ),
                                     const SizedBox(width: 6),
                                   ],
-                                  // Discount box
-                                  if (discount != null || (oldPrice != null && newPrice != null))
+                                  // display Discount %
+                                  // Rabatt % anzeigen
+                                  if (oldPrice != null && newPrice != null)
                                     Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: (oldPrice == null || newPrice == null) ? 30 : 6,
-                                        vertical: 2,
-                                      ),
+                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                       decoration: BoxDecoration(
                                         color: Colors.redAccent.shade100.withOpacity(0.8),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
-                                      child: discount != null
-                                          ? Text(
-                                              discount,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 13,
-                                              ),
-                                            )
-                                          : Text(
-                                              '${((oldPrice! - newPrice!) / oldPrice * 100).round()}%',
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 13,
-                                              ),
-                                            ),
+                                      child: Text(
+                                        newPrice == 0
+                                            ? 'Free 🎉'
+                                            : '${newPrice > oldPrice ? '+' : '-'}${((oldPrice - newPrice).abs() / oldPrice * 100).round()}%',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    )
+                                  else if (discount != null)
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: Colors.redAccent.shade100.withOpacity(0.8),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        discount,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                        ),
+                                      ),
                                     )
                                   else
                                     const Text(
@@ -508,6 +783,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
 
                             const SizedBox(height: 12),
                             // Description section
+                            // Beschreibungsabschnitt
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: Column(
@@ -532,7 +808,7 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                               ),
                             ),
 
-                            const SizedBox(height: 60),
+                            const SizedBox(height: 100),
                           ],
                         ),
                       ),
@@ -541,68 +817,286 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
                 ),
 
                 // Floating button positioned at the bottom
+                // Schwebtaste am unteren Rand positioniert
                 Positioned(
                   bottom: 25,
-                  left: 120,
-                  right: 120,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: theme.colorScheme.onPrimary,
-                      minimumSize: const Size(double.infinity, 40),
-                      textStyle: theme.textTheme.labelMedium,
-                      shape: RoundedRectangleBorder(
-                        // Explicit shape
-                        borderRadius: BorderRadius.circular(10), // Custom radius
-                      ),
-                    ),
-                    onPressed: () async {
-                      // show the QR code
-                      final hasWebsite = website?.trim().isNotEmpty ?? false;
-                      final hasLocation = location?.trim().isNotEmpty ?? false;
+                  left: 10,
+                  right: 10,
+                  child: remainingUses <= 0
+                      ? SizedBox(
+                          width: double.infinity,
+                          child: AbsorbPointer(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                disabledBackgroundColor: theme.colorScheme.primary,
+                                disabledForegroundColor: Colors.deepOrange,
+                                minimumSize: const Size(double.infinity, 40),
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                textStyle: theme.textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: BorderSide(color: Colors.grey[400]!),
+                                ),
+                              ),
+                              onPressed: null,
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.block, size: 20),
+                                  SizedBox(width: 8),
+                                  Text('Coupon-Limit erreicht'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      : () {
+                          // Check which buttons to show based on QR code availability
+                          // Überprüfen, welche Buttons basierend auf der QR-Code-Verfügbarkeit angezeigt werden sollen
+                          final hasHiddenQr = hiddenQrCode != null && hiddenQrCode.trim().isNotEmpty;
+                          final hasQrCode = qrCode != null && qrCode.trim().isNotEmpty;
 
-                      if (hasWebsite || hasLocation) {
-                        showQrCodeBottomSheet(
-                          context,
-                          qrCode,
-                          website: hasWebsite ? website : null,
-                          location: hasLocation ? location : null,
-                        );
-                      } else {
-                        showQrCodeBottomSheet(context, qrCode);
-                      }
-                      // Update remaining uses
-                      final newRemainingUses = remainingUses - 1;
+                          if (hasHiddenQr && hasQrCode) {
+                            // Show both buttons
+                            // Beide Buttons anzeigen
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // Scan Coupon Button
+                                // Coupon scannen Button
+                                SizedBox(
+                                  width: 175,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: theme.colorScheme.primary,
+                                      foregroundColor: theme.colorScheme.onPrimary,
+                                      minimumSize: const Size(double.infinity, 40),
+                                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                                      textStyle: theme.textTheme.labelMedium,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      final scannedData = await Navigator.push<String>(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const QRScanner()),
+                                      );
 
-                      final updatedCouponLimits = <String>[];
-                      bool couponFound = false;
+                                      if (scannedData == null) return;
+                                      // Check internet connection
+                                      // Internetverbindung überprüfen
+                                      final connectivityResult = await Connectivity().checkConnectivity();
+                                      if (connectivityResult == ConnectivityResult.none) {
+                                        showNetworkErrorDialog();
+                                        return;
+                                      }
+                                      if (scannedData == hiddenQrCode) {
+                                        // Update counters and remaining uses
+                                        // Zähler und verbleibende Nutzungen aktualis
+                                        final newCounter = couponUsesCounter + 1;
+                                        final availableCounter = availableCoupons != null ? availableCoupons - 1 : null;
+                                        final newRemainingUses = remainingUses - 1;
 
-                      // Update user coupon limits
-                      for (final entry in userMaxCoupons) {
-                        final parts = entry.split(':');
-                        if (parts.length == 2 && parts[0] == coupon.id) {
-                          updatedCouponLimits.add('${coupon.id}:$newRemainingUses');
-                          couponFound = true;
-                        } else {
-                          updatedCouponLimits.add(entry);
-                        }
-                      }
-                      if (!couponFound) {
-                        updatedCouponLimits.add('${coupon.id}:$newRemainingUses');
-                      }
-                      // Update UI
-                      setState(() {
-                        user.userMaxCoupons = updatedCouponLimits;
-                        remainingUses = newRemainingUses;
-                      });
-                      // Update backend
-                      await couponUserBackend.updateUserCoupons(
-                        userId: userId,
-                        updatedFields: {'userMaxCoupons': updatedCouponLimits},
-                      );
-                    },
-                    child: const Text('Jetzt einlösen'),
-                  ),
+                                        final updatedCouponLimits = <String>[];
+                                        bool couponFound = false;
+
+                                        for (final entry in userMaxCoupons) {
+                                          final parts = entry.split(':');
+                                          if (parts.length == 2 && parts[0] == coupon.id) {
+                                            updatedCouponLimits.add('${coupon.id}:$newRemainingUses');
+                                            couponFound = true;
+                                          } else {
+                                            updatedCouponLimits.add(entry);
+                                          }
+                                        }
+
+                                        if (!couponFound) {
+                                          updatedCouponLimits.add('${coupon.id}:$newRemainingUses');
+                                        }
+
+                                        setState(() {
+                                          _couponUsesCounter = newCounter;
+                                          _availableCoupons = availableCounter;
+                                          _userMaxCoupons = updatedCouponLimits;
+                                        });
+                                        // Update backend with new values
+                                        // Backend mit neuen Werten aktualisieren
+
+                                        await couponBackend.updateCoupon(
+                                          couponId: coupon.id,
+                                          updatedFields: {
+                                            'couponUsesCounter': newCounter,
+                                            'availableCoupons': availableCounter,
+                                          },
+                                        );
+                                        await couponUserBackend.updateUserCoupons(
+                                          updatedFields: {'userMaxCoupons': updatedCouponLimits},
+                                        );
+                                        showSuccessAnimationDialog();
+                                      } else {
+                                        showInvalidCodeErrorDialog();
+                                      }
+                                    },
+                                    child: const Text('Coupon scannen'),
+                                  ),
+                                ),
+                                // Redeem Button
+                                // Einlösen Button
+                                SizedBox(
+                                  width: 175,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: theme.colorScheme.primary,
+                                      foregroundColor: theme.colorScheme.onPrimary,
+                                      minimumSize: const Size(double.infinity, 40),
+                                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                                      textStyle: theme.textTheme.labelMedium,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      final hasWebsite = website?.trim().isNotEmpty ?? false;
+                                      final hasLocation = location?.trim().isNotEmpty ?? false;
+
+                                      if (hasWebsite || hasLocation) {
+                                        showQrCodeBottomSheet(
+                                          context,
+                                          qrCode,
+                                          website: hasWebsite ? website : null,
+                                          location: hasLocation ? location : null,
+                                        );
+                                      } else {
+                                        showQrCodeBottomSheet(context, qrCode);
+                                      }
+                                    },
+                                    child: const Text('Coupon einlösen'),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else if (hasHiddenQr) {
+                            // Show only scan button
+                            // Nur Scan-Button anzeigen
+                            return Center(
+                              child: SizedBox(
+                                width: 250,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: theme.colorScheme.primary,
+                                    foregroundColor: theme.colorScheme.onPrimary,
+                                    minimumSize: const Size(250, 40),
+                                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                                    textStyle: theme.textTheme.labelMedium,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    final scannedData = await Navigator.push<String>(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const QRScanner()),
+                                    );
+
+                                    if (scannedData == null) return;
+
+                                    final connectivityResult = await Connectivity().checkConnectivity();
+                                    if (connectivityResult == ConnectivityResult.none) {
+                                      showNetworkErrorDialog();
+                                      return;
+                                    }
+                                    if (scannedData == hiddenQrCode) {
+                                      final newCounter = couponUsesCounter + 1;
+                                      final availableCounter = availableCoupons != null ? availableCoupons - 1 : null;
+                                      final newRemainingUses = remainingUses - 1;
+
+                                      final updatedCouponLimits = <String>[];
+                                      bool couponFound = false;
+
+                                      for (final entry in userMaxCoupons) {
+                                        final parts = entry.split(':');
+                                        if (parts.length == 2 && parts[0] == coupon.id) {
+                                          updatedCouponLimits.add('${coupon.id}:$newRemainingUses');
+                                          couponFound = true;
+                                        } else {
+                                          updatedCouponLimits.add(entry);
+                                        }
+                                      }
+
+                                      if (!couponFound) {
+                                        updatedCouponLimits.add('${coupon.id}:$newRemainingUses');
+                                      }
+
+                                      setState(() {
+                                        _couponUsesCounter = newCounter;
+                                        _availableCoupons = availableCounter;
+                                        _userMaxCoupons = updatedCouponLimits;
+                                      });
+
+                                      await couponBackend.updateCoupon(
+                                        couponId: coupon.id,
+                                        updatedFields: {
+                                          'couponUsesCounter': newCounter,
+                                          'availableCoupons': availableCounter,
+                                        },
+                                      );
+                                      await couponUserBackend.updateUserCoupons(
+                                        updatedFields: {'userMaxCoupons': updatedCouponLimits},
+                                      );
+                                      showSuccessAnimationDialog();
+                                    } else {
+                                      showInvalidCodeErrorDialog();
+                                    }
+                                  },
+                                  child: const Text('Coupon scannen'),
+                                ),
+                              ),
+                            );
+                          } else if (hasQrCode) {
+                            // Show only redeem button
+                            // Nur Einlösen-Button anzeigen
+                            return Center(
+                              child: SizedBox(
+                                width: 250,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: theme.colorScheme.primary,
+                                    foregroundColor: theme.colorScheme.onPrimary,
+                                    minimumSize: const Size(250, 40),
+                                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                                    textStyle: theme.textTheme.labelMedium,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    final hasWebsite = website?.trim().isNotEmpty ?? false;
+                                    final hasLocation = location?.trim().isNotEmpty ?? false;
+
+                                    if (hasWebsite || hasLocation) {
+                                      showQrCodeBottomSheet(
+                                        context,
+                                        qrCode,
+                                        website: hasWebsite ? website : null,
+                                        location: hasLocation ? location : null,
+                                      );
+                                    } else {
+                                      showQrCodeBottomSheet(context, qrCode);
+                                    }
+                                  },
+                                  child: const Text('Coupon einlösen'),
+                                ),
+                              ),
+                            );
+                          } else {
+                            // Show nothing if neither QR code exists
+                            // Nichts anzeigen, wenn kein QR-Code existiert
+                            return const SizedBox.shrink();
+                          }
+                        }(),
                 ),
               ],
             ),

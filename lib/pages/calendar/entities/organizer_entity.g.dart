@@ -8,7 +8,7 @@ part of 'organizer_entity.dart';
 
 class OrganizerAdapter extends TypeAdapter<Organizer> {
   @override
-  final int typeId = 3;
+  final int typeId = 42;
 
   @override
   Organizer read(BinaryReader reader) {

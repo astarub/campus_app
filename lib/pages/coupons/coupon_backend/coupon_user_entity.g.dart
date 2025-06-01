@@ -1,44 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'category_entity.dart';
+part of 'coupon_user_entity.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CategoryAdapter extends TypeAdapter<Category> {
+class CouponUserAdapter extends TypeAdapter<CouponUser> {
   @override
-  final int typeId = 57;
+  final int typeId = 59;
 
   @override
-  Category read(BinaryReader reader) {
+  CouponUser read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Category(
-      id: fields[0] as int,
-      url: fields[1] as String,
-      name: fields[2] as String,
-      description: fields[3] as String,
-      isCategory: fields[4] as bool,
+    return CouponUser(
+      userId: fields[0] as String,
+      favoriteCoupons: (fields[1] as List?)?.cast<String>(),
+      likedCoupons: (fields[2] as List?)?.cast<String>(),
+      dislikedCoupons: (fields[3] as List?)?.cast<String>(),
+      userMaxCoupons: (fields[4] as List?)?.cast<String>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, Category obj) {
+  void write(BinaryWriter writer, CouponUser obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.id)
+      ..write(obj.userId)
       ..writeByte(1)
-      ..write(obj.url)
+      ..write(obj.favoriteCoupons)
       ..writeByte(2)
-      ..write(obj.name)
+      ..write(obj.likedCoupons)
       ..writeByte(3)
-      ..write(obj.description)
+      ..write(obj.dislikedCoupons)
       ..writeByte(4)
-      ..write(obj.isCategory);
+      ..write(obj.userMaxCoupons);
   }
 
   @override
@@ -47,7 +47,7 @@ class CategoryAdapter extends TypeAdapter<Category> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CategoryAdapter &&
+      other is CouponUserAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
