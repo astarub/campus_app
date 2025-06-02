@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, avoid_dynamic_calls
+
 import 'package:campus_app/core/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -15,7 +17,6 @@ import 'package:campus_app/pages/pathfinder/indoor_nav_page.dart';
 import 'package:campus_app/utils/pages/pathfinder_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/pages/pathfinder/pathfinder_onboarding.dart';
-import 'package:campus_app/pages/pathfinder/sync_maps.dart'; // --> Added
 
 String? selectedLocationGlobal;
 
@@ -162,7 +163,8 @@ class RaumfinderPageState extends State<RaumfinderPage>
                           optionsBuilder: (TextEditingValue textEditingValue) {
                             return predefinedLocations.keys.where(
                               (String option) => option.toLowerCase().contains(
-                                  textEditingValue.text.toLowerCase()),
+                                    textEditingValue.text.toLowerCase(),
+                                  ),
                             );
                           },
                           onSelected: changeSelectedLocation,
@@ -215,9 +217,10 @@ class RaumfinderPageState extends State<RaumfinderPage>
                                 border: InputBorder.none,
                                 hintText: 'Nach Gebäude Suchen',
                                 hintStyle: TextStyle(
-                                  color: Provider.of<ThemesNotifier>(context,
-                                                  listen: false)
-                                              .currentTheme ==
+                                  color: Provider.of<ThemesNotifier>(
+                                            context,
+                                            listen: false,
+                                          ).currentTheme ==
                                           AppThemes.light
                                       ? Colors.black
                                       : null,
@@ -263,11 +266,13 @@ class RaumfinderPageState extends State<RaumfinderPage>
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async { // Remove asynch after replacing function-call 1 and 2 
-            // Call functions to overwrite maps and graph structure if necessary 
-            await syncMapsWithServer(); // images (will silently fallback)
-            Graph graph = await syncGraphWithServer(graph);   // returns a safe map
+        floatingActionButton: FloatingActionButton async(
+          //TODO: Move function call into indoorNav (and remove asnyc above)
+          final graph2 = await ensureLatestGraph();
+          graph = graph2;
+          await syncMapImages();
+          //------
+          onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const IndoorNavigation()),
@@ -342,8 +347,10 @@ class RaumfinderPageState extends State<RaumfinderPage>
     checkFirstTimeUser();
     addGraphEntriesToPredefinedLocations();
 
-    predefinedLocations = Map.fromEntries(predefinedLocations.entries.toList()
-      ..sort((e1, e2) => e1.key.compareTo(e2.key)));
+    predefinedLocations = Map.fromEntries(
+      predefinedLocations.entries.toList()
+        ..sort((e1, e2) => e1.key.compareTo(e2.key)),
+    );
   }
 
   void placeSymbol(String locationKey) {
@@ -423,7 +430,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
       final room = key.$3;
 
       if (!room.contains('EN_')) {
-        final name = "$building $level/$room";
+        final name = '$building $level/$room';
         final closestMatchKey = findClosestMatch(
           name,
           predefinedLocations.keys.toList(),

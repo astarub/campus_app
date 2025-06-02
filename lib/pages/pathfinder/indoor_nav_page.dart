@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, avoid_redundant_argument_values, avoid_dynamic_calls
+
 import 'dart:async';
 import 'dart:io';
 
@@ -154,9 +156,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           decoration: InputDecoration(
                             hintText: 'Start: zB. SH 0/05',
                             hintStyle: TextStyle(
-                              color: Provider.of<ThemesNotifier>(context,
-                                              listen: false)
-                                          .currentTheme ==
+                              color: Provider.of<ThemesNotifier>(
+                                        context,
+                                        listen: false,
+                                      ).currentTheme ==
                                       AppThemes.light
                                   ? Colors.black
                                   : null,
@@ -222,9 +225,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           decoration: InputDecoration(
                             hintText: 'Ziel: zB. SH 0/81',
                             hintStyle: TextStyle(
-                              color: Provider.of<ThemesNotifier>(context,
-                                              listen: false)
-                                          .currentTheme ==
+                              color: Provider.of<ThemesNotifier>(
+                                        context,
+                                        listen: false,
+                                      ).currentTheme ==
                                       AppThemes.light
                                   ? Colors.black
                                   : null,
@@ -249,8 +253,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                         child: Transform(
                           transform: imageMatrix,
                           alignment: Alignment.center,
-                          child: Image.memory(images[currentIndex],
-                              fit: BoxFit.contain),
+                          child: Image.memory(
+                            images[currentIndex],
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       )
                     : Center(
@@ -259,9 +265,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           child: SvgPicture.asset(
                             'assets/img/icons/search.svg',
                             colorFilter: ColorFilter.mode(
-                              Provider.of<ThemesNotifier>(context,
-                                              listen: false)
-                                          .currentTheme ==
+                              Provider.of<ThemesNotifier>(
+                                        context,
+                                        listen: false,
+                                      ).currentTheme ==
                                       AppThemes.light
                                   ? Colors.black
                                   : const Color.fromRGBO(184, 186, 191, 1),
@@ -375,18 +382,27 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       graph.forEach((key, value) {
         final (building, level, roomName) = key;
         if ('$building$level.jpg' == filenames[i]) {
-          final coords = value["Coordinates"];
+          final coords = value['Coordinates'];
           final pos = Offset(coords[0].toDouble(), coords[1].toDouble());
           utils.drawTextWithBox(
-              baseImage, pos, roomName, img.ColorRgb8(0, 0, 0));
+            baseImage,
+            pos,
+            roomName,
+            img.ColorRgb8(0, 0, 0),
+          );
         }
       });
 
       // Add path and points
       final points = pointsList[i];
       for (int j = 0; j < points.length - 1; j++) {
-        utils.drawLine(baseImage, points[j], points[j + 1],
-            img.ColorRgb8(0, 255, 255), 10);
+        utils.drawLine(
+          baseImage,
+          points[j],
+          points[j + 1],
+          img.ColorRgb8(0, 255, 255),
+          10,
+        );
       }
       if (points.isNotEmpty) {
         utils.drawPoint(baseImage, points.last, img.ColorRgb8(255, 0, 0), 20);
@@ -400,7 +416,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       });
 
       // Let the UI render the current image before continuing
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
     }
   }
 
@@ -419,7 +435,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
     super.initState();
 
     // Disable swiping when entering this page
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       homeKey.currentState!.setSwipeDisabled();
     });
 

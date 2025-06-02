@@ -11,7 +11,6 @@
 #include <connectivity_plus/connectivity_plus_windows_plugin.h>
 #include <desktop_webview_window/desktop_webview_window_plugin.h>
 #include <firebase_core/firebase_core_plugin_c_api.h>
-#include <firebase_storage/firebase_storage_plugin_c_api.h>
 #include <flutter_inappwebview_windows/flutter_inappwebview_windows_plugin_c_api.h>
 #include <flutter_secure_storage_windows/flutter_secure_storage_windows_plugin.h>
 #include <geolocator_windows/geolocator_windows.h>
@@ -32,8 +31,6 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("DesktopWebviewWindowPlugin"));
   FirebaseCorePluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FirebaseCorePluginCApi"));
-  FirebaseStoragePluginCApiRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("FirebaseStoragePluginCApi"));
   FlutterInappwebviewWindowsPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FlutterInappwebviewWindowsPluginCApi"));
   FlutterSecureStorageWindowsPluginRegisterWithRegistrar(

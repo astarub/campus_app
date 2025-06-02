@@ -80,7 +80,7 @@ dependencies:
   flutter_animate: ^4.5.0
   shared_preferences: ^2.3.3
   cloud_firestore: ^5.6.7
-  firebase_storage: ^12.4.5
+  crypto: ^3.0.3
   
 dev_dependencies:
   flutter_test:
