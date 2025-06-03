@@ -29,6 +29,7 @@ import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:campus_app/pages/planner/planner_state.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -80,6 +81,7 @@ Future<void> main() async {
           // Initializes the provider that handles the app-theme, authentication and other things
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+          ChangeNotifierProvider(create: (context) => PlannerState()),
         ],
         child: CampusApp(
           key: campusAppKey,

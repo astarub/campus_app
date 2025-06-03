@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
-import 'package:campus_app/pages/calendar/calendar_page.dart';
+//import 'package:campus_app/pages/calendar/calendar_page.dart';
 import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/wallet/wallet_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/planner/planner_page.dart'; // Import your new PlannerPage
 
 enum PageItem { feed, events, coupons, mensa, wallet, more }
 
@@ -60,8 +61,14 @@ class NavBarNavigator extends StatelessWidget {
         );
         break;
       case PageItem.events:
-        rootPage = CalendarPage(
-          mainNavigatorKey: mainNavigatorKey,
+        // rootPage = CalendarPage(
+        //   mainNavigatorKey: mainNavigatorKey,
+        //   pageEntryAnimationKey: pageEntryAnimationKey,
+        //   pageExitAnimationKey: pageExitAnimationKey,
+        // );
+        rootPage = PlannerPage(
+          // Changed to PlannerPage
+          mainNavigatorKey: mainNavigatorKey, // Pass the existing keys
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );
