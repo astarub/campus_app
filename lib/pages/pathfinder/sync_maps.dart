@@ -2,16 +2,17 @@
 
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:path_provider/path_provider.dart';
-
 import 'package:path/path.dart' as p;
 
 // Appwrite configuration constants
-const _endpoint = 'https://cloud.appwrite.io/v1'; //CHANGE to actual Appwrite Backend
-const _projectId = '683738fe00196a8dc468';        //CHANGE
-const _bucketId = 'graph';                        //CHANGE
-const _graphFileId = 'graph';                     //CHANGE
+const _endpoint =
+    'https://cloud.appwrite.io/v1'; //CHANGE to actual Appwrite Backend
+const _projectId = '683738fe00196a8dc468'; //CHANGE
+const _bucketId = 'graph'; //CHANGE
+const _graphFileId = 'graph'; //CHANGE
 
 // Type alias for a 3-part node key and the graph structure
 typedef NodeKey = (String, String, String);
@@ -191,8 +192,8 @@ Future<void> syncMaps() async {
 
     if (localFile == null) {
       print('Downloading missing file: $name');
-      final bytes = await storage.getFileDownload(
-          bucketId: _bucketId, fileId: name);
+      final bytes =
+          await storage.getFileDownload(bucketId: _bucketId, fileId: name);
       final filePath = p.join(mapsDir.path, name);
       await File(filePath).writeAsBytes(bytes, flush: true);
       print('Downloaded: $name');
@@ -200,8 +201,8 @@ Future<void> syncMaps() async {
       final localSize = await localFile.length();
       if (localSize != remoteSize) {
         print('Updating file: $name');
-        final bytes = await storage.getFileDownload(
-            bucketId: _bucketId, fileId: name);
+        final bytes =
+            await storage.getFileDownload(bucketId: _bucketId, fileId: name);
         await localFile.writeAsBytes(bytes, flush: true);
         print('Updated: $name');
       }

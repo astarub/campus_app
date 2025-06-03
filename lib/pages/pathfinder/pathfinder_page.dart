@@ -8,6 +8,7 @@ import 'package:location/location.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:provider/provider.dart';
+import 'package:campus_app/pages/pathfinder/sync_maps.dart';
 
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -266,13 +267,15 @@ class RaumfinderPageState extends State<RaumfinderPage>
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton async(
-          //TODO: Move function call into indoorNav (and remove asnyc above)
-          final graph2 = await ensureLatestGraph();
-          graph = graph2;
-          await syncMapImages();
-          //------
+        floatingActionButton: FloatingActionButton(
           onPressed: () {
+            //TODO: Move function call into indoorNav (and remove asnyc above)
+            /*
+            final graph2 = await ensureLatestGraph();
+            graph = graph2;
+            await syncMapImages();
+            */
+            //------
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const IndoorNavigation()),

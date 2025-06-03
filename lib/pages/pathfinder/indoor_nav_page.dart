@@ -37,6 +37,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   List<String> suggestions = [];
   Map testkarte = {};
   (String, String, String) to = ('SH', '0', 'Kultur-Cafe');
+  final double scaleFactor = 1 / 4; // Compression factr
 
   final TransformationController controller = TransformationController();
   final PathfinderUtils utils = sl<PathfinderUtils>();
@@ -360,7 +361,8 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       final name = '$b$l.jpg';
       final key = step;
       final coords = graph[key]!['Coordinates'];
-      final Offset offset = Offset(coords[0].toDouble(), coords[1].toDouble());
+      final Offset offset = Offset(coords[0].toDouble() * scaleFactor,
+          coords[1].toDouble() * scaleFactor);
 
       for (int i = 0; i < filenames.length; i++) {
         if (filenames[i] == name) {
@@ -383,7 +385,8 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
         final (building, level, roomName) = key;
         if ('$building$level.jpg' == filenames[i]) {
           final coords = value['Coordinates'];
-          final pos = Offset(coords[0].toDouble(), coords[1].toDouble());
+          final pos = Offset(coords[0].toDouble() * scaleFactor,
+              coords[1].toDouble() * scaleFactor);
           utils.drawTextWithBox(
             baseImage,
             pos,
@@ -401,7 +404,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
           points[j],
           points[j + 1],
           img.ColorRgb8(0, 255, 255),
-          10,
+          5,
         );
       }
       if (points.isNotEmpty) {

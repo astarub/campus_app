@@ -45,7 +45,8 @@ class PathfinderUtils {
         return newWaypoints;
       } else {
         debugPrint(
-            'Error while finding shortest path: ${response.statusCode}. ${response.body}');
+          'Error while finding shortest path: ${response.statusCode}. ${response.body}',
+        );
       }
     } catch (e) {
       debugPrint('Error while finding shortest path: $e');
@@ -83,7 +84,12 @@ class PathfinderUtils {
   }
 
   void drawLine(
-      img.Image image, Offset p1, Offset p2, img.Color color, int thickness) {
+    img.Image image,
+    Offset p1,
+    Offset p2,
+    img.Color color,
+    int thickness,
+  ) {
     final double dx = p2.dx - p1.dx;
     final double dy = p2.dy - p1.dy;
     final double length = dx.abs() > dy.abs() ? dx.abs() : dy.abs();
@@ -104,19 +110,23 @@ class PathfinderUtils {
   }
 
   void drawTextWithBox(
-      img.Image image, Offset position, String text, img.Color textColor) {
+    img.Image image,
+    Offset position,
+    String text,
+    img.Color textColor,
+  ) {
     if (text.contains("EN_")) return;
 
     const int fontWidth = 12;
     const int fontHeight = 24;
-    const int boxPadding = 10;
+    const int boxPadding = 5;
     const int borderRadius = 10;
 
     final int textWidth = fontWidth * text.length;
     const int textHeight = fontHeight;
 
-    final int boxWidth = textWidth + boxPadding * 2;
-    final int boxHeight = textHeight + boxPadding * 2;
+    final int boxWidth = textWidth + boxPadding;
+    const int boxHeight = textHeight + boxPadding;
 
     final int x = position.dx.toInt();
     final int y = position.dy.toInt();
@@ -160,7 +170,7 @@ class PathfinderUtils {
         }
       }
     }
-
+    /*
     for (int i = boxTop - 1; i <= boxTop + boxHeight; i++) {
       for (int j = boxLeft - 1; j <= boxLeft + boxWidth; j++) {
         final int dx = j - boxLeft;
@@ -175,11 +185,18 @@ class PathfinderUtils {
         }
       }
     }
+    */
 
     final int textX = boxLeft + boxPadding;
     final int textY = boxTop + boxPadding;
-    img.drawString(image, text,
-        font: img.arial14, x: textX, y: textY, color: textColor);
+    img.drawString(
+      image,
+      text,
+      font: img.arial14,
+      x: textX,
+      y: textY,
+      color: textColor,
+    );
   }
 
   Future<List<Uint8List>> loadImages({
@@ -230,17 +247,26 @@ class PathfinderUtils {
           final Offset position =
               Offset(coordinates[0].toDouble(), coordinates[1].toDouble());
           drawTextWithBox(
-              image,
-              position,
-              roomName,
-              img.ColorRgb8(0, 0,
-                  0)); // #TODO: Replace with static approach later -> reduce time rendering 25%
+            image,
+            position,
+            roomName,
+            img.ColorRgb8(
+              0,
+              0,
+              0,
+            ),
+          ); // #TODO: Replace with static approach later -> reduce time rendering 25%
         }
       });
 
       for (int j = 0; j < pointsList[i].length - 1; j++) {
-        drawLine(image, pointsList[i][j], pointsList[i][j + 1],
-            img.ColorRgb8(0, 255, 255), 10);
+        drawLine(
+          image,
+          pointsList[i][j],
+          pointsList[i][j + 1],
+          img.ColorRgb8(0, 255, 255),
+          10,
+        );
       }
 
       drawPoint(image, pointsList[i].last, img.ColorRgb8(255, 0, 0), 20);
