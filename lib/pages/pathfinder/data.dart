@@ -1,5 +1,41 @@
 import 'package:latlong2/latlong.dart';
 
+Map<String, LatLng> emergencyAssemblyPoints = {
+  'Sammelplatz_1': const LatLng(0, 0),
+  'Sammelplatz_2': const LatLng(0, 0),
+  'Sammelplatz_3': const LatLng(0, 0),
+  'Sammelplatz_4': const LatLng(0, 0),
+  'Sammelplatz_5': const LatLng(0, 0),
+  'Sammelplatz_6': const LatLng(0, 0),
+  'Sammelplatz_7': const LatLng(0, 0),
+  'Sammelplatz_8': const LatLng(0, 0),
+  'Sammelplatz_9': const LatLng(0, 0),
+  'Sammelplatz_10': const LatLng(0, 0),
+  'Sammelplatz_11': const LatLng(0, 0),
+  'Sammelplatz_12': const LatLng(0, 0),
+  'Sammelplatz_13': const LatLng(0, 0),
+  'Sammelplatz_14': const LatLng(0, 0),
+  'Sammelplatz_15': const LatLng(0, 0),
+  'Sammelplatz_16': const LatLng(0, 0),
+  'Sammelplatz_17': const LatLng(0, 0),
+  'Sammelplatz_18': const LatLng(0, 0),
+  'Sammelplatz_19': const LatLng(0, 0),
+  'Sammelplatz_20': const LatLng(0, 0),
+  'Sammelplatz_21': const LatLng(0, 0),
+  'Sammelplatz_22': const LatLng(0, 0),
+  'Sammelplatz_23': const LatLng(0, 0),
+  'Sammelplatz_24': const LatLng(0, 0),
+};
+
+Map<String, LatLng> vendingMachines = {
+  'VendingMachines_1': const LatLng(0, 0),
+  'VendingMachines_2': const LatLng(0, 0),
+  'VendingMachines_3': const LatLng(0, 0),
+  'VendingMachines_4': const LatLng(0, 0),
+  'VendingMachines_5': const LatLng(0, 0),
+  'VendingMachines_6': const LatLng(0, 0),
+};
+
 Map<String, LatLng> predefinedLocations = {
   'UFO': const LatLng(51.448051, 7.259111),
   'U35-Haltestelle': const LatLng(51.447198, 7.259043),
@@ -80,7 +116,6 @@ Map<String, LatLng> predefinedLocations = {
   'Urne EG': const LatLng(51.44788, 7.24523),
   'Urne MC': const LatLng(51.444214, 7.256587),
 };
-
 
 Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '04', '161'): {
@@ -27628,7 +27663,7 @@ Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '04', '184'), 132),
       (('GD', '04', 'EN_3190'), 284),
-      (('RUB', '0', 'Campus'),0),
+      (('RUB', '0', 'Campus'), 0),
     ]
   },
   ('GD', '04', 'EN_3190'): {
@@ -30163,7 +30198,7 @@ Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '5', 'Treppenhaus-5-12'), 0),
       (('IA', '6', 'Treppenhaus-6-8'), 0),
       (('IA', '6', 'treppenhaus-6-12'), 0),
-      (('RUB', '0', 'Campus'),0),
+      (('RUB', '0', 'Campus'), 0),
     ]
   },
   ('IA', '1', '181'): {
@@ -35681,7 +35716,7 @@ Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '5', 'Treppe-12'), 0),
       (('IB', '6', 'Treppe-8'), 0),
       (('IB', '6', 'Treppe-12'), 0),
-      (('RUB', '0', 'Campus'),0),
+      (('RUB', '0', 'Campus'), 0),
     ]
   },
   ('IB', '01', '3'): {
@@ -44247,7 +44282,7 @@ Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '5', 'Treppe-16'), 0),
       (('IC', '6', 'Treppe-4'), 0),
       (('IC', '6', 'Treppe-16'), 0),
-      (('RUB', '0', 'Campus'),0),
+      (('RUB', '0', 'Campus'), 0),
     ]
   },
   ('IC', '04', '237'): {
@@ -51099,8 +51134,7 @@ Map<dynamic, Map<String, dynamic>> graph = {
       (('ID', '03', 'HID'), 598),
       (('ID', '03', 'EN_6646'), 88),
       (('ID', '03', '139'), 536),
-      (('ID', '04', 'EN_6650'),0),
-      
+      (('ID', '04', 'EN_6650'), 0),
     ]
   },
   ('ID', '03', 'HID'): {
@@ -51606,8 +51640,8 @@ Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ID', '04', '471'), 359),
       (('ID', '04', 'EN_6651'), 164),
-      (('RUB', '0', 'Campus'),0),
-      (('ID', '03', 'EN_6647'),0),
+      (('RUB', '0', 'Campus'), 0),
+      (('ID', '03', 'EN_6647'), 0),
     ]
   },
   ('ID', '04', 'EN_6651'): {
@@ -51739,7 +51773,7 @@ Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '5', 'Treppe-103'), 0),
       (('MA', '6', 'Treppe-3'), 0),
       (('MA', '6', 'Treppe-103'), 0),
-      (('RUB', '0', 'Campus'),0),
+      (('RUB', '0', 'Campus'), 0),
     ]
   },
   ('MA', '01', 'EN_6777'): {
@@ -56859,7 +56893,7 @@ Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '7', 'Treppenhaus-8'), 0),
       (('NB', '7', 'Treppenhaus-95'), 0),
       (('NB', '7', 'Treppenhaus-106'), 0),
-      (('RUB', '0', 'Campus'),0),
+      (('RUB', '0', 'Campus'), 0),
     ]
   },
   ('NB', '04', 'Aufzug-8'): {
@@ -80479,13 +80513,12 @@ Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '05', 'Eingang-Nordstr.'), 0),
       (('GAFO', '05', 'Eingang'), 0),
       (('GD', '04', 'EN_3183'), 0),
-      (('MA', '01', 'Treppe-3'),0),
-      (('NB', '04', 'Treppe-6'),0),
-      (('IA', '1', 'Treppenhaus-IA-8'),0),
-      (('IB', '01', 'Treppenhaus-01-8'),0),
-      (('IC', '04', 'Treppe-233'),0),
-      (('ID', '04', 'EN_6650'),0),
-
+      (('MA', '01', 'Treppe-3'), 0),
+      (('NB', '04', 'Treppe-6'), 0),
+      (('IA', '1', 'Treppenhaus-IA-8'), 0),
+      (('IB', '01', 'Treppenhaus-01-8'), 0),
+      (('IC', '04', 'Treppe-233'), 0),
+      (('ID', '04', 'EN_6650'), 0),
     ]
   },
 };

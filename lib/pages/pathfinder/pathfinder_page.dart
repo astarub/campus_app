@@ -48,10 +48,20 @@ class RaumfinderPageState extends State<RaumfinderPage>
   bool isFirstTime = false;
   @override
   bool get wantKeepAlive => true;
+  bool isSidebarOpen = false;
 
   @override
   Widget build(BuildContext context) {
     super.build(context); // <-- add this line
+    final double sidebarTop = MediaQuery.of(context).size.height / 2 - 100;
+    final bool isLightTheme =
+        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+            AppThemes.light;
+    final Color sidebarBackgroundColor = isLightTheme
+        ? const Color.fromRGBO(245, 246, 250, 1)
+        : const Color.fromRGBO(34, 40, 54, 1);
+    final Color iconColor = isLightTheme ? Colors.black : Colors.white;
+
     // Display guide if first time use
     if (isFirstTime) {
       return PathfinderOnboardingPage(
@@ -265,6 +275,71 @@ class RaumfinderPageState extends State<RaumfinderPage>
                 ),
               ),
             ),
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              top: sidebarTop + 45,
+              right: isSidebarOpen ? 50 : 0,
+              child: GestureDetector(
+                onTap: toggleSidebar,
+                child: Container(
+                  width: 20,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: sidebarBackgroundColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                    ),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      isSidebarOpen ? Icons.arrow_right : Icons.arrow_left,
+                      color: iconColor,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              top: sidebarTop,
+              right: isSidebarOpen ? 0 : -50,
+              child: Container(
+                width: 50,
+                height: 150,
+                decoration: BoxDecoration(
+                  color: sidebarBackgroundColor,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.local_grocery_store,
+                          color: iconColor, size: 30),
+                      onPressed: () => calcNearestLoc(emergencyAssemblyPoints),
+                      tooltip: 'Snackautomat',
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.restaurant, color: iconColor, size: 30),
+                      onPressed: () => calcNearestLoc(vendingMachines),
+                      tooltip: 'Restaurants',
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.local_hospital,
+                          color: iconColor, size: 30),
+                      onPressed: () => calcNearestLoc(vendingMachines),
+                      tooltip: 'Notfall',
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -450,5 +525,46 @@ class RaumfinderPageState extends State<RaumfinderPage>
     setState(() {
       //todo
     });
+  }
+
+  void toggleSidebar() {
+    setState(() {
+      isSidebarOpen = !isSidebarOpen;
+    });
+  }
+
+  Future<void> calcNearestLoc(Map<String, LatLng> locations) async {
+    if (currentLocation == null) {
+      return;
+    }
+    final LatLng currentPos = LatLng(
+      currentLocation!.latitude!,
+      currentLocation!.longitude!,
+    );
+
+    final Distance distance = const Distance();
+    String? nearestKey;
+    double minDistance = double.infinity;
+    locations.forEach((key, loc) {
+      final double dist = distance(currentPos, loc);
+      if (dist < minDistance) {
+        minDistance = dist;
+        nearestKey = key;
+      }
+    });
+
+    if (nearestKey != null) {
+      final LatLng destination = locations[nearestKey]!;
+      setState(() {
+        symbolPosition = destination;
+      });
+
+      await setShortestPath(currentPos, destination);
+      setState(() {
+        showCurrentLocation = true;
+      });
+    } else {
+      return;
+    }
   }
 }

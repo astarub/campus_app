@@ -5,13 +5,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:dijkstra/dijkstra.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:image/image.dart' as img;
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:campus_app/main.dart';
 import 'package:campus_app/core/injection.dart';
@@ -20,6 +18,7 @@ import 'package:campus_app/pages/pathfinder/data.dart';
 import 'package:campus_app/utils/pages/pathfinder_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/pages/pathfinder/pathfinder_page.dart';
+import 'package:campus_app/pages/pathfinder/image_processing.dart';
 
 class IndoorNavigation extends StatefulWidget {
   const IndoorNavigation({super.key});
@@ -38,6 +37,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   Map testkarte = {};
   (String, String, String) to = ('SH', '0', 'Kultur-Cafe');
   final double scaleFactor = 1 / 4; // Compression factr
+  bool isLoading = false;
 
   final TransformationController controller = TransformationController();
   final PathfinderUtils utils = sl<PathfinderUtils>();
@@ -243,43 +243,54 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                 ),
               ),
               Expanded(
-                child: images.isNotEmpty
-                    ? MatrixGestureDetector(
-                        shouldRotate: true,
-                        onMatrixUpdate: (m, tm, sm, rm) {
-                          setState(() {
-                            imageMatrix = m;
-                          });
-                        },
-                        child: Transform(
-                          transform: imageMatrix,
-                          alignment: Alignment.center,
-                          child: Image.memory(
-                            images[currentIndex],
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      )
-                    : Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 30),
-                          child: SvgPicture.asset(
-                            'assets/img/icons/search.svg',
-                            colorFilter: ColorFilter.mode(
-                              Provider.of<ThemesNotifier>(
-                                        context,
-                                        listen: false,
-                                      ).currentTheme ==
-                                      AppThemes.light
-                                  ? Colors.black
-                                  : const Color.fromRGBO(184, 186, 191, 1),
-                              BlendMode.srcIn,
-                            ),
-                            width: 120,
-                          ),
-                        ),
-                      ),
-              ),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: isLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : images.isNotEmpty
+                              ? MatrixGestureDetector(
+                                  shouldRotate: true,
+                                  onMatrixUpdate: (m, tm, sm, rm) {
+                                    setState(() {
+                                      imageMatrix = m;
+                                    });
+                                  },
+                                  child: Transform(
+                                    transform: imageMatrix,
+                                    alignment: Alignment.center,
+                                    child: Image.memory(
+                                      images[currentIndex],
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                )
+                              : Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 30),
+                                    child: SvgPicture.asset(
+                                      'assets/img/icons/search.svg',
+                                      colorFilter: ColorFilter.mode(
+                                        Provider.of<ThemesNotifier>(
+                                                  context,
+                                                  listen: false,
+                                                ).currentTheme ==
+                                                AppThemes.light
+                                            ? Colors.black
+                                            : const Color.fromRGBO(
+                                                184, 186, 191, 1),
+                                        BlendMode.srcIn,
+                                      ),
+                                      width: 120,
+                                    ),
+                                  ),
+                                ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
           floatingActionButton: Row(
@@ -334,11 +345,20 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   }
 
   Future<void> computeImagesForMapIncrementally(Map karte) async {
+    setState(() {
+      isLoading = true;
+    });
     debugPrint('New page opened.');
 
     final stopwatch1 = Stopwatch()..start();
-    final List<dynamic> shortestPath =
-        Dijkstra.findPathFromGraph(karte, from, to);
+    final List<dynamic> shortestPath = await compute(
+      findShortestPathIsolate,
+      {
+        'graph': karte,
+        'from': [from.$1, from.$2, from.$3],
+        'to': [to.$1, to.$2, to.$3],
+      },
+    );
     debugPrint('Dijkstra execution time: ${stopwatch1.elapsedMilliseconds}ms');
 
     final filenames = <String>[];
@@ -361,8 +381,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       final name = '$b$l.jpg';
       final key = step;
       final coords = graph[key]!['Coordinates'];
-      final Offset offset = Offset(coords[0].toDouble() * scaleFactor,
-          coords[1].toDouble() * scaleFactor);
+      final Offset offset = Offset(
+        coords[0].toDouble() * scaleFactor,
+        coords[1].toDouble() * scaleFactor,
+      );
 
       for (int i = 0; i < filenames.length; i++) {
         if (filenames[i] == name) {
@@ -378,48 +400,35 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       final ByteData data =
           await rootBundle.load('assets/maps/${filenames[i]}');
       final Uint8List bytes = data.buffer.asUint8List();
-      final img.Image baseImage = img.decodeImage(bytes)!;
 
-      // Add room labels
+      final labels = <MapEntry<Map<String, double>, String>>[];
       graph.forEach((key, value) {
         final (building, level, roomName) = key;
         if ('$building$level.jpg' == filenames[i]) {
           final coords = value['Coordinates'];
-          final pos = Offset(coords[0].toDouble() * scaleFactor,
-              coords[1].toDouble() * scaleFactor);
-          utils.drawTextWithBox(
-            baseImage,
-            pos,
-            roomName,
-            img.ColorRgb8(0, 0, 0),
-          );
+          final Map<String, double> pos = {
+            'x': coords[0].toDouble() * scaleFactor,
+            'y': coords[1].toDouble() * scaleFactor,
+          };
+          labels.add(MapEntry(pos, roomName));
         }
       });
 
-      // Add path and points
-      final points = pointsList[i];
-      for (int j = 0; j < points.length - 1; j++) {
-        utils.drawLine(
-          baseImage,
-          points[j],
-          points[j + 1],
-          img.ColorRgb8(0, 255, 255),
-          5,
-        );
-      }
-      if (points.isNotEmpty) {
-        utils.drawPoint(baseImage, points.last, img.ColorRgb8(255, 0, 0), 20);
-      }
+      final points = pointsList[i]
+          .map((offset) => {'x': offset.dx, 'y': offset.dy})
+          .toList();
+
+      final params = ImageProcessingParams(bytes, labels, points);
 
       final Uint8List modifiedImage =
-          Uint8List.fromList(img.encodePng(baseImage));
+          await compute(processImageInIsolate, params);
 
       setState(() {
         images.add(modifiedImage);
+        isLoading = false;
       });
 
-      // Let the UI render the current image before continuing
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 10));
     }
   }
 

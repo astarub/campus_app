@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dijkstra/dijkstra.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +9,156 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter/services.dart';
 
 import 'package:campus_app/pages/pathfinder/data.dart';
+
+List findShortestPathIsolate(Map<String, dynamic> params) {
+  final Map graph = params['graph'];
+  final from = (params['from'][0], params['from'][1], params['from'][2]);
+  final to = (params['to'][0], params['to'][1], params['to'][2]);
+  return Dijkstra.findPathFromGraph(graph, from, to);
+}
+
+void drawPoint(img.Image image, Offset point, img.Color color, int radius) {
+  final int centerX = point.dx.toInt();
+  final int centerY = point.dy.toInt();
+  int x = radius;
+  int y = 0;
+  int radiusError = 1 - x;
+
+  while (x >= y) {
+    for (int i = -x; i <= x; i++) {
+      image.setPixel(centerX + i, centerY + y, color);
+      image.setPixel(centerX + i, centerY - y, color);
+    }
+    for (int i = -y; i <= y; i++) {
+      image.setPixel(centerX + i, centerY + x, color);
+      image.setPixel(centerX + i, centerY - x, color);
+    }
+    y++;
+
+    if (radiusError < 0) {
+      radiusError += 2 * y + 1;
+    } else {
+      x--;
+      radiusError += 2 * (y - x + 1);
+    }
+  }
+}
+
+void drawLine(
+  img.Image image,
+  Offset p1,
+  Offset p2,
+  img.Color color,
+  int thickness,
+) {
+  final double dx = p2.dx - p1.dx;
+  final double dy = p2.dy - p1.dy;
+  final double length = dx.abs() > dy.abs() ? dx.abs() : dy.abs();
+
+  final double xIncrement = dx / length;
+  final double yIncrement = dy / length;
+  final double xo = -yIncrement;
+  final double yo = xIncrement;
+  final int thick = (thickness / 2).toInt();
+
+  for (int i = 0; i < length; i++) {
+    final double x = p1.dx + i * xIncrement;
+    final double y = p1.dy + i * yIncrement;
+    for (int k = -thick; k < thick; k++) {
+      image.setPixel((x + k * xo).toInt(), (y + k * yo).toInt(), color);
+    }
+  }
+}
+
+void drawTextWithBox(
+  img.Image image,
+  Offset position,
+  String text,
+  img.Color textColor,
+) {
+  if (text.contains("EN_")) return;
+
+  const int fontWidth = 12;
+  const int fontHeight = 24;
+  const int boxPadding = 5;
+  const int borderRadius = 10;
+
+  final int textWidth = fontWidth * text.length;
+  const int textHeight = fontHeight;
+
+  final int boxWidth = textWidth + boxPadding;
+  const int boxHeight = textHeight + boxPadding;
+
+  final int x = position.dx.toInt();
+  final int y = position.dy.toInt();
+  final int boxLeft = x - boxWidth ~/ 2;
+  final int boxTop = y - boxHeight ~/ 2;
+
+  for (int i = boxTop; i < boxTop + boxHeight; i++) {
+    for (int j = boxLeft; j < boxLeft + boxWidth; j++) {
+      final int dx = j - boxLeft;
+      final int dy = i - boxTop;
+
+      if ((dx < borderRadius &&
+              dy < borderRadius &&
+              (dx - borderRadius) * (dx - borderRadius) +
+                      (dy - borderRadius) * (dy - borderRadius) >
+                  borderRadius * borderRadius) ||
+          (dx >= boxWidth - borderRadius &&
+              dy < borderRadius &&
+              (dx - (boxWidth - borderRadius)) *
+                          (dx - (boxWidth - borderRadius)) +
+                      (dy - borderRadius) * (dy - borderRadius) >
+                  borderRadius * borderRadius) ||
+          (dx < borderRadius &&
+              dy >= boxHeight - borderRadius &&
+              (dx - borderRadius) * (dx - borderRadius) +
+                      (dy - (boxHeight - borderRadius)) *
+                          (dy - (boxHeight - borderRadius)) >
+                  borderRadius * borderRadius) ||
+          (dx >= boxWidth - borderRadius &&
+              dy >= boxHeight - borderRadius &&
+              (dx - (boxWidth - borderRadius)) *
+                          (dx - (boxWidth - borderRadius)) +
+                      (dy - (boxHeight - borderRadius)) *
+                          (dy - (boxHeight - borderRadius)) >
+                  borderRadius * borderRadius)) {
+        continue;
+      }
+
+      if (j >= 0 && j < image.width && i >= 0 && i < image.height) {
+        image.setPixel(j, i, img.ColorRgba8(255, 255, 255, 200));
+      }
+    }
+  }
+  /*
+    for (int i = boxTop - 1; i <= boxTop + boxHeight; i++) {
+      for (int j = boxLeft - 1; j <= boxLeft + boxWidth; j++) {
+        final int dx = j - boxLeft;
+        final int dy = i - boxTop;
+
+        if ((dx == 0 || dx == boxWidth || dy == 0 || dy == boxHeight) &&
+            j >= 0 &&
+            j < image.width &&
+            i >= 0 &&
+            i < image.height) {
+          image.setPixel(j, i, img.ColorRgb8(0, 0, 0));
+        }
+      }
+    }
+    */
+
+  final int textX = boxLeft + boxPadding;
+  final int textY = boxTop + boxPadding;
+  img.drawString(
+    image,
+    text,
+    font: img.arial14,
+    x: textX,
+    y: textY,
+    color: textColor,
+  );
+}
 
 class PathfinderUtils {
   /// Pathfinder Page
@@ -53,152 +204,9 @@ class PathfinderUtils {
     }
     return [];
   }
+
   //------------------------------------------------------------------------------------------------------
   /// Indoor Navigation
-
-  void drawPoint(img.Image image, Offset point, img.Color color, int radius) {
-    final int centerX = point.dx.toInt();
-    final int centerY = point.dy.toInt();
-    int x = radius;
-    int y = 0;
-    int radiusError = 1 - x;
-
-    while (x >= y) {
-      for (int i = -x; i <= x; i++) {
-        image.setPixel(centerX + i, centerY + y, color);
-        image.setPixel(centerX + i, centerY - y, color);
-      }
-      for (int i = -y; i <= y; i++) {
-        image.setPixel(centerX + i, centerY + x, color);
-        image.setPixel(centerX + i, centerY - x, color);
-      }
-      y++;
-
-      if (radiusError < 0) {
-        radiusError += 2 * y + 1;
-      } else {
-        x--;
-        radiusError += 2 * (y - x + 1);
-      }
-    }
-  }
-
-  void drawLine(
-    img.Image image,
-    Offset p1,
-    Offset p2,
-    img.Color color,
-    int thickness,
-  ) {
-    final double dx = p2.dx - p1.dx;
-    final double dy = p2.dy - p1.dy;
-    final double length = dx.abs() > dy.abs() ? dx.abs() : dy.abs();
-
-    final double xIncrement = dx / length;
-    final double yIncrement = dy / length;
-    final double xo = -yIncrement;
-    final double yo = xIncrement;
-    final int thick = (thickness / 2).toInt();
-
-    for (int i = 0; i < length; i++) {
-      final double x = p1.dx + i * xIncrement;
-      final double y = p1.dy + i * yIncrement;
-      for (int k = -thick; k < thick; k++) {
-        image.setPixel((x + k * xo).toInt(), (y + k * yo).toInt(), color);
-      }
-    }
-  }
-
-  void drawTextWithBox(
-    img.Image image,
-    Offset position,
-    String text,
-    img.Color textColor,
-  ) {
-    if (text.contains("EN_")) return;
-
-    const int fontWidth = 12;
-    const int fontHeight = 24;
-    const int boxPadding = 5;
-    const int borderRadius = 10;
-
-    final int textWidth = fontWidth * text.length;
-    const int textHeight = fontHeight;
-
-    final int boxWidth = textWidth + boxPadding;
-    const int boxHeight = textHeight + boxPadding;
-
-    final int x = position.dx.toInt();
-    final int y = position.dy.toInt();
-    final int boxLeft = x - boxWidth ~/ 2;
-    final int boxTop = y - boxHeight ~/ 2;
-
-    for (int i = boxTop; i < boxTop + boxHeight; i++) {
-      for (int j = boxLeft; j < boxLeft + boxWidth; j++) {
-        final int dx = j - boxLeft;
-        final int dy = i - boxTop;
-
-        if ((dx < borderRadius &&
-                dy < borderRadius &&
-                (dx - borderRadius) * (dx - borderRadius) +
-                        (dy - borderRadius) * (dy - borderRadius) >
-                    borderRadius * borderRadius) ||
-            (dx >= boxWidth - borderRadius &&
-                dy < borderRadius &&
-                (dx - (boxWidth - borderRadius)) *
-                            (dx - (boxWidth - borderRadius)) +
-                        (dy - borderRadius) * (dy - borderRadius) >
-                    borderRadius * borderRadius) ||
-            (dx < borderRadius &&
-                dy >= boxHeight - borderRadius &&
-                (dx - borderRadius) * (dx - borderRadius) +
-                        (dy - (boxHeight - borderRadius)) *
-                            (dy - (boxHeight - borderRadius)) >
-                    borderRadius * borderRadius) ||
-            (dx >= boxWidth - borderRadius &&
-                dy >= boxHeight - borderRadius &&
-                (dx - (boxWidth - borderRadius)) *
-                            (dx - (boxWidth - borderRadius)) +
-                        (dy - (boxHeight - borderRadius)) *
-                            (dy - (boxHeight - borderRadius)) >
-                    borderRadius * borderRadius)) {
-          continue;
-        }
-
-        if (j >= 0 && j < image.width && i >= 0 && i < image.height) {
-          image.setPixel(j, i, img.ColorRgba8(255, 255, 255, 200));
-        }
-      }
-    }
-    /*
-    for (int i = boxTop - 1; i <= boxTop + boxHeight; i++) {
-      for (int j = boxLeft - 1; j <= boxLeft + boxWidth; j++) {
-        final int dx = j - boxLeft;
-        final int dy = i - boxTop;
-
-        if ((dx == 0 || dx == boxWidth || dy == 0 || dy == boxHeight) &&
-            j >= 0 &&
-            j < image.width &&
-            i >= 0 &&
-            i < image.height) {
-          image.setPixel(j, i, img.ColorRgb8(0, 0, 0));
-        }
-      }
-    }
-    */
-
-    final int textX = boxLeft + boxPadding;
-    final int textY = boxTop + boxPadding;
-    img.drawString(
-      image,
-      text,
-      font: img.arial14,
-      x: textX,
-      y: textY,
-      color: textColor,
-    );
-  }
-
   Future<List<Uint8List>> loadImages({
     List<dynamic> shortestPath = const [],
     List<List<Offset>> pointsList = const [],
@@ -243,7 +251,7 @@ class PathfinderUtils {
       graph.forEach((key, value) {
         final (building, level, roomName) = key;
         if (filenames[i] == '$building$level.jpg') {
-          final List<int> coordinates = value["Coordinates"];
+          final List<int> coordinates = value['Coordinates'];
           final Offset position =
               Offset(coordinates[0].toDouble(), coordinates[1].toDouble());
           drawTextWithBox(
