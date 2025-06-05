@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, avoid_redundant_argument_values, avoid_dynamic_calls
-
 import 'dart:async';
 import 'dart:io';
 
@@ -38,6 +36,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   (String, String, String) to = ('SH', '0', 'Kultur-Cafe');
   final double scaleFactor = 1 / 4; // Compression factr
   bool isLoading = false;
+  int? rub0Index;
 
   final TransformationController controller = TransformationController();
   final PathfinderUtils utils = sl<PathfinderUtils>();
@@ -327,6 +326,13 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                       currentIndex = currentIndex + 1;
                     }
                   });
+
+                  if (rub0Index != null && currentIndex == rub0Index) {
+                    Future.delayed(Duration(milliseconds: 1), () {
+                      Navigator.of(context).pop();
+                      selectedLocationGlobal = zielText;
+                    });
+                  }
                 },
                 child: Icon(
                   Icons.arrow_forward,
@@ -369,6 +375,9 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       final name = '$b$l.jpg';
       if (!filenames.contains(name)) {
         filenames.add(name);
+        if (name == 'RUB0.jpg') {
+          rub0Index = filenames.length - 1;
+        }
       }
     }
 
@@ -423,6 +432,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       final Uint8List modifiedImage =
           await compute(processImageInIsolate, params);
 
+      if (!mounted) return;
       setState(() {
         images.add(modifiedImage);
         isLoading = false;

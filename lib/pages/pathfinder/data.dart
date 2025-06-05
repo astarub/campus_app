@@ -1,7 +1,7 @@
 import 'package:latlong2/latlong.dart';
 
 Map<String, LatLng> emergencyAssemblyPoints = {
-  'Sammelplatz_1': const LatLng(0, 0),
+  'Sammelplatz_1': const LatLng(51.44200, 7.25938),
   'Sammelplatz_2': const LatLng(0, 0),
   'Sammelplatz_3': const LatLng(0, 0),
   'Sammelplatz_4': const LatLng(0, 0),

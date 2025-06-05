@@ -49,10 +49,18 @@ class RaumfinderPageState extends State<RaumfinderPage>
   @override
   bool get wantKeepAlive => true;
   bool isSidebarOpen = false;
+  bool hasProcessedGlobalLocation = false;
+  bool _hasAutoUnfocused = false;
 
   @override
   Widget build(BuildContext context) {
     super.build(context); // <-- add this line
+    if (!_hasAutoUnfocused) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        FocusScope.of(context).unfocus();
+      });
+      _hasAutoUnfocused = true;
+    }
     final double sidebarTop = MediaQuery.of(context).size.height / 2 - 100;
     final bool isLightTheme =
         Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
@@ -566,5 +574,24 @@ class RaumfinderPageState extends State<RaumfinderPage>
     } else {
       return;
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!hasProcessedGlobalLocation &&
+        selectedLocationGlobal != null &&
+        selectedLocationGlobal!.isNotEmpty) {
+      hasProcessedGlobalLocation = true;
+      Future.delayed(Duration(milliseconds: 100), () {
+        final location = selectedLocationGlobal!;
+        searchController.text = location;
+        final query = searchController.text.trim();
+        if (query.isNotEmpty) {
+          changeSelectedLocation(query);
+        }
+      });
+    }
+    print("Executed");
   }
 }

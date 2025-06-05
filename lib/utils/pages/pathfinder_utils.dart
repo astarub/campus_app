@@ -57,16 +57,20 @@ void drawLine(
 
   final double xIncrement = dx / length;
   final double yIncrement = dy / length;
-  final double xo = -yIncrement;
-  final double yo = xIncrement;
-  final int thick = (thickness / 2).toInt();
+  final int radius = (thickness / 2).round();
 
   for (int i = 0; i < length; i++) {
     final double x = p1.dx + i * xIncrement;
     final double y = p1.dy + i * yIncrement;
-    for (int k = -thick; k < thick; k++) {
-      image.setPixel((x + k * xo).toInt(), (y + k * yo).toInt(), color);
-    }
+
+    img.drawCircle(
+      image,
+      x: x.toInt(),
+      y: y.toInt(),
+      radius: radius,
+      color: color,
+      antialias: true,
+    );
   }
 }
 
@@ -93,7 +97,7 @@ void drawTextWithBox(
   final int y = position.dy.toInt();
   final int boxLeft = x - boxWidth ~/ 2;
   final int boxTop = y - boxHeight ~/ 2;
-
+  /*
   for (int i = boxTop; i < boxTop + boxHeight; i++) {
     for (int j = boxLeft; j < boxLeft + boxWidth; j++) {
       final int dx = j - boxLeft;
@@ -131,6 +135,7 @@ void drawTextWithBox(
       }
     }
   }
+  */
   /*
     for (int i = boxTop - 1; i <= boxTop + boxHeight; i++) {
       for (int j = boxLeft - 1; j <= boxLeft + boxWidth; j++) {

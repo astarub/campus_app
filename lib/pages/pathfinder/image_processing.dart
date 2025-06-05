@@ -12,33 +12,64 @@ class ImageProcessingParams {
   ImageProcessingParams(this.bytes, this.labels, this.pathPoints);
 }
 
-Uint8List processImageInIsolate(ImageProcessingParams params) {
-  final img.Image baseImage = img.decodeImage(params.bytes)!;
+bool isPointNearLine(
+    Offset point, Offset lineStart, Offset lineEnd, double threshold) {
+  final dx = lineEnd.dx - lineStart.dx;
+  final dy = lineEnd.dy - lineStart.dy;
 
-  // Draw labels
-  for (final entry in params.labels) {
-    final Offset pos = Offset(entry.key['x']!, entry.key['y']!);
-    final String label = entry.value;
-
-    if (!label.contains("EN_")) {
-      drawTextWithBox(baseImage, pos, label, img.ColorRgb8(0, 0, 0));
-    }
+  if (dx == 0 && dy == 0) {
+    return (point - lineStart).distance <= threshold;
   }
 
-  // Draw path
-  for (int i = 0; i < params.pathPoints.length - 1; i++) {
-    final p1 = Offset(params.pathPoints[i]['x']!, params.pathPoints[i]['y']!);
-    final p2 =
-        Offset(params.pathPoints[i + 1]['x']!, params.pathPoints[i + 1]['y']!);
+  final t = ((point.dx - lineStart.dx) * dx + (point.dy - lineStart.dy) * dy) /
+      (dx * dx + dy * dy);
 
-    drawLine(baseImage, p1, p2, img.ColorRgb8(0, 255, 255), 5);
+  final closest = Offset(
+    lineStart.dx + t.clamp(0.0, 1.0) * dx,
+    lineStart.dy + t.clamp(0.0, 1.0) * dy,
+  );
+
+  return (point - closest).distance <= threshold;
+}
+
+Uint8List processImageInIsolate(ImageProcessingParams params) {
+  final img.Image baseImage =
+      img.decodeImage(params.bytes)!.convert(numChannels: 4);
+
+  final List<Offset> pathOffsets =
+      params.pathPoints.map((e) => Offset(e['x']!, e['y']!)).toList();
+
+  // Draw path
+  for (int i = 0; i < pathOffsets.length - 1; i++) {
+    drawLine(baseImage, pathOffsets[i], pathOffsets[i + 1],
+        img.ColorRgb8(0, 255, 255), 5);
   }
 
   // Draw endpoint
-  if (params.pathPoints.isNotEmpty) {
-    final last =
-        Offset(params.pathPoints.last['x']!, params.pathPoints.last['y']!);
-    drawPoint(baseImage, last, img.ColorRgb8(255, 0, 0), 20);
+  if (pathOffsets.isNotEmpty) {
+    drawPoint(baseImage, pathOffsets.last, img.ColorRgb8(255, 0, 0), 20);
+  }
+
+  for (final entry in params.labels) {
+    final Offset labelPos = Offset(entry.key['x']!, entry.key['y']!);
+    final String label = entry.value;
+
+    if (!label.contains("EN_")) {
+      bool isClose = false;
+      for (int i = 0; i < pathOffsets.length - 1; i++) {
+        if (isPointNearLine(
+            labelPos, pathOffsets[i], pathOffsets[i + 1], 200)) {
+          // If all set to 2000 or perform rollback
+          isClose = true;
+          break;
+        }
+      }
+
+      if (isClose) {
+        drawTextWithBox(
+            baseImage, labelPos, label, img.ColorRgb8(255, 255, 255));
+      }
+    }
   }
 
   return Uint8List.fromList(img.encodePng(baseImage));
