@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:campus_app/main.dart';
@@ -37,6 +36,14 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   final double scaleFactor = 1 / 4; // Compression factr
   bool isLoading = false;
   int? rub0Index;
+
+  double scale = 1.0;
+  double previousScale = 1.0;
+  Offset position = Offset.zero;
+  Offset startFocalPoint = Offset.zero;
+  Offset startPosition = Offset.zero;
+  double rotation = 0.0;
+  double previousRotation = 0.0;
 
   final TransformationController controller = TransformationController();
   final PathfinderUtils utils = sl<PathfinderUtils>();
@@ -245,104 +252,144 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                 child: Stack(
                   children: [
                     Positioned.fill(
-                      child: isLoading
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : images.isNotEmpty
-                              ? MatrixGestureDetector(
-                                  shouldRotate: true,
-                                  onMatrixUpdate: (m, tm, sm, rm) {
-                                    setState(() {
-                                      imageMatrix = m;
-                                    });
-                                  },
-                                  child: Transform(
-                                    transform: imageMatrix,
-                                    alignment: Alignment.center,
-                                    child: Image.memory(
-                                      images[currentIndex],
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                )
-                              : Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 30),
-                                    child: SvgPicture.asset(
-                                      'assets/img/icons/search.svg',
-                                      colorFilter: ColorFilter.mode(
-                                        Provider.of<ThemesNotifier>(
-                                                  context,
-                                                  listen: false,
-                                                ).currentTheme ==
-                                                AppThemes.light
-                                            ? Colors.black
-                                            : const Color.fromRGBO(
-                                                184, 186, 191, 1),
-                                        BlendMode.srcIn,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: ClipRect(
+                          child: isLoading
+                              ? const Center(child: CircularProgressIndicator())
+                              : images.isNotEmpty
+                                  ? GestureDetector(
+                                      onScaleStart: (details) {
+                                        previousScale = scale;
+                                        previousRotation = rotation;
+                                        startFocalPoint = details.focalPoint;
+                                        startPosition = position;
+                                      },
+                                      onScaleUpdate: (details) {
+                                        final Offset focalPointDelta =
+                                            details.focalPoint -
+                                                startFocalPoint;
+                                        const double minScale = 1.0;
+                                        const double maxScale = 8.0;
+                                        const double baseTranslationLimit =
+                                            300.0;
+
+                                        setState(() {
+                                          scale =
+                                              (previousScale * details.scale)
+                                                  .clamp(minScale, maxScale);
+                                          rotation = previousRotation +
+                                              details.rotation;
+
+                                          final Offset potentialPosition =
+                                              startPosition + focalPointDelta;
+
+                                          final double adjustedLimit =
+                                              baseTranslationLimit * scale;
+
+                                          position = Offset(
+                                            potentialPosition.dx.clamp(
+                                                -adjustedLimit, adjustedLimit),
+                                            potentialPosition.dy.clamp(
+                                                -adjustedLimit, adjustedLimit),
+                                          );
+                                        });
+                                      },
+                                      child: Center(
+                                        child: Transform(
+                                          alignment: Alignment.center,
+                                          transform: Matrix4.identity()
+                                            ..translate(
+                                                position.dx, position.dy)
+                                            ..rotateZ(rotation)
+                                            ..scale(scale),
+                                          child: Image.memory(
+                                            images[currentIndex],
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
                                       ),
-                                      width: 120,
+                                    )
+                                  : Center(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 30),
+                                        child: SvgPicture.asset(
+                                          'assets/img/icons/search.svg',
+                                          colorFilter: ColorFilter.mode(
+                                            Provider.of<ThemesNotifier>(context,
+                                                            listen: false)
+                                                        .currentTheme ==
+                                                    AppThemes.light
+                                                ? Colors.black
+                                                : const Color.fromRGBO(
+                                                    184, 186, 191, 1),
+                                            BlendMode.srcIn,
+                                          ),
+                                          width: 120,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
           floatingActionButton: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              FloatingActionButton(
-                backgroundColor: Provider.of<ThemesNotifier>(context)
-                    .currentThemeData
-                    .cardColor,
-                onPressed: () {
-                  setState(() {
-                    if (currentIndex > 0) {
+              if (currentIndex > 0)
+                FloatingActionButton(
+                  backgroundColor: Provider.of<ThemesNotifier>(context)
+                      .currentThemeData
+                      .cardColor,
+                  onPressed: () {
+                    setState(() {
                       currentIndex = currentIndex - 1;
-                    }
-                  });
-                },
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Provider.of<ThemesNotifier>(context, listen: false)
-                              .currentTheme ==
-                          AppThemes.light
-                      ? Colors.black
-                      : const Color.fromRGBO(184, 186, 191, 1),
-                ),
-              ),
-              const SizedBox(width: 10),
-              FloatingActionButton(
-                backgroundColor: Provider.of<ThemesNotifier>(context)
-                    .currentThemeData
-                    .cardColor,
-                onPressed: () async {
-                  setState(() {
-                    if (currentIndex < images.length - 1) {
-                      currentIndex = currentIndex + 1;
-                    }
-                  });
-
-                  if (rub0Index != null && currentIndex == rub0Index) {
-                    Future.delayed(Duration(milliseconds: 1), () {
-                      Navigator.of(context).pop();
-                      selectedLocationGlobal = zielText;
                     });
-                  }
-                },
-                child: Icon(
-                  Icons.arrow_forward,
-                  color: Provider.of<ThemesNotifier>(context, listen: false)
-                              .currentTheme ==
-                          AppThemes.light
-                      ? Colors.black
-                      : const Color.fromRGBO(184, 186, 191, 1),
+                  },
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Provider.of<ThemesNotifier>(context, listen: false)
+                                .currentTheme ==
+                            AppThemes.light
+                        ? Colors.black
+                        : const Color.fromRGBO(184, 186, 191, 1),
+                  ),
                 ),
-              ),
+              if (currentIndex < images.length - 1) const SizedBox(width: 10),
+              if (currentIndex < images.length - 1)
+                FloatingActionButton(
+                  backgroundColor: Provider.of<ThemesNotifier>(context)
+                      .currentThemeData
+                      .cardColor,
+                  onPressed: () async {
+                    setState(() {
+                      currentIndex = currentIndex + 1;
+                      scale = 1.0;
+                      rotation = 0.0;
+                      position = Offset.zero;
+                    });
+
+                    if (rub0Index != null && currentIndex == rub0Index) {
+                      Future.delayed(Duration(milliseconds: 1), () {
+                        Navigator.of(context).pop();
+                        selectedLocationGlobal = zielText;
+                      });
+                    }
+                  },
+                  child: Icon(
+                    Icons.arrow_forward,
+                    color: Provider.of<ThemesNotifier>(context, listen: false)
+                                .currentTheme ==
+                            AppThemes.light
+                        ? Colors.black
+                        : const Color.fromRGBO(184, 186, 191, 1),
+                  ),
+                ),
             ],
           ),
         ),
@@ -427,7 +474,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
           .map((offset) => {'x': offset.dx, 'y': offset.dy})
           .toList();
 
-      final params = ImageProcessingParams(bytes, labels, points);
+      final ByteData markerData =
+          await rootBundle.load('assets/img/destination_marker.png');
+      final Uint8List markerBytes = markerData.buffer.asUint8List();
+      final params = ImageProcessingParams(bytes, labels, points, markerBytes);
 
       final Uint8List modifiedImage =
           await compute(processImageInIsolate, params);
@@ -472,10 +522,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
 
     fill();
 
-// Set the default value for zielController if selectedLocationGlobal is not empty
-    if (selectedLocationGlobal != null && selectedLocationGlobal!.isNotEmpty) {
-      zielController.text = selectedLocationGlobal!;
-      zielText = selectedLocationGlobal!;
+    final trimmed = selectedLocationGlobal?.trim();
+    if (trimmed != null && trimmed.contains(' ')) {
+      zielController.text = trimmed;
+      zielText = trimmed;
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {

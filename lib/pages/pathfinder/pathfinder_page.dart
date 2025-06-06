@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, avoid_dynamic_calls
-
 import 'package:campus_app/core/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -8,7 +6,6 @@ import 'package:location/location.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:provider/provider.dart';
-import 'package:campus_app/pages/pathfinder/sync_maps.dart';
 
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';

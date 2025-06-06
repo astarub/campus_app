@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:dijkstra/dijkstra.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as img;
 import 'package:latlong2/latlong.dart';
 import 'package:flutter/services.dart';
-
 import 'package:campus_app/pages/pathfinder/data.dart';
 
 List findShortestPathIsolate(Map<String, dynamic> params) {
@@ -15,6 +15,27 @@ List findShortestPathIsolate(Map<String, dynamic> params) {
   final from = (params['from'][0], params['from'][1], params['from'][2]);
   final to = (params['to'][0], params['to'][1], params['to'][2]);
   return Dijkstra.findPathFromGraph(graph, from, to);
+}
+
+Future<Uint8List> drawMarkerAtEndpoint(
+  Uint8List baseImageBytes,
+  List<Offset> pathPoints,
+  String markerAssetPath,
+) async {
+  final img.Image baseImage = img.decodeImage(baseImageBytes)!;
+
+  final ByteData markerData = await rootBundle.load(markerAssetPath);
+  final Uint8List markerBytes = markerData.buffer.asUint8List();
+  final img.Image markerImage = img.decodeImage(markerBytes)!;
+
+  if (pathPoints.isEmpty) return baseImageBytes;
+
+  final Offset endpoint = pathPoints.last;
+  final int dstX = (endpoint.dx - markerImage.width / 2).round();
+  final int dstY = (endpoint.dy - markerImage.height / 2).round();
+  img.compositeImage(baseImage, markerImage, dstX: dstX, dstY: dstY);
+
+  return Uint8List.fromList(img.encodePng(baseImage));
 }
 
 void drawPoint(img.Image image, Offset point, img.Color color, int radius) {
@@ -44,6 +65,7 @@ void drawPoint(img.Image image, Offset point, img.Color color, int radius) {
   }
 }
 
+/*
 void drawLine(
   img.Image image,
   Offset p1,
@@ -73,92 +95,163 @@ void drawLine(
     );
   }
 }
+*/
+void drawLine(
+  img.Image image,
+  Offset p1,
+  Offset p2,
+  img.Color color,
+  int thickness,
+) {
+  final double dx = p2.dx - p1.dx;
+  final double dy = p2.dy - p1.dy;
+  final double length = dx.abs() > dy.abs() ? dx.abs() : dy.abs();
 
+  final double xIncrement = dx / length;
+  final double yIncrement = dy / length;
+  final int radius = (thickness / 2).round();
+
+  for (int i = 0; i < length; i++) {
+    final double x = p1.dx + i * xIncrement;
+    final double y = p1.dy + i * yIncrement;
+
+    img.drawCircle(
+      image,
+      x: x.toInt(),
+      y: y.toInt(),
+      radius: radius,
+      color: color,
+      antialias: true,
+    );
+  }
+
+  /*
+  // Draw white directional triangles
+  final double angle = math.atan2(dy, dx);
+  const double triangleSize = 4; 
+  const int spacing = 10; 
+
+  final int arrowCount = (length / spacing).floor();
+  final img.Color white = img.ColorRgb8(255, 255, 255);
+
+  for (int i = 1; i <= arrowCount; i++) {
+    final double ratio = i / (arrowCount + 1);
+    final Offset center = Offset(
+      p1.dx + dx * ratio,
+      p1.dy + dy * ratio,
+    );
+
+    final List<img.Point> trianglePoints = [
+      img.Point(
+        (center.dx + math.cos(angle) * triangleSize).toInt(),
+        (center.dy + math.sin(angle) * triangleSize).toInt(),
+      ),
+      img.Point(
+        (center.dx + math.cos(angle + 2.5) * triangleSize).toInt(),
+        (center.dy + math.sin(angle + 2.5) * triangleSize).toInt(),
+      ),
+      img.Point(
+        (center.dx + math.cos(angle - 2.5) * triangleSize).toInt(),
+        (center.dy + math.sin(angle - 2.5) * triangleSize).toInt(),
+      ),
+    ];
+
+    img.fillPolygon(
+      image,
+      vertices: trianglePoints,
+      color: white,
+    );
+  }*/
+}
+
+List<Rect> _drawnLabelRects = [];
 void drawTextWithBox(
   img.Image image,
   Offset position,
   String text,
   img.Color textColor,
 ) {
-  if (text.contains("EN_")) return;
+  if (text.contains('EN_')) return;
 
   const int fontWidth = 12;
   const int fontHeight = 24;
   const int boxPadding = 5;
-  const int borderRadius = 10;
+  const int maxRadiusSteps = 5;
+  const double radiusIncrement = 15;
 
   final int textWidth = fontWidth * text.length;
   const int textHeight = fontHeight;
-
   final int boxWidth = textWidth + boxPadding;
   const int boxHeight = textHeight + boxPadding;
 
-  final int x = position.dx.toInt();
-  final int y = position.dy.toInt();
-  final int boxLeft = x - boxWidth ~/ 2;
-  final int boxTop = y - boxHeight ~/ 2;
-  /*
-  for (int i = boxTop; i < boxTop + boxHeight; i++) {
-    for (int j = boxLeft; j < boxLeft + boxWidth; j++) {
-      final int dx = j - boxLeft;
-      final int dy = i - boxTop;
+  Offset adjustedPosition = position;
+  Rect? newLabelRect;
+  bool placed = false;
 
-      if ((dx < borderRadius &&
-              dy < borderRadius &&
-              (dx - borderRadius) * (dx - borderRadius) +
-                      (dy - borderRadius) * (dy - borderRadius) >
-                  borderRadius * borderRadius) ||
-          (dx >= boxWidth - borderRadius &&
-              dy < borderRadius &&
-              (dx - (boxWidth - borderRadius)) *
-                          (dx - (boxWidth - borderRadius)) +
-                      (dy - borderRadius) * (dy - borderRadius) >
-                  borderRadius * borderRadius) ||
-          (dx < borderRadius &&
-              dy >= boxHeight - borderRadius &&
-              (dx - borderRadius) * (dx - borderRadius) +
-                      (dy - (boxHeight - borderRadius)) *
-                          (dy - (boxHeight - borderRadius)) >
-                  borderRadius * borderRadius) ||
-          (dx >= boxWidth - borderRadius &&
-              dy >= boxHeight - borderRadius &&
-              (dx - (boxWidth - borderRadius)) *
-                          (dx - (boxWidth - borderRadius)) +
-                      (dy - (boxHeight - borderRadius)) *
-                          (dy - (boxHeight - borderRadius)) >
-                  borderRadius * borderRadius)) {
-        continue;
-      }
+  for (int r = 0; r <= maxRadiusSteps && !placed; r++) {
+    final double radius = r * radiusIncrement;
 
-      if (j >= 0 && j < image.width && i >= 0 && i < image.height) {
-        image.setPixel(j, i, img.ColorRgba8(255, 255, 255, 200));
+    for (int angle = 0; angle < 360; angle += 45) {
+      final double dx = radius * math.cos(angle * (math.pi / 180));
+      final double dy = radius * math.sin(angle * (math.pi / 180));
+      final Offset testPosition = position.translate(dx, dy);
+
+      final int x = testPosition.dx.toInt();
+      final int y = testPosition.dy.toInt();
+      final int boxLeft = x - boxWidth ~/ 2;
+      final int boxTop = y - boxHeight ~/ 2;
+
+      final Rect candidateRect = Rect.fromLTWH(
+        boxLeft.toDouble(),
+        boxTop.toDouble(),
+        boxWidth.toDouble(),
+        boxHeight.toDouble(),
+      );
+
+      if (!_drawnLabelRects.any((r) => r.overlaps(candidateRect))) {
+        newLabelRect = candidateRect;
+        adjustedPosition = testPosition;
+        placed = true;
+        break;
       }
     }
   }
-  */
-  /*
-    for (int i = boxTop - 1; i <= boxTop + boxHeight; i++) {
-      for (int j = boxLeft - 1; j <= boxLeft + boxWidth; j++) {
-        final int dx = j - boxLeft;
-        final int dy = i - boxTop;
 
-        if ((dx == 0 || dx == boxWidth || dy == 0 || dy == boxHeight) &&
-            j >= 0 &&
-            j < image.width &&
-            i >= 0 &&
-            i < image.height) {
-          image.setPixel(j, i, img.ColorRgb8(0, 0, 0));
-        }
-      }
-    }
-    */
+  newLabelRect ??= Rect.fromLTWH(
+    position.dx - boxWidth / 2,
+    position.dy - boxHeight / 2,
+    boxWidth.toDouble(),
+    boxHeight.toDouble(),
+  );
 
+  _drawnLabelRects.add(newLabelRect);
+
+  final int boxLeft = adjustedPosition.dx.toInt() - boxWidth ~/ 2;
+  final int boxTop = adjustedPosition.dy.toInt() - boxHeight ~/ 2;
   final int textX = boxLeft + boxPadding;
   final int textY = boxTop + boxPadding;
+
+  const int strokeWidth = 3;
+  for (int dx = -strokeWidth; dx <= strokeWidth; dx++) {
+    for (int dy = -strokeWidth; dy <= strokeWidth; dy++) {
+      if (dx != 0 || dy != 0) {
+        img.drawString(
+          image,
+          text,
+          font: img.arial24,
+          x: textX + dx,
+          y: textY + dy,
+          color: img.ColorRgb8(0, 0, 0),
+        );
+      }
+    }
+  }
+
+  // Draw main text
   img.drawString(
     image,
     text,
-    font: img.arial14,
+    font: img.arial24,
     x: textX,
     y: textY,
     color: textColor,

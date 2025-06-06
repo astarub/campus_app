@@ -8,8 +8,10 @@ class ImageProcessingParams {
   final Uint8List bytes;
   final List<MapEntry<Map<String, double>, String>> labels;
   final List<Map<String, double>> pathPoints;
+  final Uint8List markerBytes;
 
-  ImageProcessingParams(this.bytes, this.labels, this.pathPoints);
+  ImageProcessingParams(
+      this.bytes, this.labels, this.pathPoints, this.markerBytes);
 }
 
 bool isPointNearLine(
@@ -45,9 +47,17 @@ Uint8List processImageInIsolate(ImageProcessingParams params) {
         img.ColorRgb8(0, 255, 255), 5);
   }
 
-  // Draw endpoint
+  if (pathOffsets.isNotEmpty && params.markerBytes.isNotEmpty) {
+    final img.Image markerImage = img.decodeImage(params.markerBytes)!;
+    final Offset end = pathOffsets.last;
+    final int dstX = (end.dx - markerImage.width / 2).round();
+    final int dstY = (end.dy - markerImage.height / 2).round();
+    img.compositeImage(baseImage, markerImage, dstX: dstX, dstY: dstY);
+  }
+
+// Draw start point
   if (pathOffsets.isNotEmpty) {
-    drawPoint(baseImage, pathOffsets.last, img.ColorRgb8(255, 0, 0), 20);
+    drawPoint(baseImage, pathOffsets.first, img.ColorRgb8(255, 0, 0), 20);
   }
 
   for (final entry in params.labels) {

@@ -187,6 +187,7 @@ flutter:
     - assets/img/icons/github.svg
     - assets/img/icons/help-circle.svg
     - assets/img/icons/euro.svg
+    - assets/img/destination_marker.png
     - assets/animations/nfc-light.json
     - assets/animations/nfc-dark.json
     - assets/animations/coin-flip.json
