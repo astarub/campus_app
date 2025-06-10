@@ -29,7 +29,6 @@ dependencies:
   get_it: ^8.0.3
   html: ^0.15.4
   http: ^1.2.2
-  #intl: ^0.19.0
   intl: ^0.20.1
   path_provider: ^2.1.5
   snapping_sheet_2: ^3.1.5
@@ -64,14 +63,11 @@ dependencies:
   dismissible_page: ^1.0.2
   app_links: ^6.4.0
   dijkstra: ^0.0.4
-  #flutter_map: ^7.0.2
   flutter_map: ^8.1.0
   location: ^7.0.1
   latlong2: ^0.9.1
   flutter_polyline_points: ^2.1.0
-  #flutter_map_location_marker: ^9.1.1
   flutter_map_location_marker: ^10.1.0
-  #geolocator: ^13.0.2
   geolocator: ^14.0.1
   photo_view: ^0.15.0
   matrix_gesture_detector: 0.2.0-nullsafety.1
@@ -81,6 +77,7 @@ dependencies:
   shared_preferences: ^2.3.3
   cloud_firestore: ^5.6.7
   crypto: ^3.0.3
+  flutter_compass: ^0.8.1
   
 dev_dependencies:
   flutter_test:

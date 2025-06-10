@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:campus_app/pages/pathfinder/compas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter/foundation.dart';
 
+import 'package:flutter_compass/flutter_compass.dart';
 import 'package:campus_app/main.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -333,6 +335,45 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                         ),
                       ),
                     ),
+                    Positioned(
+                      top: 25,
+                      left: 50,
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: StreamBuilder<CompassEvent>(
+                          stream: FlutterCompass.events,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError ||
+                                snapshot.data?.heading == null) {
+                              return const SizedBox();
+                            }
+
+                            final angle = snapshot.data!.heading!;
+                            final headingLetter =
+                                buildHeadingFirstLetter(angle);
+
+                            return Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CustomPaint(
+                                  size: const Size(100, 100),
+                                  painter: CompassCustomPainter(angle: angle),
+                                ),
+                                Text(
+                                  headingLetter,
+                                  style: TextStyle(
+                                    color: Colors.grey[700],
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -577,5 +618,18 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
     } else {
       debugPrint('Both fields must be filled.');
     }
+  }
+
+  String buildHeadingFirstLetter(double direction) {
+    if (direction >= 315 || direction < 45) {
+      return 'N';
+    } else if (direction >= 45 && direction < 135) {
+      return 'E';
+    } else if (direction >= 135 && direction < 225) {
+      return 'S';
+    } else if (direction >= 225 && direction < 315) {
+      return 'W';
+    }
+    return '';
   }
 }

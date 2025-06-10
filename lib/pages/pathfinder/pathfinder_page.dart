@@ -48,6 +48,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
   bool isSidebarOpen = false;
   bool hasProcessedGlobalLocation = false;
   bool _hasAutoUnfocused = false;
+  final MapController mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +96,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
         body: Stack(
           children: [
             FlutterMap(
+              mapController: mapController,
               options: MapOptions(
                 initialCenter: currentLocation != null
                     ? LatLng(
@@ -477,6 +479,10 @@ class RaumfinderPageState extends State<RaumfinderPage>
     if (suggestions.isNotEmpty) {
       searchController.text = suggestions.first;
     }
+
+    Future.delayed(Duration(milliseconds: 300), () {
+      mapController.move(start, 19.0);
+    });
   }
 
   void addGraphEntriesToPredefinedLocations() {
