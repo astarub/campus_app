@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:campus_app/pages/pathfinder/compas.dart';
+//import 'package:campus_app/pages/pathfinder/compas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:flutter_compass/flutter_compass.dart';
+//import 'package:flutter_compass/flutter_compass.dart';
 import 'package:campus_app/main.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -38,6 +38,8 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   final double scaleFactor = 1 / 4; // Compression factr
   bool isLoading = false;
   int? rub0Index;
+
+  double rotationOffset = 0.3927 * 8; // Replace approx.
 
   double scale = 1.0;
   double previousScale = 1.0;
@@ -335,6 +337,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                         ),
                       ),
                     ),
+                    /*
                     Positioned(
                       top: 25,
                       left: 50,
@@ -373,7 +376,64 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           },
                         ),
                       ),
-                    ),
+                    ),*/
+
+                    if (images.isNotEmpty)
+                      Positioned(
+                        top: 20,
+                        left: 20,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              scale = 1.0;
+                              rotation = 0.0;
+                              position = Offset.zero;
+                            });
+                          },
+                          child: Transform.rotate(
+                            angle: rotation + rotationOffset,
+                            child: ColorFiltered(
+                              colorFilter: Provider.of<ThemesNotifier>(
+                                        context,
+                                        listen: false,
+                                      ).currentTheme ==
+                                      AppThemes.light
+                                  ? const ColorFilter.mode(
+                                      Colors.transparent,
+                                      BlendMode.dst,
+                                    )
+                                  : const ColorFilter.matrix(<double>[
+                                      -1, 0, 0, 0, 255, //
+                                      0, -1, 0, 0, 255, //
+                                      0, 0, -1, 0, 255, //
+                                      0, 0, 0, 1, 0, //
+                                    ]),
+                              child: Container(
+                                width: 75,
+                                height: 75,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Provider.of<ThemesNotifier>(
+                                              context,
+                                              listen: false,
+                                            ).currentTheme ==
+                                            AppThemes.light
+                                        ? Colors.black
+                                        : Colors.white,
+                                    width: 2,
+                                  ),
+                                  image: const DecorationImage(
+                                    image:
+                                        AssetImage('assets/img/compass.jpeg'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/pages/pathfinder/tileLoadingIsolate';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -49,6 +50,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
   bool hasProcessedGlobalLocation = false;
   bool _hasAutoUnfocused = false;
   final MapController mapController = MapController();
+  late Future<TileLayer> tileLayerFuture;
 
   @override
   Widget build(BuildContext context) {
@@ -77,18 +79,18 @@ class RaumfinderPageState extends State<RaumfinderPage>
         donePage: widget,
       );
     } else {
-      TileLayer buildTileLayer() {
-        try {
-          return TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          );
-        } catch (e) {
-          debugPrint('An exception occurred: $e');
-
-          return TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          );
-        }
+      Widget buildTileLayer() {
+        return FutureBuilder<TileLayer>(
+          future: tileLayerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.hasData) {
+              return snapshot.data!;
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        );
       }
 
       return Scaffold(
@@ -150,8 +152,8 @@ class RaumfinderPageState extends State<RaumfinderPage>
                         alignment: Alignment.center,
                         child: const Icon(
                           Icons.location_on,
-                          color: Color.fromARGB(255, 0, 174, 255),
-                          size: 20,
+                          color: Color.fromARGB(255, 255, 0, 0),
+                          size: 40,
                         ),
                       ),
                   ],
@@ -431,6 +433,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
     setInitialLocation();
     checkFirstTimeUser();
     addGraphEntriesToPredefinedLocations();
+    tileLayerFuture = buildTileLayerInIsolate();
 
     predefinedLocations = Map.fromEntries(
       predefinedLocations.entries.toList()

@@ -193,6 +193,7 @@ flutter:
     - assets/maps/
     - assets/maps/SH0.jpg
     - assets/maps/SH1.jpg
+    - assets/img/compass.jpeg
     - assets/videos/pathfinder_onboarding_cover_video.mp4
     - assets/videos/pathfinder_onboarding_step_1.mp4
     - assets/videos/pathfinder_onboarding_step_2.mp4
