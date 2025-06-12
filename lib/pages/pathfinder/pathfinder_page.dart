@@ -1,5 +1,4 @@
 import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/pages/pathfinder/tileLoadingIsolate';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +6,7 @@ import 'package:location/location.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -16,8 +16,69 @@ import 'package:campus_app/pages/pathfinder/indoor_nav_page.dart';
 import 'package:campus_app/utils/pages/pathfinder_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/pages/pathfinder/pathfinder_onboarding.dart';
+import 'package:campus_app/pages/pathfinder/tileLoadingIsolate.dart';
 
 String? selectedLocationGlobal;
+
+Map<String, LatLng> addGraphEntriesToPredefinedLocationsIsolate(
+    Map<String, dynamic> params) {
+  final rawGraph = params['graph'] as Map<dynamic, dynamic>;
+  final Map<List<String>, dynamic> graph = {
+    for (var entry in rawGraph.entries)
+      (entry.key as List<dynamic>).map((e) => e.toString()).toList():
+          entry.value
+  };
+
+  final Map<String, LatLng> predefined =
+      Map<String, LatLng>.from(params['predefined']);
+
+  String findClosestMatch(String target, List<String> candidates) {
+    int computeSimilarity(String a, String b) {
+      final int minLength = a.length < b.length ? a.length : b.length;
+      int matches = 0;
+      for (int i = 0; i < minLength; i++) {
+        if (a[i] == b[i]) {
+          matches++;
+        }
+      }
+      return matches;
+    }
+
+    String? closest = candidates.isNotEmpty ? candidates.first : null;
+    int maxSimilarity = 0;
+
+    for (final candidate in candidates) {
+      final int similarity = computeSimilarity(target, candidate);
+      if (similarity > maxSimilarity) {
+        maxSimilarity = similarity;
+        closest = candidate;
+      }
+    }
+
+    return closest ?? '';
+  }
+
+  for (final entry in graph.entries) {
+    final key = entry.key;
+    final building = key[0];
+    final level = key[1];
+    final room = key[2];
+
+    if (!room.contains('EN_')) {
+      final name = '$building $level/$room';
+      final closestMatchKey = findClosestMatch(
+        name,
+        predefined.keys.toList(),
+      );
+
+      if (closestMatchKey.isNotEmpty) {
+        predefined.putIfAbsent(name, () => predefined[closestMatchKey]!);
+      }
+    }
+  }
+
+  return predefined;
+}
 
 class RaumfinderPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -51,6 +112,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
   bool _hasAutoUnfocused = false;
   final MapController mapController = MapController();
   late Future<TileLayer> tileLayerFuture;
+  bool isTileLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -349,6 +411,10 @@ class RaumfinderPageState extends State<RaumfinderPage>
                 ),
               ),
             ),
+            if (isTileLoading)
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -430,15 +496,17 @@ class RaumfinderPageState extends State<RaumfinderPage>
   void initState() {
     super.initState();
 
-    setInitialLocation();
     checkFirstTimeUser();
-    addGraphEntriesToPredefinedLocations();
     tileLayerFuture = buildTileLayerInIsolate();
-
+    setInitialLocation();
     predefinedLocations = Map.fromEntries(
       predefinedLocations.entries.toList()
         ..sort((e1, e2) => e1.key.compareTo(e2.key)),
     );
+    //addGraphEntriesInIsolate(); // --> 1619ms bottleneck despite isolate (debug mode)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      addGraphEntriesInIsolate();
+    });
   }
 
   void placeSymbol(String locationKey) {
@@ -538,6 +606,20 @@ class RaumfinderPageState extends State<RaumfinderPage>
     });
     setState(() {
       //todo
+    });
+  }
+
+  Future<void> addGraphEntriesInIsolate() async {
+    final result = await compute(
+      addGraphEntriesToPredefinedLocationsIsolate,
+      {
+        'graph': graph.map((k, v) => MapEntry([k.$1, k.$2, k.$3], v)),
+        'predefined': predefinedLocations,
+      },
+    );
+
+    setState(() {
+      predefinedLocations = result;
     });
   }
 

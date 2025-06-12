@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 //import 'package:campus_app/pages/pathfinder/compas.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_compass/flutter_compass.dart';
 
-//import 'package:flutter_compass/flutter_compass.dart';
 import 'package:campus_app/main.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -40,6 +41,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   int? rub0Index;
 
   double rotationOffset = 0.3927 * 8; // Replace approx.
+  double? heading;
 
   double scale = 1.0;
   double previousScale = 1.0;
@@ -253,91 +255,98 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                 ),
               ),
               Expanded(
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ClipRect(
-                          child: isLoading
-                              ? const Center(child: CircularProgressIndicator())
-                              : images.isNotEmpty
-                                  ? GestureDetector(
-                                      onScaleStart: (details) {
-                                        previousScale = scale;
-                                        previousRotation = rotation;
-                                        startFocalPoint = details.focalPoint;
-                                        startPosition = position;
-                                      },
-                                      onScaleUpdate: (details) {
-                                        final Offset focalPointDelta =
-                                            details.focalPoint -
-                                                startFocalPoint;
-                                        const double minScale = 1.0;
-                                        const double maxScale = 8.0;
-                                        const double baseTranslationLimit =
-                                            300.0;
+                // TODO
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Container(
+                          color: Colors.black,
+                          child: ClipRect(
+                            child: isLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator())
+                                : images.isNotEmpty
+                                    ? GestureDetector(
+                                        onScaleStart: (details) {
+                                          previousScale = scale;
+                                          previousRotation = rotation;
+                                          startFocalPoint = details.focalPoint;
+                                          startPosition = position;
+                                        },
+                                        onScaleUpdate: (details) {
+                                          final Offset focalPointDelta =
+                                              details.focalPoint -
+                                                  startFocalPoint;
+                                          const double minScale = 1.0;
+                                          const double maxScale = 8.0;
+                                          const double baseTranslationLimit =
+                                              300.0;
 
-                                        setState(() {
-                                          scale =
-                                              (previousScale * details.scale)
-                                                  .clamp(minScale, maxScale);
-                                          rotation = previousRotation +
-                                              details.rotation;
+                                          setState(() {
+                                            scale =
+                                                (previousScale * details.scale)
+                                                    .clamp(minScale, maxScale);
+                                            rotation = previousRotation +
+                                                details.rotation;
 
-                                          final Offset potentialPosition =
-                                              startPosition + focalPointDelta;
+                                            final Offset potentialPosition =
+                                                startPosition + focalPointDelta;
 
-                                          final double adjustedLimit =
-                                              baseTranslationLimit * scale;
+                                            final double adjustedLimit =
+                                                baseTranslationLimit * scale;
 
-                                          position = Offset(
-                                            potentialPosition.dx.clamp(
-                                                -adjustedLimit, adjustedLimit),
-                                            potentialPosition.dy.clamp(
-                                                -adjustedLimit, adjustedLimit),
-                                          );
-                                        });
-                                      },
-                                      child: Center(
-                                        child: Transform(
-                                          alignment: Alignment.center,
-                                          transform: Matrix4.identity()
-                                            ..translate(
-                                                position.dx, position.dy)
-                                            ..rotateZ(rotation)
-                                            ..scale(scale),
-                                          child: Image.memory(
-                                            images[currentIndex],
-                                            fit: BoxFit.contain,
+                                            position = Offset(
+                                              potentialPosition.dx.clamp(
+                                                  -adjustedLimit,
+                                                  adjustedLimit),
+                                              potentialPosition.dy.clamp(
+                                                  -adjustedLimit,
+                                                  adjustedLimit),
+                                            );
+                                          });
+                                        },
+                                        child: Center(
+                                          child: Transform(
+                                            alignment: Alignment.center,
+                                            transform: Matrix4.identity()
+                                              ..translate(
+                                                  position.dx, position.dy)
+                                              ..rotateZ(rotation)
+                                              ..scale(scale),
+                                            child: Image.memory(
+                                              images[currentIndex],
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Center(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 30),
+                                          child: SvgPicture.asset(
+                                            'assets/img/icons/search.svg',
+                                            colorFilter: ColorFilter.mode(
+                                              Provider.of<ThemesNotifier>(
+                                                              context,
+                                                              listen: false)
+                                                          .currentTheme ==
+                                                      AppThemes.light
+                                                  ? Colors.black
+                                                  : const Color.fromRGBO(
+                                                      184, 186, 191, 1),
+                                              BlendMode.srcIn,
+                                            ),
+                                            width: 120,
                                           ),
                                         ),
                                       ),
-                                    )
-                                  : Center(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 30),
-                                        child: SvgPicture.asset(
-                                          'assets/img/icons/search.svg',
-                                          colorFilter: ColorFilter.mode(
-                                            Provider.of<ThemesNotifier>(context,
-                                                            listen: false)
-                                                        .currentTheme ==
-                                                    AppThemes.light
-                                                ? Colors.black
-                                                : const Color.fromRGBO(
-                                                    184, 186, 191, 1),
-                                            BlendMode.srcIn,
-                                          ),
-                                          width: 120,
-                                        ),
-                                      ),
-                                    ),
+                          ),
                         ),
                       ),
-                    ),
-                    /*
+                      /*
                     Positioned(
                       top: 25,
                       left: 50,
@@ -378,63 +387,64 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                       ),
                     ),*/
 
-                    if (images.isNotEmpty)
-                      Positioned(
-                        top: 20,
-                        left: 20,
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              scale = 1.0;
-                              rotation = 0.0;
-                              position = Offset.zero;
-                            });
-                          },
-                          child: Transform.rotate(
-                            angle: rotation + rotationOffset,
-                            child: ColorFiltered(
-                              colorFilter: Provider.of<ThemesNotifier>(
-                                        context,
-                                        listen: false,
-                                      ).currentTheme ==
-                                      AppThemes.light
-                                  ? const ColorFilter.mode(
-                                      Colors.transparent,
-                                      BlendMode.dst,
-                                    )
-                                  : const ColorFilter.matrix(<double>[
-                                      -1, 0, 0, 0, 255, //
-                                      0, -1, 0, 0, 255, //
-                                      0, 0, -1, 0, 255, //
-                                      0, 0, 0, 1, 0, //
-                                    ]),
-                              child: Container(
-                                width: 75,
-                                height: 75,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Provider.of<ThemesNotifier>(
-                                              context,
-                                              listen: false,
-                                            ).currentTheme ==
-                                            AppThemes.light
-                                        ? Colors.black
-                                        : Colors.white,
-                                    width: 2,
-                                  ),
-                                  image: const DecorationImage(
-                                    image:
-                                        AssetImage('assets/img/compass.jpeg'),
-                                    fit: BoxFit.cover,
+                      if (images.isNotEmpty && heading != null)
+                        Positioned(
+                          top: 20,
+                          left: 20,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                scale = 1.0;
+                                rotation = 0.0;
+                                position = Offset.zero;
+                              });
+                            },
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Transform.rotate(
+                                  angle: rotation + rotationOffset,
+                                  child: ColorFiltered(
+                                    colorFilter: getInversionFilter(context),
+                                    child: Container(
+                                      width: 125,
+                                      height: 125,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/img/compass.png'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                                Transform.rotate(
+                                  angle: (heading! * (pi / 180)),
+                                  child: SizedBox(
+                                    width: 125,
+                                    height: 125,
+                                    child: Align(
+                                      alignment: Alignment.topCenter,
+                                      child: Container(
+                                        width: 4,
+                                        height: 62.5,
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -607,6 +617,14 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   void initState() {
     super.initState();
 
+    FlutterCompass.events!.listen((event) {
+      if (mounted) {
+        setState(() {
+          heading = event.heading ?? 0;
+        });
+      }
+    });
+
     // Disable swiping when entering this page
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       homeKey.currentState!.setSwipeDisabled();
@@ -691,5 +709,19 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       return 'W';
     }
     return '';
+  }
+
+  ColorFilter getInversionFilter(BuildContext context) {
+    final isLight =
+        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+            AppThemes.light;
+    return isLight
+        ? const ColorFilter.matrix(<double>[
+            -1, 0, 0, 0, 255, //
+            0, -1, 0, 0, 255, //
+            0, 0, -1, 0, 255, //
+            0, 0, 0, 1, 0, //
+          ])
+        : const ColorFilter.mode(Colors.transparent, BlendMode.dst);
   }
 }
