@@ -1,4 +1,5 @@
 import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/pages/pathfinder/offlineMapViewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +8,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
@@ -113,6 +115,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
   final MapController mapController = MapController();
   late Future<TileLayer> tileLayerFuture;
   bool isTileLoading = true;
+  bool hasInternet = true;
 
   @override
   Widget build(BuildContext context) {
@@ -159,69 +162,72 @@ class RaumfinderPageState extends State<RaumfinderPage>
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
-            FlutterMap(
-              mapController: mapController,
-              options: MapOptions(
-                initialCenter: currentLocation != null
-                    ? LatLng(
-                        currentLocation!.latitude!,
-                        currentLocation!.longitude!,
-                      )
-                    : const LatLng(51.442887, 7.262413),
-                initialZoom: 15,
-              ),
-              children: [
-                buildTileLayer(),
-                if (waypoints.isNotEmpty)
-                  PolylineLayer(
-                    polylines: [
-                      Polyline(
-                        points: waypoints,
-                        color: const Color.fromARGB(169, 33, 149, 243),
-                        strokeWidth: 3,
+            if (hasInternet)
+              FlutterMap(
+                mapController: mapController,
+                options: MapOptions(
+                  initialCenter: currentLocation != null
+                      ? LatLng(
+                          currentLocation!.latitude!,
+                          currentLocation!.longitude!,
+                        )
+                      : const LatLng(51.442887, 7.262413),
+                  initialZoom: 15,
+                ),
+                children: [
+                  buildTileLayer(),
+                  if (waypoints.isNotEmpty)
+                    PolylineLayer(
+                      polylines: [
+                        Polyline(
+                          points: waypoints,
+                          color: const Color.fromARGB(169, 33, 149, 243),
+                          strokeWidth: 3,
+                        ),
+                      ],
+                    ),
+                  if (showCurrentLocation)
+                    CurrentLocationLayer(
+                      style: LocationMarkerStyle(
+                        marker: const DefaultLocationMarker(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        markerSize: const Size.square(40),
+                        accuracyCircleColor:
+                            const Color.fromARGB(255, 113, 143, 243)
+                                .withOpacity(0.1),
+                        headingSectorColor:
+                            const Color.fromARGB(255, 118, 221, 247)
+                                .withOpacity(0.8),
+                        headingSectorRadius: 120,
                       ),
+                      moveAnimationDuration: Duration.zero,
+                    ),
+                  MarkerLayer(
+                    markers: [
+                      if (symbolPosition != null)
+                        Marker(
+                          width: 50,
+                          height: 50,
+                          point: symbolPosition!,
+                          rotate: true,
+                          alignment: Alignment.center,
+                          child: const Icon(
+                            Icons.location_on,
+                            color: Color.fromARGB(255, 255, 0, 0),
+                            size: 40,
+                          ),
+                        ),
                     ],
                   ),
-                if (showCurrentLocation)
-                  CurrentLocationLayer(
-                    style: LocationMarkerStyle(
-                      marker: const DefaultLocationMarker(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.blue,
-                        ),
-                      ),
-                      markerSize: const Size.square(40),
-                      accuracyCircleColor:
-                          const Color.fromARGB(255, 113, 143, 243)
-                              .withOpacity(0.1),
-                      headingSectorColor:
-                          const Color.fromARGB(255, 118, 221, 247)
-                              .withOpacity(0.8),
-                      headingSectorRadius: 120,
-                    ),
-                    moveAnimationDuration: Duration.zero,
-                  ),
-                MarkerLayer(
-                  markers: [
-                    if (symbolPosition != null)
-                      Marker(
-                        width: 50,
-                        height: 50,
-                        point: symbolPosition!,
-                        rotate: true,
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.location_on,
-                          color: Color.fromARGB(255, 255, 0, 0),
-                          size: 40,
-                        ),
-                      ),
-                  ],
-                ),
-              ],
-            ),
+                ],
+              ),
+            if (!hasInternet)
+              const OfflineMapViewer(imagePath: 'assets/img/offline_map.png'),
             Positioned(
               top: 20,
               left: 10,
@@ -346,6 +352,27 @@ class RaumfinderPageState extends State<RaumfinderPage>
                 ),
               ),
             ),
+            if (!hasInternet)
+              Container(
+                margin: const EdgeInsets.only(top: 90, left: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.red.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.wifi_off, color: Colors.white, size: 18),
+                    SizedBox(width: 8),
+                    Text(
+                      'No internet connection. Offline',
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
@@ -455,23 +482,33 @@ class RaumfinderPageState extends State<RaumfinderPage>
 
     searchController.text = selectedOption;
     selectedLocationGlobal = selectedOption;
-
-    searchController.text = selectedOption;
     placeSymbol(buildingName);
+
     try {
-      if (currentLocation == null) return;
+      if (currentLocation == null) {
+        final LatLng? endLocation = predefinedLocations[buildingName];
+        if (endLocation != null) {
+          mapController.move(endLocation, 17.0);
+        }
+        return;
+      }
 
       final LatLng startLocation = LatLng(
         currentLocation!.latitude!,
         currentLocation!.longitude!,
       );
-      final LatLng endLocation = predefinedLocations[buildingName]!;
+      final LatLng? endLocation = predefinedLocations[buildingName];
+      if (endLocation == null) return;
 
       await setShortestPath(startLocation, endLocation);
 
       setState(() {
         showCurrentLocation = true;
       });
+
+      if (waypoints.isNotEmpty) {
+        await animateCameraAlongRoute(List<LatLng>.from(waypoints.reversed));
+      }
     } catch (e, stacktrace) {
       debugPrint('Error $stacktrace');
     }
@@ -503,10 +540,12 @@ class RaumfinderPageState extends State<RaumfinderPage>
       predefinedLocations.entries.toList()
         ..sort((e1, e2) => e1.key.compareTo(e2.key)),
     );
-    //addGraphEntriesInIsolate(); // --> 1619ms bottleneck despite isolate (debug mode)
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      addGraphEntriesInIsolate();
+      addGraphEntriesInIsolate().then((_) {});
     });
+
+    handleInitialLoading();
   }
 
   void placeSymbol(String locationKey) {
@@ -550,10 +589,6 @@ class RaumfinderPageState extends State<RaumfinderPage>
     if (suggestions.isNotEmpty) {
       searchController.text = suggestions.first;
     }
-
-    Future.delayed(Duration(milliseconds: 300), () {
-      mapController.move(start, 19.0);
-    });
   }
 
   void addGraphEntriesToPredefinedLocations() {
@@ -681,5 +716,37 @@ class RaumfinderPageState extends State<RaumfinderPage>
       });
     }
     print("Executed");
+  }
+
+  Future<void> animateCameraAlongRoute(List<LatLng> waypoints,
+      {double zoom = 19.0, int stepDurationMs = 40}) async {
+    if (waypoints.length < 2) return;
+
+    mapController.move(waypoints.first, zoom);
+    await Future.delayed(const Duration(seconds: 1));
+
+    for (final point in waypoints.skip(1)) {
+      if (!mounted) return;
+      mapController.move(point, zoom);
+      await Future.delayed(Duration(milliseconds: stepDurationMs));
+    }
+  }
+
+  Future<void> handleInitialLoading() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    final connected = connectivityResult != ConnectivityResult.none;
+
+    setState(() {
+      hasInternet = connected;
+    });
+
+    if (connected) {
+      await Future.delayed(const Duration(seconds: 1));
+      if (mounted) {
+        setState(() {
+          isTileLoading = false;
+        });
+      }
+    }
   }
 }
