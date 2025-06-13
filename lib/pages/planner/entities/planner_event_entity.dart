@@ -1,4 +1,3 @@
-// lib/pages/planner/entities/planner_event_entity.dart
 import 'package:flutter/material.dart';
 
 class PlannerEventEntity {
