@@ -113,7 +113,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
   bool hasProcessedGlobalLocation = false;
   bool _hasAutoUnfocused = false;
   final MapController mapController = MapController();
-  late Future<TileLayer> tileLayerFuture;
+  Future<TileLayer>? tileLayerFuture;
   bool isTileLoading = true;
   bool hasInternet = true;
 
@@ -439,9 +439,16 @@ class RaumfinderPageState extends State<RaumfinderPage>
               ),
             ),
             if (isTileLoading)
-              const Center(
-                child: CircularProgressIndicator(),
-              ),
+              Center(
+                  child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Provider.of<ThemesNotifier>(context, listen: false)
+                              .currentTheme ==
+                          AppThemes.light
+                      ? Colors.black
+                      : Colors.white,
+                ),
+              )),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -532,20 +539,45 @@ class RaumfinderPageState extends State<RaumfinderPage>
   @override
   void initState() {
     super.initState();
-
-    checkFirstTimeUser();
-    tileLayerFuture = buildTileLayerInIsolate();
-    setInitialLocation();
-    predefinedLocations = Map.fromEntries(
-      predefinedLocations.entries.toList()
-        ..sort((e1, e2) => e1.key.compareTo(e2.key)),
-    );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      addGraphEntriesInIsolate().then((_) {});
+    Future.microtask(() async {
+      await checkFirstTimeUser();
+      await initializePage();
     });
+  }
 
-    handleInitialLoading();
+  Future<void> initializePage() async {
+    predefinedLocations = sortPredefinedLocations(predefinedLocations);
+    final hasInternetConnection = await checkConnectivity();
+    setState(() => hasInternet = hasInternetConnection);
+    if (hasInternet) {
+      tileLayerFuture = buildTileLayerInIsolate();
+    }
+    currentLocation = await getUserLocation();
+    setState(() {
+      showCurrentLocation = currentLocation != null;
+      isTileLoading = false;
+    });
+  }
+
+  Future<LocationData?> getUserLocation() async {
+    try {
+      final location = Location();
+      return await location.getLocation();
+    } catch (e) {
+      debugPrint('Error getting location: $e');
+      return null;
+    }
+  }
+
+  Map<String, LatLng> sortPredefinedLocations(Map<String, LatLng> locations) {
+    final sortedEntries = locations.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+    return Map<String, LatLng>.fromEntries(sortedEntries);
+  }
+
+  Future<bool> checkConnectivity() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult != ConnectivityResult.none;
   }
 
   void placeSymbol(String locationKey) {
