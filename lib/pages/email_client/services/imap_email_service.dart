@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:enough_mail/enough_mail.dart';
+import 'package:intl/intl.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 
 class ImapEmailService {
@@ -9,7 +10,6 @@ class ImapEmailService {
   String? _username;
   String? _password;
 
-  // RUB email server configuration
   static const String _imapHost = 'mail.ruhr-uni-bochum.de';
   static const int _imapPort = 993;
   static const String _smtpHost = 'mail.ruhr-uni-bochum.de';
@@ -18,13 +18,16 @@ class ImapEmailService {
   bool get isConnected => _imapClient?.isConnected ?? false;
 
   Future<bool> connect(String username, String password) async {
+    _imapClient = ImapClient(isLogEnabled: true);
     try {
       _username = username;
       _password = password;
-      _imapClient = ImapClient(isLogEnabled: false);
       await _imapClient!.connectToServer(_imapHost, _imapPort, isSecure: true);
       await _imapClient!.login(_username!, _password!);
       print('Successfully connected to RUB email server');
+
+      final boxes = await _imapClient!.listMailboxes();
+      print('Available mailboxes: ${boxes.map((m) => m.name).toList()}');
       return true;
     } catch (e) {
       print('Failed to connect to email server: $e');
@@ -36,10 +39,13 @@ class ImapEmailService {
     try {
       await _imapClient?.disconnect();
       await _smtpClient?.disconnect();
-      _imapClient = null;
-      _smtpClient = null;
     } catch (e) {
       print('Error disconnecting: $e');
+    } finally {
+      _imapClient = null;
+      _smtpClient = null;
+      _username = null;
+      _password = null;
     }
   }
 
@@ -52,17 +58,29 @@ class ImapEmailService {
       throw Exception('Not connected to email server');
     }
 
+    // 1. select mailbox
     final mailbox = await _imapClient!.selectMailboxByPath(mailboxName);
+
+    // 2. how many messages there?
     final total = mailbox.messagesExists;
-    final start = total - (page * count) + 1;
-    final end = total - ((page - 1) * count);
-    if (start <= 0) return [];
+    print('DEBUG: $mailboxName has $total messages');
 
+    // 3. bail out only if truly empty
+    if (total == 0) return [];
+
+    // 4. clamp page-range into [1..total]
+    final start = math.max(1, total - (page * count) + 1);
+    final end = math.min(total, total - ((page - 1) * count));
+
+    // 5. fetch with parentheses around the item list
     final fetchResult = await _imapClient!.fetchMessages(
-      MessageSequence.fromRange(math.max(1, start), math.min(total, end)),
-      'BODY.PEEK[HEADER] BODY.PEEK[TEXT]',
+      MessageSequence.fromRange(start, end),
+      '(BODY.PEEK[HEADER] BODY.PEEK[TEXT])',
     );
+    print('DEBUG: fetched ${fetchResult.messages.length} '
+        'messages from $mailboxName');
 
+    // 6. map & reverse (newest-first)
     return fetchResult.messages.map(_convertMimeMessageToEmail).toList().reversed.toList();
   }
 
@@ -70,7 +88,6 @@ class ImapEmailService {
     if (_imapClient == null || !_imapClient!.isConnected) {
       throw Exception('Not connected to email server');
     }
-
     await _imapClient!.selectMailboxByPath(mailboxName);
     final result = await _imapClient!.uidFetchMessage(uid, 'BODY[]');
     if (result.messages.isNotEmpty) {
@@ -88,7 +105,6 @@ class ImapEmailService {
     List<String>? attachments,
   }) async {
     try {
-      // Initialize SMTP client
       if (_smtpClient == null) {
         _smtpClient = SmtpClient('RUB-Flutter-Client', isLogEnabled: false);
         await _smtpClient!.connectToServer(_smtpHost, _smtpPort, isSecure: false);
@@ -97,22 +113,19 @@ class ImapEmailService {
         await _smtpClient!.authenticate(_username!, _password!, AuthMechanism.login);
       }
 
-      // Use the builder API instead of buildSimpleTextMessage:
-      final builder = MessageBuilder.prepareMultipartAlternativeMessage(
-        plainText: body,
-      )
+      final builder = MessageBuilder.prepareMultipartAlternativeMessage(plainText: body)
         ..from = [MailAddress('', _username!)]
         ..to = [MailAddress('', to)]
         ..subject = subject;
 
-      if (cc != null && cc.isNotEmpty) {
-        builder.cc = cc.map((e) => MailAddress('', e)).toList();
+      if (cc?.isNotEmpty ?? false) {
+        builder.cc = cc!.map((e) => MailAddress('', e)).toList();
       }
-      if (bcc != null && bcc.isNotEmpty) {
-        builder.bcc = bcc.map((e) => MailAddress('', e)).toList();
+      if (bcc?.isNotEmpty ?? false) {
+        builder.bcc = bcc!.map((e) => MailAddress('', e)).toList();
       }
 
-      // (You can re-add attachments here once you've inspected the new attachment API.)
+      // TODO: attachments if needed
 
       final message = builder.buildMimeMessage();
       await _smtpClient!.sendMessage(message);
@@ -123,18 +136,15 @@ class ImapEmailService {
     }
   }
 
-  Future<bool> markAsRead(int uid, {String mailboxName = 'INBOX'}) {
-    return _updateEmailFlags(uid, [MessageFlags.seen], mailboxName: mailboxName);
-  }
+  Future<bool> markAsRead(int uid, {String mailboxName = 'INBOX'}) =>
+      _updateEmailFlags(uid, [MessageFlags.seen], mailboxName: mailboxName);
 
-  Future<bool> markAsUnread(int uid, {String mailboxName = 'INBOX'}) {
-    return _updateEmailFlags(
-      uid,
-      [MessageFlags.seen],
-      remove: true,
-      mailboxName: mailboxName,
-    );
-  }
+  Future<bool> markAsUnread(int uid, {String mailboxName = 'INBOX'}) => _updateEmailFlags(
+        uid,
+        [MessageFlags.seen],
+        remove: true,
+        mailboxName: mailboxName,
+      );
 
   Future<bool> deleteEmail(int uid, {String mailboxName = 'INBOX'}) async {
     try {
@@ -173,36 +183,35 @@ class ImapEmailService {
   }
 
   Future<List<Email>> searchEmails({
+    String mailboxName = 'INBOX',
     String? query,
     String? from,
     String? subject,
     DateTime? since,
     bool unreadOnly = false,
-    String mailboxName = 'INBOX',
   }) async {
     if (_imapClient == null || !_imapClient!.isConnected) {
       throw Exception('Not connected to email server');
     }
 
-    // build IMAP SEARCH criteria
     final criteria = <String>[];
     if (query?.isNotEmpty ?? false) criteria.add('TEXT "$query"');
     if (from?.isNotEmpty ?? false) criteria.add('FROM "$from"');
     if (subject?.isNotEmpty ?? false) criteria.add('SUBJECT "$subject"');
     if (since != null) {
-      criteria.add('SINCE ${DateCodec.encodeSearchDate(since)}');
+      final formatted = DateFormat('dd-MMM-yyyy').format(since).toUpperCase();
+      criteria.add('SINCE $formatted');
     }
     if (unreadOnly) criteria.add('UNSEEN');
+    if (criteria.isEmpty) criteria.add('ALL');
 
     final mailbox = await _imapClient!.selectMailboxByPath(mailboxName);
     final total = mailbox.messagesExists;
 
-    // fetchRecentMessages accepts a named `criteria` string
     final fetchResult = await _imapClient!.fetchRecentMessages(
       messageCount: total,
       criteria: criteria.join(' '),
     );
-
     return fetchResult.messages.map(_convertMimeMessageToEmail).toList();
   }
 
@@ -237,8 +246,7 @@ class ImapEmailService {
       date: msg.decodeDate() ?? DateTime.now(),
       isUnread: !msg.isSeen,
       isStarred: msg.isFlagged,
-      // stubbed; re-add once you’ve inspected MimePart’s new API:
-      attachments: <String>[],
+      attachments: <String>[], // implement if needed
       uid: msg.uid ?? 0,
     );
   }

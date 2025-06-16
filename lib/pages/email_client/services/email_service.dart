@@ -80,9 +80,9 @@ class EmailService extends ChangeNotifier {
     // Define folder mappings with fallbacks
     final folderMappings = {
       EmailFolder.inbox: ['INBOX'],
-      EmailFolder.sent: ['Sent', 'INBOX.Sent', 'INBOX/Sent'],
-      EmailFolder.drafts: ['Drafts', 'INBOX.Drafts', 'INBOX/Drafts'],
-      EmailFolder.trash: ['Trash', 'INBOX.Trash', 'INBOX/Trash', 'Deleted Messages'],
+      EmailFolder.sent: ['Sent'],
+      EmailFolder.drafts: ['Drafts'],
+      EmailFolder.trash: ['Trash'],
     };
 
     for (final entry in folderMappings.entries) {
