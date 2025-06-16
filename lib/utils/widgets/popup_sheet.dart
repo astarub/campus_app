@@ -1,9 +1,9 @@
 import 'dart:async';
+
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
-
-import 'package:campus_app/core/themes.dart';
 
 /// This widget allows to push a popup to the navigator-stack that is fully
 /// animated and can be dragged outside the screen by the user.
@@ -44,25 +44,6 @@ class _PopupSheetState extends State<PopupSheet> {
 
   /// Animated half-transparent background color
   Color backgroundColor = const Color.fromRGBO(0, 0, 0, 0);
-
-  @override
-  void initState() {
-    super.initState();
-
-    popupController = SnappingSheetController();
-
-    // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
-    Timer(
-      const Duration(milliseconds: 50),
-      () => popupController.snapToPosition(
-        SnappingPosition.factor(
-          positionFactor: widget.openPositionFactor,
-          snappingCurve: Curves.easeOutExpo,
-          snappingDuration: const Duration(milliseconds: 350),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +123,25 @@ class _PopupSheetState extends State<PopupSheet> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 50),
           color: backgroundColor,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    popupController = SnappingSheetController();
+
+    // Let the SnappingSheet move into the screen after the controller is attached (after build was colled once)
+    Timer(
+      const Duration(milliseconds: 50),
+      () => popupController.snapToPosition(
+        SnappingPosition.factor(
+          positionFactor: widget.openPositionFactor,
+          snappingCurve: Curves.easeOutExpo,
+          snappingDuration: const Duration(milliseconds: 350),
         ),
       ),
     );

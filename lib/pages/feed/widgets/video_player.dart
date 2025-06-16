@@ -2,6 +2,7 @@ import 'package:flutter_videoplayer/flutter_videoplayer.dart';
 import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FeedVideoPlayer extends StatefulWidget {
   /// The network URL to video
@@ -126,5 +127,49 @@ class _FeedVideoPlayerState extends State<FeedVideoPlayer> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _customVideoPlayerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _videoPlayerController = CachedVideoPlayerController.network(widget.url)..initialize();
+    _customVideoPlayerController = CustomVideoPlayerController(
+      context: context,
+      videoPlayerController: _videoPlayerController,
+      customVideoPlayerSettings: const CustomVideoPlayerSettings(
+        showFullscreenButton: false,
+        settingsButtonAvailable: false,
+        playOnlyOnce: true,
+        showDurationPlayed: false,
+        showDurationRemaining: false,
+        controlBarAvailable: false,
+        alwaysShowThumbnailOnVideoPaused: true,
+        showPlayButton: false,
+      ),
+    );
+
+    _customVideoPlayerController.videoPlayerController.addListener(() {
+      setState(() {
+        if (!_customVideoPlayerController.videoPlayerController.value.isPlaying &&
+            _customVideoPlayerController.videoPlayerController.value.isInitialized &&
+            (_customVideoPlayerController.videoPlayerController.value.duration ==
+                _customVideoPlayerController.videoPlayerController.value.position)) {
+          showReplayButton = true;
+        } else {
+          showReplayButton = false;
+        }
+      });
+    });
+
+    // Automatically start playing video on state initilization
+    if (widget.autoplay) _customVideoPlayerController.videoPlayerController.play();
+    // Mute Audio at start
+    if (widget.muted) _customVideoPlayerController.videoPlayerController.setVolume(0);
   }
 }

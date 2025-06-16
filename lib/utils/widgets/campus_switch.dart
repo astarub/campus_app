@@ -205,41 +205,40 @@ class CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSta
   late final AnimationController animationController;
   late final Animation toggleAnimation;
 
-  @override
-  void initState() {
-    super.initState();
-
-    animationController = AnimationController(
-      vsync: this,
-      value: widget.value ? 1.0 : 0.0,
-      duration: widget.duration,
-    );
-
-    toggleAnimation = AlignmentTween(
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
-    ).animate(CurvedAnimation(parent: animationController, curve: widget.curve));
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(CampusSwitch oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.value == widget.value) return;
-
-    if (widget.value) {
-      animationController.forward();
-    } else {
-      animationController.reverse();
+  Widget get _activeText {
+    if (widget.showOnOff) {
+      return Text(
+        widget.activeText ?? 'On',
+        style: TextStyle(
+          color: widget.activeTextColor,
+          fontWeight: _activeTextFontWeight,
+          fontSize: widget.valueFontSize,
+        ),
+      );
     }
+
+    return const Text('');
   }
+
+  FontWeight get _activeTextFontWeight => widget.activeTextFontWeight ?? FontWeight.w900;
+
+  Widget get _inactiveText {
+    if (widget.showOnOff) {
+      return Text(
+        widget.inactiveText ?? 'Off',
+        style: TextStyle(
+          color: widget.inactiveTextColor,
+          fontWeight: _inactiveTextFontWeight,
+          fontSize: widget.valueFontSize,
+        ),
+        textAlign: TextAlign.right,
+      );
+    }
+
+    return const Text('');
+  }
+
+  FontWeight get _inactiveTextFontWeight => widget.inactiveTextFontWeight ?? FontWeight.w900;
 
   @override
   Widget build(BuildContext context) {
@@ -361,37 +360,39 @@ class CampusSwitchState extends State<CampusSwitch> with SingleTickerProviderSta
     );
   }
 
-  FontWeight get _activeTextFontWeight => widget.activeTextFontWeight ?? FontWeight.w900;
-  FontWeight get _inactiveTextFontWeight => widget.inactiveTextFontWeight ?? FontWeight.w900;
+  @override
+  void didUpdateWidget(CampusSwitch oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-  Widget get _activeText {
-    if (widget.showOnOff) {
-      return Text(
-        widget.activeText ?? 'On',
-        style: TextStyle(
-          color: widget.activeTextColor,
-          fontWeight: _activeTextFontWeight,
-          fontSize: widget.valueFontSize,
-        ),
-      );
+    if (oldWidget.value == widget.value) return;
+
+    if (widget.value) {
+      animationController.forward();
+    } else {
+      animationController.reverse();
     }
-
-    return const Text('');
   }
 
-  Widget get _inactiveText {
-    if (widget.showOnOff) {
-      return Text(
-        widget.inactiveText ?? 'Off',
-        style: TextStyle(
-          color: widget.inactiveTextColor,
-          fontWeight: _inactiveTextFontWeight,
-          fontSize: widget.valueFontSize,
-        ),
-        textAlign: TextAlign.right,
-      );
-    }
+  @override
+  void dispose() {
+    animationController.dispose();
 
-    return const Text('');
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    animationController = AnimationController(
+      vsync: this,
+      value: widget.value ? 1.0 : 0.0,
+      duration: widget.duration,
+    );
+
+    toggleAnimation = AlignmentTween(
+      begin: Alignment.centerLeft,
+      end: Alignment.centerRight,
+    ).animate(CurvedAnimation(parent: animationController, curve: widget.curve));
   }
 }

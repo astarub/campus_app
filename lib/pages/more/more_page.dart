@@ -1,21 +1,23 @@
 import 'dart:io' show Platform;
+
+import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/more/imprint_page.dart';
+import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/pages/more/privacy_policy_page.dart';
+import 'package:campus_app/pages/more/settings_page.dart';
+import 'package:campus_app/pages/more/widgets/button_group.dart';
+import 'package:campus_app/pages/more/widgets/external_link_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/more/widgets/external_link_button.dart';
-import 'package:campus_app/pages/more/widgets/button_group.dart';
-import 'package:campus_app/pages/more/in_app_web_view_page.dart';
-import 'package:campus_app/pages/more/settings_page.dart';
-import 'package:campus_app/pages/more/imprint_page.dart';
-
 class MorePage extends StatefulWidget {
+  static const String privacy = 'Tbd.';
   final GlobalKey<NavigatorState> mainNavigatorKey;
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
+
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
   const MorePage({
@@ -25,34 +27,14 @@ class MorePage extends StatefulWidget {
     required this.pageExitAnimationKey,
   });
 
-  static const String privacy = 'Tbd.';
-
   @override
   State<MorePage> createState() => MorePageState();
 }
 
 class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<MorePage> {
-  void openLink(BuildContext context, String url) {
-    debugPrint('Opening external ressource: $url');
-
-    // Enforces to open social links in external browser to let the system handle these
-    // and open designated apps, if installed
-    if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useExternalBrowser ||
-        url.contains('instagram') ||
-        url.contains('facebook') ||
-        url.contains('twitch') ||
-        url.contains('mailto:') ||
-        url.contains('tel:')) {
-      // Open in external browser
-      launchUrl(
-        Uri.parse(url),
-        mode: LaunchMode.externalApplication,
-      );
-    } else {
-      // Open in InAppView
-      Navigator.push(context, MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)));
-    }
-  }
+  // Keep state alive
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -269,7 +251,25 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
     );
   }
 
-  // Keep state alive
-  @override
-  bool get wantKeepAlive => true;
+  void openLink(BuildContext context, String url) {
+    debugPrint('Opening external ressource: $url');
+
+    // Enforces to open social links in external browser to let the system handle these
+    // and open designated apps, if installed
+    if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useExternalBrowser ||
+        url.contains('instagram') ||
+        url.contains('facebook') ||
+        url.contains('twitch') ||
+        url.contains('mailto:') ||
+        url.contains('tel:')) {
+      // Open in external browser
+      launchUrl(
+        Uri.parse(url),
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      // Open in InAppView
+      Navigator.push(context, MaterialPageRoute(builder: (context) => InAppWebViewPage(url: url)));
+    }
+  }
 }

@@ -1,7 +1,6 @@
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:campus_app/core/themes.dart';
 
 /// This widget allows the user to pick between three options.
 /// It is a linear set of three segments, each of which functions as a button.
@@ -32,54 +31,10 @@ class CampusSegmentedTripleControl extends StatefulWidget {
 }
 
 class CampusSegmentedTripleControlState extends State<CampusSegmentedTripleControl> {
-  late AlignmentGeometry _hoverAligment;
   static const double _pickerWidth = 300;
+  late AlignmentGeometry _hoverAligment;
 
   int selected = 0;
-
-  void _picked(int newSelected) {
-    if (newSelected != selected) {
-      // Execute the `onChanged()` callback
-      widget.onChanged(newSelected);
-
-      // Update the visuals
-      setState(() {
-        selected = newSelected;
-
-        switch (newSelected) {
-          case 0:
-            _hoverAligment = Alignment.centerLeft;
-            break;
-          case 1:
-            _hoverAligment = Alignment.center;
-            break;
-          case 2:
-            _hoverAligment = Alignment.centerRight;
-            break;
-        }
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // This does not apply the inital value from the settings correctly
-    setState(() {
-      switch (selected) {
-        case 0:
-          _hoverAligment = Alignment.centerLeft;
-          break;
-        case 1:
-          _hoverAligment = Alignment.center;
-          break;
-        case 2:
-          _hoverAligment = Alignment.centerRight;
-          break;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,5 +147,49 @@ class CampusSegmentedTripleControlState extends State<CampusSegmentedTripleContr
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // This does not apply the inital value from the settings correctly
+    setState(() {
+      switch (selected) {
+        case 0:
+          _hoverAligment = Alignment.centerLeft;
+          break;
+        case 1:
+          _hoverAligment = Alignment.center;
+          break;
+        case 2:
+          _hoverAligment = Alignment.centerRight;
+          break;
+      }
+    });
+  }
+
+  void _picked(int newSelected) {
+    if (newSelected != selected) {
+      // Execute the `onChanged()` callback
+      widget.onChanged(newSelected);
+
+      // Update the visuals
+      setState(() {
+        selected = newSelected;
+
+        switch (newSelected) {
+          case 0:
+            _hoverAligment = Alignment.centerLeft;
+            break;
+          case 1:
+            _hoverAligment = Alignment.center;
+            break;
+          case 2:
+            _hoverAligment = Alignment.centerRight;
+            break;
+        }
+      });
+    }
   }
 }

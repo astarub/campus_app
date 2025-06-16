@@ -1,7 +1,6 @@
+import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:campus_app/core/themes.dart';
 
 /// This widget adds a custom TextButton that uses the CampusApp design language
 class CampusTextButton extends StatefulWidget {
@@ -31,15 +30,6 @@ class CampusTextButton extends StatefulWidget {
 
 class CampusTextButtonState extends State<CampusTextButton> {
   late Color buttonTextColor;
-
-  @override
-  void initState() {
-    super.initState();
-
-    buttonTextColor = Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-        ? Colors.black
-        : Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.textTheme.labelMedium!.color!;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,5 +69,14 @@ class CampusTextButtonState extends State<CampusTextButton> {
             ?.copyWith(color: buttonTextColor),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    buttonTextColor = Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+        ? Colors.black
+        : Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.textTheme.labelMedium!.color!;
   }
 }

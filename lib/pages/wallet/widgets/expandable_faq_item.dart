@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/animated_expandable.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// This widget displays one faq entry with its title and content
 /// in the guide page.
