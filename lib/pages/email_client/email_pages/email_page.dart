@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/utils/widgets/login_screen.dart';
-import 'package:campus_app/pages/email_client/email_drawer.dart';
-import 'package:campus_app/pages/email_client/email_view.dart';
-import 'package:campus_app/pages/email_client/compose_email_screen.dart';
+import 'package:campus_app/pages/email_client/email_pages/email_drawer.dart';
+import 'package:campus_app/pages/email_client/email_pages/email_view.dart';
+import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
@@ -17,13 +17,7 @@ class EmailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => EmailService()),
-        ChangeNotifierProvider(create: (_) => EmailAuthService()),
-      ],
-      child: const _EmailClientContent(),
-    );
+    return const _EmailClientContent();
   }
 }
 
@@ -337,10 +331,6 @@ class _EmailClientContentState extends State<_EmailClientContent> {
 // Trash is fully implemented so far(not anymore)
 // TODO: Sent, Archives, Drafts
 // TODO: Settings: I am unsure what to add in here.
-
-// Check: 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// Check: ticket_datasource(pages/wallet/ticket/) and injection.dart (in lib/core)
-// Use Login, make it go to Email
 
 // Check IMAP plugins (for dart/flutter): enough_mail?s
                       // SMPT und IMAP client => API

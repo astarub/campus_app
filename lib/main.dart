@@ -31,6 +31,10 @@ import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 
 import 'package:campus_app/pages/email_client/services/email_service.dart';
+import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
+import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
+import 'package:campus_app/pages/email_client/repositories/email_repository.dart';
+import 'package:campus_app/pages/email_client/repositories/imap_email_repository.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +72,9 @@ Future<void> main() async {
             // Initializes the provider that handles the app-theme, authentication and other things
             ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
             ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-            ChangeNotifierProvider<EmailService>(create: (_) => EmailService()),
+            ChangeNotifierProvider<EmailAuthService>(create: (_) => EmailAuthService()),
+            Provider<EmailRepository>(create: (_) => ImapEmailRepository(ImapEmailService())),
+            ChangeNotifierProvider<EmailService>(create: (ctx) => EmailService(ctx.read<EmailRepository>()))
           ],
           child: CampusApp(
             key: campusAppKey,
@@ -83,7 +89,9 @@ Future<void> main() async {
           // Initializes the provider that handles the app-theme, authentication and other things
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-          ChangeNotifierProvider<EmailService>(create: (_) => EmailService()),
+          ChangeNotifierProvider<EmailAuthService>(create: (_) => EmailAuthService()),
+          Provider<EmailRepository>(create: (_) => ImapEmailRepository(ImapEmailService())),
+          ChangeNotifierProvider<EmailService>(create: (ctx) => EmailService(ctx.read<EmailRepository>()))
         ],
         child: CampusApp(
           key: campusAppKey,

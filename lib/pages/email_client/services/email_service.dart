@@ -1,23 +1,27 @@
+// REFACTORED EMAIL SERVICE (Business Logic Only)
+// ============================================================================
+
 import 'package:flutter/foundation.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
+import 'package:campus_app/pages/email_client/repositories/email_repository.dart';
 import 'package:campus_app/core/injection.dart';
 
 class EmailService extends ChangeNotifier {
-  final List<Email> _allEmails;
+  final List<Email> _allEmails = [];
   final EmailSelectionController _selectionController = EmailSelectionController();
   final EmailAuthService _authService = sl<EmailAuthService>();
+  final EmailRepository _emailRepository;
 
   bool _isInitialized = false;
   bool get isInitialized => _isInitialized;
 
-  // Modified constructor: Generates dummy emails internally
-  EmailService() : _allEmails = List.generate(10, Email.dummy) {
+  EmailService(this._emailRepository) {
     _selectionController.addListener(notifyListeners);
   }
 
-  // Public API (unchanged)
+  // Public API
   List<Email> get allEmails => List.unmodifiable(_allEmails);
   EmailSelectionController get selectionController => _selectionController;
 
@@ -29,15 +33,11 @@ class EmailService extends ChangeNotifier {
         throw Exception('No valid credentials found');
       }
 
-      // Initialize your email client connection here
-      // For example, connect to IMAP server with credentials
       await _connectToEmailServer(credentials['username']!, credentials['password']!);
-
-      // Load initial emails
-      await refreshEmails();
 
       _isInitialized = true;
       notifyListeners();
+      await refreshEmails();
     } catch (e) {
       _isInitialized = false;
       notifyListeners();
@@ -45,21 +45,12 @@ class EmailService extends ChangeNotifier {
     }
   }
 
-  /// Connect to the email server (IMAP/POP3)
+  /// Connect to the email server
   Future<void> _connectToEmailServer(String username, String password) async {
-    // Implement your email server connection logic here
-    // This would typically involve:
-    // 1. Setting up IMAP/POP3 connection to RUB's email server
-    // 2. Authenticating with the provided credentials
-    // 3. Setting up folder/mailbox access
-
-    // Simulate connection delay
-    await Future.delayed(const Duration(seconds: 1));
-
-    // Example connection setup (pseudo-code):
-    // _imapClient = ImapClient();
-    // await _imapClient.connectToServer('imap.rub.de', 993, isSecure: true);
-    // await _imapClient.login(username, password);
+    final success = await _emailRepository.connect(username, password);
+    if (!success) {
+      throw Exception('Failed to connect to email server');
+    }
   }
 
   /// Refresh emails from server
@@ -69,15 +60,13 @@ class EmailService extends ChangeNotifier {
     }
 
     try {
-      // Fetch emails from server
       await _fetchEmailsFromServer();
       notifyListeners();
     } catch (e) {
-      // Handle authentication errors
       if (e.toString().contains('authentication') || e.toString().contains('credentials')) {
-        // Credentials might be invalid, logout user
         await _authService.logout();
         _isInitialized = false;
+        await _emailRepository.disconnect();
         notifyListeners();
       }
       rethrow;
@@ -86,29 +75,53 @@ class EmailService extends ChangeNotifier {
 
   /// Fetch emails from the server
   Future<void> _fetchEmailsFromServer() async {
-    // Implement your email fetching logic here
-    // This would typically involve:
-    // 1. Selecting the appropriate mailbox/folder
-    // 2. Fetching email headers and metadata
-    // 3. Updating your local email list
+    _allEmails.clear();
 
-    // Simulate fetching delay
-    await Future.delayed(const Duration(milliseconds: 500));
+    // Define folder mappings with fallbacks
+    final folderMappings = {
+      EmailFolder.inbox: ['INBOX'],
+      EmailFolder.sent: ['Sent', 'INBOX.Sent', 'INBOX/Sent'],
+      EmailFolder.drafts: ['Drafts', 'INBOX.Drafts', 'INBOX/Drafts'],
+      EmailFolder.trash: ['Trash', 'INBOX.Trash', 'INBOX/Trash', 'Deleted Messages'],
+    };
 
-    // Example fetching logic (pseudo-code):
-    // final messages = await _imapClient.fetchMessages(count: 50);
-    // _emails = messages.map((msg) => Email.fromImapMessage(msg)).toList();
+    for (final entry in folderMappings.entries) {
+      final folder = entry.key;
+      final folderNames = entry.value;
+
+      await _fetchEmailsForFolder(folder, folderNames);
+    }
   }
 
-  /// Clear all email data (called on logout)
+  Future<void> _fetchEmailsForFolder(EmailFolder folder, List<String> folderNames) async {
+    for (final folderName in folderNames) {
+      try {
+        final count = folder == EmailFolder.inbox ? 50 : 30;
+        final emails = await _emailRepository.fetchEmails(mailboxName: folderName, count: count);
+
+        for (final email in emails) {
+          _allEmails.add(email.copyWith(folder: folder));
+        }
+        return; // Success, no need to try other folder names
+      } catch (e) {
+        continue; // Try next folder name
+      }
+    }
+
+    if (folder != EmailFolder.inbox) {
+      print('Could not fetch ${folder.name} emails from any of: ${folderNames.join(', ')}');
+    }
+  }
+
+  /// Clear all email data
   void clear() {
-    // Clear all email data
     _allEmails.clear();
     _isInitialized = false;
+    _emailRepository.disconnect();
     notifyListeners();
   }
 
-  /// Send email (requires authentication)
+  /// Send email
   Future<void> sendEmail({
     required String to,
     required String subject,
@@ -120,61 +133,120 @@ class EmailService extends ChangeNotifier {
       throw Exception('Email service not initialized');
     }
 
-    final credentials = await _authService.getCredentials();
-    if (credentials == null) {
-      throw Exception('No valid credentials found');
-    }
-
-    // Implement email sending logic here
-    await _sendEmailViaSmtp(
-      username: credentials['username']!,
-      password: credentials['password']!,
+    final success = await _emailRepository.sendEmail(
       to: to,
       subject: subject,
       body: body,
-      cc: cc,
-      bcc: bcc,
+      cc: cc?.split(',').map((e) => e.trim()).toList(),
+      bcc: bcc?.split(',').map((e) => e.trim()).toList(),
     );
+
+    if (!success) {
+      throw Exception('Failed to send email');
+    }
+
+    await _refreshSentEmails();
+    notifyListeners();
   }
 
-  /// Send email via SMTP
-  Future<void> _sendEmailViaSmtp({
-    required String username,
-    required String password,
-    required String to,
-    required String subject,
-    required String body,
-    String? cc,
-    String? bcc,
-  }) async {
-    // Implement SMTP sending logic here
-    // Example (pseudo-code):
-    // final smtpClient = SmtpClient();
-    // await smtpClient.connect('smtp.rub.de', 587);
-    // await smtpClient.authenticate(username, password);
-    // await smtpClient.sendMessage(message);
+  /// Refresh sent emails only
+  Future<void> _refreshSentEmails() async {
+    _allEmails.removeWhere((e) => e.folder == EmailFolder.sent);
+    await _fetchEmailsForFolder(EmailFolder.sent, ['Sent', 'INBOX.Sent', 'INBOX/Sent']);
+  }
 
-    // Simulate sending delay
-    await Future.delayed(const Duration(seconds: 1));
+  /// Mark email as read
+  Future<void> markAsRead(Email email) async {
+    if (!_isInitialized || email.uid == 0) return;
+
+    final success = await _emailRepository.markAsRead(email.uid);
+    if (success) {
+      updateEmail(email.copyWith(isRead: true));
+    }
+  }
+
+  /// Mark email as unread
+  Future<void> markAsUnread(Email email) async {
+    if (!_isInitialized || email.uid == 0) return;
+
+    final success = await _emailRepository.markAsUnread(email.uid);
+    if (success) {
+      updateEmail(email.copyWith(isRead: false));
+    }
+  }
+
+  /// Delete email (move to trash or permanently delete)
+  Future<void> deleteEmail(Email email) async {
+    if (!_isInitialized || email.uid == 0) return;
+
+    if (email.folder == EmailFolder.trash) {
+      final success = await _emailRepository.deleteEmail(email.uid, mailboxName: 'Trash');
+      if (success) {
+        _allEmails.removeWhere((e) => e.id == email.id);
+        notifyListeners();
+      }
+    } else {
+      final success = await _emailRepository.moveEmail(email.uid, 'Trash');
+      if (success) {
+        updateEmail(email.copyWith(folder: EmailFolder.trash));
+      }
+    }
+  }
+
+  /// Search emails
+  Future<List<Email>> searchEmails({
+    String? query,
+    String? from,
+    String? subject,
+    EmailFolder? folder,
+    bool unreadOnly = false,
+  }) async {
+    if (!_isInitialized) return [];
+
+    final mailboxName = _getMailboxNameForFolder(folder ?? EmailFolder.inbox);
+    final results = await _emailRepository.searchEmails(
+      query: query,
+      from: from,
+      subject: subject,
+      unreadOnly: unreadOnly,
+      mailboxName: mailboxName,
+    );
+
+    return results.map((email) => email.copyWith(folder: folder ?? EmailFolder.inbox)).toList();
+  }
+
+  String _getMailboxNameForFolder(EmailFolder folder) {
+    switch (folder) {
+      case EmailFolder.sent:
+        return 'Sent';
+      case EmailFolder.drafts:
+        return 'Drafts';
+      case EmailFolder.trash:
+        return 'Trash';
+      default:
+        return 'INBOX';
+    }
   }
 
   /// Check if service needs re-authentication
   Future<bool> needsReAuthentication() async {
     if (!_isInitialized) return true;
-
+    if (!_emailRepository.isConnected) return true;
     return !(await _authService.validateCurrentCredentials());
   }
 
-  // Existing methods from original EmailService
+  // ========================================================================
+  // LOCAL DATA MANAGEMENT METHODS
+  // ========================================================================
+
   List<Email> filterEmails(String query, EmailFolder folder) {
     final filtered = _allEmails.where((e) => e.folder == folder).toList();
     if (query.isEmpty) return filtered;
+
     return filtered
-        .where(
-          (email) =>
-              email.sender.toLowerCase().contains(query.toLowerCase()) ||
-              email.subject.toLowerCase().contains(query.toLowerCase()),
-        )
+        .where((email) =>
+            email.sender.toLowerCase().contains(query.toLowerCase()) ||
+            email.subject.toLowerCase().contains(query.toLowerCase()))
         .toList();
   }
 
@@ -188,6 +260,13 @@ class EmailService extends ChangeNotifier {
 
   void moveEmailsToFolder(Iterable<Email> emails, EmailFolder folder) {
     for (final email in emails) {
+      if (_isInitialized && email.uid != 0) {
+        final targetMailbox = _getMailboxNameForFolder(folder);
+        _emailRepository.moveEmail(email.uid, targetMailbox).catchError((e) {
+          print('Error moving email on server: $e');
+        });
+      }
+
       final index = _allEmails.indexWhere((e) => e.id == email.id);
       if (index != -1) {
         _allEmails[index] = email.copyWith(folder: folder);
@@ -197,6 +276,14 @@ class EmailService extends ChangeNotifier {
   }
 
   void deleteEmailsPermanently(Iterable<Email> emails) {
+    for (final email in emails) {
+      if (_isInitialized && email.uid != 0) {
+        _emailRepository.deleteEmail(email.uid).catchError((e) {
+          print('Error deleting email permanently: $e');
+        });
+      }
+    }
+
     _allEmails.removeWhere((e) => emails.any((email) => email.id == e.id));
     _selectionController.clearSelection();
     notifyListeners();
@@ -213,15 +300,33 @@ class EmailService extends ChangeNotifier {
     }
 
     final index = _allEmails.indexWhere((e) => e.id == draft.id);
+    final updatedDraft = draft.copyWith(folder: EmailFolder.drafts);
+
     if (index != -1) {
-      _allEmails[index] = draft.copyWith(folder: EmailFolder.drafts);
+      _allEmails[index] = updatedDraft;
     } else {
-      _allEmails.add(draft.copyWith(folder: EmailFolder.drafts));
+      _allEmails.add(updatedDraft);
     }
+
     notifyListeners();
   }
 
   void removeDraft(String draftId) {
+    Email? draft;
+    try {
+      draft = _allEmails.firstWhere(
+        (e) => e.id == draftId && e.folder == EmailFolder.drafts,
+      );
+    } catch (e) {
+      draft = null; // Email not found
+    }
+
+    if (draft != null && _isInitialized && draft.uid != 0) {
+      _emailRepository.deleteEmail(draft.uid, mailboxName: 'Drafts').catchError((e) {
+        print('Error removing draft from server: $e');
+      });
+    }
+
     _allEmails.removeWhere((e) => e.id == draftId && e.folder == EmailFolder.drafts);
     notifyListeners();
   }
@@ -242,9 +347,14 @@ class EmailService extends ChangeNotifier {
     return _allEmails.where((e) => e.folder == EmailFolder.drafts && _isDraftEmpty(e)).length;
   }
 
+  int get unreadCount {
+    return _allEmails.where((e) => e.folder == EmailFolder.inbox && !e.isRead).length;
+  }
+
   @override
   void dispose() {
     _selectionController.dispose();
+    _emailRepository.disconnect();
     super.dispose();
   }
 }

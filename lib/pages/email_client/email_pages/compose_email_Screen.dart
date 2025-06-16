@@ -58,6 +58,7 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
   }
 
   // Check if the current composition is empty
+  /*
   bool _isCompositionEmpty() {
     return _toController.text.trim().isEmpty &&
         _ccController.text.trim().isEmpty &&
@@ -65,7 +66,7 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
         _subjectController.text.trim().isEmpty &&
         _bodyController.text.trim().isEmpty &&
         _attachments.isEmpty;
-  }
+  } */
 
   // Check if the composition has any meaningful content
   bool _hasContent() {

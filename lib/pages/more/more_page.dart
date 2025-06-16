@@ -1,5 +1,5 @@
 import 'dart:io' show Platform;
-import 'package:campus_app/pages/email_client/email_page.dart';
+import 'package:campus_app/pages/email_client/email_pages/email_page.dart';
 import 'package:campus_app/pages/more/privacy_policy_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

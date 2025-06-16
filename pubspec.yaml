@@ -62,6 +62,7 @@ dependencies:
   image: ^4.3.0
   dismissible_page: ^1.0.2
   app_links: ^6.4.0
+  enough_mail: ^2.1.5
 
 dev_dependencies:
   flutter_test:

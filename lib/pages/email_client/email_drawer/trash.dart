@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:campus_app/pages/email_client/email_view.dart';
+import 'package:campus_app/pages/email_client/email_pages/email_view.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';

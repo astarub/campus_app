@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
-import 'package:campus_app/pages/email_client/compose_email_screen.dart';
+import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
 
 class EmailView extends StatelessWidget {
   final Email email;
