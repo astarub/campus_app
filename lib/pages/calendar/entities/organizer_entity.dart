@@ -49,10 +49,10 @@ class Organizer {
     final email = json.containsKey('email') ? json['email'] : null;
 
     return Organizer(
-      id: json['id'],
-      name: json['organizer'],
-      url: json['url'],
-      slug: json['slug'],
+      id: json['id'] ?? -1,
+      name: json['organizer'] ?? '',
+      url: json['url'] ?? '',
+      slug: json['slug'] ?? '',
       phone: phone,
       website: website,
       email: email,

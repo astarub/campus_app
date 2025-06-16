@@ -350,4 +350,133 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
       }
     }
   }
+
+  void precacheAssets(BuildContext context) {
+    // Precache images to prevent a visual glitch when they're loaded the first time
+    precacheImage(Image.asset('assets/img/icons/home-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/home-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/calendar-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/calendar-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/map-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/map-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/mensa-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/mensa-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/wallet-outlined.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/wallet-filled.png').image, context);
+    precacheImage(Image.asset('assets/img/icons/more.png').image, context);
+  }
+
+  Future<void> initializeBackendConnection() async {
+    final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
+
+    // Set the initial publishers for users who weren't connected to the backend in the past
+    if (settingsHandler.currentSettings.latestVersion == '') {
+      await mainUtils.setInitialPublishers(Provider.of<SettingsHandler>(context, listen: false));
+    }
+
+    try {
+      await backendRepository.login(
+        settingsHandler,
+      );
+    } catch (e) {
+      debugPrint('Could not connect to the backend. Retrying next restart.');
+    }
+
+    if (settingsHandler.currentSettings.savedEventsNotifications == false) {
+      try {
+        await backendRepository.removeAllSavedEvents(
+          settingsHandler,
+        );
+        await backendRepository.unsubscribeFromAllSavedEvents(
+          settingsHandler,
+        );
+      } catch (e) {
+        debugPrint(
+          'Could not remove all saved events from the backend. Retrying next restart.',
+        );
+      }
+    }
+
+    try {
+      if (await backendRepository.updateAvailable(settingsHandler)) {}
+
+      await backendRepository.loadStudyCourses(settingsHandler);
+      await backendRepository.loadMensaRestaurantConfig(settingsHandler);
+    } catch (e) {
+      debugPrint('Could not lead filters. Exception $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (!Platform.isIOS) {
+      FlutterDisplayMode.setHighRefreshRate();
+    }
+
+    // Add observer in order to listen to `didChangeAppLifecycleState`
+    WidgetsBinding.instance.addObserver(this);
+
+    // load saved settings
+    loadingTimer.start();
+    loadSettings();
+
+    // Handle deep links
+    mainUtils.handleIncomingLink();
+    mainUtils.handleInitialUri();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    precacheAssets(context);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    precacheAssets(context);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      theme: Provider.of<ThemesNotifier>(context, listen: false).currentThemeData,
+      darkTheme: Provider.of<ThemesNotifier>(context, listen: false).darkThemeData,
+      themeMode: Provider.of<ThemesNotifier>(context, listen: false).currentThemeMode,
+      builder: Provider.of<SettingsHandler>(context).currentSettings.useSystemTextScaling
+          ? null
+          : (context, child) {
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                child: child!,
+              );
+            },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/') {
+          return PageTransition(
+            child: HomePage(key: homeKey, mainNavigatorKey: mainNavigatorKey),
+            type: PageTransitionType.scale,
+            alignment: Alignment.center,
+          );
+        }
+
+        return null;
+      },
+      navigatorKey: mainNavigatorKey,
+      debugShowCheckedModeBanner: false,
+    );
+  }
 }

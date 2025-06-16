@@ -146,8 +146,8 @@ class Event {
       id: json['id'],
       url: json['url'],
       title: json['title'],
-      description: json['description'],
-      slug: json['slug'],
+      description: json['description'] ?? '',
+      slug: json['slug'] ?? '',
       hasImage: hasImage,
       imageUrl: hasImage ? (json['image'] as Map<String, dynamic>)['url'] : null,
       startDate: DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').parse(
@@ -156,13 +156,13 @@ class Event {
       endDate: DateFormat('yyyy-MM-dd HH:mm:ss Z', 'de_DE').parse(
         "${json['end_date']} ${json['timezone']}",
       ),
-      allDay: json['all_day'],
+      allDay: json['all_day'] ?? false,
       cost: cost,
-      website: json['website'],
+      website: json['website'] ?? '',
       categories: categories,
       venue: venue,
       organizers: organizers,
-      author: json['author'],
+      author: json['author'] ?? '',
       pinned: json['pinned'] ?? false,
     );
   }

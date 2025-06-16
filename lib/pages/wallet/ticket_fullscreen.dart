@@ -21,6 +21,34 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
 
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
 
+  /// Loads the previously saved image of the semester ticket and
+  /// the corresponding aztec-code
+  Future<void> renderTicket() async {
+    final Image? aztecCodeImage = await ticketUsecases.renderAztecCode(width: 280, height: 280);
+
+    if (aztecCodeImage != null) {
+      setState(() {
+        this.aztecCodeImage = aztecCodeImage;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    setBrightness(1);
+
+    renderTicket();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    resetBrightness();
+  }
+
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(

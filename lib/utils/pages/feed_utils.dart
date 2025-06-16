@@ -142,6 +142,8 @@ class FeedUtils {
     } else {
       return 0;
     }
+
+    return filteredFeedItems;
   }
 
   int sortFeedDesc(dynamic a, dynamic b) {
