@@ -32,7 +32,11 @@ class _PlannerPageState extends State<PlannerPage> {
   CalendarViewMode _currentView = CalendarViewMode.week;
   DateTime _focusedDay = DateTime.now();
 
-  // Dialog logic remains the same
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
   void _showAddEventDialog() {
     final plannerState = context.read<PlannerState>();
     final titleController = TextEditingController();
@@ -59,7 +63,7 @@ class _PlannerPageState extends State<PlannerPage> {
                     const SizedBox(height: 16),
                     TextButton.icon(
                       icon: const Icon(Icons.calendar_today),
-                      label: Text(DateFormat('EEE, MMM d, yyyy').format(selectedDate)),
+                      label: Text(DateFormat('EEE, MMM d, yy').format(selectedDate)),
                       onPressed: () async {
                         final DateTime? picked = await showDatePicker(
                           context: context,
@@ -128,34 +132,6 @@ class _PlannerPageState extends State<PlannerPage> {
         return const MapEntry(Icons.view_day, 'Switch to Day View');
       case CalendarViewMode.day:
         return const MapEntry(Icons.calendar_month, 'Switch to Month View');
-    }
-  }
-
-  // --- NEW: Helper methods for navigation ---
-  void _previousMonth() {
-    setState(() {
-      _focusedDay = DateTime(_focusedDay.year, _focusedDay.month - 1);
-    });
-  }
-
-  void _nextMonth() {
-    setState(() {
-      _focusedDay = DateTime(_focusedDay.year, _focusedDay.month + 1);
-    });
-  }
-
-  Future<void> _selectMonth(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _focusedDay,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2030),
-    );
-
-    if (picked != null && picked != _focusedDay) {
-      setState(() {
-        _focusedDay = picked;
-      });
     }
   }
 
@@ -230,44 +206,88 @@ class _PlannerPageState extends State<PlannerPage> {
   }
 
   Widget _buildMonthView(ThemesNotifier themesNotifier) {
+    final theme = themesNotifier.currentThemeData;
     return MonthView<PlannerEventEntity>(
-      key: ValueKey(_focusedDay.month),
+      key: ValueKey('month_view_$_focusedDay'),
       controller: _eventController,
       initialMonth: _focusedDay,
-      headerBuilder: (date) {
+      borderColor: theme.dividerColor,
+      headerStyle: HeaderStyle(
+        decoration: BoxDecoration(color: theme.cardColor),
+        headerTextStyle: theme.textTheme.titleLarge,
+        // REMOVED deprecated properties: leftIcon, rightIcon
+      ),
+      weekDayBuilder: (dayIndex) {
+        final day = DateTime(2024).add(Duration(days: dayIndex));
         return Container(
-          color: themesNotifier.currentThemeData.cardColor,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.chevron_left),
-                onPressed: _previousMonth,
-                tooltip: 'Previous Month',
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: theme.dividerColor)),
+          ),
+          child: Center(
+            child: Text(
+              DateFormat.E().format(day),
+              style: TextStyle(
+                color: theme.colorScheme.onSurface.withAlpha(204),
+                fontWeight: FontWeight.bold,
               ),
-              Expanded(
-                child: TextButton(
-                  onPressed: () => _selectMonth(context),
-                  style: TextButton.styleFrom(
-                    foregroundColor: themesNotifier.currentThemeData.textTheme.titleLarge?.color,
-                  ),
-                  child: Text(
-                    DateFormat('MMMM yyyy').format(date),
-                    style: themesNotifier.currentThemeData.textTheme.titleLarge,
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.chevron_right),
-                onPressed: _nextMonth,
-                tooltip: 'Next Month',
-              ),
-            ],
+            ),
           ),
         );
       },
+      cellBuilder: (date, events, isToday, isInMonth, hideDaysNotInMonth) {
+        if (!isInMonth) {
+          return Container();
+        }
+
+        if (events.isNotEmpty) {
+          return Padding(
+            padding: const EdgeInsets.all(1.5),
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: events.first.color.withAlpha(220),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    '${date.day}',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      color: Colors.white.withAlpha(230),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Expanded(
+                    child: Text(
+                      events.first.title,
+                      style: const TextStyle(color: Colors.white, fontSize: 11),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          final backgroundColor = isToday ? theme.primaryColor.withAlpha(51) : theme.colorScheme.surface;
+          final textColor = isToday ? theme.primaryColor : theme.colorScheme.onSurface;
+          return Container(
+            color: backgroundColor,
+            child: Center(
+              child: Text(
+                '${date.day}',
+                style: TextStyle(color: textColor, fontWeight: isToday ? FontWeight.bold : FontWeight.normal),
+              ),
+            ),
+          );
+        }
+      },
       onCellTap: (events, date) {
+        if (date.month != _focusedDay.month) return;
         setState(() {
           _focusedDay = date;
           _currentView = CalendarViewMode.day;
@@ -277,24 +297,24 @@ class _PlannerPageState extends State<PlannerPage> {
   }
 
   Widget _buildWeekView(ThemesNotifier themesNotifier) {
+    final theme = themesNotifier.currentThemeData;
     return WeekView<PlannerEventEntity>(
       key: ValueKey('week_view_$_focusedDay'),
       controller: _eventController,
       initialDay: _focusedDay,
       showLiveTimeLineInAllDays: true,
       timeLineWidth: 60,
+      backgroundColor: theme.colorScheme.surface,
       liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
-        color: themesNotifier.currentThemeData.colorScheme.secondary,
+        color: theme.colorScheme.secondary,
       ),
-      // This defines the style for the day labels (e.g., "Mon", "Tue")
       weekDayStringBuilder: (int day) {
         return DateFormat.E().format(DateTime(2024, 1, day == 7 ? 8 : day + 1));
       },
-      // This defines the style for the main header area of the WeekView
       headerStyle: HeaderStyle(
-        decoration: BoxDecoration(color: themesNotifier.currentThemeData.cardColor),
-        // Use titleLarge for consistency with DayView and MonthView
-        headerTextStyle: themesNotifier.currentThemeData.textTheme.titleLarge,
+        decoration: BoxDecoration(color: theme.cardColor),
+        headerTextStyle: theme.textTheme.titleLarge,
+        // REMOVED deprecated properties: leftIcon, rightIcon
       ),
       eventTileBuilder: (date, events, boundary, start, end) {
         return Container(
@@ -312,21 +332,21 @@ class _PlannerPageState extends State<PlannerPage> {
   }
 
   Widget _buildDayView(ThemesNotifier themesNotifier) {
+    final theme = themesNotifier.currentThemeData;
     return DayView<PlannerEventEntity>(
       key: ValueKey('day_view_$_focusedDay'),
       controller: _eventController,
       initialDay: _focusedDay,
       showLiveTimeLineInAllDays: true,
       timeLineWidth: 60,
+      backgroundColor: theme.colorScheme.surface,
       liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
-        color: themesNotifier.currentThemeData.colorScheme.secondary,
+        color: theme.colorScheme.secondary,
       ),
-      dateStringBuilder: (date, {secondaryDate}) {
-        return DateFormat('EEE, MMM d').format(date);
-      },
       headerStyle: HeaderStyle(
-        decoration: BoxDecoration(color: themesNotifier.currentThemeData.cardColor),
-        headerTextStyle: themesNotifier.currentThemeData.textTheme.titleLarge,
+        decoration: BoxDecoration(color: theme.cardColor),
+        headerTextStyle: theme.textTheme.titleLarge,
+        // REMOVED deprecated properties: leftIcon, rightIcon
       ),
       eventTileBuilder: (date, events, boundary, start, end) {
         return Container(
