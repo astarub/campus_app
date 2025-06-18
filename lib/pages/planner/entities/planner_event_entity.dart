@@ -5,18 +5,16 @@ class PlannerEventEntity {
   final String id;
   final String title;
   final String? description;
-  final DateTime date;
-  final TimeOfDay startTime;
-  final TimeOfDay? endTime;
+  final DateTime startDateTime;
+  final DateTime endDateTime;
   final Color color;
 
   PlannerEventEntity({
     String? id,
     required this.title,
     this.description,
-    required this.date,
-    required this.startTime,
-    this.endTime,
+    required this.startDateTime,
+    required this.endDateTime,
     this.color = Colors.blue,
   }) : id = id ?? const Uuid().v4();
 
@@ -25,18 +23,16 @@ class PlannerEventEntity {
     String? id,
     String? title,
     String? description,
-    DateTime? date,
-    TimeOfDay? startTime,
-    TimeOfDay? endTime,
+    DateTime? startDateTime,
+    DateTime? endDateTime,
     Color? color,
   }) {
     return PlannerEventEntity(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
-      date: date ?? this.date,
-      startTime: startTime ?? this.startTime,
-      endTime: endTime ?? this.endTime,
+      startDateTime: startDateTime ?? this.startDateTime,
+      endDateTime: endDateTime ?? this.endDateTime,
       color: color ?? this.color,
     );
   }

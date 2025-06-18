@@ -8,6 +8,21 @@ import 'package:campus_app/pages/planner/planner_state.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 
+// Helper function to get all days between a start and end date.
+List<DateTime> getDaysInBetween(DateTime startDate, DateTime endDate) {
+  final days = <DateTime>[];
+  for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+    days.add(
+      DateTime(
+        startDate.year,
+        startDate.month,
+        startDate.day + i,
+      ),
+    );
+  }
+  return days;
+}
+
 enum CalendarViewMode { month, week, day }
 
 class PlannerPage extends StatefulWidget {
@@ -37,99 +52,114 @@ class _PlannerPageState extends State<PlannerPage> {
     super.didChangeDependencies();
   }
 
+  Future<DateTime?> _pickDateTime({required DateTime initialDate}) async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+    );
+    if (date == null) return null;
+
+    if (!mounted) return null;
+
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(initialDate),
+    );
+    if (time == null) return null;
+
+    return DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  }
+
   void _showAddOrEditEventDialog({PlannerEventEntity? event}) {
     final isEditing = event != null;
     final plannerState = context.read<PlannerState>();
     final titleController = TextEditingController(text: event?.title ?? '');
     final descController = TextEditingController(text: event?.description ?? '');
-    final dialogStartTimeNotifier = ValueNotifier(event?.startTime ?? TimeOfDay.now());
-    DateTime selectedDate = event?.date ?? _focusedDay;
+
+    final startDateTimeNotifier = ValueNotifier(event?.startDateTime ?? _focusedDay);
+    final endDateTimeNotifier = ValueNotifier(event?.endDateTime ?? _focusedDay.add(const Duration(hours: 1)));
 
     showDialog(
       context: context,
       builder: (alertDialogContext) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            return AlertDialog(
-              title: Text(isEditing ? 'Edit Event' : 'Add New Event'),
-              content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextField(controller: titleController, decoration: const InputDecoration(labelText: 'Title')),
-                    TextField(
-                      controller: descController,
-                      decoration: const InputDecoration(labelText: 'Description (Optional)'),
-                    ),
-                    const SizedBox(height: 16),
-                    TextButton.icon(
+        return AlertDialog(
+          title: Text(isEditing ? 'Edit Event' : 'Add New Event'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(controller: titleController, decoration: const InputDecoration(labelText: 'Title')),
+                TextField(
+                  controller: descController,
+                  decoration: const InputDecoration(labelText: 'Description (Optional)'),
+                ),
+                const SizedBox(height: 16),
+                ValueListenableBuilder<DateTime>(
+                  valueListenable: startDateTimeNotifier,
+                  builder: (context, currentStart, child) {
+                    return TextButton.icon(
                       icon: const Icon(Icons.calendar_today),
-                      label: Text(DateFormat('EEE, MMM d, yy').format(selectedDate)),
+                      label: Text('Starts: ${DateFormat.yMd().add_jm().format(currentStart)}'),
                       onPressed: () async {
-                        final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: selectedDate,
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2030),
-                        );
-                        if (picked != null && picked != selectedDate) {
-                          setDialogState(() {
-                            selectedDate = picked;
-                          });
+                        final pickedDateTime = await _pickDateTime(initialDate: currentStart);
+                        if (pickedDateTime != null) {
+                          startDateTimeNotifier.value = pickedDateTime;
+                          if (pickedDateTime.isAfter(endDateTimeNotifier.value)) {
+                            endDateTimeNotifier.value = pickedDateTime.add(const Duration(hours: 1));
+                          }
                         }
                       },
-                    ),
-                    ValueListenableBuilder<TimeOfDay>(
-                      valueListenable: dialogStartTimeNotifier,
-                      builder: (context, currentTime, child) {
-                        return TextButton.icon(
-                          icon: const Icon(Icons.access_time),
-                          label: Text('Start Time: ${currentTime.format(alertDialogContext)}'),
-                          onPressed: () async {
-                            final TimeOfDay? picked = await showTimePicker(
-                              context: alertDialogContext,
-                              initialTime: currentTime,
-                            );
-                            if (picked != null) {
-                              dialogStartTimeNotifier.value = picked;
-                            }
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                TextButton(onPressed: () => Navigator.pop(alertDialogContext), child: const Text('Cancel')),
-                TextButton(
-                  onPressed: () {
-                    if (titleController.text.isNotEmpty) {
-                      if (isEditing) {
-                        final updatedEvent = event.copyWith(
-                          title: titleController.text,
-                          description: descController.text,
-                          date: selectedDate,
-                          startTime: dialogStartTimeNotifier.value,
-                        );
-                        plannerState.updateEvent(updatedEvent);
-                      } else {
-                        final newEvent = PlannerEventEntity(
-                          title: titleController.text,
-                          description: descController.text.isNotEmpty ? descController.text : null,
-                          date: selectedDate,
-                          startTime: dialogStartTimeNotifier.value,
-                        );
-                        plannerState.addEvent(newEvent);
-                      }
-                      Navigator.pop(alertDialogContext);
-                    }
+                    );
                   },
-                  child: Text(isEditing ? 'Update' : 'Add'),
+                ),
+                ValueListenableBuilder<DateTime>(
+                  valueListenable: endDateTimeNotifier,
+                  builder: (context, currentEnd, child) {
+                    return TextButton.icon(
+                      icon: const Icon(Icons.timer_off_outlined),
+                      label: Text('Ends:   ${DateFormat.yMd().add_jm().format(currentEnd)}'),
+                      onPressed: () async {
+                        final pickedDateTime = await _pickDateTime(initialDate: currentEnd);
+                        if (pickedDateTime != null && pickedDateTime.isAfter(startDateTimeNotifier.value)) {
+                          endDateTimeNotifier.value = pickedDateTime;
+                        }
+                      },
+                    );
+                  },
                 ),
               ],
-            );
-          },
+            ),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(alertDialogContext), child: const Text('Cancel')),
+            TextButton(
+              onPressed: () {
+                if (titleController.text.isNotEmpty) {
+                  if (isEditing) {
+                    final updatedEvent = event.copyWith(
+                      title: titleController.text,
+                      description: descController.text,
+                      startDateTime: startDateTimeNotifier.value,
+                      endDateTime: endDateTimeNotifier.value,
+                    );
+                    plannerState.updateEvent(updatedEvent);
+                  } else {
+                    final newEvent = PlannerEventEntity(
+                      title: titleController.text,
+                      description: descController.text.isNotEmpty ? descController.text : null,
+                      startDateTime: startDateTimeNotifier.value,
+                      endDateTime: endDateTimeNotifier.value,
+                    );
+                    plannerState.addEvent(newEvent);
+                  }
+                  Navigator.pop(alertDialogContext);
+                }
+              },
+              child: Text(isEditing ? 'Update' : 'Add'),
+            ),
+          ],
         );
       },
     );
@@ -143,7 +173,16 @@ class _PlannerPageState extends State<PlannerPage> {
       builder: (dialogContext) {
         return AlertDialog(
           title: Text(event.title),
-          content: Text(event.description ?? 'No description.'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('From: ${DateFormat.yMMMEd().add_jm().format(event.startDateTime)}'),
+              Text('To:      ${DateFormat.yMMMEd().add_jm().format(event.endDateTime)}'),
+              const SizedBox(height: 16),
+              Text(event.description ?? 'No description.'),
+            ],
+          ),
           actions: <Widget>[
             TextButton.icon(
               icon: const Icon(Icons.delete, color: Colors.red),
@@ -211,22 +250,32 @@ class _PlannerPageState extends State<PlannerPage> {
     final themesNotifier = Provider.of<ThemesNotifier>(context);
     final plannerState = context.watch<PlannerState>();
 
-    final List<CalendarEventData<PlannerEventEntity>> calendarEvents = plannerState.events.map((event) {
-      final DateTime startTime =
-          DateTime(event.date.year, event.date.month, event.date.day, event.startTime.hour, event.startTime.minute);
-      final DateTime endTime = event.endTime != null
-          ? DateTime(event.date.year, event.date.month, event.date.day, event.endTime!.hour, event.endTime!.minute)
-          : startTime.add(const Duration(hours: 1));
-      return CalendarEventData(
-        date: startTime,
-        startTime: startTime,
-        endTime: endTime,
-        title: event.title,
-        description: event.description ?? '',
-        color: event.color,
-        event: event,
-      );
-    }).toList();
+    // CHANGED: This logic now correctly splits multi-day events into
+    // properly timed segments for each day.
+    final List<CalendarEventData<PlannerEventEntity>> calendarEvents = [];
+    for (final event in plannerState.events) {
+      final daysSpanned = getDaysInBetween(event.startDateTime, event.endDateTime);
+      for (final day in daysSpanned) {
+        final isFirstDay = day.isAtSameMomentAs(daysSpanned.first);
+        final isLastDay = day.isAtSameMomentAs(daysSpanned.last);
+
+        final dayStartTime = isFirstDay ? event.startDateTime : DateTime(day.year, day.month, day.day);
+
+        final dayEndTime = isLastDay ? event.endDateTime : DateTime(day.year, day.month, day.day, 23, 59);
+
+        calendarEvents.add(
+          CalendarEventData(
+            date: day,
+            startTime: dayStartTime,
+            endTime: dayEndTime,
+            title: event.title,
+            description: event.description ?? '',
+            color: event.color,
+            event: event,
+          ),
+        );
+      }
+    }
 
     _eventController.removeWhere((element) => true);
     _eventController.addAll(calendarEvents);
@@ -391,7 +440,6 @@ class _PlannerPageState extends State<PlannerPage> {
       ),
       eventTileBuilder: (date, events, boundary, start, end) {
         return GestureDetector(
-          // CORRECTED: Assert non-null on the .event property.
           onTap: () => _showEventDetailsDialog(events.first.event!),
           child: Container(
             padding: const EdgeInsets.all(8),

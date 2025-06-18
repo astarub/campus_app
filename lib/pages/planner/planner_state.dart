@@ -27,10 +27,6 @@ class PlannerState with ChangeNotifier {
 
   // Helper method to keep events sorted
   void _sortEvents() {
-    _events.sort((a, b) {
-      final aDateTime = DateTime(a.date.year, a.date.month, a.date.day, a.startTime.hour, a.startTime.minute);
-      final bDateTime = DateTime(b.date.year, b.date.month, b.date.day, b.startTime.hour, b.startTime.minute);
-      return aDateTime.compareTo(bDateTime);
-    });
+    _events.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
   }
 }
