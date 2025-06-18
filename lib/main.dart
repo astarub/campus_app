@@ -67,6 +67,7 @@ Future<void> main() async {
             // Initializes the provider that handles the app-theme, authentication and other things
             ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
             ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+            ChangeNotifierProvider<PlannerState>(create: (_) => PlannerState()),
           ],
           child: CampusApp(
             key: campusAppKey,
@@ -81,7 +82,7 @@ Future<void> main() async {
           // Initializes the provider that handles the app-theme, authentication and other things
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-          ChangeNotifierProvider(create: (context) => PlannerState()),
+          ChangeNotifierProvider<PlannerState>(create: (_) => PlannerState()),
         ],
         child: CampusApp(
           key: campusAppKey,

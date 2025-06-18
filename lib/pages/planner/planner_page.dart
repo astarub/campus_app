@@ -37,12 +37,13 @@ class _PlannerPageState extends State<PlannerPage> {
     super.didChangeDependencies();
   }
 
-  void _showAddEventDialog() {
+  void _showAddOrEditEventDialog({PlannerEventEntity? event}) {
+    final isEditing = event != null;
     final plannerState = context.read<PlannerState>();
-    final titleController = TextEditingController();
-    final descController = TextEditingController();
-    final dialogStartTimeNotifier = ValueNotifier(TimeOfDay.now());
-    DateTime selectedDate = _focusedDay;
+    final titleController = TextEditingController(text: event?.title ?? '');
+    final descController = TextEditingController(text: event?.description ?? '');
+    final dialogStartTimeNotifier = ValueNotifier(event?.startTime ?? TimeOfDay.now());
+    DateTime selectedDate = event?.date ?? _focusedDay;
 
     showDialog(
       context: context,
@@ -50,7 +51,7 @@ class _PlannerPageState extends State<PlannerPage> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              title: const Text('Add New Event'),
+              title: Text(isEditing ? 'Edit Event' : 'Add New Event'),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -104,21 +105,91 @@ class _PlannerPageState extends State<PlannerPage> {
                 TextButton(
                   onPressed: () {
                     if (titleController.text.isNotEmpty) {
-                      final newEvent = PlannerEventEntity(
-                        title: titleController.text,
-                        description: descController.text.isNotEmpty ? descController.text : null,
-                        date: selectedDate,
-                        startTime: dialogStartTimeNotifier.value,
-                      );
-                      plannerState.addEvent(newEvent);
+                      if (isEditing) {
+                        final updatedEvent = event.copyWith(
+                          title: titleController.text,
+                          description: descController.text,
+                          date: selectedDate,
+                          startTime: dialogStartTimeNotifier.value,
+                        );
+                        plannerState.updateEvent(updatedEvent);
+                      } else {
+                        final newEvent = PlannerEventEntity(
+                          title: titleController.text,
+                          description: descController.text.isNotEmpty ? descController.text : null,
+                          date: selectedDate,
+                          startTime: dialogStartTimeNotifier.value,
+                        );
+                        plannerState.addEvent(newEvent);
+                      }
                       Navigator.pop(alertDialogContext);
                     }
                   },
-                  child: const Text('Add'),
+                  child: Text(isEditing ? 'Update' : 'Add'),
                 ),
               ],
             );
           },
+        );
+      },
+    );
+  }
+
+  void _showEventDetailsDialog(PlannerEventEntity event) {
+    final plannerState = context.read<PlannerState>();
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text(event.title),
+          content: Text(event.description ?? 'No description.'),
+          actions: <Widget>[
+            TextButton.icon(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              label: const Text('Delete', style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                showDialog(
+                  context: context,
+                  builder: (confirmContext) => AlertDialog(
+                    title: const Text('Confirm Delete'),
+                    content: const Text('Are you sure you want to delete this event?'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(confirmContext).pop();
+                        },
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(foregroundColor: Colors.red),
+                        onPressed: () {
+                          plannerState.deleteEvent(event.id);
+                          Navigator.of(confirmContext).pop();
+                        },
+                        child: const Text('Delete'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            const Spacer(),
+            TextButton(
+              child: const Text('Edit'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                _showAddOrEditEventDialog(event: event);
+              },
+            ),
+            TextButton(
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+          ],
         );
       },
     );
@@ -185,7 +256,7 @@ class _PlannerPageState extends State<PlannerPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _showAddEventDialog,
+        onPressed: _showAddOrEditEventDialog,
         tooltip: 'Add Event',
         backgroundColor: themesNotifier.currentThemeData.primaryColor,
         child: const Icon(Icons.add),
@@ -215,7 +286,6 @@ class _PlannerPageState extends State<PlannerPage> {
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: theme.cardColor),
         headerTextStyle: theme.textTheme.titleLarge,
-        // REMOVED deprecated properties: leftIcon, rightIcon
       ),
       weekDayBuilder: (dayIndex) {
         final day = DateTime(2024).add(Duration(days: dayIndex));
@@ -240,35 +310,38 @@ class _PlannerPageState extends State<PlannerPage> {
         }
 
         if (events.isNotEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(1.5),
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: events.first.color.withAlpha(220),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    '${date.day}',
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: Colors.white.withAlpha(230),
-                      fontWeight: FontWeight.bold,
+          return GestureDetector(
+            onTap: () => _showEventDetailsDialog(events.first.event!),
+            child: Padding(
+              padding: const EdgeInsets.all(1.5),
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: events.first.color.withAlpha(220),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      '${date.day}',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Colors.white.withAlpha(230),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Expanded(
-                    child: Text(
-                      events.first.title,
-                      style: const TextStyle(color: Colors.white, fontSize: 11),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+                    const SizedBox(height: 2),
+                    Expanded(
+                      child: Text(
+                        events.first.title,
+                        style: const TextStyle(color: Colors.white, fontSize: 11),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -288,10 +361,11 @@ class _PlannerPageState extends State<PlannerPage> {
       },
       onCellTap: (events, date) {
         if (date.month != _focusedDay.month) return;
-        setState(() {
-          _focusedDay = date;
-          _currentView = CalendarViewMode.day;
-        });
+        if (events.isEmpty) {
+          setState(() {
+            _focusedDay = date;
+          });
+        }
       },
     );
   }
@@ -314,17 +388,20 @@ class _PlannerPageState extends State<PlannerPage> {
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: theme.cardColor),
         headerTextStyle: theme.textTheme.titleLarge,
-        // REMOVED deprecated properties: leftIcon, rightIcon
       ),
       eventTileBuilder: (date, events, boundary, start, end) {
-        return Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(color: events.first.color.withAlpha(220), borderRadius: BorderRadius.circular(6)),
-          child: Text(
-            events.first.title,
-            style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
+        return GestureDetector(
+          // CORRECTED: Assert non-null on the .event property.
+          onTap: () => _showEventDetailsDialog(events.first.event!),
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(color: events.first.color.withAlpha(220), borderRadius: BorderRadius.circular(6)),
+            child: Text(
+              events.first.title,
+              style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+            ),
           ),
         );
       },
@@ -346,17 +423,19 @@ class _PlannerPageState extends State<PlannerPage> {
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: theme.cardColor),
         headerTextStyle: theme.textTheme.titleLarge,
-        // REMOVED deprecated properties: leftIcon, rightIcon
       ),
       eventTileBuilder: (date, events, boundary, start, end) {
-        return Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(color: events.first.color.withAlpha(220), borderRadius: BorderRadius.circular(6)),
-          child: Text(
-            events.first.title,
-            style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
+        return GestureDetector(
+          onTap: () => _showEventDetailsDialog(events.first.event!),
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(color: events.first.color.withAlpha(220), borderRadius: BorderRadius.circular(6)),
+            child: Text(
+              events.first.title,
+              style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+            ),
           ),
         );
       },

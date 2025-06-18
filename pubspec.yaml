@@ -63,6 +63,7 @@ dependencies:
   dismissible_page: ^1.0.2
   app_links: ^6.4.0
   calendar_view: ^1.4.0
+  uuid: ^4.5.1
 
 dev_dependencies:
   flutter_test:
