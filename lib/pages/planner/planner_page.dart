@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
+import 'package:rrule/rrule.dart';
 
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
@@ -55,7 +56,7 @@ class _PlannerPageState extends State<PlannerPage> {
   Future<DateTime?> _pickDateTime({required DateTime initialDate}) async {
     final date = await showDatePicker(
       context: context,
-      initialDate: initialDate,
+      initialDate: initialDate.toLocal(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
     );
@@ -65,11 +66,11 @@ class _PlannerPageState extends State<PlannerPage> {
 
     final time = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.fromDateTime(initialDate),
+      initialTime: TimeOfDay.fromDateTime(initialDate.toLocal()),
     );
     if (time == null) return null;
 
-    return DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    return DateTime.utc(date.year, date.month, date.day, time.hour, time.minute);
   }
 
   void _showAddOrEditEventDialog({PlannerEventEntity? event}) {
@@ -78,8 +79,9 @@ class _PlannerPageState extends State<PlannerPage> {
     final titleController = TextEditingController(text: event?.title ?? '');
     final descController = TextEditingController(text: event?.description ?? '');
 
-    final startDateTimeNotifier = ValueNotifier(event?.startDateTime ?? _focusedDay);
-    final endDateTimeNotifier = ValueNotifier(event?.endDateTime ?? _focusedDay.add(const Duration(hours: 1)));
+    final startDateTimeNotifier = ValueNotifier(event?.startDateTime ?? _focusedDay.toUtc());
+    final endDateTimeNotifier = ValueNotifier(event?.endDateTime ?? _focusedDay.toUtc().add(const Duration(hours: 1)));
+    final rruleNotifier = ValueNotifier<String?>(event?.rrule);
 
     showDialog(
       context: context,
@@ -101,7 +103,7 @@ class _PlannerPageState extends State<PlannerPage> {
                   builder: (context, currentStart, child) {
                     return TextButton.icon(
                       icon: const Icon(Icons.calendar_today),
-                      label: Text('Starts: ${DateFormat.yMd().add_jm().format(currentStart)}'),
+                      label: Text('Starts: ${DateFormat.yMd().add_jm().format(currentStart.toLocal())}'),
                       onPressed: () async {
                         final pickedDateTime = await _pickDateTime(initialDate: currentStart);
                         if (pickedDateTime != null) {
@@ -119,11 +121,34 @@ class _PlannerPageState extends State<PlannerPage> {
                   builder: (context, currentEnd, child) {
                     return TextButton.icon(
                       icon: const Icon(Icons.timer_off_outlined),
-                      label: Text('Ends:   ${DateFormat.yMd().add_jm().format(currentEnd)}'),
+                      label: Text('Ends:   ${DateFormat.yMd().add_jm().format(currentEnd.toLocal())}'),
                       onPressed: () async {
                         final pickedDateTime = await _pickDateTime(initialDate: currentEnd);
                         if (pickedDateTime != null && pickedDateTime.isAfter(startDateTimeNotifier.value)) {
                           endDateTimeNotifier.value = pickedDateTime;
+                        }
+                      },
+                    );
+                  },
+                ),
+                ValueListenableBuilder<String?>(
+                  valueListenable: rruleNotifier,
+                  builder: (context, currentRrule, child) {
+                    final bool isRecurring = currentRrule != null && currentRrule.isNotEmpty;
+
+                    return TextButton.icon(
+                      icon: const Icon(Icons.repeat),
+                      label: Text(isRecurring ? 'Repeats' : "Don't repeat"),
+                      onPressed: () async {
+                        final newRrule = await showDialog<String?>(
+                          context: context,
+                          builder: (_) => _RecurrenceOptionsDialog(
+                            initialRrule: currentRrule,
+                            eventStartDate: startDateTimeNotifier.value,
+                          ),
+                        );
+                        if (newRrule != null) {
+                          rruleNotifier.value = newRrule == 'clear' ? null : newRrule;
                         }
                       },
                     );
@@ -138,11 +163,14 @@ class _PlannerPageState extends State<PlannerPage> {
               onPressed: () {
                 if (titleController.text.isNotEmpty) {
                   if (isEditing) {
-                    final updatedEvent = event.copyWith(
+                    final updatedEvent = PlannerEventEntity(
+                      id: event.id,
                       title: titleController.text,
-                      description: descController.text,
+                      description: descController.text.isNotEmpty ? descController.text : null,
                       startDateTime: startDateTimeNotifier.value,
                       endDateTime: endDateTimeNotifier.value,
+                      rrule: rruleNotifier.value,
+                      color: event.color,
                     );
                     plannerState.updateEvent(updatedEvent);
                   } else {
@@ -151,6 +179,7 @@ class _PlannerPageState extends State<PlannerPage> {
                       description: descController.text.isNotEmpty ? descController.text : null,
                       startDateTime: startDateTimeNotifier.value,
                       endDateTime: endDateTimeNotifier.value,
+                      rrule: rruleNotifier.value,
                     );
                     plannerState.addEvent(newEvent);
                   }
@@ -177,8 +206,8 @@ class _PlannerPageState extends State<PlannerPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('From: ${DateFormat.yMMMEd().add_jm().format(event.startDateTime)}'),
-              Text('To:      ${DateFormat.yMMMEd().add_jm().format(event.endDateTime)}'),
+              Text('From: ${DateFormat.yMMMEd().add_jm().format(event.startDateTime.toLocal())}'),
+              Text('To:      ${DateFormat.yMMMEd().add_jm().format(event.endDateTime.toLocal())}'),
               const SizedBox(height: 16),
               Text(event.description ?? 'No description.'),
             ],
@@ -249,31 +278,73 @@ class _PlannerPageState extends State<PlannerPage> {
   Widget build(BuildContext context) {
     final themesNotifier = Provider.of<ThemesNotifier>(context);
     final plannerState = context.watch<PlannerState>();
-
-    // CHANGED: This logic now correctly splits multi-day events into
-    // properly timed segments for each day.
     final List<CalendarEventData<PlannerEventEntity>> calendarEvents = [];
     for (final event in plannerState.events) {
-      final daysSpanned = getDaysInBetween(event.startDateTime, event.endDateTime);
-      for (final day in daysSpanned) {
-        final isFirstDay = day.isAtSameMomentAs(daysSpanned.first);
-        final isLastDay = day.isAtSameMomentAs(daysSpanned.last);
+      if (event.rrule == null) {
+        final daysSpanned = getDaysInBetween(event.startDateTime, event.endDateTime);
+        for (final day in daysSpanned) {
+          final isFirstDay = day.isAtSameMomentAs(daysSpanned.first);
+          final isLastDay = day.isAtSameMomentAs(daysSpanned.last);
+          final dayStartTime = isFirstDay ? event.startDateTime : DateTime.utc(day.year, day.month, day.day);
+          final dayEndTime = isLastDay ? event.endDateTime : DateTime.utc(day.year, day.month, day.day, 23, 59, 59);
 
-        final dayStartTime = isFirstDay ? event.startDateTime : DateTime(day.year, day.month, day.day);
+          calendarEvents.add(
+            CalendarEventData(
+              date: day.toLocal(),
+              startTime: dayStartTime,
+              endTime: dayEndTime,
+              title: event.title,
+              description: event.description ?? '',
+              color: event.color,
+              event: event,
+            ),
+          );
+        }
+      } else {
+        try {
+          final rule = RecurrenceRule.fromString(event.rrule!);
+          final duration = event.endDateTime.difference(event.startDateTime);
 
-        final dayEndTime = isLastDay ? event.endDateTime : DateTime(day.year, day.month, day.day, 23, 59);
+          final occurrences = rule.getInstances(
+            start: event.startDateTime,
+            before: DateTime.now().toUtc().add(const Duration(days: 365 * 2)),
+          );
 
-        calendarEvents.add(
-          CalendarEventData(
-            date: day,
-            startTime: dayStartTime,
-            endTime: dayEndTime,
-            title: event.title,
-            description: event.description ?? '',
-            color: event.color,
-            event: event,
-          ),
-        );
+          for (final occurrenceStart in occurrences) {
+            final occurrenceEnd = occurrenceStart.add(duration);
+            final daysSpanned = getDaysInBetween(occurrenceStart, occurrenceEnd);
+            for (final day in daysSpanned) {
+              final isFirstDay = day.isAtSameMomentAs(daysSpanned.first);
+              final isLastDay = day.isAtSameMomentAs(daysSpanned.last);
+              final dayStartTime = isFirstDay ? occurrenceStart : DateTime.utc(day.year, day.month, day.day);
+              final dayEndTime = isLastDay ? occurrenceEnd : DateTime.utc(day.year, day.month, day.day, 23, 59, 59);
+
+              calendarEvents.add(
+                CalendarEventData(
+                  date: day.toLocal(),
+                  startTime: dayStartTime,
+                  endTime: dayEndTime,
+                  title: event.title,
+                  description: event.description ?? '',
+                  color: event.color,
+                  event: event,
+                ),
+              );
+            }
+          }
+        } catch (e) {
+          calendarEvents.add(
+            CalendarEventData(
+              date: event.startDateTime.toLocal(),
+              startTime: event.startDateTime,
+              endTime: event.endDateTime,
+              title: event.title,
+              description: event.description ?? '',
+              color: event.color,
+              event: event,
+            ),
+          );
+        }
       }
     }
 
@@ -487,6 +558,196 @@ class _PlannerPageState extends State<PlannerPage> {
           ),
         );
       },
+    );
+  }
+}
+
+enum _EndCondition { never, onDate, afterCount }
+
+class _RecurrenceOptionsDialog extends StatefulWidget {
+  final String? initialRrule;
+  final DateTime eventStartDate;
+  const _RecurrenceOptionsDialog({this.initialRrule, required this.eventStartDate});
+
+  @override
+  State<_RecurrenceOptionsDialog> createState() => __RecurrenceOptionsDialogState();
+}
+
+class __RecurrenceOptionsDialogState extends State<_RecurrenceOptionsDialog> {
+  late Frequency _frequency;
+  late int _interval;
+  DateTime? _until;
+  int? _count;
+  late _EndCondition _endCondition;
+
+  final _intervalController = TextEditingController();
+  final _countController = TextEditingController();
+
+  final List<Frequency> _frequencies = const [
+    Frequency.yearly,
+    Frequency.monthly,
+    Frequency.weekly,
+    Frequency.daily,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    RecurrenceRule? initialRule;
+    try {
+      initialRule = RecurrenceRule.fromString(widget.initialRrule ?? '');
+    } catch (_) {}
+
+    _frequency = initialRule?.frequency ?? Frequency.daily;
+    _interval = initialRule?.interval ?? 1;
+    _until = initialRule?.until;
+    _count = initialRule?.count;
+
+    if (_until != null) {
+      _endCondition = _EndCondition.onDate;
+    } else if (_count != null) {
+      _endCondition = _EndCondition.afterCount;
+    } else {
+      _endCondition = _EndCondition.never;
+    }
+
+    _intervalController.text = _interval.toString();
+    if (_count != null) _countController.text = _count.toString();
+  }
+
+  @override
+  void dispose() {
+    _intervalController.dispose();
+    _countController.dispose();
+    super.dispose();
+  }
+
+  void _save() {
+    final int? finalCount = _endCondition == _EndCondition.afterCount ? _count : null;
+    final DateTime? finalUntil = _endCondition == _EndCondition.onDate ? _until : null;
+
+    final rule = RecurrenceRule(
+      frequency: _frequency,
+      interval: _interval,
+      until: finalUntil,
+      count: finalCount,
+    );
+    Navigator.of(context).pop(rule.toString());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Event repeats'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _intervalController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'Every'),
+                    onChanged: (value) => setState(() => _interval = int.tryParse(value) ?? 1),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: DropdownButton<Frequency>(
+                      isExpanded: true,
+                      value: _frequency,
+                      underline: const SizedBox(),
+                      onChanged: (value) {
+                        if (value != null && _frequencies.contains(value)) {
+                          setState(() => _frequency = value);
+                        }
+                      },
+                      items: _frequencies
+                          .map((f) => DropdownMenuItem(value: f, child: Text(f.toString().split('.').last)))
+                          .toList(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            const Text('Ends', style: TextStyle(fontWeight: FontWeight.bold)),
+            RadioListTile<_EndCondition>(
+              title: const Text('Never'),
+              value: _EndCondition.never,
+              groupValue: _endCondition,
+              onChanged: (v) => setState(() {
+                _endCondition = v!;
+                _until = null;
+                _count = null;
+              }),
+            ),
+            RadioListTile<_EndCondition>(
+              title: Text(
+                _until == null || _endCondition != _EndCondition.onDate
+                    ? 'On a date...'
+                    : 'On ${DateFormat.yMd().format(_until!.toLocal())}',
+              ),
+              value: _EndCondition.onDate,
+              groupValue: _endCondition,
+              onChanged: (v) async {
+                setState(() => _endCondition = v!);
+                final pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: _until?.toLocal() ?? DateTime.now(),
+                  firstDate: widget.eventStartDate.toLocal(),
+                  lastDate: DateTime(2040),
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    _until = DateTime.utc(pickedDate.year, pickedDate.month, pickedDate.day, 23, 59, 59);
+                    // No need to set _count to null here as _save uses finalCount
+                  });
+                }
+              },
+            ),
+            RadioListTile<_EndCondition>(
+              title: const Text('After a number of occurrences'),
+              value: _EndCondition.afterCount,
+              groupValue: _endCondition,
+              onChanged: (v) => setState(() {
+                _endCondition = v!;
+                _until = null;
+                if (_count == null) {
+                  _countController.clear();
+                }
+              }),
+            ),
+            if (_endCondition == _EndCondition.afterCount)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextField(
+                  controller: _countController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(labelText: 'Occurrences'),
+                  onChanged: (value) => setState(() => _count = int.tryParse(value)),
+                ),
+              ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop('clear');
+          },
+          child: const Text('DONT REPEAT'),
+        ),
+        const Spacer(),
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        TextButton(onPressed: _save, child: const Text('Done')),
+      ],
     );
   }
 }

@@ -8,6 +8,7 @@ class PlannerEventEntity {
   final DateTime startDateTime;
   final DateTime endDateTime;
   final Color color;
+  final String? rrule;
 
   PlannerEventEntity({
     String? id,
@@ -16,24 +17,6 @@ class PlannerEventEntity {
     required this.startDateTime,
     required this.endDateTime,
     this.color = Colors.blue,
+    this.rrule,
   }) : id = id ?? const Uuid().v4();
-
-  // Helper method to create a copy of the entity with updated fields
-  PlannerEventEntity copyWith({
-    String? id,
-    String? title,
-    String? description,
-    DateTime? startDateTime,
-    DateTime? endDateTime,
-    Color? color,
-  }) {
-    return PlannerEventEntity(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      startDateTime: startDateTime ?? this.startDateTime,
-      endDateTime: endDateTime ?? this.endDateTime,
-      color: color ?? this.color,
-    );
-  }
 }
