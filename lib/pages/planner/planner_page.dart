@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
 import 'package:rrule/rrule.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
@@ -78,10 +79,10 @@ class _PlannerPageState extends State<PlannerPage> {
     final plannerState = context.read<PlannerState>();
     final titleController = TextEditingController(text: event?.title ?? '');
     final descController = TextEditingController(text: event?.description ?? '');
-
     final startDateTimeNotifier = ValueNotifier(event?.startDateTime ?? _focusedDay.toUtc());
     final endDateTimeNotifier = ValueNotifier(event?.endDateTime ?? _focusedDay.toUtc().add(const Duration(hours: 1)));
     final rruleNotifier = ValueNotifier<String?>(event?.rrule);
+    final colorNotifier = ValueNotifier(event?.color ?? Colors.blue);
 
     showDialog(
       context: context,
@@ -98,6 +99,40 @@ class _PlannerPageState extends State<PlannerPage> {
                   decoration: const InputDecoration(labelText: 'Description (Optional)'),
                 ),
                 const SizedBox(height: 16),
+                ValueListenableBuilder<Color>(
+                  valueListenable: colorNotifier,
+                  builder: (context, currentColor, child) {
+                    return ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: CircleAvatar(backgroundColor: currentColor),
+                      title: const Text('Event Color'),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (pickerContext) => AlertDialog(
+                            title: const Text('Pick a color'),
+                            content: SingleChildScrollView(
+                              child: BlockPicker(
+                                pickerColor: currentColor,
+                                onColorChanged: (color) {
+                                  colorNotifier.value = color;
+                                },
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Done'),
+                                onPressed: () {
+                                  Navigator.of(pickerContext).pop();
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
                 ValueListenableBuilder<DateTime>(
                   valueListenable: startDateTimeNotifier,
                   builder: (context, currentStart, child) {
@@ -170,7 +205,7 @@ class _PlannerPageState extends State<PlannerPage> {
                       startDateTime: startDateTimeNotifier.value,
                       endDateTime: endDateTimeNotifier.value,
                       rrule: rruleNotifier.value,
-                      color: event.color,
+                      color: colorNotifier.value,
                     );
                     plannerState.updateEvent(updatedEvent);
                   } else {
@@ -180,6 +215,7 @@ class _PlannerPageState extends State<PlannerPage> {
                       startDateTime: startDateTimeNotifier.value,
                       endDateTime: endDateTimeNotifier.value,
                       rrule: rruleNotifier.value,
+                      color: colorNotifier.value,
                     );
                     plannerState.addEvent(newEvent);
                   }
