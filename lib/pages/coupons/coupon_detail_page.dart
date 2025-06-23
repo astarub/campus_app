@@ -2,6 +2,7 @@
 
 import 'dart:io' show Platform;
 import 'package:campus_app/core/backend/backend_repository.dart';
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/coupons/coupon_backend/coupon_entity.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/pages/coupons/coupon_backend/coupon_user_backend_repository.dart';
@@ -402,9 +403,10 @@ class _CouponDetailPageState extends State<CouponDetailPage> {
     final Coupon coupon = Coupon.fromMap(widget.deal);
     final couponUserBackend = sl<CouponUserBackendRepository>();
     final couponBackend = sl<BackendRepository>();
+    final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
     return FutureBuilder<CouponUser>(
-      future: couponUserBackend.getUserCoupons(),
+      future: couponUserBackend.getUserCoupons(settingsHandler.currentSettings.backendAccount.id),
       builder: (context, snapshot) {
         // Loading state
         // Ladezustand

@@ -31,8 +31,8 @@ class BackendRepository {
 
     try {
       final document = await databaseService.createDocument(
-        databaseId: '681a0e830016ba0cf88d',
-        collectionId: '681a0e9f0027fe8bd87b',
+        databaseId: 'coupon',
+        collectionId: 'CCoupon',
         documentId: ID.unique(),
         data: coupon.toMap(),
       );
@@ -48,8 +48,8 @@ class BackendRepository {
 
     try {
       final documentList = await databaseService.listDocuments(
-        databaseId: '681a0e830016ba0cf88d',
-        collectionId: '681a0e9f0027fe8bd87b',
+        databaseId: 'coupon',
+        collectionId: 'CCoupon',
       );
       return documentList.documents.map((doc) => Coupon.fromMap(doc.data)).toList();
     } on AppwriteException catch (e) {
@@ -67,8 +67,8 @@ class BackendRepository {
 
     try {
       final updatedDocument = await databaseService.updateDocument(
-        databaseId: '681a0e830016ba0cf88d',
-        collectionId: '681a0e9f0027fe8bd87b',
+        databaseId: 'coupon',
+        collectionId: 'CCoupon',
         documentId: couponId,
         data: updatedFields,
       );
@@ -85,8 +85,8 @@ class BackendRepository {
 
     try {
       await databaseService.deleteDocument(
-        databaseId: '681a0e830016ba0cf88d',
-        collectionId: '681a0e9f0027fe8bd87b',
+        databaseId: 'coupon',
+        collectionId: 'CCoupon',
         documentId: couponId,
       );
       debugPrint('Successfully deleted coupon.');

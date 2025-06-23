@@ -55,8 +55,9 @@ class CouponUserBackendRepository {
     return newId;
   }
 
-  Future<models.Document> createUserCoupon(CouponUser coupon) async {
+  Future<models.Document> createUserCoupon(CouponUser coupon, String userId) async {
     final Databases databaseService = Databases(client);
+
     final data = {
       'favoriteCoupons': coupon.favoriteCoupons ?? [],
       'likedCoupons': coupon.likedCoupons ?? [],
@@ -65,25 +66,25 @@ class CouponUserBackendRepository {
     };
 
     final document = await databaseService.createDocument(
-      databaseId: '681a0e830016ba0cf88d',
-      collectionId: '68225527003712c670e4',
-      documentId: coupon.userId,
+      databaseId: 'coupon',
+      collectionId: 'UserCoupon',
+      documentId: userId,
       data: data,
     );
     return document;
   }
 
   // Fetch a user's coupon interactions
-  Future<CouponUser> getUserCoupons() async {
+  Future<CouponUser> getUserCoupons(String userId) async {
     final Databases databaseService = Databases(client);
-    final userId = await _getOrCreateDeviceId();
 
     try {
       final document = await databaseService.getDocument(
-        databaseId: '681a0e830016ba0cf88d',
-        collectionId: '68225527003712c670e4',
+        databaseId: 'coupon',
+        collectionId: 'UserCoupon',
         documentId: userId,
       );
+
       return CouponUser.fromMap(document.data);
     } on AppwriteException catch (e) {
       if (e.code == 404) {
@@ -96,7 +97,7 @@ class CouponUserBackendRepository {
           dislikedCoupons: [],
           userMaxCoupons: [],
         );
-        await createUserCoupon(newUser);
+        await createUserCoupon(newUser, userId);
         return newUser;
       } else {
         rethrow;
@@ -113,8 +114,8 @@ class CouponUserBackendRepository {
     // Now safely attempt to update
     try {
       final updatedDocument = await databaseService.updateDocument(
-        databaseId: '681a0e830016ba0cf88d',
-        collectionId: '68225527003712c670e4',
+        databaseId: 'coupon',
+        collectionId: 'UserCoupon',
         documentId: userId,
         data: updatedFields,
       );

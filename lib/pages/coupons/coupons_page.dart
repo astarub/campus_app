@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, avoid_dynamic_calls, use_build_context_synchronously
 
 import 'dart:io' show Platform;
+import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/coupons/coupon_detail_page.dart';
 import 'package:campus_app/pages/coupons/coupon_backend/coupon_user_backend_repository.dart';
 import 'package:flutter/material.dart';
@@ -187,7 +188,8 @@ class _CouponsPageState extends State<CouponsPage> {
     final backend = sl<BackendRepository>();
     final couponUserBackend = sl<CouponUserBackendRepository>();
     final coupons = await backend.getCoupons();
-    final couponUser = await couponUserBackend.getUserCoupons();
+    final settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
+    final couponUser = await couponUserBackend.getUserCoupons(settingsHandler.currentSettings.backendAccount.id);
 
     setState(() {
       deals = coupons

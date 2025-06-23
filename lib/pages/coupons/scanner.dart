@@ -1,4 +1,4 @@
-import 'package:mobile_scanner/mobile_scanner.dart';
+//import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/material.dart';
 
 class QRScanner extends StatefulWidget {
@@ -15,7 +15,7 @@ class _QRScannerState extends State<QRScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('QR-Code scannen')),
-      body: MobileScanner(
+      /**body: MobileScanner(
         onDetect: (capture) {
           if (_isScanned) return;
 
@@ -27,7 +27,7 @@ class _QRScannerState extends State<QRScanner> {
             Navigator.pop(context, code);
           }
         },
-      ),
+      ),**/
     );
   }
 }

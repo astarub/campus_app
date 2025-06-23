@@ -71,7 +71,7 @@ Future<void> init() async {
   //!
 
   sl.registerLazySingleton<Client>(
-    () => Client().setEndpoint('http://10.0.2.2/v1').setProject('681895f000356728d10a'),
+    () => Client().setEndpoint('https://api-dev-app.asta-bochum.de/v1').setProject('campus_app'),
   );
   sl.registerLazySingleton(() => BackendRepository(client: sl<Client>()));
   sl.registerLazySingleton(() => CouponUserBackendRepository(client: sl<Client>()));
