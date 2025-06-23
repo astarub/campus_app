@@ -35,15 +35,15 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
     if (widget.draft != null) {
       _toController.text = widget.draft!.recipients.join(', ');
       _subjectController.text = widget.draft!.subject;
-      _bodyController.text = widget.draft!.body;
+      _bodyController.text = widget.draft!.htmlBody ?? widget.draft!.body;
       _attachments.addAll(widget.draft!.attachments);
     } else if (widget.replyTo != null) {
       _toController.text = widget.replyTo!.senderEmail;
       _subjectController.text = 'Re: ${widget.replyTo!.subject}';
-      _bodyController.text = '\n\n----------\n${widget.replyTo!.body}';
+      _bodyController.text = '\n\n----------\n${widget.replyTo!.htmlBody ?? widget.replyTo!.body}';
     } else if (widget.forwardFrom != null) {
       _subjectController.text = 'Fwd: ${widget.forwardFrom!.subject}';
-      _bodyController.text = '\n\n----------\n${widget.forwardFrom!.body}';
+      _bodyController.text = '\n\n----------\n${widget.forwardFrom!.htmlBody ?? widget.forwardFrom!.body}';
     }
   }
 

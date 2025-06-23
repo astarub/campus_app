@@ -7,6 +7,7 @@ class Email {
   final List<String> recipients;
   final String subject;
   final String body;
+  final String? htmlBody;
   final DateTime date;
   final bool isUnread;
   final bool isStarred;
@@ -23,6 +24,7 @@ class Email {
     required this.recipients,
     required this.subject,
     required this.body,
+    this.htmlBody,
     required this.date,
     this.isUnread = false,
     this.isStarred = false,
@@ -56,6 +58,7 @@ class Email {
         'recipients': recipients,
         'subject': subject,
         'body': body,
+        'htmlBody': htmlBody,
         'date': date.toIso8601String(),
         'isRead': !isUnread,
         'isStarred': isStarred,
@@ -71,6 +74,7 @@ class Email {
         recipients: List<String>.from(json['recipients']),
         subject: json['subject'],
         body: json['body'],
+        htmlBody: json['htmlBody'],
         date: DateTime.parse(json['date']),
         isUnread: !json['isRead'],
         isStarred: json['isStarred'],
@@ -86,6 +90,7 @@ class Email {
     List<String>? recipients,
     String? subject,
     String? body,
+    String? htmlBody,
     DateTime? date,
     bool? isUnread,
     bool? isStarred,
@@ -101,6 +106,7 @@ class Email {
         recipients: recipients ?? this.recipients,
         subject: subject ?? this.subject,
         body: body ?? this.body,
+        htmlBody: htmlBody ?? this.htmlBody,
         date: date ?? this.date,
         isUnread: isRead != null ? !isRead : (isUnread ?? this.isUnread),
         isStarred: isStarred ?? this.isStarred,

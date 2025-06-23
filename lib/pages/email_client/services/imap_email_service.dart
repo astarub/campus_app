@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:enough_mail/enough_mail.dart';
 import 'package:intl/intl.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
+import 'dart:convert';
 
 class ImapEmailService {
   ImapClient? _imapClient;
@@ -81,7 +82,7 @@ class ImapEmailService {
         'messages from $mailboxName');
 
     // 6. map & reverse (newest-first)
-    return fetchResult.messages.map(_convertMimeMessageToEmail).toList().reversed.toList();
+    return (await Future.wait(fetchResult.messages.map(_convertMimeMessageToEmail))).reversed.toList();
   }
 
   Future<Email?> fetchEmailByUid(int uid, {String mailboxName = 'INBOX'}) async {
@@ -91,7 +92,7 @@ class ImapEmailService {
     await _imapClient!.selectMailboxByPath(mailboxName);
     final result = await _imapClient!.uidFetchMessage(uid, 'BODY[]');
     if (result.messages.isNotEmpty) {
-      return _convertMimeMessageToEmail(result.messages.first);
+      return await _convertMimeMessageToEmail(result.messages.first);
     }
     return null;
   }
@@ -212,7 +213,7 @@ class ImapEmailService {
       messageCount: total,
       criteria: criteria.join(' '),
     );
-    return fetchResult.messages.map(_convertMimeMessageToEmail).toList();
+    return await Future.wait(fetchResult.messages.map(_convertMimeMessageToEmail));
   }
 
   Future<bool> _updateEmailFlags(
@@ -235,18 +236,25 @@ class ImapEmailService {
     }
   }
 
-  Email _convertMimeMessageToEmail(MimeMessage msg) {
+  Future<Email> _convertMimeMessageToEmail(MimeMessage msg) async {
+    final plain = msg.decodeTextPlainPart();
+    final html = msg.decodeTextHtmlPart();
+
+    print('FIXED DECODE plain=$plain');
+    print('FIXED DECODE html=$html');
+
     return Email(
       id: msg.uid?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
       subject: msg.decodeSubject() ?? 'No Subject',
-      body: msg.decodeTextPlainPart() ?? msg.decodeTextHtmlPart() ?? '',
+      body: plain ?? html ?? '',
+      htmlBody: html,
       sender: msg.from?.first.personalName ?? msg.from?.first.email ?? 'Unknown',
-      senderEmail: msg.from?.first.email ?? 'unknown@example.com',
-      recipients: msg.to?.map((addr) => addr.email).toList() ?? [],
+      senderEmail: msg.from?.first.email ?? '',
+      recipients: msg.to?.map((a) => a.email).toList() ?? [],
       date: msg.decodeDate() ?? DateTime.now(),
       isUnread: !msg.isSeen,
       isStarred: msg.isFlagged,
-      attachments: <String>[], // implement if needed
+      attachments: <String>[],
       uid: msg.uid ?? 0,
     );
   }

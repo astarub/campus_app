@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class EmailView extends StatelessWidget {
   final Email email;
@@ -148,10 +149,12 @@ class EmailView extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Body
-            Text(
-              email.body,
-              style: theme.textTheme.bodyLarge,
-            ),
+            email.htmlBody != null && email.htmlBody!.isNotEmpty
+                ? Html(data: email.htmlBody!)
+                : Text(
+                    email.body,
+                    style: theme.textTheme.bodyLarge,
+                  ),
 
             // Attachments
             if (email.attachments.isNotEmpty) ...[
