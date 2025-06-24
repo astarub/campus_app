@@ -64,7 +64,7 @@ class ImapEmailService {
 
     // 2. how many messages there?
     final total = mailbox.messagesExists;
-    print('DEBUG: $mailboxName has $total messages');
+    //print('DEBUG: $mailboxName has $total messages');
 
     // 3. bail out only if truly empty
     if (total == 0) return [];
@@ -78,8 +78,8 @@ class ImapEmailService {
       MessageSequence.fromRange(start, end),
       '(BODY.PEEK[HEADER] BODY.PEEK[TEXT])',
     );
-    print('DEBUG: fetched ${fetchResult.messages.length} '
-        'messages from $mailboxName');
+    //print('DEBUG: fetched ${fetchResult.messages.length} '
+    // 'messages from $mailboxName');
 
     // 6. map & reverse (newest-first)
     return (await Future.wait(fetchResult.messages.map(_convertMimeMessageToEmail))).reversed.toList();
@@ -240,8 +240,8 @@ class ImapEmailService {
     final plain = msg.decodeTextPlainPart();
     final html = msg.decodeTextHtmlPart();
 
-    print('FIXED DECODE plain=$plain');
-    print('FIXED DECODE html=$html');
+    //print('FIXED DECODE plain=$plain');
+    //print('FIXED DECODE html=$html');
 
     return Email(
       id: msg.uid?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),

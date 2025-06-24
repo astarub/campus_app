@@ -47,7 +47,10 @@ class TrashPage extends StatelessWidget {
           ? const Center(child: Text('Trash is empty.'))
           : ListView.separated(
               itemCount: trashEmails.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
+              separatorBuilder: (_, __) => Divider(
+                height: 1,
+                color: Theme.of(context).dividerColor,
+              ),
               itemBuilder: (_, index) {
                 final email = trashEmails[index];
                 return EmailTile(

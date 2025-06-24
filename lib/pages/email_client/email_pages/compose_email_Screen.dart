@@ -171,14 +171,24 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                 // To Field
                 TextFormField(
                   controller: _toController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'To',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Theme.of(context).dividerColor),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter recipient';
                     }
+
+                    final emails = value.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty);
+                    for (final email in emails) {
+                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+                        return 'Invalid email: $email';
+                      }
+                    }
+
                     return null;
                   },
                 ),
@@ -189,6 +199,9 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () => setState(() => _showCcBcc = !_showCcBcc),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Theme.of(context).colorScheme.primary,
+                    ),
                     child: Text(_showCcBcc ? 'Hide CC/BCC' : 'Add CC/BCC'),
                   ),
                 ),
@@ -197,9 +210,11 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                 if (_showCcBcc) ...[
                   TextFormField(
                     controller: _ccController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'CC',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).dividerColor),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -209,9 +224,11 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                 if (_showCcBcc) ...[
                   TextFormField(
                     controller: _bccController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'BCC',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Theme.of(context).dividerColor),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -220,9 +237,11 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                 // Subject Field
                 TextFormField(
                   controller: _subjectController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Subject',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Theme.of(context).dividerColor),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -236,6 +255,8 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                       itemCount: _attachments.length,
                       itemBuilder: (context, index) => Chip(
                         label: Text(_attachments[index]),
+                        backgroundColor: Theme.of(context).chipTheme.backgroundColor,
+                        deleteIconColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                         deleteIcon: const Icon(Icons.close, size: 18),
                         onDeleted: () => setState(() => _attachments.removeAt(index)),
                       ),

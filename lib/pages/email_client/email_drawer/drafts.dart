@@ -26,7 +26,10 @@ class _DraftsPageState extends State<DraftsPage> {
           ? _buildEmptyState()
           : ListView.separated(
               itemCount: drafts.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
+              separatorBuilder: (_, __) => Divider(
+                height: 1,
+                color: Theme.of(context).dividerColor,
+              ),
               itemBuilder: (_, index) {
                 final draft = drafts[index];
                 return EmailTile(

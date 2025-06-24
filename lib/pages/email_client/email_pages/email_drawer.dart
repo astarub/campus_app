@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:campus_app/pages/email_client/email_drawer/archives.dart';
 import 'package:campus_app/pages/email_client/email_drawer/drafts.dart';
 import 'package:campus_app/pages/email_client/email_drawer/sent.dart';
 import 'package:campus_app/pages/email_client/email_drawer/trash.dart';
+import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
+import 'package:campus_app/pages/email_client/services/email_service.dart';
+// TODO: Create this page and import it
+import 'package:campus_app/pages/email_client/email_drawer/spam.dart';
 
 class EmailDrawer extends StatelessWidget {
   const EmailDrawer({super.key});
@@ -17,72 +22,67 @@ class EmailDrawer extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
+            // === Drawer header with user info ===
             DrawerHeader(
               decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer,
+                color: theme.colorScheme.surfaceVariant,
               ),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 25,
                     child: Icon(Icons.person, size: 30),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Your Name',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Text(
                     'you@example.com',
-                    style: TextStyle(fontSize: 14),
+                    style: theme.textTheme.bodySmall,
                   ),
                 ],
               ),
             ),
 
-            // Inbox without navigation for example:
+            // === Drawer navigation options ===
             ListTile(
-              leading: const Icon(Icons.inbox),
-              title: const Text('Inbox'),
+              leading: Icon(Icons.inbox, color: theme.iconTheme.color),
+              title: Text('Inbox', style: theme.textTheme.bodyLarge),
               onTap: () => Navigator.pop(context),
             ),
+            _buildDrawerItem(context, icon: Icons.send, title: 'Sent', page: const SentPage()),
+            _buildDrawerItem(context, icon: Icons.archive, title: 'Archives', page: const ArchivesPage()),
+            _buildDrawerItem(context, icon: Icons.drafts, title: 'Drafts', page: const DraftsPage()),
+            _buildDrawerItem(context, icon: Icons.delete, title: 'Trash', page: const TrashPage()),
 
-            // Using helper method to reduce repetition:
+            // === NEW: Spam folder ===
             _buildDrawerItem(
               context,
-              icon: Icons.send,
-              title: 'Sent',
-              page: const SentPage(),
-            ),
-            _buildDrawerItem(
-              context,
-              icon: Icons.archive,
-              title: 'Archives',
-              page: const ArchivesPage(),
-            ),
-            _buildDrawerItem(
-              context,
-              icon: Icons.drafts,
-              title: 'Drafts',
-              page: const DraftsPage(),
-            ),
-            _buildDrawerItem(
-              context,
-              icon: Icons.delete,
-              title: 'Trash',
-              page: const TrashPage(),
+              icon: Icons.report_gmailerrorred,
+              title: 'Spam',
+              page: const SpamPage(), // Make sure you define this page
             ),
 
             const Divider(),
 
+            // === Settings option (placeholder) ===
             ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
+              leading: Icon(Icons.settings, color: theme.iconTheme.color),
+              title: Text('Settings', style: theme.textTheme.bodyLarge),
               onTap: () {
                 Navigator.pop(context);
-                // TODO: Add SettingsPage() navigation here later
+                // TODO: Add SettingsPage navigation
               },
+            ),
+
+            // === Logout with confirmation ===
+            ListTile(
+              leading: Icon(Icons.logout, color: theme.colorScheme.error),
+              title: Text('Logout', style: TextStyle(color: theme.colorScheme.error)),
+              onTap: () => _confirmLogout(context),
             ),
           ],
         ),
@@ -90,6 +90,7 @@ class EmailDrawer extends StatelessWidget {
     );
   }
 
+  /// Helper to create drawer items with consistent styling and navigation
   Widget _buildDrawerItem(
     BuildContext context, {
     required IconData icon,
@@ -97,12 +98,10 @@ class EmailDrawer extends StatelessWidget {
     required Widget page,
   }) {
     return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
+      leading: Icon(icon, color: Theme.of(context).iconTheme.color),
+      title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
       onTap: () {
-        Navigator.pop(context); // close the drawer first
-
-        // Delay navigation until after drawer closes
+        Navigator.pop(context); // close drawer first
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.push(
             context,
@@ -110,6 +109,40 @@ class EmailDrawer extends StatelessWidget {
           );
         });
       },
+    );
+  }
+
+  /// Show confirmation dialog before logging the user out
+  void _confirmLogout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(ctx); // Close dialog
+              Navigator.pop(context); // Close drawer
+
+              // Call logout logic from EmailAuthService and EmailService
+              final emailAuthService = context.read<EmailAuthService>();
+              final emailService = context.read<EmailService>();
+
+              await emailAuthService.logout();
+              emailService.clear();
+            },
+            child: Text(
+              'Logout',
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

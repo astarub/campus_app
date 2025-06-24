@@ -170,7 +170,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
               Icon(
                 Icons.email,
                 size: 64,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(height: 24),
               Text(
@@ -243,11 +243,6 @@ class _EmailClientContentState extends State<_EmailClientContent> {
               ),
             ],
             if (!_isSearching && !_selectionController.isSelecting)
-              IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: _handleLogout,
-              ),
-            if (!_isSearching && !_selectionController.isSelecting)
               Builder(
                 builder: (context) => IconButton(
                   icon: const Icon(Icons.menu),
@@ -268,7 +263,10 @@ class _EmailClientContentState extends State<_EmailClientContent> {
             },
             child: ListView.separated(
               itemCount: filteredEmails.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
+              separatorBuilder: (_, __) => Divider(
+                height: 1,
+                color: Theme.of(context).dividerColor,
+              ),
               itemBuilder: (_, index) {
                 final email = filteredEmails[index];
                 return EmailTile(
@@ -307,13 +305,13 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                   FloatingActionButton(
                     heroTag: 'delete',
                     onPressed: () => _selectionController.onDelete?.call(_selectionController.selectedEmails),
-                    child: const Icon(Icons.delete),
+                    child: Icon(Icons.delete, color: Theme.of(context).colorScheme.onPrimary),
                   ),
                   const SizedBox(width: 16),
                   FloatingActionButton(
                     heroTag: 'archive',
                     onPressed: () => _selectionController.onArchive?.call(_selectionController.selectedEmails),
-                    child: const Icon(Icons.archive),
+                    child: Icon(Icons.archive, color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ],
               )
@@ -322,7 +320,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                   context,
                   MaterialPageRoute(builder: (_) => const ComposeEmailScreen()),
                 ),
-                child: const Icon(Icons.edit),
+                child: Icon(Icons.edit, color: Theme.of(context).colorScheme.onPrimary),
               ),
       ),
     );

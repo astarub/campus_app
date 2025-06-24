@@ -48,7 +48,10 @@ class EmailView extends StatelessWidget {
                 const SnackBar(content: Text('Email permanently deleted')),
               );
             },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            child: Text(
+              'Delete',
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
           ),
         ],
       ),
@@ -128,14 +131,18 @@ class EmailView extends StatelessWidget {
                       if (email.senderEmail.isNotEmpty)
                         Text(
                           email.senderEmail,
-                          style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          ),
                         ),
                     ],
                   ),
                 ),
                 Text(
                   timeText,
-                  style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  ),
                 ),
               ],
             ),
@@ -173,13 +180,13 @@ class EmailView extends StatelessWidget {
                     width: 80,
                     margin: const EdgeInsets.only(right: 8),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: theme.dividerColor),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.insert_drive_file, size: 30),
+                        Icon(Icons.insert_drive_file, size: 30, color: theme.iconTheme.color),
                         const SizedBox(height: 4),
                         Text(
                           'File ${index + 1}',

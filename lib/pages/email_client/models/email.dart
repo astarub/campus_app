@@ -132,4 +132,5 @@ enum EmailFolder {
   drafts,
   trash,
   archives,
+  spam,
 }
