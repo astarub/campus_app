@@ -1006,6 +1006,7 @@ class _CouponsPageState extends State<CouponsPage> {
                         }
                       }
                     } catch (e) {
+                      print('Fehler beim Update: $e');
                       if (mounted) {
                         setState(() {
                           fireAnimations[couponId] = false;

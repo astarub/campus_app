@@ -111,6 +111,30 @@ class CouponUserBackendRepository {
   }) async {
     final Databases databaseService = Databases(client);
     final userId = await _getOrCreateDeviceId();
+
+    try {
+      // Test, ob Dokument existiert
+      await databaseService.getDocument(
+        databaseId: 'coupon',
+        collectionId: 'UserCoupon',
+        documentId: userId,
+      );
+    } on AppwriteException catch (e) {
+      if (e.code == 404) {
+        // Dokument existiert nicht → erstelle es
+        final newUser = CouponUser(
+          userId: userId,
+          favoriteCoupons: [],
+          likedCoupons: [],
+          dislikedCoupons: [],
+          userMaxCoupons: [],
+        );
+        await createUserCoupon(newUser, userId);
+      } else {
+        rethrow;
+      }
+    }
+
     // Now safely attempt to update
     try {
       final updatedDocument = await databaseService.updateDocument(
@@ -121,6 +145,7 @@ class CouponUserBackendRepository {
       );
       return updatedDocument;
     } catch (e) {
+      debugPrint("Fehler beim Update von UserCoupons: $e");
       rethrow;
     }
   }
