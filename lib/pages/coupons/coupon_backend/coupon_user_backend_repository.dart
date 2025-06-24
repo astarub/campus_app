@@ -42,7 +42,7 @@ class CouponUserBackendRepository {
     }
   }
 
-  Future<String> _getOrCreateDeviceId() async {
+  Future<String> getOrCreateDeviceId() async {
     final prefs = await SharedPreferences.getInstance();
     final String? storedId = prefs.getString(_deviceIdKey);
 
@@ -110,7 +110,7 @@ class CouponUserBackendRepository {
     required Map<String, dynamic> updatedFields,
   }) async {
     final Databases databaseService = Databases(client);
-    final userId = await _getOrCreateDeviceId();
+    final userId = await getOrCreateDeviceId();
 
     try {
       // Test, ob Dokument existiert

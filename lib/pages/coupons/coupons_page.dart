@@ -79,6 +79,7 @@ class _CouponsPageState extends State<CouponsPage> {
     super.initState();
     _scrollController = ScrollController();
     _loadInitialData();
+    _loadUserData();
 
     // Add scroll listener to control FAB visibility
     // Scroll-Listener hinzufügen, um Sichtbarkeit des FAB zu steuern
@@ -99,7 +100,6 @@ class _CouponsPageState extends State<CouponsPage> {
         setState(() => _showFab = false);
       }
     });
-    _loadDealsFromAppwrite();
   }
 
   @override
@@ -146,6 +146,48 @@ class _CouponsPageState extends State<CouponsPage> {
     }
   }
 
+  Future<void> _loadUserData() async {
+    final couponUserBackend = sl<CouponUserBackendRepository>();
+    final userId = await couponUserBackend.getOrCreateDeviceId();
+    final userCoupons = await couponUserBackend.getUserCoupons(userId);
+
+    final backend = sl<BackendRepository>();
+    final coupons = await backend.getCoupons();
+
+    setState(() {
+      deals = coupons
+          .map((coupon) => {
+                r'$id': coupon.id,
+                r'$createdAt': coupon.createdAt?.toIso8601String(),
+                'title': coupon.title,
+                'description': coupon.description,
+                'oldPrice': coupon.oldPrice,
+                'newPrice': coupon.newPrice,
+                'discount': coupon.discount,
+                'qrCode': coupon.qrCode,
+                'images': coupon.images,
+                'provider': coupon.provider,
+                'website': coupon.website,
+                'location': coupon.location,
+                'category': coupon.category,
+                'expiresAt': coupon.expiresAt?.toIso8601String(),
+                'availableCoupons': coupon.availableCoupons,
+                'voteCount': coupon.voteCount,
+                'hiddenQrCode': coupon.hiddenQrCode,
+                'couponUsesCounter': coupon.couponUsesCounter,
+              })
+          .toList();
+
+      userData = {
+        'userId': userCoupons.userId,
+        'maxCoupons': userCoupons.userMaxCoupons ?? [],
+        'favorites': userCoupons.favoriteCoupons ?? [],
+        'likes': userCoupons.likedCoupons ?? [],
+        'dislikes': userCoupons.dislikedCoupons ?? [],
+      };
+    });
+  }
+
 // Refreshes data from backend
   // Aktualisiert Daten vom Backend
   Future<void> _refreshData() async {
@@ -188,8 +230,11 @@ class _CouponsPageState extends State<CouponsPage> {
     final backend = sl<BackendRepository>();
     final couponUserBackend = sl<CouponUserBackendRepository>();
     final coupons = await backend.getCoupons();
-    final settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
-    final couponUser = await couponUserBackend.getUserCoupons(settingsHandler.currentSettings.backendAccount.id);
+    //final settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
+    //final couponUser = await couponUserBackend.getUserCoupons(settingsHandler.currentSettings.backendAccount.id);
+
+    final userId = await couponUserBackend.getOrCreateDeviceId();
+    final couponUser = await couponUserBackend.getUserCoupons(userId);
 
     setState(() {
       deals = coupons
