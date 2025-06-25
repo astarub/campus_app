@@ -64,7 +64,7 @@ dependencies:
   dismissible_page: ^1.0.2
   app_links: ^6.4.0
   barcode_widget: ^2.0.4
-  #mobile_scanner: ^3.0.0
+  mobile_scanner: ^3.0.0
   connectivity_plus: ^5.0.2
   uuid: ^4.5.1
   shared_preferences: ^2.2.2
