@@ -1,6 +1,3 @@
-// 1. ABSTRACT EMAIL REPOSITORY (Define the contract)
-// ============================================================================
-
 import 'package:campus_app/pages/email_client/models/email.dart';
 
 abstract class EmailRepository {
@@ -26,38 +23,10 @@ abstract class EmailRepository {
     String mailboxName = 'INBOX',
   });
   bool get isConnected;
+
+  /// Save or update a draft on the server
+  Future<bool> saveDraft(Email draft);
+
+  /// Fetch drafts from the server-side “Drafts” folder
+  Future<List<Email>> fetchDrafts({int count = 50});
 }
-
-
-
-// ============================================================================
-// USAGE EXAMPLE
-/*
-
-class EmailController {
-  final EmailService _emailService = sl<EmailService>();
-  
-  Future<void> initializeEmail() async {
-    try {
-      await _emailService.initialize();
-    } catch (e) {
-      // Handle initialization error
-      print('Failed to initialize email: $e');
-    }
-  }
-  
-  Future<void> sendTestEmail() async {
-    try {
-      await _emailService.sendEmail(
-        to: 'test@example.com',
-        subject: 'Test Email',
-        body: 'This is a test email',
-      );
-    } catch (e) {
-      // Handle send error
-      print('Failed to send email: $e');
-    }
-  }
-}
-
-*/

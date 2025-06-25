@@ -57,18 +57,6 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
     super.dispose();
   }
 
-  // Check if the current composition is empty
-  /*
-  bool _isCompositionEmpty() {
-    return _toController.text.trim().isEmpty &&
-        _ccController.text.trim().isEmpty &&
-        _bccController.text.trim().isEmpty &&
-        _subjectController.text.trim().isEmpty &&
-        _bodyController.text.trim().isEmpty &&
-        _attachments.isEmpty;
-  } */
-
-  // Check if the composition has any meaningful content
   bool _hasContent() {
     return _toController.text.trim().isNotEmpty ||
         _subjectController.text.trim().isNotEmpty ||
@@ -76,15 +64,12 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
         _attachments.isNotEmpty;
   }
 
-  // Save or update the draft only if it has content
   void _saveDraft(EmailService emailService) {
-    // Only save if there's actual content
     if (!_hasContent()) {
-      // If this was an existing draft that's now empty, remove it
       if (widget.draft != null) {
         emailService.removeDraft(widget.draft!.id);
       }
-      return; // Don't save empty compositions
+      return;
     }
 
     final newDraft = Email(
@@ -107,25 +92,44 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
     );
   }
 
-  // Send email and remove draft if exists
-  void _sendEmail() {
-    if (_formKey.currentState!.validate()) {
-      final emailService = Provider.of<EmailService>(context, listen: false);
-      if (widget.draft != null) {
-        emailService.removeDraft(widget.draft!.id);
-      }
+  Future<void> _sendEmail() async {
+    if (!_formKey.currentState!.validate()) return;
 
-      // TODO: Implement actual sending logic here
+    final emailService = Provider.of<EmailService>(context, listen: false);
+
+    // Remove the old draft if we're editing one
+    if (widget.draft != null) {
+      emailService.removeDraft(widget.draft!.id);
+    }
+
+    try {
+      await emailService.sendEmail(
+        to: _toController.text.trim(),
+        subject: _subjectController.text.trim(),
+        body: _bodyController.text,
+        // Pass cc/bcc as String? (the service will split internally)
+        cc: _ccController.text.trim().isEmpty
+            ? null
+            : _ccController.text.trim(), // <<< changed: String? instead of List<String>?
+        bcc: _bccController.text.trim().isEmpty ? null : _bccController.text.trim(), // <<< changed here as well
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email sent')),
+        const SnackBar(
+          content: Text('Email sent'),
+          duration: Duration(seconds: 2),
+        ),
       );
       Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to send email: $e')),
+      );
     }
   }
 
   Future<void> _attachFile() async {
-    // TODO: Implement file attachment
+    // TODO: implement real file picker
     setState(() {
       _attachments.add('file_${_attachments.length + 1}.pdf');
     });
@@ -153,12 +157,10 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
             IconButton(
               icon: const Icon(Icons.attach_file),
               onPressed: _attachFile,
-              tooltip: 'Attach file',
             ),
             IconButton(
               icon: const Icon(Icons.send),
               onPressed: _sendEmail,
-              tooltip: 'Send',
             ),
           ],
         ),
@@ -168,7 +170,7 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                // To Field
+                // To field
                 TextFormField(
                   controller: _toController,
                   decoration: InputDecoration(
@@ -181,91 +183,68 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter recipient';
                     }
-
-                    final emails = value.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty);
+                    final emails = value.split(',').map((e) => e.trim());
                     for (final email in emails) {
                       if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
                         return 'Invalid email: $email';
                       }
                     }
-
                     return null;
                   },
                 ),
                 const SizedBox(height: 8),
 
-                // CC/BCC Toggle
+                // CC/BCC toggle
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () => setState(() => _showCcBcc = !_showCcBcc),
-                    style: TextButton.styleFrom(
-                      foregroundColor: Theme.of(context).colorScheme.primary,
-                    ),
                     child: Text(_showCcBcc ? 'Hide CC/BCC' : 'Add CC/BCC'),
                   ),
                 ),
 
-                // CC Field (conditional)
+                // CC field
                 if (_showCcBcc) ...[
                   TextFormField(
                     controller: _ccController,
-                    decoration: InputDecoration(
-                      labelText: 'CC',
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).dividerColor),
-                      ),
-                    ),
+                    decoration: const InputDecoration(labelText: 'CC'),
                   ),
                   const SizedBox(height: 8),
                 ],
 
-                // BCC Field (conditional)
+                // BCC field
                 if (_showCcBcc) ...[
                   TextFormField(
                     controller: _bccController,
-                    decoration: InputDecoration(
-                      labelText: 'BCC',
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Theme.of(context).dividerColor),
-                      ),
-                    ),
+                    decoration: const InputDecoration(labelText: 'BCC'),
                   ),
                   const SizedBox(height: 8),
                 ],
 
-                // Subject Field
+                // Subject
                 TextFormField(
                   controller: _subjectController,
-                  decoration: InputDecoration(
-                    labelText: 'Subject',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).dividerColor),
-                    ),
-                  ),
+                  decoration: const InputDecoration(labelText: 'Subject'),
                 ),
                 const SizedBox(height: 8),
 
-                // Attachments
+                // Attachments preview
                 if (_attachments.isNotEmpty) ...[
                   SizedBox(
                     height: 50,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: _attachments.length,
-                      itemBuilder: (context, index) => Chip(
-                        label: Text(_attachments[index]),
-                        backgroundColor: Theme.of(context).chipTheme.backgroundColor,
-                        deleteIconColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                        deleteIcon: const Icon(Icons.close, size: 18),
-                        onDeleted: () => setState(() => _attachments.removeAt(index)),
+                      itemBuilder: (_, i) => Chip(
+                        label: Text(_attachments[i]),
+                        onDeleted: () => setState(() => _attachments.removeAt(i)),
                       ),
                     ),
                   ),
                   const SizedBox(height: 8),
                 ],
 
-                // Email Body
+                // Body
                 Expanded(
                   child: TextFormField(
                     controller: _bodyController,

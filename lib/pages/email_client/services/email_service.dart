@@ -21,7 +21,7 @@ class EmailService extends ChangeNotifier {
   List<Email> get allEmails => List.unmodifiable(_allEmails);
   EmailSelectionController get selectionController => _selectionController;
 
-  /// Attempt to initialize email connection and pull inbox
+  /// Initialize connection and pull all folders (including drafts).
   Future<void> initialize() async {
     try {
       final credentials = await _authService.getCredentials();
@@ -29,6 +29,8 @@ class EmailService extends ChangeNotifier {
       await _connectToEmailServer(credentials['username']!, credentials['password']!);
       _isInitialized = true;
       notifyListeners();
+
+      // Immediately load all folders, including drafts on the server
       await refreshEmails();
     } catch (e) {
       _isInitialized = false;
@@ -37,13 +39,12 @@ class EmailService extends ChangeNotifier {
     }
   }
 
-  /// Connects using provided credentials
   Future<void> _connectToEmailServer(String username, String password) async {
     final success = await _emailRepository.connect(username, password);
     if (!success) throw Exception('Failed to connect to email server');
   }
 
-  /// Refreshes all mailbox folders
+  /// Refreshes all mailbox folders, including server drafts.
   Future<void> refreshEmails() async {
     if (!_isInitialized) throw Exception('Email service not initialized');
     try {
@@ -60,38 +61,48 @@ class EmailService extends ChangeNotifier {
     }
   }
 
-  /// Fetches emails from all folders including spam
+  /// Fetches inbox, sent, drafts (server-side), trash, spam.
   Future<void> _fetchEmailsFromServer() async {
     _allEmails.clear();
 
     final folderMappings = {
       EmailFolder.inbox: ['INBOX'],
       EmailFolder.sent: ['Sent'],
-      EmailFolder.drafts: ['Drafts'],
+      EmailFolder.drafts: ['Drafts'], // ← We’ll fetch server drafts separately below
       EmailFolder.trash: ['Trash'],
-      EmailFolder.spam: ['UCE-TMP'], // 👈 NEW: Add spam mapping
+      EmailFolder.spam: ['UCE-TMP'],
     };
 
+    // 1) Fetch standard folders
     for (final entry in folderMappings.entries) {
       final folder = entry.key;
       final folderNames = entry.value;
       await _fetchEmailsForFolder(folder, folderNames);
     }
+
+    // 2) Fetch server-side drafts and merge
+    try {
+      final serverDrafts = await _emailRepository.fetchDrafts(count: 50);
+      for (final draft in serverDrafts) {
+        _allEmails.add(draft.copyWith(folder: EmailFolder.drafts));
+      }
+    } catch (e) {
+      print('Could not fetch server drafts: $e');
+    }
   }
 
-  /// Attempts to fetch from each alias for a folder
+  /// Helper to try all mailbox name aliases for a given folder.
   Future<void> _fetchEmailsForFolder(EmailFolder folder, List<String> folderNames) async {
     for (final folderName in folderNames) {
       try {
         final count = folder == EmailFolder.inbox ? 50 : 30;
         final emails = await _emailRepository.fetchEmails(mailboxName: folderName, count: count);
-
         for (final email in emails) {
           _allEmails.add(email.copyWith(folder: folder));
         }
         return;
       } catch (_) {
-        continue;
+        // try next alias
       }
     }
 
@@ -107,7 +118,7 @@ class EmailService extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Sends a new email and refreshes sent list
+  /// Sends a new email over SMTP and refreshes the Sent folder.
   Future<void> sendEmail({
     required String to,
     required String subject,
@@ -124,14 +135,12 @@ class EmailService extends ChangeNotifier {
       cc: cc?.split(',').map((e) => e.trim()).toList(),
       bcc: bcc?.split(',').map((e) => e.trim()).toList(),
     );
-
     if (!success) throw Exception('Failed to send email');
 
     await _refreshSentEmails();
     notifyListeners();
   }
 
-  /// Clears and refetches sent folder only
   Future<void> _refreshSentEmails() async {
     _allEmails.removeWhere((e) => e.folder == EmailFolder.sent);
     await _fetchEmailsForFolder(EmailFolder.sent, ['Sent', 'INBOX.Sent', 'INBOX/Sent']);
@@ -149,7 +158,6 @@ class EmailService extends ChangeNotifier {
     if (success) updateEmail(email.copyWith(isRead: false));
   }
 
-  /// Deletes or moves to trash depending on current folder
   Future<void> deleteEmail(Email email) async {
     if (!_isInitialized || email.uid == 0) return;
 
@@ -165,7 +173,6 @@ class EmailService extends ChangeNotifier {
     }
   }
 
-  /// Server-side search
   Future<List<Email>> searchEmails({
     String? query,
     String? from,
@@ -187,7 +194,6 @@ class EmailService extends ChangeNotifier {
     return results.map((e) => e.copyWith(folder: folder ?? EmailFolder.inbox)).toList();
   }
 
-  /// Maps folder enum to IMAP mailbox name
   String _getMailboxNameForFolder(EmailFolder folder) {
     switch (folder) {
       case EmailFolder.sent:
@@ -214,7 +220,6 @@ class EmailService extends ChangeNotifier {
   List<Email> filterEmails(String query, EmailFolder folder) {
     final filtered = _allEmails.where((e) => e.folder == folder).toList();
     if (query.isEmpty) return filtered;
-
     return filtered.where((email) {
       return email.sender.toLowerCase().contains(query.toLowerCase()) ||
           email.subject.toLowerCase().contains(query.toLowerCase());
@@ -235,7 +240,6 @@ class EmailService extends ChangeNotifier {
         final targetMailbox = _getMailboxNameForFolder(folder);
         _emailRepository.moveEmail(email.uid, targetMailbox).catchError(print);
       }
-
       final index = _allEmails.indexWhere((e) => e.id == email.id);
       if (index != -1) {
         _allEmails[index] = email.copyWith(folder: folder);
@@ -250,35 +254,53 @@ class EmailService extends ChangeNotifier {
         _emailRepository.deleteEmail(email.uid).catchError(print);
       }
     }
-
-    _allEmails.removeWhere((e) => emails.any((email) => email.id == e.id));
+    _allEmails.removeWhere((e) => emails.any((d) => d.id == e.id));
     _selectionController.clearSelection();
     notifyListeners();
   }
 
-  void saveOrUpdateDraft(Email draft) {
+  /// Save or update a draft both locally and on the IMAP server
+  Future<void> saveOrUpdateDraft(Email draft) async {
+    // 1) Local cache update
     if (_isDraftEmpty(draft)) {
       _allEmails.removeWhere((e) => e.id == draft.id);
       notifyListeners();
-      return;
-    }
-
-    final updatedDraft = draft.copyWith(folder: EmailFolder.drafts);
-    final index = _allEmails.indexWhere((e) => e.id == draft.id);
-    if (index != -1) {
-      _allEmails[index] = updatedDraft;
     } else {
-      _allEmails.add(updatedDraft);
+      final updatedDraft = draft.copyWith(folder: EmailFolder.drafts);
+      final index = _allEmails.indexWhere((e) => e.id == draft.id);
+      if (index != -1) {
+        _allEmails[index] = updatedDraft;
+      } else {
+        _allEmails.add(updatedDraft);
+      }
+      notifyListeners();
     }
 
-    notifyListeners();
+    // 2) Push to server
+    try {
+      final success = await _emailRepository.saveDraft(draft);
+      if (!success) {
+        print('Failed to save draft on server');
+        // Optionally, show a user-facing error here
+      }
+    } catch (e) {
+      print('Error while saving draft: $e');
+      // Optionally, rollback local change
+    }
   }
 
   void removeDraft(String draftId) {
     final draft = _allEmails.firstWhere(
       (e) => e.id == draftId && e.folder == EmailFolder.drafts,
-      orElse: () =>
-          Email(id: '', sender: '', senderEmail: '', recipients: [], subject: '', body: '', date: DateTime.now()),
+      orElse: () => Email(
+        id: '',
+        sender: '',
+        senderEmail: '',
+        recipients: [],
+        subject: '',
+        body: '',
+        date: DateTime.now(),
+      ),
     );
 
     if (_isInitialized && draft.uid != 0 && draft.id.isNotEmpty) {

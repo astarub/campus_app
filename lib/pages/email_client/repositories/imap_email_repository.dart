@@ -1,6 +1,3 @@
-//2. IMAP IMPLEMENTATION OF EMAIL REPOSITORY
-// ============================================================================
-
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/repositories/email_repository.dart';
 import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
@@ -81,4 +78,10 @@ class ImapEmailRepository implements EmailRepository {
 
   @override
   bool get isConnected => _imapService.isConnected;
+
+  @override
+  Future<bool> saveDraft(Email draft) => _imapService.appendDraft(draft);
+
+  @override
+  Future<List<Email>> fetchDrafts({int count = 50}) => _imapService.fetchEmails(mailboxName: 'Drafts', count: count);
 }

@@ -109,6 +109,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     );
   }
 
+/*
   Future<void> _handleLogout() async {
     final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
     final emailService = Provider.of<EmailService>(context, listen: false);
@@ -119,7 +120,8 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     setState(() {
       _isAuthenticated = false;
     });
-  }
+  } 
+  */
 
   Future<void> _handlePop(BuildContext context) async {
     if (_selectionController.isSelecting) {
@@ -326,11 +328,11 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     );
   }
 }
-// Trash is fully implemented so far(not anymore)
-// TODO: Sent, Archives, Drafts
-// TODO: Settings: I am unsure what to add in here.
+/*
+NOTES:
+- changes on the email client only appear on the app not in the actual Email.
+- Email inbox only loads a certain number of emails, 
+  it takes too long to load so needs some efficiency improvements
+- Composed Emails don't actually send.
 
-// Check IMAP plugins (for dart/flutter): enough_mail?s
-                      // SMPT und IMAP client => API
-                      // UI und Backend separate, start with UI it is easier.
-                      // flutter secure storage login daten, take it from there
+*/

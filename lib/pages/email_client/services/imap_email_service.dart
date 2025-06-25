@@ -11,6 +11,7 @@ class ImapEmailService {
   String? _username;
   String? _password;
 
+  // IMAP/SMTP server configuration
   static const String _imapHost = 'mail.ruhr-uni-bochum.de';
   static const int _imapPort = 993;
   static const String _smtpHost = 'mail.ruhr-uni-bochum.de';
@@ -18,6 +19,7 @@ class ImapEmailService {
 
   bool get isConnected => _imapClient?.isConnected ?? false;
 
+  /// Connects to the IMAP server and logs in.
   Future<bool> connect(String username, String password) async {
     _imapClient = ImapClient(isLogEnabled: true);
     try {
@@ -25,23 +27,21 @@ class ImapEmailService {
       _password = password;
       await _imapClient!.connectToServer(_imapHost, _imapPort, isSecure: true);
       await _imapClient!.login(_username!, _password!);
-      print('Successfully connected to RUB email server');
-
-      final boxes = await _imapClient!.listMailboxes();
-      print('Available mailboxes: ${boxes.map((m) => m.name).toList()}');
+      print('IMAP: Connected as $_username');
       return true;
     } catch (e) {
-      print('Failed to connect to email server: $e');
+      print('IMAP: Connection/login failed: $e');
       return false;
     }
   }
 
+  /// Disconnects both IMAP and SMTP clients cleanly.
   Future<void> disconnect() async {
     try {
       await _imapClient?.disconnect();
       await _smtpClient?.disconnect();
     } catch (e) {
-      print('Error disconnecting: $e');
+      print('Disconnect error: $e');
     } finally {
       _imapClient = null;
       _smtpClient = null;
@@ -50,53 +50,49 @@ class ImapEmailService {
     }
   }
 
+  /// Fetches [count] messages from [mailboxName], newest-first paging.
   Future<List<Email>> fetchEmails({
     String mailboxName = 'INBOX',
     int count = 50,
     int page = 1,
   }) async {
     if (_imapClient == null || !_imapClient!.isConnected) {
-      throw Exception('Not connected to email server');
+      throw Exception('Not connected to IMAP server');
     }
-
-    // 1. select mailbox
+    // 1) Select mailbox
     final mailbox = await _imapClient!.selectMailboxByPath(mailboxName);
-
-    // 2. how many messages there?
     final total = mailbox.messagesExists;
-    //print('DEBUG: $mailboxName has $total messages');
-
-    // 3. bail out only if truly empty
     if (total == 0) return [];
 
-    // 4. clamp page-range into [1..total]
+    // 2) Determine sequence range
     final start = math.max(1, total - (page * count) + 1);
     final end = math.min(total, total - ((page - 1) * count));
 
-    // 5. fetch with parentheses around the item list
-    final fetchResult = await _imapClient!.fetchMessages(
+    // 3) Fetch headers and body peek
+    final result = await _imapClient!.fetchMessages(
       MessageSequence.fromRange(start, end),
       '(BODY.PEEK[HEADER] BODY.PEEK[TEXT])',
     );
-    //print('DEBUG: fetched ${fetchResult.messages.length} '
-    // 'messages from $mailboxName');
 
-    // 6. map & reverse (newest-first)
-    return (await Future.wait(fetchResult.messages.map(_convertMimeMessageToEmail))).reversed.toList();
+    // 4) Convert and reverse for newest-first order
+    final emails = await Future.wait(
+      result.messages.map(_convertMimeMessageToEmail),
+    );
+    return emails.reversed.toList();
   }
 
+  /// Fetches a single email by its UID.
   Future<Email?> fetchEmailByUid(int uid, {String mailboxName = 'INBOX'}) async {
     if (_imapClient == null || !_imapClient!.isConnected) {
-      throw Exception('Not connected to email server');
+      throw Exception('Not connected to IMAP server');
     }
     await _imapClient!.selectMailboxByPath(mailboxName);
     final result = await _imapClient!.uidFetchMessage(uid, 'BODY[]');
-    if (result.messages.isNotEmpty) {
-      return await _convertMimeMessageToEmail(result.messages.first);
-    }
-    return null;
+    if (result.messages.isEmpty) return null;
+    return await _convertMimeMessageToEmail(result.messages.first);
   }
 
+  /// Sends an email via SMTP, then appends it into the IMAP “Sent” folder.
   Future<bool> sendEmail({
     required String to,
     required String subject,
@@ -106,83 +102,105 @@ class ImapEmailService {
     List<String>? attachments,
   }) async {
     try {
-      if (_smtpClient == null) {
-        _smtpClient = SmtpClient('RUB-Flutter-Client', isLogEnabled: false);
+      // ─── 1) Ensure SMTP connection + full STARTTLS handshake ─────────────
+      if (_smtpClient == null || !_smtpClient!.isConnected) {
+        _smtpClient = SmtpClient('RUB-Flutter-Client', isLogEnabled: true);
+
+        // Connect without TLS
         await _smtpClient!.connectToServer(_smtpHost, _smtpPort, isSecure: false);
+        // Advertise capabilities
         await _smtpClient!.ehlo();
+        // Upgrade to TLS
         await _smtpClient!.startTls();
+        // Re-advertise capabilities after TLS
+        await _smtpClient!.ehlo();
+        // Authenticate
         await _smtpClient!.authenticate(_username!, _password!, AuthMechanism.login);
       }
 
+      // ─── 2) Build the MIME message ────────────────────────────────────────
       final builder = MessageBuilder.prepareMultipartAlternativeMessage(plainText: body)
-        ..from = [MailAddress('', _username!)]
+        ..from = [
+          MailAddress(
+            '',
+            _username!.contains('@') ? _username! : '$_username@ruhr-uni-bochum.de',
+          )
+        ]
         ..to = [MailAddress('', to)]
         ..subject = subject;
 
       if (cc?.isNotEmpty ?? false) {
-        builder.cc = cc!.map((e) => MailAddress('', e)).toList();
+        builder.cc = cc!.map((addr) => MailAddress('', addr)).toList();
       }
       if (bcc?.isNotEmpty ?? false) {
-        builder.bcc = bcc!.map((e) => MailAddress('', e)).toList();
+        builder.bcc = bcc!.map((addr) => MailAddress('', addr)).toList();
       }
 
-      // TODO: attachments if needed
+      // TODO: handle attachments if needed
 
-      final message = builder.buildMimeMessage();
-      await _smtpClient!.sendMessage(message);
+      final mimeMessage = builder.buildMimeMessage();
+
+      // ─── 3) Send the message ───────────────────────────────────────────────
+      await _smtpClient!.sendMessage(mimeMessage);
+      print('SMTP: Message sent');
+
+      // ─── 4) Append to IMAP “Sent” folder ──────────────────────────────────
+      if (_imapClient != null && _imapClient!.isConnected) {
+        try {
+          await _imapClient!.selectMailboxByPath('Sent');
+          await _imapClient!.appendMessage(
+            mimeMessage,
+            flags: [MessageFlags.seen], // mark as read in Sent
+          );
+          print('IMAP: Appended message to Sent');
+        } catch (e) {
+          print('IMAP: Failed to append to Sent: $e');
+        }
+      }
+
       return true;
     } catch (e) {
-      print('Error sending email: $e');
+      print('sendEmail error: $e');
       return false;
     }
   }
 
-  Future<bool> markAsRead(int uid, {String mailboxName = 'INBOX'}) =>
-      _updateEmailFlags(uid, [MessageFlags.seen], mailboxName: mailboxName);
+  /// Appends (or updates) a draft in the IMAP “Drafts” folder.
+  Future<bool> appendDraft(Email draft) async {
+    if (_imapClient == null || !_imapClient!.isConnected) {
+      throw Exception('Not connected to IMAP server');
+    }
+    // Select the Drafts mailbox
+    await _imapClient!.selectMailboxByPath('Drafts');
+    // Build draft MIME
+    final builder = MessageBuilder.prepareMultipartAlternativeMessage(plainText: draft.body)
+      ..from = [MailAddress('', _username!)]
+      ..to = draft.recipients.map((r) => MailAddress('', r)).toList()
+      ..subject = draft.subject;
+    final mime = builder.buildMimeMessage();
 
-  Future<bool> markAsUnread(int uid, {String mailboxName = 'INBOX'}) => _updateEmailFlags(
-        uid,
-        [MessageFlags.seen],
-        remove: true,
-        mailboxName: mailboxName,
+    try {
+      await _imapClient!.appendMessage(
+        mime,
+        flags: [MessageFlags.draft],
       );
-
-  Future<bool> deleteEmail(int uid, {String mailboxName = 'INBOX'}) async {
-    try {
-      await _imapClient!.selectMailboxByPath(mailboxName);
-      await _imapClient!.uidStore(MessageSequence.fromId(uid), [MessageFlags.deleted]);
-      await _imapClient!.expunge();
       return true;
     } catch (e) {
-      print('Error deleting email: $e');
+      print('appendDraft error: $e');
       return false;
     }
   }
 
-  Future<bool> moveEmail(
-    int uid,
-    String targetMailbox, {
-    String sourceMailbox = 'INBOX',
-  }) async {
-    try {
-      await _imapClient!.selectMailboxByPath(sourceMailbox);
-      await _imapClient!.selectMailboxByPath(targetMailbox);
-      await _imapClient!.uidMove(MessageSequence.fromId(uid));
-      return true;
-    } catch (e) {
-      print('Error moving email: $e');
-      return false;
-    }
-  }
-
+  /// Lists all mailbox names on the server.
   Future<List<String>> getMailboxes() async {
     if (_imapClient == null || !_imapClient!.isConnected) {
-      throw Exception('Not connected to email server');
+      throw Exception('Not connected to IMAP server');
     }
     final boxes = await _imapClient!.listMailboxes();
     return boxes.map((m) => m.name).toList();
   }
 
+  /// Searches emails in [mailboxName] matching optional criteria.
   Future<List<Email>> searchEmails({
     String mailboxName = 'INBOX',
     String? query,
@@ -192,9 +210,10 @@ class ImapEmailService {
     bool unreadOnly = false,
   }) async {
     if (_imapClient == null || !_imapClient!.isConnected) {
-      throw Exception('Not connected to email server');
+      throw Exception('Not connected to IMAP server');
     }
 
+    // Build IMAP search criteria
     final criteria = <String>[];
     if (query?.isNotEmpty ?? false) criteria.add('TEXT "$query"');
     if (from?.isNotEmpty ?? false) criteria.add('FROM "$from"');
@@ -206,16 +225,18 @@ class ImapEmailService {
     if (unreadOnly) criteria.add('UNSEEN');
     if (criteria.isEmpty) criteria.add('ALL');
 
+    // Execute search
     final mailbox = await _imapClient!.selectMailboxByPath(mailboxName);
     final total = mailbox.messagesExists;
-
-    final fetchResult = await _imapClient!.fetchRecentMessages(
+    final result = await _imapClient!.fetchRecentMessages(
       messageCount: total,
       criteria: criteria.join(' '),
     );
-    return await Future.wait(fetchResult.messages.map(_convertMimeMessageToEmail));
+
+    return Future.wait(result.messages.map(_convertMimeMessageToEmail));
   }
 
+  /// Internal helper to add/remove flags (e.g., Seen).
   Future<bool> _updateEmailFlags(
     int uid,
     List<String> flags, {
@@ -236,12 +257,46 @@ class ImapEmailService {
     }
   }
 
+  Future<bool> markAsRead(int uid, {String mailboxName = 'INBOX'}) =>
+      _updateEmailFlags(uid, [MessageFlags.seen], mailboxName: mailboxName);
+
+  Future<bool> markAsUnread(int uid, {String mailboxName = 'INBOX'}) =>
+      _updateEmailFlags(uid, [MessageFlags.seen], remove: true, mailboxName: mailboxName);
+
+  /// Deletes a message (marks \Deleted + EXPUNGE).
+  Future<bool> deleteEmail(int uid, {String mailboxName = 'INBOX'}) async {
+    try {
+      await _imapClient!.selectMailboxByPath(mailboxName);
+      await _imapClient!.uidStore(MessageSequence.fromId(uid), [MessageFlags.deleted]);
+      await _imapClient!.expunge();
+      return true;
+    } catch (e) {
+      print('Error deleting email: $e');
+      return false;
+    }
+  }
+
+  /// Moves a message to [targetMailbox].
+  Future<bool> moveEmail(
+    int uid,
+    String targetMailbox, {
+    String sourceMailbox = 'INBOX',
+  }) async {
+    try {
+      await _imapClient!.selectMailboxByPath(sourceMailbox);
+      await _imapClient!.selectMailboxByPath(targetMailbox);
+      await _imapClient!.uidMove(MessageSequence.fromId(uid));
+      return true;
+    } catch (e) {
+      print('Error moving email: $e');
+      return false;
+    }
+  }
+
+  /// Converts a raw [MimeMessage] into your app’s [Email] model.
   Future<Email> _convertMimeMessageToEmail(MimeMessage msg) async {
     final plain = msg.decodeTextPlainPart();
     final html = msg.decodeTextHtmlPart();
-
-    //print('FIXED DECODE plain=$plain');
-    //print('FIXED DECODE html=$html');
 
     return Email(
       id: msg.uid?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
