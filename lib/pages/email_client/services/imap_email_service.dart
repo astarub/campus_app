@@ -19,7 +19,7 @@ class ImapEmailService {
 
   bool get isConnected => _imapClient?.isConnected ?? false;
 
-  /// Connects to the IMAP server and logs in.
+  // Connects to the IMAP server and logs in.
   Future<bool> connect(String username, String password) async {
     _imapClient = ImapClient(isLogEnabled: true);
     try {
@@ -35,7 +35,7 @@ class ImapEmailService {
     }
   }
 
-  /// Disconnects both IMAP and SMTP clients cleanly.
+  // Disconnects both IMAP and SMTP clients cleanly.
   Future<void> disconnect() async {
     try {
       await _imapClient?.disconnect();
@@ -50,7 +50,7 @@ class ImapEmailService {
     }
   }
 
-  /// Fetches [count] messages from [mailboxName], newest-first paging.
+  // Fetches [count] messages from [mailboxName], newest-first paging.
   Future<List<Email>> fetchEmails({
     String mailboxName = 'INBOX',
     int count = 50,
@@ -81,7 +81,7 @@ class ImapEmailService {
     return emails.reversed.toList();
   }
 
-  /// Fetches a single email by its UID.
+  // Fetches a single email by its UID.
   Future<Email?> fetchEmailByUid(int uid, {String mailboxName = 'INBOX'}) async {
     if (_imapClient == null || !_imapClient!.isConnected) {
       throw Exception('Not connected to IMAP server');
@@ -92,7 +92,7 @@ class ImapEmailService {
     return await _convertMimeMessageToEmail(result.messages.first);
   }
 
-  /// Sends an email via SMTP, then appends it into the IMAP “Sent” folder.
+  // Sends an email via SMTP, then appends it into the IMAP “Sent” folder.
   Future<bool> sendEmail({
     required String to,
     required String subject,
@@ -165,7 +165,7 @@ class ImapEmailService {
     }
   }
 
-  /// Appends (or updates) a draft in the IMAP “Drafts” folder.
+  // Appends (or updates) a draft in the IMAP “Drafts” folder.
   Future<bool> appendDraft(Email draft) async {
     if (_imapClient == null || !_imapClient!.isConnected) {
       throw Exception('Not connected to IMAP server');
@@ -236,7 +236,7 @@ class ImapEmailService {
     return Future.wait(result.messages.map(_convertMimeMessageToEmail));
   }
 
-  /// Internal helper to add/remove flags (e.g., Seen).
+  // Internal helper to add/remove flags (e.g., Seen).
   Future<bool> _updateEmailFlags(
     int uid,
     List<String> flags, {
@@ -263,7 +263,7 @@ class ImapEmailService {
   Future<bool> markAsUnread(int uid, {String mailboxName = 'INBOX'}) =>
       _updateEmailFlags(uid, [MessageFlags.seen], remove: true, mailboxName: mailboxName);
 
-  /// Deletes a message (marks \Deleted + EXPUNGE).
+  // Deletes a message (marks \Deleted + EXPUNGE).
   Future<bool> deleteEmail(int uid, {String mailboxName = 'INBOX'}) async {
     try {
       await _imapClient!.selectMailboxByPath(mailboxName);
@@ -276,7 +276,7 @@ class ImapEmailService {
     }
   }
 
-  /// Moves a message to [targetMailbox].
+  // Moves a message to [targetMailbox].
   Future<bool> moveEmail(
     int uid,
     String targetMailbox, {
@@ -293,7 +293,7 @@ class ImapEmailService {
     }
   }
 
-  /// Converts a raw [MimeMessage] into your app’s [Email] model.
+  // Converts a raw [MimeMessage] into your app’s [Email] model.
   Future<Email> _convertMimeMessageToEmail(MimeMessage msg) async {
     final plain = msg.decodeTextPlainPart();
     final html = msg.decodeTextHtmlPart();

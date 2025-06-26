@@ -3,11 +3,12 @@ import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
 import 'package:flutter_html/flutter_html.dart';
 
+// Displays a full view of an email, including sender info, subject, body, and actions (reply, delete, restore)
 class EmailView extends StatelessWidget {
-  final Email email;
-  final void Function(Email)? onDelete;
-  final void Function(Email)? onRestore;
-  final bool isInTrash;
+  final Email email; // The email being viewed
+  final void Function(Email)? onDelete; // Optional callback for deletion
+  final void Function(Email)? onRestore; // Optional callback for restoring from trash
+  final bool isInTrash; // Whether the email is currently in the trash folder
 
   const EmailView({
     super.key,
@@ -17,6 +18,7 @@ class EmailView extends StatelessWidget {
     this.isInTrash = false,
   });
 
+  // Opens the compose screen with the current email as a reply
   void _handleReply(BuildContext context) {
     Navigator.push(
       context,
@@ -26,6 +28,7 @@ class EmailView extends StatelessWidget {
     );
   }
 
+  // Shows confirmation dialog before permanently deleting the email
   void _confirmPermanentDelete(BuildContext context) {
     showDialog(
       context: context,
@@ -34,14 +37,14 @@ class EmailView extends StatelessWidget {
         content: const Text('This action is permanent. Are you sure?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(ctx),
+            onPressed: () => Navigator.pop(ctx), // Cancel action
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(ctx); // Close dialog
               if (onDelete != null) {
-                onDelete!(email);
+                onDelete!(email); // Perform delete
               }
               Navigator.pop(context); // Close email view
               ScaffoldMessenger.of(context).showSnackBar(
@@ -58,10 +61,11 @@ class EmailView extends StatelessWidget {
     );
   }
 
+  // Handles restoring a trashed email
   void _handleRestore(BuildContext context) {
     if (onRestore != null) {
       onRestore!(email);
-      Navigator.pop(context);
+      Navigator.pop(context); // Close email view
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Email restored from trash')),
       );
@@ -71,7 +75,7 @@ class EmailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final timeText = '${email.date.hour}:${email.date.minute.toString().padLeft(2, '0')}';
+    final timeText = '${email.date.hour}:${email.date.minute.toString().padLeft(2, '0')}'; // Format time
 
     return Scaffold(
       appBar: AppBar(
@@ -80,14 +84,14 @@ class EmailView extends StatelessWidget {
           if (!isInTrash)
             IconButton(
               icon: const Icon(Icons.reply),
-              onPressed: () => _handleReply(context),
+              onPressed: () => _handleReply(context), // Quick reply
               tooltip: 'Reply',
             ),
           if (!isInTrash && onDelete != null)
             IconButton(
               icon: const Icon(Icons.delete),
               onPressed: () {
-                onDelete!(email);
+                onDelete!(email); // Soft delete (to trash)
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Email moved to trash')),
@@ -98,13 +102,13 @@ class EmailView extends StatelessWidget {
           if (isInTrash)
             IconButton(
               icon: const Icon(Icons.restore_from_trash),
-              onPressed: () => _handleRestore(context),
+              onPressed: () => _handleRestore(context), // Restore from trash
               tooltip: 'Restore',
             ),
           if (isInTrash)
             IconButton(
               icon: const Icon(Icons.delete_forever),
-              onPressed: () => _confirmPermanentDelete(context),
+              onPressed: () => _confirmPermanentDelete(context), // Permanent delete
               tooltip: 'Permanently Delete',
             ),
         ],
@@ -114,7 +118,7 @@ class EmailView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
+            // Header section with sender info and timestamp
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -139,7 +143,7 @@ class EmailView extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  timeText,
+                  timeText, // Display formatted time
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurface.withOpacity(0.6),
                   ),
@@ -148,14 +152,14 @@ class EmailView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Subject
+            // Subject line
             Text(
               email.subject,
               style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
 
-            // Body
+            // Email body (HTML if available, fallback to plain text)
             email.htmlBody != null && email.htmlBody!.isNotEmpty
                 ? Html(data: email.htmlBody!)
                 : Text(
@@ -163,7 +167,7 @@ class EmailView extends StatelessWidget {
                     style: theme.textTheme.bodyLarge,
                   ),
 
-            // Attachments
+            // Attachments section
             if (email.attachments.isNotEmpty) ...[
               const SizedBox(height: 24),
               Text(
@@ -189,7 +193,7 @@ class EmailView extends StatelessWidget {
                         Icon(Icons.insert_drive_file, size: 30, color: theme.iconTheme.color),
                         const SizedBox(height: 4),
                         Text(
-                          'File ${index + 1}',
+                          'File ${index + 1}', // Display file number
                           style: theme.textTheme.labelSmall,
                         ),
                       ],
@@ -203,7 +207,7 @@ class EmailView extends StatelessWidget {
       ),
       floatingActionButton: !isInTrash
           ? FloatingActionButton(
-              onPressed: () => _handleReply(context),
+              onPressed: () => _handleReply(context), // FAB for quick reply
               tooltip: 'Reply',
               child: const Icon(Icons.reply),
             )

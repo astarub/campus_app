@@ -1,21 +1,21 @@
-// this files defines the data model of an email (structure)
+// This file defines the data model of an email (structure)
 // by defining a data class that represents an email's properties
 class Email {
-  final String id;
-  final String sender;
-  final String senderEmail;
-  final List<String> recipients;
-  final String subject;
-  final String body;
-  final String? htmlBody;
-  final DateTime date;
-  final bool isUnread;
-  final bool isStarred;
-  final List<String> attachments;
-  final EmailFolder folder;
+  final String id; // Unique identifier for the email
+  final String sender; // Display name of the sender
+  final String senderEmail; // Sender's email address
+  final List<String> recipients; // List of recipient email addresses
+  final String subject; // Subject line of the email
+  final String body; // Plain text body content
+  final String? htmlBody; // Optional HTML version of the body
+  final DateTime date; // Timestamp of when the email was sent
+  final bool isUnread; // Whether the email is unread
+  final bool isStarred; // Whether the email is marked as important/starred
+  final List<String> attachments; // Filenames of any attachments
+  final EmailFolder folder; // The folder where this email is stored
 
   // Added for IMAP operations
-  final int uid; // IMAP UID for server operations
+  final int uid; // IMAP UID for server operations (used to identify emails remotely)
 
   const Email({
     required this.id,
@@ -33,7 +33,7 @@ class Email {
     this.uid = 0, // Default to 0 for local/dummy emails
   });
 
-  // Updated dummy constructor
+  // Factory method for generating sample/mock emails (used for testing or UI previews)
   factory Email.dummy(int index) => Email(
         id: index.toString(),
         sender: 'Sender $index',
@@ -50,7 +50,7 @@ class Email {
         uid: 0, // Dummy emails don't have IMAP UIDs
       );
 
-  // JSON serialization
+  // Convert Email instance to a JSON map for storage or network transmission
   Map<String, dynamic> toJson() => {
         'id': id,
         'sender': sender,
@@ -60,13 +60,14 @@ class Email {
         'body': body,
         'htmlBody': htmlBody,
         'date': date.toIso8601String(),
-        'isRead': !isUnread,
+        'isRead': !isUnread, // Stored as "isRead" for clarity
         'isStarred': isStarred,
         'attachments': attachments,
         'folder': folder.name,
         'uid': uid,
       };
 
+  // Create an Email instance from a JSON map
   factory Email.fromJson(Map<String, dynamic> json) => Email(
         id: json['id'],
         sender: json['sender'],
@@ -83,6 +84,7 @@ class Email {
         uid: json['uid'] ?? 0,
       );
 
+  // Create a modified copy of the current Email instance
   Email copyWith({
     String? id,
     String? sender,
@@ -97,7 +99,7 @@ class Email {
     List<String>? attachments,
     EmailFolder? folder,
     int? uid,
-    bool? isRead,
+    bool? isRead, // Optional override using isRead instead of isUnread
   }) =>
       Email(
         id: id ?? this.id,
@@ -115,17 +117,19 @@ class Email {
         uid: uid ?? this.uid,
       );
 
+  // Shortened preview text of the email body
   String get preview {
     return body.length > 50 ? '${body.substring(0, 50)}...' : body;
   }
 
-  // Convenience getters for compatibility with IMAP service
-  bool get isRead => !isUnread;
+  // Convenience getters for easier access in UI and logic
+  bool get isRead => !isUnread; // Inverted boolean for clarity
   bool get hasAttachments => attachments.isNotEmpty;
-  String get senderName => sender;
-  DateTime get timestamp => date;
+  String get senderName => sender; // Alias for UI usage
+  DateTime get timestamp => date; // Alias for sorting or displaying
 }
 
+// Enum representing standard email folders
 enum EmailFolder {
   inbox,
   sent,

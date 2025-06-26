@@ -12,6 +12,7 @@ import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
 import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 
+// Main entry widget for the email client screen
 class EmailPage extends StatelessWidget {
   const EmailPage({super.key});
 
@@ -21,6 +22,7 @@ class EmailPage extends StatelessWidget {
   }
 }
 
+// Internal stateful widget that handles authentication, email loading, and UI behavior
 class _EmailClientContent extends StatefulWidget {
   const _EmailClientContent();
 
@@ -32,59 +34,66 @@ class _EmailClientContentState extends State<_EmailClientContent> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = TextEditingController();
   final FlutterSecureStorage secureStorage = sl<FlutterSecureStorage>();
-  bool _isSearching = false;
-  bool _isLoading = true;
-  bool _isAuthenticated = false;
-  late EmailSelectionController _selectionController;
+
+  bool _isSearching = false; // True when search bar is active
+  bool _isLoading = true; // True while authenticating or initializing
+  bool _isAuthenticated = false; // True after successful login
+  late EmailSelectionController _selectionController; // Handles multi-select actions
 
   @override
   void initState() {
     super.initState();
-    _initializeEmailClient();
+    _initializeEmailClient(); // Start setup on load
   }
 
+  // Initialize email services and authentication
   Future<void> _initializeEmailClient() async {
     final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
     final emailService = Provider.of<EmailService>(context, listen: false);
 
+    // Set up selection controller with callbacks
     _selectionController = EmailSelectionController(
       onDelete: (emails) async {
-        emailService.moveEmailsToFolder(emails, EmailFolder.trash);
-        _search();
+        emailService.moveEmailsToFolder(emails, EmailFolder.trash); // Move to Trash
+        _search(); // Refresh view
       },
       onArchive: (emails) async {
-        emailService.moveEmailsToFolder(emails, EmailFolder.archives);
+        emailService.moveEmailsToFolder(emails, EmailFolder.archives); // Move to Archives
         _search();
       },
       onEmailUpdated: (email) async {
-        emailService.updateEmail(email);
+        emailService.updateEmail(email); // Update state if email is modified
         _search();
       },
-    )..addListener(_onSelectionChanged);
+    )..addListener(_onSelectionChanged); // Listen for selection state changes
 
-    // Check if user is already authenticated
+    // Check stored credentials and try to authenticate
     final isAuthenticated = await emailAuthService.isAuthenticated();
 
     if (isAuthenticated) {
-      // Initialize email service if authenticated
+      // If valid, initialize mailbox
       await emailService.initialize();
       setState(() {
         _isAuthenticated = true;
         _isLoading = false;
       });
     } else {
+      // Show login screen if not authenticated
       setState(() {
         _isLoading = false;
       });
     }
   }
 
+  // Rebuild UI when selection changes
   void _onSelectionChanged() => setState(() {});
 
+  // Rebuilds UI when a search is performed
   void _search() {
     setState(() {});
   }
 
+  // Triggers the login screen and handles post-login setup
   Future<void> _handleLogin() async {
     Navigator.push(
       context,
@@ -123,6 +132,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
   } 
   */
 
+  // Handles back/gesture navigation, exits selection/search/drawer as needed
   Future<void> _handlePop(BuildContext context) async {
     if (_selectionController.isSelecting) {
       _selectionController.clearSelection();
@@ -152,6 +162,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
 
   @override
   Widget build(BuildContext context) {
+    // Show loading spinner while initializing
     if (_isLoading) {
       return const Scaffold(
         body: Center(
@@ -160,6 +171,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
       );
     }
 
+    // Show login prompt if not authenticated
     if (!_isAuthenticated) {
       return Scaffold(
         appBar: AppBar(
@@ -197,11 +209,11 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     }
 
     final emailService = Provider.of<EmailService>(context);
-    final filteredEmails = emailService.filterEmails(_searchController.text, EmailFolder.inbox);
+    final filteredEmails = emailService.filterEmails(_searchController.text, EmailFolder.inbox); // Apply search filter
 
     return PopScope(
       onPopInvoked: (didPop) async {
-        if (!didPop) await _handlePop(context);
+        if (!didPop) await _handlePop(context); // Custom pop behavior
       },
       child: Scaffold(
         key: _scaffoldKey,
@@ -214,7 +226,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                     hintText: 'E-Mails durchsuchen...',
                     border: InputBorder.none,
                   ),
-                  onChanged: (_) => _search(),
+                  onChanged: (_) => _search(), // Update search results
                 )
               : const Text('RubMail'),
           leading: _isSearching
@@ -253,15 +265,15 @@ class _EmailClientContentState extends State<_EmailClientContent> {
               ),
           ],
         ),
-        endDrawer: const EmailDrawer(),
+        endDrawer: const EmailDrawer(), // Folder navigation drawer
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: _selectionController.isSelecting ? _selectionController.clearSelection : null,
           child: RefreshIndicator(
             onRefresh: () async {
               final emailService = Provider.of<EmailService>(context, listen: false);
-              await emailService.refreshEmails();
-              _search();
+              await emailService.refreshEmails(); // Pull-to-refresh
+              _search(); // Re-apply search
             },
             child: ListView.separated(
               itemCount: filteredEmails.length,
@@ -328,11 +340,18 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     );
   }
 }
+
 /*
 NOTES:
-- changes on the email client only appear on the app not in the actual Email.
-- Email inbox only loads a certain number of emails, 
-  it takes too long to load so needs some efficiency improvements
-- Composed Emails don't actually send.
-
+- some changes on the email client only appear on the app not in the actual Email. Like delete.
+- Email inbox only loads a certain number of emails, loading takes a long time needs optimization.
+- Drawer top needs to be fixed (name/Email display)
+- Some Email bodies are not shown.
+- sending emails and replying works. drafts also work.
+- selection needs to be added to the drawer pages as well. the selection component is already implemented but
+  the use of options different than the inbox is needed.
+- Setting need to be implemented
+- Attachments need implementing as well. Some UI components for that are already implemented but these are only UI
+  as for the email view with attachments it needs to be further tested.
+- Searching is implemented for the inbox but it should also be implemented for the drawer pages
 */

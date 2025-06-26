@@ -21,7 +21,7 @@ class EmailService extends ChangeNotifier {
   List<Email> get allEmails => List.unmodifiable(_allEmails);
   EmailSelectionController get selectionController => _selectionController;
 
-  /// Initialize connection and pull all folders (including drafts).
+  // Initialize connection and pull all folders (including drafts).
   Future<void> initialize() async {
     try {
       final credentials = await _authService.getCredentials();
@@ -44,7 +44,7 @@ class EmailService extends ChangeNotifier {
     if (!success) throw Exception('Failed to connect to email server');
   }
 
-  /// Refreshes all mailbox folders, including server drafts.
+  // Refreshes all mailbox folders, including server drafts.
   Future<void> refreshEmails() async {
     if (!_isInitialized) throw Exception('Email service not initialized');
     try {
@@ -61,14 +61,14 @@ class EmailService extends ChangeNotifier {
     }
   }
 
-  /// Fetches inbox, sent, drafts (server-side), trash, spam.
+  // Fetches inbox, sent, drafts (server-side), trash, spam.
   Future<void> _fetchEmailsFromServer() async {
     _allEmails.clear();
 
     final folderMappings = {
       EmailFolder.inbox: ['INBOX'],
       EmailFolder.sent: ['Sent'],
-      EmailFolder.drafts: ['Drafts'], // ← We’ll fetch server drafts separately below
+      EmailFolder.drafts: ['Drafts'], // ← fetch server drafts separately below
       EmailFolder.trash: ['Trash'],
       EmailFolder.spam: ['UCE-TMP'],
     };
@@ -91,7 +91,7 @@ class EmailService extends ChangeNotifier {
     }
   }
 
-  /// Helper to try all mailbox name aliases for a given folder.
+  // Helper to try all mailbox name aliases for a given folder.
   Future<void> _fetchEmailsForFolder(EmailFolder folder, List<String> folderNames) async {
     for (final folderName in folderNames) {
       try {
@@ -118,7 +118,7 @@ class EmailService extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Sends a new email over SMTP and refreshes the Sent folder.
+  // Sends a new email over SMTP and refreshes the Sent folder.
   Future<void> sendEmail({
     required String to,
     required String subject,
@@ -215,7 +215,7 @@ class EmailService extends ChangeNotifier {
     return !(await _authService.validateCurrentCredentials());
   }
 
-  // === Local Data Helpers ===
+  // Local Data Helpers
 
   List<Email> filterEmails(String query, EmailFolder folder) {
     final filtered = _allEmails.where((e) => e.folder == folder).toList();
@@ -259,7 +259,7 @@ class EmailService extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Save or update a draft both locally and on the IMAP server
+  // Save or update a draft both locally and on the IMAP server
   Future<void> saveOrUpdateDraft(Email draft) async {
     // 1) Local cache update
     if (_isDraftEmpty(draft)) {
