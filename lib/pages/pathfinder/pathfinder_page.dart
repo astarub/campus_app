@@ -111,7 +111,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
   bool get wantKeepAlive => true;
   bool isSidebarOpen = false;
   bool hasProcessedGlobalLocation = false;
-  bool _hasAutoUnfocused = false;
+  bool hasAutoUnfocused = false;
   final MapController mapController = MapController();
   Future<TileLayer>? tileLayerFuture;
   bool isTileLoading = true;
@@ -119,12 +119,12 @@ class RaumfinderPageState extends State<RaumfinderPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); // <-- add this line
-    if (!_hasAutoUnfocused) {
+    super.build(context);
+    if (!hasAutoUnfocused) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         FocusScope.of(context).unfocus();
       });
-      _hasAutoUnfocused = true;
+      hasAutoUnfocused = true;
     }
     final double sidebarTop = MediaQuery.of(context).size.height / 2 - 100;
     final bool isLightTheme =
@@ -314,9 +314,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
                                       : null,
                                 ),
                               ),
-                              onChanged: (value) {
-                                //_updateSuggestions(value);
-                              },
+                              onChanged: (value) {},
                               onSubmitted: changeSelectedLocation,
                             );
                           },
@@ -453,7 +451,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            //TODO: Move function call into indoorNav (and remove asnyc above)
+            //TODO: Move function call into indoorNav into async call to update graph and images
             /*
             final graph2 = await ensureLatestGraph();
             graph = graph2;
@@ -483,6 +481,8 @@ class RaumfinderPageState extends State<RaumfinderPage>
       );
     }
   }
+
+//-----------------------------------------------------------------------------
 
   Future<void> changeSelectedLocation(String selectedOption) async {
     final String buildingName = selectedOption.split(' ')[0];
@@ -671,9 +671,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
         }
       }
     });
-    setState(() {
-      //todo
-    });
+    setState(() {});
   }
 
   Future<void> addGraphEntriesInIsolate() async {

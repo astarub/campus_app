@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:image/image.dart' as img;
 import 'package:campus_app/utils/pages/pathfinder_utils.dart';
 
+// Image processing class; perform calc functions
 class ImageProcessingParams {
   final Uint8List bytes;
   final List<MapEntry<Map<String, double>, String>> labels;
@@ -14,6 +15,7 @@ class ImageProcessingParams {
       this.bytes, this.labels, this.pathPoints, this.markerBytes);
 }
 
+// Calculate distance of all points to line
 bool isPointNearLine(
     Offset point, Offset lineStart, Offset lineEnd, double threshold) {
   final dx = lineEnd.dx - lineStart.dx;
@@ -41,7 +43,7 @@ Uint8List processImageInIsolate(ImageProcessingParams params) {
   final List<Offset> pathOffsets =
       params.pathPoints.map((e) => Offset(e['x']!, e['y']!)).toList();
 
-  // Draw path
+  // Draw path using calc route via pixel coordinates
   for (int i = 0; i < pathOffsets.length - 1; i++) {
     drawLine(baseImage, pathOffsets[i], pathOffsets[i + 1],
         img.ColorRgb8(0, 255, 255), 5);
@@ -69,7 +71,6 @@ Uint8List processImageInIsolate(ImageProcessingParams params) {
       for (int i = 0; i < pathOffsets.length - 1; i++) {
         if (isPointNearLine(
             labelPos, pathOffsets[i], pathOffsets[i + 1], 200)) {
-          // If all set to 2000 or perform rollback
           isClose = true;
           break;
         }

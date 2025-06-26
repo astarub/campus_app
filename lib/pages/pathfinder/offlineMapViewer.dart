@@ -7,42 +7,53 @@ class OfflineMapViewer extends StatefulWidget {
   const OfflineMapViewer({Key? key, required this.imagePath}) : super(key: key);
 
   @override
-  State<OfflineMapViewer> createState() => _OfflineMapViewerState();
+  State<OfflineMapViewer> createState() => OfflineMapViewerState();
 }
 
-class _OfflineMapViewerState extends State<OfflineMapViewer> {
-  double _scale = 2.0;
-  double _previousScale = 1.0;
-  Offset _position = Offset.zero;
-  Offset _startFocalPoint = Offset.zero;
-  Offset _startPosition = Offset.zero;
-  double _rotation = 0.0;
-  double _previousRotation = 0.0;
+class OfflineMapViewerState extends State<OfflineMapViewer> {
+  // Hyperparameters to configure UI/UX interface
+  double scale = 2.0;
+  double previousScale = 1.0;
+  Offset position = Offset.zero;
+  Offset startFocalPoint = Offset.zero;
+  Offset startPosition = Offset.zero;
+  double rotation = 0.0;
+  double previousRotation = 0.0;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onScaleStart: (details) {
-        _previousScale = _scale;
-        _previousRotation = _rotation;
-        _startFocalPoint = details.focalPoint;
-        _startPosition = _position;
+        // Store the initial starting position param.
+        previousScale = scale;
+        previousRotation = rotation;
+        startFocalPoint = details.focalPoint;
+        startPosition = position;
+
+        // Disable swipe gestures
         homeKey.currentState!.setSwipeDisabled(disableSwipe: true);
       },
       onScaleUpdate: (details) {
-        final Offset focalPointDelta = details.focalPoint - _startFocalPoint;
+        // Calculate gesture movement delta
+        final Offset focalPointDelta = details.focalPoint - startFocalPoint;
+
+        // Set min and max allowed zoom levels and pan limits
         const double minScale = 1.0;
         const double maxScale = 8.0;
         const double baseTranslationLimit = 300.0;
 
         setState(() {
-          _scale = (_previousScale * details.scale).clamp(minScale, maxScale);
-          _rotation = _previousRotation + details.rotation;
+          // Update scale and clamp to bounds
+          scale = (previousScale * details.scale).clamp(minScale, maxScale);
 
-          final Offset potentialPosition = _startPosition + focalPointDelta;
-          final double adjustedLimit = baseTranslationLimit * _scale;
+          // Update rotation angle
+          rotation = previousRotation + details.rotation;
 
-          _position = Offset(
+          // Calculate new position and clamp to pan limits based on scale
+          final Offset potentialPosition = startPosition + focalPointDelta;
+          final double adjustedLimit = baseTranslationLimit * scale;
+
+          position = Offset(
             potentialPosition.dx.clamp(-adjustedLimit, adjustedLimit),
             potentialPosition.dy.clamp(-adjustedLimit, adjustedLimit),
           );
@@ -51,10 +62,13 @@ class _OfflineMapViewerState extends State<OfflineMapViewer> {
       child: Center(
         child: Transform(
           alignment: Alignment.center,
+          // Apply Transformation: translation, rotation, and scaling
           transform: Matrix4.identity()
-            ..translate(_position.dx, _position.dy)
-            ..rotateZ(_rotation)
-            ..scale(_scale),
+            ..translate(position.dx, position.dy)
+            ..rotateZ(rotation)
+            ..scale(scale),
+          // Display static image using asset path as default solution
+          // TODO: Replace using flutter package: flutter_map_mbtiles
           child: Image.asset(
             widget.imagePath,
             fit: BoxFit.contain,

@@ -2,14 +2,13 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-//import 'package:campus_app/pages/pathfinder/compas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_compass/flutter_compass.dart';
+//import 'package:flutter_compass/flutter_compass.dart';
 
 import 'package:campus_app/main.dart';
 import 'package:campus_app/core/injection.dart';
@@ -541,6 +540,8 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       ),
     );
   }
+
+//----------------------------------------
 
   Future<void> computeImagesForMapIncrementally(Map karte) async {
     setState(() {

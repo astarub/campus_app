@@ -10,13 +10,17 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter/services.dart';
 import 'package:campus_app/pages/pathfinder/data.dart';
 
+// Placed outside of class scope in oder to be accesssable to isolates (currently 3)
 List findShortestPathIsolate(Map<String, dynamic> params) {
+  // Dummy values
   final Map graph = params['graph'];
   final from = (params['from'][0], params['from'][1], params['from'][2]);
   final to = (params['to'][0], params['to'][1], params['to'][2]);
+  // Calculate shortest path on campus
   return Dijkstra.findPathFromGraph(graph, from, to);
 }
 
+// GUI func: modify img directly; add simple Marker Icon at target location
 Future<Uint8List> drawMarkerAtEndpoint(
   Uint8List baseImageBytes,
   List<Offset> pathPoints,
@@ -38,6 +42,7 @@ Future<Uint8List> drawMarkerAtEndpoint(
   return Uint8List.fromList(img.encodePng(baseImage));
 }
 
+// GUI sub-func: modify img directly; place simple circle using pixel position
 void drawPoint(img.Image image, Offset point, img.Color color, int radius) {
   final int centerX = point.dx.toInt();
   final int centerY = point.dy.toInt();
@@ -65,7 +70,7 @@ void drawPoint(img.Image image, Offset point, img.Color color, int radius) {
   }
 }
 
-/*
+// GUI func: modify img directly; add line inbetween points
 void drawLine(
   img.Image image,
   Offset p1,
@@ -95,75 +100,8 @@ void drawLine(
     );
   }
 }
-*/
-void drawLine(
-  img.Image image,
-  Offset p1,
-  Offset p2,
-  img.Color color,
-  int thickness,
-) {
-  final double dx = p2.dx - p1.dx;
-  final double dy = p2.dy - p1.dy;
-  final double length = dx.abs() > dy.abs() ? dx.abs() : dy.abs();
 
-  final double xIncrement = dx / length;
-  final double yIncrement = dy / length;
-  final int radius = (thickness / 2).round();
-
-  for (int i = 0; i < length; i++) {
-    final double x = p1.dx + i * xIncrement;
-    final double y = p1.dy + i * yIncrement;
-
-    img.drawCircle(
-      image,
-      x: x.toInt(),
-      y: y.toInt(),
-      radius: radius,
-      color: color,
-      antialias: true,
-    );
-  }
-
-  /*
-  // Draw white directional triangles
-  final double angle = math.atan2(dy, dx);
-  const double triangleSize = 4; 
-  const int spacing = 10; 
-
-  final int arrowCount = (length / spacing).floor();
-  final img.Color white = img.ColorRgb8(255, 255, 255);
-
-  for (int i = 1; i <= arrowCount; i++) {
-    final double ratio = i / (arrowCount + 1);
-    final Offset center = Offset(
-      p1.dx + dx * ratio,
-      p1.dy + dy * ratio,
-    );
-
-    final List<img.Point> trianglePoints = [
-      img.Point(
-        (center.dx + math.cos(angle) * triangleSize).toInt(),
-        (center.dy + math.sin(angle) * triangleSize).toInt(),
-      ),
-      img.Point(
-        (center.dx + math.cos(angle + 2.5) * triangleSize).toInt(),
-        (center.dy + math.sin(angle + 2.5) * triangleSize).toInt(),
-      ),
-      img.Point(
-        (center.dx + math.cos(angle - 2.5) * triangleSize).toInt(),
-        (center.dy + math.sin(angle - 2.5) * triangleSize).toInt(),
-      ),
-    ];
-
-    img.fillPolygon(
-      image,
-      vertices: trianglePoints,
-      color: white,
-    );
-  }*/
-}
-
+// Calculate and dynamically place labels using extracted information from graph
 List<Rect> _drawnLabelRects = [];
 void drawTextWithBox(
   img.Image image,
@@ -262,11 +200,14 @@ class PathfinderUtils {
   /// Pathfinder Page
 
   Future<List<LatLng>> getShortestPath(LatLng start, LatLng end) async {
+    // AStA server to request tiles from docker contained osm instance
     const String apiUrl = 'https://osrm.app.asta-bochum.de/route/v1/';
+    // Limit to "walking" profile
     const String profile = 'walking';
     final String url =
         '$apiUrl$profile/${start.longitude},${start.latitude};${end.longitude},${end.latitude}?overview=false&alternatives=false&steps=true';
 
+    // Logic providing geo-coord to receive shortest osm route; Mode: walking; no wheelchair support available?
     try {
       final http.Response response = await http.get(Uri.parse(url));
 
@@ -305,6 +246,7 @@ class PathfinderUtils {
 
   //------------------------------------------------------------------------------------------------------
   /// Indoor Navigation
+  // Lazy-Loader developed by intern; resopnsible to load images sequentially to speed up loading time
   Future<List<Uint8List>> loadImages({
     List<dynamic> shortestPath = const [],
     List<List<Offset>> pointsList = const [],
@@ -361,7 +303,7 @@ class PathfinderUtils {
               0,
               0,
             ),
-          ); // #TODO: Replace with static approach later -> reduce time rendering 25%
+          );
         }
       });
 

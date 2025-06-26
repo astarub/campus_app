@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, avoid_slow_async_io, prefer_single_quotes, avoid_dynamic_calls
-
 import 'dart:convert';
 import 'dart:io';
 

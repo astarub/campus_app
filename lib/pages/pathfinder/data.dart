@@ -1,5 +1,6 @@
 import 'package:latlong2/latlong.dart';
 
+// Storage of geo-coordinates associated with "Sammelpunkte" during emergencies; closest loc automat. extracted
 Map<String, LatLng> emergencyAssemblyPoints = {
   'Sammelplatz_1': const LatLng(51.44200, 7.25938),
   'Sammelplatz_2': const LatLng(0, 0),
@@ -27,6 +28,7 @@ Map<String, LatLng> emergencyAssemblyPoints = {
   'Sammelplatz_24': const LatLng(0, 0),
 };
 
+// Storage of geo-coordinates associated with "Snack-Automaten"; closest loc automat. extracted
 Map<String, LatLng> vendingMachines = {
   'VendingMachines_1': const LatLng(0, 0),
   'VendingMachines_2': const LatLng(0, 0),
@@ -36,6 +38,7 @@ Map<String, LatLng> vendingMachines = {
   'VendingMachines_6': const LatLng(0, 0),
 };
 
+// Fixed List of named buildings on the Uni grounds; available in the search bar
 Map<String, LatLng> predefinedLocations = {
   'UFO': const LatLng(51.448051, 7.259111),
   'U35-Haltestelle': const LatLng(51.447198, 7.259043),
