@@ -1,5 +1,5 @@
 import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/pages/pathfinder/offlineMapViewer.dart';
+import 'package:campus_app/pages/pathfinder/offline_map_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,21 +18,19 @@ import 'package:campus_app/pages/pathfinder/indoor_nav_page.dart';
 import 'package:campus_app/utils/pages/pathfinder_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/pages/pathfinder/pathfinder_onboarding.dart';
-import 'package:campus_app/pages/pathfinder/tileLoadingIsolate.dart';
+import 'package:campus_app/pages/pathfinder/tile_loading_isolate.dart';
 
 String? selectedLocationGlobal;
 
 Map<String, LatLng> addGraphEntriesToPredefinedLocationsIsolate(
-    Map<String, dynamic> params) {
+  Map<String, dynamic> params,
+) {
   final rawGraph = params['graph'] as Map<dynamic, dynamic>;
   final Map<List<String>, dynamic> graph = {
-    for (var entry in rawGraph.entries)
-      (entry.key as List<dynamic>).map((e) => e.toString()).toList():
-          entry.value
+    for (final entry in rawGraph.entries) (entry.key as List<dynamic>).map((e) => e.toString()).toList(): entry.value,
   };
 
-  final Map<String, LatLng> predefined =
-      Map<String, LatLng>.from(params['predefined']);
+  final Map<String, LatLng> predefined = Map<String, LatLng>.from(params['predefined']);
 
   String findClosestMatch(String target, List<String> candidates) {
     int computeSimilarity(String a, String b) {
@@ -96,8 +94,7 @@ class RaumfinderPage extends StatefulWidget {
   State<RaumfinderPage> createState() => RaumfinderPageState();
 }
 
-class RaumfinderPageState extends State<RaumfinderPage>
-    with AutomaticKeepAliveClientMixin {
+class RaumfinderPageState extends State<RaumfinderPage> with AutomaticKeepAliveClientMixin {
   LocationData? currentLocation;
   FocusNode focusNode = FocusNode();
   final TextEditingController searchController = TextEditingController();
@@ -127,12 +124,9 @@ class RaumfinderPageState extends State<RaumfinderPage>
       hasAutoUnfocused = true;
     }
     final double sidebarTop = MediaQuery.of(context).size.height / 2 - 100;
-    final bool isLightTheme =
-        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-            AppThemes.light;
-    final Color sidebarBackgroundColor = isLightTheme
-        ? const Color.fromRGBO(245, 246, 250, 1)
-        : const Color.fromRGBO(34, 40, 54, 1);
+    final bool isLightTheme = Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light;
+    final Color sidebarBackgroundColor =
+        isLightTheme ? const Color.fromRGBO(245, 246, 250, 1) : const Color.fromRGBO(34, 40, 54, 1);
     final Color iconColor = isLightTheme ? Colors.black : Colors.white;
 
     // Display guide if first time use
@@ -148,8 +142,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
         return FutureBuilder<TileLayer>(
           future: tileLayerFuture,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
               return snapshot.data!;
             } else {
               return const SizedBox.shrink();
@@ -197,12 +190,8 @@ class RaumfinderPageState extends State<RaumfinderPage>
                           ),
                         ),
                         markerSize: const Size.square(40),
-                        accuracyCircleColor:
-                            const Color.fromARGB(255, 113, 143, 243)
-                                .withOpacity(0.1),
-                        headingSectorColor:
-                            const Color.fromARGB(255, 118, 221, 247)
-                                .withOpacity(0.8),
+                        accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withOpacity(0.1),
+                        headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withOpacity(0.8),
                         headingSectorRadius: 120,
                       ),
                       moveAnimationDuration: Duration.zero,
@@ -226,8 +215,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
                   ),
                 ],
               ),
-            if (!hasInternet)
-              const OfflineMapViewer(imagePath: 'assets/img/offline_map.png'),
+            if (!hasInternet) const OfflineMapViewer(imagePath: 'assets/img/offline_map.png'),
             Positioned(
               top: 20,
               left: 10,
@@ -235,9 +223,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Provider.of<ThemesNotifier>(context, listen: false)
-                              .currentTheme ==
-                          AppThemes.light
+                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                       ? const Color.fromRGBO(245, 246, 250, 1)
                       : const Color.fromRGBO(34, 40, 54, 1),
                   borderRadius: BorderRadius.circular(15),
@@ -323,21 +309,15 @@ class RaumfinderPageState extends State<RaumfinderPage>
                       CampusIconButton(
                         iconPath: 'assets/img/icons/search.svg',
                         backgroundColorDark:
-                            Provider.of<ThemesNotifier>(context, listen: false)
-                                        .currentTheme ==
-                                    AppThemes.light
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                 ? const Color.fromRGBO(245, 246, 250, 1)
                                 : const Color.fromRGBO(34, 40, 54, 1),
                         backgroundColorLight:
-                            Provider.of<ThemesNotifier>(context, listen: false)
-                                        .currentTheme ==
-                                    AppThemes.light
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                 ? const Color.fromRGBO(245, 246, 250, 1)
                                 : const Color.fromRGBO(34, 40, 54, 1),
                         borderColorDark:
-                            Provider.of<ThemesNotifier>(context, listen: false)
-                                        .currentTheme ==
-                                    AppThemes.light
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                 ? const Color.fromRGBO(245, 246, 250, 1)
                                 : const Color.fromRGBO(34, 40, 54, 1),
                         transparent: true,
@@ -353,8 +333,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
             if (!hasInternet)
               Container(
                 margin: const EdgeInsets.only(top: 90, left: 10),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.red.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(8),
@@ -416,8 +395,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.local_grocery_store,
-                          color: iconColor, size: 30),
+                      icon: Icon(Icons.local_grocery_store, color: iconColor, size: 30),
                       onPressed: () => calcNearestLoc(emergencyAssemblyPoints),
                       tooltip: 'Snackautomat',
                     ),
@@ -427,8 +405,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
                       tooltip: 'Restaurants',
                     ),
                     IconButton(
-                      icon: Icon(Icons.local_hospital,
-                          color: iconColor, size: 30),
+                      icon: Icon(Icons.local_hospital, color: iconColor, size: 30),
                       onPressed: () => calcNearestLoc(vendingMachines),
                       tooltip: 'Notfall',
                     ),
@@ -438,15 +415,14 @@ class RaumfinderPageState extends State<RaumfinderPage>
             ),
             if (isTileLoading)
               Center(
-                  child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Provider.of<ThemesNotifier>(context, listen: false)
-                              .currentTheme ==
-                          AppThemes.light
-                      ? Colors.black
-                      : Colors.white,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
                 ),
-              )),
+              ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -463,14 +439,11 @@ class RaumfinderPageState extends State<RaumfinderPage>
               MaterialPageRoute(builder: (context) => const IndoorNavigation()),
             );
           },
-          backgroundColor:
-              Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
           child: SvgPicture.asset(
             'assets/img/icons/door-closed.svg',
             colorFilter: ColorFilter.mode(
-              Provider.of<ThemesNotifier>(context, listen: false)
-                          .currentTheme ==
-                      AppThemes.light
+              Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                   ? Colors.black
                   : const Color.fromRGBO(184, 186, 191, 1),
               BlendMode.srcIn,
@@ -495,7 +468,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
       if (currentLocation == null) {
         final LatLng? endLocation = predefinedLocations[buildingName];
         if (endLocation != null) {
-          mapController.move(endLocation, 17.0);
+          mapController.move(endLocation, 17);
         }
         return;
       }
@@ -523,16 +496,12 @@ class RaumfinderPageState extends State<RaumfinderPage>
 
   Future<void> checkFirstTimeUser() async {
     setState(() {
-      isFirstTime = Provider.of<SettingsHandler>(context, listen: false)
-          .currentSettings
-          .firstTimePathfinder;
+      isFirstTime = Provider.of<SettingsHandler>(context, listen: false).currentSettings.firstTimePathfinder;
     });
 
     if (isFirstTime) {
       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-          Provider.of<SettingsHandler>(context, listen: false)
-              .currentSettings
-              .copyWith(firstTimePathfinder: false);
+          Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(firstTimePathfinder: false);
     }
   }
 
@@ -570,8 +539,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
   }
 
   Map<String, LatLng> sortPredefinedLocations(Map<String, LatLng> locations) {
-    final sortedEntries = locations.entries.toList()
-      ..sort((a, b) => a.key.compareTo(b.key));
+    final sortedEntries = locations.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
     return Map<String, LatLng>.fromEntries(sortedEntries);
   }
 
@@ -703,7 +671,7 @@ class RaumfinderPageState extends State<RaumfinderPage>
       currentLocation!.longitude!,
     );
 
-    final Distance distance = const Distance();
+    const Distance distance = Distance();
     String? nearestKey;
     double minDistance = double.infinity;
     locations.forEach((key, loc) {
@@ -732,11 +700,9 @@ class RaumfinderPageState extends State<RaumfinderPage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!hasProcessedGlobalLocation &&
-        selectedLocationGlobal != null &&
-        selectedLocationGlobal!.isNotEmpty) {
+    if (!hasProcessedGlobalLocation && selectedLocationGlobal != null && selectedLocationGlobal!.isNotEmpty) {
       hasProcessedGlobalLocation = true;
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         final location = selectedLocationGlobal!;
         searchController.text = location;
         final query = searchController.text.trim();
@@ -745,11 +711,9 @@ class RaumfinderPageState extends State<RaumfinderPage>
         }
       });
     }
-    print("Executed");
   }
 
-  Future<void> animateCameraAlongRoute(List<LatLng> waypoints,
-      {double zoom = 19.0, int stepDurationMs = 40}) async {
+  Future<void> animateCameraAlongRoute(List<LatLng> waypoints, {double zoom = 19.0, int stepDurationMs = 40}) async {
     if (waypoints.length < 2) return;
 
     mapController.move(waypoints.first, zoom);

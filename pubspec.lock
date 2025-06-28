@@ -579,6 +579,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  flutter_compass:
+    dependency: "direct main"
+    description:
+      name: flutter_compass
+      sha256: "1b4d7e6c95a675ec8482b5c9c9ccf1ebf0ced3dbec59dce28ad609da953de850"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.1"
   flutter_displaymode:
     dependency: "direct main"
     description:
@@ -2002,7 +2010,7 @@ packages:
     source: hosted
     version: "1.1.16"
   vector_math:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: vector_math
       sha256: "80b3257d1492ce4d091729e3a67a60407d227c27241d6927be0130c98e741803"

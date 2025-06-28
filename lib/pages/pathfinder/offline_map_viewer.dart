@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class OfflineMapViewer extends StatefulWidget {
   final String imagePath;
 
-  const OfflineMapViewer({Key? key, required this.imagePath}) : super(key: key);
+  const OfflineMapViewer({super.key, required this.imagePath});
 
   @override
   State<OfflineMapViewer> createState() => OfflineMapViewerState();
@@ -12,13 +12,13 @@ class OfflineMapViewer extends StatefulWidget {
 
 class OfflineMapViewerState extends State<OfflineMapViewer> {
   // Hyperparameters to configure UI/UX interface
-  double scale = 2.0;
-  double previousScale = 1.0;
+  double scale = 2;
+  double previousScale = 1;
   Offset position = Offset.zero;
   Offset startFocalPoint = Offset.zero;
   Offset startPosition = Offset.zero;
-  double rotation = 0.0;
-  double previousRotation = 0.0;
+  double rotation = 0;
+  double previousRotation = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +38,9 @@ class OfflineMapViewerState extends State<OfflineMapViewer> {
         final Offset focalPointDelta = details.focalPoint - startFocalPoint;
 
         // Set min and max allowed zoom levels and pan limits
-        const double minScale = 1.0;
-        const double maxScale = 8.0;
-        const double baseTranslationLimit = 300.0;
+        const double minScale = 1;
+        const double maxScale = 8;
+        const double baseTranslationLimit = 300;
 
         setState(() {
           // Update scale and clamp to bounds

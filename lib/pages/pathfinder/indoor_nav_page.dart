@@ -1,23 +1,25 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/main.dart';
+import 'package:campus_app/pages/pathfinder/data.dart';
+import 'package:campus_app/pages/pathfinder/models/floor_map.dart';
+import 'package:campus_app/pages/pathfinder/pathfinder_page.dart';
+import 'package:campus_app/pages/pathfinder/widgets/compass.dart';
+import 'package:campus_app/pages/pathfinder/widgets/destination_waypoint.dart';
+import 'package:campus_app/pages/pathfinder/widgets/navigation_buttons.dart';
+import 'package:campus_app/pages/pathfinder/widgets/room_label.dart';
+import 'package:campus_app/pages/pathfinder/widgets/start_waypoint.dart';
+import 'package:campus_app/pages/pathfinder/widgets/waypoint_arrow.dart';
+import 'package:campus_app/utils/pages/pathfinder_utils.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:flutter/foundation.dart';
-//import 'package:flutter_compass/flutter_compass.dart';
-
-import 'package:campus_app/main.dart';
-import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/pathfinder/data.dart';
-import 'package:campus_app/utils/pages/pathfinder_utils.dart';
-import 'package:campus_app/utils/widgets/campus_icon_button.dart';
-import 'package:campus_app/pages/pathfinder/pathfinder_page.dart';
-import 'package:campus_app/pages/pathfinder/image_processing.dart';
 
 class IndoorNavigation extends StatefulWidget {
   const IndoorNavigation({super.key});
@@ -30,7 +32,6 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   int currentIndex = 0;
   Timer? fieldTimer;
   (String, String, String) from = ('SH', '0', 'Haupteingang');
-  List<Uint8List> images = [];
   List<List<Offset>> pointsList = [];
   List<String> suggestions = [];
   Map testkarte = {};
@@ -38,19 +39,17 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   final double scaleFactor = 1 / 4; // Compression factr
   bool isLoading = false;
   int? rub0Index;
-  List<String> fn = [];
-  final List<List<Offset>> labelCoordinatesPerImage = [];
 
   double rotationOffset = 0.3927 * 8; // Replace approx.
   double? heading;
 
-  double scale = 1.0;
-  double previousScale = 1.0;
+  double scale = 1;
+  double previousScale = 1;
   Offset position = Offset.zero;
   Offset startFocalPoint = Offset.zero;
   Offset startPosition = Offset.zero;
-  double rotation = 0.0;
-  double previousRotation = 0.0;
+  double rotation = 0;
+  double previousRotation = 0;
 
   final TransformationController controller = TransformationController();
   final PathfinderUtils utils = sl<PathfinderUtils>();
@@ -60,10 +59,14 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   String startText = '';
   String zielText = '';
 
+  List<FloorMap> floors = [];
+
   Matrix4 imageMatrix = Matrix4.identity();
 
   @override
   Widget build(BuildContext context) {
+    final currentThemeData = Provider.of<ThemesNotifier>(context).currentThemeData;
+
     return PopScope(
       onPopInvoked: (didPop) async {
         if (didPop) return;
@@ -83,10 +86,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
           }
         },
         child: Scaffold(
-          backgroundColor: Provider.of<ThemesNotifier>(context)
-              .currentThemeData
-              .colorScheme
-              .surface,
+          backgroundColor: currentThemeData.colorScheme.surface,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -111,10 +111,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                       Align(
                         child: Text(
                           'Navigation',
-                          style: Provider.of<ThemesNotifier>(context)
-                              .currentThemeData
-                              .textTheme
-                              .displayMedium,
+                          style: currentThemeData.textTheme.displayMedium,
                         ),
                       ),
                     ],
@@ -126,9 +123,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Provider.of<ThemesNotifier>(context, listen: false)
-                                .currentTheme ==
-                            AppThemes.light
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                         ? const Color.fromRGBO(245, 246, 250, 1)
                         : const Color.fromRGBO(34, 40, 54, 1),
                     borderRadius: BorderRadius.circular(15),
@@ -141,9 +136,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           return suggestions;
                         }
                         return suggestions.where((String option) {
-                          return option
-                              .toLowerCase()
-                              .contains(textEditingValue.text.toLowerCase());
+                          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
                         });
                       },
                       onSelected: (String selection) {
@@ -175,7 +168,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                                         listen: false,
                                       ).currentTheme ==
                                       AppThemes.light
-                                  ? Colors.black
+                                  ? const Color.fromRGBO(34, 40, 54, 1)
                                   : null,
                             ),
                             border: InputBorder.none,
@@ -191,9 +184,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Provider.of<ThemesNotifier>(context, listen: false)
-                                .currentTheme ==
-                            AppThemes.light
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                         ? const Color.fromRGBO(245, 246, 250, 1)
                         : const Color.fromRGBO(34, 40, 54, 1),
                     borderRadius: BorderRadius.circular(15),
@@ -206,9 +197,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           return suggestions;
                         }
                         return suggestions.where((String option) {
-                          return option
-                              .toLowerCase()
-                              .contains(textEditingValue.text.toLowerCase());
+                          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
                         });
                       },
                       onSelected: (String selection) {
@@ -244,7 +233,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                                         listen: false,
                                       ).currentTheme ==
                                       AppThemes.light
-                                  ? Colors.black
+                                  ? currentThemeData.colorScheme.surface
                                   : null,
                             ),
                             border: InputBorder.none,
@@ -260,35 +249,27 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                   padding: const EdgeInsets.only(top: 10),
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      final containerSize =
-                          Size(constraints.maxWidth, constraints.maxHeight);
-
+                      //* Loading Indicator
                       if (isLoading) {
                         return Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              Provider.of<ThemesNotifier>(context)
-                                          .currentTheme ==
-                                      AppThemes.light
-                                  ? Colors.black
-                                  : Colors.white,
+                              currentThemeData.colorScheme.primary,
                             ),
                           ),
                         );
                       }
 
-                      if (images.isEmpty) {
+                      //* Empty Search
+                      if (floors.isEmpty) {
                         return Center(
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30),
                             child: SvgPicture.asset(
                               'assets/img/icons/search.svg',
                               colorFilter: ColorFilter.mode(
-                                Provider.of<ThemesNotifier>(context,
-                                                listen: false)
-                                            .currentTheme ==
-                                        AppThemes.light
-                                    ? Colors.black
+                                Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                    ? const Color.fromRGBO(34, 40, 54, 1)
                                     : const Color.fromRGBO(184, 186, 191, 1),
                                 BlendMode.srcIn,
                               ),
@@ -297,20 +278,14 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           ),
                         );
                       }
-                      // Extract dyn value later
-                      final imageSize = Size(
-                        1409 * scaleFactor,
-                        1409 * scaleFactor,
-                      );
 
-                      final Offset dotPosition = getTransformedOriginPosition(
-                          imageSize, containerSize);
-
+                      //* Indoor Navigation
                       return Stack(
                         children: [
+                          //* Map
                           Positioned.fill(
                             child: Container(
-                              color: Colors.black,
+                              color: currentThemeData.colorScheme.surface,
                               child: ClipRect(
                                 child: GestureDetector(
                                   onScaleStart: (details) {
@@ -320,58 +295,60 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                                     startPosition = position;
                                   },
                                   onScaleUpdate: (details) {
-                                    final Offset focalPointDelta =
-                                        details.focalPoint - startFocalPoint;
-                                    const double minScale = 1.0;
-                                    const double maxScale = 8.0;
-                                    const double baseTranslationLimit = 300.0;
+                                    final Offset focalPointDelta = details.focalPoint - startFocalPoint;
+                                    const double minScale = 1;
+                                    const double maxScale = 8;
+                                    const double baseTranslationLimit = 500;
 
                                     setState(() {
-                                      scale = (previousScale * details.scale)
-                                          .clamp(minScale, maxScale);
-                                      rotation =
-                                          previousRotation + details.rotation;
+                                      scale = (previousScale * details.scale).clamp(minScale, maxScale);
+                                      rotation = previousRotation + details.rotation;
 
-                                      final Offset potentialPosition =
-                                          startPosition + focalPointDelta;
-                                      final double adjustedLimit =
-                                          baseTranslationLimit * scale;
+                                      final Offset potentialPosition = startPosition + focalPointDelta;
+                                      final double adjustedLimit = baseTranslationLimit * scale;
 
                                       position = Offset(
-                                        potentialPosition.dx.clamp(
-                                            -adjustedLimit, adjustedLimit),
-                                        potentialPosition.dy.clamp(
-                                            -adjustedLimit, adjustedLimit),
+                                        potentialPosition.dx.clamp(-adjustedLimit, adjustedLimit),
+                                        potentialPosition.dy.clamp(-adjustedLimit, adjustedLimit),
                                       );
                                     });
                                   },
-                                  child: Center(
-                                    child: Transform(
-                                      alignment: Alignment.center,
-                                      transform: Matrix4.identity()
-                                        ..translate(position.dx, position.dy)
-                                        ..rotateZ(rotation)
-                                        ..scale(scale),
-                                      child: Stack(
-                                        children: [
-                                          Image.memory(
-                                            images[currentIndex],
-                                            fit: BoxFit.contain,
-                                          ),
-                                          /*
-                                          Positioned(
-                                            left: 380,
-                                            top: 380,
-                                            child: Container(
-                                              width: 10,
-                                              height: 10,
-                                              decoration: const BoxDecoration(
-                                                color: Colors.red,
-                                                shape: BoxShape.circle,
+                                  child: FittedBox(
+                                    child: Center(
+                                      child: Transform(
+                                        alignment: Alignment.center,
+                                        transform: Matrix4.identity()
+                                          ..translate(position.dx, position.dy)
+                                          ..rotateZ(rotation)
+                                          ..scale(scale),
+                                        child: Stack(
+                                          children: [
+                                            //* Floor Image
+                                            floors[currentIndex].floorImage,
+                                            //* Path
+                                            for (int i = 1; i < floors[currentIndex].wayPoints.length - 1; i++)
+                                              WaypointArrow(
+                                                current: floors[currentIndex].wayPoints[i],
+                                                previous: floors[currentIndex].wayPoints[i - 1],
                                               ),
+                                            //* Floor Labels
+                                            for (final label in floors[currentIndex].roomLabels)
+                                              RoomLabelWidget(
+                                                label: label,
+                                                rotation: rotation,
+                                                isStart: label.position == floors[currentIndex].wayPoints.first,
+                                                isDest: label.position == floors[currentIndex].wayPoints.last,
+                                              ),
+                                            StartWaypoint(
+                                              position: floors[currentIndex].wayPoints.first,
+                                              rotation: rotation,
                                             ),
-                                          ),*/
-                                        ],
+                                            DestinationWaypoint(
+                                              position: floors[currentIndex].wayPoints.last,
+                                              rotation: rotation,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -379,100 +356,40 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                               ),
                             ),
                           ),
-                          if (images.isNotEmpty && heading == null)
-                            Positioned(
-                              top: 20,
-                              left: 20,
-                              right: 20,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        scale = 1.0;
-                                        rotation = 0.0;
-                                        position = Offset.zero;
-                                      });
-                                    },
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        Transform.rotate(
-                                          angle: rotation + rotationOffset,
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              ColorFiltered(
-                                                colorFilter:
-                                                    getInversionFilter(context),
-                                                child: Container(
-                                                  width: 125,
-                                                  height: 125,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'assets/img/compass.png'),
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Transform.translate(
-                                                offset: const Offset(2, -25),
-                                                child: Container(
-                                                  width: 6,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.red,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            3),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 8),
+                          if (floors.isNotEmpty && heading == null)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //* Compass
+                                Compass(
+                                  rotation: rotation,
+                                  rotationOffset: rotationOffset,
+                                  onReset: () {
+                                    setState(() {
+                                      scale = 1.5;
+                                      rotation = 0.0;
+                                    });
+                                  },
+                                ),
+                                //* Floor Label
+                                Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                     decoration: BoxDecoration(
-                                      color:
-                                          Provider.of<ThemesNotifier>(context)
-                                              .currentThemeData
-                                              .cardColor,
+                                      color: currentThemeData.cardColor,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      fn.isNotEmpty
-                                          ? transformFileName(fn[currentIndex])
-                                          : 'Unknown',
+                                      floors[currentIndex].floorName,
                                       style: TextStyle(
-                                        fontSize: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.fontSize ??
-                                            16,
-                                        color:
-                                            Provider.of<ThemesNotifier>(context)
-                                                        .currentTheme ==
-                                                    AppThemes.light
-                                                ? Colors.black
-                                                : const Color.fromRGBO(
-                                                    184, 186, 191, 1),
+                                        fontSize: Theme.of(context).textTheme.titleLarge?.fontSize ?? 24,
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                         ],
                       );
@@ -482,59 +399,32 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
               ),
             ],
           ),
-          floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              if (currentIndex > 0)
-                FloatingActionButton(
-                  backgroundColor: Provider.of<ThemesNotifier>(context)
-                      .currentThemeData
-                      .cardColor,
-                  onPressed: () {
-                    setState(() {
-                      currentIndex = currentIndex - 1;
-                    });
-                  },
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Provider.of<ThemesNotifier>(context, listen: false)
-                                .currentTheme ==
-                            AppThemes.light
-                        ? Colors.black
-                        : const Color.fromRGBO(184, 186, 191, 1),
-                  ),
-                ),
-              if (currentIndex < images.length - 1) const SizedBox(width: 10),
-              if (currentIndex < images.length - 1)
-                FloatingActionButton(
-                  backgroundColor: Provider.of<ThemesNotifier>(context)
-                      .currentThemeData
-                      .cardColor,
-                  onPressed: () async {
-                    setState(() {
-                      currentIndex = currentIndex + 1;
-                      scale = 1.0;
-                      rotation = 0.0;
-                      position = Offset.zero;
-                    });
+          //* Step Navigation Buttons
+          floatingActionButton: FloorNavigationButtons(
+            currentIndex: currentIndex,
+            floorCount: floors.length,
+            backgroundColor: currentThemeData.cardColor,
+            onPrevious: () {
+              setState(() {
+                currentIndex = currentIndex - 1;
+              });
+            },
+            onNext: () {
+              setState(() {
+                currentIndex = currentIndex + 1;
+                scale = 1.5;
+                rotation = 0.0;
+                position = Offset.zero;
+              });
 
-                    if (rub0Index != null && currentIndex == rub0Index) {
-                      Future.delayed(Duration(milliseconds: 1), () {
-                        Navigator.of(context).pop();
-                        selectedLocationGlobal = zielText;
-                      });
-                    }
-                  },
-                  child: Icon(
-                    Icons.arrow_forward,
-                    color: Provider.of<ThemesNotifier>(context, listen: false)
-                                .currentTheme ==
-                            AppThemes.light
-                        ? Colors.black
-                        : const Color.fromRGBO(184, 186, 191, 1),
-                  ),
-                ),
-            ],
+              if (rub0Index != null && currentIndex == rub0Index) {
+                Future.delayed(const Duration(milliseconds: 1), () {
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop();
+                  selectedLocationGlobal = zielText;
+                });
+              }
+            },
           ),
         ),
       ),
@@ -547,11 +437,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
     setState(() {
       isLoading = true;
     });
-    debugPrint('New page opened.');
 
     final stopwatch1 = Stopwatch()..start();
     final List<dynamic> shortestPath = await compute(
-      findShortestPathIsolate,
+      utils.findShortestPathIsolate,
       {
         'graph': karte,
         'from': [from.$1, from.$2, from.$3],
@@ -574,9 +463,14 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       }
     }
 
+    const double distanceThreshold = 30; // Adjust as needed
+
     for (int i = 0; i < filenames.length; i++) {
       pointsListTemp.add([]);
     }
+
+    Offset? lastOffset;
+    String? lastName;
 
     for (final step in shortestPath) {
       final (b, l, _) = step;
@@ -590,52 +484,41 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
 
       for (int i = 0; i < filenames.length; i++) {
         if (filenames[i] == name) {
+          if (lastOffset != null && lastName == name) {
+            final double distance = (offset - lastOffset).distance;
+
+            if (distance > distanceThreshold) {
+              final int segments = (distance / distanceThreshold).floor();
+              for (int s = 1; s < segments; s++) {
+                final double t = s / segments;
+                final interpolated = Offset.lerp(lastOffset, offset, t)!;
+                pointsListTemp[i].add(interpolated);
+              }
+            }
+          }
+
           pointsListTemp[i].add(offset);
         }
       }
+
+      lastOffset = offset;
+      lastName = name;
     }
 
     pointsList.clear();
     pointsList.addAll(pointsListTemp);
 
     for (int i = 0; i < filenames.length; i++) {
-      final ByteData data =
-          await rootBundle.load('assets/maps/${filenames[i]}');
-      fn.add(filenames[i]);
-
-      final Uint8List bytes = data.buffer.asUint8List();
-
-      final labelList = <Offset>[];
-
-      final labels = <MapEntry<Map<String, double>, String>>[];
-      graph.forEach((key, value) {
-        final (building, level, roomName) = key;
-        if ('$building$level.jpg' == filenames[i]) {
-          final coords = value['Coordinates'];
-          final Offset pos = Offset(
-            coords[0].toDouble() * scaleFactor,
-            coords[1].toDouble() * scaleFactor,
-          );
-          labelList.add(pos);
-        }
-      });
-      labelCoordinatesPerImage.add(labelList);
-
-      final points = pointsList[i]
-          .map((offset) => {'x': offset.dx, 'y': offset.dy})
-          .toList();
-
-      final ByteData markerData =
-          await rootBundle.load('assets/img/destination_marker.png');
-      final Uint8List markerBytes = markerData.buffer.asUint8List();
-      final params = ImageProcessingParams(bytes, labels, points, markerBytes);
-
-      final Uint8List modifiedImage =
-          await compute(processImageInIsolate, params);
+      final floorMap = FloorMap(
+        floorName: utils.transformFileName(filenames[i]),
+        roomLabels: utils.getRoomLabelsFromGraph(filenames[i]),
+        floorImage: Image.asset('assets/maps/${filenames[i]}'),
+        wayPoints: pointsList[i],
+      );
 
       if (!mounted) return;
       setState(() {
-        images.add(modifiedImage);
+        floors.add(floorMap);
         isLoading = false;
       });
 
@@ -653,19 +536,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      initializeAfterUIShown();
-    });
-  }
-
-  void initializeAfterUIShown() async {
+  Future<void> initializeAfterUIShown() async {
     homeKey.currentState?.setSwipeDisabled(disableSwipe: true);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 200));
 
     graph.keys.forEach((key) {
       final Map x = {};
@@ -684,6 +558,15 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       zielText = trimmed;
     }
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initializeAfterUIShown();
+    });
   }
 
   void resetTimer() {
@@ -719,70 +602,16 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       setState(() {
         from = start;
         to = ziel;
-        images = [];
+        floors = [];
         pointsList = [];
         currentIndex = 0;
       });
 
-      images = [];
+      floors = [];
       currentIndex = 0;
       await computeImagesForMapIncrementally(testkarte);
     } else {
       debugPrint('Both fields must be filled.');
     }
-  }
-
-  String buildHeadingFirstLetter(double direction) {
-    if (direction >= 315 || direction < 45) {
-      return 'N';
-    } else if (direction >= 45 && direction < 135) {
-      return 'E';
-    } else if (direction >= 135 && direction < 225) {
-      return 'S';
-    } else if (direction >= 225 && direction < 315) {
-      return 'W';
-    }
-    return '';
-  }
-
-  ColorFilter getInversionFilter(BuildContext context) {
-    return const ColorFilter.matrix(<double>[
-      -1, 0, 0, 0, 255, //
-      0, -1, 0, 0, 255, //
-      0, 0, -1, 0, 255, //
-      0, 0, 0, 1, 0, //
-    ]);
-  }
-
-  String transformFileName(String name) {
-    if (!name.endsWith('.jpg')) return name;
-    final baseName = name.substring(0, name.length - 4);
-    final match = RegExp(r'^([A-Za-z]+)(\d+)$').firstMatch(baseName);
-    if (match == null) return name;
-    final letters = match.group(1);
-    final digits = match.group(2);
-    return '$letters-$digits';
-  }
-
-  Offset getTransformedOriginPosition(Size imageSize, Size containerSize) {
-    final Offset imageOrigin = Offset(0, 0);
-    final Offset imageCenter =
-        Offset(imageSize.width / 2, imageSize.height / 2);
-    Offset relativeOrigin = imageOrigin - imageCenter;
-
-    relativeOrigin = relativeOrigin * scale;
-
-    final double cosTheta = cos(rotation);
-    final double sinTheta = sin(rotation);
-    Offset rotated = Offset(
-      relativeOrigin.dx * cosTheta - relativeOrigin.dy * sinTheta,
-      relativeOrigin.dx * sinTheta + relativeOrigin.dy * cosTheta,
-    );
-
-    final Offset screenCenter =
-        Offset(containerSize.width / 2, containerSize.height / 2);
-    Offset finalPosition = screenCenter + rotated + position;
-
-    return finalPosition;
   }
 }
