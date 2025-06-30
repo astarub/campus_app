@@ -143,9 +143,4 @@ class _DraftsPageState extends State<DraftsPage> {
       ),
     );
   }
-
-  // Utility: check if a draft is empty (no subject, body, or recipients)
-  bool _isDraftEmpty(Email draft) {
-    return draft.subject.trim().isEmpty && draft.body.trim().isEmpty && draft.recipients.isEmpty;
-  }
 }

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:enough_mail/enough_mail.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
-import 'dart:convert';
 
 class ImapEmailService {
   ImapClient? _imapClient;
@@ -27,10 +27,10 @@ class ImapEmailService {
       _password = password;
       await _imapClient!.connectToServer(_imapHost, _imapPort, isSecure: true);
       await _imapClient!.login(_username!, _password!);
-      print('IMAP: Connected as $_username');
+      debugPrint('IMAP: Connected as $_username');
       return true;
     } catch (e) {
-      print('IMAP: Connection/login failed: $e');
+      debugPrint('IMAP: Connection/login failed: $e');
       return false;
     }
   }
@@ -41,7 +41,7 @@ class ImapEmailService {
       await _imapClient?.disconnect();
       await _smtpClient?.disconnect();
     } catch (e) {
-      print('Disconnect error: $e');
+      debugPrint('Disconnect error: $e');
     } finally {
       _imapClient = null;
       _smtpClient = null;
@@ -142,7 +142,7 @@ class ImapEmailService {
 
       // ─── 3) Send the message ───────────────────────────────────────────────
       await _smtpClient!.sendMessage(mimeMessage);
-      print('SMTP: Message sent');
+      debugPrint('SMTP: Message sent');
 
       // ─── 4) Append to IMAP “Sent” folder ──────────────────────────────────
       if (_imapClient != null && _imapClient!.isConnected) {
@@ -152,15 +152,15 @@ class ImapEmailService {
             mimeMessage,
             flags: [MessageFlags.seen], // mark as read in Sent
           );
-          print('IMAP: Appended message to Sent');
+          debugPrint('IMAP: Appended message to Sent');
         } catch (e) {
-          print('IMAP: Failed to append to Sent: $e');
+          debugPrint('IMAP: Failed to append to Sent: $e');
         }
       }
 
       return true;
     } catch (e) {
-      print('sendEmail error: $e');
+      debugPrint('sendEmail error: $e');
       return false;
     }
   }
@@ -186,7 +186,7 @@ class ImapEmailService {
       );
       return true;
     } catch (e) {
-      print('appendDraft error: $e');
+      debugPrint('appendDraft error: $e');
       return false;
     }
   }
@@ -252,7 +252,7 @@ class ImapEmailService {
       );
       return true;
     } catch (e) {
-      print('Error updating email flags: $e');
+      debugPrint('Error updating email flags: $e');
       return false;
     }
   }
@@ -271,7 +271,7 @@ class ImapEmailService {
       await _imapClient!.expunge();
       return true;
     } catch (e) {
-      print('Error deleting email: $e');
+      debugPrint('Error deleting email: $e');
       return false;
     }
   }
@@ -288,7 +288,7 @@ class ImapEmailService {
       await _imapClient!.uidMove(MessageSequence.fromId(uid));
       return true;
     } catch (e) {
-      print('Error moving email: $e');
+      debugPrint('Error moving email: $e');
       return false;
     }
   }

@@ -82,12 +82,12 @@ class EmailService extends ChangeNotifier {
 
     // 2) Fetch server-side drafts and merge
     try {
-      final serverDrafts = await _emailRepository.fetchDrafts(count: 50);
+      final serverDrafts = await _emailRepository.fetchDrafts();
       for (final draft in serverDrafts) {
         _allEmails.add(draft.copyWith(folder: EmailFolder.drafts));
       }
     } catch (e) {
-      print('Could not fetch server drafts: $e');
+      debugPrint('Could not fetch server drafts: $e');
     }
   }
 
@@ -107,7 +107,7 @@ class EmailService extends ChangeNotifier {
     }
 
     if (folder != EmailFolder.inbox) {
-      print('Could not fetch ${folder.name} emails from: ${folderNames.join(', ')}');
+      debugPrint('Could not fetch ${folder.name} emails from: ${folderNames.join(', ')}');
     }
   }
 
@@ -280,11 +280,11 @@ class EmailService extends ChangeNotifier {
     try {
       final success = await _emailRepository.saveDraft(draft);
       if (!success) {
-        print('Failed to save draft on server');
+        debugPrint('Failed to save draft on server');
         // Optionally, show a user-facing error here
       }
     } catch (e) {
-      print('Error while saving draft: $e');
+      debugPrint('Error while saving draft: $e');
       // Optionally, rollback local change
     }
   }

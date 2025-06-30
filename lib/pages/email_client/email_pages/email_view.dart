@@ -1,7 +1,7 @@
+import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 // Displays a full view of an email, including sender info, subject, body, and actions (reply, delete, restore)
 class EmailView extends StatelessWidget {
@@ -160,12 +160,16 @@ class EmailView extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Email body (HTML if available, fallback to plain text)
-            email.htmlBody != null && email.htmlBody!.isNotEmpty
-                ? Html(data: email.htmlBody!)
-                : Text(
-                    email.body,
-                    style: theme.textTheme.bodyLarge,
-                  ),
+            if (email.htmlBody != null && email.htmlBody!.isNotEmpty)
+              StyledHTML(
+                text: email.htmlBody!,
+                context: context,
+              )
+            else
+              Text(
+                email.body,
+                style: theme.textTheme.bodyLarge,
+              ),
 
             // Attachments section
             if (email.attachments.isNotEmpty) ...[
