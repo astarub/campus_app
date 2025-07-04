@@ -38,10 +38,24 @@ class _PlannerPageState extends State<PlannerPage> {
 
   CalendarViewMode _currentView = CalendarViewMode.week;
   DateTime _focusedDay = DateTime.now();
+  late final PlannerState _plannerState;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    _plannerState = Provider.of<PlannerState>(context, listen: false);
+    _syncEventController(_plannerState.events);
+    _plannerState.addListener(_onPlannerStateChanged);
+  }
+
+  void _onPlannerStateChanged() {
+    _syncEventController(_plannerState.events);
+  }
+
+  void _syncEventController(List<PlannerEventEntity> events) {
+    final mapped = mapPlannerEvents(events);
+    _eventController.removeWhere((_) => true);
+    _eventController.addAll(mapped);
   }
 
   Future<void> _showAddOrEditEventDialog({PlannerEventEntity? event}) async {
@@ -67,11 +81,7 @@ class _PlannerPageState extends State<PlannerPage> {
   @override
   Widget build(BuildContext context) {
     final themesNotifier = Provider.of<ThemesNotifier>(context);
-    final plannerState = context.watch<PlannerState>();
-    final List<CalendarEventData<PlannerEventEntity>> calendarEvents = mapPlannerEvents(plannerState.events);
-
-    _eventController.removeWhere((element) => true);
-    _eventController.addAll(calendarEvents);
+    context.watch<PlannerState>();
 
     return Scaffold(
       backgroundColor: themesNotifier.currentThemeData.colorScheme.surface,
@@ -116,5 +126,12 @@ class _PlannerPageState extends State<PlannerPage> {
           onEventTap: _showEventDetailsDialog,
         );
     }
+  }
+
+  @override
+  void dispose() {
+    _plannerState.removeListener(_onPlannerStateChanged);
+    _eventController.dispose();
+    super.dispose();
   }
 }
