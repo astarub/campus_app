@@ -7,7 +7,7 @@ import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/wallet/wallet_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/planner/planner_page.dart'; // Import your new PlannerPage
+import 'package:campus_app/pages/planner/planner_page.dart';
 
 enum PageItem { feed, events, coupons, mensa, wallet, more }
 

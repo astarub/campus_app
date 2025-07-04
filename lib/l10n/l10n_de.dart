@@ -12,7 +12,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get helloWorld => 'Hallo Welt!';
 
   @override
-  String get serverFailureMessage => 'Serverdaten konnten nicht geladen werden.';
+  String get serverFailureMessage =>
+      'Serverdaten konnten nicht geladen werden.';
 
   @override
   String get generalFailureMessage => 'Ein Fehler ist aufgetreten.';
@@ -24,16 +25,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get unexpectedError => 'Ein unerwarteter Fehler ist aufgetreten...';
 
   @override
-  String get invalid2FATokenFailureMessage => 'Dein Einmalcode (TOTP) is ungültig. Bitte versuche es erneut!';
+  String get invalid2FATokenFailureMessage =>
+      'Dein Einmalcode (TOTP) is ungültig. Bitte versuche es erneut!';
 
   @override
-  String get invalidLoginIDAndPasswordFailureMessage => 'Die Anmeldedaten sind ungültig!';
+  String get invalidLoginIDAndPasswordFailureMessage =>
+      'Die Anmeldedaten sind ungültig!';
 
   @override
   String get welcome => 'Willkommen!';
 
   @override
-  String get login_prompt => 'Bitte melde dich mit deiner RUB-ID und deinem Passwort an.';
+  String get login_prompt =>
+      'Bitte melde dich mit deiner RUB-ID und deinem Passwort an.';
 
   @override
   String get rubid => 'Login-ID von deinem RUB-Account';
