@@ -7,7 +7,7 @@ import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/wallet/wallet_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/pathfinder/pathfinder_page.dart';
+import 'package:campus_app/pages/navigation/navigation_page.dart';
 
 enum PageItem { feed, events, coupons, pathfinder, mensa, wallet, more }
 
@@ -78,7 +78,7 @@ class NavBarNavigator extends StatelessWidget {
         );
         break;
       case PageItem.pathfinder:
-        rootPage = RaumfinderPage(
+        rootPage = NavigationPage(
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );

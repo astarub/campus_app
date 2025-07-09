@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/pathfinder/models/room_label.dart';
+import 'package:campus_app/pages/navigation/models/room_label.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:campus_app/pages/pathfinder/data.dart';
-import 'package:campus_app/pages/pathfinder/models/room_label.dart';
+import 'package:campus_app/pages/navigation/data.dart';
+import 'package:campus_app/pages/navigation/models/room_label.dart';
 import 'package:dijkstra/dijkstra.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';

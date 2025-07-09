@@ -30,9 +30,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     return Container(
       height: Platform.isIOS ? 88 : 68,
-      padding: Platform.isIOS
-          ? const EdgeInsets.only(bottom: 20, left: 5)
-          : const EdgeInsets.only(left: 7),
+      padding: Platform.isIOS ? const EdgeInsets.only(bottom: 20, left: 5) : const EdgeInsets.only(left: 7),
       decoration: BoxDecoration(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: const BorderRadius.only(
@@ -41,7 +39,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
         ),
         boxShadow: const [
           BoxShadow(
-              color: Colors.black12, blurRadius: 5, offset: Offset(0, -1),),
+            color: Colors.black12,
+            blurRadius: 5,
+            offset: Offset(0, -1),
+          ),
         ],
       ),
       child: SingleChildScrollView(
@@ -78,7 +79,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 onTap: () => widget.onSelectedPage(PageItem.mensa),
                 isActive: widget.currentPage == PageItem.mensa,
               ),
-              // Raumfinder
+              // Navigation
               BottomNavBarItem(
                 title: 'Karte',
                 imagePathActive: 'assets/img/icons/map-filled.png',

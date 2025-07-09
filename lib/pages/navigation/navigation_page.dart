@@ -1,5 +1,5 @@
 import 'package:campus_app/core/settings.dart';
-import 'package:campus_app/pages/pathfinder/offline_map_viewer.dart';
+import 'package:campus_app/pages/navigation/offline_map_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,12 +13,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/pathfinder/data.dart';
-import 'package:campus_app/pages/pathfinder/indoor_nav_page.dart';
+import 'package:campus_app/pages/navigation/data.dart';
+import 'package:campus_app/pages/navigation/indoor_nav_page.dart';
 import 'package:campus_app/utils/pages/pathfinder_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
-import 'package:campus_app/pages/pathfinder/pathfinder_onboarding.dart';
-import 'package:campus_app/pages/pathfinder/tile_loading_isolate.dart';
+import 'package:campus_app/pages/navigation/navigation_onboarding.dart';
+import 'package:campus_app/pages/navigation/tile_loading_isolate.dart';
 
 String? selectedLocationGlobal;
 
@@ -80,21 +80,21 @@ Map<String, LatLng> addGraphEntriesToPredefinedLocationsIsolate(
   return predefined;
 }
 
-class RaumfinderPage extends StatefulWidget {
+class NavigationPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
-  const RaumfinderPage({
+  const NavigationPage({
     super.key,
     required this.pageEntryAnimationKey,
     required this.pageExitAnimationKey,
   });
 
   @override
-  State<RaumfinderPage> createState() => RaumfinderPageState();
+  State<NavigationPage> createState() => NavigationPageState();
 }
 
-class RaumfinderPageState extends State<RaumfinderPage> with AutomaticKeepAliveClientMixin {
+class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveClientMixin {
   LocationData? currentLocation;
   FocusNode focusNode = FocusNode();
   final TextEditingController searchController = TextEditingController();
