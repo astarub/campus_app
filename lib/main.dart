@@ -30,6 +30,7 @@ import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
+import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -47,6 +48,7 @@ Future<void> main() async {
   Hive.registerAdapter(CategoryAdapter());
   Hive.registerAdapter(NewsEntityAdapter());
   Hive.registerAdapter(DishEntityAdapter());
+  Hive.registerAdapter(PlannerEventEntityAdapter());
 
   // Initialize injection container
   await ic.init();

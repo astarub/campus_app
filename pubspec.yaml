@@ -76,7 +76,7 @@ dev_dependencies:
   mockito: ^5.4.3
   envied_generator: ^1.1.1
   flutter_launcher_icons: ^0.14.3
-
+  analyzer: ^6.11.0
 dependency_overrides:
   # AppWrite depends on outdated package.
   #  - https://github.com/appwrite/sdk-for-flutter/issues/214#issuecomment-2278577156

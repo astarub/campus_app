@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -31,6 +32,7 @@ import 'package:native_dio_adapter/native_dio_adapter.dart';
 final sl = GetIt.instance; // service locator
 
 Future<void> init() async {
+  await Hive.openBox<PlannerEventEntity>('planner_events');
   //!
   //! Datasources
   //!

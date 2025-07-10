@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import 'package:hive/hive.dart';
 
+part 'planner_event_entity.g.dart';
+
+@HiveType(typeId: 6)
 class PlannerEventEntity {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String title;
+
+  @HiveField(2)
   final String? description;
+
+  @HiveField(3)
   final DateTime startDateTime;
+
+  @HiveField(4)
   final DateTime endDateTime;
-  final Color color;
+
+  @HiveField(5)
+  final int colorValue;
+
+  @HiveField(6)
   final String? rrule;
 
   PlannerEventEntity({
@@ -16,7 +33,9 @@ class PlannerEventEntity {
     this.description,
     required this.startDateTime,
     required this.endDateTime,
-    this.color = Colors.blue,
+    Color color = Colors.blue,
     this.rrule,
-  }) : id = id ?? const Uuid().v4();
+  })  : id = id ?? const Uuid().v4(),
+        colorValue = color.toARGB32();
+  Color get color => Color(colorValue);
 }
