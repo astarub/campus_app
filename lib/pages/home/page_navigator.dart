@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:campus_app/pages/feed/feed_page.dart';
+//import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
-//import 'package:campus_app/pages/calendar/calendar_page.dart';
+import 'package:campus_app/pages/calendar/calendar_page.dart';
 import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/wallet/wallet_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
@@ -54,21 +54,20 @@ class NavBarNavigator extends StatelessWidget {
     Widget rootPage;
     switch (pageItem) {
       case PageItem.feed:
-        rootPage = FeedPage(
+        /* rootPage = FeedPage(
+          mainNavigatorKey: mainNavigatorKey,
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
+        ); */
+        rootPage = CalendarPage(
           mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );
         break;
       case PageItem.events:
-        // rootPage = CalendarPage(
-        //   mainNavigatorKey: mainNavigatorKey,
-        //   pageEntryAnimationKey: pageEntryAnimationKey,
-        //   pageExitAnimationKey: pageExitAnimationKey,
-        // );
         rootPage = PlannerPage(
-          // Changed to PlannerPage
-          mainNavigatorKey: mainNavigatorKey, // Pass the existing keys
+          mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );
