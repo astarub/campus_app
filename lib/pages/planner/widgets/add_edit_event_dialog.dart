@@ -1,4 +1,4 @@
-import 'package:campus_app/pages/planner/recurrence_options_dialog.dart';
+import 'package:campus_app/pages/planner/widgets/recurrence_options_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +6,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
-import 'package:campus_app/pages/planner/planner_utils.dart';
+import 'package:campus_app/utils/pages/planner_utils.dart';
 
 class AddEditEventDialog extends StatefulWidget {
   const AddEditEventDialog({
@@ -156,7 +156,7 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
     if (_titleController.text.isEmpty) return;
 
     if (_isEditing) {
-      _plannerState.updateEvent(
+      await _plannerState.updateEvent(
         PlannerEventEntity(
           id: widget.event!.id,
           title: _titleController.text,
@@ -168,7 +168,7 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
         ),
       );
     } else {
-      _plannerState.addEvent(
+      await _plannerState.addEvent(
         PlannerEventEntity(
           title: _titleController.text,
           description: _descController.text.isNotEmpty ? _descController.text : null,
@@ -179,6 +179,7 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
         ),
       );
     }
+    if (!mounted) return;
     Navigator.pop(context);
   }
 }

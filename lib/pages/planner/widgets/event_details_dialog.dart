@@ -64,7 +64,8 @@ class EventDetailsDialog extends StatelessWidget {
             if (!context.mounted) return;
 
             if (confirmed ?? false) {
-              plannerState.deleteEvent(event.id);
+              await plannerState.deleteEvent(event.id);
+              if (!context.mounted) return;
               Navigator.pop(context);
             }
           },

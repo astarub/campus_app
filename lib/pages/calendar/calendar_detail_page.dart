@@ -45,13 +45,14 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
     });
     if (savedEvent) {
       if (!_isAlreadyInPlanner) {
-        _plannerState.addEvent(widget.event.toPlannerEvent());
+        await _plannerState.addEvent(widget.event.toPlannerEvent());
       }
     } else {
       if (_isAlreadyInPlanner) {
-        _plannerState.deleteEvent(widget.event.id.toString());
+        await _plannerState.deleteEvent(widget.event.id.toString());
       }
     }
+    if (!mounted) return;
     try {
       final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 

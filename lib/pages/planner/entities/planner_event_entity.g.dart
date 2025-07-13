@@ -52,5 +52,7 @@ class PlannerEventEntityAdapter extends TypeAdapter<PlannerEventEntity> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PlannerEventEntityAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is PlannerEventEntityAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

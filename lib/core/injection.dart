@@ -1,5 +1,8 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
+import 'package:campus_app/pages/planner/planner_datasource.dart';
+import 'package:campus_app/pages/planner/planner_repository.dart';
+import 'package:campus_app/pages/planner/planner_usecases.dart';
 import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -32,7 +35,6 @@ import 'package:native_dio_adapter/native_dio_adapter.dart';
 final sl = GetIt.instance; // service locator
 
 Future<void> init() async {
-  await Hive.openBox<PlannerEventEntity>('planner_events');
   //!
   //! Datasources
   //!
@@ -65,6 +67,10 @@ Future<void> init() async {
     );
   });
 
+  sl.registerSingletonAsync<PlannerDatasource>(() async {
+    await Hive.openBox<PlannerEventEntity>('planner_events');
+    return PlannerDatasource();
+  });
   //!
   //! Repositories
   //!
@@ -93,6 +99,10 @@ Future<void> init() async {
     () => TicketRepository(ticketDataSource: sl(), secureStorage: sl()),
   );
 
+  sl.registerSingletonWithDependencies<PlannerRepository>(
+    () => PlannerRepository(sl()),
+    dependsOn: [PlannerDatasource],
+  );
   //!
   //! Usecases
   //!
@@ -114,6 +124,11 @@ Future<void> init() async {
 
   sl.registerLazySingleton(
     () => TicketUsecases(ticketRepository: sl()),
+  );
+
+  sl.registerSingletonWithDependencies<PlannerUsecases>(
+    () => PlannerUsecases(sl()),
+    dependsOn: [PlannerRepository],
   );
 
   //!

@@ -131,6 +131,7 @@ class _PlannerPageState extends State<PlannerPage> {
   @override
   void dispose() {
     _plannerState.removeListener(_onPlannerStateChanged);
+    _plannerState.disposeWatcher();
     _eventController.dispose();
     super.dispose();
   }

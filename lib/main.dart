@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ Future<void> main() async {
             // Initializes the provider that handles the app-theme, authentication and other things
             ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
             ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-            ChangeNotifierProvider<PlannerState>(create: (_) => PlannerState()),
+            ChangeNotifierProvider<PlannerState>(create: (_) => PlannerState(sl())..init()),
           ],
           child: CampusApp(
             key: campusAppKey,
@@ -84,7 +85,7 @@ Future<void> main() async {
           // Initializes the provider that handles the app-theme, authentication and other things
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
-          ChangeNotifierProvider<PlannerState>(create: (_) => PlannerState()),
+          ChangeNotifierProvider<PlannerState>(create: (_) => PlannerState(sl())..init()),
         ],
         child: CampusApp(
           key: campusAppKey,

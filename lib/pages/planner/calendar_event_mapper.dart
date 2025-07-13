@@ -2,7 +2,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:rrule/rrule.dart';
 
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
-import 'package:campus_app/pages/planner/planner_utils.dart';
+import 'package:campus_app/utils/pages/planner_utils.dart';
 
 List<CalendarEventData<PlannerEventEntity>> mapPlannerEvents(List<PlannerEventEntity> raw) {
   final List<CalendarEventData<PlannerEventEntity>> out = [];
