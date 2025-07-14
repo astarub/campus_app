@@ -37,7 +37,7 @@ class PathfinderUtils {
 
     graph.forEach((key, value) {
       final (building, level, roomName) = key;
-      if ('$building$level.jpg' == fn) {
+      if ('$building$level.png' == fn) {
         final coords = value['Coordinates'];
 
         if (!roomName.contains('EN_')) {
@@ -101,7 +101,7 @@ class PathfinderUtils {
   }
 
   String transformFileName(String name) {
-    if (!name.endsWith('.jpg')) return name;
+    if (!name.endsWith('.png')) return name;
     final baseName = name.substring(0, name.length - 4);
     final match = RegExp(r'^([A-Za-z]+)(\d+)$').firstMatch(baseName);
     if (match == null) return name;

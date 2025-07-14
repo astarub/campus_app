@@ -145,13 +145,13 @@ Future<void> syncMaps() async {
 
   // Collect all remote .jpg filenames and their sizes
   for (final file in files.files) {
-    if (file.name.endsWith('.jpg')) {
+    if (file.name.endsWith('.png')) {
       remoteMap[file.name] = file.sizeOriginal;
     }
   }
 
   // Read existing local .jpg files
-  final localFiles = mapsDir.listSync().whereType<File>().where((f) => f.path.endsWith('.jpg')).toList();
+  final localFiles = mapsDir.listSync().whereType<File>().where((f) => f.path.endsWith('.png')).toList();
 
   final localMap = <String, File>{};
   for (final file in localFiles) {

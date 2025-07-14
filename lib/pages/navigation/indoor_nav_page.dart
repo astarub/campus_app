@@ -454,7 +454,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
 
     for (final step in shortestPath) {
       final (b, l, _) = step;
-      final name = '$b$l.jpg';
+      final name = '$b$l.png';
       if (!filenames.contains(name)) {
         filenames.add(name);
         if (name == 'RUB0.jpg') {
@@ -474,7 +474,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
 
     for (final step in shortestPath) {
       final (b, l, _) = step;
-      final name = '$b$l.jpg';
+      final name = '$b$l.png';
       final key = step;
       final coords = graph[key]!['Coordinates'];
       final Offset offset = Offset(
