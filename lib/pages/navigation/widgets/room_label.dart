@@ -45,7 +45,7 @@ class RoomLabelWidget extends StatelessWidget {
           child: Text(
             label.labelText,
             style: TextStyle(
-              fontSize: isPOI ? 15 : 10,
+              fontSize: isPOI ? 20 : 15,
               fontWeight: FontWeight.bold,
               color: currentThemeData.colorScheme.onSurface,
             ),

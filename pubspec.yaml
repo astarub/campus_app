@@ -195,8 +195,6 @@ flutter:
     - assets/img/bogestra-logo.svg
     - assets/img/icons/file-plus.svg
     - assets/maps/
-    - assets/maps/SH0.jpg
-    - assets/maps/SH1.jpg
     - assets/img/offline_map.png
     - assets/videos/pathfinder_onboarding_cover_video.mp4
     - assets/videos/pathfinder_onboarding_step_1.mp4
