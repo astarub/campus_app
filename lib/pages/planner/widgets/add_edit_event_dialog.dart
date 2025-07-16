@@ -30,10 +30,10 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
   late final TextEditingController _descController = TextEditingController(text: widget.event?.description ?? '');
 
   late final ValueNotifier<DateTime> _startDateTimeNotifier =
-      ValueNotifier<DateTime>(widget.event?.startDateTime ?? widget.focusedDay.toUtc());
+      ValueNotifier<DateTime>(widget.event?.startDateTime ?? widget.focusedDay.toLocal());
 
   late final ValueNotifier<DateTime> _endDateTimeNotifier =
-      ValueNotifier<DateTime>(widget.event?.endDateTime ?? widget.focusedDay.toUtc().add(const Duration(hours: 1)));
+      ValueNotifier<DateTime>(widget.event?.endDateTime ?? widget.focusedDay.toLocal().add(const Duration(hours: 1)));
 
   late final ValueNotifier<String?> _rruleNotifier = ValueNotifier<String?>(widget.event?.rrule);
 
@@ -161,8 +161,8 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
           id: widget.event!.id,
           title: _titleController.text,
           description: _descController.text.isNotEmpty ? _descController.text : null,
-          startDateTime: _startDateTimeNotifier.value,
-          endDateTime: _endDateTimeNotifier.value,
+          startDateTime: _startDateTimeNotifier.value.toUtc(),
+          endDateTime: _endDateTimeNotifier.value.toUtc(),
           rrule: _rruleNotifier.value,
           color: _colorNotifier.value,
         ),
@@ -172,8 +172,8 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
         PlannerEventEntity(
           title: _titleController.text,
           description: _descController.text.isNotEmpty ? _descController.text : null,
-          startDateTime: _startDateTimeNotifier.value,
-          endDateTime: _endDateTimeNotifier.value,
+          startDateTime: _startDateTimeNotifier.value.toUtc(),
+          endDateTime: _endDateTimeNotifier.value.toUtc(),
           rrule: _rruleNotifier.value,
           color: _colorNotifier.value,
         ),

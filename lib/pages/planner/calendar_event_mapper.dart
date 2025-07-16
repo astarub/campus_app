@@ -2,7 +2,8 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:rrule/rrule.dart';
 
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
-import 'package:campus_app/utils/pages/planner_utils.dart';
+
+bool _sameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
 
 List<CalendarEventData<PlannerEventEntity>> mapPlannerEvents(List<PlannerEventEntity> raw) {
   final List<CalendarEventData<PlannerEventEntity>> out = [];
@@ -25,23 +26,26 @@ void _expandSingle(
   PlannerEventEntity event,
   List<CalendarEventData<PlannerEventEntity>> sink,
 ) {
-  final days = getDaysInBetween(event.startDateTime, event.endDateTime);
-  for (final day in days) {
-    final isFirst = day.isAtSameMomentAs(days.first);
-    final isLast = day.isAtSameMomentAs(days.last);
-
-    final start = isFirst ? event.startDateTime : DateTime.utc(day.year, day.month, day.day);
-
-    final end = isLast ? event.endDateTime : DateTime.utc(day.year, day.month, day.day, 23, 59, 59);
-
+  final start = event.startDateTime.toLocal();
+  final end = event.endDateTime.toLocal();
+  if (_sameDay(start, end)) {
     sink.add(
-      CalendarEventData(
-        date: day.toLocal(),
+      CalendarEventData<PlannerEventEntity>(
+        title: event.title,
+        description: event.description,
+        date: start,
         startTime: start,
         endTime: end,
+        event: event,
+      ),
+    );
+  } else {
+    sink.add(
+      CalendarEventData<PlannerEventEntity>(
         title: event.title,
-        description: event.description ?? '',
-        color: event.color,
+        description: event.description,
+        date: start,
+        endDate: end,
         event: event,
       ),
     );
@@ -53,32 +57,36 @@ void _expandRecurring(
   List<CalendarEventData<PlannerEventEntity>> sink,
 ) {
   final rule = RecurrenceRule.fromString(template.rrule!);
-  final duration = template.endDateTime.difference(template.startDateTime);
+  final duration = template.endDateTime.toLocal().difference(template.startDateTime.toLocal());
 
   final instances = rule.getInstances(
-    start: template.startDateTime,
+    start: template.startDateTime.toUtc(),
     before: DateTime.now().toUtc().add(const Duration(days: 365 * 2)),
   );
 
-  for (final start in instances) {
+  for (final startUtc in instances) {
+    final start = startUtc.toLocal();
     final end = start.add(duration);
 
-    final days = getDaysInBetween(start, end);
-    for (final day in days) {
-      final isFirst = day.isAtSameMomentAs(days.first);
-      final isLast = day.isAtSameMomentAs(days.last);
-
-      final dayStart = isFirst ? start : DateTime.utc(day.year, day.month, day.day);
-
-      final dayEnd = isLast ? end : DateTime.utc(day.year, day.month, day.day, 23, 59, 59);
-
+    if (_sameDay(start, end)) {
       sink.add(
-        CalendarEventData(
-          date: day.toLocal(),
-          startTime: dayStart,
-          endTime: dayEnd,
+        CalendarEventData<PlannerEventEntity>(
           title: template.title,
-          description: template.description ?? '',
+          description: template.description,
+          date: start,
+          startTime: start,
+          endTime: end,
+          color: template.color,
+          event: template,
+        ),
+      );
+    } else {
+      sink.add(
+        CalendarEventData<PlannerEventEntity>(
+          title: template.title,
+          description: template.description,
+          date: start,
+          endDate: end,
           color: template.color,
           event: template,
         ),
