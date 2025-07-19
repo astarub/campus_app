@@ -16,7 +16,7 @@ class DayViewCalendar extends StatelessWidget {
   final ThemesNotifier themesNotifier;
   final DateTime focusedDay;
   final EventController<PlannerEventEntity> eventController;
-  final void Function(PlannerEventEntity event) onEventTap;
+  final void Function(PlannerEventEntity) onEventTap;
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +34,29 @@ class DayViewCalendar extends StatelessWidget {
         headerTextStyle: theme.textTheme.titleLarge,
       ),
       eventTileBuilder: (date, events, boundary, start, end) {
-        return eventTile(events, () => onEventTap(events.first.event!));
+        return GestureDetector(
+          onTap: () => onEventTap(events.first.event!),
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: events.first.color.withAlpha(220),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              events.first.title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                overflow: TextOverflow.ellipsis,
+              ),
+              maxLines: 2,
+            ),
+          ),
+        );
       },
       fullDayEventBuilder: (events, date) {
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            return SizedBox(
-              width: constraints.maxWidth,
-              child: eventTile(events, () => onEventTap(events.first.event!)),
-            );
-          },
-        );
+        return eventTile(events, onEventTap);
       },
     );
   }

@@ -12,13 +12,42 @@ class MonthViewCalendar extends StatelessWidget {
     required this.eventController,
     required this.onEventTap,
     required this.onDateTap,
+    this.maxVisibleRows = 3,
   });
 
   final ThemesNotifier themesNotifier;
   final DateTime focusedDay;
   final EventController<PlannerEventEntity> eventController;
-  final void Function(PlannerEventEntity event) onEventTap;
-  final void Function(DateTime date) onDateTap;
+  final void Function(PlannerEventEntity) onEventTap;
+  final void Function(DateTime) onDateTap;
+
+  final int maxVisibleRows;
+
+  void _showMoreSheet(
+    BuildContext context,
+    List<CalendarEventData<PlannerEventEntity>> hidden,
+    void Function(PlannerEventEntity) onTap,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => ListView.builder(
+        itemCount: hidden.length,
+        itemBuilder: (_, idx) {
+          final ev = hidden[idx];
+          return ListTile(
+            leading: CircleAvatar(
+              backgroundColor: ev.color,
+            ),
+            title: Text(ev.title),
+            onTap: () {
+              Navigator.pop(context);
+              onTap(ev.event!);
+            },
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,63 +78,100 @@ class MonthViewCalendar extends StatelessWidget {
           ),
         );
       },
-      cellBuilder: (date, events, isToday, isInMonth, hideDaysNotInMonth) {
+      cellBuilder: (date, events, isToday, isInMonth, _) {
         if (!isInMonth) {
-          return Container();
+          return Container(
+            alignment: Alignment.topRight,
+            padding: const EdgeInsets.all(3),
+            child: Text(
+              '${date.day}',
+              style: theme.textTheme.labelSmall?.copyWith(color: theme.disabledColor),
+            ),
+          );
         }
 
-        if (events.isNotEmpty) {
-          return GestureDetector(
-            onTap: () => onEventTap(events.first.event!),
-            child: Padding(
-              padding: const EdgeInsets.all(1.5),
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: events.first.color.withAlpha(220),
-                  borderRadius: BorderRadius.circular(6),
+        events.sort((a, b) => a.title.compareTo(b.title));
+
+        return LayoutBuilder(
+          builder: (ctx, constraints) {
+            const rowH = 15.0;
+            const maxRows = 3;
+            final cellW = constraints.maxWidth;
+
+            final rows = <Widget>[
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '${date.day}',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+                    color: isToday ? theme.primaryColor : theme.colorScheme.onSurface,
+                  ),
                 ),
+              ),
+            ];
+
+            final visible = events.take(maxRows).toList();
+            final hidden = events.length - visible.length;
+
+            for (final ev in visible) {
+              rows.add(
+                GestureDetector(
+                  onTap: () => onEventTap(ev.event!),
+                  child: Container(
+                    width: cellW - 2,
+                    height: rowH,
+                    margin: const EdgeInsets.only(right: 2, top: 1),
+                    decoration: BoxDecoration(
+                      color: ev.color.withOpacity(.9),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    child: Text(
+                      ev.title,
+                      style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onPrimary),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            if (hidden > 0) {
+              rows.add(
+                GestureDetector(
+                  onTap: () => _showMoreSheet(ctx, events.skip(maxRows).toList(), onEventTap),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 1),
+                    child: Text(
+                      '+$hidden more',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        fontSize: 12,
+                        color: theme.primaryColor,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => onDateTap(date),
+              child: Padding(
+                padding: const EdgeInsets.all(1.5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      '${date.day}',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Colors.white.withAlpha(230),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Expanded(
-                      child: Text(
-                        events.first.title,
-                        style: const TextStyle(color: Colors.white, fontSize: 11),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
-                    ),
-                  ],
+                  children: rows,
                 ),
               ),
-            ),
-          );
-        } else {
-          final backgroundColor = isToday ? theme.primaryColor.withAlpha(51) : theme.colorScheme.surface;
-          final textColor = isToday ? theme.primaryColor : theme.colorScheme.onSurface;
-          return Container(
-            color: backgroundColor,
-            child: Center(
-              child: Text(
-                '${date.day}',
-                style: TextStyle(color: textColor, fontWeight: isToday ? FontWeight.bold : FontWeight.normal),
-              ),
-            ),
-          );
-        }
+            );
+          },
+        );
       },
       onCellTap: (events, date) {
-        if (date.month != focusedDay.month) return;
         if (events.isEmpty) onDateTap(date);
       },
     );

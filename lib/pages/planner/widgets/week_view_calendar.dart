@@ -12,12 +12,22 @@ class WeekViewCalendar extends StatelessWidget {
     required this.focusedDay,
     required this.eventController,
     required this.onEventTap,
+    this.timeLineWidth = 60,
   });
 
   final ThemesNotifier themesNotifier;
   final DateTime focusedDay;
   final EventController<PlannerEventEntity> eventController;
   final void Function(PlannerEventEntity event) onEventTap;
+  final double timeLineWidth;
+
+  Widget _buildFullDayRow(
+    BuildContext context,
+    List<CalendarEventData<PlannerEventEntity>> events,
+    DateTime _,
+  ) {
+    return eventTile(events, onEventTap);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +37,37 @@ class WeekViewCalendar extends StatelessWidget {
       controller: eventController,
       initialDay: focusedDay,
       showLiveTimeLineInAllDays: true,
-      timeLineWidth: 60,
+      timeLineWidth: timeLineWidth,
       backgroundColor: theme.colorScheme.surface,
       liveTimeIndicatorSettings: LiveTimeIndicatorSettings(color: theme.colorScheme.secondary),
-      weekDayStringBuilder: (int day) => DateFormat.E().format(DateTime(2024, 1, day == 7 ? 8 : day + 1)),
+      weekDayStringBuilder: (d) => DateFormat.E().format(DateTime(2024, 1, d == 7 ? 8 : d + 1)),
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: theme.cardColor),
         headerTextStyle: theme.textTheme.titleLarge,
       ),
       eventTileBuilder: (date, events, boundary, start, end) {
-        return eventTile(events, () => onEventTap(events.first.event!));
+        return GestureDetector(
+          onTap: () => onEventTap(events.first.event!),
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: events.first.color.withAlpha(220),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              events.first.title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                overflow: TextOverflow.ellipsis,
+              ),
+              maxLines: 2,
+            ),
+          ),
+        );
       },
-      fullDayEventBuilder: (events, date) {
-        return eventTile(events, () => onEventTap(events.first.event!));
-      },
+      fullDayEventBuilder: (e, d) => _buildFullDayRow(context, e, d),
     );
   }
 }
