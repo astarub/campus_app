@@ -11,12 +11,14 @@ class DayViewCalendar extends StatelessWidget {
     required this.focusedDay,
     required this.eventController,
     required this.onEventTap,
+    required this.onDateTap,
   });
 
   final ThemesNotifier themesNotifier;
   final DateTime focusedDay;
   final EventController<PlannerEventEntity> eventController;
   final void Function(PlannerEventEntity) onEventTap;
+  final void Function(DateTime date) onDateTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class DayViewCalendar extends StatelessWidget {
       key: ValueKey('day_view_$focusedDay'),
       controller: eventController,
       initialDay: focusedDay,
+      onDateTap: onDateTap,
       showLiveTimeLineInAllDays: true,
       timeLineWidth: 60,
       backgroundColor: theme.colorScheme.surface,

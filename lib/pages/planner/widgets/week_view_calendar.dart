@@ -13,6 +13,7 @@ class WeekViewCalendar extends StatelessWidget {
     required this.eventController,
     required this.onEventTap,
     this.timeLineWidth = 60,
+    required this.onDateTap,
   });
 
   final ThemesNotifier themesNotifier;
@@ -20,6 +21,10 @@ class WeekViewCalendar extends StatelessWidget {
   final EventController<PlannerEventEntity> eventController;
   final void Function(PlannerEventEntity event) onEventTap;
   final double timeLineWidth;
+  final void Function(
+    List<CalendarEventData<PlannerEventEntity>> events,
+    DateTime date,
+  ) onDateTap;
 
   Widget _buildFullDayRow(
     BuildContext context,
@@ -36,6 +41,10 @@ class WeekViewCalendar extends StatelessWidget {
       key: ValueKey('week_view_$focusedDay'),
       controller: eventController,
       initialDay: focusedDay,
+      onDateTap: (date) {
+        final events = eventController.getEventsOnDay(date);
+        onDateTap(events, date);
+      },
       showLiveTimeLineInAllDays: true,
       timeLineWidth: timeLineWidth,
       backgroundColor: theme.colorScheme.surface,

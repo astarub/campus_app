@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 
-/// Stacks all events in [events] vertically.
-/// Every row can be tapped; colours come from the event.
 Widget eventTile(
   List<CalendarEventData<PlannerEventEntity>> events,
   void Function(PlannerEventEntity event) onEventTap, {
@@ -11,7 +9,6 @@ Widget eventTile(
 }) {
   if (events.isEmpty) return const SizedBox.shrink();
 
-  // Stable ordering → each event keeps the same row across all days.
   events.sort((a, b) => a.title.compareTo(b.title));
 
   final visible = events.take(maxVisible).toList();
