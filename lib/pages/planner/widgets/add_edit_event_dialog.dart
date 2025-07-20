@@ -33,12 +33,12 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
       ValueNotifier<DateTime>(widget.event?.startDateTime ?? widget.focusedDay.toLocal());
 
   late final ValueNotifier<DateTime> _endDateTimeNotifier =
-      ValueNotifier<DateTime>(widget.event?.endDateTime ?? widget.focusedDay.toLocal().add(const Duration(hours: 1)));
+      ValueNotifier<DateTime>(widget.event?.endDateTime ?? widget.focusedDay.toLocal().add(const Duration(hours: 2)));
 
   late final ValueNotifier<String?> _rruleNotifier = ValueNotifier<String?>(widget.event?.rrule);
 
   late final ValueNotifier<Color> _colorNotifier = ValueNotifier<Color>(widget.event?.color ?? Colors.blue);
-
+  static const TextStyle _textStyle = TextStyle(fontSize: 16);
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -47,10 +47,15 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: _titleController, decoration: const InputDecoration(labelText: 'Title')),
+            TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(labelText: 'Title'),
+              style: _textStyle,
+            ),
             TextField(
               controller: _descController,
               decoration: const InputDecoration(labelText: 'Description (Optional)'),
+              style: _textStyle,
             ),
             const SizedBox(height: 16),
             ValueListenableBuilder<Color>(
@@ -59,12 +64,18 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
                 return ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: CircleAvatar(backgroundColor: currentColor),
-                  title: const Text('Event Color'),
+                  title: const Text(
+                    'Event Color',
+                    style: _textStyle,
+                  ),
                   onTap: () {
                     showDialog(
                       context: context,
                       builder: (pickerContext) => AlertDialog(
-                        title: const Text('Pick a color'),
+                        title: const Text(
+                          'Pick a color',
+                          style: _textStyle,
+                        ),
                         content: SingleChildScrollView(
                           child: BlockPicker(
                             pickerColor: currentColor,
@@ -89,13 +100,16 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
               valueListenable: _startDateTimeNotifier,
               builder: (context, currentStart, child) => TextButton.icon(
                 icon: const Icon(Icons.calendar_today),
-                label: Text('Starts: ${DateFormat.yMd().add_jm().format(currentStart.toLocal())}'),
+                label: Text(
+                  'Starts: ${DateFormat.yMd().add_jm().format(currentStart.toLocal())}',
+                  style: _textStyle,
+                ),
                 onPressed: () async {
                   final picked = await pickDateTime(context, initialDate: currentStart);
                   if (picked != null) {
                     _startDateTimeNotifier.value = picked;
                     if (picked.isAfter(_endDateTimeNotifier.value)) {
-                      _endDateTimeNotifier.value = picked.add(const Duration(hours: 1));
+                      _endDateTimeNotifier.value = picked.add(const Duration(hours: 2));
                     }
                   }
                 },
@@ -105,7 +119,10 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
               valueListenable: _endDateTimeNotifier,
               builder: (context, currentEnd, child) => TextButton.icon(
                 icon: const Icon(Icons.timer_off_outlined),
-                label: Text('Ends:   ${DateFormat.yMd().add_jm().format(currentEnd.toLocal())}'),
+                label: Text(
+                  'Ends: ${DateFormat.yMd().add_jm().format(currentEnd.toLocal())}',
+                  style: _textStyle,
+                ),
                 onPressed: () async {
                   final picked = await pickDateTime(context, initialDate: currentEnd);
                   if (picked != null && picked.isAfter(_startDateTimeNotifier.value)) {
@@ -120,7 +137,10 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
                 final isRecurring = currentRrule?.isNotEmpty ?? false;
                 return TextButton.icon(
                   icon: const Icon(Icons.repeat),
-                  label: Text(isRecurring ? 'Repeats' : "Don't repeat"),
+                  label: Text(
+                    isRecurring ? 'Repeats' : "Don't repeat",
+                    style: _textStyle,
+                  ),
                   onPressed: () async {
                     final newRrule = await showDialog<String?>(
                       context: context,

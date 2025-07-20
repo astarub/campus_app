@@ -36,6 +36,7 @@ void _expandSingle(
         date: start,
         startTime: start,
         endTime: end,
+        color: event.color,
         event: event,
       ),
     );
@@ -46,6 +47,7 @@ void _expandSingle(
         description: event.description,
         date: start,
         endDate: end,
+        color: event.color,
         event: event,
       ),
     );
