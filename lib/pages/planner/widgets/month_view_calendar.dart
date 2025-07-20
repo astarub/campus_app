@@ -171,9 +171,6 @@ class MonthViewCalendar extends StatelessWidget {
           },
         );
       },
-      onCellTap: (events, date) {
-        if (events.isEmpty) onDateTap(date);
-      },
     );
   }
 }

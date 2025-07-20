@@ -30,10 +30,10 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
   late final TextEditingController _descController = TextEditingController(text: widget.event?.description ?? '');
 
   late final ValueNotifier<DateTime> _startDateTimeNotifier =
-      ValueNotifier<DateTime>(widget.event?.startDateTime ?? widget.focusedDay.toLocal());
+      ValueNotifier<DateTime>(widget.event?.startDateTime ?? _todayWithNow(widget.focusedDay));
 
   late final ValueNotifier<DateTime> _endDateTimeNotifier =
-      ValueNotifier<DateTime>(widget.event?.endDateTime ?? widget.focusedDay.toLocal().add(const Duration(hours: 2)));
+      ValueNotifier<DateTime>(widget.event?.endDateTime ?? _startDateTimeNotifier.value.add(const Duration(hours: 2)));
 
   late final ValueNotifier<String?> _rruleNotifier = ValueNotifier<String?>(widget.event?.rrule);
 
@@ -101,7 +101,7 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
               builder: (context, currentStart, child) => TextButton.icon(
                 icon: const Icon(Icons.calendar_today),
                 label: Text(
-                  'Starts: ${DateFormat.yMd().add_jm().format(currentStart.toLocal())}',
+                  'Starts: ${DateFormat('dd/MM/yyyy').add_jm().format(currentStart.toLocal())}',
                   style: _textStyle,
                 ),
                 onPressed: () async {
@@ -120,7 +120,7 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
               builder: (context, currentEnd, child) => TextButton.icon(
                 icon: const Icon(Icons.timer_off_outlined),
                 label: Text(
-                  'Ends: ${DateFormat.yMd().add_jm().format(currentEnd.toLocal())}',
+                  'Ends: ${DateFormat('dd/MM/yyyy').add_jm().format(currentEnd.toLocal())}',
                   style: _textStyle,
                 ),
                 onPressed: () async {
@@ -201,5 +201,10 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
     }
     if (!mounted) return;
     Navigator.pop(context);
+  }
+
+  DateTime _todayWithNow(DateTime day) {
+    final now = DateTime.now().toLocal();
+    return DateTime(day.year, day.month, day.day, now.hour, now.minute);
   }
 }

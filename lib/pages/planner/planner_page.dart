@@ -1,6 +1,5 @@
 import 'package:campus_app/pages/planner/calendar_event_mapper.dart';
 import 'package:campus_app/pages/planner/widgets/add_edit_event_dialog.dart';
-import 'package:campus_app/pages/planner/widgets/add_event_fab.dart';
 import 'package:campus_app/pages/planner/widgets/event_details_dialog.dart';
 import 'package:campus_app/pages/planner/widgets/view_mode_switch.dart';
 import 'package:flutter/material.dart';
@@ -58,11 +57,14 @@ class _PlannerPageState extends State<PlannerPage> {
     _eventController.addAll(mapped);
   }
 
-  Future<void> _showAddOrEditEventDialog({PlannerEventEntity? event}) async {
+  Future<void> _showAddOrEditEventDialog({
+    PlannerEventEntity? event,
+    DateTime? date,
+  }) async {
     await showDialog(
       context: context,
       builder: (_) => AddEditEventDialog(
-        focusedDay: _focusedDay,
+        focusedDay: date ?? _focusedDay,
         event: event,
       ),
     );
@@ -96,7 +98,14 @@ class _PlannerPageState extends State<PlannerPage> {
           ),
         ],
       ),
-      floatingActionButton: AddEventFab(onPressed: _showAddOrEditEventDialog),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Add Event',
+        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: () {
+          _showAddOrEditEventDialog(date: DateTime.now());
+        },
+        child: const Icon(Icons.add),
+      ),
       body: _buildCalendarView(themesNotifier),
     );
   }
@@ -109,7 +118,10 @@ class _PlannerPageState extends State<PlannerPage> {
           focusedDay: _focusedDay,
           eventController: _eventController,
           onEventTap: _showEventDetailsDialog,
-          onDateTap: (d) => setState(() => _focusedDay = d),
+          onDateTap: (d) {
+            setState(() => _focusedDay = d);
+            _showAddOrEditEventDialog(date: d);
+          },
         );
       case CalendarViewMode.week:
         return WeekViewCalendar(
