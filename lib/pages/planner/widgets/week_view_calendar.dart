@@ -12,7 +12,7 @@ class WeekViewCalendar extends StatelessWidget {
     required this.focusedDay,
     required this.eventController,
     required this.onEventTap,
-    this.timeLineWidth = 60,
+    this.timeLineWidth = 30,
     required this.onDateTap,
   });
 
@@ -67,11 +67,9 @@ class WeekViewCalendar extends StatelessWidget {
               events.first.title,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
             ),
           ),
         );

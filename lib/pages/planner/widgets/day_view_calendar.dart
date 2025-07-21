@@ -29,7 +29,7 @@ class DayViewCalendar extends StatelessWidget {
       initialDay: focusedDay,
       onDateTap: onDateTap,
       showLiveTimeLineInAllDays: true,
-      timeLineWidth: 60,
+      timeLineWidth: 50,
       backgroundColor: theme.colorScheme.surface,
       liveTimeIndicatorSettings: LiveTimeIndicatorSettings(color: theme.colorScheme.secondary),
       headerStyle: HeaderStyle(
@@ -49,11 +49,9 @@ class DayViewCalendar extends StatelessWidget {
               events.first.title,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
             ),
           ),
         );

@@ -31,8 +31,7 @@ Widget eventTile(
               ev.title,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 12,
-                overflow: TextOverflow.ellipsis,
+                fontSize: 11,
               ),
               maxLines: 1,
             ),

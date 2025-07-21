@@ -130,9 +130,8 @@ class MonthViewCalendar extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 2),
                     child: Text(
                       ev.title,
-                      style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onPrimary),
+                      style: theme.textTheme.labelSmall?.copyWith(color: theme.primaryColor, fontSize: 11),
                       maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
