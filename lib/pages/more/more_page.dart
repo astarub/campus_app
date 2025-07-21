@@ -253,7 +253,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             title: 'Feedback',
                             leadingIconPath: 'assets/img/icons/message-square.svg',
                             onTap: () =>
-                                openLink(context, 'https://next.asta-bochum.de/index.php/apps/forms/jb2Z4mge9yj2z56E'),
+                                openLink(context, 'https://next.asta-bochum.de/apps/forms/s/QB2resxiSwf5atFaNsp2eEgY'),
                           ),
                         ],
                       ),
