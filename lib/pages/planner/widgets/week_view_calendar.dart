@@ -12,7 +12,7 @@ class WeekViewCalendar extends StatelessWidget {
     required this.focusedDay,
     required this.eventController,
     required this.onEventTap,
-    this.timeLineWidth = 60,
+    this.timeLineWidth = 30,
     required this.onDateTap,
   });
 
@@ -31,7 +31,10 @@ class WeekViewCalendar extends StatelessWidget {
     List<CalendarEventData<PlannerEventEntity>> events,
     DateTime _,
   ) {
-    return eventTile(events, onEventTap);
+    return EventTile(
+      events: events,
+      onEventTap: onEventTap,
+    );
   }
 
   @override
@@ -45,14 +48,19 @@ class WeekViewCalendar extends StatelessWidget {
         final events = eventController.getEventsOnDay(date);
         onDateTap(events, date);
       },
-      showLiveTimeLineInAllDays: true,
       timeLineWidth: timeLineWidth,
       backgroundColor: theme.colorScheme.surface,
       liveTimeIndicatorSettings: LiveTimeIndicatorSettings(color: theme.colorScheme.secondary),
       weekDayStringBuilder: (d) => DateFormat.E().format(DateTime(2024, 1, d == 7 ? 8 : d + 1)),
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: theme.cardColor),
-        headerTextStyle: theme.textTheme.titleLarge,
+        headerTextStyle: theme.textTheme.headlineSmall,
+        leftIconConfig: IconDataConfig(
+          color: theme.colorScheme.primary,
+        ),
+        rightIconConfig: IconDataConfig(
+          color: theme.colorScheme.primary,
+        ),
       ),
       eventTileBuilder: (date, events, boundary, start, end) {
         return GestureDetector(
@@ -60,23 +68,23 @@ class WeekViewCalendar extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: events.first.color.withAlpha(220),
+              color: events.first.color,
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
               events.first.title,
-              style: const TextStyle(
-                color: Colors.white,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.primary,
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
             ),
           ),
         );
       },
       fullDayEventBuilder: (e, d) => _buildFullDayRow(context, e, d),
+      hourIndicatorSettings: HourIndicatorSettings(
+        color: theme.dividerColor,
+      ),
     );
   }
 }

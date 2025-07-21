@@ -59,7 +59,13 @@ class MonthViewCalendar extends StatelessWidget {
       borderColor: theme.dividerColor,
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: theme.cardColor),
-        headerTextStyle: theme.textTheme.titleLarge,
+        headerTextStyle: theme.textTheme.headlineSmall,
+        leftIconConfig: IconDataConfig(
+          color: theme.colorScheme.primary,
+        ),
+        rightIconConfig: IconDataConfig(
+          color: theme.colorScheme.primary,
+        ),
       ),
       weekDayBuilder: (dayIndex) {
         final day = DateTime(2024).add(Duration(days: dayIndex));
@@ -68,13 +74,7 @@ class MonthViewCalendar extends StatelessWidget {
             border: Border(bottom: BorderSide(color: theme.dividerColor)),
           ),
           child: Center(
-            child: Text(
-              DateFormat.E().format(day),
-              style: TextStyle(
-                color: theme.colorScheme.onSurface.withAlpha(204),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            child: Text(DateFormat.E().format(day), style: theme.textTheme.bodyMedium),
           ),
         );
       },
@@ -85,16 +85,14 @@ class MonthViewCalendar extends StatelessWidget {
             padding: const EdgeInsets.all(3),
             child: Text(
               '${date.day}',
-              style: theme.textTheme.labelSmall?.copyWith(color: theme.disabledColor),
+              style: theme.textTheme.bodyMedium,
             ),
           );
         }
 
-        events.sort((a, b) => a.title.compareTo(b.title));
-
         return LayoutBuilder(
           builder: (ctx, constraints) {
-            const rowH = 15.0;
+            const rowH = 18.0;
             const maxRows = 3;
             final cellW = constraints.maxWidth;
 
@@ -103,9 +101,9 @@ class MonthViewCalendar extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: Text(
                   '${date.day}',
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
-                    color: isToday ? theme.primaryColor : theme.colorScheme.onSurface,
+                    color: isToday ? theme.colorScheme.secondary : theme.colorScheme.primary,
                   ),
                 ),
               ),
@@ -123,16 +121,15 @@ class MonthViewCalendar extends StatelessWidget {
                     height: rowH,
                     margin: const EdgeInsets.only(right: 2, top: 1),
                     decoration: BoxDecoration(
-                      color: ev.color.withOpacity(.9),
-                      borderRadius: BorderRadius.circular(4),
+                      color: ev.color,
+                      borderRadius: BorderRadius.circular(6),
                     ),
                     alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                     child: Text(
                       ev.title,
-                      style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onPrimary),
+                      style: theme.textTheme.bodyMedium?.copyWith(color: theme.primaryColor, fontSize: 12),
                       maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
@@ -147,7 +144,7 @@ class MonthViewCalendar extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 1),
                     child: Text(
                       '+$hidden more',
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         fontSize: 12,
                         color: theme.primaryColor,
                       ),

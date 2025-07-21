@@ -88,6 +88,7 @@ class _PlannerPageState extends State<PlannerPage> {
     return Scaffold(
       backgroundColor: themesNotifier.currentThemeData.colorScheme.surface,
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Planner', style: themesNotifier.currentThemeData.textTheme.displayMedium),
         backgroundColor: themesNotifier.currentThemeData.colorScheme.surface,
         elevation: 0,
