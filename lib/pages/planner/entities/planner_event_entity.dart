@@ -33,9 +33,10 @@ class PlannerEventEntity {
     this.description,
     required this.startDateTime,
     required this.endDateTime,
-    Color color = Colors.blue,
+    Color? color,
+    int? colorValue,
     this.rrule,
   })  : id = id ?? const Uuid().v4(),
-        colorValue = color.toARGB32();
+        colorValue = colorValue ?? (color ?? Colors.blue).value;
   Color get color => Color(colorValue);
 }
