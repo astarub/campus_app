@@ -43,6 +43,8 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
         url.contains('twitch') ||
         url.contains('tiktok') ||
         url.contains('mailto:') ||
+        // Nextcloud Form doesn't render correctly in webview
+        url.contains('next.asta-bochum.de') ||
         url.contains('tel:')) {
       // Open in external browser
       launchUrl(
