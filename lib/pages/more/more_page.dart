@@ -41,6 +41,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
         url.contains('instagram') ||
         url.contains('facebook') ||
         url.contains('twitch') ||
+        url.contains('tiktok') ||
         url.contains('mailto:') ||
         url.contains('tel:')) {
       // Open in external browser
@@ -128,6 +129,12 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                                 child: SocialMediaButton(
                                   iconPath: 'assets/img/icons/instagram.svg',
                                   onTap: () => openLink(context, 'https://www.instagram.com/astarub/'),
+                                ),
+                              ),
+                              Expanded(
+                                child: SocialMediaButton(
+                                  iconPath: 'assets/img/icons/tiktok.svg',
+                                  onTap: () => openLink(context, 'https://www.tiktok.com/@asta_rub'),
                                 ),
                               ),
                               Expanded(
