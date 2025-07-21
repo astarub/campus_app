@@ -22,7 +22,6 @@ class PlannerEventEntityAdapter extends TypeAdapter<PlannerEventEntity> {
       description: fields[2] as String?,
       startDateTime: fields[3] as DateTime,
       endDateTime: fields[4] as DateTime,
-      colorValue: fields[5] as int?,
       rrule: fields[6] as String?,
     );
   }
