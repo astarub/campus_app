@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 
 part 'planner_event_entity.g.dart';
 
+/// PlannerEventEntity data entity.
 @HiveType(typeId: 6)
 class PlannerEventEntity {
   @HiveField(0)
@@ -24,6 +25,7 @@ class PlannerEventEntity {
   @HiveField(5)
   final int colorValue;
 
+  // Handle recurrence rule (RRULE).
   @HiveField(6)
   final String? rrule;
 

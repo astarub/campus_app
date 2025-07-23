@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 enum _EndCondition { never, onDate, afterCount }
 
+// RecurrenceOptionsDialog UI widget.
 class RecurrenceOptionsDialog extends StatefulWidget {
   final String? initialRrule;
   final DateTime eventStartDate;
@@ -13,6 +14,7 @@ class RecurrenceOptionsDialog extends StatefulWidget {
   State<RecurrenceOptionsDialog> createState() => __RecurrenceOptionsDialogState();
 }
 
+// __RecurrenceOptionsDialogState UI widget.
 class __RecurrenceOptionsDialogState extends State<RecurrenceOptionsDialog> {
   late Frequency _frequency;
   late int _interval;

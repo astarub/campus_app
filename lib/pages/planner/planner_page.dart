@@ -14,8 +14,10 @@ import 'package:campus_app/pages/planner/widgets/month_view_calendar.dart';
 import 'package:campus_app/pages/planner/widgets/week_view_calendar.dart';
 import 'package:campus_app/pages/planner/widgets/day_view_calendar.dart';
 
+// Available calendar views for the planner UI.
 enum CalendarViewMode { month, week, day }
 
+// StatefulWidget representing the Planner screen.
 class PlannerPage extends StatefulWidget {
   final GlobalKey<NavigatorState>? mainNavigatorKey;
   final GlobalKey<AnimatedEntryState>? pageEntryAnimationKey;
@@ -32,6 +34,7 @@ class PlannerPage extends StatefulWidget {
   State<PlannerPage> createState() => _PlannerPageState();
 }
 
+// State class holding current view & reacting to PlannerState changes.
 class _PlannerPageState extends State<PlannerPage> {
   final EventController<PlannerEventEntity> _eventController = EventController();
 

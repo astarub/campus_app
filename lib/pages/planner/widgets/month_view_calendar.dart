@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/core/themes.dart';
 
+// MonthViewCalendar UI widget.
 class MonthViewCalendar extends StatelessWidget {
   const MonthViewCalendar({
     super.key,

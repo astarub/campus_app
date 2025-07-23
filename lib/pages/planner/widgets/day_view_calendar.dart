@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/core/themes.dart';
 
+// DayViewCalendar UI widget.
 class DayViewCalendar extends StatelessWidget {
   const DayViewCalendar({
     super.key,

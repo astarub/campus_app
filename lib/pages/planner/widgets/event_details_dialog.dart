@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
 
+// EventDetailsDialog UI widget.
 class EventDetailsDialog extends StatelessWidget {
   const EventDetailsDialog({
     super.key,

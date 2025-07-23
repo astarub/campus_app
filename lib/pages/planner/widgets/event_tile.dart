@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 
+// EventTile UI widget.
 class EventTile extends StatelessWidget {
   const EventTile({
     super.key,
