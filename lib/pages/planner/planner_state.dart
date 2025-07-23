@@ -6,6 +6,7 @@ import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/pages/planner/planner_usecases.dart';
 
+// Application state for Planner feature, to be provided via Provider.
 class PlannerState with ChangeNotifier {
   final PlannerUsecases plannerUsecases;
   PlannerState(this.plannerUsecases);

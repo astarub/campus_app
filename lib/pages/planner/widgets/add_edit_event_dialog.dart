@@ -8,6 +8,7 @@ import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
 import 'package:campus_app/utils/pages/planner_utils.dart';
 
+// AddEditEventDialog UI widget.
 class AddEditEventDialog extends StatefulWidget {
   const AddEditEventDialog({
     super.key,
@@ -22,6 +23,7 @@ class AddEditEventDialog extends StatefulWidget {
   State<AddEditEventDialog> createState() => _AddEditEventDialogState();
 }
 
+// _AddEditEventDialogState UI widget.
 class _AddEditEventDialogState extends State<AddEditEventDialog> {
   late final bool _isEditing = widget.event != null;
   late final PlannerState _plannerState = context.read<PlannerState>();

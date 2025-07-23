@@ -5,6 +5,7 @@ import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:intl/intl.dart';
 
+// WeekViewCalendar UI widget.
 class WeekViewCalendar extends StatelessWidget {
   const WeekViewCalendar({
     super.key,

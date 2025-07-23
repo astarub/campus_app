@@ -1,6 +1,7 @@
 import 'package:campus_app/pages/planner/planner_page.dart';
 import 'package:flutter/material.dart';
 
+// ViewModeSwitch UI widget.
 class ViewModeSwitch extends StatelessWidget {
   const ViewModeSwitch({
     super.key,

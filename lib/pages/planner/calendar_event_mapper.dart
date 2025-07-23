@@ -3,8 +3,11 @@ import 'package:rrule/rrule.dart';
 
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 
+// Returns true when both DateTime values fall on the same calendar day.
 bool _sameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
 
+// Converts a list of PlannerEventEntity instances into CalendarEventData.
+// Recurring events are expanded according to their RRULE.
 List<CalendarEventData<PlannerEventEntity>> mapPlannerEvents(List<PlannerEventEntity> raw) {
   final List<CalendarEventData<PlannerEventEntity>> out = [];
 
@@ -22,6 +25,7 @@ List<CalendarEventData<PlannerEventEntity>> mapPlannerEvents(List<PlannerEventEn
   return out;
 }
 
+// Adds a single (non‑recurring) event instance to the output sink.
 void _expandSingle(
   PlannerEventEntity event,
   List<CalendarEventData<PlannerEventEntity>> sink,
@@ -54,6 +58,7 @@ void _expandSingle(
   }
 }
 
+// Expands a recurring event into individual instances for the next 2 years and adds them to the sink.
 void _expandRecurring(
   PlannerEventEntity template,
   List<CalendarEventData<PlannerEventEntity>> sink,
