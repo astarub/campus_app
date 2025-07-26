@@ -1,4 +1,8 @@
+import 'package:campus_app/pages/mensa/planner_helpers/mensa_day_notifier.dart';
+import 'package:campus_app/pages/mensa/planner_helpers/restaurant_location.dart';
+import 'package:campus_app/pages/planner/planner_state.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
@@ -61,6 +65,8 @@ class MealItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String location = context.read<RestaurantLocation>().name;
+    final DateTime selectedDay = context.watch<MensaDayNotifier>().focusedDate;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Column(
@@ -69,9 +75,52 @@ class MealItem extends StatelessWidget {
           // Name
           Padding(
             padding: const EdgeInsets.only(bottom: 3),
-            child: Text(
-              name,
-              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    name,
+                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+                  ),
+                ),
+                // add‑to‑planner button
+                Selector<PlannerState, bool>(
+                  selector: (_, planner) => planner.hasMealEvent(
+                    title: name,
+                    location: location,
+                    date: selectedDay,
+                  ),
+                  builder: (context, exists, _) {
+                    return IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      iconSize: 20,
+                      splashRadius: 18,
+                      icon: Icon(exists ? Icons.event_busy_outlined : Icons.event_available_outlined),
+                      tooltip: exists ? 'Remove from planner' : 'Add to planner',
+                      onPressed: () async {
+                        final planner = context.read<PlannerState>();
+                        await planner.toggleMealEvent(
+                          title: name,
+                          price: price,
+                          location: location,
+                          date: selectedDay,
+                        );
+
+                        if (!context.mounted) return;
+                        await Fluttertoast.showToast(
+                          msg: exists ? 'Removed from planner' : 'Saved in planner',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Theme.of(context).colorScheme.surface,
+                          textColor: Theme.of(context).colorScheme.onSurface,
+                          fontSize: 14,
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
           ),
           // Price
