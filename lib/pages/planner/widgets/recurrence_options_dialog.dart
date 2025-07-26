@@ -183,7 +183,7 @@ class __RecurrenceOptionsDialogState extends State<RecurrenceOptionsDialog> {
           onPressed: () {
             Navigator.of(context).pop('clear');
           },
-          child: const Text('Don\'t Repeat'),
+          child: const Text("Don't Repeat"),
         ),
         TextButton(onPressed: _save, child: const Text('Done')),
       ],
