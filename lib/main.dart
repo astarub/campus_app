@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/pages/mensa/planner_helpers/mensa_day_notifier.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,7 @@ Future<void> main() async {
             ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
             ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
             ChangeNotifierProvider<PlannerState>(create: (_) => PlannerState(sl())..init()),
+            ChangeNotifierProvider(create: (_) => MensaDayNotifier()),
           ],
           child: CampusApp(
             key: campusAppKey,
@@ -86,6 +88,7 @@ Future<void> main() async {
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
           ChangeNotifierProvider<PlannerState>(create: (_) => PlannerState(sl())..init()),
+          ChangeNotifierProvider(create: (_) => MensaDayNotifier()),
         ],
         child: CampusApp(
           key: campusAppKey,

@@ -28,8 +28,8 @@ class EventDetailsDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('From: ${DateFormat.yMMMEd().add_jm().format(event.startDateTime.toLocal())}'),
-            Text('To:      ${DateFormat.yMMMEd().add_jm().format(event.endDateTime.toLocal())}'),
+            Text('From:     ${DateFormat.yMMMEd().add_jm().format(event.startDateTime.toLocal())}'),
+            Text('To:           ${DateFormat.yMMMEd().add_jm().format(event.endDateTime.toLocal())}'),
             const SizedBox(height: 16),
             StyledHTML(
               context: context,
@@ -71,7 +71,6 @@ class EventDetailsDialog extends StatelessWidget {
             }
           },
         ),
-        const Spacer(),
         if (userEvent)
           TextButton(
             child: const Text('Edit'),

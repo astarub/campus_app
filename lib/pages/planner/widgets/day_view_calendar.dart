@@ -47,7 +47,7 @@ class DayViewCalendar extends StatelessWidget {
         return GestureDetector(
           onTap: () => onEventTap(events.first.event!),
           child: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               color: events.first.color,
               borderRadius: BorderRadius.circular(6),
