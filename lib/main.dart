@@ -32,6 +32,7 @@ import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +54,6 @@ Future<void> main() async {
 
   // Initialize injection container
   await ic.init();
-
   // Checks if the app is in release mode and initializes sentry
   // REMOVE THIS CHECK IF YOU WISH TO RUN THE APP IN RELEASE MODE OTHERWISE THE APP WILL NOT RUN
   if (kReleaseMode) {

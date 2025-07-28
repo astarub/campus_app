@@ -7,6 +7,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
 import 'package:campus_app/utils/pages/planner_utils.dart';
+import 'package:campus_app/pages/planner/studytimer_page.dart';
 
 class AddEditEventDialog extends StatefulWidget {
   const AddEditEventDialog({

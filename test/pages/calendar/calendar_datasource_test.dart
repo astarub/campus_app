@@ -19,6 +19,7 @@ import 'samples/eventfeed_response.dart';
 Event emptyEvent({String title = 'Title'}) {
   return Event(
     id: 0,
+    
     url: 'Url',
     title: title,
     description: 'Description',

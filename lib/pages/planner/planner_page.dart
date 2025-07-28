@@ -13,6 +13,7 @@ import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/planner/widgets/month_view_calendar.dart';
 import 'package:campus_app/pages/planner/widgets/week_view_calendar.dart';
 import 'package:campus_app/pages/planner/widgets/day_view_calendar.dart';
+import 'package:campus_app/pages/planner/studytimer_page.dart';
 
 enum CalendarViewMode { month, week, day }
 
@@ -38,6 +39,7 @@ class _PlannerPageState extends State<PlannerPage> {
   CalendarViewMode _currentView = CalendarViewMode.week;
   DateTime _focusedDay = DateTime.now();
   late final PlannerState _plannerState;
+  bool _showActionOptions = false;
 
   @override
   void initState() {
@@ -98,15 +100,53 @@ class _PlannerPageState extends State<PlannerPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Add Event',
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          _showAddOrEditEventDialog(date: DateTime.now());
-        },
-        child: const Icon(Icons.add),
-      ),
       body: _buildCalendarView(themesNotifier),
+      floatingActionButton: _showActionOptions
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 90.0, right: 20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _buildActionButton(
+                    icon: Icons.timer,
+                    tooltip: 'Timer',
+                    color: Colors.blueAccent,
+                    onPressed: () {
+                      setState(() => _showActionOptions = false);
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const StudyTimerPage()));
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  _buildActionButton(
+                    icon: Icons.event,
+                    tooltip: 'Add Event',
+                    color: Colors.green,
+                    onPressed: () {
+                      setState(() => _showActionOptions = false);
+                      _showAddOrEditEventDialog(date: DateTime.now());
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  _buildActionButton(
+                    icon: Icons.close,
+                    tooltip: 'Close Menu',
+                    color: Colors.red,
+                    mini: true,
+                    onPressed: () {
+                      setState(() => _showActionOptions = false);
+                    },
+                  ),
+                ],
+              ),
+            )
+          : FloatingActionButton(
+              tooltip: 'Show Options',
+              onPressed: () {
+                setState(() => _showActionOptions = true);
+              },
+              child: const Icon(Icons.add),
+            ),
     );
   }
 
@@ -152,5 +192,23 @@ class _PlannerPageState extends State<PlannerPage> {
     _plannerState.disposeWatcher();
     _eventController.dispose();
     super.dispose();
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String tooltip,
+    required Color color,
+    required VoidCallback onPressed,
+    bool mini = false,
+  }) {
+    return FloatingActionButton(
+      heroTag: tooltip,
+      tooltip: tooltip,
+      mini: mini,
+      backgroundColor: color,
+      elevation: 6,
+      child: Icon(icon, size: 24),
+      onPressed: onPressed,
+    );
   }
 }

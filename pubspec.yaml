@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  percent_indicator: ^4.2.2
+
   envied: ^1.1.1
   flutter_native_splash: ^2.4.2
   flutter_html: ^3.0.0-alpha.5
