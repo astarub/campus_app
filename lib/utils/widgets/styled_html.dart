@@ -31,6 +31,7 @@ class StyledHTML extends Html {
             'h4': Style(
               fontSize: FontSize(17),
             ),
+            'a': Style(margin: Margins.only(top: 10)),
             '*': Style(
               color:
                   textStyle?.color ?? Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium?.color,
@@ -69,8 +70,12 @@ class StyledHTML extends Html {
         url.contains('instagram') ||
         url.contains('facebook') ||
         url.contains('twitch') ||
+        url.contains('tiktok') ||
         url.contains('mailto:') ||
-        url.contains('tel:')) {
+        url.contains('tel:') ||
+        url.contains('.pdf') ||
+        url.contains('play.google.com') ||
+        url.contains('apps.apple.com')) {
       // Open in external browser
       launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
