@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/core/themes.dart';
 
+// DayViewCalendar UI widget.
 class DayViewCalendar extends StatelessWidget {
   const DayViewCalendar({
     super.key,
@@ -29,38 +30,47 @@ class DayViewCalendar extends StatelessWidget {
       initialDay: focusedDay,
       onDateTap: onDateTap,
       showLiveTimeLineInAllDays: true,
-      timeLineWidth: 60,
+      timeLineWidth: 50,
       backgroundColor: theme.colorScheme.surface,
       liveTimeIndicatorSettings: LiveTimeIndicatorSettings(color: theme.colorScheme.secondary),
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: theme.cardColor),
-        headerTextStyle: theme.textTheme.titleLarge,
+        headerTextStyle: theme.textTheme.headlineSmall,
+        leftIconConfig: IconDataConfig(
+          color: theme.colorScheme.primary,
+        ),
+        rightIconConfig: IconDataConfig(
+          color: theme.colorScheme.primary,
+        ),
       ),
       eventTileBuilder: (date, events, boundary, start, end) {
         return GestureDetector(
           onTap: () => onEventTap(events.first.event!),
           child: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
-              color: events.first.color.withAlpha(220),
+              color: events.first.color,
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
               events.first.title,
-              style: const TextStyle(
-                color: Colors.white,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.primary,
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
             ),
           ),
         );
       },
       fullDayEventBuilder: (events, date) {
-        return eventTile(events, onEventTap);
+        return EventTile(
+          events: events,
+          onEventTap: onEventTap,
+        );
       },
+      hourIndicatorSettings: HourIndicatorSettings(
+        color: theme.dividerColor,
+      ),
     );
   }
 }

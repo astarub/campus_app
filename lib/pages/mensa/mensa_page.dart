@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io' show Platform;
+import 'package:campus_app/pages/mensa/planner_helpers/mensa_day_notifier.dart';
+import 'package:campus_app/pages/mensa/planner_helpers/restaurant_location.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -195,6 +197,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                             });
 
                             streamController.add(date);
+                            context.read<MensaDayNotifier>().setDay(date);
                           },
                         ),
                       ),
@@ -271,37 +274,40 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                           );
                         } else {
                           // Restaurants (index-1 for calling restaurantConfig)
-                          return ExpandableRestaurant(
-                            name: restaurantConfig[index - 1]['name'],
-                            imagePath: restaurantConfig[index - 1]['imagePath'],
-                            date: selectedDate,
-                            stream: streamController.stream,
-                            meals: index == 1
-                                ? mensaUtils.buildKulturCafeRestaurant(
-                                    onPreferenceTap: singlePreferenceSelected,
-                                    mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
-                                        .currentSettings
-                                        .mensaAllergenes,
-                                    mensaPreferences: Provider.of<SettingsHandler>(context, listen: false)
-                                        .currentSettings
-                                        .mensaPreferences,
-                                  )
-                                : mensaUtils.fromDishListToMealCategoryList(
-                                    entities: index == 2
-                                        ? mensaDishes
-                                        : index == 3
-                                            ? roteBeeteDishes
-                                            : qwestDishes,
-                                    day: selectedDay,
-                                    onPreferenceTap: singlePreferenceSelected,
-                                    mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
-                                        .currentSettings
-                                        .mensaAllergenes,
-                                    mensaPreferences: Provider.of<SettingsHandler>(context, listen: false)
-                                        .currentSettings
-                                        .mensaPreferences,
-                                  ),
-                            openingHours: Map<String, String>.from(restaurantConfig[index - 1]['openingHours']),
+                          return Provider<RestaurantLocation>.value(
+                            value: RestaurantLocation(restaurantConfig[index - 1]['name']),
+                            child: ExpandableRestaurant(
+                              name: restaurantConfig[index - 1]['name'],
+                              imagePath: restaurantConfig[index - 1]['imagePath'],
+                              date: selectedDate,
+                              stream: streamController.stream,
+                              meals: index == 1
+                                  ? mensaUtils.buildKulturCafeRestaurant(
+                                      onPreferenceTap: singlePreferenceSelected,
+                                      mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
+                                          .currentSettings
+                                          .mensaAllergenes,
+                                      mensaPreferences: Provider.of<SettingsHandler>(context, listen: false)
+                                          .currentSettings
+                                          .mensaPreferences,
+                                    )
+                                  : mensaUtils.fromDishListToMealCategoryList(
+                                      entities: index == 2
+                                          ? mensaDishes
+                                          : index == 3
+                                              ? roteBeeteDishes
+                                              : qwestDishes,
+                                      day: selectedDay,
+                                      onPreferenceTap: singlePreferenceSelected,
+                                      mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
+                                          .currentSettings
+                                          .mensaAllergenes,
+                                      mensaPreferences: Provider.of<SettingsHandler>(context, listen: false)
+                                          .currentSettings
+                                          .mensaPreferences,
+                                    ),
+                              openingHours: Map<String, String>.from(restaurantConfig[index - 1]['openingHours']),
+                            ),
                           );
                         }
                       },

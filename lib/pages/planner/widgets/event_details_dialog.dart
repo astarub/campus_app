@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
 
+// EventDetailsDialog UI widget.
 class EventDetailsDialog extends StatelessWidget {
   const EventDetailsDialog({
     super.key,
@@ -27,8 +28,8 @@ class EventDetailsDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('From: ${DateFormat.yMMMEd().add_jm().format(event.startDateTime.toLocal())}'),
-            Text('To:      ${DateFormat.yMMMEd().add_jm().format(event.endDateTime.toLocal())}'),
+            Text('From:     ${DateFormat.yMMMEd().add_jm().format(event.startDateTime.toLocal())}'),
+            Text('To:           ${DateFormat.yMMMEd().add_jm().format(event.endDateTime.toLocal())}'),
             const SizedBox(height: 16),
             StyledHTML(
               context: context,
@@ -70,7 +71,6 @@ class EventDetailsDialog extends StatelessWidget {
             }
           },
         ),
-        const Spacer(),
         if (userEvent)
           TextButton(
             child: const Text('Edit'),

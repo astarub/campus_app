@@ -2,47 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 
-Widget eventTile(
-  List<CalendarEventData<PlannerEventEntity>> events,
-  void Function(PlannerEventEntity event) onEventTap, {
-  int maxVisible = 4,
-}) {
-  if (events.isEmpty) return const SizedBox.shrink();
+// EventTile UI widget.
+class EventTile extends StatelessWidget {
+  const EventTile({
+    super.key,
+    required this.events,
+    required this.onEventTap,
+  });
 
-  events.sort((a, b) => a.title.compareTo(b.title));
+  final List<CalendarEventData<PlannerEventEntity>> events;
+  final ValueChanged<PlannerEventEntity> onEventTap;
 
-  final visible = events.take(maxVisible).toList();
-  final hidden = events.length - visible.length;
+  @override
+  Widget build(BuildContext context) {
+    if (events.isEmpty) return const SizedBox.shrink();
+    final theme = Theme.of(context);
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      for (final ev in visible)
-        GestureDetector(
-          onTap: () => onEventTap(ev.event!),
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 1),
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-            decoration: BoxDecoration(
-              color: ev.color.withOpacity(.9),
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              ev.title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                overflow: TextOverflow.ellipsis,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (final ev in events)
+          GestureDetector(
+            onTap: () => onEventTap(ev.event!),
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 1),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+              decoration: BoxDecoration(
+                color: ev.color,
+                borderRadius: BorderRadius.circular(6),
               ),
-              maxLines: 1,
+              child: Text(
+                ev.title,
+                style: theme.textTheme.bodyMedium?.copyWith(color: theme.primaryColor, fontSize: 12),
+                maxLines: 1,
+              ),
             ),
           ),
-        ),
-      if (hidden > 0)
-        Padding(
-          padding: const EdgeInsets.only(top: 2),
-          child: Text('+$hidden more', style: const TextStyle(fontSize: 10)),
-        ),
-    ],
-  );
+      ],
+    );
+  }
 }

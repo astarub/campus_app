@@ -9,6 +9,7 @@ import 'package:campus_app/pages/planner/planner_state.dart';
 import 'package:campus_app/utils/pages/planner_utils.dart';
 import 'package:campus_app/pages/planner/studytimer_page.dart';
 
+// AddEditEventDialog UI widget.
 class AddEditEventDialog extends StatefulWidget {
   const AddEditEventDialog({
     super.key,
@@ -23,6 +24,7 @@ class AddEditEventDialog extends StatefulWidget {
   State<AddEditEventDialog> createState() => _AddEditEventDialogState();
 }
 
+// _AddEditEventDialogState UI widget.
 class _AddEditEventDialogState extends State<AddEditEventDialog> {
   late final bool _isEditing = widget.event != null;
   late final PlannerState _plannerState = context.read<PlannerState>();
@@ -42,6 +44,7 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
   static const TextStyle _textStyle = TextStyle(fontSize: 16);
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return AlertDialog(
       title: Text(_isEditing ? 'Edit Event' : 'Add New Event'),
       content: SingleChildScrollView(
@@ -50,12 +53,12 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
+              decoration: InputDecoration(labelText: 'Title', labelStyle: theme.textTheme.bodyMedium),
               style: _textStyle,
             ),
             TextField(
               controller: _descController,
-              decoration: const InputDecoration(labelText: 'Description (Optional)'),
+              decoration: InputDecoration(labelText: 'Description (Optional)', labelStyle: theme.textTheme.bodyMedium),
               style: _textStyle,
             ),
             const SizedBox(height: 16),
@@ -75,7 +78,7 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
                       builder: (pickerContext) => AlertDialog(
                         title: const Text(
                           'Pick a color',
-                          style: _textStyle,
+                          style: TextStyle(fontSize: 20),
                         ),
                         content: SingleChildScrollView(
                           child: BlockPicker(
@@ -119,7 +122,7 @@ class _AddEditEventDialogState extends State<AddEditEventDialog> {
             ValueListenableBuilder<DateTime>(
               valueListenable: _endDateTimeNotifier,
               builder: (context, currentEnd, child) => TextButton.icon(
-                icon: const Icon(Icons.timer_off_outlined),
+                icon: const Icon(Icons.calendar_today),
                 label: Text(
                   'Ends: ${DateFormat('dd/MM/yyyy').add_jm().format(currentEnd.toLocal())}',
                   style: _textStyle,
