@@ -5,10 +5,10 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:campus_app/core/exceptions.dart';
-import 'package:campus_app/pages/calendar/calendar_datasource.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
-import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_datasource.dart';
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/calendar/entities/organizer_entity.dart';
+import 'package:campus_app/pages/feed/calendar/entities/venue_entity.dart';
 import 'package:campus_app/utils/constants.dart';
 
 import 'calendar_datasource_test.mocks.dart';
@@ -19,7 +19,6 @@ import 'samples/eventfeed_response.dart';
 Event emptyEvent({String title = 'Title'}) {
   return Event(
     id: 0,
-    
     url: 'Url',
     title: title,
     description: 'Description',

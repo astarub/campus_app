@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/widgets/event_widget.dart';
 import 'package:campus_app/utils/constants.dart';
 
 class CalendarUtils {

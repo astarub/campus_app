@@ -19,10 +19,10 @@ import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 import 'package:campus_app/firebase_options.dart';
 import 'package:campus_app/pages/home/widgets/firebase_popup.dart';
-import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
-import 'package:campus_app/pages/calendar/calendar_usecases.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_detail_page.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/home/page_navigator.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 

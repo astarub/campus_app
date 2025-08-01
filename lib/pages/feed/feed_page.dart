@@ -69,10 +69,12 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
       // ignore: empty_catches
     } catch (e) {}
 
+    // TODO: Add calendar entries to feed
     final newsData = await _newsUsecases.updateFeedAndFailures();
 
     try {
       setState(() {
+        // TODO: Do the same for event data
         news = newsData['news'] != null ? newsData['news']! as List<NewsEntity> : [];
         parsedNewsWidgets = parseUpdateToWidgets();
       });
@@ -125,6 +127,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
     final List<Widget> filteredWidgets = [];
 
     for (final Widget e in parsedNewsWidgets) {
+      // TODO: Add case for EventEntity
       if (e is FeedItem) {
         if (e.title.toUpperCase().contains(search.toUpperCase())) {
           filteredWidgets.add(e);

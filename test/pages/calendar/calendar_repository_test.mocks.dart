@@ -5,8 +5,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i5;
 
-import 'package:campus_app/pages/calendar/calendar_datasource.dart' as _i4;
-import 'package:campus_app/pages/calendar/entities/event_entity.dart' as _i6;
+import 'package:campus_app/pages/feed/calendar/calendar_datasource.dart' as _i4;
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart' as _i6;
 import 'package:dio/dio.dart' as _i2;
 import 'package:hive/hive.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
@@ -48,8 +48,7 @@ class _FakeBox_1<E> extends _i1.SmartFake implements _i3.Box<E> {
 /// A class which mocks [CalendarDatasource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCalendarDatasource extends _i1.Mock
-    implements _i4.CalendarDatasource {
+class MockCalendarDatasource extends _i1.Mock implements _i4.CalendarDatasource {
   MockCalendarDatasource() {
     _i1.throwOnMissingStub(this);
   }

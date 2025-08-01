@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/calendar/calendar_repository.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_repository.dart';
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart';
 
 class CalendarUsecases {
   final CalendarRepository calendarRepository;
@@ -21,14 +21,10 @@ class CalendarUsecases {
     };
 
     // get events from AStA API and cached events
-    final Either<Failure, List<Event>> remoteEvents =
-        await calendarRepository.getAStAEvents();
-    final Either<Failure, List<Event>> remoteAppEvents =
-        await calendarRepository.getAppEvents();
-    final Either<Failure, List<Event>> cachedEvents =
-        calendarRepository.getCachedEvents();
-    final Either<Failure, List<Event>> savedEvents =
-        await calendarRepository.updateSavedEvents();
+    final Either<Failure, List<Event>> remoteEvents = await calendarRepository.getAStAEvents();
+    final Either<Failure, List<Event>> remoteAppEvents = await calendarRepository.getAppEvents();
+    final Either<Failure, List<Event>> cachedEvents = calendarRepository.getCachedEvents();
+    final Either<Failure, List<Event>> savedEvents = await calendarRepository.updateSavedEvents();
 
     // fold cachedEvents
     cachedEvents.fold(
@@ -75,8 +71,7 @@ class CalendarUsecases {
     };
 
     // get only cached events
-    final Either<Failure, List<Event>> cachedEvents =
-        calendarRepository.getCachedEvents();
+    final Either<Failure, List<Event>> cachedEvents = calendarRepository.getCachedEvents();
 
     // fold cachedEvents
     cachedEvents.fold(

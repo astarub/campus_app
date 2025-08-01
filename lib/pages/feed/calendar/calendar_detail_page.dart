@@ -8,14 +8,14 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
-import 'package:campus_app/pages/calendar/calendar_repository.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_repository.dart';
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
-import 'package:campus_app/pages/calendar/calendar_event_planner_mapper.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_event_planner_mapper.dart';
 
 class CalendarDetailPage extends StatefulWidget {
   final Event event;

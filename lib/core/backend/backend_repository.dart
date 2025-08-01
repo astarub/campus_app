@@ -13,7 +13,7 @@ import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/backend/entities/account_entity.dart';
 import 'package:campus_app/core/backend/entities/study_course_entity.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:campus_app/utils/onboarding_data.dart';
 

@@ -1,3 +1,5 @@
+// TODO: Remove page entirely
+
 import 'dart:async';
 import 'dart:io' show Platform;
 import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
@@ -11,17 +13,17 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
-import 'package:campus_app/pages/calendar/calendar_repository.dart';
-import 'package:campus_app/pages/calendar/calendar_usecases.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
-import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_repository.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_usecases.dart';
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/widgets/event_widget.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_search_bar.dart';
-import 'package:campus_app/pages/calendar/widgets/calendar_filter_popup.dart';
+import 'package:campus_app/pages/feed/widgets/calendar_filter_popup.dart';
 
 class CalendarPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;

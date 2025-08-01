@@ -1,7 +1,7 @@
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/calendar/calendar_repository.dart';
-import 'package:campus_app/pages/calendar/calendar_usecases.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_repository.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_usecases.dart';
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

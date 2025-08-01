@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:sentry/sentry_io.dart';
 
 import 'package:campus_app/core/exceptions.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart';
 import 'package:campus_app/utils/constants.dart';
 
 class CalendarDatasource {

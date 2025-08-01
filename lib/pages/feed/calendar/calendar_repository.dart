@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
-import 'package:campus_app/pages/calendar/calendar_datasource.dart';
-import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+import 'package:campus_app/pages/feed/calendar/calendar_datasource.dart';
+import 'package:campus_app/pages/feed/calendar/entities/event_entity.dart';
 import 'package:dartz/dartz.dart';
 
 class CalendarRepository {
