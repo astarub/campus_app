@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_int_literals
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 

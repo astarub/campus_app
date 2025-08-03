@@ -25,6 +25,7 @@ dart_code_metrics:
     - no-empty-block
     - prefer-conditional-expressions
     - no-equal-then-else
+    - no_leading_underscores_for_local_identifiers
     - no-magic-number:
         severity: style
     - avoid-late-keyword:
