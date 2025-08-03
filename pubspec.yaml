@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  percent_indicator: ^4.2.2
+
   envied: ^1.1.1
   flutter_native_splash: ^2.4.2
   flutter_html: ^3.0.0-alpha.5
@@ -62,8 +64,13 @@ dependencies:
   image: ^4.3.0
   dismissible_page: ^1.0.2
   app_links: ^6.4.0
+  calendar_view: ^1.4.0
+  uuid: ^4.5.1
+  rrule: ^0.2.17
+  flutter_colorpicker: ^1.1.0
 
 dev_dependencies:
+
   flutter_test:
     sdk: flutter
   build_runner: ^2.4.13
@@ -71,7 +78,7 @@ dev_dependencies:
   mockito: ^5.4.3
   envied_generator: ^1.1.1
   flutter_launcher_icons: ^0.14.3
-
+  analyzer: ^6.11.0
 dependency_overrides:
   # AppWrite depends on outdated package.
   #  - https://github.com/appwrite/sdk-for-flutter/issues/214#issuecomment-2278577156

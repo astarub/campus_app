@@ -20,3 +20,6 @@ class NoDataFailure extends Failure {}
 
 /// caching goes wrong
 class CachFailure extends Failure {}
+
+/// local storage error
+class StorageFailure extends Failure {}

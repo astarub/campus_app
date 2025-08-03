@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/pages/mensa/planner_helpers/mensa_day_notifier.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,9 @@ import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:campus_app/pages/planner/planner_state.dart';
+import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -46,10 +51,10 @@ Future<void> main() async {
   Hive.registerAdapter(CategoryAdapter());
   Hive.registerAdapter(NewsEntityAdapter());
   Hive.registerAdapter(DishEntityAdapter());
+  Hive.registerAdapter(PlannerEventEntityAdapter());
 
   // Initialize injection container
   await ic.init();
-
   // Checks if the app is in release mode and initializes sentry
   // REMOVE THIS CHECK IF YOU WISH TO RUN THE APP IN RELEASE MODE OTHERWISE THE APP WILL NOT RUN
   if (kReleaseMode) {
@@ -66,6 +71,8 @@ Future<void> main() async {
             // Initializes the provider that handles the app-theme, authentication and other things
             ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
             ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+            ChangeNotifierProvider<PlannerState>(create: (_) => PlannerState(sl())..init()),
+            ChangeNotifierProvider(create: (_) => MensaDayNotifier()),
           ],
           child: CampusApp(
             key: campusAppKey,
@@ -80,6 +87,8 @@ Future<void> main() async {
           // Initializes the provider that handles the app-theme, authentication and other things
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
+          ChangeNotifierProvider<PlannerState>(create: (_) => PlannerState(sl())..init()),
+          ChangeNotifierProvider(create: (_) => MensaDayNotifier()),
         ],
         child: CampusApp(
           key: campusAppKey,

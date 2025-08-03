@@ -14,6 +14,8 @@ import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:campus_app/pages/planner/planner_state.dart';
+import 'package:campus_app/pages/calendar/calendar_event_planner_mapper.dart';
 
 class CalendarDetailPage extends StatefulWidget {
   final Event event;
@@ -30,8 +32,10 @@ class CalendarDetailPage extends StatefulWidget {
 class _CalendarDetailState extends State<CalendarDetailPage> {
   final CalendarRepository calendarRepository = sl<CalendarRepository>();
   final BackendRepository backendRepository = sl<BackendRepository>();
+  late PlannerState _plannerState;
 
   bool savedEvent = false;
+  bool get _isAlreadyInPlanner => _plannerState.events.any((e) => e.id == widget.event.id.toString());
 
   /// Function that updates the saved event state and shows an info
   /// message inside a [SnackBar]
@@ -39,7 +43,16 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
     setState(() {
       savedEvent = !savedEvent;
     });
-
+    if (savedEvent) {
+      if (!_isAlreadyInPlanner) {
+        await _plannerState.addEvent(widget.event.toPlannerEvent());
+      }
+    } else {
+      if (_isAlreadyInPlanner) {
+        await _plannerState.deleteEvent(widget.event.id.toString());
+      }
+    }
+    if (!mounted) return;
     try {
       final SettingsHandler settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
@@ -71,6 +84,8 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
   @override
   void initState() {
     super.initState();
+    _plannerState = context.read<PlannerState>();
+    if (_isAlreadyInPlanner) savedEvent = true;
 
     calendarRepository.updateSavedEvents().then((savedEvents) {
       savedEvents.fold((failure) => null, (list) {

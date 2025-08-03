@@ -259,7 +259,6 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                           ),
                         ],
                       ),
-                      // AStA logo at the bottom of the page
                       Image.asset(
                         'assets/img/asta_logo.png',
                         width: 50,
