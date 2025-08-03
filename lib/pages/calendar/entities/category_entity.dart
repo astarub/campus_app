@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'category_entity.g.dart';
 
-@HiveType(typeId: 4)
+@HiveType(typeId: 57)
 class Category {
   /// The unique id of the category or tag
   @HiveField(0)

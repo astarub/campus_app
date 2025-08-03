@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:appwrite/models.dart' as models;
+import 'package:campus_app/pages/coupons/coupon_backend/coupon_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:slugid/slugid.dart';
 import 'package:appwrite/appwrite.dart';
@@ -24,6 +25,76 @@ class BackendRepository {
   BackendRepository({
     required this.client,
   });
+
+  Future<models.Document> createCoupon(Coupon coupon) async {
+    final Databases databaseService = Databases(client);
+
+    try {
+      final document = await databaseService.createDocument(
+        databaseId: 'coupon',
+        collectionId: 'CCoupon',
+        documentId: ID.unique(),
+        data: coupon.toMap(),
+      );
+      return document;
+    } on AppwriteException catch (e) {
+      debugPrint('Error while creating coupon: ${e.message}');
+      rethrow;
+    }
+  }
+
+  Future<List<Coupon>> getCoupons() async {
+    final Databases databaseService = Databases(client);
+
+    try {
+      final documentList = await databaseService.listDocuments(
+        databaseId: 'coupon',
+        collectionId: 'CCoupon',
+      );
+      return documentList.documents.map((doc) => Coupon.fromMap(doc.data)).toList();
+    } on AppwriteException catch (e) {
+      debugPrint('Error while fetching coupons: ${e.message}');
+      rethrow;
+    }
+  }
+
+  // Update Coupon (e.g., increment usedCount)
+  Future<models.Document> updateCoupon({
+    required String couponId,
+    required Map<String, dynamic> updatedFields,
+  }) async {
+    final Databases databaseService = Databases(client);
+
+    try {
+      final updatedDocument = await databaseService.updateDocument(
+        databaseId: 'coupon',
+        collectionId: 'CCoupon',
+        documentId: couponId,
+        data: updatedFields,
+      );
+      return updatedDocument;
+    } on AppwriteException catch (e) {
+      debugPrint('Error while updating coupon: ${e.message}');
+      rethrow;
+    }
+  }
+
+  // Delete Coupon
+  Future<void> deleteCoupon({required String couponId}) async {
+    final Databases databaseService = Databases(client);
+
+    try {
+      await databaseService.deleteDocument(
+        databaseId: 'coupon',
+        collectionId: 'CCoupon',
+        documentId: couponId,
+      );
+      debugPrint('Successfully deleted coupon.');
+    } on AppwriteException catch (e) {
+      debugPrint('Error while deleting coupon: ${e.message}');
+      rethrow;
+    }
+  }
 
   Future<void> createAccount(SettingsHandler settingsHandler) async {
     final Functions functionService = Functions(client);

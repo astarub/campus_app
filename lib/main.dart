@@ -29,6 +29,8 @@ import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
+import 'package:campus_app/pages/coupons/coupon_backend/coupon_entity.dart';
+import 'package:campus_app/pages/coupons/coupon_backend/coupon_user_entity.dart';
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -40,12 +42,18 @@ Future<void> main() async {
 
   // Initializes Hive and all used adapter for caching entities
   await Hive.initFlutter();
+
   Hive.registerAdapter(EventAdapter());
   Hive.registerAdapter(VenueAdapter());
   Hive.registerAdapter(OrganizerAdapter());
   Hive.registerAdapter(CategoryAdapter());
   Hive.registerAdapter(NewsEntityAdapter());
   Hive.registerAdapter(DishEntityAdapter());
+  Hive.registerAdapter(CouponAdapter());
+  Hive.registerAdapter(CouponUserAdapter());
+
+  await Hive.openBox<Coupon>('couponBox');
+  await Hive.openBox<CouponUser>('couponUserBox');
 
   // Initialize injection container
   await ic.init();
@@ -317,7 +325,7 @@ class CampusAppState extends State<CampusApp> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-
+    Hive.close();
     super.dispose();
   }
 

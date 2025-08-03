@@ -10,7 +10,7 @@ import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
 part 'event_entity.g.dart';
 
 @immutable
-@HiveType(typeId: 1)
+@HiveType(typeId: 78)
 class Event {
   /// The unique id of the event
   @HiveField(0)

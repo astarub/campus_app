@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'venue_entity.g.dart';
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 53)
 class Venue {
   /// The unique id of the venue
   @HiveField(0)
