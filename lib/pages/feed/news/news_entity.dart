@@ -105,14 +105,16 @@ class NewsEntity {
     final url = json['link'];
     final author = json['author'];
     final categories = json['categories'];
-    final content = Bidi.stripHtmlIfNeeded(Map<String, dynamic>.from(json['content'])['rendered'] as String);
+    final content = Map<String, dynamic>.from(json['content'])['rendered'] as String;
     String description = '';
 
     // Remove html and whitespaces from the content
     final String formattedContent = content
         .replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '')
         .replaceAll(RegExp(' {2,}'), ' ')
-        .replaceAll('\n', ' ');
+        // Remove first figure if post starts with a figure
+        .replaceAll(RegExp('^<figure[^>]*>.*?</figure>', dotAll: true), '')
+        .replaceAll('\n', '');
     final List<String> descWords = formattedContent.split(' ');
     final List<String> descriptionList = [];
 
