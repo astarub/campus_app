@@ -1,4 +1,8 @@
 import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/pages/navigation/data/assembly_points.dart';
+import 'package:campus_app/pages/navigation/data/buildings.dart';
+import 'package:campus_app/pages/navigation/data/room_graph.dart';
+import 'package:campus_app/pages/navigation/data/vending_machines.dart';
 import 'package:campus_app/pages/navigation/offline_map_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -13,7 +17,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/navigation/data.dart';
 import 'package:campus_app/pages/navigation/indoor_nav_page.dart';
 import 'package:campus_app/utils/pages/pathfinder_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';

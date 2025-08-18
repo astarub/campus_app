@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/main.dart';
-import 'package:campus_app/pages/navigation/data.dart';
+import 'package:campus_app/pages/navigation/data/room_graph.dart';
 import 'package:campus_app/pages/navigation/models/floor_map.dart';
 import 'package:campus_app/pages/navigation/navigation_page.dart';
 import 'package:campus_app/pages/navigation/widgets/compass.dart';
@@ -34,9 +34,8 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   (String, String, String) from = ('SH', '0', 'Haupteingang');
   List<List<Offset>> pointsList = [];
   List<String> suggestions = [];
-  Map testkarte = {};
+  Map dijkstraMap = {};
   (String, String, String) to = ('SH', '0', 'Kultur-Cafe');
-  final double scaleFactor = 1 / 4; // Compression factr
   bool isLoading = false;
   int? rub0Index;
 
@@ -448,6 +447,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       },
     );
     debugPrint('Dijkstra execution time: ${stopwatch1.elapsedMilliseconds}ms');
+    debugPrint('$shortestPath');
 
     final filenames = <String>[];
     final pointsListTemp = <List<Offset>>[];
@@ -478,8 +478,8 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       final key = step;
       final coords = graph[key]!['Coordinates'];
       final Offset offset = Offset(
-        coords[0].toDouble() * scaleFactor,
-        coords[1].toDouble() * scaleFactor,
+        coords[0].toDouble(),
+        coords[1].toDouble(),
       );
 
       for (int i = 0; i < filenames.length; i++) {
@@ -527,7 +527,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   }
 
   void fill() {
-    for (final key in testkarte.keys) {
+    for (final key in dijkstraMap.keys) {
       final (x1, x2, x3) = key;
       final x4 = '$x1 $x2/$x3';
       if (!x4.contains('EN_')) {
@@ -541,14 +541,17 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
 
     await Future.delayed(const Duration(milliseconds: 200));
 
-    graph.keys.forEach((key) {
-      final Map x = {};
-      for (var i = 0; i < graph[key]?['Connections'].length; i++) {
-        final (y, z) = graph[key]?['Connections'][i];
-        x[y] = z;
+    for (final node in graph.keys) {
+      final Map connectionsOfNode = {};
+
+      for (var i = 0; i < graph[node]?['Connections'].length; i++) {
+        final (connectionTo, distance) = graph[node]?['Connections'][i];
+        connectionsOfNode[connectionTo] = distance;
       }
-      testkarte[key] = x;
-    });
+
+      dijkstraMap[node] = connectionsOfNode;
+    }
+    debugPrint('dijkstraMap = $dijkstraMap');
 
     fill();
 
@@ -609,7 +612,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
 
       floors = [];
       currentIndex = 0;
-      await computeImagesForMapIncrementally(testkarte);
+      await computeImagesForMapIncrementally(dijkstraMap);
     } else {
       debugPrint('Both fields must be filled.');
     }

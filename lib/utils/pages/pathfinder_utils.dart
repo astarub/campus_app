@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:campus_app/pages/navigation/data.dart';
+import 'package:campus_app/pages/navigation/data/room_graph.dart';
 import 'package:campus_app/pages/navigation/models/room_label.dart';
 import 'package:dijkstra/dijkstra.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class PathfinderUtils {
     return Dijkstra.findPathFromGraph(graph, from, to);
   }
 
-  List<RoomLabel> getRoomLabelsFromGraph(String fn, {double scaleFactor = 0.25}) {
+  List<RoomLabel> getRoomLabelsFromGraph(String fn) {
     final labels = <RoomLabel>[];
 
     graph.forEach((key, value) {
@@ -45,8 +45,8 @@ class PathfinderUtils {
             RoomLabel(
               labelText: roomName,
               position: Offset(
-                coords[0].toDouble() * scaleFactor,
-                coords[1].toDouble() * scaleFactor,
+                coords[0].toDouble(),
+                coords[1].toDouble(),
               ),
             ),
           );
