@@ -147,7 +147,7 @@ class _PathfinderOnboardingPageState extends State<PathfinderOnboardingPage> {
                             bottom: 50,
                           ),
                           child: Text(
-                            'Dies ist die Alpha Version des Raumfinders. Aktuell steht die Gebäudeinterne Navigation nur für wenige Gebäude zur Verfügung.',
+                            'Dies ist die Beta Version des Raumfinders. Aktuell steht die Gebäudeinterne Navigation noch nicht für alle Gebäude und Ebenen zur Verfügung.',
                             style: Provider.of<ThemesNotifier>(context)
                                 .currentThemeData
                                 .textTheme

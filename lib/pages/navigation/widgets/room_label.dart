@@ -44,7 +44,7 @@ class RoomLabelWidget extends StatelessWidget {
     final labelStyle = TextStyle(
       fontSize: isPOI ? 20 : 10,
       fontWeight: FontWeight.bold,
-      color: currentThemeData.colorScheme.onSurface,
+      color: isPOI ? Colors.white : currentThemeData.colorScheme.onSurface,
     );
 
     // measure text size
@@ -58,9 +58,7 @@ class RoomLabelWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 2),
           decoration: BoxDecoration(
-            color: isPOI
-                ? (isStart ? currentThemeData.colorScheme.secondary : Colors.red)
-                : currentThemeData.colorScheme.surface,
+            color: isPOI ? (isStart ? Colors.blue : Colors.red) : currentThemeData.colorScheme.surface,
             borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
           child: Text(

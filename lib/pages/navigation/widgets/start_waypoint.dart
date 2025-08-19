@@ -26,10 +26,10 @@ class StartWaypoint extends StatelessWidget {
       top: position.dy - 15,
       child: Transform.rotate(
         angle: textRot,
-        child: Icon(
+        child: const Icon(
           Icons.my_location_outlined,
           size: 30,
-          color: currentThemeData.colorScheme.secondary,
+          color: Colors.blue,
         ),
       ),
     );

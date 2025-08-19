@@ -242,7 +242,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                                         listen: false,
                                       ).currentTheme ==
                                       AppThemes.light
-                                  ? currentThemeData.colorScheme.surface
+                                  ? const Color.fromRGBO(34, 40, 54, 1)
                                   : null,
                             ),
                             border: InputBorder.none,
