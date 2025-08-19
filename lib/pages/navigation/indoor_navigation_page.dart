@@ -389,17 +389,10 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                                         // Reset rotation on tab
                                         // TODO: Compas should hanlde this
                                         onTap: () {
-                                          final startPoint = floors[currentIndex].wayPoints.first;
-                                          final screenWidth = constraints.maxWidth;
-                                          final screenHeight = constraints.maxHeight;
-
                                           setState(() {
-                                            scale = 2.5;
+                                            scale = 1.5;
                                             rotation = 0.0;
-                                            position = Offset(
-                                              (screenWidth - startPoint.dx * scale) / 2,
-                                              (screenHeight - startPoint.dy * scale) / 2,
-                                            );
+                                            position = Offset.zero;
                                           });
                                         },
                                         child: Container(
