@@ -6,7 +6,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/main.dart';
 import 'package:campus_app/pages/navigation/data/room_graph.dart';
 import 'package:campus_app/pages/navigation/models/floor_map.dart';
-import 'package:campus_app/pages/navigation/navigation_page.dart';
+import 'package:campus_app/pages/navigation/outdoor_navigation_page.dart';
 import 'package:campus_app/pages/navigation/widgets/compass.dart';
 import 'package:campus_app/pages/navigation/widgets/destination_waypoint.dart';
 import 'package:campus_app/pages/navigation/widgets/navigation_buttons.dart';

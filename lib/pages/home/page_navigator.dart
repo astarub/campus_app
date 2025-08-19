@@ -7,7 +7,7 @@ import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/wallet/wallet_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/navigation/navigation_page.dart';
+import 'package:campus_app/pages/navigation/outdoor_navigation_page.dart';
 
 enum PageItem { feed, events, coupons, pathfinder, mensa, wallet, more }
 

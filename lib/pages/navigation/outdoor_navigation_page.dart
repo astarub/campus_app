@@ -6,9 +6,8 @@ import 'package:campus_app/pages/navigation/data/assembly_points.dart';
 import 'package:campus_app/pages/navigation/data/buildings.dart';
 import 'package:campus_app/pages/navigation/data/room_graph.dart';
 import 'package:campus_app/pages/navigation/data/vending_machines.dart';
-import 'package:campus_app/pages/navigation/indoor_nav_page.dart';
+import 'package:campus_app/pages/navigation/indoor_navigation_page.dart';
 import 'package:campus_app/pages/navigation/navigation_onboarding.dart';
-import 'package:campus_app/pages/navigation/tile_loading_isolate.dart';
 import 'package:campus_app/utils/pages/navigation_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:flutter/foundation.dart';
@@ -78,6 +77,18 @@ Map<String, LatLng> addGraphEntriesToPredefinedLocationsIsolate(
   }
 
   return predefined;
+}
+
+// Isolate responsible for providing map tiles using backend-server
+Future<TileLayer> buildTileLayerInIsolate() async {
+  return compute(_buildTileLayerWorker, null);
+}
+
+TileLayer _buildTileLayerWorker(dynamic _) {
+  return TileLayer(
+    // URL template
+    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+  );
 }
 
 class NavigationPage extends StatefulWidget {
