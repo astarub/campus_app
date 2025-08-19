@@ -1,6 +1,8 @@
 //! Important: This Datasource is currently NOT used!!
 // TODO: Implement working synchronisation & update mechanism.
 
+// ignore_for_file: avoid_dynamic_calls
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -85,7 +87,6 @@ class NavigationDatasource {
       final coords = value['Coordinates'];
       final connsRaw = value['Connections'];
 
-      // ignore: avoid_dynamic_calls
       final conns = connsRaw.map<((String, String, String), int)>((conn) {
         final innerParts = (conn[0] as String).split('-');
         final innerTuple = (innerParts[0], innerParts[1], innerParts[2]);

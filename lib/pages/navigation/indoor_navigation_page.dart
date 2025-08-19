@@ -144,7 +144,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           final lowerOption = option.toLowerCase();
 
                           // keep option only if all tokens are found
-                          return tokens.every((token) => lowerOption.contains(token));
+                          return tokens.every(lowerOption.contains);
                         });
                       },
                       onSelected: (String selection) {
@@ -516,7 +516,9 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       final key = step;
       final coords = graph[key]!['Coordinates'];
       final Offset offset = Offset(
+        // ignore: avoid_dynamic_calls
         coords[0].toDouble(),
+        // ignore: avoid_dynamic_calls
         coords[1].toDouble(),
       );
 
@@ -612,7 +614,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       NodeId parseNode(String input) {
         final components = input.split(' ');
         if (components.length < 2) {
-          throw FormatException("Invalid node format: $input");
+          throw FormatException('Invalid node format: $input');
         }
 
         final building = components.first;
@@ -620,7 +622,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
         final levelAndRoom = components.sublist(1).join(' ');
         final levelAndRoomComponents = levelAndRoom.split('/');
         if (levelAndRoomComponents.length < 2) {
-          throw FormatException("Invalid level/room format: $input");
+          throw FormatException('Invalid level/room format: $input');
         }
 
         final level = levelAndRoomComponents[0].trim();
