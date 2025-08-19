@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
@@ -204,6 +206,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
 
   @override
   Widget build(BuildContext context) {
+    final currentThemeData = Provider.of<ThemesNotifier>(context).currentThemeData;
+
     super.build(context);
     if (!hasAutoUnfocused) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -240,255 +244,293 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
       }
 
       return Scaffold(
+        backgroundColor: currentThemeData.colorScheme.surface,
         resizeToAvoidBottomInset: false,
-        body: Stack(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FlutterMap(
-              mapController: mapController,
-              options: MapOptions(
-                initialCenter: currentLocation != null
-                    ? LatLng(
-                        currentLocation!.latitude!,
-                        currentLocation!.longitude!,
-                      )
-                    : const LatLng(51.442887, 7.262413),
-                initialZoom: 15,
+            // Header
+            Padding(
+              padding: EdgeInsets.only(
+                top: Platform.isAndroid ? 20 : 0,
+                left: 20,
+                right: 20,
+                bottom: 20,
               ),
-              children: [
-                buildTileLayer(),
-                if (waypoints.isNotEmpty)
-                  PolylineLayer(
-                    polylines: [
-                      Polyline(
-                        points: waypoints,
-                        color: const Color.fromARGB(169, 33, 149, 243),
-                        strokeWidth: 3,
-                      ),
-                    ],
+              child: SizedBox(
+                width: double.infinity,
+                child: Align(
+                  child: Text(
+                    'Navigation',
+                    style: currentThemeData.textTheme.displayMedium,
                   ),
-                if (showCurrentLocation)
-                  CurrentLocationLayer(
-                    style: LocationMarkerStyle(
-                      marker: const DefaultLocationMarker(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.blue,
-                        ),
-                      ),
-                      markerSize: const Size.square(40),
-                      accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withValues(alpha: 0.1),
-                      headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withValues(alpha: 0.8),
-                      headingSectorRadius: 120,
-                    ),
-                    moveAnimationDuration: Duration.zero,
-                  ),
-                MarkerLayer(
-                  markers: [
-                    if (symbolPosition != null)
-                      Marker(
-                        width: 50,
-                        height: 50,
-                        point: symbolPosition!,
-                        rotate: true,
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.location_on,
-                          color: Color.fromARGB(255, 255, 0, 0),
-                          size: 40,
-                        ),
-                      ),
-                  ],
                 ),
-              ],
+              ),
             ),
-            Positioned(
-              top: 20,
-              left: 10,
-              right: 10,
+            // Map
+            Expanded(
               child: Container(
-                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                      ? const Color.fromRGBO(245, 246, 250, 1)
-                      : const Color.fromRGBO(34, 40, 54, 1),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Autocomplete<String>(
-                          optionsBuilder: (TextEditingValue textEditingValue) {
-                            return predefinedLocations.keys.where(
-                              (String option) => option.toLowerCase().contains(
-                                    textEditingValue.text.toLowerCase(),
-                                  ),
-                            );
-                          },
-                          onSelected: changeSelectedLocation,
-                          optionsViewBuilder: (
-                            BuildContext context,
-                            AutocompleteOnSelected<String> onSelected,
-                            Iterable<String> options,
-                          ) {
-                            final int itemCount = options.length;
-                            final double containerHeight = itemCount * 80.0;
-                            return Align(
-                              alignment: Alignment.topLeft,
-                              child: Container(
-                                constraints: BoxConstraints(
-                                  maxWidth: 300,
-                                  maxHeight: containerHeight,
-                                ),
-                                child: Material(
-                                  elevation: 4,
-                                  child: ListView(
-                                    children: options
-                                        .map(
-                                          (String option) => GestureDetector(
-                                            onTap: () {
-                                              onSelected(option);
-                                            },
-                                            child: ListTile(
-                                              title: Text(option),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          fieldViewBuilder: (
-                            BuildContext context,
-                            TextEditingController textEditingController,
-                            FocusNode focusNode,
-                            VoidCallback onFieldSubmitted,
-                          ) {
-                            focusNode = focusNode;
-
-                            return TextField(
-                              controller: textEditingController,
-                              focusNode: focusNode,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Nach Gebäude Suchen',
-                                hintStyle: TextStyle(
-                                  color: Provider.of<ThemesNotifier>(
-                                            context,
-                                            listen: false,
-                                          ).currentTheme ==
-                                          AppThemes.light
-                                      ? Colors.black
-                                      : null,
-                                ),
-                              ),
-                              onChanged: (value) {},
-                              onSubmitted: changeSelectedLocation,
-                            );
-                          },
-                        ),
-                      ),
-                      CampusIconButton(
-                        iconPath: 'assets/img/icons/search.svg',
-                        backgroundColorDark:
-                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                                ? const Color.fromRGBO(245, 246, 250, 1)
-                                : const Color.fromRGBO(34, 40, 54, 1),
-                        backgroundColorLight:
-                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                                ? const Color.fromRGBO(245, 246, 250, 1)
-                                : const Color.fromRGBO(34, 40, 54, 1),
-                        borderColorDark:
-                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                                ? const Color.fromRGBO(245, 246, 250, 1)
-                                : const Color.fromRGBO(34, 40, 54, 1),
-                        transparent: true,
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              top: sidebarTop + 45,
-              right: isSidebarOpen ? 50 : 0,
-              child: GestureDetector(
-                onTap: toggleSidebar,
-                child: Container(
-                  width: 20,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: sidebarBackgroundColor,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                    ),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      isSidebarOpen ? Icons.arrow_right : Icons.arrow_left,
-                      color: iconColor,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              top: sidebarTop,
-              right: isSidebarOpen ? 0 : -50,
-              child: Container(
-                width: 50,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: sidebarBackgroundColor,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                clipBehavior: Clip.hardEdge,
+                child: Stack(
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.local_grocery_store, color: iconColor, size: 30),
-                      onPressed: () => calcNearestLoc(emergencyAssemblyPoints),
-                      tooltip: 'Snackautomat',
+                    FlutterMap(
+                      mapController: mapController,
+                      options: MapOptions(
+                        initialCenter: currentLocation != null
+                            ? LatLng(
+                                currentLocation!.latitude!,
+                                currentLocation!.longitude!,
+                              )
+                            : const LatLng(51.442887, 7.262413),
+                        initialZoom: 15,
+                      ),
+                      children: [
+                        buildTileLayer(),
+                        if (waypoints.isNotEmpty)
+                          PolylineLayer(
+                            polylines: [
+                              Polyline(
+                                points: waypoints,
+                                color: const Color.fromARGB(169, 33, 149, 243),
+                                strokeWidth: 3,
+                              ),
+                            ],
+                          ),
+                        if (showCurrentLocation)
+                          CurrentLocationLayer(
+                            style: LocationMarkerStyle(
+                              marker: const DefaultLocationMarker(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              markerSize: const Size.square(40),
+                              accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withValues(alpha: 0.1),
+                              headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withValues(alpha: 0.8),
+                              headingSectorRadius: 120,
+                            ),
+                            moveAnimationDuration: Duration.zero,
+                          ),
+                        MarkerLayer(
+                          markers: [
+                            if (symbolPosition != null)
+                              Marker(
+                                width: 50,
+                                height: 50,
+                                point: symbolPosition!,
+                                rotate: true,
+                                alignment: Alignment.center,
+                                child: const Icon(
+                                  Icons.location_on,
+                                  color: Color.fromARGB(255, 255, 0, 0),
+                                  size: 40,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.restaurant, color: iconColor, size: 30),
-                      onPressed: () => calcNearestLoc(vendingMachines),
-                      tooltip: 'Restaurants',
+                    Positioned(
+                      top: 20,
+                      left: 10,
+                      right: 10,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                              ? const Color.fromRGBO(245, 246, 250, 1)
+                              : const Color.fromRGBO(34, 40, 54, 1),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Autocomplete<String>(
+                                  optionsBuilder: (TextEditingValue textEditingValue) {
+                                    return predefinedLocations.keys.where(
+                                      (String option) => option.toLowerCase().contains(
+                                            textEditingValue.text.toLowerCase(),
+                                          ),
+                                    );
+                                  },
+                                  onSelected: changeSelectedLocation,
+                                  optionsViewBuilder: (
+                                    BuildContext context,
+                                    AutocompleteOnSelected<String> onSelected,
+                                    Iterable<String> options,
+                                  ) {
+                                    final int itemCount = options.length;
+                                    final double containerHeight = itemCount * 80.0;
+                                    return Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                        constraints: BoxConstraints(
+                                          maxWidth: 300,
+                                          maxHeight: containerHeight,
+                                        ),
+                                        child: Material(
+                                          elevation: 4,
+                                          child: ListView(
+                                            children: options
+                                                .map(
+                                                  (String option) => GestureDetector(
+                                                    onTap: () {
+                                                      onSelected(option);
+                                                    },
+                                                    child: ListTile(
+                                                      title: Text(option),
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList(),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  fieldViewBuilder: (
+                                    BuildContext context,
+                                    TextEditingController textEditingController,
+                                    FocusNode focusNode,
+                                    VoidCallback onFieldSubmitted,
+                                  ) {
+                                    focusNode = focusNode;
+
+                                    return TextField(
+                                      controller: textEditingController,
+                                      focusNode: focusNode,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Nach Gebäude Suchen',
+                                        hintStyle: TextStyle(
+                                          color: Provider.of<ThemesNotifier>(
+                                                    context,
+                                                    listen: false,
+                                                  ).currentTheme ==
+                                                  AppThemes.light
+                                              ? Colors.black
+                                              : null,
+                                        ),
+                                      ),
+                                      onChanged: (value) {},
+                                      onSubmitted: changeSelectedLocation,
+                                    );
+                                  },
+                                ),
+                              ),
+                              CampusIconButton(
+                                iconPath: 'assets/img/icons/search.svg',
+                                backgroundColorDark:
+                                    Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                        ? const Color.fromRGBO(245, 246, 250, 1)
+                                        : const Color.fromRGBO(34, 40, 54, 1),
+                                backgroundColorLight:
+                                    Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                        ? const Color.fromRGBO(245, 246, 250, 1)
+                                        : const Color.fromRGBO(34, 40, 54, 1),
+                                borderColorDark:
+                                    Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                        ? const Color.fromRGBO(245, 246, 250, 1)
+                                        : const Color.fromRGBO(34, 40, 54, 1),
+                                transparent: true,
+                                onTap: () {
+                                  FocusScope.of(context).unfocus();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    IconButton(
-                      icon: Icon(Icons.local_hospital, color: iconColor, size: 30),
-                      onPressed: () => calcNearestLoc(vendingMachines),
-                      tooltip: 'Notfall',
-                    ),
+                    // TODO: Add data for emergencyAssemblyPoints, vendingMachines etc.
+                    // AnimatedPositioned(
+                    //   duration: const Duration(milliseconds: 300),
+                    //   curve: Curves.easeInOut,
+                    //   top: sidebarTop + 45,
+                    //   right: isSidebarOpen ? 50 : 0,
+                    //   child: GestureDetector(
+                    //     onTap: toggleSidebar,
+                    //     child: Container(
+                    //       width: 20,
+                    //       height: 60,
+                    //       decoration: BoxDecoration(
+                    //         color: sidebarBackgroundColor,
+                    //         borderRadius: const BorderRadius.only(
+                    //           topLeft: Radius.circular(10),
+                    //           bottomLeft: Radius.circular(10),
+                    //         ),
+                    //       ),
+                    //       child: Center(
+                    //         child: Icon(
+                    //           isSidebarOpen ? Icons.arrow_right : Icons.arrow_left,
+                    //           color: iconColor,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // AnimatedPositioned(
+                    //   duration: const Duration(milliseconds: 300),
+                    //   curve: Curves.easeInOut,
+                    //   top: sidebarTop,
+                    //   right: isSidebarOpen ? 0 : -50,
+                    //   child: Container(
+                    //     width: 50,
+                    //     height: 150,
+                    //     decoration: BoxDecoration(
+                    //       color: sidebarBackgroundColor,
+                    //       borderRadius: const BorderRadius.only(
+                    //         topLeft: Radius.circular(10),
+                    //         bottomLeft: Radius.circular(10),
+                    //       ),
+                    //     ),
+                    //     child: Column(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: [
+                    //         IconButton(
+                    //           icon: Icon(Icons.local_grocery_store, color: iconColor, size: 30),
+                    //           onPressed: () => calcNearestLoc(emergencyAssemblyPoints),
+                    //           tooltip: 'Snackautomat',
+                    //         ),
+                    //         IconButton(
+                    //           icon: Icon(Icons.restaurant, color: iconColor, size: 30),
+                    //           onPressed: () => calcNearestLoc(vendingMachines),
+                    //           tooltip: 'Restaurants',
+                    //         ),
+                    //         IconButton(
+                    //           icon: Icon(Icons.local_hospital, color: iconColor, size: 30),
+                    //           onPressed: () => calcNearestLoc(vendingMachines),
+                    //           tooltip: 'Notfall',
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    if (isTileLoading)
+                      Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                ? Colors.black
+                                : Colors.white,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
             ),
-            if (isTileLoading)
-              Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-                ),
-              ),
           ],
         ),
         floatingActionButton: FloatingActionButton(

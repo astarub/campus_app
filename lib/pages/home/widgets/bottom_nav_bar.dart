@@ -81,11 +81,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               // Navigation
               BottomNavBarItem(
-                title: 'Karte',
+                title: 'Navigation',
                 imagePathActive: 'assets/img/icons/map-filled.png',
                 imagePathInactive: 'assets/img/icons/map-outlined.png',
-                onTap: () => widget.onSelectedPage(PageItem.pathfinder),
-                isActive: widget.currentPage == PageItem.pathfinder,
+                onTap: () => widget.onSelectedPage(PageItem.navigation),
+                isActive: widget.currentPage == PageItem.navigation,
               ),
               // Wallet
               BottomNavBarItem(

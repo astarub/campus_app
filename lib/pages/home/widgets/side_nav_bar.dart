@@ -29,9 +29,7 @@ class _SideNavBarState extends State<SideNavBar> {
       width: 80,
       padding: const EdgeInsets.only(top: 40, bottom: 10, left: 15, right: 15),
       decoration: BoxDecoration(
-        color: Provider.of<ThemesNotifier>(context, listen: false)
-                    .currentTheme ==
-                AppThemes.light
+        color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
             ? const Color.fromRGBO(245, 246, 250, 1)
             : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
       ),
@@ -65,8 +63,8 @@ class _SideNavBarState extends State<SideNavBar> {
             title: 'Karte',
             imagePathActive: 'assets/img/icons/mensa-filled.png',
             imagePathInactive: 'assets/img/icons/mensa-outlined.png',
-            onTap: () => widget.onSelectedPage(PageItem.pathfinder),
-            isActive: widget.currentPage == PageItem.pathfinder,
+            onTap: () => widget.onSelectedPage(PageItem.navigation),
+            isActive: widget.currentPage == PageItem.navigation,
           ),
           // Wallet
           SideNavBarItem(
