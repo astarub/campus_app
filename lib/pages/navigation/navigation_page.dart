@@ -1,27 +1,24 @@
+import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/settings.dart';
+import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/navigation/data/assembly_points.dart';
 import 'package:campus_app/pages/navigation/data/buildings.dart';
 import 'package:campus_app/pages/navigation/data/room_graph.dart';
 import 'package:campus_app/pages/navigation/data/vending_machines.dart';
-import 'package:campus_app/pages/navigation/offline_map_viewer.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:location/location.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/foundation.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-
-import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/navigation/indoor_nav_page.dart';
-import 'package:campus_app/utils/pages/pathfinder_utils.dart';
-import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/pages/navigation/navigation_onboarding.dart';
 import 'package:campus_app/pages/navigation/tile_loading_isolate.dart';
+import 'package:campus_app/utils/pages/navigation_utils.dart';
+import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 String? selectedLocationGlobal;
 
@@ -104,18 +101,95 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   bool showCurrentLocation = false;
   List<String> suggestions = [];
   LatLng? symbolPosition;
-  final PathfinderUtils utils = sl<PathfinderUtils>();
+  final NavigationUtils utils = sl<NavigationUtils>();
   List<LatLng> waypoints = [];
   bool isFirstTime = false;
-  @override
-  bool get wantKeepAlive => true;
   bool isSidebarOpen = false;
   bool hasProcessedGlobalLocation = false;
   bool hasAutoUnfocused = false;
   final MapController mapController = MapController();
   Future<TileLayer>? tileLayerFuture;
   bool isTileLoading = true;
-  bool hasInternet = true;
+  @override
+  bool get wantKeepAlive => true;
+
+  Future<void> addGraphEntriesInIsolate() async {
+    final result = await compute(
+      addGraphEntriesToPredefinedLocationsIsolate,
+      {
+        'graph': graph.map((k, v) => MapEntry([k.$1, k.$2, k.$3], v)),
+        'predefined': predefinedLocations,
+      },
+    );
+
+    setState(() {
+      predefinedLocations = result;
+    });
+  }
+
+  void addGraphEntriesToPredefinedLocations() {
+    String findClosestMatch(String target, List<String> candidates) {
+      int computeSimilarity(String a, String b) {
+        final int minLength = a.length < b.length ? a.length : b.length;
+        int matches = 0;
+
+        for (int i = 0; i < minLength; i++) {
+          if (a[i] == b[i]) {
+            matches++;
+          }
+        }
+        return matches;
+      }
+
+      String? closest = candidates.isNotEmpty ? candidates.first : null;
+      int maxSimilarity = 0;
+
+      for (final candidate in candidates) {
+        final int similarity = computeSimilarity(target, candidate);
+        if (similarity > maxSimilarity) {
+          maxSimilarity = similarity;
+          closest = candidate;
+        }
+      }
+
+      return closest ?? '';
+    }
+
+    graph.forEach((key, value) {
+      final building = key.$1;
+      final level = key.$2;
+      final room = key.$3;
+
+      if (!room.contains('EN_')) {
+        final name = '$building $level/$room';
+        final closestMatchKey = findClosestMatch(
+          name,
+          predefinedLocations.keys.toList(),
+        );
+
+        if (closestMatchKey.isNotEmpty) {
+          predefinedLocations.putIfAbsent(
+            name,
+            () => predefinedLocations[closestMatchKey]!,
+          );
+        }
+      }
+    });
+    setState(() {});
+  }
+
+  Future<void> animateCameraAlongRoute(List<LatLng> waypoints, {double zoom = 19.0, int stepDurationMs = 40}) async {
+    if (waypoints.length < 2) return;
+
+    mapController.move(waypoints.first, zoom);
+    await Future.delayed(const Duration(seconds: 1));
+
+    for (final point in waypoints.skip(1)) {
+      if (!mounted) return;
+      mapController.move(point, zoom);
+      await Future.delayed(Duration(milliseconds: stepDurationMs));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,67 +232,65 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
-            if (hasInternet)
-              FlutterMap(
-                mapController: mapController,
-                options: MapOptions(
-                  initialCenter: currentLocation != null
-                      ? LatLng(
-                          currentLocation!.latitude!,
-                          currentLocation!.longitude!,
-                        )
-                      : const LatLng(51.442887, 7.262413),
-                  initialZoom: 15,
-                ),
-                children: [
-                  buildTileLayer(),
-                  if (waypoints.isNotEmpty)
-                    PolylineLayer(
-                      polylines: [
-                        Polyline(
-                          points: waypoints,
-                          color: const Color.fromARGB(169, 33, 149, 243),
-                          strokeWidth: 3,
-                        ),
-                      ],
-                    ),
-                  if (showCurrentLocation)
-                    CurrentLocationLayer(
-                      style: LocationMarkerStyle(
-                        marker: const DefaultLocationMarker(
-                          color: Color.fromARGB(255, 255, 255, 255),
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.blue,
-                          ),
-                        ),
-                        markerSize: const Size.square(40),
-                        accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withOpacity(0.1),
-                        headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withOpacity(0.8),
-                        headingSectorRadius: 120,
+            FlutterMap(
+              mapController: mapController,
+              options: MapOptions(
+                initialCenter: currentLocation != null
+                    ? LatLng(
+                        currentLocation!.latitude!,
+                        currentLocation!.longitude!,
+                      )
+                    : const LatLng(51.442887, 7.262413),
+                initialZoom: 15,
+              ),
+              children: [
+                buildTileLayer(),
+                if (waypoints.isNotEmpty)
+                  PolylineLayer(
+                    polylines: [
+                      Polyline(
+                        points: waypoints,
+                        color: const Color.fromARGB(169, 33, 149, 243),
+                        strokeWidth: 3,
                       ),
-                      moveAnimationDuration: Duration.zero,
-                    ),
-                  MarkerLayer(
-                    markers: [
-                      if (symbolPosition != null)
-                        Marker(
-                          width: 50,
-                          height: 50,
-                          point: symbolPosition!,
-                          rotate: true,
-                          alignment: Alignment.center,
-                          child: const Icon(
-                            Icons.location_on,
-                            color: Color.fromARGB(255, 255, 0, 0),
-                            size: 40,
-                          ),
-                        ),
                     ],
                   ),
-                ],
-              ),
-            if (!hasInternet) const OfflineMapViewer(imagePath: 'assets/img/offline_map.png'),
+                if (showCurrentLocation)
+                  CurrentLocationLayer(
+                    style: LocationMarkerStyle(
+                      marker: const DefaultLocationMarker(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      markerSize: const Size.square(40),
+                      accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withOpacity(0.1),
+                      headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withOpacity(0.8),
+                      headingSectorRadius: 120,
+                    ),
+                    moveAnimationDuration: Duration.zero,
+                  ),
+                MarkerLayer(
+                  markers: [
+                    if (symbolPosition != null)
+                      Marker(
+                        width: 50,
+                        height: 50,
+                        point: symbolPosition!,
+                        rotate: true,
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.location_on,
+                          color: Color.fromARGB(255, 255, 0, 0),
+                          size: 40,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
             Positioned(
               top: 20,
               left: 10,
@@ -333,26 +405,6 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                 ),
               ),
             ),
-            if (!hasInternet)
-              Container(
-                margin: const EdgeInsets.only(top: 90, left: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.wifi_off, color: Colors.white, size: 18),
-                    SizedBox(width: 8),
-                    Text(
-                      'No internet connection. Offline',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
@@ -458,7 +510,42 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     }
   }
 
-//-----------------------------------------------------------------------------
+  Future<void> calcNearestLoc(Map<String, LatLng> locations) async {
+    if (currentLocation == null) {
+      return;
+    }
+    final LatLng currentPos = LatLng(
+      currentLocation!.latitude!,
+      currentLocation!.longitude!,
+    );
+
+    const Distance distance = Distance();
+    String? nearestKey;
+    double minDistance = double.infinity;
+    locations.forEach((key, loc) {
+      final double dist = distance(currentPos, loc);
+      if (dist < minDistance) {
+        minDistance = dist;
+        nearestKey = key;
+      }
+    });
+
+    if (nearestKey != null) {
+      final LatLng destination = locations[nearestKey]!;
+      setState(() {
+        symbolPosition = destination;
+      });
+
+      await setShortestPath(currentPos, destination);
+      setState(() {
+        showCurrentLocation = true;
+      });
+    } else {
+      return;
+    }
+  }
+
+  //-----------------------------------------------------------------------------
 
   Future<void> changeSelectedLocation(String selectedOption) async {
     final String buildingName = selectedOption.split(' ')[0];
@@ -509,26 +596,19 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   }
 
   @override
-  void initState() {
-    super.initState();
-    Future.microtask(() async {
-      await checkFirstTimeUser();
-      await initializePage();
-    });
-  }
-
-  Future<void> initializePage() async {
-    predefinedLocations = sortPredefinedLocations(predefinedLocations);
-    final hasInternetConnection = await checkConnectivity();
-    setState(() => hasInternet = hasInternetConnection);
-    if (hasInternet) {
-      tileLayerFuture = buildTileLayerInIsolate();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!hasProcessedGlobalLocation && selectedLocationGlobal != null && selectedLocationGlobal!.isNotEmpty) {
+      hasProcessedGlobalLocation = true;
+      Future.delayed(const Duration(milliseconds: 100), () {
+        final location = selectedLocationGlobal!;
+        searchController.text = location;
+        final query = searchController.text.trim();
+        if (query.isNotEmpty) {
+          changeSelectedLocation(query);
+        }
+      });
     }
-    currentLocation = await getUserLocation();
-    setState(() {
-      showCurrentLocation = currentLocation != null;
-      isTileLoading = false;
-    });
   }
 
   Future<LocationData?> getUserLocation() async {
@@ -541,14 +621,33 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     }
   }
 
-  Map<String, LatLng> sortPredefinedLocations(Map<String, LatLng> locations) {
-    final sortedEntries = locations.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
-    return Map<String, LatLng>.fromEntries(sortedEntries);
+  Future<void> handleInitialLoading() async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (mounted) {
+      setState(() {
+        isTileLoading = false;
+      });
+    }
   }
 
-  Future<bool> checkConnectivity() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-    return connectivityResult != ConnectivityResult.none;
+  Future<void> initializePage() async {
+    predefinedLocations = sortPredefinedLocations(predefinedLocations);
+    tileLayerFuture = buildTileLayerInIsolate();
+    currentLocation = await getUserLocation();
+
+    setState(() {
+      showCurrentLocation = currentLocation != null;
+      isTileLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      await checkFirstTimeUser();
+      await initializePage();
+    });
   }
 
   void placeSymbol(String locationKey) {
@@ -582,7 +681,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
       waypoints = [];
     });
 
-    final List<LatLng> newWaypoints = await utils.getShortestPath(start, end);
+    final List<LatLng> newWaypoints = await utils.getOutdoorPath(start, end);
 
     setState(() {
       waypoints = newWaypoints;
@@ -594,156 +693,14 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     }
   }
 
-  void addGraphEntriesToPredefinedLocations() {
-    String findClosestMatch(String target, List<String> candidates) {
-      int computeSimilarity(String a, String b) {
-        final int minLength = a.length < b.length ? a.length : b.length;
-        int matches = 0;
-
-        for (int i = 0; i < minLength; i++) {
-          if (a[i] == b[i]) {
-            matches++;
-          }
-        }
-        return matches;
-      }
-
-      String? closest = candidates.isNotEmpty ? candidates.first : null;
-      int maxSimilarity = 0;
-
-      for (final candidate in candidates) {
-        final int similarity = computeSimilarity(target, candidate);
-        if (similarity > maxSimilarity) {
-          maxSimilarity = similarity;
-          closest = candidate;
-        }
-      }
-
-      return closest ?? '';
-    }
-
-    graph.forEach((key, value) {
-      final building = key.$1;
-      final level = key.$2;
-      final room = key.$3;
-
-      if (!room.contains('EN_')) {
-        final name = '$building $level/$room';
-        final closestMatchKey = findClosestMatch(
-          name,
-          predefinedLocations.keys.toList(),
-        );
-
-        if (closestMatchKey.isNotEmpty) {
-          predefinedLocations.putIfAbsent(
-            name,
-            () => predefinedLocations[closestMatchKey]!,
-          );
-        }
-      }
-    });
-    setState(() {});
-  }
-
-  Future<void> addGraphEntriesInIsolate() async {
-    final result = await compute(
-      addGraphEntriesToPredefinedLocationsIsolate,
-      {
-        'graph': graph.map((k, v) => MapEntry([k.$1, k.$2, k.$3], v)),
-        'predefined': predefinedLocations,
-      },
-    );
-
-    setState(() {
-      predefinedLocations = result;
-    });
+  Map<String, LatLng> sortPredefinedLocations(Map<String, LatLng> locations) {
+    final sortedEntries = locations.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
+    return Map<String, LatLng>.fromEntries(sortedEntries);
   }
 
   void toggleSidebar() {
     setState(() {
       isSidebarOpen = !isSidebarOpen;
     });
-  }
-
-  Future<void> calcNearestLoc(Map<String, LatLng> locations) async {
-    if (currentLocation == null) {
-      return;
-    }
-    final LatLng currentPos = LatLng(
-      currentLocation!.latitude!,
-      currentLocation!.longitude!,
-    );
-
-    const Distance distance = Distance();
-    String? nearestKey;
-    double minDistance = double.infinity;
-    locations.forEach((key, loc) {
-      final double dist = distance(currentPos, loc);
-      if (dist < minDistance) {
-        minDistance = dist;
-        nearestKey = key;
-      }
-    });
-
-    if (nearestKey != null) {
-      final LatLng destination = locations[nearestKey]!;
-      setState(() {
-        symbolPosition = destination;
-      });
-
-      await setShortestPath(currentPos, destination);
-      setState(() {
-        showCurrentLocation = true;
-      });
-    } else {
-      return;
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!hasProcessedGlobalLocation && selectedLocationGlobal != null && selectedLocationGlobal!.isNotEmpty) {
-      hasProcessedGlobalLocation = true;
-      Future.delayed(const Duration(milliseconds: 100), () {
-        final location = selectedLocationGlobal!;
-        searchController.text = location;
-        final query = searchController.text.trim();
-        if (query.isNotEmpty) {
-          changeSelectedLocation(query);
-        }
-      });
-    }
-  }
-
-  Future<void> animateCameraAlongRoute(List<LatLng> waypoints, {double zoom = 19.0, int stepDurationMs = 40}) async {
-    if (waypoints.length < 2) return;
-
-    mapController.move(waypoints.first, zoom);
-    await Future.delayed(const Duration(seconds: 1));
-
-    for (final point in waypoints.skip(1)) {
-      if (!mounted) return;
-      mapController.move(point, zoom);
-      await Future.delayed(Duration(milliseconds: stepDurationMs));
-    }
-  }
-
-  Future<void> handleInitialLoading() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-    final connected = connectivityResult != ConnectivityResult.none;
-
-    setState(() {
-      hasInternet = connected;
-    });
-
-    if (connected) {
-      await Future.delayed(const Duration(seconds: 1));
-      if (mounted) {
-        setState(() {
-          isTileLoading = false;
-        });
-      }
-    }
   }
 }

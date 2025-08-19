@@ -13,13 +13,16 @@ import 'package:campus_app/pages/navigation/widgets/navigation_buttons.dart';
 import 'package:campus_app/pages/navigation/widgets/room_label.dart';
 import 'package:campus_app/pages/navigation/widgets/start_waypoint.dart';
 import 'package:campus_app/pages/navigation/widgets/waypoint_arrow.dart';
-import 'package:campus_app/utils/pages/pathfinder_utils.dart';
+import 'package:campus_app/utils/pages/navigation_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
+import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+enum SearchStatus { success, loading, fail, wait }
 
 class IndoorNavigation extends StatefulWidget {
   const IndoorNavigation({super.key});
@@ -36,14 +39,14 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   List<String> suggestions = [];
   Map dijkstraMap = {};
   (String, String, String) to = ('SH', '0', 'Kultur-Cafe');
-  bool isLoading = false;
   int? rub0Index;
 
   double rotationOffset = 0.3927 * 8; // Replace approx.
-  double? heading;
 
-  double scale = 1;
-  double previousScale = 1;
+  SearchStatus searchStatus = SearchStatus.wait;
+
+  double scale = 2;
+  double previousScale = 2;
   Offset position = Offset.zero;
   Offset startFocalPoint = Offset.zero;
   Offset startPosition = Offset.zero;
@@ -51,7 +54,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   double previousRotation = 0;
 
   final TransformationController controller = TransformationController();
-  final PathfinderUtils utils = sl<PathfinderUtils>();
+  final NavigationUtils utils = sl<NavigationUtils>();
   final TextEditingController startController = TextEditingController();
   final TextEditingController zielController = TextEditingController();
 
@@ -67,7 +70,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
     final currentThemeData = Provider.of<ThemesNotifier>(context).currentThemeData;
 
     return PopScope(
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
 
         homeKey.currentState!.setSwipeDisabled();
@@ -89,7 +92,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Back button & page title
+              //* Back button & page title
               Padding(
                 padding: EdgeInsets.only(
                   top: Platform.isAndroid ? 20 : 0,
@@ -117,6 +120,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                   ),
                 ),
               ),
+              //* Search Bar: Start
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 5, 15, 2),
                 child: Container(
@@ -135,7 +139,12 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                           return suggestions;
                         }
                         return suggestions.where((String option) {
-                          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+                          final query = textEditingValue.text.toLowerCase().trim();
+                          final tokens = query.split(RegExp(r'\s+')); // split on any whitespace
+                          final lowerOption = option.toLowerCase();
+
+                          // keep option only if all tokens are found
+                          return tokens.every((token) => lowerOption.contains(token));
                         });
                       },
                       onSelected: (String selection) {
@@ -178,6 +187,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                   ),
                 ),
               ),
+              //* Search Bar: Ziel
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
                 child: Container(
@@ -243,155 +253,182 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                   ),
                 ),
               ),
+              //* Navigation
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      //* Loading Indicator
-                      if (isLoading) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              currentThemeData.colorScheme.primary,
-                            ),
-                          ),
-                        );
-                      }
-
-                      //* Empty Search
-                      if (floors.isEmpty) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 30),
-                            child: SvgPicture.asset(
-                              'assets/img/icons/search.svg',
-                              colorFilter: ColorFilter.mode(
-                                Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                                    ? const Color.fromRGBO(34, 40, 54, 1)
-                                    : const Color.fromRGBO(184, 186, 191, 1),
-                                BlendMode.srcIn,
+                      switch (searchStatus) {
+                        //* Loading Indicator
+                        case SearchStatus.loading:
+                          return Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                currentThemeData.colorScheme.primary,
                               ),
-                              width: 120,
                             ),
-                          ),
-                        );
-                      }
+                          );
+                        //* Empty Search
+                        case SearchStatus.wait:
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 30),
+                              child: SvgPicture.asset(
+                                'assets/img/icons/search.svg',
+                                colorFilter: ColorFilter.mode(
+                                  Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                      ? const Color.fromRGBO(34, 40, 54, 1)
+                                      : const Color.fromRGBO(184, 186, 191, 1),
+                                  BlendMode.srcIn,
+                                ),
+                                width: 120,
+                              ),
+                            ),
+                          );
+                        //* Indoor Navigation
+                        case SearchStatus.success:
+                          return Stack(
+                            children: [
+                              //* Map
+                              Positioned.fill(
+                                child: Container(
+                                  color: currentThemeData.colorScheme.surface,
+                                  child: ClipRect(
+                                    child: GestureDetector(
+                                      onScaleStart: (details) {
+                                        previousScale = scale;
+                                        previousRotation = rotation;
+                                        startFocalPoint = details.focalPoint;
+                                        startPosition = position;
+                                      },
+                                      onScaleUpdate: (details) {
+                                        final Offset focalPointDelta = details.focalPoint - startFocalPoint;
+                                        const double minScale = 1;
+                                        const double maxScale = 8;
+                                        const double baseTranslationLimit = 500;
 
-                      //* Indoor Navigation
-                      return Stack(
-                        children: [
-                          //* Map
-                          Positioned.fill(
-                            child: Container(
-                              color: currentThemeData.colorScheme.surface,
-                              child: ClipRect(
-                                child: GestureDetector(
-                                  onScaleStart: (details) {
-                                    previousScale = scale;
-                                    previousRotation = rotation;
-                                    startFocalPoint = details.focalPoint;
-                                    startPosition = position;
-                                  },
-                                  onScaleUpdate: (details) {
-                                    final Offset focalPointDelta = details.focalPoint - startFocalPoint;
-                                    const double minScale = 1;
-                                    const double maxScale = 8;
-                                    const double baseTranslationLimit = 500;
+                                        setState(() {
+                                          scale = (previousScale * details.scale).clamp(minScale, maxScale);
+                                          rotation = previousRotation + details.rotation;
 
-                                    setState(() {
-                                      scale = (previousScale * details.scale).clamp(minScale, maxScale);
-                                      rotation = previousRotation + details.rotation;
+                                          final Offset potentialPosition = startPosition + focalPointDelta;
+                                          final double adjustedLimit = baseTranslationLimit * scale;
 
-                                      final Offset potentialPosition = startPosition + focalPointDelta;
-                                      final double adjustedLimit = baseTranslationLimit * scale;
-
-                                      position = Offset(
-                                        potentialPosition.dx.clamp(-adjustedLimit, adjustedLimit),
-                                        potentialPosition.dy.clamp(-adjustedLimit, adjustedLimit),
-                                      );
-                                    });
-                                  },
-                                  child: FittedBox(
-                                    child: Center(
-                                      child: Transform(
-                                        alignment: Alignment.center,
-                                        transform: Matrix4.identity()
-                                          ..translate(position.dx, position.dy)
-                                          ..rotateZ(rotation)
-                                          ..scale(scale),
-                                        child: Stack(
-                                          children: [
-                                            //* Floor Image
-                                            floors[currentIndex].floorImage,
-                                            //* Path
-                                            for (int i = 1; i < floors[currentIndex].wayPoints.length - 1; i++)
-                                              WaypointArrow(
-                                                current: floors[currentIndex].wayPoints[i],
-                                                previous: floors[currentIndex].wayPoints[i - 1],
-                                              ),
-                                            //* Floor Labels
-                                            for (final label in floors[currentIndex].roomLabels)
-                                              RoomLabelWidget(
-                                                label: label,
-                                                rotation: rotation,
-                                                isStart: label.position == floors[currentIndex].wayPoints.first,
-                                                isDest: label.position == floors[currentIndex].wayPoints.last,
-                                              ),
-                                            StartWaypoint(
-                                              position: floors[currentIndex].wayPoints.first,
-                                              rotation: rotation,
+                                          position = Offset(
+                                            potentialPosition.dx.clamp(-adjustedLimit, adjustedLimit),
+                                            potentialPosition.dy.clamp(-adjustedLimit, adjustedLimit),
+                                          );
+                                        });
+                                      },
+                                      child: FittedBox(
+                                        child: Center(
+                                          child: Transform(
+                                            alignment: Alignment.center,
+                                            transform: Matrix4.identity()
+                                              ..translate(position.dx, position.dy)
+                                              ..rotateZ(rotation)
+                                              ..scale(scale),
+                                            child: Stack(
+                                              children: [
+                                                //* Floor Image
+                                                floors[currentIndex].floorImage,
+                                                //* Path
+                                                for (int i = 1; i < floors[currentIndex].wayPoints.length - 1; i++)
+                                                  WaypointArrow(
+                                                    current: floors[currentIndex].wayPoints[i],
+                                                    previous: floors[currentIndex].wayPoints[i - 1],
+                                                  ),
+                                                //* Floor Labels
+                                                for (final label in floors[currentIndex].roomLabels)
+                                                  RoomLabelWidget(
+                                                    label: label,
+                                                    rotation: rotation,
+                                                    isStart: label.position == floors[currentIndex].wayPoints.first,
+                                                    isDest: label.position == floors[currentIndex].wayPoints.last,
+                                                  ),
+                                                StartWaypoint(
+                                                  position: floors[currentIndex].wayPoints.first,
+                                                  rotation: rotation,
+                                                ),
+                                                DestinationWaypoint(
+                                                  position: floors[currentIndex].wayPoints.last,
+                                                  rotation: rotation,
+                                                ),
+                                              ],
                                             ),
-                                            DestinationWaypoint(
-                                              position: floors[currentIndex].wayPoints.last,
-                                              rotation: rotation,
-                                            ),
-                                          ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                          if (floors.isNotEmpty && heading == null)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                //* Compass
-                                Compass(
-                                  rotation: rotation,
-                                  rotationOffset: rotationOffset,
-                                  onReset: () {
-                                    setState(() {
-                                      scale = 1.5;
-                                      rotation = 0.0;
-                                    });
-                                  },
-                                ),
-                                //* Floor Label
-                                Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                    decoration: BoxDecoration(
-                                      color: currentThemeData.cardColor,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      floors[currentIndex].floorName,
-                                      style: TextStyle(
-                                        fontSize: Theme.of(context).textTheme.titleLarge?.fontSize ?? 24,
+                              if (floors.isNotEmpty)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    //* Compass
+                                    // TODO: Floor maps must indicate compass direction. They are NOT standarized.
+                                    Container(),
+                                    // Compass(
+                                    //   rotation: rotation,
+                                    //   rotationOffset: rotationOffset,
+                                    //   onReset: () {
+                                    //     setState(() {
+                                    //       scale = 1.5;
+                                    //       rotation = 0.0;
+                                    //     });
+                                    //   },
+                                    // ),
+                                    //* Floor Label
+                                    Padding(
+                                      padding: const EdgeInsets.all(15),
+                                      child: GestureDetector(
+                                        // Reset rotation on tab
+                                        // TODO: Compas should hanlde this
+                                        onTap: () {
+                                          final startPoint = floors[currentIndex].wayPoints.first;
+                                          final screenWidth = constraints.maxWidth;
+                                          final screenHeight = constraints.maxHeight;
+
+                                          setState(() {
+                                            scale = 1.5;
+                                            rotation = 0.0;
+                                            position = Offset(
+                                              (screenWidth - startPoint.dx * scale) / 2,
+                                              (screenHeight - startPoint.dy * scale) / 2,
+                                            );
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                          decoration: BoxDecoration(
+                                            color: currentThemeData.cardColor,
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          child: Text(
+                                            floors[currentIndex].floorName,
+                                            style: TextStyle(
+                                              fontSize: Theme.of(context).textTheme.titleLarge?.fontSize ?? 24,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                        ],
-                      );
+                            ],
+                          );
+                        //* Couldn't find path
+                        case SearchStatus.fail:
+                          return const EmptyStatePlaceholder(
+                            title: 'Keine Route gefunden! :(',
+                            text:
+                                'Leider konnte unser Raumfinder keine Route für deine Suchanfrage berechnen. Wir empfehlen, das du zuerst über die Außennavigation zu deinem Gebäude gelangst und anschließend innerhalb des Gebäudes erneut den Raumfinder verwendest.',
+                          );
+                      }
                     },
                   ),
                 ),
@@ -417,11 +454,8 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
               });
 
               if (rub0Index != null && currentIndex == rub0Index) {
-                Future.delayed(const Duration(milliseconds: 1), () {
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pop();
-                  selectedLocationGlobal = zielText;
-                });
+                selectedLocationGlobal = zielText;
+                Navigator.of(context).pop();
               }
             },
           ),
@@ -432,22 +466,26 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
 
 //----------------------------------------
 
-  Future<void> computeImagesForMapIncrementally(Map karte) async {
-    setState(() {
-      isLoading = true;
-    });
+  Future<void> computeImagesForMapIncrementally(Map dijkstraMap) async {
+    setState(() => searchStatus = SearchStatus.loading);
 
     final stopwatch1 = Stopwatch()..start();
     final List<dynamic> shortestPath = await compute(
       utils.findShortestPathIsolate,
       {
-        'graph': karte,
+        'graph': dijkstraMap,
         'from': [from.$1, from.$2, from.$3],
         'to': [to.$1, to.$2, to.$3],
       },
     );
     debugPrint('Dijkstra execution time: ${stopwatch1.elapsedMilliseconds}ms');
-    debugPrint('$shortestPath');
+
+    // No connection / path found
+    if (shortestPath.isEmpty) {
+      setState(() => searchStatus = SearchStatus.fail);
+
+      return;
+    }
 
     final filenames = <String>[];
     final pointsListTemp = <List<Offset>>[];
@@ -457,13 +495,13 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       final name = '$b$l.png';
       if (!filenames.contains(name)) {
         filenames.add(name);
-        if (name == 'RUB0.jpg') {
+        if (name == 'RUB0.png') {
           rub0Index = filenames.length - 1;
         }
       }
     }
 
-    const double distanceThreshold = 30; // Adjust as needed
+    const double distanceThreshold = 15; // Adjust as needed
 
     for (int i = 0; i < filenames.length; i++) {
       pointsListTemp.add([]);
@@ -519,39 +557,24 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
       if (!mounted) return;
       setState(() {
         floors.add(floorMap);
-        isLoading = false;
+        searchStatus = SearchStatus.success;
       });
-
-      await Future.delayed(const Duration(milliseconds: 10));
     }
   }
 
   void fill() {
     for (final key in dijkstraMap.keys) {
-      final (x1, x2, x3) = key;
-      final x4 = '$x1 $x2/$x3';
-      if (!x4.contains('EN_')) {
-        suggestions.add(x4);
+      final (building, floor, room) = key;
+      final name = '$building $floor / ${utils.humanReadableRoomLabel(room)}';
+      if (!name.contains('EN_')) {
+        suggestions.add(name);
       }
     }
   }
 
   Future<void> initializeAfterUIShown() async {
     homeKey.currentState?.setSwipeDisabled(disableSwipe: true);
-
-    await Future.delayed(const Duration(milliseconds: 200));
-
-    for (final node in graph.keys) {
-      final Map connectionsOfNode = {};
-
-      for (var i = 0; i < graph[node]?['Connections'].length; i++) {
-        final (connectionTo, distance) = graph[node]?['Connections'][i];
-        connectionsOfNode[connectionTo] = distance;
-      }
-
-      dijkstraMap[node] = connectionsOfNode;
-    }
-    debugPrint('dijkstraMap = $dijkstraMap');
+    dijkstraMap = utils.createDijkstraMapFromGraph(graph);
 
     fill();
 
@@ -586,21 +609,31 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
 
   Future<void> validateAndPerformAction() async {
     if (startText.isNotEmpty && zielText.isNotEmpty) {
-      final List<String> components = startText.split(' ');
-      final String building = components[0];
-      final String levelAndRoom = components[1];
-      final List<String> levelAndRoomComponents = levelAndRoom.split('/');
-      final String level = levelAndRoomComponents[0];
-      final String room = levelAndRoomComponents[1];
-      final start = (building, level, room);
+      NodeId parseNode(String input) {
+        final components = input.split(' ');
+        if (components.length < 2) {
+          throw FormatException("Invalid node format: $input");
+        }
 
-      final List<String> components2 = zielText.split(' ');
-      final String building2 = components2[0];
-      final String levelAndRoom2 = components2[1];
-      final List<String> levelAndRoomComponents2 = levelAndRoom2.split('/');
-      final String level2 = levelAndRoomComponents2[0];
-      final String room2 = levelAndRoomComponents2[1];
-      final ziel = (building2, level2, room2);
+        final building = components.first;
+        // everything after the building is "level / room"
+        final levelAndRoom = components.sublist(1).join(' ');
+        final levelAndRoomComponents = levelAndRoom.split('/');
+        if (levelAndRoomComponents.length < 2) {
+          throw FormatException("Invalid level/room format: $input");
+        }
+
+        final level = levelAndRoomComponents[0].trim();
+        final roomRaw = levelAndRoomComponents.sublist(1).join('/').trim();
+
+        // restore original format: replace spaces with "-"
+        final room = roomRaw.replaceAll(' ', '-');
+
+        return (building, level, room);
+      }
+
+      final start = parseNode(startText);
+      final ziel = parseNode(zielText);
 
       setState(() {
         from = start;

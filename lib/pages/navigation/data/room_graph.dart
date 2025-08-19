@@ -111,35 +111,35 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '02', 'EN_7'), 30),
     ],
   },
-  ('GA', '02', 'Aufzug Nord'): {
+  ('GA', '02', 'Aufzug-Nord'): {
     'Coordinates': [467, 487],
     'Connections': [
       (('GA', '02', 'EN_5'), 40),
       (('GA', '02', 'EN_8'), 78),
-      (('GA', '03', 'Aufzug Nord'), 1),
-      (('GA', '04', 'Aufzug Nord'), 1),
-      (('GA', '1', 'Aufzug Nord'), 1),
-      (('GA', '2', 'Aufzug Nord'), 1),
-      (('GA', '3', 'Aufzug Nord'), 1),
-      (('GA', '4', 'Aufzug Nord'), 1),
-      (('GA', '5', 'Aufzug Nord'), 1),
-      (('GA', '7', 'Aufzug Nord'), 1),
-      (('GA', '8', 'Aufzug Nord'), 1),
+      (('GA', '03', 'Aufzug-Nord'), 1),
+      (('GA', '04', 'Aufzug-Nord'), 1),
+      (('GA', '1', 'Aufzug-Nord'), 1),
+      (('GA', '2', 'Aufzug-Nord'), 1),
+      (('GA', '3', 'Aufzug-Nord'), 1),
+      (('GA', '4', 'Aufzug-Nord'), 1),
+      (('GA', '5', 'Aufzug-Nord'), 1),
+      (('GA', '7', 'Aufzug-Nord'), 1),
+      (('GA', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GA', '02', 'Aufzug Süd'): {
+  ('GA', '02', 'Aufzug-Süd'): {
     'Coordinates': [990, 1022],
     'Connections': [
       (('GA', '02', 'EN_28'), 60),
       (('GA', '02', 'EN_32'), 49),
-      (('GA', '03', 'Aufzug Süd'), 1),
-      (('GA', '04', 'Aufzug Süd'), 1),
-      (('GA', '2', 'Aufzug Süd'), 1),
-      (('GA', '3', 'Aufzug Süd'), 1),
-      (('GA', '4', 'Aufzug Süd'), 1),
-      (('GA', '6', 'Aufzug Süd'), 1),
-      (('GA', '7', 'Aufzug Süd'), 1),
-      (('GA', '8', 'Aufzug Süd'), 1),
+      (('GA', '03', 'Aufzug-Süd'), 1),
+      (('GA', '04', 'Aufzug-Süd'), 1),
+      (('GA', '2', 'Aufzug-Süd'), 1),
+      (('GA', '3', 'Aufzug-Süd'), 1),
+      (('GA', '4', 'Aufzug-Süd'), 1),
+      (('GA', '6', 'Aufzug-Süd'), 1),
+      (('GA', '7', 'Aufzug-Süd'), 1),
+      (('GA', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GA', '02', 'Cafeteria'): {
@@ -227,7 +227,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '02', 'EN_1'), 70),
       (('GA', '02', 'EN_3'), 36),
-      (('GA', '02', 'Eingang Nord'), 86),
+      (('GA', '02', 'Eingang-Nord'), 86),
     ],
   },
   ('GA', '02', 'EN_20'): {
@@ -287,10 +287,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '02', 'EN_28'): {
     'Coordinates': [947, 980],
     'Connections': [
-      (('GA', '02', 'Aufzug Süd'), 60),
+      (('GA', '02', 'Aufzug-Süd'), 60),
       (('GA', '02', 'EN_29'), 33),
       (('GA', '02', 'EN_30'), 27),
-      (('GA', '02', 'Treppe Süd'), 59),
+      (('GA', '02', 'Treppe-Süd'), 59),
     ],
   },
   ('GA', '02', 'EN_29'): {
@@ -323,16 +323,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '02', 'EN_27'), 96),
       (('GA', '02', 'EN_30'), 32),
       (('GA', '02', 'EN_35'), 112),
-      (('GA', '02', 'Treppe Süd 2 West'), 29),
+      (('GA', '02', 'Treppe-Süd-2-West'), 29),
     ],
   },
   ('GA', '02', 'EN_32'): {
     'Coordinates': [1025, 1056],
     'Connections': [
-      (('GA', '02', 'Aufzug Süd'), 49),
+      (('GA', '02', 'Aufzug-Süd'), 49),
       (('GA', '02', 'EN_33'), 40),
       (('GA', '02', 'EN_35'), 58),
-      (('GA', '02', 'WC Süd'), 33),
+      (('GA', '02', 'WC-Süd'), 33),
     ],
   },
   ('GA', '02', 'EN_33'): {
@@ -372,7 +372,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '02', 'EN_25'), 72),
       (('GA', '02', 'EN_29'), 28),
       (('GA', '02', 'EN_34'), 115),
-      (('GA', '02', 'Treppe Süd 2 Ost'), 26),
+      (('GA', '02', 'Treppe-Süd-2-Ost'), 26),
     ],
   },
   ('GA', '02', 'EN_4'): {
@@ -386,10 +386,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '02', 'EN_5'): {
     'Coordinates': [495, 516],
     'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 40),
+      (('GA', '02', 'Aufzug-Nord'), 40),
       (('GA', '02', 'EN_4'), 31),
       (('GA', '02', 'EN_6'), 33),
-      (('GA', '02', 'Treppe Nord'), 32),
+      (('GA', '02', 'Treppe-Nord'), 32),
     ],
   },
   ('GA', '02', 'EN_6'): {
@@ -411,10 +411,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '02', 'EN_8'): {
     'Coordinates': [413, 431],
     'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 78),
+      (('GA', '02', 'Aufzug-Nord'), 78),
       (('GA', '02', 'EN_7'), 31),
       (('GA', '02', 'EN_9'), 57),
-      (('GA', '02', 'WC Nord'), 30),
+      (('GA', '02', 'WC-Nord'), 30),
     ],
   },
   ('GA', '02', 'EN_9'): {
@@ -425,68 +425,68 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA02.png', '03', 'EN_13'), 95),
     ],
   },
-  ('GA', '02', 'Eingang Nord'): {
+  ('GA', '02', 'Eingang-Nord'): {
     'Coordinates': [353, 233],
     'Connections': [
       (('GA', '02', 'EN_2'), 86),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GA', '02', 'Treppe Nord'): {
+  ('GA', '02', 'Treppe-Nord'): {
     'Coordinates': [517, 539],
     'Connections': [
       (('GA', '02', 'EN_5'), 32),
-      (('GA', '03', 'Treppe Nord'), 2),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Treppe Nord'), 2),
-      (('GA', '2', 'Treppe Nord'), 2),
-      (('GA', '3', 'Treppe Nord'), 2),
-      (('GA', '4', 'Treppe Nord'), 2),
-      (('GA', '5', 'Treppe Nord'), 2),
-      (('GA', '6', 'Treppe Nord'), 2),
-      (('GA', '7', 'Treppe Nord'), 2),
-      (('GA', '8', 'Treppe Nord'), 2),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
+      (('GA', '2', 'Treppe-Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '02', 'Treppe Süd'): {
+  ('GA', '02', 'Treppe-Süd'): {
     'Coordinates': [906, 937],
     'Connections': [
       (('GA', '02', 'EN_28'), 59),
-      (('GA', '03', 'Treppe Süd'), 2),
-      (('GA', '04', 'Treppe Süd'), 2),
-      (('GA', '05', 'Treppe Süd'), 2),
-      (('GA', '1', 'Treppe Süd'), 2),
-      (('GA', '2', 'Treppe Süd'), 2),
-      (('GA', '3', 'Treppe Süd'), 2),
-      (('GA', '4', 'Treppe Süd'), 2),
-      (('GA', '5', 'Treppe Süd'), 2),
-      (('GA', '6', 'Treppe Süd'), 2),
-      (('GA', '7', 'Treppe Süd'), 2),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
-  ('GA', '02', 'Treppe Süd 2 Ost'): {
+  ('GA', '02', 'Treppe-Süd-2-Ost'): {
     'Coordinates': [1005, 916],
     'Connections': [
       (('GA', '02', 'EN_37'), 26),
-      (('GA', '03', 'Treppe Süd 2 Ost'), 2),
+      (('GA', '03', 'Treppe-Süd-2-Ost'), 2),
     ],
   },
-  ('GA', '02', 'Treppe Süd 2 West'): {
+  ('GA', '02', 'Treppe-Süd-2-West'): {
     'Coordinates': [892, 1047],
     'Connections': [
       (('GA', '02', 'EN_31'), 29),
-      (('GA', '03', 'Treppe Süd 2 West'), 2),
+      (('GA', '03', 'Treppe-Süd-2-West'), 2),
     ],
   },
-  ('GA', '02', 'WC Nord'): {
+  ('GA', '02', 'WC-Nord'): {
     'Coordinates': [393, 409],
     'Connections': [
       (('GA', '02', 'EN_8'), 30),
     ],
   },
-  ('GA', '02', 'WC Süd'): {
+  ('GA', '02', 'WC-Süd'): {
     'Coordinates': [1049, 1079],
     'Connections': [
       (('GA', '02', 'EN_32'), 33),
@@ -543,13 +543,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '03', '120'): {
     'Coordinates': [797, 957],
     'Connections': [
-      (('GA', '03', 'Treppe Süd 2 West'), 31),
+      (('GA', '03', 'Treppe-Süd-2-West'), 31),
     ],
   },
   ('GA', '03', '120a'): {
     'Coordinates': [966, 817],
     'Connections': [
-      (('GA', '03', 'Treppe Süd 2 Ost'), 25),
+      (('GA', '03', 'Treppe-Süd-2-Ost'), 25),
     ],
   },
   ('GA', '03', '13'): {
@@ -700,45 +700,45 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '03', 'EN_13'), 25),
     ],
   },
-  ('GA', '03', 'Aufzug Nord'): {
+  ('GA', '03', 'Aufzug-Nord'): {
     'Coordinates': [316, 307],
     'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 1),
+      (('GA', '02', 'Aufzug-Nord'), 1),
       (('GA', '03', 'EN_12'), 76),
       (('GA', '03', 'EN_15'), 44),
-      (('GA', '04', 'Aufzug Nord'), 1),
-      (('GA', '1', 'Aufzug Nord'), 1),
-      (('GA', '2', 'Aufzug Nord'), 1),
-      (('GA', '3', 'Aufzug Nord'), 1),
-      (('GA', '4', 'Aufzug Nord'), 1),
-      (('GA', '5', 'Aufzug Nord'), 1),
-      (('GA', '7', 'Aufzug Nord'), 1),
-      (('GA', '8', 'Aufzug Nord'), 1),
+      (('GA', '04', 'Aufzug-Nord'), 1),
+      (('GA', '1', 'Aufzug-Nord'), 1),
+      (('GA', '2', 'Aufzug-Nord'), 1),
+      (('GA', '3', 'Aufzug-Nord'), 1),
+      (('GA', '4', 'Aufzug-Nord'), 1),
+      (('GA', '5', 'Aufzug-Nord'), 1),
+      (('GA', '7', 'Aufzug-Nord'), 1),
+      (('GA', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GA', '03', 'Aufzug Süd'): {
+  ('GA', '03', 'Aufzug-Süd'): {
     'Coordinates': [894, 898],
     'Connections': [
-      (('GA', '02', 'Aufzug Süd'), 1),
+      (('GA', '02', 'Aufzug-Süd'), 1),
       (('GA', '03', 'EN_48'), 58),
       (('GA', '03', 'EN_52'), 55),
-      (('GA', '04', 'Aufzug Süd'), 1),
-      (('GA', '2', 'Aufzug Süd'), 1),
-      (('GA', '3', 'Aufzug Süd'), 1),
-      (('GA', '4', 'Aufzug Süd'), 1),
-      (('GA', '6', 'Aufzug Süd'), 1),
-      (('GA', '7', 'Aufzug Süd'), 1),
-      (('GA', '8', 'Aufzug Süd'), 1),
+      (('GA', '04', 'Aufzug-Süd'), 1),
+      (('GA', '2', 'Aufzug-Süd'), 1),
+      (('GA', '3', 'Aufzug-Süd'), 1),
+      (('GA', '4', 'Aufzug-Süd'), 1),
+      (('GA', '6', 'Aufzug-Süd'), 1),
+      (('GA', '7', 'Aufzug-Süd'), 1),
+      (('GA', '8', 'Aufzug-Süd'), 1),
     ],
   },
-  ('GA', '03', 'Durchgang Richtung GB Nord'): {
+  ('GA', '03', 'Durchgang-Richtung-GB-Nord'): {
     'Coordinates': [250, 453],
     'Connections': [
       (('GA', '03', 'EN_18'), 87),
-      (('GB', '03', 'Durchgang Richtung GA Nord'), 1),
+      (('GB', '03', 'Durchgang-Richtung-GA-Nord'), 1),
     ],
   },
-  ('GA', '03', 'Durchgang Richtung HGA Nord'): {
+  ('GA', '03', 'Durchgang-Richtung-HGA-Nord'): {
     'Coordinates': [444, 247],
     'Connections': [
       (('GA', '03', 'EN_17'), 76),
@@ -749,7 +749,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '03', '33'), 45),
       (('GA', '03', 'EN_2'), 69),
-      (('GA', '03', 'Eingang Nord Links'), 43),
+      (('GA', '03', 'Eingang-Nord-Links'), 43),
     ],
   },
   ('GA', '03', 'EN_10'): {
@@ -770,10 +770,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '03', 'EN_12'): {
     'Coordinates': [261, 254],
     'Connections': [
-      (('GA', '03', 'Aufzug Nord'), 76),
+      (('GA', '03', 'Aufzug-Nord'), 76),
       (('GA', '03', 'EN_13'), 31),
       (('GA', '03', 'EN_9'), 60),
-      (('GA', '03', 'WC Nord'), 28),
+      (('GA', '03', 'WC-Nord'), 28),
     ],
   },
   ('GA', '03', 'EN_13'): {
@@ -795,10 +795,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '03', 'EN_15'): {
     'Coordinates': [348, 337],
     'Connections': [
-      (('GA', '03', 'Aufzug Nord'), 44),
+      (('GA', '03', 'Aufzug-Nord'), 44),
       (('GA', '03', 'EN_14'), 31),
       (('GA', '03', 'EN_16'), 29),
-      (('GA', '03', 'Treppe Nord'), 48),
+      (('GA', '03', 'Treppe-Nord'), 48),
     ],
   },
   ('GA', '03', 'EN_16'): {
@@ -812,7 +812,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '03', 'EN_17'): {
     'Coordinates': [390, 300],
     'Connections': [
-      (('GA', '03', 'Durchgang Richtung HGA Nord'), 76),
+      (('GA', '03', 'Durchgang-Richtung-HGA-Nord'), 76),
       (('GA', '03', 'EN_16'), 27),
       (('GA', '03', 'EN_19'), 100),
       (('GA', '03', 'EN_5'), 50),
@@ -821,7 +821,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '03', 'EN_18'): {
     'Coordinates': [301, 382],
     'Connections': [
-      (('GA', '03', 'Durchgang Richtung GB Nord'), 87),
+      (('GA', '03', 'Durchgang-Richtung-GB-Nord'), 87),
       (('GA', '03', 'EN_11'), 42),
       (('GA', '03', 'EN_14'), 35),
       (('GA', '03', 'EN_24'), 90),
@@ -1060,16 +1060,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '03', 'EN_48'), 58),
       (('GA', '03', 'EN_53'), 124),
       (('GA', '03', 'EN_56'), 83),
-      (('GA', '03', 'Treppe Süd 2 West'), 86),
+      (('GA', '03', 'Treppe-Süd-2-West'), 86),
     ],
   },
   ('GA', '03', 'EN_48'): {
     'Coordinates': [934, 940],
     'Connections': [
-      (('GA', '03', 'Aufzug Süd'), 58),
+      (('GA', '03', 'Aufzug-Süd'), 58),
       (('GA', '03', 'EN_47'), 58),
       (('GA', '03', 'EN_50'), 37),
-      (('GA', '03', 'WC Süd'), 28),
+      (('GA', '03', 'WC-Süd'), 28),
     ],
   },
   ('GA', '03', 'EN_49'): {
@@ -1078,7 +1078,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '03', 'EN_50'), 24),
       (('GA', '03', 'EN_51'), 116),
       (('GA', '03', 'EN_57'), 110),
-      (('GA', '03', 'Treppe Süd 2 Ost'), 79),
+      (('GA', '03', 'Treppe-Süd-2-Ost'), 79),
     ],
   },
   ('GA', '03', 'EN_5'): {
@@ -1103,16 +1103,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '03', 'EN_46'), 98),
       (('GA', '03', 'EN_49'), 116),
       (('GA', '03', 'EN_52'), 59),
-      (('GA', '03', 'Treppe Süd 2 Ost'), 51),
+      (('GA', '03', 'Treppe-Süd-2-Ost'), 51),
     ],
   },
   ('GA', '03', 'EN_52'): {
     'Coordinates': [852, 863],
     'Connections': [
-      (('GA', '03', 'Aufzug Süd'), 55),
+      (('GA', '03', 'Aufzug-Süd'), 55),
       (('GA', '03', 'EN_51'), 59),
       (('GA', '03', 'EN_53'), 55),
-      (('GA', '03', 'Treppe Süd'), 35),
+      (('GA', '03', 'Treppe-Süd'), 35),
     ],
   },
   ('GA', '03', 'EN_53'): {
@@ -1121,7 +1121,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '03', 'EN_45'), 88),
       (('GA', '03', 'EN_47'), 124),
       (('GA', '03', 'EN_52'), 55),
-      (('GA', '03', 'Treppe Süd 2 West'), 45),
+      (('GA', '03', 'Treppe-Süd-2-West'), 45),
     ],
   },
   ('GA', '03', 'EN_55'): {
@@ -1129,7 +1129,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '03', '103'), 37),
       (('GA', '03', 'EN_56'), 24),
-      (('GA', '03', 'Eingang Süd Links'), 32),
+      (('GA', '03', 'Eingang-Süd-Links'), 32),
     ],
   },
   ('GA', '03', 'EN_56'): {
@@ -1145,7 +1145,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '03', '101'), 28),
       (('GA', '03', 'EN_49'), 110),
-      (('GA', '03', 'Eingang Süd Rechts'), 30),
+      (('GA', '03', 'Eingang-Süd-Rechts'), 30),
     ],
   },
   ('GA', '03', 'EN_6'): {
@@ -1153,7 +1153,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '03', '133'), 43),
       (('GA', '03', 'EN_7'), 88),
-      (('GA', '03', 'Eingang Nord Rechts'), 45),
+      (('GA', '03', 'Eingang-Nord-Rechts'), 45),
     ],
   },
   ('GA', '03', 'EN_7'): {
@@ -1180,97 +1180,97 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '03', 'EN_7'), 22),
     ],
   },
-  ('GA', '03', 'Eingang Nord Links'): {
+  ('GA', '03', 'Eingang-Nord-Links'): {
     'Coordinates': [197, 97],
     'Connections': [
       (('GA', '03', 'EN_1'), 43),
-      (('GA', '03', 'Eingang Nord Rechts'), 122),
-      (('RUB', '0', 'Campus'), 1),
+      (('GA', '03', 'Eingang-Nord-Rechts'), 122),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GA', '03', 'Eingang Nord Rechts'): {
+  ('GA', '03', 'Eingang-Nord-Rechts'): {
     'Coordinates': [110, 183],
     'Connections': [
       (('GA', '03', 'EN_6'), 45),
-      (('GA', '03', 'Eingang Nord Links'), 122),
-      (('RUB', '0', 'Campus'), 1),
+      (('GA', '03', 'Eingang-Nord-Links'), 122),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GA', '03', 'Eingang Süd Links'): {
+  ('GA', '03', 'Eingang-Süd-Links'): {
     'Coordinates': [993, 1085],
     'Connections': [
       (('GA', '03', 'EN_55'), 32),
-      (('GA', '03', 'Eingang Süd Rechts'), 117),
-      (('RUB', '0', 'Campus'), 1),
+      (('GA', '03', 'Eingang-Süd-Rechts'), 117),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GA', '03', 'Eingang Süd Rechts'): {
+  ('GA', '03', 'Eingang-Süd-Rechts'): {
     'Coordinates': [1075, 1002],
     'Connections': [
       (('GA', '03', 'EN_57'), 30),
-      (('GA', '03', 'Eingang Süd Links'), 117),
-      (('RUB', '0', 'Campus'), 1),
+      (('GA', '03', 'Eingang-Süd-Links'), 117),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GA', '03', 'Treppe Nord'): {
+  ('GA', '03', 'Treppe-Nord'): {
     'Coordinates': [381, 372],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
       (('GA', '03', 'EN_15'), 48),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Treppe Nord'), 2),
-      (('GA', '2', 'Treppe Nord'), 2),
-      (('GA', '3', 'Treppe Nord'), 2),
-      (('GA', '4', 'Treppe Nord'), 2),
-      (('GA', '5', 'Treppe Nord'), 2),
-      (('GA', '6', 'Treppe Nord'), 2),
-      (('GA', '7', 'Treppe Nord'), 2),
-      (('GA', '8', 'Treppe Nord'), 2),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
+      (('GA', '2', 'Treppe-Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '03', 'Treppe Süd'): {
+  ('GA', '03', 'Treppe-Süd'): {
     'Coordinates': [833, 834],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
       (('GA', '03', 'EN_52'), 35),
-      (('GA', '04', 'Treppe Süd'), 2),
-      (('GA', '05', 'Treppe Süd'), 2),
-      (('GA', '1', 'Treppe Süd'), 2),
-      (('GA', '2', 'Treppe Süd'), 2),
-      (('GA', '3', 'Treppe Süd'), 2),
-      (('GA', '4', 'Treppe Süd'), 2),
-      (('GA', '5', 'Treppe Süd'), 2),
-      (('GA', '6', 'Treppe Süd'), 2),
-      (('GA', '7', 'Treppe Süd'), 2),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
-  ('GA', '03', 'Treppe Süd 2 Ost'): {
+  ('GA', '03', 'Treppe-Süd-2-Ost'): {
     'Coordinates': [944, 829],
     'Connections': [
-      (('GA', '02', 'Treppe Süd 2 Ost'), 2),
+      (('GA', '02', 'Treppe-Süd-2-Ost'), 2),
       (('GA', '03', '120a'), 25),
       (('GA', '03', 'EN_49'), 79),
       (('GA', '03', 'EN_51'), 51),
     ],
   },
-  ('GA', '03', 'Treppe Süd 2 West'): {
+  ('GA', '03', 'Treppe-Süd-2-West'): {
     'Coordinates': [824, 941],
     'Connections': [
-      (('GA', '02', 'Treppe Süd 2 West'), 2),
+      (('GA', '02', 'Treppe-Süd-2-West'), 2),
       (('GA', '03', '120'), 31),
       (('GA', '03', 'EN_47'), 86),
       (('GA', '03', 'EN_53'), 45),
     ],
   },
-  ('GA', '03', 'WC Nord'): {
+  ('GA', '03', 'WC-Nord'): {
     'Coordinates': [243, 233],
     'Connections': [
       (('GA', '03', 'EN_12'), 28),
     ],
   },
-  ('GA', '03', 'WC Süd'): {
+  ('GA', '03', 'WC-Süd'): {
     'Coordinates': [955, 958],
     'Connections': [
       (('GA', '03', 'EN_48'), 28),
@@ -1285,7 +1285,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '04', '100'): {
     'Coordinates': [336, 466],
     'Connections': [
-      (('GA', '04', 'Durchgang Richtung GB Nord'), 59),
+      (('GA', '04', 'Durchgang-Richtung-GB-Nord'), 59),
       (('GA', '04', 'EN_44'), 28),
     ],
   },
@@ -1601,58 +1601,58 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '04', 'EN_61'), 25),
     ],
   },
-  ('GA', '04', 'Aufzug Nord'): {
+  ('GA', '04', 'Aufzug-Nord'): {
     'Coordinates': [294, 284],
     'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 1),
-      (('GA', '03', 'Aufzug Nord'), 1),
+      (('GA', '02', 'Aufzug-Nord'), 1),
+      (('GA', '03', 'Aufzug-Nord'), 1),
       (('GA', '04', 'EN_47'), 61),
       (('GA', '04', 'EN_63'), 50),
-      (('GA', '1', 'Aufzug Nord'), 1),
-      (('GA', '2', 'Aufzug Nord'), 1),
-      (('GA', '3', 'Aufzug Nord'), 1),
-      (('GA', '4', 'Aufzug Nord'), 1),
-      (('GA', '5', 'Aufzug Nord'), 1),
-      (('GA', '7', 'Aufzug Nord'), 1),
-      (('GA', '8', 'Aufzug Nord'), 1),
+      (('GA', '1', 'Aufzug-Nord'), 1),
+      (('GA', '2', 'Aufzug-Nord'), 1),
+      (('GA', '3', 'Aufzug-Nord'), 1),
+      (('GA', '4', 'Aufzug-Nord'), 1),
+      (('GA', '5', 'Aufzug-Nord'), 1),
+      (('GA', '7', 'Aufzug-Nord'), 1),
+      (('GA', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GA', '04', 'Aufzug Süd'): {
+  ('GA', '04', 'Aufzug-Süd'): {
     'Coordinates': [898, 886],
     'Connections': [
-      (('GA', '02', 'Aufzug Süd'), 1),
-      (('GA', '03', 'Aufzug Süd'), 1),
+      (('GA', '02', 'Aufzug-Süd'), 1),
+      (('GA', '03', 'Aufzug-Süd'), 1),
       (('GA', '04', 'EN_10'), 64),
       (('GA', '04', 'EN_23'), 50),
       (('GA', '04', 'EN_8'), 65),
-      (('GA', '2', 'Aufzug Süd'), 1),
-      (('GA', '3', 'Aufzug Süd'), 1),
-      (('GA', '4', 'Aufzug Süd'), 1),
-      (('GA', '6', 'Aufzug Süd'), 1),
-      (('GA', '7', 'Aufzug Süd'), 1),
-      (('GA', '8', 'Aufzug Süd'), 1),
+      (('GA', '2', 'Aufzug-Süd'), 1),
+      (('GA', '3', 'Aufzug-Süd'), 1),
+      (('GA', '4', 'Aufzug-Süd'), 1),
+      (('GA', '6', 'Aufzug-Süd'), 1),
+      (('GA', '7', 'Aufzug-Süd'), 1),
+      (('GA', '8', 'Aufzug-Süd'), 1),
     ],
   },
-  ('GA', '04', 'Durchgang Richtung GB Nord'): {
+  ('GA', '04', 'Durchgang-Richtung-GB-Nord'): {
     'Coordinates': [277, 469],
     'Connections': [
       (('GA', '04', '100'), 59),
-      (('GB', '04', 'Durchgang Richtung GA Nord'), 1),
+      (('GB', '04', 'Durchgang-Richtung-GA-Nord'), 1),
     ],
   },
-  ('GA', '04', 'Durchgang Richtung GB Süd'): {
+  ('GA', '04', 'Durchgang-Richtung-GB-Süd'): {
     'Coordinates': [761, 965],
     'Connections': [
       (('GA', '04', 'EN_13'), 54),
     ],
   },
-  ('GA', '04', 'Durchgang Richtung HGA Nord'): {
+  ('GA', '04', 'Durchgang-Richtung-HGA-Nord'): {
     'Coordinates': [472, 268],
     'Connections': [
       (('GA', '04', 'EN_53'), 39),
     ],
   },
-  ('GA', '04', 'Durchgang Richtung HGA Süd'): {
+  ('GA', '04', 'Durchgang-Richtung-HGA-Süd'): {
     'Coordinates': [1012, 799],
     'Connections': [
       (('GA', '04', 'EN_62'), 79),
@@ -1670,16 +1670,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '04', '161'), 57),
       (('GA', '04', 'EN_2'), 20),
-      (('GA', '04', 'Treppe Süd 2 - West'), 50),
+      (('GA', '04', 'Treppe-Süd-2---West'), 50),
     ],
   },
   ('GA', '04', 'EN_10'): {
     'Coordinates': [938, 936],
     'Connections': [
-      (('GA', '04', 'Aufzug Süd'), 64),
+      (('GA', '04', 'Aufzug-Süd'), 64),
       (('GA', '04', 'EN_11'), 53),
       (('GA', '04', 'EN_8'), 18),
-      (('GA', '04', 'WC Süd'), 20),
+      (('GA', '04', 'WC-Süd'), 20),
     ],
   },
   ('GA', '04', 'EN_11'): {
@@ -1701,7 +1701,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [796, 924],
     'Connections': [
       (('GA', '04', '151'), 79),
-      (('GA', '04', 'Durchgang Richtung GB Süd'), 54),
+      (('GA', '04', 'Durchgang-Richtung-GB-Süd'), 54),
       (('GA', '04', 'EN_25'), 44),
     ],
   },
@@ -1787,10 +1787,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '04', 'EN_23'): {
     'Coordinates': [865, 849],
     'Connections': [
-      (('GA', '04', 'Aufzug Süd'), 50),
+      (('GA', '04', 'Aufzug-Süd'), 50),
       (('GA', '04', 'EN_22'), 25),
       (('GA', '04', 'EN_24'), 18),
-      (('GA', '04', 'Treppe Süd'), 48),
+      (('GA', '04', 'Treppe-Süd'), 48),
     ],
   },
   ('GA', '04', 'EN_24'): {
@@ -1929,7 +1929,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '04', '59'), 60),
       (('GA', '04', 'EN_71'), 30),
-      (('GA', '04', 'Treppe Süd 2 - Ost'), 62),
+      (('GA', '04', 'Treppe-Süd-2---Ost'), 62),
     ],
   },
   ('GA', '04', 'EN_40'): {
@@ -1993,10 +1993,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '04', 'EN_47'): {
     'Coordinates': [332, 332],
     'Connections': [
-      (('GA', '04', 'Aufzug Nord'), 61),
+      (('GA', '04', 'Aufzug-Nord'), 61),
       (('GA', '04', 'EN_46'), 25),
       (('GA', '04', 'EN_48'), 32),
-      (('GA', '04', 'Treppe Nord'), 46),
+      (('GA', '04', 'Treppe-Nord'), 46),
     ],
   },
   ('GA', '04', 'EN_48'): {
@@ -2052,7 +2052,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [492, 302],
     'Connections': [
       (('GA', '04', '39'), 71),
-      (('GA', '04', 'Durchgang Richtung HGA Nord'), 39),
+      (('GA', '04', 'Durchgang-Richtung-HGA-Nord'), 39),
       (('GA', '04', 'EN_52'), 32),
     ],
   },
@@ -2130,7 +2130,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '04', 'EN_62'): {
     'Coordinates': [958, 856],
     'Connections': [
-      (('GA', '04', 'Durchgang Richtung HGA Süd'), 79),
+      (('GA', '04', 'Durchgang-Richtung-HGA-Süd'), 79),
       (('GA', '04', 'EN_21'), 73),
       (('GA', '04', 'EN_5'), 45),
     ],
@@ -2138,10 +2138,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '04', 'EN_63'): {
     'Coordinates': [256, 251],
     'Connections': [
-      (('GA', '04', 'Aufzug Nord'), 50),
+      (('GA', '04', 'Aufzug-Nord'), 50),
       (('GA', '04', 'EN_61'), 33),
       (('GA', '04', 'EN_64'), 54),
-      (('GA', '04', 'WC Nord'), 28),
+      (('GA', '04', 'WC-Nord'), 28),
     ],
   },
   ('GA', '04', 'EN_64'): {
@@ -2211,10 +2211,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '04', 'EN_8'): {
     'Coordinates': [951, 923],
     'Connections': [
-      (('GA', '04', 'Aufzug Süd'), 65),
+      (('GA', '04', 'Aufzug-Süd'), 65),
       (('GA', '04', 'EN_10'), 18),
       (('GA', '04', 'EN_7'), 30),
-      (('GA', '04', 'WC Süd'), 22),
+      (('GA', '04', 'WC-Süd'), 22),
     ],
   },
   ('GA', '04', 'EN_9'): {
@@ -2225,59 +2225,59 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '04', 'EN_43'), 102),
     ],
   },
-  ('GA', '04', 'Treppe Nord'): {
+  ('GA', '04', 'Treppe-Nord'): {
     'Coordinates': [369, 359],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
-      (('GA', '03', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
       (('GA', '04', 'EN_47'), 46),
-      (('GA', '1', 'Treppe Nord'), 2),
-      (('GA', '2', 'Treppe Nord'), 2),
-      (('GA', '3', 'Treppe Nord'), 2),
-      (('GA', '4', 'Treppe Nord'), 2),
-      (('GA', '5', 'Treppe Nord'), 2),
-      (('GA', '6', 'Treppe Nord'), 2),
-      (('GA', '7', 'Treppe Nord'), 2),
-      (('GA', '8', 'Treppe Nord'), 2),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
+      (('GA', '2', 'Treppe-Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '04', 'Treppe Süd'): {
+  ('GA', '04', 'Treppe-Süd'): {
     'Coordinates': [831, 815],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
-      (('GA', '03', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
       (('GA', '04', 'EN_23'), 48),
-      (('GA', '05', 'Treppe Süd'), 2),
-      (('GA', '1', 'Treppe Süd'), 2),
-      (('GA', '2', 'Treppe Süd'), 2),
-      (('GA', '3', 'Treppe Süd'), 2),
-      (('GA', '4', 'Treppe Süd'), 2),
-      (('GA', '5', 'Treppe Süd'), 2),
-      (('GA', '6', 'Treppe Süd'), 2),
-      (('GA', '7', 'Treppe Süd'), 2),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
-  ('GA', '04', 'Treppe Süd 2 - Ost'): {
+  ('GA', '04', 'Treppe-Süd-2---Ost'): {
     'Coordinates': [1056, 924],
     'Connections': [
       (('GA', '04', 'EN_4'), 62),
     ],
   },
-  ('GA', '04', 'Treppe Süd 2 - West'): {
+  ('GA', '04', 'Treppe-Süd-2---West'): {
     'Coordinates': [949, 1050],
     'Connections': [
       (('GA', '04', 'EN_1'), 50),
     ],
   },
-  ('GA', '04', 'WC Nord'): {
+  ('GA', '04', 'WC-Nord'): {
     'Coordinates': [242, 227],
     'Connections': [
       (('GA', '04', 'EN_63'), 28),
     ],
   },
-  ('GA', '04', 'WC Süd'): {
+  ('GA', '04', 'WC-Süd'): {
     'Coordinates': [956, 944],
     'Connections': [
       (('GA', '04', 'EN_10'), 20),
@@ -2455,7 +2455,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '05', '101'), 29),
       (('GA', '05', 'EN_1'), 59),
-      (('GA', '05', 'Eingang Süd Rechts'), 47),
+      (('GA', '05', 'Eingang-Süd-Rechts'), 47),
     ],
   },
   ('GA', '05', 'EN_1'): {
@@ -2488,7 +2488,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '05', '103'), 38),
       (('GA', '05', 'EN_11'), 28),
-      (('GA', '05', 'Eingang Süd Links'), 42),
+      (('GA', '05', 'Eingang-Süd-Links'), 42),
     ],
   },
   ('GA', '05', 'EN_13'): {
@@ -2528,7 +2528,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '05', 'Aufzug-110'), 54),
       (('GA', '05', 'EN_16'), 26),
       (('GA', '05', 'EN_18'), 18),
-      (('GA', '05', 'Treppe Süd'), 45),
+      (('GA', '05', 'Treppe-Süd'), 45),
     ],
   },
   ('GA', '05', 'EN_18'): {
@@ -2670,7 +2670,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '05', 'Aufzug-110'), 62),
       (('GA', '05', 'EN_4'), 18),
       (('GA', '05', 'EN_6'), 24),
-      (('GA', '05', 'WC Süd'), 24),
+      (('GA', '05', 'WC-Süd'), 24),
     ],
   },
   ('GA', '05', 'EN_6'): {
@@ -2679,7 +2679,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '05', 'Aufzug-110'), 62),
       (('GA', '05', 'EN_5'), 24),
       (('GA', '05', 'EN_7'), 43),
-      (('GA', '05', 'WC Süd'), 26),
+      (('GA', '05', 'WC-Süd'), 26),
     ],
   },
   ('GA', '05', 'EN_7'): {
@@ -2706,40 +2706,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '05', 'EN_8'), 13),
     ],
   },
-  ('GA', '05', 'Eingang Süd Links'): {
+  ('GA', '05', 'Eingang-Süd-Links'): {
     'Coordinates': [1016, 1097],
     'Connections': [
       (('GA', '05', 'EN_12'), 42),
-      (('GA', '05', 'Eingang Süd Rechts'), 117),
-      (('RUB', '0', 'Campus'), 1),
+      (('GA', '05', 'Eingang-Süd-Rechts'), 117),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GA', '05', 'Eingang Süd Rechts'): {
+  ('GA', '05', 'Eingang-Süd-Rechts'): {
     'Coordinates': [1097, 1012],
     'Connections': [
       (('GA', '05', 'EN_0'), 47),
-      (('GA', '05', 'Eingang Süd Links'), 117),
-      (('RUB', '0', 'Campus'), 1),
+      (('GA', '05', 'Eingang-Süd-Links'), 117),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GA', '05', 'Treppe Süd'): {
+  ('GA', '05', 'Treppe-Süd'): {
     'Coordinates': [833, 836],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
-      (('GA', '03', 'Treppe Süd'), 2),
-      (('GA', '04', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
       (('GA', '05', 'EN_17'), 45),
-      (('GA', '1', 'Treppe Süd'), 2),
-      (('GA', '2', 'Treppe Süd'), 2),
-      (('GA', '3', 'Treppe Süd'), 2),
-      (('GA', '4', 'Treppe Süd'), 2),
-      (('GA', '5', 'Treppe Süd'), 2),
-      (('GA', '6', 'Treppe Süd'), 2),
-      (('GA', '7', 'Treppe Süd'), 2),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
-  ('GA', '05', 'WC Süd'): {
+  ('GA', '05', 'WC-Süd'): {
     'Coordinates': [963, 963],
     'Connections': [
       (('GA', '05', 'EN_5'), 24),
@@ -2764,7 +2764,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '06', 'EN_0'), 88),
       (('GA', '06', 'EN_2'), 69),
-      (('GA', '06', 'Eingang Süd'), 107),
+      (('GA', '06', 'Eingang-Süd'), 107),
     ],
   },
   ('GA', '06', 'EN_2'): {
@@ -2782,11 +2782,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '06', 'EN_2'), 80),
     ],
   },
-  ('GA', '06', 'Eingang Süd'): {
+  ('GA', '06', 'Eingang-Süd'): {
     'Coordinates': [993, 1109],
     'Connections': [
       (('GA', '06', 'EN_1'), 107),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
   ('GA', '1', '1'): {
@@ -2820,7 +2820,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '1', '11'): {
     'Coordinates': [377, 359],
     'Connections': [
-      (('GA', '1', 'Aufzug Nord'), 73),
+      (('GA', '1', 'Aufzug-Nord'), 73),
     ],
   },
   ('GA', '1', '114'): {
@@ -2836,7 +2836,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '1', '12'): {
     'Coordinates': [348, 382],
     'Connections': [
-      (('GA', '1', 'Aufzug Nord'), 67),
+      (('GA', '1', 'Aufzug-Nord'), 67),
     ],
   },
   ('GA', '1', '128'): {
@@ -3187,23 +3187,23 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '1', 'EN_44'), 47),
     ],
   },
-  ('GA', '1', 'Aufzug Nord'): {
+  ('GA', '1', 'Aufzug-Nord'): {
     'Coordinates': [312, 326],
     'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 1),
-      (('GA', '03', 'Aufzug Nord'), 1),
-      (('GA', '04', 'Aufzug Nord'), 1),
+      (('GA', '02', 'Aufzug-Nord'), 1),
+      (('GA', '03', 'Aufzug-Nord'), 1),
+      (('GA', '04', 'Aufzug-Nord'), 1),
       (('GA', '1', '11'), 73),
       (('GA', '1', '12'), 67),
       (('GA', '1', 'EN_41'), 66),
       (('GA', '1', 'EN_42'), 64),
-      (('GA', '1', 'Treppe Nord'), 88),
-      (('GA', '2', 'Aufzug Nord'), 1),
-      (('GA', '3', 'Aufzug Nord'), 1),
-      (('GA', '4', 'Aufzug Nord'), 1),
-      (('GA', '5', 'Aufzug Nord'), 1),
-      (('GA', '7', 'Aufzug Nord'), 1),
-      (('GA', '8', 'Aufzug Nord'), 1),
+      (('GA', '1', 'Treppe-Nord'), 88),
+      (('GA', '2', 'Aufzug-Nord'), 1),
+      (('GA', '3', 'Aufzug-Nord'), 1),
+      (('GA', '4', 'Aufzug-Nord'), 1),
+      (('GA', '5', 'Aufzug-Nord'), 1),
+      (('GA', '7', 'Aufzug-Nord'), 1),
+      (('GA', '8', 'Aufzug-Nord'), 1),
     ],
   },
   ('GA', '1', 'EN_0'): {
@@ -3227,7 +3227,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '1', 'Aufzug'), 66),
       (('GA', '1', 'EN_11'), 29),
       (('GA', '1', 'EN_9'), 60),
-      (('GA', '1', 'WC Süd'), 28),
+      (('GA', '1', 'WC-Süd'), 28),
     ],
   },
   ('GA', '1', 'EN_11'): {
@@ -3492,7 +3492,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '1', 'EN_41'): {
     'Coordinates': [259, 286],
     'Connections': [
-      (('GA', '1', 'Aufzug Nord'), 66),
+      (('GA', '1', 'Aufzug-Nord'), 66),
       (('GA', '1', 'EN_40'), 46),
       (('GA', '1', 'EN_42'), 16),
     ],
@@ -3501,10 +3501,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [272, 276],
     'Connections': [
       (('GA', '1', '9'), 32),
-      (('GA', '1', 'Aufzug Nord'), 64),
+      (('GA', '1', 'Aufzug-Nord'), 64),
       (('GA', '1', 'EN_41'), 16),
       (('GA', '1', 'EN_53'), 61),
-      (('GA', '1', 'WC Nord'), 45),
+      (('GA', '1', 'WC-Nord'), 45),
     ],
   },
   ('GA', '1', 'EN_43'): {
@@ -3521,7 +3521,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '1', 'Aufzug'), 47),
       (('GA', '1', 'EN_17'), 61),
       (('GA', '1', 'EN_43'), 64),
-      (('GA', '1', 'Treppe Süd'), 44),
+      (('GA', '1', 'Treppe-Süd'), 44),
     ],
   },
   ('GA', '1', 'EN_45'): {
@@ -3697,7 +3697,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [754, 756],
     'Connections': [
       (('GA', '1', 'EN_63'), 54),
-      (('GA', '1', 'Treppe Süd 2'), 43),
+      (('GA', '1', 'Treppe-Süd-2'), 43),
     ],
   },
   ('GA', '1', 'EN_66'): {
@@ -3752,59 +3752,59 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '1', 'EN_60'), 48),
     ],
   },
-  ('GA', '1', 'Treppe Nord'): {
+  ('GA', '1', 'Treppe-Nord'): {
     'Coordinates': [376, 387],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
-      (('GA', '03', 'Treppe Nord'), 2),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Aufzug Nord'), 88),
-      (('GA', '2', 'Treppe Nord'), 2),
-      (('GA', '3', 'Treppe Nord'), 2),
-      (('GA', '4', 'Treppe Nord'), 2),
-      (('GA', '5', 'Treppe Nord'), 2),
-      (('GA', '6', 'Treppe Nord'), 2),
-      (('GA', '7', 'Treppe Nord'), 2),
-      (('GA', '8', 'Treppe Nord'), 2),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Aufzug-Nord'), 88),
+      (('GA', '2', 'Treppe-Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '1', 'Treppe Süd'): {
+  ('GA', '1', 'Treppe-Süd'): {
     'Coordinates': [831, 836],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
-      (('GA', '03', 'Treppe Süd'), 2),
-      (('GA', '04', 'Treppe Süd'), 2),
-      (('GA', '05', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
       (('GA', '1', 'EN_44'), 44),
-      (('GA', '2', 'Treppe Süd'), 2),
-      (('GA', '3', 'Treppe Süd'), 2),
-      (('GA', '4', 'Treppe Süd'), 2),
-      (('GA', '5', 'Treppe Süd'), 2),
-      (('GA', '6', 'Treppe Süd'), 2),
-      (('GA', '7', 'Treppe Süd'), 2),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
-  ('GA', '1', 'Treppe Süd 2'): {
+  ('GA', '1', 'Treppe-Süd-2'): {
     'Coordinates': [782, 788],
     'Connections': [
       (('GA', '1', 'EN_64'), 43),
-      (('GA', '2', 'Treppe Süd 2'), 2),
-      (('GA', '4', 'Treppe Süd 2'), 2),
-      (('GA', '5', 'Treppe Süd 2'), 2),
-      (('GA', '6', 'Treppe Süd 2'), 2),
-      (('GA', '7', 'Treppe Süd 2'), 2),
-      (('GA', '8', 'Treppe Süd 2'), 2),
+      (('GA', '2', 'Treppe-Süd-2'), 2),
+      (('GA', '4', 'Treppe-Süd-2'), 2),
+      (('GA', '5', 'Treppe-Süd-2'), 2),
+      (('GA', '6', 'Treppe-Süd-2'), 2),
+      (('GA', '7', 'Treppe-Süd-2'), 2),
+      (('GA', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GA', '1', 'WC Nord'): {
+  ('GA', '1', 'WC-Nord'): {
     'Coordinates': [239, 246],
     'Connections': [
       (('GA', '1', 'EN_42'), 45),
     ],
   },
-  ('GA', '1', 'WC Süd'): {
+  ('GA', '1', 'WC-Süd'): {
     'Coordinates': [964, 965],
     'Connections': [
       (('GA', '1', 'EN_10'), 28),
@@ -4231,35 +4231,35 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '2', 'EN_58'), 29),
     ],
   },
-  ('GA', '2', 'Aufzug Nord'): {
+  ('GA', '2', 'Aufzug-Nord'): {
     'Coordinates': [308, 311],
     'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 1),
-      (('GA', '03', 'Aufzug Nord'), 1),
-      (('GA', '04', 'Aufzug Nord'), 1),
-      (('GA', '1', 'Aufzug Nord'), 1),
+      (('GA', '02', 'Aufzug-Nord'), 1),
+      (('GA', '03', 'Aufzug-Nord'), 1),
+      (('GA', '04', 'Aufzug-Nord'), 1),
+      (('GA', '1', 'Aufzug-Nord'), 1),
       (('GA', '2', 'EN_47'), 61),
       (('GA', '2', 'EN_57'), 53),
-      (('GA', '3', 'Aufzug Nord'), 1),
-      (('GA', '4', 'Aufzug Nord'), 1),
-      (('GA', '5', 'Aufzug Nord'), 1),
-      (('GA', '7', 'Aufzug Nord'), 1),
-      (('GA', '8', 'Aufzug Nord'), 1),
+      (('GA', '3', 'Aufzug-Nord'), 1),
+      (('GA', '4', 'Aufzug-Nord'), 1),
+      (('GA', '5', 'Aufzug-Nord'), 1),
+      (('GA', '7', 'Aufzug-Nord'), 1),
+      (('GA', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GA', '2', 'Aufzug Süd'): {
+  ('GA', '2', 'Aufzug-Süd'): {
     'Coordinates': [894, 901],
     'Connections': [
-      (('GA', '02', 'Aufzug Süd'), 1),
-      (('GA', '03', 'Aufzug Süd'), 1),
-      (('GA', '04', 'Aufzug Süd'), 1),
+      (('GA', '02', 'Aufzug-Süd'), 1),
+      (('GA', '03', 'Aufzug-Süd'), 1),
+      (('GA', '04', 'Aufzug-Süd'), 1),
       (('GA', '2', 'EN_26'), 39),
-      (('GA', '2', 'WC Süd'), 72),
-      (('GA', '3', 'Aufzug Süd'), 1),
-      (('GA', '4', 'Aufzug Süd'), 1),
-      (('GA', '6', 'Aufzug Süd'), 1),
-      (('GA', '7', 'Aufzug Süd'), 1),
-      (('GA', '8', 'Aufzug Süd'), 1),
+      (('GA', '2', 'WC-Süd'), 72),
+      (('GA', '3', 'Aufzug-Süd'), 1),
+      (('GA', '4', 'Aufzug-Süd'), 1),
+      (('GA', '6', 'Aufzug-Süd'), 1),
+      (('GA', '7', 'Aufzug-Süd'), 1),
+      (('GA', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GA', '2', 'EN_0'): {
@@ -4418,10 +4418,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '2', 'EN_26'): {
     'Coordinates': [877, 866],
     'Connections': [
-      (('GA', '2', 'Aufzug Süd'), 39),
+      (('GA', '2', 'Aufzug-Süd'), 39),
       (('GA', '2', 'EN_24'), 27),
       (('GA', '2', 'EN_27'), 22),
-      (('GA', '2', 'Treppe Süd'), 59),
+      (('GA', '2', 'Treppe-Süd'), 59),
     ],
   },
   ('GA', '2', 'EN_27'): {
@@ -4492,7 +4492,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [762, 763],
     'Connections': [
       (('GA', '2', 'EN_35'), 54),
-      (('GA', '2', 'Treppe Süd 2'), 50),
+      (('GA', '2', 'Treppe-Süd-2'), 50),
     ],
   },
   ('GA', '2', 'EN_35'): {
@@ -4599,10 +4599,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '2', 'EN_47'): {
     'Coordinates': [351, 354],
     'Connections': [
-      (('GA', '2', 'Aufzug Nord'), 61),
+      (('GA', '2', 'Aufzug-Nord'), 61),
       (('GA', '2', 'EN_46'), 17),
       (('GA', '2', 'EN_49'), 23),
-      (('GA', '2', 'Treppe Nord'), 49),
+      (('GA', '2', 'Treppe-Nord'), 49),
     ],
   },
   ('GA', '2', 'EN_48'): {
@@ -4626,7 +4626,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '2', '156'), 52),
       (('GA', '2', 'EN_4'), 53),
       (('GA', '2', 'EN_6'), 43),
-      (('GA', '2', 'WC Süd'), 60),
+      (('GA', '2', 'WC-Süd'), 60),
     ],
   },
   ('GA', '2', 'EN_50'): {
@@ -4641,7 +4641,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [446, 456],
     'Connections': [
       (('GA', '2', 'EN_52'), 34),
-      (('GA', '2', 'Treppe Nord 2'), 47),
+      (('GA', '2', 'Treppe-Nord-2'), 47),
     ],
   },
   ('GA', '2', 'EN_52'): {
@@ -4687,10 +4687,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [275, 269],
     'Connections': [
       (('GA', '2', '9'), 28),
-      (('GA', '2', 'Aufzug Nord'), 53),
+      (('GA', '2', 'Aufzug-Nord'), 53),
       (('GA', '2', 'EN_56'), 25),
       (('GA', '2', 'EN_58'), 50),
-      (('GA', '2', 'WC Nord'), 37),
+      (('GA', '2', 'WC-Nord'), 37),
     ],
   },
   ('GA', '2', 'EN_58'): {
@@ -4876,7 +4876,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [959, 937],
     'Connections': [
       (('GA', '2', 'EN_87'), 22),
-      (('GA', '2', 'WC Süd'), 19),
+      (('GA', '2', 'WC-Süd'), 19),
     ],
   },
   ('GA', '2', 'EN_80'): {
@@ -4920,73 +4920,73 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '2', 'EN_87'), 26),
     ],
   },
-  ('GA', '2', 'Treppe Nord'): {
+  ('GA', '2', 'Treppe-Nord'): {
     'Coordinates': [386, 388],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
-      (('GA', '03', 'Treppe Nord'), 2),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
       (('GA', '2', 'EN_47'), 49),
-      (('GA', '3', 'Treppe Nord'), 2),
-      (('GA', '4', 'Treppe Nord'), 2),
-      (('GA', '5', 'Treppe Nord'), 2),
-      (('GA', '6', 'Treppe Nord'), 2),
-      (('GA', '7', 'Treppe Nord'), 2),
-      (('GA', '8', 'Treppe Nord'), 2),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '2', 'Treppe Nord 2'): {
+  ('GA', '2', 'Treppe-Nord-2'): {
     'Coordinates': [420, 417],
     'Connections': [
       (('GA', '2', 'EN_51'), 47),
-      (('GA', '3', 'Treppe Nord 2'), 2),
-      (('GA', '5', 'Treppe Nord 2'), 2),
-      (('GA', '6', 'Treppe Nord 2'), 2),
-      (('GA', '7', 'Treppe Nord 2'), 2),
-      (('GA', '8', 'Treppe Nord 2'), 2),
+      (('GA', '3', 'Treppe-Nord-2'), 2),
+      (('GA', '5', 'Treppe-Nord-2'), 2),
+      (('GA', '6', 'Treppe-Nord-2'), 2),
+      (('GA', '7', 'Treppe-Nord-2'), 2),
+      (('GA', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GA', '2', 'Treppe Süd'): {
+  ('GA', '2', 'Treppe-Süd'): {
     'Coordinates': [830, 831],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
-      (('GA', '03', 'Treppe Süd'), 2),
-      (('GA', '04', 'Treppe Süd'), 2),
-      (('GA', '05', 'Treppe Süd'), 2),
-      (('GA', '1', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
       (('GA', '2', 'EN_26'), 59),
-      (('GA', '3', 'Treppe Süd'), 2),
-      (('GA', '4', 'Treppe Süd'), 2),
-      (('GA', '5', 'Treppe Süd'), 2),
-      (('GA', '6', 'Treppe Süd'), 2),
-      (('GA', '7', 'Treppe Süd'), 2),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
-  ('GA', '2', 'Treppe Süd 2'): {
+  ('GA', '2', 'Treppe-Süd-2'): {
     'Coordinates': [798, 797],
     'Connections': [
-      (('GA', '1', 'Treppe Süd 2'), 2),
+      (('GA', '1', 'Treppe-Süd-2'), 2),
       (('GA', '2', 'EN_34'), 50),
-      (('GA', '4', 'Treppe Süd 2'), 2),
-      (('GA', '5', 'Treppe Süd 2'), 2),
-      (('GA', '6', 'Treppe Süd 2'), 2),
-      (('GA', '7', 'Treppe Süd 2'), 2),
-      (('GA', '8', 'Treppe Süd 2'), 2),
+      (('GA', '4', 'Treppe-Süd-2'), 2),
+      (('GA', '5', 'Treppe-Süd-2'), 2),
+      (('GA', '6', 'Treppe-Süd-2'), 2),
+      (('GA', '7', 'Treppe-Süd-2'), 2),
+      (('GA', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GA', '2', 'WC Nord'): {
+  ('GA', '2', 'WC-Nord'): {
     'Coordinates': [246, 246],
     'Connections': [
       (('GA', '2', 'EN_57'), 37),
     ],
   },
-  ('GA', '2', 'WC Süd'): {
+  ('GA', '2', 'WC-Süd'): {
     'Coordinates': [946, 951],
     'Connections': [
-      (('GA', '2', 'Aufzug Süd'), 72),
+      (('GA', '2', 'Aufzug-Süd'), 72),
       (('GA', '2', 'EN_5'), 60),
       (('GA', '2', 'EN_8'), 19),
     ],
@@ -5402,36 +5402,36 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '3', 'EN_56'), 25),
     ],
   },
-  ('GA', '3', 'Aufzug Nord'): {
+  ('GA', '3', 'Aufzug-Nord'): {
     'Coordinates': [307, 303],
     'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 1),
-      (('GA', '03', 'Aufzug Nord'), 1),
-      (('GA', '04', 'Aufzug Nord'), 1),
-      (('GA', '1', 'Aufzug Nord'), 1),
-      (('GA', '2', 'Aufzug Nord'), 1),
+      (('GA', '02', 'Aufzug-Nord'), 1),
+      (('GA', '03', 'Aufzug-Nord'), 1),
+      (('GA', '04', 'Aufzug-Nord'), 1),
+      (('GA', '1', 'Aufzug-Nord'), 1),
+      (('GA', '2', 'Aufzug-Nord'), 1),
       (('GA', '3', 'EN_49'), 64),
       (('GA', '3', 'EN_53'), 53),
       (('GA', '3', 'EN_54'), 50),
-      (('GA', '4', 'Aufzug Nord'), 1),
-      (('GA', '5', 'Aufzug Nord'), 1),
-      (('GA', '7', 'Aufzug Nord'), 1),
-      (('GA', '8', 'Aufzug Nord'), 1),
+      (('GA', '4', 'Aufzug-Nord'), 1),
+      (('GA', '5', 'Aufzug-Nord'), 1),
+      (('GA', '7', 'Aufzug-Nord'), 1),
+      (('GA', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GA', '3', 'Aufzug Süd'): {
+  ('GA', '3', 'Aufzug-Süd'): {
     'Coordinates': [898, 902],
     'Connections': [
-      (('GA', '02', 'Aufzug Süd'), 1),
-      (('GA', '03', 'Aufzug Süd'), 1),
-      (('GA', '04', 'Aufzug Süd'), 1),
-      (('GA', '2', 'Aufzug Süd'), 1),
+      (('GA', '02', 'Aufzug-Süd'), 1),
+      (('GA', '03', 'Aufzug-Süd'), 1),
+      (('GA', '04', 'Aufzug-Süd'), 1),
+      (('GA', '2', 'Aufzug-Süd'), 1),
       (('GA', '3', 'EN_21'), 69),
       (('GA', '3', 'EN_84'), 50),
-      (('GA', '4', 'Aufzug Süd'), 1),
-      (('GA', '6', 'Aufzug Süd'), 1),
-      (('GA', '7', 'Aufzug Süd'), 1),
-      (('GA', '8', 'Aufzug Süd'), 1),
+      (('GA', '4', 'Aufzug-Süd'), 1),
+      (('GA', '6', 'Aufzug-Süd'), 1),
+      (('GA', '7', 'Aufzug-Süd'), 1),
+      (('GA', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GA', '3', 'EN_0'): {
@@ -5517,10 +5517,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '3', 'EN_21'): {
     'Coordinates': [950, 947],
     'Connections': [
-      (('GA', '3', 'Aufzug Süd'), 69),
+      (('GA', '3', 'Aufzug-Süd'), 69),
       (('GA', '3', 'EN_19'), 35),
       (('GA', '3', 'EN_6'), 54),
-      (('GA', '3', 'WC Süd'), 24),
+      (('GA', '3', 'WC-Süd'), 24),
     ],
   },
   ('GA', '3', 'EN_23'): {
@@ -5753,10 +5753,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '3', 'EN_49'): {
     'Coordinates': [351, 349],
     'Connections': [
-      (('GA', '3', 'Aufzug Nord'), 64),
+      (('GA', '3', 'Aufzug-Nord'), 64),
       (('GA', '3', 'EN_48'), 24),
       (('GA', '3', 'EN_51'), 21),
-      (('GA', '3', 'Treppe Nord'), 52),
+      (('GA', '3', 'Treppe-Nord'), 52),
     ],
   },
   ('GA', '3', 'EN_51'): {
@@ -5778,7 +5778,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '3', 'EN_53'): {
     'Coordinates': [258, 283],
     'Connections': [
-      (('GA', '3', 'Aufzug Nord'), 53),
+      (('GA', '3', 'Aufzug-Nord'), 53),
       (('GA', '3', 'EN_54'), 22),
       (('GA', '3', 'EN_55'), 39),
     ],
@@ -5786,10 +5786,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '3', 'EN_54'): {
     'Coordinates': [273, 267],
     'Connections': [
-      (('GA', '3', 'Aufzug Nord'), 50),
+      (('GA', '3', 'Aufzug-Nord'), 50),
       (('GA', '3', 'EN_53'), 22),
       (('GA', '3', 'EN_56'), 26),
-      (('GA', '3', 'WC Nord'), 43),
+      (('GA', '3', 'WC-Nord'), 43),
     ],
   },
   ('GA', '3', 'EN_55'): {
@@ -6013,7 +6013,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [483, 484],
     'Connections': [
       (('GA', '3', 'EN_79'), 62),
-      (('GA', '3', 'Treppe Nord 2'), 76),
+      (('GA', '3', 'Treppe-Nord-2'), 76),
     ],
   },
   ('GA', '3', 'EN_82'): {
@@ -6035,10 +6035,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '3', 'EN_84'): {
     'Coordinates': [866, 864],
     'Connections': [
-      (('GA', '3', 'Aufzug Süd'), 50),
+      (('GA', '3', 'Aufzug-Süd'), 50),
       (('GA', '3', 'EN_83'), 21),
       (('GA', '3', 'EN_85'), 28),
-      (('GA', '3', 'Treppe Süd'), 42),
+      (('GA', '3', 'Treppe-Süd'), 42),
     ],
   },
   ('GA', '3', 'EN_85'): {
@@ -6057,49 +6057,49 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '3', 'EN_8'), 49),
     ],
   },
-  ('GA', '3', 'Treppe Nord'): {
+  ('GA', '3', 'Treppe-Nord'): {
     'Coordinates': [387, 386],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
-      (('GA', '03', 'Treppe Nord'), 2),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Treppe Nord'), 2),
-      (('GA', '2', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
+      (('GA', '2', 'Treppe-Nord'), 2),
       (('GA', '3', 'EN_49'), 52),
-      (('GA', '4', 'Treppe Nord'), 2),
-      (('GA', '5', 'Treppe Nord'), 2),
-      (('GA', '6', 'Treppe Nord'), 2),
-      (('GA', '7', 'Treppe Nord'), 2),
-      (('GA', '8', 'Treppe Nord'), 2),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '3', 'Treppe Nord 2'): {
+  ('GA', '3', 'Treppe-Nord-2'): {
     'Coordinates': [427, 432],
     'Connections': [
-      (('GA', '2', 'Treppe Nord 2'), 2),
+      (('GA', '2', 'Treppe-Nord-2'), 2),
       (('GA', '3', 'EN_80'), 76),
-      (('GA', '5', 'Treppe Nord 2'), 2),
-      (('GA', '6', 'Treppe Nord 2'), 2),
-      (('GA', '7', 'Treppe Nord 2'), 2),
-      (('GA', '8', 'Treppe Nord 2'), 2),
+      (('GA', '5', 'Treppe-Nord-2'), 2),
+      (('GA', '6', 'Treppe-Nord-2'), 2),
+      (('GA', '7', 'Treppe-Nord-2'), 2),
+      (('GA', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GA', '3', 'Treppe Süd'): {
+  ('GA', '3', 'Treppe-Süd'): {
     'Coordinates': [838, 833],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
-      (('GA', '03', 'Treppe Süd'), 2),
-      (('GA', '04', 'Treppe Süd'), 2),
-      (('GA', '05', 'Treppe Süd'), 2),
-      (('GA', '1', 'Treppe Süd'), 2),
-      (('GA', '2', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
       (('GA', '3', 'EN_84'), 42),
-      (('GA', '4', 'Treppe Süd'), 2),
-      (('GA', '5', 'Treppe Süd'), 2),
-      (('GA', '6', 'Treppe Süd'), 2),
-      (('GA', '7', 'Treppe Süd'), 2),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
   ('GA', '3', 'Treppenhaus-116'): {
@@ -6108,13 +6108,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '3', 'EN_36'), 34),
     ],
   },
-  ('GA', '3', 'WC Nord'): {
+  ('GA', '3', 'WC-Nord'): {
     'Coordinates': [242, 237],
     'Connections': [
       (('GA', '3', 'EN_54'), 43),
     ],
   },
-  ('GA', '3', 'WC Süd'): {
+  ('GA', '3', 'WC-Süd'): {
     'Coordinates': [965, 966],
     'Connections': [
       (('GA', '3', 'EN_21'), 24),
@@ -6589,36 +6589,36 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '4', 'EN_75'), 28),
     ],
   },
-  ('GA', '4', 'Aufzug Nord'): {
+  ('GA', '4', 'Aufzug-Nord'): {
     'Coordinates': [320, 316],
     'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 1),
-      (('GA', '03', 'Aufzug Nord'), 1),
-      (('GA', '04', 'Aufzug Nord'), 1),
-      (('GA', '1', 'Aufzug Nord'), 1),
-      (('GA', '2', 'Aufzug Nord'), 1),
-      (('GA', '3', 'Aufzug Nord'), 1),
+      (('GA', '02', 'Aufzug-Nord'), 1),
+      (('GA', '03', 'Aufzug-Nord'), 1),
+      (('GA', '04', 'Aufzug-Nord'), 1),
+      (('GA', '1', 'Aufzug-Nord'), 1),
+      (('GA', '2', 'Aufzug-Nord'), 1),
+      (('GA', '3', 'Aufzug-Nord'), 1),
       (('GA', '4', 'EN_67'), 47),
       (('GA', '4', 'EN_73'), 67),
-      (('GA', '5', 'Aufzug Nord'), 1),
-      (('GA', '7', 'Aufzug Nord'), 1),
-      (('GA', '8', 'Aufzug Nord'), 1),
+      (('GA', '5', 'Aufzug-Nord'), 1),
+      (('GA', '7', 'Aufzug-Nord'), 1),
+      (('GA', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GA', '4', 'Aufzug Süd'): {
+  ('GA', '4', 'Aufzug-Süd'): {
     'Coordinates': [895, 898],
     'Connections': [
-      (('GA', '02', 'Aufzug Süd'), 1),
-      (('GA', '03', 'Aufzug Süd'), 1),
-      (('GA', '04', 'Aufzug Süd'), 1),
-      (('GA', '2', 'Aufzug Süd'), 1),
-      (('GA', '3', 'Aufzug Süd'), 1),
+      (('GA', '02', 'Aufzug-Süd'), 1),
+      (('GA', '03', 'Aufzug-Süd'), 1),
+      (('GA', '04', 'Aufzug-Süd'), 1),
+      (('GA', '2', 'Aufzug-Süd'), 1),
+      (('GA', '3', 'Aufzug-Süd'), 1),
       (('GA', '4', 'EN_10'), 76),
       (('GA', '4', 'EN_11'), 71),
       (('GA', '4', 'EN_21'), 37),
-      (('GA', '6', 'Aufzug Süd'), 1),
-      (('GA', '7', 'Aufzug Süd'), 1),
-      (('GA', '8', 'Aufzug Süd'), 1),
+      (('GA', '6', 'Aufzug-Süd'), 1),
+      (('GA', '7', 'Aufzug-Süd'), 1),
+      (('GA', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GA', '4', 'EN_0'): {
@@ -6640,7 +6640,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '4', 'EN_10'): {
     'Coordinates': [958, 940],
     'Connections': [
-      (('GA', '4', 'Aufzug Süd'), 76),
+      (('GA', '4', 'Aufzug-Süd'), 76),
       (('GA', '4', 'EN_11'), 18),
       (('GA', '4', 'EN_9'), 18),
     ],
@@ -6648,10 +6648,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '4', 'EN_11'): {
     'Coordinates': [943, 950],
     'Connections': [
-      (('GA', '4', 'Aufzug Süd'), 71),
+      (('GA', '4', 'Aufzug-Süd'), 71),
       (('GA', '4', 'EN_10'), 18),
       (('GA', '4', 'EN_12'), 57),
-      (('GA', '4', 'WC Süd'), 20),
+      (('GA', '4', 'WC-Süd'), 20),
     ],
   },
   ('GA', '4', 'EN_12'): {
@@ -6732,10 +6732,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '4', 'EN_21'): {
     'Coordinates': [868, 873],
     'Connections': [
-      (('GA', '4', 'Aufzug Süd'), 37),
+      (('GA', '4', 'Aufzug-Süd'), 37),
       (('GA', '4', 'EN_20'), 20),
       (('GA', '4', 'EN_22'), 21),
-      (('GA', '4', 'Treppe Süd'), 62),
+      (('GA', '4', 'Treppe-Süd'), 62),
     ],
   },
   ('GA', '4', 'EN_22'): {
@@ -6964,7 +6964,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [695, 697],
     'Connections': [
       (('GA', '4', 'EN_30'), 57),
-      (('GA', '4', 'Treppe Süd 2'), 129),
+      (('GA', '4', 'Treppe-Süd-2'), 129),
     ],
   },
   ('GA', '4', 'EN_48'): {
@@ -7083,7 +7083,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [450, 446],
     'Connections': [
       (('GA', '4', 'EN_61'), 117),
-      (('GA', '4', 'Treppen Nord 2'), 40),
+      (('GA', '4', 'Treppen-Nord-2'), 40),
     ],
   },
   ('GA', '4', 'EN_61'): {
@@ -7136,10 +7136,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '4', 'EN_67'): {
     'Coordinates': [348, 354],
     'Connections': [
-      (('GA', '4', 'Aufzug Nord'), 47),
+      (('GA', '4', 'Aufzug-Nord'), 47),
       (('GA', '4', 'EN_66'), 19),
       (('GA', '4', 'EN_68'), 28),
-      (('GA', '4', 'Treppe Nord'), 55),
+      (('GA', '4', 'Treppe-Nord'), 55),
     ],
   },
   ('GA', '4', 'EN_68'): {
@@ -7193,10 +7193,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '4', 'EN_73'): {
     'Coordinates': [268, 273],
     'Connections': [
-      (('GA', '4', 'Aufzug Nord'), 67),
+      (('GA', '4', 'Aufzug-Nord'), 67),
       (('GA', '4', 'EN_72'), 54),
       (('GA', '4', 'EN_75'), 35),
-      (('GA', '4', 'WC Nord'), 28),
+      (('GA', '4', 'WC-Nord'), 28),
     ],
   },
   ('GA', '4', 'EN_75'): {
@@ -7319,65 +7319,65 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '4', 'EN_8'), 26),
     ],
   },
-  ('GA', '4', 'Treppe Nord'): {
+  ('GA', '4', 'Treppe-Nord'): {
     'Coordinates': [393, 385],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
-      (('GA', '03', 'Treppe Nord'), 2),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Treppe Nord'), 2),
-      (('GA', '2', 'Treppe Nord'), 2),
-      (('GA', '3', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
+      (('GA', '2', 'Treppe-Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
       (('GA', '4', 'EN_67'), 55),
-      (('GA', '5', 'Treppe Nord'), 2),
-      (('GA', '6', 'Treppe Nord'), 2),
-      (('GA', '7', 'Treppe Nord'), 2),
-      (('GA', '8', 'Treppe Nord'), 2),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '4', 'Treppe Süd'): {
+  ('GA', '4', 'Treppe-Süd'): {
     'Coordinates': [823, 830],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
-      (('GA', '03', 'Treppe Süd'), 2),
-      (('GA', '04', 'Treppe Süd'), 2),
-      (('GA', '05', 'Treppe Süd'), 2),
-      (('GA', '1', 'Treppe Süd'), 2),
-      (('GA', '2', 'Treppe Süd'), 2),
-      (('GA', '3', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
       (('GA', '4', 'EN_21'), 62),
-      (('GA', '5', 'Treppe Süd'), 2),
-      (('GA', '6', 'Treppe Süd'), 2),
-      (('GA', '7', 'Treppe Süd'), 2),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
-  ('GA', '4', 'Treppe Süd 2'): {
+  ('GA', '4', 'Treppe-Süd-2'): {
     'Coordinates': [784, 790],
     'Connections': [
-      (('GA', '1', 'Treppe Süd 2'), 2),
-      (('GA', '2', 'Treppe Süd 2'), 2),
+      (('GA', '1', 'Treppe-Süd-2'), 2),
+      (('GA', '2', 'Treppe-Süd-2'), 2),
       (('GA', '4', 'EN_47'), 129),
-      (('GA', '5', 'Treppe Süd 2'), 2),
-      (('GA', '6', 'Treppe Süd 2'), 2),
-      (('GA', '7', 'Treppe Süd 2'), 2),
-      (('GA', '8', 'Treppe Süd 2'), 2),
+      (('GA', '5', 'Treppe-Süd-2'), 2),
+      (('GA', '6', 'Treppe-Süd-2'), 2),
+      (('GA', '7', 'Treppe-Süd-2'), 2),
+      (('GA', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GA', '4', 'Treppen Nord 2'): {
+  ('GA', '4', 'Treppen-Nord-2'): {
     'Coordinates': [423, 416],
     'Connections': [
       (('GA', '4', 'EN_60'), 40),
     ],
   },
-  ('GA', '4', 'WC Nord'): {
+  ('GA', '4', 'WC-Nord'): {
     'Coordinates': [253, 249],
     'Connections': [
       (('GA', '4', 'EN_73'), 28),
     ],
   },
-  ('GA', '4', 'WC Süd'): {
+  ('GA', '4', 'WC-Süd'): {
     'Coordinates': [957, 964],
     'Connections': [
       (('GA', '4', 'EN_11'), 20),
@@ -7666,27 +7666,27 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '5', 'EN_50'), 19),
     ],
   },
-  ('GA', '5', 'Aufzug Nord'): {
-    'Coordinates': [318, 313],
-    'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 1),
-      (('GA', '03', 'Aufzug Nord'), 1),
-      (('GA', '04', 'Aufzug Nord'), 1),
-      (('GA', '1', 'Aufzug Nord'), 1),
-      (('GA', '2', 'Aufzug Nord'), 1),
-      (('GA', '3', 'Aufzug Nord'), 1),
-      (('GA', '4', 'Aufzug Nord'), 1),
-      (('GA', '5', 'EN_46'), 46),
-      (('GA', '5', 'EN_51'), 69),
-      (('GA', '7', 'Aufzug Nord'), 1),
-      (('GA', '8', 'Aufzug Nord'), 1),
-    ],
-  },
   ('GA', '5', 'Aufzug-110'): {
     'Coordinates': [890, 902],
     'Connections': [
       (('GA', '5', 'EN_16'), 62),
       (('GA', '5', 'EN_25'), 52),
+    ],
+  },
+  ('GA', '5', 'Aufzug-Nord'): {
+    'Coordinates': [318, 313],
+    'Connections': [
+      (('GA', '02', 'Aufzug-Nord'), 1),
+      (('GA', '03', 'Aufzug-Nord'), 1),
+      (('GA', '04', 'Aufzug-Nord'), 1),
+      (('GA', '1', 'Aufzug-Nord'), 1),
+      (('GA', '2', 'Aufzug-Nord'), 1),
+      (('GA', '3', 'Aufzug-Nord'), 1),
+      (('GA', '4', 'Aufzug-Nord'), 1),
+      (('GA', '5', 'EN_46'), 46),
+      (('GA', '5', 'EN_51'), 69),
+      (('GA', '7', 'Aufzug-Nord'), 1),
+      (('GA', '8', 'Aufzug-Nord'), 1),
     ],
   },
   ('GA', '5', 'EN_0'): {
@@ -7748,7 +7748,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '5', 'Aufzug-110'), 62),
       (('GA', '5', 'EN_15'), 19),
       (('GA', '5', 'EN_17'), 21),
-      (('GA', '5', 'WC Süd'), 32),
+      (('GA', '5', 'WC-Süd'), 32),
     ],
   },
   ('GA', '5', 'EN_17'): {
@@ -7830,7 +7830,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '5', 'Aufzug-110'), 52),
       (('GA', '5', 'EN_24'), 30),
       (('GA', '5', 'EN_27'), 30),
-      (('GA', '5', 'Treppe Süd'), 47),
+      (('GA', '5', 'Treppe-Süd'), 47),
     ],
   },
   ('GA', '5', 'EN_26'): {
@@ -7877,7 +7877,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '5', 'EN_31'), 63),
       (('GA', '5', 'EN_53'), 52),
-      (('GA', '5', 'Treppe Süd 2'), 35),
+      (('GA', '5', 'Treppe-Süd-2'), 35),
     ],
   },
   ('GA', '5', 'EN_31'): {
@@ -7925,7 +7925,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GA', '5', 'EN_38'), 50),
       (('GA', '5', 'EN_39'), 62),
-      (('GA', '5', 'Treppe Nord 2'), 45),
+      (('GA', '5', 'Treppe-Nord-2'), 45),
     ],
   },
   ('GA', '5', 'EN_38'): {
@@ -8006,10 +8006,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '5', 'EN_46'): {
     'Coordinates': [351, 345],
     'Connections': [
-      (('GA', '5', 'Aufzug Nord'), 46),
+      (('GA', '5', 'Aufzug-Nord'), 46),
       (('GA', '5', 'EN_45'), 45),
       (('GA', '5', 'EN_47'), 27),
-      (('GA', '5', 'Treppe Nord'), 47),
+      (('GA', '5', 'Treppe-Nord'), 47),
     ],
   },
   ('GA', '5', 'EN_47'): {
@@ -8055,10 +8055,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '5', 'EN_51'): {
     'Coordinates': [268, 265],
     'Connections': [
-      (('GA', '5', 'Aufzug Nord'), 69),
+      (('GA', '5', 'Aufzug-Nord'), 69),
       (('GA', '5', 'EN_50'), 32),
       (('GA', '5', 'EN_52'), 21),
-      (('GA', '5', 'WC Nord'), 37),
+      (('GA', '5', 'WC-Nord'), 37),
     ],
   },
   ('GA', '5', 'EN_52'): {
@@ -8225,70 +8225,70 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '5', 'EN_12'), 33),
     ],
   },
-  ('GA', '5', 'Treppe Nord'): {
+  ('GA', '5', 'Treppe-Nord'): {
     'Coordinates': [384, 379],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
-      (('GA', '03', 'Treppe Nord'), 2),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Treppe Nord'), 2),
-      (('GA', '2', 'Treppe Nord'), 2),
-      (('GA', '3', 'Treppe Nord'), 2),
-      (('GA', '4', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
+      (('GA', '2', 'Treppe-Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
       (('GA', '5', 'EN_46'), 47),
-      (('GA', '6', 'Treppe Nord'), 2),
-      (('GA', '7', 'Treppe Nord'), 2),
-      (('GA', '8', 'Treppe Nord'), 2),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '5', 'Treppe Nord 2'): {
+  ('GA', '5', 'Treppe-Nord-2'): {
     'Coordinates': [414, 412],
     'Connections': [
-      (('GA', '2', 'Treppe Nord 2'), 2),
-      (('GA', '3', 'Treppe Nord 2'), 2),
+      (('GA', '2', 'Treppe-Nord-2'), 2),
+      (('GA', '3', 'Treppe-Nord-2'), 2),
       (('GA', '5', 'EN_36'), 45),
-      (('GA', '6', 'Treppe Nord 2'), 2),
-      (('GA', '7', 'Treppe Nord 2'), 2),
-      (('GA', '8', 'Treppe Nord 2'), 2),
+      (('GA', '6', 'Treppe-Nord-2'), 2),
+      (('GA', '7', 'Treppe-Nord-2'), 2),
+      (('GA', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GA', '5', 'Treppe Süd'): {
+  ('GA', '5', 'Treppe-Süd'): {
     'Coordinates': [820, 832],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
-      (('GA', '03', 'Treppe Süd'), 2),
-      (('GA', '04', 'Treppe Süd'), 2),
-      (('GA', '05', 'Treppe Süd'), 2),
-      (('GA', '1', 'Treppe Süd'), 2),
-      (('GA', '2', 'Treppe Süd'), 2),
-      (('GA', '3', 'Treppe Süd'), 2),
-      (('GA', '4', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
       (('GA', '5', 'EN_25'), 47),
-      (('GA', '6', 'Treppe Süd'), 2),
-      (('GA', '7', 'Treppe Süd'), 2),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
-  ('GA', '5', 'Treppe Süd 2'): {
+  ('GA', '5', 'Treppe-Süd-2'): {
     'Coordinates': [779, 789],
     'Connections': [
-      (('GA', '1', 'Treppe Süd 2'), 2),
-      (('GA', '2', 'Treppe Süd 2'), 2),
-      (('GA', '4', 'Treppe Süd 2'), 2),
+      (('GA', '1', 'Treppe-Süd-2'), 2),
+      (('GA', '2', 'Treppe-Süd-2'), 2),
+      (('GA', '4', 'Treppe-Süd-2'), 2),
       (('GA', '5', 'EN_30'), 35),
-      (('GA', '6', 'Treppe Süd 2'), 2),
-      (('GA', '7', 'Treppe Süd 2'), 2),
-      (('GA', '8', 'Treppe Süd 2'), 2),
+      (('GA', '6', 'Treppe-Süd-2'), 2),
+      (('GA', '7', 'Treppe-Süd-2'), 2),
+      (('GA', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GA', '5', 'WC Nord'): {
+  ('GA', '5', 'WC-Nord'): {
     'Coordinates': [243, 238],
     'Connections': [
       (('GA', '5', 'EN_51'), 37),
     ],
   },
-  ('GA', '5', 'WC Süd'): {
+  ('GA', '5', 'WC-Süd'): {
     'Coordinates': [961, 964],
     'Connections': [
       (('GA', '5', 'EN_16'), 32),
@@ -8675,27 +8675,27 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '6', 'EN_58'), 23),
     ],
   },
-  ('GA', '6', 'Aufzug Süd'): {
-    'Coordinates': [903, 900],
-    'Connections': [
-      (('GA', '02', 'Aufzug Süd'), 1),
-      (('GA', '03', 'Aufzug Süd'), 1),
-      (('GA', '04', 'Aufzug Süd'), 1),
-      (('GA', '2', 'Aufzug Süd'), 1),
-      (('GA', '3', 'Aufzug Süd'), 1),
-      (('GA', '4', 'Aufzug Süd'), 1),
-      (('GA', '6', 'EN_21'), 55),
-      (('GA', '6', 'EN_8'), 57),
-      (('GA', '7', 'Aufzug Süd'), 1),
-      (('GA', '8', 'Aufzug Süd'), 1),
-    ],
-  },
   ('GA', '6', 'Aufzug-10'): {
     'Coordinates': [313, 308],
     'Connections': [
       (('GA', '6', 'EN_47'), 54),
       (('GA', '6', 'EN_57'), 50),
       (('GA', '6', 'EN_60'), 57),
+    ],
+  },
+  ('GA', '6', 'Aufzug-Süd'): {
+    'Coordinates': [903, 900],
+    'Connections': [
+      (('GA', '02', 'Aufzug-Süd'), 1),
+      (('GA', '03', 'Aufzug-Süd'), 1),
+      (('GA', '04', 'Aufzug-Süd'), 1),
+      (('GA', '2', 'Aufzug-Süd'), 1),
+      (('GA', '3', 'Aufzug-Süd'), 1),
+      (('GA', '4', 'Aufzug-Süd'), 1),
+      (('GA', '6', 'EN_21'), 55),
+      (('GA', '6', 'EN_8'), 57),
+      (('GA', '7', 'Aufzug-Süd'), 1),
+      (('GA', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GA', '6', 'EN_0'): {
@@ -8813,10 +8813,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '6', 'EN_21'): {
     'Coordinates': [870, 856],
     'Connections': [
-      (('GA', '6', 'Aufzug Süd'), 55),
+      (('GA', '6', 'Aufzug-Süd'), 55),
       (('GA', '6', 'EN_20'), 18),
       (('GA', '6', 'EN_22'), 22),
-      (('GA', '6', 'Treppe Süd'), 57),
+      (('GA', '6', 'Treppe-Süd'), 57),
     ],
   },
   ('GA', '6', 'EN_22'): {
@@ -8880,7 +8880,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [763, 760],
     'Connections': [
       (('GA', '6', 'EN_30'), 67),
-      (('GA', '6', 'Treppe Süd 2'), 45),
+      (('GA', '6', 'Treppe-Süd-2'), 45),
     ],
   },
   ('GA', '6', 'EN_3'): {
@@ -9043,7 +9043,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '6', 'Aufzug-10'), 54),
       (('GA', '6', 'EN_46'), 21),
       (('GA', '6', 'EN_48'), 21),
-      (('GA', '6', 'Treppe Nord'), 44),
+      (('GA', '6', 'Treppe-Nord'), 44),
     ],
   },
   ('GA', '6', 'EN_48'): {
@@ -9123,7 +9123,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '6', 'Aufzug-10'), 50),
       (('GA', '6', 'EN_58'), 25),
       (('GA', '6', 'EN_60'), 18),
-      (('GA', '6', 'WC Nord'), 34),
+      (('GA', '6', 'WC-Nord'), 34),
     ],
   },
   ('GA', '6', 'EN_58'): {
@@ -9288,17 +9288,17 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '6', 'EN_8'): {
     'Coordinates': [948, 935],
     'Connections': [
-      (('GA', '6', 'Aufzug Süd'), 57),
+      (('GA', '6', 'Aufzug-Süd'), 57),
       (('GA', '6', 'EN_7'), 19),
       (('GA', '6', 'EN_9'), 63),
-      (('GA', '6', 'WC Süd'), 21),
+      (('GA', '6', 'WC-Süd'), 21),
     ],
   },
   ('GA', '6', 'EN_80'): {
     'Coordinates': [461, 448],
     'Connections': [
       (('GA', '6', 'EN_81'), 55),
-      (('GA', '6', 'Treppe Nord 2'), 45),
+      (('GA', '6', 'Treppe-Nord-2'), 45),
     ],
   },
   ('GA', '6', 'EN_81'): {
@@ -9318,70 +9318,70 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '6', 'EN_8'), 63),
     ],
   },
-  ('GA', '6', 'Treppe Nord'): {
+  ('GA', '6', 'Treppe-Nord'): {
     'Coordinates': [387, 372],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
-      (('GA', '03', 'Treppe Nord'), 2),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Treppe Nord'), 2),
-      (('GA', '2', 'Treppe Nord'), 2),
-      (('GA', '3', 'Treppe Nord'), 2),
-      (('GA', '4', 'Treppe Nord'), 2),
-      (('GA', '5', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
+      (('GA', '2', 'Treppe-Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
       (('GA', '6', 'EN_47'), 44),
-      (('GA', '7', 'Treppe Nord'), 2),
-      (('GA', '8', 'Treppe Nord'), 2),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '6', 'Treppe Nord 2'): {
+  ('GA', '6', 'Treppe-Nord-2'): {
     'Coordinates': [429, 416],
     'Connections': [
-      (('GA', '2', 'Treppe Nord 2'), 2),
-      (('GA', '3', 'Treppe Nord 2'), 2),
-      (('GA', '5', 'Treppe Nord 2'), 2),
+      (('GA', '2', 'Treppe-Nord-2'), 2),
+      (('GA', '3', 'Treppe-Nord-2'), 2),
+      (('GA', '5', 'Treppe-Nord-2'), 2),
       (('GA', '6', 'EN_80'), 45),
-      (('GA', '7', 'Treppe Nord 2'), 2),
-      (('GA', '8', 'Treppe Nord 2'), 2),
+      (('GA', '7', 'Treppe-Nord-2'), 2),
+      (('GA', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GA', '6', 'Treppe Süd'): {
+  ('GA', '6', 'Treppe-Süd'): {
     'Coordinates': [827, 819],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
-      (('GA', '03', 'Treppe Süd'), 2),
-      (('GA', '04', 'Treppe Süd'), 2),
-      (('GA', '05', 'Treppe Süd'), 2),
-      (('GA', '1', 'Treppe Süd'), 2),
-      (('GA', '2', 'Treppe Süd'), 2),
-      (('GA', '3', 'Treppe Süd'), 2),
-      (('GA', '4', 'Treppe Süd'), 2),
-      (('GA', '5', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
       (('GA', '6', 'EN_21'), 57),
-      (('GA', '7', 'Treppe Süd'), 2),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
-  ('GA', '6', 'Treppe Süd 2'): {
+  ('GA', '6', 'Treppe-Süd-2'): {
     'Coordinates': [795, 792],
     'Connections': [
-      (('GA', '1', 'Treppe Süd 2'), 2),
-      (('GA', '2', 'Treppe Süd 2'), 2),
-      (('GA', '4', 'Treppe Süd 2'), 2),
-      (('GA', '5', 'Treppe Süd 2'), 2),
+      (('GA', '1', 'Treppe-Süd-2'), 2),
+      (('GA', '2', 'Treppe-Süd-2'), 2),
+      (('GA', '4', 'Treppe-Süd-2'), 2),
+      (('GA', '5', 'Treppe-Süd-2'), 2),
       (('GA', '6', 'EN_29'), 45),
-      (('GA', '7', 'Treppe Süd 2'), 2),
-      (('GA', '8', 'Treppe Süd 2'), 2),
+      (('GA', '7', 'Treppe-Süd-2'), 2),
+      (('GA', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GA', '6', 'WC Nord'): {
+  ('GA', '6', 'WC-Nord'): {
     'Coordinates': [259, 245],
     'Connections': [
       (('GA', '6', 'EN_57'), 34),
     ],
   },
-  ('GA', '6', 'WC Süd'): {
+  ('GA', '6', 'WC-Süd'): {
     'Coordinates': [964, 949],
     'Connections': [
       (('GA', '6', 'EN_8'), 21),
@@ -9822,36 +9822,36 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '7', 'EN_60'), 27),
     ],
   },
-  ('GA', '7', 'Aufzug Nord'): {
+  ('GA', '7', 'Aufzug-Nord'): {
     'Coordinates': [308, 303],
     'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 1),
-      (('GA', '03', 'Aufzug Nord'), 1),
-      (('GA', '04', 'Aufzug Nord'), 1),
-      (('GA', '1', 'Aufzug Nord'), 1),
-      (('GA', '2', 'Aufzug Nord'), 1),
-      (('GA', '3', 'Aufzug Nord'), 1),
-      (('GA', '4', 'Aufzug Nord'), 1),
-      (('GA', '5', 'Aufzug Nord'), 1),
+      (('GA', '02', 'Aufzug-Nord'), 1),
+      (('GA', '03', 'Aufzug-Nord'), 1),
+      (('GA', '04', 'Aufzug-Nord'), 1),
+      (('GA', '1', 'Aufzug-Nord'), 1),
+      (('GA', '2', 'Aufzug-Nord'), 1),
+      (('GA', '3', 'Aufzug-Nord'), 1),
+      (('GA', '4', 'Aufzug-Nord'), 1),
+      (('GA', '5', 'Aufzug-Nord'), 1),
       (('GA', '7', 'EN_48'), 60),
       (('GA', '7', 'EN_61'), 54),
-      (('GA', '8', 'Aufzug Nord'), 1),
+      (('GA', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GA', '7', 'Aufzug Süd'): {
+  ('GA', '7', 'Aufzug-Süd'): {
     'Coordinates': [906, 908],
     'Connections': [
-      (('GA', '02', 'Aufzug Süd'), 1),
-      (('GA', '03', 'Aufzug Süd'), 1),
-      (('GA', '04', 'Aufzug Süd'), 1),
-      (('GA', '2', 'Aufzug Süd'), 1),
-      (('GA', '3', 'Aufzug Süd'), 1),
-      (('GA', '4', 'Aufzug Süd'), 1),
-      (('GA', '6', 'Aufzug Süd'), 1),
+      (('GA', '02', 'Aufzug-Süd'), 1),
+      (('GA', '03', 'Aufzug-Süd'), 1),
+      (('GA', '04', 'Aufzug-Süd'), 1),
+      (('GA', '2', 'Aufzug-Süd'), 1),
+      (('GA', '3', 'Aufzug-Süd'), 1),
+      (('GA', '4', 'Aufzug-Süd'), 1),
+      (('GA', '6', 'Aufzug-Süd'), 1),
       (('GA', '7', 'EN_13'), 56),
       (('GA', '7', 'EN_14'), 58),
       (('GA', '7', 'EN_29'), 56),
-      (('GA', '8', 'Aufzug Süd'), 1),
+      (('GA', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GA', '7', 'EN_0'): {
@@ -9897,7 +9897,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '7', 'EN_13'): {
     'Coordinates': [934, 957],
     'Connections': [
-      (('GA', '7', 'Aufzug Süd'), 56),
+      (('GA', '7', 'Aufzug-Süd'), 56),
       (('GA', '7', 'EN_12'), 42),
       (('GA', '7', 'EN_14'), 26),
     ],
@@ -9905,10 +9905,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '7', 'EN_14'): {
     'Coordinates': [954, 940],
     'Connections': [
-      (('GA', '7', 'Aufzug Süd'), 58),
+      (('GA', '7', 'Aufzug-Süd'), 58),
       (('GA', '7', 'EN_13'), 26),
       (('GA', '7', 'EN_15'), 21),
-      (('GA', '7', 'WC Süd'), 27),
+      (('GA', '7', 'WC-Süd'), 27),
     ],
   },
   ('GA', '7', 'EN_15'): {
@@ -10026,10 +10026,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '7', 'EN_29'): {
     'Coordinates': [867, 868],
     'Connections': [
-      (('GA', '7', 'Aufzug Süd'), 56),
+      (('GA', '7', 'Aufzug-Süd'), 56),
       (('GA', '7', 'EN_28'), 21),
       (('GA', '7', 'EN_30'), 24),
-      (('GA', '7', 'Treppe Süd'), 46),
+      (('GA', '7', 'Treppe-Süd'), 46),
     ],
   },
   ('GA', '7', 'EN_3'): {
@@ -10062,7 +10062,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [766, 762],
     'Connections': [
       (('GA', '7', '45'), 59),
-      (('GA', '7', 'Treppe Süd 2'), 43),
+      (('GA', '7', 'Treppe-Süd-2'), 43),
     ],
   },
   ('GA', '7', 'EN_33'): {
@@ -10198,10 +10198,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '7', 'EN_48'): {
     'Coordinates': [347, 348],
     'Connections': [
-      (('GA', '7', 'Aufzug Nord'), 60),
+      (('GA', '7', 'Aufzug-Nord'), 60),
       (('GA', '7', 'EN_47'), 21),
       (('GA', '7', 'EN_49'), 34),
-      (('GA', '7', 'Treppe Nord'), 41),
+      (('GA', '7', 'Treppe-Nord'), 41),
     ],
   },
   ('GA', '7', 'EN_49'): {
@@ -10320,10 +10320,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '7', 'EN_61'): {
     'Coordinates': [271, 263],
     'Connections': [
-      (('GA', '7', 'Aufzug Nord'), 54),
+      (('GA', '7', 'Aufzug-Nord'), 54),
       (('GA', '7', 'EN_60'), 29),
       (('GA', '7', 'EN_62'), 20),
-      (('GA', '7', 'WC Nord'), 21),
+      (('GA', '7', 'WC-Nord'), 21),
     ],
   },
   ('GA', '7', 'EN_62'): {
@@ -10503,7 +10503,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [516, 512],
     'Connections': [
       (('GA', '7', 'EN_83'), 64),
-      (('GA', '7', 'Treppe Nord 2'), 139),
+      (('GA', '7', 'Treppe-Nord-2'), 139),
     ],
   },
   ('GA', '7', 'EN_83'): {
@@ -10523,70 +10523,70 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '7', 'EN_8'), 15),
     ],
   },
-  ('GA', '7', 'Treppe Nord'): {
+  ('GA', '7', 'Treppe-Nord'): {
     'Coordinates': [382, 370],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
-      (('GA', '03', 'Treppe Nord'), 2),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Treppe Nord'), 2),
-      (('GA', '2', 'Treppe Nord'), 2),
-      (('GA', '3', 'Treppe Nord'), 2),
-      (('GA', '4', 'Treppe Nord'), 2),
-      (('GA', '5', 'Treppe Nord'), 2),
-      (('GA', '6', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
+      (('GA', '2', 'Treppe-Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
       (('GA', '7', 'EN_48'), 41),
-      (('GA', '8', 'Treppe Nord'), 2),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '7', 'Treppe Nord 2'): {
+  ('GA', '7', 'Treppe-Nord-2'): {
     'Coordinates': [420, 411],
     'Connections': [
-      (('GA', '2', 'Treppe Nord 2'), 2),
-      (('GA', '3', 'Treppe Nord 2'), 2),
-      (('GA', '5', 'Treppe Nord 2'), 2),
-      (('GA', '6', 'Treppe Nord 2'), 2),
+      (('GA', '2', 'Treppe-Nord-2'), 2),
+      (('GA', '3', 'Treppe-Nord-2'), 2),
+      (('GA', '5', 'Treppe-Nord-2'), 2),
+      (('GA', '6', 'Treppe-Nord-2'), 2),
       (('GA', '7', 'EN_82'), 139),
-      (('GA', '8', 'Treppe Nord 2'), 2),
+      (('GA', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GA', '7', 'Treppe Süd'): {
+  ('GA', '7', 'Treppe-Süd'): {
     'Coordinates': [837, 833],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
-      (('GA', '03', 'Treppe Süd'), 2),
-      (('GA', '04', 'Treppe Süd'), 2),
-      (('GA', '05', 'Treppe Süd'), 2),
-      (('GA', '1', 'Treppe Süd'), 2),
-      (('GA', '2', 'Treppe Süd'), 2),
-      (('GA', '3', 'Treppe Süd'), 2),
-      (('GA', '4', 'Treppe Süd'), 2),
-      (('GA', '5', 'Treppe Süd'), 2),
-      (('GA', '6', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
       (('GA', '7', 'EN_29'), 46),
-      (('GA', '8', 'Treppe Süd'), 2),
+      (('GA', '8', 'Treppe-Süd'), 2),
     ],
   },
-  ('GA', '7', 'Treppe Süd 2'): {
+  ('GA', '7', 'Treppe-Süd-2'): {
     'Coordinates': [794, 794],
     'Connections': [
-      (('GA', '1', 'Treppe Süd 2'), 2),
-      (('GA', '2', 'Treppe Süd 2'), 2),
-      (('GA', '4', 'Treppe Süd 2'), 2),
-      (('GA', '5', 'Treppe Süd 2'), 2),
-      (('GA', '6', 'Treppe Süd 2'), 2),
+      (('GA', '1', 'Treppe-Süd-2'), 2),
+      (('GA', '2', 'Treppe-Süd-2'), 2),
+      (('GA', '4', 'Treppe-Süd-2'), 2),
+      (('GA', '5', 'Treppe-Süd-2'), 2),
+      (('GA', '6', 'Treppe-Süd-2'), 2),
       (('GA', '7', 'EN_32'), 43),
-      (('GA', '8', 'Treppe Süd 2'), 2),
+      (('GA', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GA', '7', 'WC Nord'): {
+  ('GA', '7', 'WC-Nord'): {
     'Coordinates': [260, 245],
     'Connections': [
       (('GA', '7', 'EN_61'), 21),
     ],
   },
-  ('GA', '7', 'WC Süd'): {
+  ('GA', '7', 'WC-Süd'): {
     'Coordinates': [968, 963],
     'Connections': [
       (('GA', '7', 'EN_14'), 27),
@@ -10980,33 +10980,33 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '8', 'EN_60'), 19),
     ],
   },
-  ('GA', '8', 'Aufzug Nord'): {
+  ('GA', '8', 'Aufzug-Nord'): {
     'Coordinates': [321, 319],
     'Connections': [
-      (('GA', '02', 'Aufzug Nord'), 1),
-      (('GA', '03', 'Aufzug Nord'), 1),
-      (('GA', '04', 'Aufzug Nord'), 1),
-      (('GA', '1', 'Aufzug Nord'), 1),
-      (('GA', '2', 'Aufzug Nord'), 1),
-      (('GA', '3', 'Aufzug Nord'), 1),
-      (('GA', '4', 'Aufzug Nord'), 1),
-      (('GA', '5', 'Aufzug Nord'), 1),
-      (('GA', '7', 'Aufzug Nord'), 1),
+      (('GA', '02', 'Aufzug-Nord'), 1),
+      (('GA', '03', 'Aufzug-Nord'), 1),
+      (('GA', '04', 'Aufzug-Nord'), 1),
+      (('GA', '1', 'Aufzug-Nord'), 1),
+      (('GA', '2', 'Aufzug-Nord'), 1),
+      (('GA', '3', 'Aufzug-Nord'), 1),
+      (('GA', '4', 'Aufzug-Nord'), 1),
+      (('GA', '5', 'Aufzug-Nord'), 1),
+      (('GA', '7', 'Aufzug-Nord'), 1),
       (('GA', '8', 'EN_45'), 42),
       (('GA', '8', 'EN_59'), 69),
     ],
   },
-  ('GA', '8', 'Aufzug Süd'): {
+  ('GA', '8', 'Aufzug-Süd'): {
     'Coordinates': [898, 893],
     'Connections': [
-      (('GA', '02', 'Aufzug Süd'), 1),
-      (('GA', '03', 'Aufzug Süd'), 1),
-      (('GA', '04', 'Aufzug Süd'), 1),
-      (('GA', '2', 'Aufzug Süd'), 1),
-      (('GA', '3', 'Aufzug Süd'), 1),
-      (('GA', '4', 'Aufzug Süd'), 1),
-      (('GA', '6', 'Aufzug Süd'), 1),
-      (('GA', '7', 'Aufzug Süd'), 1),
+      (('GA', '02', 'Aufzug-Süd'), 1),
+      (('GA', '03', 'Aufzug-Süd'), 1),
+      (('GA', '04', 'Aufzug-Süd'), 1),
+      (('GA', '2', 'Aufzug-Süd'), 1),
+      (('GA', '3', 'Aufzug-Süd'), 1),
+      (('GA', '4', 'Aufzug-Süd'), 1),
+      (('GA', '6', 'Aufzug-Süd'), 1),
+      (('GA', '7', 'Aufzug-Süd'), 1),
       (('GA', '8', 'EN_12'), 73),
       (('GA', '8', 'EN_13'), 76),
       (('GA', '8', 'EN_22'), 41),
@@ -11047,19 +11047,19 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '8', 'EN_12'): {
     'Coordinates': [939, 954],
     'Connections': [
-      (('GA', '8', 'Aufzug Süd'), 73),
+      (('GA', '8', 'Aufzug-Süd'), 73),
       (('GA', '8', 'EN_11'), 38),
       (('GA', '8', 'EN_13'), 24),
-      (('GA', '8', 'WC Süd'), 17),
+      (('GA', '8', 'WC-Süd'), 17),
     ],
   },
   ('GA', '8', 'EN_13'): {
     'Coordinates': [958, 939],
     'Connections': [
-      (('GA', '8', 'Aufzug Süd'), 76),
+      (('GA', '8', 'Aufzug-Süd'), 76),
       (('GA', '8', 'EN_12'), 24),
       (('GA', '8', 'EN_14'), 19),
-      (('GA', '8', 'WC Süd'), 15),
+      (('GA', '8', 'WC-Süd'), 15),
     ],
   },
   ('GA', '8', 'EN_14'): {
@@ -11139,10 +11139,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '8', 'EN_22'): {
     'Coordinates': [870, 863],
     'Connections': [
-      (('GA', '8', 'Aufzug Süd'), 41),
+      (('GA', '8', 'Aufzug-Süd'), 41),
       (('GA', '8', 'EN_21'), 26),
       (('GA', '8', 'EN_23'), 22),
-      (('GA', '8', 'Treppe Süd'), 42),
+      (('GA', '8', 'Treppe-Süd'), 42),
     ],
   },
   ('GA', '8', 'EN_23'): {
@@ -11343,10 +11343,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '8', 'EN_45'): {
     'Coordinates': [348, 351],
     'Connections': [
-      (('GA', '8', 'Aufzug Nord'), 42),
+      (('GA', '8', 'Aufzug-Nord'), 42),
       (('GA', '8', 'EN_44'), 25),
       (('GA', '8', 'EN_46'), 28),
-      (('GA', '8', 'Treppe Nord'), 45),
+      (('GA', '8', 'Treppe-Nord'), 45),
     ],
   },
   ('GA', '8', 'EN_46'): {
@@ -11400,7 +11400,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [461, 459],
     'Connections': [
       (('GA', '8', 'EN_52'), 54),
-      (('GA', '8', 'Treppe Nord 2'), 52),
+      (('GA', '8', 'Treppe-Nord-2'), 52),
     ],
   },
   ('GA', '8', 'EN_52'): {
@@ -11423,7 +11423,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [762, 762],
     'Connections': [
       (('GA', '8', 'EN_53'), 74),
-      (('GA', '8', 'Treppe Süd 2'), 43),
+      (('GA', '8', 'Treppe-Süd-2'), 43),
     ],
   },
   ('GA', '8', 'EN_55'): {
@@ -11460,10 +11460,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GA', '8', 'EN_59'): {
     'Coordinates': [274, 268],
     'Connections': [
-      (('GA', '8', 'Aufzug Nord'), 69),
+      (('GA', '8', 'Aufzug-Nord'), 69),
       (('GA', '8', 'EN_58'), 28),
       (('GA', '8', 'EN_60'), 30),
-      (('GA', '8', 'WC Nord'), 28),
+      (('GA', '8', 'WC-Nord'), 28),
     ],
   },
   ('GA', '8', 'EN_6'): {
@@ -11656,70 +11656,70 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '8', 'EN_8'), 31),
     ],
   },
-  ('GA', '8', 'Treppe Nord'): {
+  ('GA', '8', 'Treppe-Nord'): {
     'Coordinates': [379, 384],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
-      (('GA', '03', 'Treppe Nord'), 2),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Treppe Nord'), 2),
-      (('GA', '2', 'Treppe Nord'), 2),
-      (('GA', '3', 'Treppe Nord'), 2),
-      (('GA', '4', 'Treppe Nord'), 2),
-      (('GA', '5', 'Treppe Nord'), 2),
-      (('GA', '6', 'Treppe Nord'), 2),
-      (('GA', '7', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
+      (('GA', '2', 'Treppe-Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
       (('GA', '8', 'EN_45'), 45),
-      (('GA', '9', 'Treppe Nord'), 2),
+      (('GA', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GA', '8', 'Treppe Nord 2'): {
+  ('GA', '8', 'Treppe-Nord-2'): {
     'Coordinates': [426, 420],
     'Connections': [
-      (('GA', '2', 'Treppe Nord 2'), 2),
-      (('GA', '3', 'Treppe Nord 2'), 2),
-      (('GA', '5', 'Treppe Nord 2'), 2),
-      (('GA', '6', 'Treppe Nord 2'), 2),
-      (('GA', '7', 'Treppe Nord 2'), 2),
+      (('GA', '2', 'Treppe-Nord-2'), 2),
+      (('GA', '3', 'Treppe-Nord-2'), 2),
+      (('GA', '5', 'Treppe-Nord-2'), 2),
+      (('GA', '6', 'Treppe-Nord-2'), 2),
+      (('GA', '7', 'Treppe-Nord-2'), 2),
       (('GA', '8', 'EN_51'), 52),
     ],
   },
-  ('GA', '8', 'Treppe Süd'): {
+  ('GA', '8', 'Treppe-Süd'): {
     'Coordinates': [842, 832],
     'Connections': [
-      (('GA', '02', 'Treppe Süd'), 2),
-      (('GA', '03', 'Treppe Süd'), 2),
-      (('GA', '04', 'Treppe Süd'), 2),
-      (('GA', '05', 'Treppe Süd'), 2),
-      (('GA', '1', 'Treppe Süd'), 2),
-      (('GA', '2', 'Treppe Süd'), 2),
-      (('GA', '3', 'Treppe Süd'), 2),
-      (('GA', '4', 'Treppe Süd'), 2),
-      (('GA', '5', 'Treppe Süd'), 2),
-      (('GA', '6', 'Treppe Süd'), 2),
-      (('GA', '7', 'Treppe Süd'), 2),
+      (('GA', '02', 'Treppe-Süd'), 2),
+      (('GA', '03', 'Treppe-Süd'), 2),
+      (('GA', '04', 'Treppe-Süd'), 2),
+      (('GA', '05', 'Treppe-Süd'), 2),
+      (('GA', '1', 'Treppe-Süd'), 2),
+      (('GA', '2', 'Treppe-Süd'), 2),
+      (('GA', '3', 'Treppe-Süd'), 2),
+      (('GA', '4', 'Treppe-Süd'), 2),
+      (('GA', '5', 'Treppe-Süd'), 2),
+      (('GA', '6', 'Treppe-Süd'), 2),
+      (('GA', '7', 'Treppe-Süd'), 2),
       (('GA', '8', 'EN_22'), 42),
     ],
   },
-  ('GA', '8', 'Treppe Süd 2'): {
+  ('GA', '8', 'Treppe-Süd-2'): {
     'Coordinates': [794, 791],
     'Connections': [
-      (('GA', '1', 'Treppe Süd 2'), 2),
-      (('GA', '2', 'Treppe Süd 2'), 2),
-      (('GA', '4', 'Treppe Süd 2'), 2),
-      (('GA', '5', 'Treppe Süd 2'), 2),
-      (('GA', '6', 'Treppe Süd 2'), 2),
-      (('GA', '7', 'Treppe Süd 2'), 2),
+      (('GA', '1', 'Treppe-Süd-2'), 2),
+      (('GA', '2', 'Treppe-Süd-2'), 2),
+      (('GA', '4', 'Treppe-Süd-2'), 2),
+      (('GA', '5', 'Treppe-Süd-2'), 2),
+      (('GA', '6', 'Treppe-Süd-2'), 2),
+      (('GA', '7', 'Treppe-Süd-2'), 2),
       (('GA', '8', 'EN_54'), 43),
     ],
   },
-  ('GA', '8', 'WC Nord'): {
+  ('GA', '8', 'WC-Nord'): {
     'Coordinates': [255, 248],
     'Connections': [
       (('GA', '8', 'EN_59'), 28),
     ],
   },
-  ('GA', '8', 'WC Süd'): {
+  ('GA', '8', 'WC-Süd'): {
     'Coordinates': [956, 954],
     'Connections': [
       (('GA', '8', 'EN_12'), 17),
@@ -11736,19 +11736,19 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [899, 908],
     'Connections': [
       (('GA', '9', '12'), 116),
-      (('GA', '9', 'Treppe Nord'), 126),
+      (('GA', '9', 'Treppe-Nord'), 126),
     ],
   },
   ('GA', '9', '15'): {
     'Coordinates': [865, 823],
     'Connections': [
-      (('GA', '9', 'Treppe Nord'), 52),
+      (('GA', '9', 'Treppe-Nord'), 52),
     ],
   },
   ('GA', '9', '17'): {
     'Coordinates': [791, 802],
     'Connections': [
-      (('GA', '9', 'Treppe Nord'), 26),
+      (('GA', '9', 'Treppe-Nord'), 26),
     ],
   },
   ('GA', '9', '2'): {
@@ -11761,30 +11761,30 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [304, 298],
     'Connections': [
       (('GA', '9', '2'), 105),
-      (('GA', '9', 'Trepep Nord'), 123),
+      (('GA', '9', 'Trepep-Nord'), 123),
     ],
   },
   ('GA', '9', '7'): {
     'Coordinates': [433, 422],
     'Connections': [
-      (('GA', '9', 'Trepep Nord'), 56),
+      (('GA', '9', 'Trepep-Nord'), 56),
     ],
   },
   ('GA', '9', 'EN_0'): {
     'Coordinates': [331, 428],
     'Connections': [
       (('GA', '9', 'EN_1'), 627),
-      (('GA', '9', 'Trepep Nord'), 79),
+      (('GA', '9', 'Trepep-Nord'), 79),
     ],
   },
   ('GA', '9', 'EN_1'): {
     'Coordinates': [768, 878],
     'Connections': [
       (('GA', '9', 'EN_0'), 627),
-      (('GA', '9', 'Treppe Nord'), 78),
+      (('GA', '9', 'Treppe-Nord'), 78),
     ],
   },
-  ('GA', '9', 'Trepep Nord'): {
+  ('GA', '9', 'Trepep-Nord'): {
     'Coordinates': [395, 381],
     'Connections': [
       (('GA', '9', '4'), 123),
@@ -11792,20 +11792,20 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GA', '9', 'EN_0'), 79),
     ],
   },
-  ('GA', '9', 'Treppe Nord'): {
+  ('GA', '9', 'Treppe-Nord'): {
     'Coordinates': [814, 815],
     'Connections': [
-      (('GA', '02', 'Treppe Nord'), 2),
-      (('GA', '03', 'Treppe Nord'), 2),
-      (('GA', '04', 'Treppe Nord'), 2),
-      (('GA', '1', 'Treppe Nord'), 2),
-      (('GA', '2', 'Treppe Nord'), 2),
-      (('GA', '3', 'Treppe Nord'), 2),
-      (('GA', '4', 'Treppe Nord'), 2),
-      (('GA', '5', 'Treppe Nord'), 2),
-      (('GA', '6', 'Treppe Nord'), 2),
-      (('GA', '7', 'Treppe Nord'), 2),
-      (('GA', '8', 'Treppe Nord'), 2),
+      (('GA', '02', 'Treppe-Nord'), 2),
+      (('GA', '03', 'Treppe-Nord'), 2),
+      (('GA', '04', 'Treppe-Nord'), 2),
+      (('GA', '1', 'Treppe-Nord'), 2),
+      (('GA', '2', 'Treppe-Nord'), 2),
+      (('GA', '3', 'Treppe-Nord'), 2),
+      (('GA', '4', 'Treppe-Nord'), 2),
+      (('GA', '5', 'Treppe-Nord'), 2),
+      (('GA', '6', 'Treppe-Nord'), 2),
+      (('GA', '7', 'Treppe-Nord'), 2),
+      (('GA', '8', 'Treppe-Nord'), 2),
       (('GA', '9', '14'), 126),
       (('GA', '9', '15'), 52),
       (('GA', '9', '17'), 26),
@@ -11868,84 +11868,84 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GABF', '02', 'EN_1'): {
     'Coordinates': [227, 112],
     'Connections': [
-      (('GABF', '02', 'Eingang HGB 10 Oben'), 82),
-      (('GABF', '02', 'Treppe Nord Ost'), 184),
+      (('GABF', '02', 'Eingang-HGB-10-Oben'), 82),
+      (('GABF', '02', 'Treppe-Nord-Ost'), 184),
     ],
   },
   ('GABF', '02', 'EN_2'): {
     'Coordinates': [105, 226],
     'Connections': [
-      (('GABF', '02', 'Eingang HGB 10 Oben'), 85),
-      (('GABF', '02', 'Treppe Nord West'), 193),
+      (('GABF', '02', 'Eingang-HGB-10-Oben'), 85),
+      (('GABF', '02', 'Treppe-Nord-West'), 193),
     ],
   },
   ('GABF', '02', 'EN_3'): {
     'Coordinates': [217, 283],
     'Connections': [
-      (('GABF', '02', 'Eingang HGB 10 Unten Links'), 86),
-      (('GABF', '02', 'HGB 10'), 45),
+      (('GABF', '02', 'Eingang-HGB-10-Unten-Links'), 86),
+      (('GABF', '02', 'HGB-10'), 45),
     ],
   },
   ('GABF', '02', 'EN_4'): {
     'Coordinates': [285, 214],
     'Connections': [
-      (('GABF', '02', 'Eingang HGB 10 Unten Rechts'), 90),
-      (('GABF', '02', 'HGB 10'), 52),
+      (('GABF', '02', 'Eingang-HGB-10-Unten-Rechts'), 90),
+      (('GABF', '02', 'HGB-10'), 52),
     ],
   },
-  ('GABF', '02', 'Eingang HGB 10 Oben'): {
+  ('GABF', '02', 'Eingang-HGB-10-Oben'): {
     'Coordinates': [164, 165],
     'Connections': [
       (('GABF', '02', 'EN_1'), 82),
       (('GABF', '02', 'EN_2'), 85),
-      (('GABF', '02', 'Eingang Nord'), 64),
-      (('GABF', '02', 'HGB 10'), 118),
-      (('RUB', '0', 'Campus'), 1),
+      (('GABF', '02', 'Eingang-Nord'), 64),
+      (('GABF', '02', 'HGB-10'), 118),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GABF', '02', 'Eingang HGB 10 Unten Links'): {
+  ('GABF', '02', 'Eingang-HGB-10-Unten-Links'): {
     'Coordinates': [281, 341],
     'Connections': [
       (('GABF', '02', 'EN_3'), 86),
-      (('GABF', '02', 'Eingang HGB 10 Unten Rechts'), 88),
-      (('RUB', '0', 'Campus'), 1),
+      (('GABF', '02', 'Eingang-HGB-10-Unten-Rechts'), 88),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GABF', '02', 'Eingang HGB 10 Unten Rechts'): {
+  ('GABF', '02', 'Eingang-HGB-10-Unten-Rechts'): {
     'Coordinates': [345, 281],
     'Connections': [
       (('GABF', '02', 'EN_4'), 90),
-      (('GABF', '02', 'Eingang HGB 10 Unten Links'), 88),
-      (('RUB', '0', 'Campus'), 1),
+      (('GABF', '02', 'Eingang-HGB-10-Unten-Links'), 88),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GABF', '02', 'Eingang Nord'): {
+  ('GABF', '02', 'Eingang-Nord'): {
     'Coordinates': [119, 120],
     'Connections': [
-      (('GABF', '02', 'Eingang HGB 10 Oben'), 64),
-      (('RUB', '0', 'Campus'), 1),
+      (('GABF', '02', 'Eingang-HGB-10-Oben'), 64),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GABF', '02', 'HGB 10'): {
+  ('GABF', '02', 'HGB-10'): {
     'Coordinates': [247, 249],
     'Connections': [
       (('GABF', '02', 'EN_3'), 45),
       (('GABF', '02', 'EN_4'), 52),
-      (('GABF', '02', 'Eingang HGB 10 Oben'), 118),
+      (('GABF', '02', 'Eingang-HGB-10-Oben'), 118),
     ],
   },
-  ('GABF', '02', 'Treppe Nord Ost'): {
+  ('GABF', '02', 'Treppe-Nord-Ost'): {
     'Coordinates': [355, 244],
     'Connections': [
       (('GABF', '02', 'EN_1'), 184),
-      (('GABF', '03', 'Treppe Nord Ost'), 2),
+      (('GABF', '03', 'Treppe-Nord-Ost'), 2),
     ],
   },
-  ('GABF', '02', 'Treppe Nord West'): {
+  ('GABF', '02', 'Treppe-Nord-West'): {
     'Coordinates': [244, 360],
     'Connections': [
       (('GABF', '02', 'EN_2'), 193),
-      (('GABF', '03', 'Treppe Nord West'), 2),
+      (('GABF', '03', 'Treppe-Nord-West'), 2),
     ],
   },
   ('GABF', '03', '310'): {
@@ -11954,13 +11954,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GABF', '03', 'EN_4'), 12),
     ],
   },
-  ('GABF', '03', 'Durchgang GA'): {
+  ('GABF', '03', 'Durchgang-GA'): {
     'Coordinates': [538, 147],
     'Connections': [
       (('GABF', '03', 'EN_0'), 39),
     ],
   },
-  ('GABF', '03', 'Durchgang GC'): {
+  ('GABF', '03', 'Durchgang-GC'): {
     'Coordinates': [140, 533],
     'Connections': [
       (('GABF', '03', 'EN_26'), 45),
@@ -11969,7 +11969,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GABF', '03', 'EN_0'): {
     'Coordinates': [508, 172],
     'Connections': [
-      (('GABF', '03', 'Durchgang GA'), 39),
+      (('GABF', '03', 'Durchgang-GA'), 39),
       (('GABF', '03', 'EN_1'), 104),
       (('GABF', '03', 'EN_21'), 37),
     ],
@@ -12017,7 +12017,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '03', 'EN_12'), 22),
       (('GABF', '03', 'EN_16'), 22),
-      (('GABF', '03', 'Treppe Nord West'), 31),
+      (('GABF', '03', 'Treppe-Nord-West'), 31),
     ],
   },
   ('GABF', '03', 'EN_16'): {
@@ -12047,7 +12047,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [406, 154],
     'Connections': [
       (('GABF', '03', 'EN_18'), 45),
-      (('GABF', '03', 'HGB 40'), 46),
+      (('GABF', '03', 'HGB-40'), 46),
     ],
   },
   ('GABF', '03', 'EN_2'): {
@@ -12055,8 +12055,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '03', 'EN_1'), 59),
       (('GABF', '03', 'EN_11'), 20),
-      (('GABF', '03', 'Treppe Nord 2 West'), 53),
-      (('GABF', '03', 'Treppe Nord Ost'), 45),
+      (('GABF', '03', 'Treppe-Nord-2-West'), 53),
+      (('GABF', '03', 'Treppe-Nord-Ost'), 45),
     ],
   },
   ('GABF', '03', 'EN_20'): {
@@ -12064,7 +12064,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '03', 'EN_3'), 53),
       (('GABF', '03', 'EN_4'), 66),
-      (('GABF', '03', 'HGB 40'), 31),
+      (('GABF', '03', 'HGB-40'), 31),
     ],
   },
   ('GABF', '03', 'EN_21'): {
@@ -12107,7 +12107,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GABF', '03', 'EN_26'): {
     'Coordinates': [173, 503],
     'Connections': [
-      (('GABF', '03', 'Durchgang GC'), 45),
+      (('GABF', '03', 'Durchgang-GC'), 45),
       (('GABF', '03', 'EN_8'), 21),
     ],
   },
@@ -12130,7 +12130,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [150, 415],
     'Connections': [
       (('GABF', '03', 'EN_28'), 40),
-      (('GABF', '03', 'HGB 30'), 39),
+      (('GABF', '03', 'HGB-30'), 39),
     ],
   },
   ('GABF', '03', 'EN_3'): {
@@ -12144,7 +12144,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [100, 465],
     'Connections': [
       (('GABF', '03', 'EN_27'), 38),
-      (('GABF', '03', 'HGB 30'), 41),
+      (('GABF', '03', 'HGB-30'), 41),
     ],
   },
   ('GABF', '03', 'EN_31'): {
@@ -12159,7 +12159,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [169, 402],
     'Connections': [
       (('GABF', '03', 'EN_31'), 34),
-      (('GABF', '03', 'HGB 20'), 38),
+      (('GABF', '03', 'HGB-20'), 38),
     ],
   },
   ('GABF', '03', 'EN_33'): {
@@ -12214,20 +12214,20 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GABF', '03', 'EN_7'), 95),
     ],
   },
-  ('GABF', '03', 'HGB 20'): {
+  ('GABF', '03', 'HGB-20'): {
     'Coordinates': [178, 365],
     'Connections': [
       (('GABF', '03', 'EN_32'), 38),
     ],
   },
-  ('GABF', '03', 'HGB 30'): {
+  ('GABF', '03', 'HGB-30'): {
     'Coordinates': [113, 426],
     'Connections': [
       (('GABF', '03', 'EN_29'), 39),
       (('GABF', '03', 'EN_30'), 41),
     ],
   },
-  ('GABF', '03', 'HGB 40'): {
+  ('GABF', '03', 'HGB-40'): {
     'Coordinates': [363, 170],
     'Connections': [
       (('GABF', '03', 'EN_19'), 46),
@@ -12248,23 +12248,23 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GABF', '03', 'EN_24'), 50),
     ],
   },
-  ('GABF', '03', 'Treppe Nord 2 West'): {
+  ('GABF', '03', 'Treppe-Nord-2-West'): {
     'Coordinates': [360, 311],
     'Connections': [
       (('GABF', '03', 'EN_2'), 53),
     ],
   },
-  ('GABF', '03', 'Treppe Nord Ost'): {
+  ('GABF', '03', 'Treppe-Nord-Ost'): {
     'Coordinates': [348, 225],
     'Connections': [
-      (('GABF', '02', 'Treppe Nord Ost'), 2),
+      (('GABF', '02', 'Treppe-Nord-Ost'), 2),
       (('GABF', '03', 'EN_2'), 45),
     ],
   },
-  ('GABF', '03', 'Treppe Nord West'): {
+  ('GABF', '03', 'Treppe-Nord-West'): {
     'Coordinates': [238, 347],
     'Connections': [
-      (('GABF', '02', 'Treppe Nord West'), 2),
+      (('GABF', '02', 'Treppe-Nord-West'), 2),
       (('GABF', '03', 'EN_15'), 31),
     ],
   },
@@ -12450,25 +12450,25 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GABF', '04', 'EN_7'), 24),
     ],
   },
-  ('GABF', '04', 'Durchgang GA Nord'): {
+  ('GABF', '04', 'Durchgang-GA-Nord'): {
     'Coordinates': [581, 184],
     'Connections': [
       (('GABF', '04', 'EN_29'), 52),
     ],
   },
-  ('GABF', '04', 'Durchgang GA Süd'): {
+  ('GABF', '04', 'Durchgang-GA-Süd'): {
     'Coordinates': [905, 512],
     'Connections': [
       (('GABF', '04', 'EN_15'), 38),
     ],
   },
-  ('GABF', '04', 'Durchgang GB Nord'): {
+  ('GABF', '04', 'Durchgang-GB-Nord'): {
     'Coordinates': [198, 566],
     'Connections': [
       (('GABF', '04', 'EN_16'), 33),
     ],
   },
-  ('GABF', '04', 'Durchgang GB Süd'): {
+  ('GABF', '04', 'Durchgang-GB-Süd'): {
     'Coordinates': [524, 891],
     'Connections': [
       (('GABF', '04', 'EN_0'), 36),
@@ -12479,7 +12479,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '04', '414'), 52),
       (('GABF', '04', '614'), 47),
-      (('GABF', '04', 'Durchgang GB Süd'), 36),
+      (('GABF', '04', 'Durchgang-GB-Süd'), 36),
       (('GABF', '04', 'EN_1'), 50),
     ],
   },
@@ -12505,7 +12505,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '04', 'EN_12'), 54),
       (('GABF', '04', 'EN_4'), 42),
-      (('GABF', '04', 'Treppe Süd'), 42),
+      (('GABF', '04', 'Treppe-Süd'), 42),
     ],
   },
   ('GABF', '04', 'EN_12'): {
@@ -12537,7 +12537,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '04', '516'), 62),
       (('GABF', '04', '716'), 54),
-      (('GABF', '04', 'Durchgang GA Süd'), 38),
+      (('GABF', '04', 'Durchgang-GA-Süd'), 38),
       (('GABF', '04', 'EN_14'), 64),
     ],
   },
@@ -12545,7 +12545,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [220, 542],
     'Connections': [
       (('GABF', '04', '252'), 39),
-      (('GABF', '04', 'Durchgang GB Nord'), 33),
+      (('GABF', '04', 'Durchgang-GB-Nord'), 33),
       (('GABF', '04', 'EN_17'), 32),
     ],
   },
@@ -12596,7 +12596,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '04', 'EN_20'), 28),
       (('GABF', '04', 'EN_22'), 30),
-      (('GABF', '04', 'Treppe Nord'), 53),
+      (('GABF', '04', 'Treppe-Nord'), 53),
     ],
   },
   ('GABF', '04', 'EN_22'): {
@@ -12619,7 +12619,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '04', 'EN_23'), 35),
       (('GABF', '04', 'EN_31'), 43),
-      (('GABF', '04', 'Treppe Nord'), 25),
+      (('GABF', '04', 'Treppe-Nord'), 25),
     ],
   },
   ('GABF', '04', 'EN_25'): {
@@ -12660,7 +12660,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '04', '301'), 37),
       (('GABF', '04', '352'), 36),
-      (('GABF', '04', 'Durchgang GA Nord'), 52),
+      (('GABF', '04', 'Durchgang-GA-Nord'), 52),
       (('GABF', '04', 'EN_28'), 48),
     ],
   },
@@ -12676,7 +12676,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [290, 388],
     'Connections': [
       (('GABF', '04', 'EN_22'), 25),
-      (('GABF', '04', 'WC Nord'), 77),
+      (('GABF', '04', 'WC-Nord'), 77),
     ],
   },
   ('GABF', '04', 'EN_31'): {
@@ -12690,7 +12690,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [397, 283],
     'Connections': [
       (('GABF', '04', 'EN_31'), 28),
-      (('GABF', '04', 'WC Nord'), 73),
+      (('GABF', '04', 'WC-Nord'), 73),
     ],
   },
   ('GABF', '04', 'EN_4'): {
@@ -12740,21 +12740,21 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GABF', '04', 'EN_8'), 16),
     ],
   },
-  ('GABF', '04', 'Treppe Nord'): {
+  ('GABF', '04', 'Treppe-Nord'): {
     'Coordinates': [369, 349],
     'Connections': [
       (('GABF', '04', 'EN_21'), 53),
       (('GABF', '04', 'EN_24'), 25),
     ],
   },
-  ('GABF', '04', 'Treppe Süd'): {
+  ('GABF', '04', 'Treppe-Süd'): {
     'Coordinates': [712, 699],
     'Connections': [
       (('GABF', '04', 'EN_11'), 42),
-      (('GABF', '05', 'Treppe Süd'), 2),
+      (('GABF', '05', 'Treppe-Süd'), 2),
     ],
   },
-  ('GABF', '04', 'WC Nord'): {
+  ('GABF', '04', 'WC-Nord'): {
     'Coordinates': [344, 333],
     'Connections': [
       (('GABF', '04', 'EN_30'), 77),
@@ -13000,7 +13000,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GABF', '05', '510'), 29),
       (('GABF', '05', 'EN_18'), 33),
       (('GABF', '05', 'EN_20'), 30),
-      (('GABF', '05', 'Treppe Süd'), 37),
+      (('GABF', '05', 'Treppe-Süd'), 37),
     ],
   },
   ('GABF', '05', 'EN_2'): {
@@ -13017,7 +13017,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '05', '511'), 29),
       (('GABF', '05', 'EN_19'), 30),
-      (('GABF', '05', 'Treppe Süd'), 39),
+      (('GABF', '05', 'Treppe-Süd'), 39),
     ],
   },
   ('GABF', '05', 'EN_21'): {
@@ -13026,8 +13026,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GABF', '05', '801'), 22),
       (('GABF', '05', 'EN_23'), 47),
       (('GABF', '05', 'EN_4'), 29),
-      (('GABF', '05', 'Treppe Süd'), 31),
-      (('GABF', '05', 'WC Süd'), 25),
+      (('GABF', '05', 'Treppe-Süd'), 31),
+      (('GABF', '05', 'WC-Süd'), 25),
     ],
   },
   ('GABF', '05', 'EN_23'): {
@@ -13035,8 +13035,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GABF', '05', '808'), 20),
       (('GABF', '05', 'EN_21'), 47),
-      (('GABF', '05', 'Treppe Süd'), 34),
-      (('GABF', '05', 'WC Süd 2'), 25),
+      (('GABF', '05', 'Treppe-Süd'), 34),
+      (('GABF', '05', 'WC-Süd-2'), 25),
     ],
   },
   ('GABF', '05', 'EN_3'): {
@@ -13054,8 +13054,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GABF', '05', 'EN_21'), 29),
       (('GABF', '05', 'EN_3'), 71),
       (('GABF', '05', 'EN_5'), 81),
-      (('GABF', '05', 'Eingang Süd'), 59),
-      (('GABF', '05', 'Treppe Süd'), 41),
+      (('GABF', '05', 'Eingang-Süd'), 59),
+      (('GABF', '05', 'Treppe-Süd'), 41),
     ],
   },
   ('GABF', '05', 'EN_5'): {
@@ -13096,17 +13096,17 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GABF', '05', 'EN_7'), 59),
     ],
   },
-  ('GABF', '05', 'Eingang Süd'): {
+  ('GABF', '05', 'Eingang-Süd'): {
     'Coordinates': [791, 791],
     'Connections': [
       (('GABF', '05', 'EN_4'), 59),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GABF', '05', 'Treppe Süd'): {
+  ('GABF', '05', 'Treppe-Süd'): {
     'Coordinates': [722, 719],
     'Connections': [
-      (('GABF', '04', 'Treppe Süd'), 2),
+      (('GABF', '04', 'Treppe-Süd'), 2),
       (('GABF', '05', 'EN_19'), 37),
       (('GABF', '05', 'EN_20'), 39),
       (('GABF', '05', 'EN_21'), 31),
@@ -13114,13 +13114,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GABF', '05', 'EN_4'), 41),
     ],
   },
-  ('GABF', '05', 'WC Süd'): {
+  ('GABF', '05', 'WC-Süd'): {
     'Coordinates': [701, 765],
     'Connections': [
       (('GABF', '05', 'EN_21'), 25),
     ],
   },
-  ('GABF', '05', 'WC Süd 2'): {
+  ('GABF', '05', 'WC-Süd-2'): {
     'Coordinates': [773, 699],
     'Connections': [
       (('GABF', '05', 'EN_23'), 25),
@@ -13144,7 +13144,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [463, 342],
     'Connections': [
       (('GAFO', '02', 'EN_14'), 35),
-      (('GAFO', '02', 'Treppe Nord 2'), 70),
+      (('GAFO', '02', 'Treppe-Nord-2'), 70),
     ],
   },
   ('GAFO', '02', '365'): {
@@ -13263,7 +13263,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '02', 'EN_1'), 94),
     ],
   },
-  ('GAFO', '02', 'Durchgang GA'): {
+  ('GAFO', '02', 'Durchgang-GA'): {
     'Coordinates': [575, 175],
     'Connections': [
       (('GAFO', '02', 'EN_19'), 24),
@@ -13273,7 +13273,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [213, 347],
     'Connections': [
       (('GAFO', '02', 'EN_4'), 85),
-      (('GAFO', '02', 'Treppe Nord Ost'), 134),
+      (('GAFO', '02', 'Treppe-Nord-Ost'), 134),
     ],
   },
   ('GAFO', '02', 'EN_1'): {
@@ -13305,7 +13305,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '02', '852'), 17),
       (('GAFO', '02', 'EN_11'), 33),
       (('GAFO', '02', 'EN_13'), 32),
-      (('GAFO', '02', 'Treppe Nord 2'), 31),
+      (('GAFO', '02', 'Treppe-Nord-2'), 31),
     ],
   },
   ('GAFO', '02', 'EN_13'): {
@@ -13365,7 +13365,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '02', '373'), 48),
       (('GAFO', '02', '376'), 25),
-      (('GAFO', '02', 'Durchgang GA'), 24),
+      (('GAFO', '02', 'Durchgang-GA'), 24),
       (('GAFO', '02', 'EN_20'), 27),
     ],
   },
@@ -13373,7 +13373,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [90, 459],
     'Connections': [
       (('GAFO', '02', 'EN_4'), 82),
-      (('GAFO', '02', 'Treppe Nord West'), 156),
+      (('GAFO', '02', 'Treppe-Nord-West'), 156),
     ],
   },
   ('GAFO', '02', 'EN_20'): {
@@ -13395,7 +13395,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '02', 'EN_0'), 85),
       (('GAFO', '02', 'EN_2'), 82),
-      (('GAFO', '02', 'Eingang Nord'), 103),
+      (('GAFO', '02', 'Eingang-Nord'), 103),
       (('GAFO', '02', 'HGA10'), 82),
     ],
   },
@@ -13426,14 +13426,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '02', 'EN_10'), 30),
       (('GAFO', '02', 'EN_8'), 23),
-      (('GAFO', '02', 'WC Nord'), 25),
+      (('GAFO', '02', 'WC-Nord'), 25),
     ],
   },
-  ('GAFO', '02', 'Eingang Nord'): {
+  ('GAFO', '02', 'Eingang-Nord'): {
     'Coordinates': [86, 331],
     'Connections': [
       (('GAFO', '02', 'EN_4'), 103),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
   ('GAFO', '02', 'HGA10'): {
@@ -13444,30 +13444,30 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '02', 'EN_4'), 82),
     ],
   },
-  ('GAFO', '02', 'Treppe Nord 2'): {
+  ('GAFO', '02', 'Treppe-Nord-2'): {
     'Coordinates': [413, 391],
     'Connections': [
       (('GAFO', '02', '364'), 70),
       (('GAFO', '02', 'EN_12'), 31),
-      (('GAFO', '03', 'Treppe Nord 2'), 2),
-      (('GAFO', '04', 'Treppe Nord 2'), 2),
+      (('GAFO', '03', 'Treppe-Nord-2'), 2),
+      (('GAFO', '04', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GAFO', '02', 'Treppe Nord Ost'): {
+  ('GAFO', '02', 'Treppe-Nord-Ost'): {
     'Coordinates': [312, 438],
     'Connections': [
       (('GAFO', '02', 'EN_0'), 134),
-      (('GAFO', '03', 'Treppe Nord Ost'), 2),
+      (('GAFO', '03', 'Treppe-Nord-Ost'), 2),
     ],
   },
-  ('GAFO', '02', 'Treppe Nord West'): {
+  ('GAFO', '02', 'Treppe-Nord-West'): {
     'Coordinates': [205, 564],
     'Connections': [
       (('GAFO', '02', 'EN_2'), 156),
-      (('GAFO', '03', 'Treppe Nord West'), 2),
+      (('GAFO', '03', 'Treppe-Nord-West'), 2),
     ],
   },
-  ('GAFO', '02', 'WC Nord'): {
+  ('GAFO', '02', 'WC-Nord'): {
     'Coordinates': [364, 429],
     'Connections': [
       (('GAFO', '02', 'EN_9'), 25),
@@ -13610,13 +13610,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GAFO', '03', '851'): {
     'Coordinates': [273, 220],
     'Connections': [
-      (('GAFO', '03', 'Treppe Nord 2'), 25),
+      (('GAFO', '03', 'Treppe-Nord-2'), 25),
     ],
   },
   ('GAFO', '03', '852'): {
     'Coordinates': [314, 196],
     'Connections': [
-      (('GAFO', '03', 'Treppe Nord 2'), 28),
+      (('GAFO', '03', 'Treppe-Nord-2'), 28),
     ],
   },
   ('GAFO', '03', '901'): {
@@ -13940,7 +13940,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '03', 'EN_37'), 23),
     ],
   },
-  ('GAFO', '03', 'Durchgang GA'): {
+  ('GAFO', '03', 'Durchgang-GA'): {
     'Coordinates': [96, 468],
     'Connections': [
       (('GAFO', '03', 'EN_0'), 35),
@@ -13949,7 +13949,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GAFO', '03', 'EN_0'): {
     'Coordinates': [121, 443],
     'Connections': [
-      (('GAFO', '03', 'Durchgang GA'), 35),
+      (('GAFO', '03', 'Durchgang-GA'), 35),
       (('GAFO', '03', 'EN_1'), 60),
       (('GAFO', '03', 'EN_55'), 31),
     ],
@@ -13967,7 +13967,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '03', 'EN_40'), 33),
       (('GAFO', '03', 'EN_9'), 20),
-      (('GAFO', '03', 'Treppe Nord 2'), 42),
+      (('GAFO', '03', 'Treppe-Nord-2'), 42),
     ],
   },
   ('GAFO', '03', 'EN_11'): {
@@ -14053,7 +14053,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '03', 'EN_1'), 51),
       (('GAFO', '03', 'EN_5'), 22),
-      (('GAFO', '03', 'Treppe Nord West'), 47),
+      (('GAFO', '03', 'Treppe-Nord-West'), 47),
     ],
   },
   ('GAFO', '03', 'EN_21'): {
@@ -14105,8 +14105,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '03', 'EN_25'), 28),
       (('GAFO', '03', 'EN_27'), 23),
-      (('GAFO', '03', 'Treppe Süd'), 21),
-      (('GAFO', '03', 'WC Süd'), 24),
+      (('GAFO', '03', 'Treppe-Süd'), 21),
+      (('GAFO', '03', 'WC-Süd'), 24),
     ],
   },
   ('GAFO', '03', 'EN_27'): {
@@ -14241,7 +14241,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [99, 313],
     'Connections': [
       (('GAFO', '03', '210'), 21),
-      (('GAFO', '03', 'HGB 20'), 39),
+      (('GAFO', '03', 'HGB-20'), 39),
     ],
   },
   ('GAFO', '03', 'EN_40'): {
@@ -14288,7 +14288,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '03', 'EN_46'), 55),
       (('GAFO', '03', 'EN_47'), 35),
-      (('GAFO', '03', 'Eingang Nord West'), 47),
+      (('GAFO', '03', 'Eingang-Nord-West'), 47),
     ],
   },
   ('GAFO', '03', 'EN_46'): {
@@ -14392,7 +14392,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [67, 409],
     'Connections': [
       (('GAFO', '03', 'EN_56'), 26),
-      (('GAFO', '03', 'HGA 30'), 21),
+      (('GAFO', '03', 'HGA-30'), 21),
     ],
   },
   ('GAFO', '03', 'EN_58'): {
@@ -14406,7 +14406,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [96, 382],
     'Connections': [
       (('GAFO', '03', 'EN_58'), 32),
-      (('GAFO', '03', 'HGA 30'), 25),
+      (('GAFO', '03', 'HGA-30'), 25),
     ],
   },
   ('GAFO', '03', 'EN_6'): {
@@ -14422,14 +14422,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [113, 362],
     'Connections': [
       (('GAFO', '03', 'EN_63'), 22),
-      (('GAFO', '03', 'HGB 20'), 21),
+      (('GAFO', '03', 'HGB-20'), 21),
     ],
   },
   ('GAFO', '03', 'EN_62'): {
     'Coordinates': [143, 336],
     'Connections': [
       (('GAFO', '03', 'EN_3'), 20),
-      (('GAFO', '03', 'HGB 20'), 22),
+      (('GAFO', '03', 'HGB-20'), 22),
     ],
   },
   ('GAFO', '03', 'EN_63'): {
@@ -14445,7 +14445,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '03', 'EN_1'), 40),
       (('GAFO', '03', 'EN_3'), 21),
       (('GAFO', '03', 'EN_63'), 13),
-      (('GAFO', '03', 'HGB 20'), 28),
+      (('GAFO', '03', 'HGB-20'), 28),
     ],
   },
   ('GAFO', '03', 'EN_65'): {
@@ -14466,14 +14466,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [207, 249],
     'Connections': [
       (('GAFO', '03', 'EN_66'), 32),
-      (('GAFO', '03', 'HGA 10'), 35),
+      (('GAFO', '03', 'HGA-10'), 35),
     ],
   },
   ('GAFO', '03', 'EN_68'): {
     'Coordinates': [169, 292],
     'Connections': [
       (('GAFO', '03', 'EN_65'), 29),
-      (('GAFO', '03', 'HGA 10'), 36),
+      (('GAFO', '03', 'HGA-10'), 36),
     ],
   },
   ('GAFO', '03', 'EN_69'): {
@@ -14490,7 +14490,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '03', 'EN_46'), 15),
       (('GAFO', '03', 'EN_6'), 29),
-      (('GAFO', '03', 'Treppe Nord Ost'), 23),
+      (('GAFO', '03', 'Treppe-Nord-Ost'), 23),
     ],
   },
   ('GAFO', '03', 'EN_70'): {
@@ -14498,7 +14498,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '03', '259'), 57),
       (('GAFO', '03', 'EN_69'), 11),
-      (('GAFO', '03', 'Eingang Nord Ost'), 45),
+      (('GAFO', '03', 'Eingang-Nord-Ost'), 45),
     ],
   },
   ('GAFO', '03', 'EN_72'): {
@@ -14541,35 +14541,35 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '03', 'EN_8'), 16),
     ],
   },
-  ('GAFO', '03', 'Eingang Nord Ost'): {
+  ('GAFO', '03', 'Eingang-Nord-Ost'): {
     'Coordinates': [381, 5],
     'Connections': [
       (('GAFO', '03', 'EN_70'), 45),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GAFO', '03', 'Eingang Nord West'): {
+  ('GAFO', '03', 'Eingang-Nord-West'): {
     'Coordinates': [203, 187],
     'Connections': [
       (('GAFO', '03', 'EN_45'), 47),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GAFO', '03', 'HGA 10'): {
+  ('GAFO', '03', 'HGA-10'): {
     'Coordinates': [173, 256],
     'Connections': [
       (('GAFO', '03', 'EN_67'), 35),
       (('GAFO', '03', 'EN_68'), 36),
     ],
   },
-  ('GAFO', '03', 'HGA 30'): {
+  ('GAFO', '03', 'HGA-30'): {
     'Coordinates': [72, 389],
     'Connections': [
       (('GAFO', '03', 'EN_57'), 21),
       (('GAFO', '03', 'EN_59'), 25),
     ],
   },
-  ('GAFO', '03', 'HGB 20'): {
+  ('GAFO', '03', 'HGB-20'): {
     'Coordinates': [123, 344],
     'Connections': [
       (('GAFO', '03', 'EN_4'), 39),
@@ -14578,36 +14578,36 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '03', 'EN_64'), 28),
     ],
   },
-  ('GAFO', '03', 'Treppe Nord 2'): {
+  ('GAFO', '03', 'Treppe-Nord-2'): {
     'Coordinates': [286, 199],
     'Connections': [
-      (('GAFO', '02', 'Treppe Nord 2'), 2),
+      (('GAFO', '02', 'Treppe-Nord-2'), 2),
       (('GAFO', '03', '851'), 25),
       (('GAFO', '03', '852'), 28),
       (('GAFO', '03', 'EN_10'), 42),
-      (('GAFO', '04', 'Treppe Nord 2'), 2),
+      (('GAFO', '04', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GAFO', '03', 'Treppe Nord Ost'): {
+  ('GAFO', '03', 'Treppe-Nord-Ost'): {
     'Coordinates': [248, 249],
     'Connections': [
-      (('GAFO', '02', 'Treppe Nord Ost'), 2),
+      (('GAFO', '02', 'Treppe-Nord-Ost'), 2),
       (('GAFO', '03', 'EN_7'), 23),
     ],
   },
-  ('GAFO', '03', 'Treppe Nord West'): {
+  ('GAFO', '03', 'Treppe-Nord-West'): {
     'Coordinates': [166, 325],
     'Connections': [
-      (('GAFO', '02', 'Treppe Nord West'), 2),
+      (('GAFO', '02', 'Treppe-Nord-West'), 2),
       (('GAFO', '03', 'EN_2'), 47),
     ],
   },
-  ('GAFO', '03', 'Treppe Süd'): {
+  ('GAFO', '03', 'Treppe-Süd'): {
     'Coordinates': [571, 467],
     'Connections': [
       (('GAFO', '03', 'EN_26'), 21),
-      (('GAFO', '04', 'Treppe Süd'), 2),
-      (('GAFO', '05', 'Treppe Süd'), 2),
+      (('GAFO', '04', 'Treppe-Süd'), 2),
+      (('GAFO', '05', 'Treppe-Süd'), 2),
     ],
   },
   ('GAFO', '03', 'Treppenhaus-200a'): {
@@ -14616,7 +14616,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '03', 'EN_6'), 16),
     ],
   },
-  ('GAFO', '03', 'WC Süd'): {
+  ('GAFO', '03', 'WC-Süd'): {
     'Coordinates': [538, 437],
     'Connections': [
       (('GAFO', '03', 'EN_26'), 24),
@@ -15155,14 +15155,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GAFO', '04', '803'): {
     'Coordinates': [619, 483],
     'Connections': [
-      (('GAFO', '04', 'Treppe Süd'), 24),
+      (('GAFO', '04', 'Treppe-Süd'), 24),
     ],
   },
   ('GAFO', '04', '851'): {
     'Coordinates': [335, 241],
     'Connections': [
       (('GAFO', '04', 'EN_64'), 15),
-      (('GAFO', '04', 'Treppe Nord'), 23),
+      (('GAFO', '04', 'Treppe-Nord'), 23),
     ],
   },
   ('GAFO', '04', '852'): {
@@ -15174,7 +15174,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GAFO', '04', '902'): {
     'Coordinates': [590, 506],
     'Connections': [
-      (('GAFO', '04', 'Treppe Süd'), 28),
+      (('GAFO', '04', 'Treppe-Süd'), 28),
     ],
   },
   ('GAFO', '04', '905'): {
@@ -15345,13 +15345,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '04', 'EN_44'), 20),
     ],
   },
-  ('GAFO', '04', 'Durchgang GA Nord'): {
+  ('GAFO', '04', 'Durchgang-GA-Nord'): {
     'Coordinates': [140, 508],
     'Connections': [
       (('GAFO', '04', 'EN_88'), 38),
     ],
   },
-  ('GAFO', '04', 'Durchgang GA Süd'): {
+  ('GAFO', '04', 'Durchgang-GA-Süd'): {
     'Coordinates': [386, 764],
     'Connections': [
       (('GAFO', '04', 'EN_0'), 33),
@@ -15360,7 +15360,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GAFO', '04', 'EN_0'): {
     'Coordinates': [409, 740],
     'Connections': [
-      (('GAFO', '04', 'Durchgang GA Süd'), 33),
+      (('GAFO', '04', 'Durchgang-GA-Süd'), 33),
       (('GAFO', '04', 'EN_1'), 22),
     ],
   },
@@ -15420,7 +15420,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '04', 'EN_14'), 18),
       (('GAFO', '04', 'EN_16'), 36),
-      (('GAFO', '04', 'Treppe Süd'), 14),
+      (('GAFO', '04', 'Treppe-Süd'), 14),
     ],
   },
   ('GAFO', '04', 'EN_16'): {
@@ -15582,7 +15582,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '04', 'EN_32'), 21),
       (('GAFO', '04', 'EN_34'), 15),
-      (('GAFO', '04', 'WC Süd'), 19),
+      (('GAFO', '04', 'WC-Süd'), 19),
     ],
   },
   ('GAFO', '04', 'EN_34'): {
@@ -15591,7 +15591,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '04', 'EN_23'), 27),
       (('GAFO', '04', 'EN_33'), 15),
       (('GAFO', '04', 'EN_35'), 25),
-      (('GAFO', '04', 'WC Süd'), 13),
+      (('GAFO', '04', 'WC-Süd'), 13),
     ],
   },
   ('GAFO', '04', 'EN_35'): {
@@ -15835,7 +15835,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GAFO', '04', 'EN_48'), 35),
       (('GAFO', '04', 'EN_62'), 23),
-      (('GAFO', '04', 'Treppe Nord'), 40),
+      (('GAFO', '04', 'Treppe-Nord'), 40),
     ],
   },
   ('GAFO', '04', 'EN_62'): {
@@ -15991,7 +15991,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '04', '260'), 22),
       (('GAFO', '04', 'EN_78'), 18),
       (('GAFO', '04', 'EN_80'), 22),
-      (('GAFO', '04', 'Treppe Nord 2'), 19),
+      (('GAFO', '04', 'Treppe-Nord-2'), 19),
     ],
   },
   ('GAFO', '04', 'EN_8'): {
@@ -16008,7 +16008,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '04', '259'), 23),
       (('GAFO', '04', 'EN_79'), 22),
       (('GAFO', '04', 'EN_81'), 23),
-      (('GAFO', '04', 'Treppe Nord 2'), 17),
+      (('GAFO', '04', 'Treppe-Nord-2'), 17),
     ],
   },
   ('GAFO', '04', 'EN_81'): {
@@ -16074,7 +16074,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [168, 483],
     'Connections': [
       (('GAFO', '04', '251'), 25),
-      (('GAFO', '04', 'Durchgang GA Nord'), 38),
+      (('GAFO', '04', 'Durchgang-GA-Nord'), 38),
       (('GAFO', '04', 'EN_87'), 21),
     ],
   },
@@ -16087,30 +16087,30 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '04', 'EN_8'), 19),
     ],
   },
-  ('GAFO', '04', 'Treppe Nord'): {
+  ('GAFO', '04', 'Treppe-Nord'): {
     'Coordinates': [358, 245],
     'Connections': [
       (('GAFO', '04', '851'), 23),
       (('GAFO', '04', 'EN_61'), 40),
     ],
   },
-  ('GAFO', '04', 'Treppe Nord 2'): {
+  ('GAFO', '04', 'Treppe-Nord-2'): {
     'Coordinates': [280, 349],
     'Connections': [
-      (('GAFO', '02', 'Treppe Nord 2'), 2),
-      (('GAFO', '03', 'Treppe Nord 2'), 2),
+      (('GAFO', '02', 'Treppe-Nord-2'), 2),
+      (('GAFO', '03', 'Treppe-Nord-2'), 2),
       (('GAFO', '04', 'EN_79'), 19),
       (('GAFO', '04', 'EN_80'), 17),
     ],
   },
-  ('GAFO', '04', 'Treppe Süd'): {
+  ('GAFO', '04', 'Treppe-Süd'): {
     'Coordinates': [618, 507],
     'Connections': [
-      (('GAFO', '03', 'Treppe Süd'), 2),
+      (('GAFO', '03', 'Treppe-Süd'), 2),
       (('GAFO', '04', '803'), 24),
       (('GAFO', '04', '902'), 28),
       (('GAFO', '04', 'EN_15'), 14),
-      (('GAFO', '05', 'Treppe Süd'), 2),
+      (('GAFO', '05', 'Treppe-Süd'), 2),
     ],
   },
   ('GAFO', '04', 'Treppenhaus-230'): {
@@ -16121,7 +16121,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '04', 'EN_81'), 15),
     ],
   },
-  ('GAFO', '04', 'WC Süd'): {
+  ('GAFO', '04', 'WC-Süd'): {
     'Coordinates': [582, 465],
     'Connections': [
       (('GAFO', '04', 'EN_33'), 19),
@@ -16513,7 +16513,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GAFO', '05', '617'), 16),
       (('GAFO', '05', 'EN_14'), 21),
       (('GAFO', '05', 'EN_16'), 17),
-      (('GAFO', '05', 'Treppe Süd'), 33),
+      (('GAFO', '05', 'Treppe-Süd'), 33),
     ],
   },
   ('GAFO', '05', 'EN_16'): {
@@ -16783,14 +16783,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [332, 706],
     'Connections': [
       (('GAFO', '05', 'EN_0'), 21),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GAFO', '05', 'Treppe Süd'): {
+  ('GAFO', '05', 'Treppe-Süd'): {
     'Coordinates': [541, 447],
     'Connections': [
-      (('GAFO', '03', 'Treppe Süd'), 2),
-      (('GAFO', '04', 'Treppe Süd'), 2),
+      (('GAFO', '03', 'Treppe-Süd'), 2),
+      (('GAFO', '04', 'Treppe-Süd'), 2),
       (('GAFO', '05', 'EN_15'), 33),
     ],
   },
@@ -16951,39 +16951,39 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '02', 'EN_25'), 119),
     ],
   },
-  ('GB', '02', 'Aufzug Nord'): {
+  ('GB', '02', 'Aufzug-Nord'): {
     'Coordinates': [334, 361],
     'Connections': [
       (('GB', '02', 'EN_2'), 47),
       (('GB', '02', 'EN_7'), 76),
-      (('GB', '03', 'Aufzug Nord'), 1),
-      (('GB', '04', 'Aufzug Nord'), 1),
-      (('GB', '1', 'Aufzug Nord'), 1),
-      (('GB', '2', 'Aufzug Nord'), 1),
-      (('GB', '3', 'Aufzug Nord'), 1),
-      (('GB', '4', 'Aufzug Nord'), 1),
-      (('GB', '5', 'Aufzug Nord'), 1),
-      (('GB', '6', 'Aufzug Nord'), 1),
-      (('GB', '7', 'Aufzug Nord'), 1),
-      (('GB', '8', 'Aufzug Nord'), 1),
+      (('GB', '03', 'Aufzug-Nord'), 1),
+      (('GB', '04', 'Aufzug-Nord'), 1),
+      (('GB', '1', 'Aufzug-Nord'), 1),
+      (('GB', '2', 'Aufzug-Nord'), 1),
+      (('GB', '3', 'Aufzug-Nord'), 1),
+      (('GB', '4', 'Aufzug-Nord'), 1),
+      (('GB', '5', 'Aufzug-Nord'), 1),
+      (('GB', '6', 'Aufzug-Nord'), 1),
+      (('GB', '7', 'Aufzug-Nord'), 1),
+      (('GB', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GB', '02', 'Aufzug Süd'): {
+  ('GB', '02', 'Aufzug-Süd'): {
     'Coordinates': [918, 959],
     'Connections': [
       (('GB', '02', 'EN_37'), 57),
       (('GB', '02', 'EN_38'), 61),
-      (('GB', '03', 'Aufzug Süd'), 1),
-      (('GB', '04', 'Aufzug Süd'), 1),
-      (('GB', '05', 'Aufzug Süd'), 1),
-      (('GB', '1', 'Aufzug Süd'), 1),
-      (('GB', '2', 'Aufzug Süd'), 1),
-      (('GB', '3', 'Aufzug Süd'), 1),
-      (('GB', '4', 'Aufzug Süd'), 1),
-      (('GB', '5', 'Aufzug Süd'), 1),
-      (('GB', '6', 'Aufzug Süd'), 1),
-      (('GB', '7', 'Aufzug Süd'), 1),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
+      (('GB', '04', 'Aufzug-Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
+      (('GB', '4', 'Aufzug-Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GB', '02', 'Cafeteria'): {
@@ -17054,7 +17054,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '02', 'EN_18'), 34),
       (('GB', '02', 'EN_5'), 96),
-      (('GB', '02', 'Eingang Nord'), 98),
+      (('GB', '02', 'Eingang-Nord'), 98),
     ],
   },
   ('GB', '02', 'EN_18'): {
@@ -17074,10 +17074,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '02', 'EN_2'): {
     'Coordinates': [367, 394],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 47),
+      (('GB', '02', 'Aufzug-Nord'), 47),
       (('GB', '02', 'EN_3'), 72),
       (('GB', '02', 'EN_9'), 59),
-      (('GB', '02', 'Treppe Nord'), 39),
+      (('GB', '02', 'Treppe-Nord'), 39),
     ],
   },
   ('GB', '02', 'EN_21'): {
@@ -17181,7 +17181,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '02', 'EN_35'), 15),
       (('GB', '02', 'EN_39'), 107),
-      (('GB', '02', 'Treppe Süd 2 West'), 40),
+      (('GB', '02', 'Treppe-Süd-2-West'), 40),
     ],
   },
   ('GB', '02', 'EN_35'): {
@@ -17198,25 +17198,25 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '02', 'EN_32'), 101),
       (('GB', '02', 'EN_37'), 53),
       (('GB', '02', 'EN_40'), 114),
-      (('GB', '02', 'Treppe Süd 2 Ost'), 48),
+      (('GB', '02', 'Treppe-Süd-2-Ost'), 48),
     ],
   },
   ('GB', '02', 'EN_37'): {
     'Coordinates': [880, 916],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 57),
+      (('GB', '02', 'Aufzug-Süd'), 57),
       (('GB', '02', 'EN_35'), 59),
       (('GB', '02', 'EN_36'), 53),
-      (('GB', '02', 'Treppe Süd'), 36),
+      (('GB', '02', 'Treppe-Süd'), 36),
     ],
   },
   ('GB', '02', 'EN_38'): {
     'Coordinates': [961, 1002],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 61),
+      (('GB', '02', 'Aufzug-Süd'), 61),
       (('GB', '02', 'EN_39'), 56),
       (('GB', '02', 'EN_40'), 60),
-      (('GB', '02', 'WC Süd'), 29),
+      (('GB', '02', 'WC-Süd'), 29),
     ],
   },
   ('GB', '02', 'EN_39'): {
@@ -17291,10 +17291,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '02', 'EN_7'): {
     'Coordinates': [282, 306],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 76),
+      (('GB', '02', 'Aufzug-Nord'), 76),
       (('GB', '02', 'EN_6'), 52),
       (('GB', '02', 'EN_8'), 58),
-      (('GB', '02', 'WC Nord'), 35),
+      (('GB', '02', 'WC-Nord'), 35),
     ],
   },
   ('GB', '02', 'EN_8'): {
@@ -17313,70 +17313,70 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '02', 'EN_2'), 59),
     ],
   },
-  ('GB', '02', 'Eingang Nord'): {
+  ('GB', '02', 'Eingang-Nord'): {
     'Coordinates': [209, 105],
     'Connections': [
       (('GB', '02', 'EN_17'), 98),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GB', '02', 'Treppe Nord'): {
+  ('GB', '02', 'Treppe-Nord'): {
     'Coordinates': [394, 422],
     'Connections': [
       (('GB', '02', 'EN_2'), 39),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'Treppe Nord'), 2),
-      (('GB', '1', 'Treppe Nord'), 2),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Treppe Nord'), 2),
-      (('GB', '4', 'Treppe Nord'), 2),
-      (('GB', '5', 'Treppe Nord'), 2),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Treppe Nord'), 2),
-      (('GB', '8', 'Treppe Nord'), 2),
-      (('GB', '9', 'Treppe Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
+      (('GB', '1', 'Treppe-Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
+      (('GB', '4', 'Treppe-Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GB', '02', 'Treppe Süd'): {
+  ('GB', '02', 'Treppe-Süd'): {
     'Coordinates': [854, 891],
     'Connections': [
       (('GB', '02', 'EN_37'), 36),
-      (('GB', '03', 'Treppe Süd'), 2),
-      (('GB', '05', 'Treppe Süd'), 2),
-      (('GB', '1', 'Treppe Süd'), 2),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Treppe Süd'), 2),
-      (('GB', '4', 'Treppe Süd'), 2),
-      (('GB', '5', 'Treppe Süd'), 2),
-      (('GB', '6', 'Treppe Süd'), 2),
-      (('GB', '7', 'Treppe Süd'), 2),
-      (('GB', '8', 'Treppe Süd'), 2),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
+      (('GB', '05', 'Treppe-Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
+      (('GB', '4', 'Treppe-Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '02', 'Treppe Süd 2 Ost'): {
+  ('GB', '02', 'Treppe-Süd-2-Ost'): {
     'Coordinates': [956, 849],
     'Connections': [
       (('GB', '02', 'EN_36'), 48),
-      (('GB', '03', 'Treppe Süd 2 Ost'), 2),
-      (('GB', '04', 'Treppe Süd 2 Ost'), 2),
+      (('GB', '03', 'Treppe-Süd-2-Ost'), 2),
+      (('GB', '04', 'Treppe-Süd-2-Ost'), 2),
     ],
   },
-  ('GB', '02', 'Treppe Süd 2 West'): {
+  ('GB', '02', 'Treppe-Süd-2-West'): {
     'Coordinates': [815, 997],
     'Connections': [
       (('GB', '02', 'EN_34'), 40),
-      (('GB', '03', 'Treppe Süd 2 West'), 2),
-      (('GB', '04', 'Treppe Süd 2 West'), 2),
+      (('GB', '03', 'Treppe-Süd-2-West'), 2),
+      (('GB', '04', 'Treppe-Süd-2-West'), 2),
     ],
   },
-  ('GB', '02', 'WC Nord'): {
+  ('GB', '02', 'WC-Nord'): {
     'Coordinates': [259, 279],
     'Connections': [
       (('GB', '02', 'EN_7'), 35),
     ],
   },
-  ('GB', '02', 'WC Süd'): {
+  ('GB', '02', 'WC-Süd'): {
     'Coordinates': [981, 1023],
     'Connections': [
       (('GB', '02', 'EN_38'), 29),
@@ -17569,45 +17569,45 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '03', 'EN_30'), 35),
     ],
   },
-  ('GB', '03', 'Aufzug Nord'): {
+  ('GB', '03', 'Aufzug-Nord'): {
     'Coordinates': [305, 324],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 1),
+      (('GB', '02', 'Aufzug-Nord'), 1),
       (('GB', '03', 'EN_26'), 56),
       (('GB', '03', 'EN_40'), 63),
-      (('GB', '04', 'Aufzug Nord'), 1),
-      (('GB', '1', 'Aufzug Nord'), 1),
-      (('GB', '2', 'Aufzug Nord'), 1),
-      (('GB', '3', 'Aufzug Nord'), 1),
-      (('GB', '4', 'Aufzug Nord'), 1),
-      (('GB', '5', 'Aufzug Nord'), 1),
-      (('GB', '6', 'Aufzug Nord'), 1),
-      (('GB', '7', 'Aufzug Nord'), 1),
-      (('GB', '8', 'Aufzug Nord'), 1),
+      (('GB', '04', 'Aufzug-Nord'), 1),
+      (('GB', '1', 'Aufzug-Nord'), 1),
+      (('GB', '2', 'Aufzug-Nord'), 1),
+      (('GB', '3', 'Aufzug-Nord'), 1),
+      (('GB', '4', 'Aufzug-Nord'), 1),
+      (('GB', '5', 'Aufzug-Nord'), 1),
+      (('GB', '6', 'Aufzug-Nord'), 1),
+      (('GB', '7', 'Aufzug-Nord'), 1),
+      (('GB', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GB', '03', 'Aufzug Süd'): {
+  ('GB', '03', 'Aufzug-Süd'): {
     'Coordinates': [899, 924],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
       (('GB', '03', 'EN_3'), 62),
-      (('GB', '03', 'Treppe Süd'), 86),
-      (('GB', '04', 'Aufzug Süd'), 1),
-      (('GB', '05', 'Aufzug Süd'), 1),
-      (('GB', '1', 'Aufzug Süd'), 1),
-      (('GB', '2', 'Aufzug Süd'), 1),
-      (('GB', '3', 'Aufzug Süd'), 1),
-      (('GB', '4', 'Aufzug Süd'), 1),
-      (('GB', '5', 'Aufzug Süd'), 1),
-      (('GB', '6', 'Aufzug Süd'), 1),
-      (('GB', '7', 'Aufzug Süd'), 1),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '03', 'Treppe-Süd'), 86),
+      (('GB', '04', 'Aufzug-Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
+      (('GB', '4', 'Aufzug-Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
-  ('GB', '03', 'Durchgang Richtung GA Nord'): {
+  ('GB', '03', 'Durchgang-Richtung-GA-Nord'): {
     'Coordinates': [468, 268],
     'Connections': [
-      (('GA', '03', 'Durchgang Richtung GB Nord'), 1),
+      (('GA', '03', 'Durchgang-Richtung-GB-Nord'), 1),
       (('GB', '03', 'EN_39'), 87),
     ],
   },
@@ -17656,7 +17656,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '03', 'EN_12'), 51),
       (('GB', '03', 'EN_24'), 47),
       (('GB', '03', 'EN_31'), 57),
-      (('GB', '03', 'Treppe Süd 2 Ost'), 55),
+      (('GB', '03', 'Treppe-Süd-2-Ost'), 55),
     ],
   },
   ('GB', '03', 'EN_14'): {
@@ -17664,7 +17664,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '03', 'EN_2'), 76),
       (('GB', '03', 'EN_7'), 37),
-      (('GB', '03', 'Treppe Süd 2 West'), 30),
+      (('GB', '03', 'Treppe-Süd-2-West'), 30),
     ],
   },
   ('GB', '03', 'EN_15'): {
@@ -17717,7 +17717,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '03', 'EN_1'), 42),
       (('GB', '03', 'EN_14'), 76),
       (('GB', '03', 'EN_3'), 64),
-      (('GB', '03', 'Treppe Süd 2 West'), 85),
+      (('GB', '03', 'Treppe-Süd-2-West'), 85),
     ],
   },
   ('GB', '03', 'EN_20'): {
@@ -17758,7 +17758,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '03', 'EN_13'), 47),
       (('GB', '03', 'EN_4'), 69),
-      (('GB', '03', 'Treppe Süd 2 Ost'), 29),
+      (('GB', '03', 'Treppe-Süd-2-Ost'), 29),
     ],
   },
   ('GB', '03', 'EN_25'): {
@@ -17773,10 +17773,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '03', 'EN_26'): {
     'Coordinates': [268, 282],
     'Connections': [
-      (('GB', '03', 'Aufzug Nord'), 56),
+      (('GB', '03', 'Aufzug-Nord'), 56),
       (('GB', '03', 'EN_38'), 54),
       (('GB', '03', 'EN_43'), 62),
-      (('GB', '03', 'WC Nord'), 33),
+      (('GB', '03', 'WC-Nord'), 33),
     ],
   },
   ('GB', '03', 'EN_27'): {
@@ -17800,16 +17800,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '03', '1'), 25),
       (('GB', '03', 'EN_25'), 84),
-      (('GB', '03', 'Eingang Nord Links'), 38),
+      (('GB', '03', 'Eingang-Nord-Links'), 38),
     ],
   },
   ('GB', '03', 'EN_3'): {
     'Coordinates': [942, 968],
     'Connections': [
-      (('GB', '03', 'Aufzug Süd'), 62),
+      (('GB', '03', 'Aufzug-Süd'), 62),
       (('GB', '03', 'EN_2'), 64),
       (('GB', '03', 'EN_4'), 62),
-      (('GB', '03', 'WC Süd'), 35),
+      (('GB', '03', 'WC-Süd'), 35),
     ],
   },
   ('GB', '03', 'EN_30'): {
@@ -17863,7 +17863,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '03', '3'), 33),
       (('GB', '03', 'EN_28'), 13),
-      (('GB', '03', 'Eingang Nord Rechts'), 39),
+      (('GB', '03', 'Eingang-Nord-Rechts'), 39),
     ],
   },
   ('GB', '03', 'EN_38'): {
@@ -17877,7 +17877,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '03', 'EN_39'): {
     'Coordinates': [400, 322],
     'Connections': [
-      (('GB', '03', 'Durchgang Richtung GA Nord'), 87),
+      (('GB', '03', 'Durchgang-Richtung-GA-Nord'), 87),
       (('GB', '03', 'EN_21'), 92),
       (('GB', '03', 'EN_22'), 46),
       (('GB', '03', 'EN_40'), 65),
@@ -17889,16 +17889,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '03', 'EN_24'), 69),
       (('GB', '03', 'EN_3'), 62),
       (('GB', '03', 'EN_5'), 65),
-      (('GB', '03', 'Treppe Süd 2 Ost'), 78),
+      (('GB', '03', 'Treppe-Süd-2-Ost'), 78),
     ],
   },
   ('GB', '03', 'EN_40'): {
     'Coordinates': [352, 366],
     'Connections': [
-      (('GB', '03', 'Aufzug Nord'), 63),
+      (('GB', '03', 'Aufzug-Nord'), 63),
       (('GB', '03', 'EN_39'), 65),
       (('GB', '03', 'EN_41'), 62),
-      (('GB', '03', 'Treppe Nord'), 28),
+      (('GB', '03', 'Treppe-Nord'), 28),
     ],
   },
   ('GB', '03', 'EN_41'): {
@@ -17937,7 +17937,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '03', 'EN_14'), 37),
       (('GB', '03', 'EN_31'), 65),
       (('GB', '03', 'EN_8'), 95),
-      (('GB', '03', 'Treppe Süd 2 West'), 45),
+      (('GB', '03', 'Treppe-Süd-2-West'), 45),
     ],
   },
   ('GB', '03', 'EN_8'): {
@@ -17956,83 +17956,83 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '03', 'EN_8'), 57),
     ],
   },
-  ('GB', '03', 'Eingang Nord Links'): {
+  ('GB', '03', 'Eingang-Nord-Links'): {
     'Coordinates': [201, 132],
     'Connections': [
       (('GB', '03', 'EN_29'), 38),
-      (('GB', '03', 'Eingang Nord Rechts'), 120),
-      (('RUB', '0', 'Campus'), 1),
+      (('GB', '03', 'Eingang-Nord-Rechts'), 120),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GB', '03', 'Eingang Nord Rechts'): {
+  ('GB', '03', 'Eingang-Nord-Rechts'): {
     'Coordinates': [113, 214],
     'Connections': [
       (('GB', '03', 'EN_37'), 39),
-      (('GB', '03', 'Eingang Nord Links'), 120),
-      (('RUB', '0', 'Campus'), 1),
+      (('GB', '03', 'Eingang-Nord-Links'), 120),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GB', '03', 'Treppe Nord'): {
+  ('GB', '03', 'Treppe-Nord'): {
     'Coordinates': [372, 386],
     'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
+      (('GB', '02', 'Treppe-Nord'), 2),
       (('GB', '03', 'EN_40'), 28),
-      (('GB', '04', 'Treppe Nord'), 2),
-      (('GB', '1', 'Treppe Nord'), 2),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Treppe Nord'), 2),
-      (('GB', '4', 'Treppe Nord'), 2),
-      (('GB', '5', 'Treppe Nord'), 2),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Treppe Nord'), 2),
-      (('GB', '8', 'Treppe Nord'), 2),
-      (('GB', '9', 'Treppe Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
+      (('GB', '1', 'Treppe-Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
+      (('GB', '4', 'Treppe-Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GB', '03', 'Treppe Süd'): {
+  ('GB', '03', 'Treppe-Süd'): {
     'Coordinates': [839, 863],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Aufzug Süd'), 86),
-      (('GB', '05', 'Treppe Süd'), 2),
-      (('GB', '1', 'Treppe Süd'), 2),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Treppe Süd'), 2),
-      (('GB', '4', 'Treppe Süd'), 2),
-      (('GB', '5', 'Treppe Süd'), 2),
-      (('GB', '6', 'Treppe Süd'), 2),
-      (('GB', '7', 'Treppe Süd'), 2),
-      (('GB', '8', 'Treppe Süd'), 2),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Aufzug-Süd'), 86),
+      (('GB', '05', 'Treppe-Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
+      (('GB', '4', 'Treppe-Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '03', 'Treppe Süd 2 Ost'): {
+  ('GB', '03', 'Treppe-Süd-2-Ost'): {
     'Coordinates': [957, 852],
     'Connections': [
-      (('GB', '02', 'Treppe Süd 2 Ost'), 2),
+      (('GB', '02', 'Treppe-Süd-2-Ost'), 2),
       (('GB', '03', 'EN_13'), 55),
       (('GB', '03', 'EN_24'), 29),
       (('GB', '03', 'EN_4'), 78),
-      (('GB', '04', 'Treppe Süd 2 Ost'), 2),
+      (('GB', '04', 'Treppe-Süd-2-Ost'), 2),
     ],
   },
-  ('GB', '03', 'Treppe Süd 2 West'): {
+  ('GB', '03', 'Treppe-Süd-2-West'): {
     'Coordinates': [822, 976],
     'Connections': [
-      (('GB', '02', 'Treppe Süd 2 West'), 2),
+      (('GB', '02', 'Treppe-Süd-2-West'), 2),
       (('GB', '03', 'EN_14'), 30),
       (('GB', '03', 'EN_2'), 85),
       (('GB', '03', 'EN_7'), 45),
-      (('GB', '04', 'Treppe Süd 2 West'), 2),
+      (('GB', '04', 'Treppe-Süd-2-West'), 2),
     ],
   },
-  ('GB', '03', 'WC Nord'): {
+  ('GB', '03', 'WC-Nord'): {
     'Coordinates': [243, 261],
     'Connections': [
       (('GB', '03', 'EN_26'), 33),
     ],
   },
-  ('GB', '03', 'WC Süd'): {
+  ('GB', '03', 'WC-Süd'): {
     'Coordinates': [966, 993],
     'Connections': [
       (('GB', '03', 'EN_3'), 35),
@@ -18318,45 +18318,45 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '04', 'EN_30'), 27),
     ],
   },
-  ('GB', '04', 'Aufzug Nord'): {
+  ('GB', '04', 'Aufzug-Nord'): {
     'Coordinates': [297, 283],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 1),
-      (('GB', '03', 'Aufzug Nord'), 1),
+      (('GB', '02', 'Aufzug-Nord'), 1),
+      (('GB', '03', 'Aufzug-Nord'), 1),
       (('GB', '04', 'EN_39'), 54),
       (('GB', '04', 'EN_45'), 60),
-      (('GB', '1', 'Aufzug Nord'), 1),
-      (('GB', '2', 'Aufzug Nord'), 1),
-      (('GB', '3', 'Aufzug Nord'), 1),
-      (('GB', '4', 'Aufzug Nord'), 1),
-      (('GB', '5', 'Aufzug Nord'), 1),
-      (('GB', '6', 'Aufzug Nord'), 1),
-      (('GB', '7', 'Aufzug Nord'), 1),
-      (('GB', '8', 'Aufzug Nord'), 1),
+      (('GB', '1', 'Aufzug-Nord'), 1),
+      (('GB', '2', 'Aufzug-Nord'), 1),
+      (('GB', '3', 'Aufzug-Nord'), 1),
+      (('GB', '4', 'Aufzug-Nord'), 1),
+      (('GB', '5', 'Aufzug-Nord'), 1),
+      (('GB', '6', 'Aufzug-Nord'), 1),
+      (('GB', '7', 'Aufzug-Nord'), 1),
+      (('GB', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GB', '04', 'Aufzug Süd'): {
+  ('GB', '04', 'Aufzug-Süd'): {
     'Coordinates': [898, 888],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
-      (('GB', '03', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
       (('GB', '04', 'EN_54'), 57),
       (('GB', '04', 'EN_6'), 63),
-      (('GB', '05', 'Aufzug Süd'), 1),
-      (('GB', '1', 'Aufzug Süd'), 1),
-      (('GB', '2', 'Aufzug Süd'), 1),
-      (('GB', '3', 'Aufzug Süd'), 1),
-      (('GB', '4', 'Aufzug Süd'), 1),
-      (('GB', '5', 'Aufzug Süd'), 1),
-      (('GB', '6', 'Aufzug Süd'), 1),
-      (('GB', '7', 'Aufzug Süd'), 1),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
+      (('GB', '4', 'Aufzug-Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
-  ('GB', '04', 'Durchgang Richtung GA Nord'): {
+  ('GB', '04', 'Durchgang-Richtung-GA-Nord'): {
     'Coordinates': [538, 342],
     'Connections': [
-      (('GA', '04', 'Durchgang Richtung GB Nord'), 1),
+      (('GA', '04', 'Durchgang-Richtung-GB-Nord'), 1),
       (('GB', '04', 'EN_40'), 69),
     ],
   },
@@ -18461,7 +18461,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '04', 'EN_1'), 89),
       (('GB', '04', 'EN_57'), 121),
       (('GB', '04', 'EN_6'), 63),
-      (('GB', '04', 'Treppe Süd 2 West'), 29),
+      (('GB', '04', 'Treppe-Süd-2-West'), 29),
     ],
   },
   ('GB', '04', 'EN_20'): {
@@ -18609,16 +18609,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '04', 'EN_39'): {
     'Coordinates': [337, 320],
     'Connections': [
-      (('GB', '04', 'Aufzug Nord'), 54),
+      (('GB', '04', 'Aufzug-Nord'), 54),
       (('GB', '04', 'EN_34'), 60),
       (('GB', '04', 'EN_42'), 55),
-      (('GB', '04', 'Treppe Nord'), 35),
+      (('GB', '04', 'Treppe-Nord'), 35),
     ],
   },
   ('GB', '04', 'EN_40'): {
     'Coordinates': [486, 388],
     'Connections': [
-      (('GB', '04', 'Durchgang Richtung GA Nord'), 69),
+      (('GB', '04', 'Durchgang-Richtung-GA-Nord'), 69),
       (('GB', '04', 'EN_31'), 53),
       (('GB', '04', 'EN_41'), 50),
     ],
@@ -18662,10 +18662,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '04', 'EN_45'): {
     'Coordinates': [256, 239],
     'Connections': [
-      (('GB', '04', 'Aufzug Nord'), 60),
+      (('GB', '04', 'Aufzug-Nord'), 60),
       (('GB', '04', 'EN_43'), 59),
       (('GB', '04', 'EN_47'), 59),
-      (('GB', '04', 'WC Nord'), 27),
+      (('GB', '04', 'WC-Nord'), 27),
     ],
   },
   ('GB', '04', 'EN_46'): {
@@ -18720,7 +18720,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '04', 'EN_54'): {
     'Coordinates': [859, 847],
     'Connections': [
-      (('GB', '04', 'Aufzug Süd'), 57),
+      (('GB', '04', 'Aufzug-Süd'), 57),
       (('GB', '04', 'EN_56'), 62),
       (('GB', '04', 'EN_57'), 71),
       (('GB', '04', 'Treppe-112'), 31),
@@ -18732,7 +18732,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '04', 'EN_10'), 82),
       (('GB', '04', 'EN_54'), 62),
       (('GB', '04', 'EN_7'), 125),
-      (('GB', '04', 'Treppe Süd 2 Ost'), 127),
+      (('GB', '04', 'Treppe-Süd-2-Ost'), 127),
     ],
   },
   ('GB', '04', 'EN_57'): {
@@ -18741,16 +18741,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '04', 'EN_2'), 121),
       (('GB', '04', 'EN_20'), 89),
       (('GB', '04', 'EN_54'), 71),
-      (('GB', '04', 'Treppe Süd 2 West'), 125),
+      (('GB', '04', 'Treppe-Süd-2-West'), 125),
     ],
   },
   ('GB', '04', 'EN_6'): {
     'Coordinates': [945, 930],
     'Connections': [
-      (('GB', '04', 'Aufzug Süd'), 63),
+      (('GB', '04', 'Aufzug-Süd'), 63),
       (('GB', '04', 'EN_2'), 63),
       (('GB', '04', 'EN_7'), 64),
-      (('GB', '04', 'WC Süd'), 33),
+      (('GB', '04', 'WC-Süd'), 33),
     ],
   },
   ('GB', '04', 'EN_7'): {
@@ -18759,7 +18759,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '04', 'EN_56'), 125),
       (('GB', '04', 'EN_6'), 64),
       (('GB', '04', 'EN_8'), 113),
-      (('GB', '04', 'Treppe Süd 2 Ost'), 26),
+      (('GB', '04', 'Treppe-Süd-2-Ost'), 26),
     ],
   },
   ('GB', '04', 'EN_8'): {
@@ -18777,54 +18777,54 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '04', 'EN_8'), 24),
     ],
   },
-  ('GB', '04', 'Treppe Nord'): {
-    'Coordinates': [361, 346],
-    'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'EN_39'), 35),
-      (('GB', '1', 'Treppe Nord'), 2),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Treppe Nord'), 2),
-      (('GB', '4', 'Treppe Nord'), 2),
-      (('GB', '5', 'Treppe Nord'), 2),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Treppe Nord'), 2),
-      (('GB', '8', 'Treppe Nord'), 2),
-      (('GB', '9', 'Treppe Nord'), 2),
-    ],
-  },
-  ('GB', '04', 'Treppe Süd 2 Ost'): {
-    'Coordinates': [1007, 865],
-    'Connections': [
-      (('GB', '02', 'Treppe Süd 2 Ost'), 2),
-      (('GB', '03', 'Treppe Süd 2 Ost'), 2),
-      (('GB', '04', 'EN_56'), 127),
-      (('GB', '04', 'EN_7'), 26),
-    ],
-  },
-  ('GB', '04', 'Treppe Süd 2 West'): {
-    'Coordinates': [881, 996],
-    'Connections': [
-      (('GB', '02', 'Treppe Süd 2 West'), 2),
-      (('GB', '03', 'Treppe Süd 2 West'), 2),
-      (('GB', '04', 'EN_2'), 29),
-      (('GB', '04', 'EN_57'), 125),
-    ],
-  },
   ('GB', '04', 'Treppe-112'): {
     'Coordinates': [838, 824],
     'Connections': [
       (('GB', '04', 'EN_54'), 31),
     ],
   },
-  ('GB', '04', 'WC Nord'): {
+  ('GB', '04', 'Treppe-Nord'): {
+    'Coordinates': [361, 346],
+    'Connections': [
+      (('GB', '02', 'Treppe-Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'EN_39'), 35),
+      (('GB', '1', 'Treppe-Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
+      (('GB', '4', 'Treppe-Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
+    ],
+  },
+  ('GB', '04', 'Treppe-Süd-2-Ost'): {
+    'Coordinates': [1007, 865],
+    'Connections': [
+      (('GB', '02', 'Treppe-Süd-2-Ost'), 2),
+      (('GB', '03', 'Treppe-Süd-2-Ost'), 2),
+      (('GB', '04', 'EN_56'), 127),
+      (('GB', '04', 'EN_7'), 26),
+    ],
+  },
+  ('GB', '04', 'Treppe-Süd-2-West'): {
+    'Coordinates': [881, 996],
+    'Connections': [
+      (('GB', '02', 'Treppe-Süd-2-West'), 2),
+      (('GB', '03', 'Treppe-Süd-2-West'), 2),
+      (('GB', '04', 'EN_2'), 29),
+      (('GB', '04', 'EN_57'), 125),
+    ],
+  },
+  ('GB', '04', 'WC-Nord'): {
     'Coordinates': [237, 220],
     'Connections': [
       (('GB', '04', 'EN_45'), 27),
     ],
   },
-  ('GB', '04', 'WC Süd'): {
+  ('GB', '04', 'WC-Süd'): {
     'Coordinates': [967, 955],
     'Connections': [
       (('GB', '04', 'EN_6'), 33),
@@ -18989,25 +18989,25 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '05', 'EN_29'), 64),
     ],
   },
-  ('GB', '05', 'Aufzug Süd'): {
+  ('GB', '05', 'Aufzug-Süd'): {
     'Coordinates': [910, 915],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
-      (('GB', '03', 'Aufzug Süd'), 1),
-      (('GB', '04', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
+      (('GB', '04', 'Aufzug-Süd'), 1),
       (('GB', '05', 'EN_17'), 57),
       (('GB', '05', 'EN_20'), 60),
-      (('GB', '1', 'Aufzug Süd'), 1),
-      (('GB', '2', 'Aufzug Süd'), 1),
-      (('GB', '3', 'Aufzug Süd'), 1),
-      (('GB', '4', 'Aufzug Süd'), 1),
-      (('GB', '5', 'Aufzug Süd'), 1),
-      (('GB', '6', 'Aufzug Süd'), 1),
-      (('GB', '7', 'Aufzug Süd'), 1),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
+      (('GB', '4', 'Aufzug-Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
-  ('GB', '05', 'Durchgang Richtung GA Süd'): {
+  ('GB', '05', 'Durchgang-Richtung-GA-Süd'): {
     'Coordinates': [1021, 821],
     'Connections': [
       (('GB', '05', 'EN_30'), 87),
@@ -19085,10 +19085,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '05', 'EN_17'): {
     'Coordinates': [869, 875],
     'Connections': [
-      (('GB', '05', 'Aufzug Süd'), 57),
+      (('GB', '05', 'Aufzug-Süd'), 57),
       (('GB', '05', 'EN_18'), 30),
       (('GB', '05', 'EN_19'), 31),
-      (('GB', '05', 'Treppe Süd'), 42),
+      (('GB', '05', 'Treppe-Süd'), 42),
     ],
   },
   ('GB', '05', 'EN_18'): {
@@ -19117,10 +19117,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '05', 'EN_20'): {
     'Coordinates': [951, 959],
     'Connections': [
-      (('GB', '05', 'Aufzug Süd'), 60),
+      (('GB', '05', 'Aufzug-Süd'), 60),
       (('GB', '05', 'EN_21'), 54),
       (('GB', '05', 'EN_23'), 59),
-      (('GB', '05', 'WC Süd'), 35),
+      (('GB', '05', 'WC-Süd'), 35),
     ],
   },
   ('GB', '05', 'EN_21'): {
@@ -19172,7 +19172,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '05', '103'), 37),
       (('GB', '05', '158'), 48),
       (('GB', '05', 'EN_25'), 17),
-      (('GB', '05', 'Eingang Süd Links'), 52),
+      (('GB', '05', 'Eingang-Süd-Links'), 52),
     ],
   },
   ('GB', '05', 'EN_27'): {
@@ -19180,7 +19180,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '05', '101'), 35),
       (('GB', '05', 'EN_28'), 69),
-      (('GB', '05', 'Eingang Süd Rechts'), 40),
+      (('GB', '05', 'Eingang-Süd-Rechts'), 40),
     ],
   },
   ('GB', '05', 'EN_28'): {
@@ -19209,7 +19209,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '05', 'EN_30'): {
     'Coordinates': [963, 886],
     'Connections': [
-      (('GB', '05', 'Durchgang Richtung GA Süd'), 87),
+      (('GB', '05', 'Durchgang-Richtung-GA-Süd'), 87),
       (('GB', '05', 'EN_15'), 37),
       (('GB', '05', 'EN_23'), 40),
     ],
@@ -19261,40 +19261,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '05', 'EN_8'), 78),
     ],
   },
-  ('GB', '05', 'Eingang Süd Links'): {
+  ('GB', '05', 'Eingang-Süd-Links'): {
     'Coordinates': [1028, 1115],
     'Connections': [
       (('GB', '05', 'EN_26'), 52),
-      (('GB', '05', 'Eingang Süd Rechts'), 117),
-      (('RUB', '0', 'Campus'), 1),
+      (('GB', '05', 'Eingang-Süd-Rechts'), 117),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GB', '05', 'Eingang Süd Rechts'): {
+  ('GB', '05', 'Eingang-Süd-Rechts'): {
     'Coordinates': [1104, 1026],
     'Connections': [
       (('GB', '05', 'EN_27'), 40),
-      (('GB', '05', 'Eingang Süd Links'), 117),
-      (('RUB', '0', 'Campus'), 1),
+      (('GB', '05', 'Eingang-Süd-Links'), 117),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GB', '05', 'Treppe Süd'): {
+  ('GB', '05', 'Treppe-Süd'): {
     'Coordinates': [838, 846],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
       (('GB', '05', 'EN_17'), 42),
-      (('GB', '1', 'Treppe Süd'), 2),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Treppe Süd'), 2),
-      (('GB', '4', 'Treppe Süd'), 2),
-      (('GB', '5', 'Treppe Süd'), 2),
-      (('GB', '6', 'Treppe Süd'), 2),
-      (('GB', '7', 'Treppe Süd'), 2),
-      (('GB', '8', 'Treppe Süd'), 2),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
+      (('GB', '4', 'Treppe-Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '05', 'WC Süd'): {
+  ('GB', '05', 'WC-Süd'): {
     'Coordinates': [976, 984],
     'Connections': [
       (('GB', '05', 'EN_20'), 35),
@@ -19725,7 +19725,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '1', 'EN_75'), 54),
       (('GB', '1', 'EN_76'), 54),
-      (('GB', '1', 'Treppe Süd 2'), 63),
+      (('GB', '1', 'Treppe-Süd-2'), 63),
     ],
   },
   ('GB', '1', '80'): {
@@ -19749,39 +19749,39 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '1', 'EN_43'), 35),
     ],
   },
-  ('GB', '1', 'Aufzug Nord'): {
+  ('GB', '1', 'Aufzug-Nord'): {
     'Coordinates': [324, 314],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 1),
-      (('GB', '03', 'Aufzug Nord'), 1),
-      (('GB', '04', 'Aufzug Nord'), 1),
+      (('GB', '02', 'Aufzug-Nord'), 1),
+      (('GB', '03', 'Aufzug-Nord'), 1),
+      (('GB', '04', 'Aufzug-Nord'), 1),
       (('GB', '1', 'EN_41'), 37),
       (('GB', '1', 'EN_42'), 74),
-      (('GB', '2', 'Aufzug Nord'), 1),
-      (('GB', '3', 'Aufzug Nord'), 1),
-      (('GB', '4', 'Aufzug Nord'), 1),
-      (('GB', '5', 'Aufzug Nord'), 1),
-      (('GB', '6', 'Aufzug Nord'), 1),
-      (('GB', '7', 'Aufzug Nord'), 1),
-      (('GB', '8', 'Aufzug Nord'), 1),
+      (('GB', '2', 'Aufzug-Nord'), 1),
+      (('GB', '3', 'Aufzug-Nord'), 1),
+      (('GB', '4', 'Aufzug-Nord'), 1),
+      (('GB', '5', 'Aufzug-Nord'), 1),
+      (('GB', '6', 'Aufzug-Nord'), 1),
+      (('GB', '7', 'Aufzug-Nord'), 1),
+      (('GB', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GB', '1', 'Aufzug Süd'): {
+  ('GB', '1', 'Aufzug-Süd'): {
     'Coordinates': [899, 904],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
-      (('GB', '03', 'Aufzug Süd'), 1),
-      (('GB', '04', 'Aufzug Süd'), 1),
-      (('GB', '05', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
+      (('GB', '04', 'Aufzug-Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
       (('GB', '1', 'EN_7'), 58),
       (('GB', '1', 'EN_84'), 53),
-      (('GB', '2', 'Aufzug Süd'), 1),
-      (('GB', '3', 'Aufzug Süd'), 1),
-      (('GB', '4', 'Aufzug Süd'), 1),
-      (('GB', '5', 'Aufzug Süd'), 1),
-      (('GB', '6', 'Aufzug Süd'), 1),
-      (('GB', '7', 'Aufzug Süd'), 1),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
+      (('GB', '4', 'Aufzug-Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GB', '1', 'EN_1'): {
@@ -20035,7 +20035,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '1', '88'), 47),
       (('GB', '1', 'EN_59'), 59),
-      (('GB', '1', 'Treppe Nord 2'), 42),
+      (('GB', '1', 'Treppe-Nord-2'), 42),
     ],
   },
   ('GB', '1', 'EN_4'): {
@@ -20055,18 +20055,18 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '1', 'EN_41'): {
     'Coordinates': [354, 335],
     'Connections': [
-      (('GB', '1', 'Aufzug Nord'), 37),
+      (('GB', '1', 'Aufzug-Nord'), 37),
       (('GB', '1', 'EN_40'), 35),
-      (('GB', '1', 'Treppe Nord'), 45),
+      (('GB', '1', 'Treppe-Nord'), 45),
     ],
   },
   ('GB', '1', 'EN_42'): {
     'Coordinates': [275, 258],
     'Connections': [
-      (('GB', '1', 'Aufzug Nord'), 74),
+      (('GB', '1', 'Aufzug-Nord'), 74),
       (('GB', '1', 'EN_43'), 25),
       (('GB', '1', 'EN_72'), 61),
-      (('GB', '1', 'WC Nord'), 33),
+      (('GB', '1', 'WC-Nord'), 33),
     ],
   },
   ('GB', '1', 'EN_43'): {
@@ -20310,10 +20310,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '1', 'EN_7'): {
     'Coordinates': [942, 943],
     'Connections': [
-      (('GB', '1', 'Aufzug Süd'), 58),
+      (('GB', '1', 'Aufzug-Süd'), 58),
       (('GB', '1', 'EN_6'), 27),
       (('GB', '1', 'EN_80'), 62),
-      (('GB', '1', 'WC Süd'), 28),
+      (('GB', '1', 'WC-Süd'), 28),
     ],
   },
   ('GB', '1', 'EN_71'): {
@@ -20397,10 +20397,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '1', 'EN_84'): {
     'Coordinates': [864, 864],
     'Connections': [
-      (('GB', '1', 'Aufzug Süd'), 53),
+      (('GB', '1', 'Aufzug-Süd'), 53),
       (('GB', '1', 'EN_82'), 37),
       (('GB', '1', 'EN_83'), 32),
-      (('GB', '1', 'Treppe Süd'), 33),
+      (('GB', '1', 'Treppe-Süd'), 33),
     ],
   },
   ('GB', '1', 'EN_85'): {
@@ -20420,73 +20420,73 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '1', 'EN_47'), 14),
     ],
   },
-  ('GB', '1', 'Treppe Nord'): {
+  ('GB', '1', 'Treppe-Nord'): {
     'Coordinates': [386, 366],
     'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'Treppe Nord'), 2),
+      (('GB', '02', 'Treppe-Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
       (('GB', '1', 'EN_41'), 45),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Treppe Nord'), 2),
-      (('GB', '4', 'Treppe Nord'), 2),
-      (('GB', '5', 'Treppe Nord'), 2),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Treppe Nord'), 2),
-      (('GB', '8', 'Treppe Nord'), 2),
-      (('GB', '9', 'Treppe Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
+      (('GB', '4', 'Treppe-Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GB', '1', 'Treppe Nord 2'): {
+  ('GB', '1', 'Treppe-Nord-2'): {
     'Coordinates': [429, 417],
     'Connections': [
       (('GB', '1', 'EN_39'), 42),
-      (('GB', '2', 'Treppe Nord 2'), 2),
-      (('GB', '3', 'Treppe Nord 2'), 2),
-      (('GB', '4', 'Treppe Nord 2'), 2),
-      (('GB', '5', 'Treppe Nord 2'), 2),
-      (('GB', '6', 'Treppe Nord 2'), 2),
-      (('GB', '7', 'Treppe Nord 2'), 2),
-      (('GB', '8', 'Treppe Nord 2'), 2),
+      (('GB', '2', 'Treppe-Nord-2'), 2),
+      (('GB', '3', 'Treppe-Nord-2'), 2),
+      (('GB', '4', 'Treppe-Nord-2'), 2),
+      (('GB', '5', 'Treppe-Nord-2'), 2),
+      (('GB', '6', 'Treppe-Nord-2'), 2),
+      (('GB', '7', 'Treppe-Nord-2'), 2),
+      (('GB', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GB', '1', 'Treppe Süd'): {
+  ('GB', '1', 'Treppe-Süd'): {
     'Coordinates': [842, 840],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Treppe Süd'), 2),
-      (('GB', '05', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
+      (('GB', '05', 'Treppe-Süd'), 2),
       (('GB', '1', 'EN_84'), 33),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Treppe Süd'), 2),
-      (('GB', '4', 'Treppe Süd'), 2),
-      (('GB', '5', 'Treppe Süd'), 2),
-      (('GB', '6', 'Treppe Süd'), 2),
-      (('GB', '7', 'Treppe Süd'), 2),
-      (('GB', '8', 'Treppe Süd'), 2),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
+      (('GB', '4', 'Treppe-Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '1', 'Treppe Süd 2'): {
+  ('GB', '1', 'Treppe-Süd-2'): {
     'Coordinates': [786, 783],
     'Connections': [
       (('GB', '1', '79'), 63),
-      (('GB', '2', 'Treppe Süd 2'), 2),
-      (('GB', '3', 'Treppe Süd 2'), 2),
-      (('GB', '4', 'Treppe Süd 2'), 2),
-      (('GB', '5', 'Treppe Süd 2'), 2),
-      (('GB', '6', 'Treppe Süd 2'), 2),
-      (('GB', '7', 'Treppe Süd 2'), 2),
-      (('GB', '8', 'Treppe Süd 2'), 2),
+      (('GB', '2', 'Treppe-Süd-2'), 2),
+      (('GB', '3', 'Treppe-Süd-2'), 2),
+      (('GB', '4', 'Treppe-Süd-2'), 2),
+      (('GB', '5', 'Treppe-Süd-2'), 2),
+      (('GB', '6', 'Treppe-Süd-2'), 2),
+      (('GB', '7', 'Treppe-Süd-2'), 2),
+      (('GB', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GB', '1', 'WC Nord'): {
+  ('GB', '1', 'WC-Nord'): {
     'Coordinates': [251, 236],
     'Connections': [
       (('GB', '1', 'EN_42'), 33),
     ],
   },
-  ('GB', '1', 'WC Süd'): {
+  ('GB', '1', 'WC-Süd'): {
     'Coordinates': [963, 961],
     'Connections': [
       (('GB', '1', 'EN_7'), 28),
@@ -20851,39 +20851,39 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '2', 'EN_3'), 55),
     ],
   },
-  ('GB', '2', 'Aufzug Nord'): {
+  ('GB', '2', 'Aufzug-Nord'): {
     'Coordinates': [329, 320],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 1),
-      (('GB', '03', 'Aufzug Nord'), 1),
-      (('GB', '04', 'Aufzug Nord'), 1),
-      (('GB', '1', 'Aufzug Nord'), 1),
+      (('GB', '02', 'Aufzug-Nord'), 1),
+      (('GB', '03', 'Aufzug-Nord'), 1),
+      (('GB', '04', 'Aufzug-Nord'), 1),
+      (('GB', '1', 'Aufzug-Nord'), 1),
       (('GB', '2', 'EN_38'), 82),
       (('GB', '2', 'EN_40'), 34),
-      (('GB', '3', 'Aufzug Nord'), 1),
-      (('GB', '4', 'Aufzug Nord'), 1),
-      (('GB', '5', 'Aufzug Nord'), 1),
-      (('GB', '6', 'Aufzug Nord'), 1),
-      (('GB', '7', 'Aufzug Nord'), 1),
-      (('GB', '8', 'Aufzug Nord'), 1),
+      (('GB', '3', 'Aufzug-Nord'), 1),
+      (('GB', '4', 'Aufzug-Nord'), 1),
+      (('GB', '5', 'Aufzug-Nord'), 1),
+      (('GB', '6', 'Aufzug-Nord'), 1),
+      (('GB', '7', 'Aufzug-Nord'), 1),
+      (('GB', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GB', '2', 'Aufzug Süd'): {
+  ('GB', '2', 'Aufzug-Süd'): {
     'Coordinates': [897, 904],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
-      (('GB', '03', 'Aufzug Süd'), 1),
-      (('GB', '04', 'Aufzug Süd'), 1),
-      (('GB', '05', 'Aufzug Süd'), 1),
-      (('GB', '1', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
+      (('GB', '04', 'Aufzug-Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
       (('GB', '2', 'EN_11'), 60),
       (('GB', '2', 'EN_33'), 55),
-      (('GB', '3', 'Aufzug Süd'), 1),
-      (('GB', '4', 'Aufzug Süd'), 1),
-      (('GB', '5', 'Aufzug Süd'), 1),
-      (('GB', '6', 'Aufzug Süd'), 1),
-      (('GB', '7', 'Aufzug Süd'), 1),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
+      (('GB', '4', 'Aufzug-Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GB', '2', 'EN_0'): {
@@ -20911,10 +20911,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '2', 'EN_11'): {
     'Coordinates': [936, 950],
     'Connections': [
-      (('GB', '2', 'Aufzug Süd'), 60),
+      (('GB', '2', 'Aufzug-Süd'), 60),
       (('GB', '2', 'EN_10'), 19),
       (('GB', '2', 'EN_59'), 60),
-      (('GB', '2', 'WC Süd'), 40),
+      (('GB', '2', 'WC-Süd'), 40),
     ],
   },
   ('GB', '2', 'EN_12'): {
@@ -21083,10 +21083,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '2', 'EN_33'): {
     'Coordinates': [857, 866],
     'Connections': [
-      (('GB', '2', 'Aufzug Süd'), 55),
+      (('GB', '2', 'Aufzug-Süd'), 55),
       (('GB', '2', 'EN_62'), 29),
       (('GB', '2', 'EN_63'), 31),
-      (('GB', '2', 'Treppe Süd'), 43),
+      (('GB', '2', 'Treppe-Süd'), 43),
     ],
   },
   ('GB', '2', 'EN_34'): {
@@ -21126,10 +21126,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '2', 'EN_38'): {
     'Coordinates': [269, 264],
     'Connections': [
-      (('GB', '2', 'Aufzug Nord'), 82),
+      (('GB', '2', 'Aufzug-Nord'), 82),
       (('GB', '2', 'EN_39'), 44),
       (('GB', '2', 'EN_75'), 60),
-      (('GB', '2', 'WC Nord'), 32),
+      (('GB', '2', 'WC-Nord'), 32),
     ],
   },
   ('GB', '2', 'EN_39'): {
@@ -21150,10 +21150,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '2', 'EN_40'): {
     'Coordinates': [350, 347],
     'Connections': [
-      (('GB', '2', 'Aufzug Nord'), 34),
+      (('GB', '2', 'Aufzug-Nord'), 34),
       (('GB', '2', 'EN_20'), 64),
       (('GB', '2', 'EN_42'), 58),
-      (('GB', '2', 'Treppe Nord'), 38),
+      (('GB', '2', 'Treppe-Nord'), 38),
     ],
   },
   ('GB', '2', 'EN_41'): {
@@ -21364,7 +21364,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [754, 756],
     'Connections': [
       (('GB', '2', 'EN_15'), 47),
-      (('GB', '2', 'Treppe Süd 2'), 32),
+      (('GB', '2', 'Treppe-Süd-2'), 32),
     ],
   },
   ('GB', '2', 'EN_66'): {
@@ -21396,7 +21396,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [458, 450],
     'Connections': [
       (('GB', '2', 'EN_18'), 60),
-      (('GB', '2', 'Treppe Nord 2'), 43),
+      (('GB', '2', 'Treppe-Nord-2'), 43),
     ],
   },
   ('GB', '2', 'EN_72'): {
@@ -21446,73 +21446,73 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '2', 'EN_8'), 77),
     ],
   },
-  ('GB', '2', 'Treppe Nord'): {
+  ('GB', '2', 'Treppe-Nord'): {
     'Coordinates': [379, 372],
     'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'Treppe Nord'), 2),
-      (('GB', '1', 'Treppe Nord'), 2),
+      (('GB', '02', 'Treppe-Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
+      (('GB', '1', 'Treppe-Nord'), 2),
       (('GB', '2', 'EN_40'), 38),
-      (('GB', '3', 'Treppe Nord'), 2),
-      (('GB', '4', 'Treppe Nord'), 2),
-      (('GB', '5', 'Treppe Nord'), 2),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Treppe Nord'), 2),
-      (('GB', '8', 'Treppe Nord'), 2),
-      (('GB', '9', 'Treppe Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
+      (('GB', '4', 'Treppe-Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GB', '2', 'Treppe Nord 2'): {
+  ('GB', '2', 'Treppe-Nord-2'): {
     'Coordinates': [430, 418],
     'Connections': [
-      (('GB', '1', 'Treppe Nord 2'), 2),
+      (('GB', '1', 'Treppe-Nord-2'), 2),
       (('GB', '2', 'EN_70'), 43),
-      (('GB', '3', 'Treppe Nord 2'), 2),
-      (('GB', '4', 'Treppe Nord 2'), 2),
-      (('GB', '5', 'Treppe Nord 2'), 2),
-      (('GB', '6', 'Treppe Nord 2'), 2),
-      (('GB', '7', 'Treppe Nord 2'), 2),
-      (('GB', '8', 'Treppe Nord 2'), 2),
+      (('GB', '3', 'Treppe-Nord-2'), 2),
+      (('GB', '4', 'Treppe-Nord-2'), 2),
+      (('GB', '5', 'Treppe-Nord-2'), 2),
+      (('GB', '6', 'Treppe-Nord-2'), 2),
+      (('GB', '7', 'Treppe-Nord-2'), 2),
+      (('GB', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GB', '2', 'Treppe Süd'): {
+  ('GB', '2', 'Treppe-Süd'): {
     'Coordinates': [824, 838],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Treppe Süd'), 2),
-      (('GB', '05', 'Treppe Süd'), 2),
-      (('GB', '1', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
+      (('GB', '05', 'Treppe-Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
       (('GB', '2', 'EN_33'), 43),
-      (('GB', '3', 'Treppe Süd'), 2),
-      (('GB', '4', 'Treppe Süd'), 2),
-      (('GB', '5', 'Treppe Süd'), 2),
-      (('GB', '6', 'Treppe Süd'), 2),
-      (('GB', '7', 'Treppe Süd'), 2),
-      (('GB', '8', 'Treppe Süd'), 2),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
+      (('GB', '4', 'Treppe-Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '2', 'Treppe Süd 2'): {
+  ('GB', '2', 'Treppe-Süd-2'): {
     'Coordinates': [776, 779],
     'Connections': [
-      (('GB', '1', 'Treppe Süd 2'), 2),
+      (('GB', '1', 'Treppe-Süd-2'), 2),
       (('GB', '2', 'EN_65'), 32),
-      (('GB', '3', 'Treppe Süd 2'), 2),
-      (('GB', '4', 'Treppe Süd 2'), 2),
-      (('GB', '5', 'Treppe Süd 2'), 2),
-      (('GB', '6', 'Treppe Süd 2'), 2),
-      (('GB', '7', 'Treppe Süd 2'), 2),
-      (('GB', '8', 'Treppe Süd 2'), 2),
+      (('GB', '3', 'Treppe-Süd-2'), 2),
+      (('GB', '4', 'Treppe-Süd-2'), 2),
+      (('GB', '5', 'Treppe-Süd-2'), 2),
+      (('GB', '6', 'Treppe-Süd-2'), 2),
+      (('GB', '7', 'Treppe-Süd-2'), 2),
+      (('GB', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GB', '2', 'WC Nord'): {
+  ('GB', '2', 'WC-Nord'): {
     'Coordinates': [247, 241],
     'Connections': [
       (('GB', '2', 'EN_38'), 32),
     ],
   },
-  ('GB', '2', 'WC Süd'): {
+  ('GB', '2', 'WC-Süd'): {
     'Coordinates': [965, 977],
     'Connections': [
       (('GB', '2', 'EN_11'), 40),
@@ -21943,40 +21943,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '3', 'EN_8'), 43),
     ],
   },
-  ('GB', '3', 'Aufzug Nord'): {
+  ('GB', '3', 'Aufzug-Nord'): {
     'Coordinates': [322, 294],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 1),
-      (('GB', '03', 'Aufzug Nord'), 1),
-      (('GB', '04', 'Aufzug Nord'), 1),
-      (('GB', '1', 'Aufzug Nord'), 1),
-      (('GB', '2', 'Aufzug Nord'), 1),
+      (('GB', '02', 'Aufzug-Nord'), 1),
+      (('GB', '03', 'Aufzug-Nord'), 1),
+      (('GB', '04', 'Aufzug-Nord'), 1),
+      (('GB', '1', 'Aufzug-Nord'), 1),
+      (('GB', '2', 'Aufzug-Nord'), 1),
       (('GB', '3', 'EN_40'), 67),
       (('GB', '3', 'EN_80'), 49),
-      (('GB', '3', 'Treppe Nord'), 88),
-      (('GB', '4', 'Aufzug Nord'), 1),
-      (('GB', '5', 'Aufzug Nord'), 1),
-      (('GB', '6', 'Aufzug Nord'), 1),
-      (('GB', '7', 'Aufzug Nord'), 1),
-      (('GB', '8', 'Aufzug Nord'), 1),
+      (('GB', '3', 'Treppe-Nord'), 88),
+      (('GB', '4', 'Aufzug-Nord'), 1),
+      (('GB', '5', 'Aufzug-Nord'), 1),
+      (('GB', '6', 'Aufzug-Nord'), 1),
+      (('GB', '7', 'Aufzug-Nord'), 1),
+      (('GB', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GB', '3', 'Aufzug Süd'): {
+  ('GB', '3', 'Aufzug-Süd'): {
     'Coordinates': [899, 893],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
-      (('GB', '03', 'Aufzug Süd'), 1),
-      (('GB', '04', 'Aufzug Süd'), 1),
-      (('GB', '05', 'Aufzug Süd'), 1),
-      (('GB', '1', 'Aufzug Süd'), 1),
-      (('GB', '2', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
+      (('GB', '04', 'Aufzug-Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
       (('GB', '3', 'EN_4'), 63),
-      (('GB', '3', 'Treppe Süd'), 91),
-      (('GB', '4', 'Aufzug Süd'), 1),
-      (('GB', '5', 'Aufzug Süd'), 1),
-      (('GB', '6', 'Aufzug Süd'), 1),
-      (('GB', '7', 'Aufzug Süd'), 1),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '3', 'Treppe-Süd'), 91),
+      (('GB', '4', 'Aufzug-Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GB', '3', 'EN_0'): {
@@ -22097,7 +22097,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [757, 753],
     'Connections': [
       (('GB', '3', 'EN_20'), 56),
-      (('GB', '3', 'Treppe Süd 2'), 42),
+      (('GB', '3', 'Treppe-Süd-2'), 42),
     ],
   },
   ('GB', '3', 'EN_22'): {
@@ -22252,19 +22252,19 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '3', 'EN_4'): {
     'Coordinates': [946, 935],
     'Connections': [
-      (('GB', '3', 'Aufzug Süd'), 63),
+      (('GB', '3', 'Aufzug-Süd'), 63),
       (('GB', '3', 'EN_3'), 67),
       (('GB', '3', 'EN_6'), 56),
-      (('GB', '3', 'WC Süd'), 29),
+      (('GB', '3', 'WC-Süd'), 29),
     ],
   },
   ('GB', '3', 'EN_40'): {
     'Coordinates': [278, 244],
     'Connections': [
-      (('GB', '3', 'Aufzug Nord'), 67),
+      (('GB', '3', 'Aufzug-Nord'), 67),
       (('GB', '3', 'EN_34'), 59),
       (('GB', '3', 'EN_39'), 54),
-      (('GB', '3', 'WC Nord'), 24),
+      (('GB', '3', 'WC-Nord'), 24),
     ],
   },
   ('GB', '3', 'EN_41'): {
@@ -22560,7 +22560,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [461, 435],
     'Connections': [
       (('GB', '3', 'EN_29'), 61),
-      (('GB', '3', 'Treppe Nord 2'), 47),
+      (('GB', '3', 'Treppe-Nord-2'), 47),
     ],
   },
   ('GB', '3', 'EN_79'): {
@@ -22582,7 +22582,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '3', 'EN_80'): {
     'Coordinates': [357, 329],
     'Connections': [
-      (('GB', '3', 'Aufzug Nord'), 49),
+      (('GB', '3', 'Aufzug-Nord'), 49),
       (('GB', '3', 'EN_33'), 61),
       (('GB', '3', 'EN_56'), 59),
     ],
@@ -22602,73 +22602,73 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '3', 'EN_8'), 34),
     ],
   },
-  ('GB', '3', 'Treppe Nord'): {
+  ('GB', '3', 'Treppe-Nord'): {
     'Coordinates': [385, 355],
     'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'Treppe Nord'), 2),
-      (('GB', '1', 'Treppe Nord'), 2),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Aufzug Nord'), 88),
-      (('GB', '4', 'Treppe Nord'), 2),
-      (('GB', '5', 'Treppe Nord'), 2),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Treppe Nord'), 2),
-      (('GB', '8', 'Treppe Nord'), 2),
-      (('GB', '9', 'Treppe Nord'), 2),
+      (('GB', '02', 'Treppe-Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
+      (('GB', '1', 'Treppe-Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Aufzug-Nord'), 88),
+      (('GB', '4', 'Treppe-Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GB', '3', 'Treppe Nord 2'): {
+  ('GB', '3', 'Treppe-Nord-2'): {
     'Coordinates': [429, 400],
     'Connections': [
-      (('GB', '1', 'Treppe Nord 2'), 2),
-      (('GB', '2', 'Treppe Nord 2'), 2),
+      (('GB', '1', 'Treppe-Nord-2'), 2),
+      (('GB', '2', 'Treppe-Nord-2'), 2),
       (('GB', '3', 'EN_78'), 47),
-      (('GB', '4', 'Treppe Nord 2'), 2),
-      (('GB', '5', 'Treppe Nord 2'), 2),
-      (('GB', '6', 'Treppe Nord 2'), 2),
-      (('GB', '7', 'Treppe Nord 2'), 2),
-      (('GB', '8', 'Treppe Nord 2'), 2),
+      (('GB', '4', 'Treppe-Nord-2'), 2),
+      (('GB', '5', 'Treppe-Nord-2'), 2),
+      (('GB', '6', 'Treppe-Nord-2'), 2),
+      (('GB', '7', 'Treppe-Nord-2'), 2),
+      (('GB', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GB', '3', 'Treppe Süd'): {
+  ('GB', '3', 'Treppe-Süd'): {
     'Coordinates': [835, 828],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Treppe Süd'), 2),
-      (('GB', '05', 'Treppe Süd'), 2),
-      (('GB', '1', 'Treppe Süd'), 2),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Aufzug Süd'), 91),
-      (('GB', '4', 'Treppe Süd'), 2),
-      (('GB', '5', 'Treppe Süd'), 2),
-      (('GB', '6', 'Treppe Süd'), 2),
-      (('GB', '7', 'Treppe Süd'), 2),
-      (('GB', '8', 'Treppe Süd'), 2),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
+      (('GB', '05', 'Treppe-Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Aufzug-Süd'), 91),
+      (('GB', '4', 'Treppe-Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '3', 'Treppe Süd 2'): {
+  ('GB', '3', 'Treppe-Süd-2'): {
     'Coordinates': [789, 780],
     'Connections': [
-      (('GB', '1', 'Treppe Süd 2'), 2),
-      (('GB', '2', 'Treppe Süd 2'), 2),
+      (('GB', '1', 'Treppe-Süd-2'), 2),
+      (('GB', '2', 'Treppe-Süd-2'), 2),
       (('GB', '3', 'EN_21'), 42),
-      (('GB', '4', 'Treppe Süd 2'), 2),
-      (('GB', '5', 'Treppe Süd 2'), 2),
-      (('GB', '6', 'Treppe Süd 2'), 2),
-      (('GB', '7', 'Treppe Süd 2'), 2),
-      (('GB', '8', 'Treppe Süd 2'), 2),
+      (('GB', '4', 'Treppe-Süd-2'), 2),
+      (('GB', '5', 'Treppe-Süd-2'), 2),
+      (('GB', '6', 'Treppe-Süd-2'), 2),
+      (('GB', '7', 'Treppe-Süd-2'), 2),
+      (('GB', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GB', '3', 'WC Nord'): {
+  ('GB', '3', 'WC-Nord'): {
     'Coordinates': [258, 231],
     'Connections': [
       (('GB', '3', 'EN_40'), 24),
     ],
   },
-  ('GB', '3', 'WC Süd'): {
+  ('GB', '3', 'WC-Süd'): {
     'Coordinates': [963, 959],
     'Connections': [
       (('GB', '3', 'EN_4'), 29),
@@ -23018,39 +23018,39 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '4', 'EN_3'), 47),
     ],
   },
-  ('GB', '4', 'Aufzug Nord'): {
+  ('GB', '4', 'Aufzug-Nord'): {
     'Coordinates': [308, 312],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 1),
-      (('GB', '03', 'Aufzug Nord'), 1),
-      (('GB', '04', 'Aufzug Nord'), 1),
-      (('GB', '1', 'Aufzug Nord'), 1),
-      (('GB', '2', 'Aufzug Nord'), 1),
-      (('GB', '3', 'Aufzug Nord'), 1),
+      (('GB', '02', 'Aufzug-Nord'), 1),
+      (('GB', '03', 'Aufzug-Nord'), 1),
+      (('GB', '04', 'Aufzug-Nord'), 1),
+      (('GB', '1', 'Aufzug-Nord'), 1),
+      (('GB', '2', 'Aufzug-Nord'), 1),
+      (('GB', '3', 'Aufzug-Nord'), 1),
       (('GB', '4', 'EN_27'), 62),
       (('GB', '4', 'EN_48'), 53),
-      (('GB', '5', 'Aufzug Nord'), 1),
-      (('GB', '6', 'Aufzug Nord'), 1),
-      (('GB', '7', 'Aufzug Nord'), 1),
-      (('GB', '8', 'Aufzug Nord'), 1),
+      (('GB', '5', 'Aufzug-Nord'), 1),
+      (('GB', '6', 'Aufzug-Nord'), 1),
+      (('GB', '7', 'Aufzug-Nord'), 1),
+      (('GB', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GB', '4', 'Aufzug Süd'): {
+  ('GB', '4', 'Aufzug-Süd'): {
     'Coordinates': [894, 899],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
-      (('GB', '03', 'Aufzug Süd'), 1),
-      (('GB', '04', 'Aufzug Süd'), 1),
-      (('GB', '05', 'Aufzug Süd'), 1),
-      (('GB', '1', 'Aufzug Süd'), 1),
-      (('GB', '2', 'Aufzug Süd'), 1),
-      (('GB', '3', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
+      (('GB', '04', 'Aufzug-Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
       (('GB', '4', 'EN_20'), 64),
       (('GB', '4', 'EN_70'), 47),
-      (('GB', '5', 'Aufzug Süd'), 1),
-      (('GB', '6', 'Aufzug Süd'), 1),
-      (('GB', '7', 'Aufzug Süd'), 1),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GB', '4', 'EN_0'): {
@@ -23115,7 +23115,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [759, 760],
     'Connections': [
       (('GB', '4', 'EN_14'), 57),
-      (('GB', '4', 'Treppe Süd 2'), 45),
+      (('GB', '4', 'Treppe-Süd-2'), 45),
     ],
   },
   ('GB', '4', 'EN_16'): {
@@ -23160,10 +23160,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '4', 'EN_20'): {
     'Coordinates': [938, 945],
     'Connections': [
-      (('GB', '4', 'Aufzug Süd'), 64),
+      (('GB', '4', 'Aufzug-Süd'), 64),
       (('GB', '4', 'EN_10'), 62),
       (('GB', '4', 'EN_19'), 55),
-      (('GB', '4', 'WC Süd'), 31),
+      (('GB', '4', 'WC-Süd'), 31),
     ],
   },
   ('GB', '4', 'EN_21'): {
@@ -23218,10 +23218,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '4', 'EN_27'): {
     'Coordinates': [262, 270],
     'Connections': [
-      (('GB', '4', 'Aufzug Nord'), 62),
+      (('GB', '4', 'Aufzug-Nord'), 62),
       (('GB', '4', 'EN_22'), 56),
       (('GB', '4', 'EN_29'), 67),
-      (('GB', '4', 'WC Nord'), 32),
+      (('GB', '4', 'WC-Nord'), 32),
     ],
   },
   ('GB', '4', 'EN_28'): {
@@ -23333,7 +23333,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [451, 456],
     'Connections': [
       (('GB', '4', 'EN_39'), 59),
-      (('GB', '4', 'Treppe Nord 2'), 46),
+      (('GB', '4', 'Treppe-Nord-2'), 46),
     ],
   },
   ('GB', '4', 'EN_41'): {
@@ -23396,10 +23396,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '4', 'EN_48'): {
     'Coordinates': [346, 349],
     'Connections': [
-      (('GB', '4', 'Aufzug Nord'), 53),
+      (('GB', '4', 'Aufzug-Nord'), 53),
       (('GB', '4', 'EN_45'), 60),
       (('GB', '4', 'EN_47'), 58),
-      (('GB', '4', 'Treppe Nord'), 35),
+      (('GB', '4', 'Treppe-Nord'), 35),
     ],
   },
   ('GB', '4', 'EN_49'): {
@@ -23580,10 +23580,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '4', 'EN_70'): {
     'Coordinates': [861, 865],
     'Connections': [
-      (('GB', '4', 'Aufzug Süd'), 47),
+      (('GB', '4', 'Aufzug-Süd'), 47),
       (('GB', '4', 'EN_13'), 60),
       (('GB', '4', 'EN_69'), 53),
-      (('GB', '4', 'Treppe Süd'), 52),
+      (('GB', '4', 'Treppe-Süd'), 52),
     ],
   },
   ('GB', '4', 'EN_71'): {
@@ -23611,73 +23611,73 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '4', 'EN_8'), 46),
     ],
   },
-  ('GB', '4', 'Treppe Nord'): {
+  ('GB', '4', 'Treppe-Nord'): {
     'Coordinates': [373, 372],
     'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'Treppe Nord'), 2),
-      (('GB', '1', 'Treppe Nord'), 2),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Treppe Nord'), 2),
+      (('GB', '02', 'Treppe-Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
+      (('GB', '1', 'Treppe-Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
       (('GB', '4', 'EN_48'), 35),
-      (('GB', '5', 'Treppe Nord'), 2),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Treppe Nord'), 2),
-      (('GB', '8', 'Treppe Nord'), 2),
-      (('GB', '9', 'Treppe Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GB', '4', 'Treppe Nord 2'): {
+  ('GB', '4', 'Treppe-Nord-2'): {
     'Coordinates': [419, 423],
     'Connections': [
-      (('GB', '1', 'Treppe Nord 2'), 2),
-      (('GB', '2', 'Treppe Nord 2'), 2),
-      (('GB', '3', 'Treppe Nord 2'), 2),
+      (('GB', '1', 'Treppe-Nord-2'), 2),
+      (('GB', '2', 'Treppe-Nord-2'), 2),
+      (('GB', '3', 'Treppe-Nord-2'), 2),
       (('GB', '4', 'EN_40'), 46),
-      (('GB', '5', 'Treppe Nord 2'), 2),
-      (('GB', '6', 'Treppe Nord 2'), 2),
-      (('GB', '7', 'Treppe Nord 2'), 2),
-      (('GB', '8', 'Treppe Nord 2'), 2),
+      (('GB', '5', 'Treppe-Nord-2'), 2),
+      (('GB', '6', 'Treppe-Nord-2'), 2),
+      (('GB', '7', 'Treppe-Nord-2'), 2),
+      (('GB', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GB', '4', 'Treppe Süd'): {
+  ('GB', '4', 'Treppe-Süd'): {
     'Coordinates': [826, 826],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Treppe Süd'), 2),
-      (('GB', '05', 'Treppe Süd'), 2),
-      (('GB', '1', 'Treppe Süd'), 2),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
+      (('GB', '05', 'Treppe-Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
       (('GB', '4', 'EN_70'), 52),
-      (('GB', '5', 'Treppe Süd'), 2),
-      (('GB', '6', 'Treppe Süd'), 2),
-      (('GB', '7', 'Treppe Süd'), 2),
-      (('GB', '8', 'Treppe Süd'), 2),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '4', 'Treppe Süd 2'): {
+  ('GB', '4', 'Treppe-Süd-2'): {
     'Coordinates': [792, 790],
     'Connections': [
-      (('GB', '1', 'Treppe Süd 2'), 2),
-      (('GB', '2', 'Treppe Süd 2'), 2),
-      (('GB', '3', 'Treppe Süd 2'), 2),
+      (('GB', '1', 'Treppe-Süd-2'), 2),
+      (('GB', '2', 'Treppe-Süd-2'), 2),
+      (('GB', '3', 'Treppe-Süd-2'), 2),
       (('GB', '4', 'EN_15'), 45),
-      (('GB', '5', 'Treppe Süd 2'), 2),
-      (('GB', '6', 'Treppe Süd 2'), 2),
-      (('GB', '7', 'Treppe Süd 2'), 2),
-      (('GB', '8', 'Treppe Süd 2'), 2),
+      (('GB', '5', 'Treppe-Süd-2'), 2),
+      (('GB', '6', 'Treppe-Süd-2'), 2),
+      (('GB', '7', 'Treppe-Süd-2'), 2),
+      (('GB', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GB', '4', 'WC Nord'): {
+  ('GB', '4', 'WC-Nord'): {
     'Coordinates': [242, 245],
     'Connections': [
       (('GB', '4', 'EN_27'), 32),
     ],
   },
-  ('GB', '4', 'WC Süd'): {
+  ('GB', '4', 'WC-Süd'): {
     'Coordinates': [963, 963],
     'Connections': [
       (('GB', '4', 'EN_20'), 31),
@@ -24015,39 +24015,39 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '5', 'EN_51'), 158),
     ],
   },
-  ('GB', '5', 'Aufzug Nord'): {
+  ('GB', '5', 'Aufzug-Nord'): {
     'Coordinates': [323, 320],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 1),
-      (('GB', '03', 'Aufzug Nord'), 1),
-      (('GB', '04', 'Aufzug Nord'), 1),
-      (('GB', '1', 'Aufzug Nord'), 1),
-      (('GB', '2', 'Aufzug Nord'), 1),
-      (('GB', '3', 'Aufzug Nord'), 1),
-      (('GB', '4', 'Aufzug Nord'), 1),
+      (('GB', '02', 'Aufzug-Nord'), 1),
+      (('GB', '03', 'Aufzug-Nord'), 1),
+      (('GB', '04', 'Aufzug-Nord'), 1),
+      (('GB', '1', 'Aufzug-Nord'), 1),
+      (('GB', '2', 'Aufzug-Nord'), 1),
+      (('GB', '3', 'Aufzug-Nord'), 1),
+      (('GB', '4', 'Aufzug-Nord'), 1),
       (('GB', '5', 'EN_36'), 41),
       (('GB', '5', 'EN_40'), 74),
-      (('GB', '6', 'Aufzug Nord'), 1),
-      (('GB', '7', 'Aufzug Nord'), 1),
-      (('GB', '8', 'Aufzug Nord'), 1),
+      (('GB', '6', 'Aufzug-Nord'), 1),
+      (('GB', '7', 'Aufzug-Nord'), 1),
+      (('GB', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GB', '5', 'Aufzug Süd'): {
+  ('GB', '5', 'Aufzug-Süd'): {
     'Coordinates': [897, 896],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
-      (('GB', '03', 'Aufzug Süd'), 1),
-      (('GB', '04', 'Aufzug Süd'), 1),
-      (('GB', '05', 'Aufzug Süd'), 1),
-      (('GB', '1', 'Aufzug Süd'), 1),
-      (('GB', '2', 'Aufzug Süd'), 1),
-      (('GB', '3', 'Aufzug Süd'), 1),
-      (('GB', '4', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
+      (('GB', '04', 'Aufzug-Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
+      (('GB', '4', 'Aufzug-Süd'), 1),
       (('GB', '5', 'EN_4'), 62),
       (('GB', '5', 'EN_66'), 53),
-      (('GB', '6', 'Aufzug Süd'), 1),
-      (('GB', '7', 'Aufzug Süd'), 1),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GB', '5', 'EN_0'): {
@@ -24120,7 +24120,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [760, 758],
     'Connections': [
       (('GB', '5', 'EN_15'), 59),
-      (('GB', '5', 'Treppe Süd 2'), 41),
+      (('GB', '5', 'Treppe-Süd-2'), 41),
     ],
   },
   ('GB', '5', 'EN_2'): {
@@ -24273,10 +24273,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '5', 'EN_36'): {
     'Coordinates': [350, 351],
     'Connections': [
-      (('GB', '5', 'Aufzug Nord'), 41),
+      (('GB', '5', 'Aufzug-Nord'), 41),
       (('GB', '5', 'EN_22'), 62),
       (('GB', '5', 'EN_28'), 61),
-      (('GB', '5', 'Treppe Nord'), 34),
+      (('GB', '5', 'Treppe-Nord'), 34),
     ],
   },
   ('GB', '5', 'EN_37'): {
@@ -24306,19 +24306,19 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '5', 'EN_4'): {
     'Coordinates': [938, 942],
     'Connections': [
-      (('GB', '5', 'Aufzug Süd'), 62),
+      (('GB', '5', 'Aufzug-Süd'), 62),
       (('GB', '5', 'EN_3'), 58),
       (('GB', '5', 'EN_65'), 59),
-      (('GB', '5', 'WC Süd'), 33),
+      (('GB', '5', 'WC-Süd'), 33),
     ],
   },
   ('GB', '5', 'EN_40'): {
     'Coordinates': [268, 270],
     'Connections': [
-      (('GB', '5', 'Aufzug Nord'), 74),
+      (('GB', '5', 'Aufzug-Nord'), 74),
       (('GB', '5', 'EN_37'), 59),
       (('GB', '5', 'EN_41'), 64),
-      (('GB', '5', 'WC Nord'), 35),
+      (('GB', '5', 'WC-Nord'), 35),
     ],
   },
   ('GB', '5', 'EN_41'): {
@@ -24503,7 +24503,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [461, 455],
     'Connections': [
       (('GB', '5', 'EN_43'), 55),
-      (('GB', '5', 'Treppe Nord 2'), 50),
+      (('GB', '5', 'Treppe-Nord-2'), 50),
     ],
   },
   ('GB', '5', 'EN_65'): {
@@ -24517,10 +24517,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '5', 'EN_66'): {
     'Coordinates': [860, 858],
     'Connections': [
-      (('GB', '5', 'Aufzug Süd'), 53),
+      (('GB', '5', 'Aufzug-Süd'), 53),
       (('GB', '5', 'EN_12'), 56),
       (('GB', '5', 'EN_67'), 59),
-      (('GB', '5', 'Treppe Süd'), 24),
+      (('GB', '5', 'Treppe-Süd'), 24),
     ],
   },
   ('GB', '5', 'EN_67'): {
@@ -24564,79 +24564,79 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '5', 'EN_8'), 37),
     ],
   },
-  ('GB', '5', 'Treppe Nord'): {
+  ('GB', '5', 'Treppe-Nord'): {
     'Coordinates': [376, 373],
     'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'Treppe Nord'), 2),
-      (('GB', '1', 'Treppe Nord'), 2),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Treppe Nord'), 2),
-      (('GB', '4', 'Treppe Nord'), 2),
+      (('GB', '02', 'Treppe-Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
+      (('GB', '1', 'Treppe-Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
+      (('GB', '4', 'Treppe-Nord'), 2),
       (('GB', '5', 'EN_36'), 34),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Treppe Nord'), 2),
-      (('GB', '8', 'Treppe Nord'), 2),
-      (('GB', '9', 'Treppe Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GB', '5', 'Treppe Nord 2'): {
+  ('GB', '5', 'Treppe-Nord-2'): {
     'Coordinates': [425, 420],
     'Connections': [
-      (('GB', '1', 'Treppe Nord 2'), 2),
-      (('GB', '2', 'Treppe Nord 2'), 2),
-      (('GB', '3', 'Treppe Nord 2'), 2),
-      (('GB', '4', 'Treppe Nord 2'), 2),
+      (('GB', '1', 'Treppe-Nord-2'), 2),
+      (('GB', '2', 'Treppe-Nord-2'), 2),
+      (('GB', '3', 'Treppe-Nord-2'), 2),
+      (('GB', '4', 'Treppe-Nord-2'), 2),
       (('GB', '5', 'EN_61'), 50),
-      (('GB', '6', 'Treppe Nord 2'), 2),
-      (('GB', '7', 'Treppe Nord 2'), 2),
-      (('GB', '8', 'Treppe Nord 2'), 2),
+      (('GB', '6', 'Treppe-Nord-2'), 2),
+      (('GB', '7', 'Treppe-Nord-2'), 2),
+      (('GB', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GB', '5', 'Treppe Süd'): {
+  ('GB', '5', 'Treppe-Süd'): {
     'Coordinates': [843, 841],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Treppe Süd'), 2),
-      (('GB', '05', 'Treppe Süd'), 2),
-      (('GB', '1', 'Treppe Süd'), 2),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Treppe Süd'), 2),
-      (('GB', '4', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
+      (('GB', '05', 'Treppe-Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
+      (('GB', '4', 'Treppe-Süd'), 2),
       (('GB', '5', 'EN_66'), 24),
-      (('GB', '6', 'Treppe Süd'), 2),
-      (('GB', '7', 'Treppe Süd'), 2),
-      (('GB', '8', 'Treppe Süd'), 2),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '5', 'Treppe Süd 2'): {
+  ('GB', '5', 'Treppe-Süd-2'): {
     'Coordinates': [791, 785],
     'Connections': [
-      (('GB', '1', 'Treppe Süd 2'), 2),
-      (('GB', '2', 'Treppe Süd 2'), 2),
-      (('GB', '3', 'Treppe Süd 2'), 2),
-      (('GB', '4', 'Treppe Süd 2'), 2),
+      (('GB', '1', 'Treppe-Süd-2'), 2),
+      (('GB', '2', 'Treppe-Süd-2'), 2),
+      (('GB', '3', 'Treppe-Süd-2'), 2),
+      (('GB', '4', 'Treppe-Süd-2'), 2),
       (('GB', '5', 'EN_18'), 41),
-      (('GB', '6', 'Treppe Süd 2'), 2),
-      (('GB', '7', 'Treppe Süd 2'), 2),
-      (('GB', '8', 'Treppe Süd 2'), 2),
+      (('GB', '6', 'Treppe-Süd-2'), 2),
+      (('GB', '7', 'Treppe-Süd-2'), 2),
+      (('GB', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GB', '5', 'WC Nord'): {
+  ('GB', '5', 'WC-Nord'): {
     'Coordinates': [244, 244],
     'Connections': [
       (('GB', '5', 'EN_40'), 35),
     ],
   },
-  ('GB', '5', 'WC Süd'): {
+  ('GB', '5', 'WC-Süd'): {
     'Coordinates': [961, 965],
     'Connections': [
       (('GB', '5', 'EN_4'), 33),
     ],
   },
-  ('GB', '6', ' 160'): {
+  ('GB', '6', '-160'): {
     'Coordinates': [1014, 1185],
     'Connections': [
       (('GB', '6', 'EN_66'), 32),
@@ -24993,48 +24993,48 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '6', 'EN_71'), 47),
     ],
   },
-  ('GB', '6', 'Aufzug Nord'): {
+  ('GB', '6', 'Aufzug-Nord'): {
     'Coordinates': [313, 338],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 1),
-      (('GB', '03', 'Aufzug Nord'), 1),
-      (('GB', '04', 'Aufzug Nord'), 1),
-      (('GB', '1', 'Aufzug Nord'), 1),
-      (('GB', '2', 'Aufzug Nord'), 1),
-      (('GB', '3', 'Aufzug Nord'), 1),
-      (('GB', '4', 'Aufzug Nord'), 1),
-      (('GB', '5', 'Aufzug Nord'), 1),
+      (('GB', '02', 'Aufzug-Nord'), 1),
+      (('GB', '03', 'Aufzug-Nord'), 1),
+      (('GB', '04', 'Aufzug-Nord'), 1),
+      (('GB', '1', 'Aufzug-Nord'), 1),
+      (('GB', '2', 'Aufzug-Nord'), 1),
+      (('GB', '3', 'Aufzug-Nord'), 1),
+      (('GB', '4', 'Aufzug-Nord'), 1),
+      (('GB', '5', 'Aufzug-Nord'), 1),
       (('GB', '6', 'EN_14'), 61),
       (('GB', '6', 'EN_9'), 58),
-      (('GB', '7', 'Aufzug Nord'), 1),
-      (('GB', '8', 'Aufzug Nord'), 1),
+      (('GB', '7', 'Aufzug-Nord'), 1),
+      (('GB', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GB', '6', 'Aufzug Süd'): {
+  ('GB', '6', 'Aufzug-Süd'): {
     'Coordinates': [898, 937],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
-      (('GB', '03', 'Aufzug Süd'), 1),
-      (('GB', '04', 'Aufzug Süd'), 1),
-      (('GB', '05', 'Aufzug Süd'), 1),
-      (('GB', '1', 'Aufzug Süd'), 1),
-      (('GB', '2', 'Aufzug Süd'), 1),
-      (('GB', '3', 'Aufzug Süd'), 1),
-      (('GB', '4', 'Aufzug Süd'), 1),
-      (('GB', '5', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
+      (('GB', '04', 'Aufzug-Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
+      (('GB', '4', 'Aufzug-Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
       (('GB', '6', 'EN_1'), 65),
       (('GB', '6', 'EN_60'), 49),
-      (('GB', '7', 'Aufzug Süd'), 1),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GB', '6', 'EN_1'): {
     'Coordinates': [944, 983],
     'Connections': [
-      (('GB', '6', 'Aufzug Süd'), 65),
+      (('GB', '6', 'Aufzug-Süd'), 65),
       (('GB', '6', 'EN_58'), 59),
       (('GB', '6', 'EN_76'), 56),
-      (('GB', '6', 'WC Süd'), 31),
+      (('GB', '6', 'WC-Süd'), 31),
     ],
   },
   ('GB', '6', 'EN_10'): {
@@ -25047,10 +25047,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '6', 'EN_14'): {
     'Coordinates': [360, 377],
     'Connections': [
-      (('GB', '6', 'Aufzug Nord'), 61),
+      (('GB', '6', 'Aufzug-Nord'), 61),
       (('GB', '6', 'EN_16'), 50),
       (('GB', '6', 'EN_17'), 63),
-      (('GB', '6', 'Treppe Nord'), 36),
+      (('GB', '6', 'Treppe-Nord'), 36),
     ],
   },
   ('GB', '6', 'EN_16'): {
@@ -25124,7 +25124,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [463, 480],
     'Connections': [
       (('GB', '6', 'EN_24'), 55),
-      (('GB', '6', 'Treppe Nord 2'), 43),
+      (('GB', '6', 'Treppe-Nord-2'), 43),
     ],
   },
   ('GB', '6', 'EN_27'): {
@@ -25406,10 +25406,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '6', 'EN_60'): {
     'Coordinates': [862, 904],
     'Connections': [
-      (('GB', '6', 'Aufzug Süd'), 49),
+      (('GB', '6', 'Aufzug-Süd'), 49),
       (('GB', '6', 'EN_59'), 54),
       (('GB', '6', 'EN_78'), 57),
-      (('GB', '6', 'Treppe Süd'), 28),
+      (('GB', '6', 'Treppe-Süd'), 28),
     ],
   },
   ('GB', '6', 'EN_61'): {
@@ -25449,7 +25449,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '6', 'EN_66'): {
     'Coordinates': [1033, 1159],
     'Connections': [
-      (('GB', '6', ' 160'), 32),
+      (('GB', '6', '-160'), 32),
       (('GB', '6', 'EN_65'), 47),
     ],
   },
@@ -25563,7 +25563,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [763, 800],
     'Connections': [
       (('GB', '6', 'EN_81'), 59),
-      (('GB', '6', 'Treppe Süd 2'), 45),
+      (('GB', '6', 'Treppe-Süd-2'), 45),
     ],
   },
   ('GB', '6', 'EN_83'): {
@@ -25576,79 +25576,79 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '6', 'EN_9'): {
     'Coordinates': [272, 297],
     'Connections': [
-      (('GB', '6', 'Aufzug Nord'), 58),
+      (('GB', '6', 'Aufzug-Nord'), 58),
       (('GB', '6', 'EN_19'), 61),
       (('GB', '6', 'EN_7'), 59),
-      (('GB', '6', 'WC Nord'), 27),
+      (('GB', '6', 'WC-Nord'), 27),
     ],
   },
-  ('GB', '6', 'Treppe Nord'): {
+  ('GB', '6', 'Treppe-Nord'): {
     'Coordinates': [382, 405],
     'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'Treppe Nord'), 2),
-      (('GB', '1', 'Treppe Nord'), 2),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Treppe Nord'), 2),
-      (('GB', '4', 'Treppe Nord'), 2),
-      (('GB', '5', 'Treppe Nord'), 2),
+      (('GB', '02', 'Treppe-Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
+      (('GB', '1', 'Treppe-Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
+      (('GB', '4', 'Treppe-Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
       (('GB', '6', 'EN_14'), 36),
-      (('GB', '7', 'Treppe Nord'), 2),
-      (('GB', '8', 'Treppe Nord'), 2),
-      (('GB', '9', 'Treppe Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GB', '6', 'Treppe Nord 2'): {
+  ('GB', '6', 'Treppe-Nord-2'): {
     'Coordinates': [430, 452],
     'Connections': [
-      (('GB', '1', 'Treppe Nord 2'), 2),
-      (('GB', '2', 'Treppe Nord 2'), 2),
-      (('GB', '3', 'Treppe Nord 2'), 2),
-      (('GB', '4', 'Treppe Nord 2'), 2),
-      (('GB', '5', 'Treppe Nord 2'), 2),
+      (('GB', '1', 'Treppe-Nord-2'), 2),
+      (('GB', '2', 'Treppe-Nord-2'), 2),
+      (('GB', '3', 'Treppe-Nord-2'), 2),
+      (('GB', '4', 'Treppe-Nord-2'), 2),
+      (('GB', '5', 'Treppe-Nord-2'), 2),
       (('GB', '6', 'EN_25'), 43),
-      (('GB', '7', 'Treppe Nord 2'), 2),
-      (('GB', '8', 'Treppe Nord 2'), 2),
+      (('GB', '7', 'Treppe-Nord-2'), 2),
+      (('GB', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GB', '6', 'Treppe Süd'): {
+  ('GB', '6', 'Treppe-Süd'): {
     'Coordinates': [844, 883],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Treppe Süd'), 2),
-      (('GB', '05', 'Treppe Süd'), 2),
-      (('GB', '1', 'Treppe Süd'), 2),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Treppe Süd'), 2),
-      (('GB', '4', 'Treppe Süd'), 2),
-      (('GB', '5', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
+      (('GB', '05', 'Treppe-Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
+      (('GB', '4', 'Treppe-Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
       (('GB', '6', 'EN_60'), 28),
-      (('GB', '7', 'Treppe Süd'), 2),
-      (('GB', '8', 'Treppe Süd'), 2),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '6', 'Treppe Süd 2'): {
+  ('GB', '6', 'Treppe-Süd-2'): {
     'Coordinates': [797, 830],
     'Connections': [
-      (('GB', '1', 'Treppe Süd 2'), 2),
-      (('GB', '2', 'Treppe Süd 2'), 2),
-      (('GB', '3', 'Treppe Süd 2'), 2),
-      (('GB', '4', 'Treppe Süd 2'), 2),
-      (('GB', '5', 'Treppe Süd 2'), 2),
+      (('GB', '1', 'Treppe-Süd-2'), 2),
+      (('GB', '2', 'Treppe-Süd-2'), 2),
+      (('GB', '3', 'Treppe-Süd-2'), 2),
+      (('GB', '4', 'Treppe-Süd-2'), 2),
+      (('GB', '5', 'Treppe-Süd-2'), 2),
       (('GB', '6', 'EN_82'), 45),
-      (('GB', '7', 'Treppe Süd 2'), 2),
-      (('GB', '8', 'Treppe Süd 2'), 2),
+      (('GB', '7', 'Treppe-Süd-2'), 2),
+      (('GB', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GB', '6', 'WC Nord'): {
+  ('GB', '6', 'WC-Nord'): {
     'Coordinates': [253, 278],
     'Connections': [
       (('GB', '6', 'EN_9'), 27),
     ],
   },
-  ('GB', '6', 'WC Süd'): {
+  ('GB', '6', 'WC-Süd'): {
     'Coordinates': [966, 1005],
     'Connections': [
       (('GB', '6', 'EN_1'), 31),
@@ -26006,39 +26006,39 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '7', 'EN_69'), 37),
     ],
   },
-  ('GB', '7', 'Aufzug Nord'): {
+  ('GB', '7', 'Aufzug-Nord'): {
     'Coordinates': [316, 341],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 1),
-      (('GB', '03', 'Aufzug Nord'), 1),
-      (('GB', '04', 'Aufzug Nord'), 1),
-      (('GB', '1', 'Aufzug Nord'), 1),
-      (('GB', '2', 'Aufzug Nord'), 1),
-      (('GB', '3', 'Aufzug Nord'), 1),
-      (('GB', '4', 'Aufzug Nord'), 1),
-      (('GB', '5', 'Aufzug Nord'), 1),
-      (('GB', '6', 'Aufzug Nord'), 1),
+      (('GB', '02', 'Aufzug-Nord'), 1),
+      (('GB', '03', 'Aufzug-Nord'), 1),
+      (('GB', '04', 'Aufzug-Nord'), 1),
+      (('GB', '1', 'Aufzug-Nord'), 1),
+      (('GB', '2', 'Aufzug-Nord'), 1),
+      (('GB', '3', 'Aufzug-Nord'), 1),
+      (('GB', '4', 'Aufzug-Nord'), 1),
+      (('GB', '5', 'Aufzug-Nord'), 1),
+      (('GB', '6', 'Aufzug-Nord'), 1),
       (('GB', '7', 'EN_5'), 55),
-      (('GB', '7', 'Treppe Nord'), 90),
-      (('GB', '8', 'Aufzug Nord'), 1),
+      (('GB', '7', 'Treppe-Nord'), 90),
+      (('GB', '8', 'Aufzug-Nord'), 1),
     ],
   },
-  ('GB', '7', 'Aufzug Süd'): {
+  ('GB', '7', 'Aufzug-Süd'): {
     'Coordinates': [902, 930],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
-      (('GB', '03', 'Aufzug Süd'), 1),
-      (('GB', '04', 'Aufzug Süd'), 1),
-      (('GB', '05', 'Aufzug Süd'), 1),
-      (('GB', '1', 'Aufzug Süd'), 1),
-      (('GB', '2', 'Aufzug Süd'), 1),
-      (('GB', '3', 'Aufzug Süd'), 1),
-      (('GB', '4', 'Aufzug Süd'), 1),
-      (('GB', '5', 'Aufzug Süd'), 1),
-      (('GB', '6', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
+      (('GB', '04', 'Aufzug-Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
+      (('GB', '4', 'Aufzug-Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
       (('GB', '7', 'EN_2'), 69),
       (('GB', '7', 'EN_78'), 47),
-      (('GB', '8', 'Aufzug Süd'), 1),
+      (('GB', '8', 'Aufzug-Süd'), 1),
     ],
   },
   ('GB', '7', 'EN_0'): {
@@ -26129,10 +26129,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '7', 'EN_2'): {
     'Coordinates': [950, 980],
     'Connections': [
-      (('GB', '7', 'Aufzug Süd'), 69),
+      (('GB', '7', 'Aufzug-Süd'), 69),
       (('GB', '7', 'EN_1'), 63),
       (('GB', '7', 'EN_63'), 59),
-      (('GB', '7', 'WC Süd'), 29),
+      (('GB', '7', 'WC-Süd'), 29),
     ],
   },
   ('GB', '7', 'EN_20'): {
@@ -26172,7 +26172,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '7', 'EN_27'), 60),
       (('GB', '7', 'EN_4'), 59),
-      (('GB', '7', 'Treppe Nord'), 37),
+      (('GB', '7', 'Treppe-Nord'), 37),
     ],
   },
   ('GB', '7', 'EN_27'): {
@@ -26245,7 +26245,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [462, 481],
     'Connections': [
       (('GB', '7', 'EN_35'), 57),
-      (('GB', '7', 'Treppe Nord 2'), 45),
+      (('GB', '7', 'Treppe-Nord-2'), 45),
     ],
   },
   ('GB', '7', 'EN_38'): {
@@ -26324,10 +26324,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '7', 'EN_5'): {
     'Coordinates': [277, 302],
     'Connections': [
-      (('GB', '7', 'Aufzug Nord'), 55),
+      (('GB', '7', 'Aufzug-Nord'), 55),
       (('GB', '7', 'EN_6'), 61),
       (('GB', '7', 'EN_7'), 59),
-      (('GB', '7', 'WC Nord'), 35),
+      (('GB', '7', 'WC-Nord'), 35),
     ],
   },
   ('GB', '7', 'EN_50'): {
@@ -26553,10 +26553,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '7', 'EN_78'): {
     'Coordinates': [870, 895],
     'Connections': [
-      (('GB', '7', 'Aufzug Süd'), 47),
+      (('GB', '7', 'Aufzug-Süd'), 47),
       (('GB', '7', 'EN_3'), 64),
       (('GB', '7', 'EN_75'), 56),
-      (('GB', '7', 'Treppe Süd'), 30),
+      (('GB', '7', 'Treppe-Süd'), 30),
     ],
   },
   ('GB', '7', 'EN_79'): {
@@ -26579,7 +26579,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [764, 793],
     'Connections': [
       (('GB', '7', 'EN_79'), 61),
-      (('GB', '7', 'Treppe Süd 2'), 42),
+      (('GB', '7', 'Treppe-Süd-2'), 42),
     ],
   },
   ('GB', '7', 'EN_9'): {
@@ -26590,74 +26590,74 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '7', 'EN_17'), 23),
     ],
   },
-  ('GB', '7', 'Treppe Nord'): {
+  ('GB', '7', 'Treppe-Nord'): {
     'Coordinates': [382, 402],
     'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'Treppe Nord'), 2),
-      (('GB', '1', 'Treppe Nord'), 2),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Treppe Nord'), 2),
-      (('GB', '4', 'Treppe Nord'), 2),
-      (('GB', '5', 'Treppe Nord'), 2),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Aufzug Nord'), 90),
+      (('GB', '02', 'Treppe-Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
+      (('GB', '1', 'Treppe-Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
+      (('GB', '4', 'Treppe-Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Aufzug-Nord'), 90),
       (('GB', '7', 'EN_26'), 37),
-      (('GB', '8', 'Treppe Nord'), 2),
-      (('GB', '9', 'Treppe Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GB', '7', 'Treppe Nord 2'): {
+  ('GB', '7', 'Treppe-Nord-2'): {
     'Coordinates': [429, 451],
     'Connections': [
-      (('GB', '1', 'Treppe Nord 2'), 2),
-      (('GB', '2', 'Treppe Nord 2'), 2),
-      (('GB', '3', 'Treppe Nord 2'), 2),
-      (('GB', '4', 'Treppe Nord 2'), 2),
-      (('GB', '5', 'Treppe Nord 2'), 2),
-      (('GB', '6', 'Treppe Nord 2'), 2),
+      (('GB', '1', 'Treppe-Nord-2'), 2),
+      (('GB', '2', 'Treppe-Nord-2'), 2),
+      (('GB', '3', 'Treppe-Nord-2'), 2),
+      (('GB', '4', 'Treppe-Nord-2'), 2),
+      (('GB', '5', 'Treppe-Nord-2'), 2),
+      (('GB', '6', 'Treppe-Nord-2'), 2),
       (('GB', '7', 'EN_36'), 45),
-      (('GB', '8', 'Treppe Nord 2'), 2),
+      (('GB', '8', 'Treppe-Nord-2'), 2),
     ],
   },
-  ('GB', '7', 'Treppe Süd'): {
+  ('GB', '7', 'Treppe-Süd'): {
     'Coordinates': [848, 875],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Treppe Süd'), 2),
-      (('GB', '05', 'Treppe Süd'), 2),
-      (('GB', '1', 'Treppe Süd'), 2),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Treppe Süd'), 2),
-      (('GB', '4', 'Treppe Süd'), 2),
-      (('GB', '5', 'Treppe Süd'), 2),
-      (('GB', '6', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
+      (('GB', '05', 'Treppe-Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
+      (('GB', '4', 'Treppe-Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
       (('GB', '7', 'EN_78'), 30),
-      (('GB', '8', 'Treppe Süd'), 2),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '7', 'Treppe Süd 2'): {
+  ('GB', '7', 'Treppe-Süd-2'): {
     'Coordinates': [795, 822],
     'Connections': [
-      (('GB', '1', 'Treppe Süd 2'), 2),
-      (('GB', '2', 'Treppe Süd 2'), 2),
-      (('GB', '3', 'Treppe Süd 2'), 2),
-      (('GB', '4', 'Treppe Süd 2'), 2),
-      (('GB', '5', 'Treppe Süd 2'), 2),
-      (('GB', '6', 'Treppe Süd 2'), 2),
+      (('GB', '1', 'Treppe-Süd-2'), 2),
+      (('GB', '2', 'Treppe-Süd-2'), 2),
+      (('GB', '3', 'Treppe-Süd-2'), 2),
+      (('GB', '4', 'Treppe-Süd-2'), 2),
+      (('GB', '5', 'Treppe-Süd-2'), 2),
+      (('GB', '6', 'Treppe-Süd-2'), 2),
       (('GB', '7', 'EN_80'), 42),
-      (('GB', '8', 'Treppe Süd 2'), 2),
+      (('GB', '8', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('GB', '7', 'WC Nord'): {
+  ('GB', '7', 'WC-Nord'): {
     'Coordinates': [252, 277],
     'Connections': [
       (('GB', '7', 'EN_5'), 35),
     ],
   },
-  ('GB', '7', 'WC Süd'): {
+  ('GB', '7', 'WC-Süd'): {
     'Coordinates': [970, 1001],
     'Connections': [
       (('GB', '7', 'EN_2'), 29),
@@ -27013,37 +27013,37 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '8', 'EN_70'), 43),
     ],
   },
-  ('GB', '8', 'Aufzug Nord'): {
+  ('GB', '8', 'Aufzug-Nord'): {
     'Coordinates': [314, 306],
     'Connections': [
-      (('GB', '02', 'Aufzug Nord'), 1),
-      (('GB', '03', 'Aufzug Nord'), 1),
-      (('GB', '04', 'Aufzug Nord'), 1),
-      (('GB', '1', 'Aufzug Nord'), 1),
-      (('GB', '2', 'Aufzug Nord'), 1),
-      (('GB', '3', 'Aufzug Nord'), 1),
-      (('GB', '4', 'Aufzug Nord'), 1),
-      (('GB', '5', 'Aufzug Nord'), 1),
-      (('GB', '6', 'Aufzug Nord'), 1),
-      (('GB', '7', 'Aufzug Nord'), 1),
+      (('GB', '02', 'Aufzug-Nord'), 1),
+      (('GB', '03', 'Aufzug-Nord'), 1),
+      (('GB', '04', 'Aufzug-Nord'), 1),
+      (('GB', '1', 'Aufzug-Nord'), 1),
+      (('GB', '2', 'Aufzug-Nord'), 1),
+      (('GB', '3', 'Aufzug-Nord'), 1),
+      (('GB', '4', 'Aufzug-Nord'), 1),
+      (('GB', '5', 'Aufzug-Nord'), 1),
+      (('GB', '6', 'Aufzug-Nord'), 1),
+      (('GB', '7', 'Aufzug-Nord'), 1),
       (('GB', '8', 'EN_40'), 57),
       (('GB', '8', 'EN_6'), 58),
     ],
   },
-  ('GB', '8', 'Aufzug Süd'): {
+  ('GB', '8', 'Aufzug-Süd'): {
     'Coordinates': [898, 898],
     'Connections': [
-      (('GB', '02', 'Aufzug Süd'), 1),
-      (('GB', '03', 'Aufzug Süd'), 1),
-      (('GB', '04', 'Aufzug Süd'), 1),
-      (('GB', '05', 'Aufzug Süd'), 1),
-      (('GB', '1', 'Aufzug Süd'), 1),
-      (('GB', '2', 'Aufzug Süd'), 1),
-      (('GB', '3', 'Aufzug Süd'), 1),
-      (('GB', '4', 'Aufzug Süd'), 1),
-      (('GB', '5', 'Aufzug Süd'), 1),
-      (('GB', '6', 'Aufzug Süd'), 1),
-      (('GB', '7', 'Aufzug Süd'), 1),
+      (('GB', '02', 'Aufzug-Süd'), 1),
+      (('GB', '03', 'Aufzug-Süd'), 1),
+      (('GB', '04', 'Aufzug-Süd'), 1),
+      (('GB', '05', 'Aufzug-Süd'), 1),
+      (('GB', '1', 'Aufzug-Süd'), 1),
+      (('GB', '2', 'Aufzug-Süd'), 1),
+      (('GB', '3', 'Aufzug-Süd'), 1),
+      (('GB', '4', 'Aufzug-Süd'), 1),
+      (('GB', '5', 'Aufzug-Süd'), 1),
+      (('GB', '6', 'Aufzug-Süd'), 1),
+      (('GB', '7', 'Aufzug-Süd'), 1),
       (('GB', '8', 'EN_4'), 71),
       (('GB', '8', 'EN_63'), 47),
     ],
@@ -27274,25 +27274,25 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [460, 439],
     'Connections': [
       (('GB', '8', 'EN_38'), 54),
-      (('GB', '8', 'Treppe Nord 2'), 44),
+      (('GB', '8', 'Treppe-Nord-2'), 44),
     ],
   },
   ('GB', '8', 'EN_4'): {
     'Coordinates': [950, 946],
     'Connections': [
-      (('GB', '8', 'Aufzug Süd'), 71),
+      (('GB', '8', 'Aufzug-Süd'), 71),
       (('GB', '8', 'EN_3'), 57),
       (('GB', '8', 'EN_65'), 61),
-      (('GB', '8', 'WC Süd'), 25),
+      (('GB', '8', 'WC-Süd'), 25),
     ],
   },
   ('GB', '8', 'EN_40'): {
     'Coordinates': [358, 343],
     'Connections': [
-      (('GB', '8', 'Aufzug Nord'), 57),
+      (('GB', '8', 'Aufzug-Nord'), 57),
       (('GB', '8', 'EN_8'), 58),
       (('GB', '8', 'EN_9'), 61),
-      (('GB', '8', 'Treppe Nord'), 27),
+      (('GB', '8', 'Treppe-Nord'), 27),
     ],
   },
   ('GB', '8', 'EN_41'): {
@@ -27434,10 +27434,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '8', 'EN_6'): {
     'Coordinates': [274, 264],
     'Connections': [
-      (('GB', '8', 'Aufzug Nord'), 58),
+      (('GB', '8', 'Aufzug-Nord'), 58),
       (('GB', '8', 'EN_5'), 61),
       (('GB', '8', 'EN_7'), 58),
-      (('GB', '8', 'WC Nord'), 33),
+      (('GB', '8', 'WC-Nord'), 33),
     ],
   },
   ('GB', '8', 'EN_60'): {
@@ -27468,10 +27468,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '8', 'EN_63'): {
     'Coordinates': [863, 866],
     'Connections': [
-      (('GB', '8', 'Aufzug Süd'), 47),
+      (('GB', '8', 'Aufzug-Süd'), 47),
       (('GB', '8', 'EN_61'), 59),
       (('GB', '8', 'EN_64'), 57),
-      (('GB', '8', 'Treppe Süd'), 37),
+      (('GB', '8', 'Treppe-Süd'), 37),
     ],
   },
   ('GB', '8', 'EN_64'): {
@@ -27617,7 +27617,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [761, 757],
     'Connections': [
       (('GB', '8', 'EN_79'), 51),
-      (('GB', '8', 'Treppe Süd 2'), 44),
+      (('GB', '8', 'Treppe-Süd-2'), 44),
     ],
   },
   ('GB', '8', 'EN_9'): {
@@ -27628,73 +27628,73 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '8', 'EN_43'), 58),
     ],
   },
-  ('GB', '8', 'Treppe Nord'): {
+  ('GB', '8', 'Treppe-Nord'): {
     'Coordinates': [376, 363],
     'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'Treppe Nord'), 2),
-      (('GB', '1', 'Treppe Nord'), 2),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Treppe Nord'), 2),
-      (('GB', '4', 'Treppe Nord'), 2),
-      (('GB', '5', 'Treppe Nord'), 2),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Treppe Nord'), 2),
+      (('GB', '02', 'Treppe-Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
+      (('GB', '1', 'Treppe-Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
+      (('GB', '4', 'Treppe-Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
       (('GB', '8', 'EN_40'), 27),
-      (('GB', '9', 'Treppe Nord'), 2),
+      (('GB', '9', 'Treppe-Nord'), 2),
     ],
   },
-  ('GB', '8', 'Treppe Nord 2'): {
+  ('GB', '8', 'Treppe-Nord-2'): {
     'Coordinates': [427, 410],
     'Connections': [
-      (('GB', '1', 'Treppe Nord 2'), 2),
-      (('GB', '2', 'Treppe Nord 2'), 2),
-      (('GB', '3', 'Treppe Nord 2'), 2),
-      (('GB', '4', 'Treppe Nord 2'), 2),
-      (('GB', '5', 'Treppe Nord 2'), 2),
-      (('GB', '6', 'Treppe Nord 2'), 2),
-      (('GB', '7', 'Treppe Nord 2'), 2),
+      (('GB', '1', 'Treppe-Nord-2'), 2),
+      (('GB', '2', 'Treppe-Nord-2'), 2),
+      (('GB', '3', 'Treppe-Nord-2'), 2),
+      (('GB', '4', 'Treppe-Nord-2'), 2),
+      (('GB', '5', 'Treppe-Nord-2'), 2),
+      (('GB', '6', 'Treppe-Nord-2'), 2),
+      (('GB', '7', 'Treppe-Nord-2'), 2),
       (('GB', '8', 'EN_39'), 44),
     ],
   },
-  ('GB', '8', 'Treppe Süd'): {
+  ('GB', '8', 'Treppe-Süd'): {
     'Coordinates': [838, 839],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Treppe Süd'), 2),
-      (('GB', '05', 'Treppe Süd'), 2),
-      (('GB', '1', 'Treppe Süd'), 2),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Treppe Süd'), 2),
-      (('GB', '4', 'Treppe Süd'), 2),
-      (('GB', '5', 'Treppe Süd'), 2),
-      (('GB', '6', 'Treppe Süd'), 2),
-      (('GB', '7', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
+      (('GB', '05', 'Treppe-Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
+      (('GB', '4', 'Treppe-Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
       (('GB', '8', 'EN_63'), 37),
-      (('GB', '9', 'Treppe Süd'), 2),
+      (('GB', '9', 'Treppe-Süd'), 2),
     ],
   },
-  ('GB', '8', 'Treppe Süd 2'): {
+  ('GB', '8', 'Treppe-Süd-2'): {
     'Coordinates': [789, 791],
     'Connections': [
-      (('GB', '1', 'Treppe Süd 2'), 2),
-      (('GB', '2', 'Treppe Süd 2'), 2),
-      (('GB', '3', 'Treppe Süd 2'), 2),
-      (('GB', '4', 'Treppe Süd 2'), 2),
-      (('GB', '5', 'Treppe Süd 2'), 2),
-      (('GB', '6', 'Treppe Süd 2'), 2),
-      (('GB', '7', 'Treppe Süd 2'), 2),
+      (('GB', '1', 'Treppe-Süd-2'), 2),
+      (('GB', '2', 'Treppe-Süd-2'), 2),
+      (('GB', '3', 'Treppe-Süd-2'), 2),
+      (('GB', '4', 'Treppe-Süd-2'), 2),
+      (('GB', '5', 'Treppe-Süd-2'), 2),
+      (('GB', '6', 'Treppe-Süd-2'), 2),
+      (('GB', '7', 'Treppe-Süd-2'), 2),
       (('GB', '8', 'EN_81'), 44),
     ],
   },
-  ('GB', '8', 'WC Nord'): {
+  ('GB', '8', 'WC-Nord'): {
     'Coordinates': [251, 241],
     'Connections': [
       (('GB', '8', 'EN_6'), 33),
     ],
   },
-  ('GB', '8', 'WC Süd'): {
+  ('GB', '8', 'WC-Süd'): {
     'Coordinates': [967, 965],
     'Connections': [
       (('GB', '8', 'EN_4'), 25),
@@ -27729,19 +27729,19 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [903, 899],
     'Connections': [
       (('GB', '9', '12'), 115),
-      (('GB', '9', 'Treppe Süd'), 120),
+      (('GB', '9', 'Treppe-Süd'), 120),
     ],
   },
   ('GB', '9', '15'): {
     'Coordinates': [864, 822],
     'Connections': [
-      (('GB', '9', 'Treppe Süd'), 45),
+      (('GB', '9', 'Treppe-Süd'), 45),
     ],
   },
   ('GB', '9', '17'): {
     'Coordinates': [792, 789],
     'Connections': [
-      (('GB', '9', 'Treppe Süd'), 37),
+      (('GB', '9', 'Treppe-Süd'), 37),
     ],
   },
   ('GB', '9', '2'): {
@@ -27773,7 +27773,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GB', '9', '7'): {
     'Coordinates': [430, 418],
     'Connections': [
-      (('GB', '9', 'Treppe Nord'), 45),
+      (('GB', '9', 'Treppe-Nord'), 45),
     ],
   },
   ('GB', '9', 'EN_0'): {
@@ -27788,7 +27788,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '9', '4'), 82),
       (('GB', '9', '5'), 32),
-      (('GB', '9', 'Treppe Nord'), 37),
+      (('GB', '9', 'Treppe-Nord'), 37),
     ],
   },
   ('GB', '9', 'EN_2'): {
@@ -27796,7 +27796,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '9', 'EN_3'), 240),
       (('GB', '9', 'EN_5'), 605),
-      (('GB', '9', 'Treppe Nord'), 83),
+      (('GB', '9', 'Treppe-Nord'), 83),
     ],
   },
   ('GB', '9', 'EN_3'): {
@@ -27818,7 +27818,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GB', '9', 'EN_2'), 605),
       (('GB', '9', 'EN_6'), 238),
-      (('GB', '9', 'Treppe Süd'), 86),
+      (('GB', '9', 'Treppe-Süd'), 86),
     ],
   },
   ('GB', '9', 'EN_6'): {
@@ -27828,39 +27828,39 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GB', '9', 'EN_5'), 238),
     ],
   },
-  ('GB', '9', 'Treppe Nord'): {
+  ('GB', '9', 'Treppe-Nord'): {
     'Coordinates': [397, 387],
     'Connections': [
-      (('GB', '02', 'Treppe Nord'), 2),
-      (('GB', '03', 'Treppe Nord'), 2),
-      (('GB', '04', 'Treppe Nord'), 2),
-      (('GB', '1', 'Treppe Nord'), 2),
-      (('GB', '2', 'Treppe Nord'), 2),
-      (('GB', '3', 'Treppe Nord'), 2),
-      (('GB', '4', 'Treppe Nord'), 2),
-      (('GB', '5', 'Treppe Nord'), 2),
-      (('GB', '6', 'Treppe Nord'), 2),
-      (('GB', '7', 'Treppe Nord'), 2),
-      (('GB', '8', 'Treppe Nord'), 2),
+      (('GB', '02', 'Treppe-Nord'), 2),
+      (('GB', '03', 'Treppe-Nord'), 2),
+      (('GB', '04', 'Treppe-Nord'), 2),
+      (('GB', '1', 'Treppe-Nord'), 2),
+      (('GB', '2', 'Treppe-Nord'), 2),
+      (('GB', '3', 'Treppe-Nord'), 2),
+      (('GB', '4', 'Treppe-Nord'), 2),
+      (('GB', '5', 'Treppe-Nord'), 2),
+      (('GB', '6', 'Treppe-Nord'), 2),
+      (('GB', '7', 'Treppe-Nord'), 2),
+      (('GB', '8', 'Treppe-Nord'), 2),
       (('GB', '9', '7'), 45),
       (('GB', '9', 'EN_1'), 37),
       (('GB', '9', 'EN_2'), 83),
     ],
   },
-  ('GB', '9', 'Treppe Süd'): {
+  ('GB', '9', 'Treppe-Süd'): {
     'Coordinates': [820, 813],
     'Connections': [
-      (('GB', '02', 'Treppe Süd'), 2),
-      (('GB', '03', 'Treppe Süd'), 2),
-      (('GB', '05', 'Treppe Süd'), 2),
-      (('GB', '1', 'Treppe Süd'), 2),
-      (('GB', '2', 'Treppe Süd'), 2),
-      (('GB', '3', 'Treppe Süd'), 2),
-      (('GB', '4', 'Treppe Süd'), 2),
-      (('GB', '5', 'Treppe Süd'), 2),
-      (('GB', '6', 'Treppe Süd'), 2),
-      (('GB', '7', 'Treppe Süd'), 2),
-      (('GB', '8', 'Treppe Süd'), 2),
+      (('GB', '02', 'Treppe-Süd'), 2),
+      (('GB', '03', 'Treppe-Süd'), 2),
+      (('GB', '05', 'Treppe-Süd'), 2),
+      (('GB', '1', 'Treppe-Süd'), 2),
+      (('GB', '2', 'Treppe-Süd'), 2),
+      (('GB', '3', 'Treppe-Süd'), 2),
+      (('GB', '4', 'Treppe-Süd'), 2),
+      (('GB', '5', 'Treppe-Süd'), 2),
+      (('GB', '6', 'Treppe-Süd'), 2),
+      (('GB', '7', 'Treppe-Süd'), 2),
+      (('GB', '8', 'Treppe-Süd'), 2),
       (('GB', '9', '14'), 120),
       (('GB', '9', '15'), 45),
       (('GB', '9', '17'), 37),
@@ -27957,7 +27957,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', '129'), 51),
       (('GD', '02', '135'), 24),
-      (('GD', '02', 'WC Nord Ost'), 35),
+      (('GD', '02', 'WC-Nord-Ost'), 35),
     ],
   },
   ('GD', '02', '135'): {
@@ -28029,7 +28029,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', '165'), 20),
       (('GD', '02', 'EN_12'), 35),
-      (('GD', '02', 'WC Süd Ost'), 34),
+      (('GD', '02', 'WC-Süd-Ost'), 34),
     ],
   },
   ('GD', '02', '165'): {
@@ -28417,7 +28417,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', '331'), 24),
       (('GD', '02', 'EN_3'), 33),
-      (('GD', '02', 'WC Süd West'), 45),
+      (('GD', '02', 'WC-Süd-West'), 45),
     ],
   },
   ('GD', '02', '337'): {
@@ -28502,7 +28502,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', '361'), 16),
       (('GD', '02', '367'), 54),
-      (('GD', '02', 'WC Nord West'), 42),
+      (('GD', '02', 'WC-Nord-West'), 42),
     ],
   },
   ('GD', '02', '367'): {
@@ -29046,48 +29046,48 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '02', 'EN_13'), 38),
     ],
   },
-  ('GD', '02', 'Aufzug Nord Ost'): {
+  ('GD', '02', 'Aufzug-Nord-Ost'): {
     'Coordinates': [540, 207],
     'Connections': [
-      (('GD', '02', 'Treppe Nord Ost'), 29),
-      (('GD', '03', 'Aufzug Nord Ost'), 1),
-      (('GD', '04', 'Aufzug Nord Ost'), 1),
-      (('GD', '05Z', 'Aufzug Nord Ost'), 1),
-      (('GD', '1', 'Aufzug Nord Ost'), 1),
-      (('GD', '2', 'Aufzug Nord Ost'), 1),
+      (('GD', '02', 'Treppe-Nord-Ost'), 29),
+      (('GD', '03', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '04', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '05Z', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '1', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '2', 'Aufzug-Nord-Ost'), 1),
     ],
   },
-  ('GD', '02', 'Aufzug Nord West'): {
+  ('GD', '02', 'Aufzug-Nord-West'): {
     'Coordinates': [219, 521],
     'Connections': [
-      (('GD', '02', 'Treppe Nord West'), 35),
-      (('GD', '03', 'Aufzug Nord West'), 1),
-      (('GD', '04', 'Aufzug Nord West'), 1),
-      (('GD', '06', 'Aufzug Nord West'), 1),
-      (('GD', '1', 'Aufzug Nord West'), 1),
-      (('GD', '2', 'Aufzug Nord West'), 1),
+      (('GD', '02', 'Treppe-Nord-West'), 35),
+      (('GD', '03', 'Aufzug-Nord-West'), 1),
+      (('GD', '04', 'Aufzug-Nord-West'), 1),
+      (('GD', '06', 'Aufzug-Nord-West'), 1),
+      (('GD', '1', 'Aufzug-Nord-West'), 1),
+      (('GD', '2', 'Aufzug-Nord-West'), 1),
     ],
   },
-  ('GD', '02', 'Aufzug Süd Ost'): {
+  ('GD', '02', 'Aufzug-Süd-Ost'): {
     'Coordinates': [1026, 694],
     'Connections': [
       (('GD', '02', 'EN_20'), 16),
-      (('GD', '03', 'Aufzug Süd Ost'), 1),
-      (('GD', '04', 'Aufzug Süd Ost'), 1),
-      (('GD', '05', 'Aufzug Süd Ost'), 1),
-      (('GD', '1', 'Aufzug Süd Ost'), 1),
-      (('GD', '2', 'Aufzug Süd Ost'), 1),
+      (('GD', '03', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '04', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '05', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '1', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '2', 'Aufzug-Süd-Ost'), 1),
     ],
   },
-  ('GD', '02', 'Aufzug Süd West'): {
+  ('GD', '02', 'Aufzug-Süd-West'): {
     'Coordinates': [706, 1006],
     'Connections': [
-      (('GD', '02', 'Treppe Süd West'), 28),
-      (('GD', '03', 'Aufzug Süd West'), 1),
-      (('GD', '04', 'Aufzug Süd West'), 1),
-      (('GD', '05', 'Aufzug Süd West'), 1),
-      (('GD', '1', 'Aufzug Süd West'), 1),
-      (('GD', '2', 'Aufzug Süd West'), 1),
+      (('GD', '02', 'Treppe-Süd-West'), 28),
+      (('GD', '03', 'Aufzug-Süd-West'), 1),
+      (('GD', '04', 'Aufzug-Süd-West'), 1),
+      (('GD', '05', 'Aufzug-Süd-West'), 1),
+      (('GD', '1', 'Aufzug-Süd-West'), 1),
+      (('GD', '2', 'Aufzug-Süd-West'), 1),
     ],
   },
   ('GD', '02', 'EN_0'): {
@@ -29095,7 +29095,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', '316'), 55),
       (('GD', '02', 'EN_21'), 152),
-      (('GD', '02', 'Treppe Süd West'), 34),
+      (('GD', '02', 'Treppe-Süd-West'), 34),
     ],
   },
   ('GD', '02', 'EN_1'): {
@@ -29103,7 +29103,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', '319'), 28),
       (('GD', '02', '323'), 27),
-      (('GD', '02', 'Treppe Süd West'), 39),
+      (('GD', '02', 'Treppe-Süd-West'), 39),
     ],
   },
   ('GD', '02', 'EN_10'): {
@@ -29119,7 +29119,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', 'EN_5'), 122),
       (('GD', '02', 'EN_6'), 51),
-      (('GD', '02', 'WC Nord West'), 34),
+      (('GD', '02', 'WC-Nord-West'), 34),
     ],
   },
   ('GD', '02', 'EN_12'): {
@@ -29142,7 +29142,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', 'EN_15'), 49),
       (('GD', '02', 'EN_9'), 131),
-      (('GD', '02', 'WC Nord Ost'), 42),
+      (('GD', '02', 'WC-Nord-Ost'), 42),
     ],
   },
   ('GD', '02', 'EN_15'): {
@@ -29166,7 +29166,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', 'EN_13'), 28),
       (('GD', '02', 'EN_19'), 171),
-      (('GD', '02', 'WC Süd Ost'), 44),
+      (('GD', '02', 'WC-Süd-Ost'), 44),
     ],
   },
   ('GD', '02', 'EN_19'): {
@@ -29189,9 +29189,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [1014, 684],
     'Connections': [
       (('GD', '02', '177'), 38),
-      (('GD', '02', 'Aufzug Süd Ost'), 16),
+      (('GD', '02', 'Aufzug-Süd-Ost'), 16),
       (('GD', '02', 'EN_19'), 43),
-      (('GD', '02', 'Treppe Süd Ost'), 57),
+      (('GD', '02', 'Treppe-Süd-Ost'), 57),
     ],
   },
   ('GD', '02', 'EN_21'): {
@@ -29199,7 +29199,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', 'EN_0'), 152),
       (('GD', '02', 'EN_2'), 28),
-      (('GD', '02', 'WC Süd West'), 30),
+      (('GD', '02', 'WC-Süd-West'), 30),
     ],
   },
   ('GD', '02', 'EN_3'): {
@@ -29215,7 +29215,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', '373'), 23),
       (('GD', '02', '377'), 26),
-      (('GD', '02', 'Treppe Nord West'), 40),
+      (('GD', '02', 'Treppe-Nord-West'), 40),
     ],
   },
   ('GD', '02', 'EN_5'): {
@@ -29223,7 +29223,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', '380'), 90),
       (('GD', '02', 'EN_11'), 122),
-      (('GD', '02', 'Treppe Nord West'), 36),
+      (('GD', '02', 'Treppe-Nord-West'), 36),
     ],
   },
   ('GD', '02', 'EN_6'): {
@@ -29247,7 +29247,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', '119'), 23),
       (('GD', '02', '123'), 28),
-      (('GD', '02', 'Treppe Nord Ost'), 35),
+      (('GD', '02', 'Treppe-Nord-Ost'), 35),
     ],
   },
   ('GD', '02', 'EN_9'): {
@@ -29255,84 +29255,84 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '02', '118'), 82),
       (('GD', '02', 'EN_14'), 131),
-      (('GD', '02', 'Treppe Nord Ost'), 37),
+      (('GD', '02', 'Treppe-Nord-Ost'), 37),
     ],
   },
-  ('GD', '02', 'Treppe Nord Ost'): {
+  ('GD', '02', 'Treppe-Nord-Ost'): {
     'Coordinates': [559, 229],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord Ost'), 29),
+      (('GD', '02', 'Aufzug-Nord-Ost'), 29),
       (('GD', '02', 'EN_8'), 35),
       (('GD', '02', 'EN_9'), 37),
-      (('GD', '03', 'Treppe Nord Ost'), 2),
-      (('GD', '04', 'Treppe Nord Ost'), 2),
-      (('GD', '05Z', 'Treppe Nord Ost'), 2),
-      (('GD', '06', 'Treppe Nord Ost'), 2),
-      (('GD', '1', 'Treppe Nord Ost'), 2),
-      (('GD', '2', 'Treppe Nord Ost'), 2),
+      (('GD', '03', 'Treppe-Nord-Ost'), 2),
+      (('GD', '04', 'Treppe-Nord-Ost'), 2),
+      (('GD', '05Z', 'Treppe-Nord-Ost'), 2),
+      (('GD', '06', 'Treppe-Nord-Ost'), 2),
+      (('GD', '1', 'Treppe-Nord-Ost'), 2),
+      (('GD', '2', 'Treppe-Nord-Ost'), 2),
     ],
   },
-  ('GD', '02', 'Treppe Nord West'): {
+  ('GD', '02', 'Treppe-Nord-West'): {
     'Coordinates': [244, 545],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord West'), 35),
+      (('GD', '02', 'Aufzug-Nord-West'), 35),
       (('GD', '02', 'EN_4'), 40),
       (('GD', '02', 'EN_5'), 36),
-      (('GD', '03', 'Treppe Nord West'), 2),
-      (('GD', '04', 'Treppe Nord West'), 2),
-      (('GD', '06', 'Treppe Nord West'), 2),
-      (('GD', '1', 'Treppe Nord West'), 2),
-      (('GD', '2', 'Treppe Nord West'), 2),
-      (('GD', '3', 'Treppe Nord West'), 2),
+      (('GD', '03', 'Treppe-Nord-West'), 2),
+      (('GD', '04', 'Treppe-Nord-West'), 2),
+      (('GD', '06', 'Treppe-Nord-West'), 2),
+      (('GD', '1', 'Treppe-Nord-West'), 2),
+      (('GD', '2', 'Treppe-Nord-West'), 2),
+      (('GD', '3', 'Treppe-Nord-West'), 2),
     ],
   },
-  ('GD', '02', 'Treppe Süd Ost'): {
+  ('GD', '02', 'Treppe-Süd-Ost'): {
     'Coordinates': [976, 642],
     'Connections': [
       (('GD', '02', 'EN_20'), 57),
-      (('GD', '03', 'Treppe Süd Ost'), 2),
-      (('GD', '04', 'Treppe Süd Ost'), 2),
-      (('GD', '05', 'Treppe Süd Ost'), 2),
-      (('GD', '1', 'Treppe Süd Ost'), 2),
-      (('GD', '2', 'Treppe Süd Ost'), 2),
-      (('GD', '3', 'Treppe Süd Ost'), 2),
+      (('GD', '03', 'Treppe-Süd-Ost'), 2),
+      (('GD', '04', 'Treppe-Süd-Ost'), 2),
+      (('GD', '05', 'Treppe-Süd-Ost'), 2),
+      (('GD', '1', 'Treppe-Süd-Ost'), 2),
+      (('GD', '2', 'Treppe-Süd-Ost'), 2),
+      (('GD', '3', 'Treppe-Süd-Ost'), 2),
     ],
   },
-  ('GD', '02', 'Treppe Süd West'): {
+  ('GD', '02', 'Treppe-Süd-West'): {
     'Coordinates': [685, 987],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd West'), 28),
+      (('GD', '02', 'Aufzug-Süd-West'), 28),
       (('GD', '02', 'EN_0'), 34),
       (('GD', '02', 'EN_1'), 39),
-      (('GD', '03', 'Treppe Süd West'), 2),
-      (('GD', '04', 'Treppe Süd West'), 2),
-      (('GD', '05', 'Treppe Süd West'), 2),
-      (('GD', '1', 'Treppe Süd West'), 2),
-      (('GD', '2', 'Treppe Süd West'), 2),
+      (('GD', '03', 'Treppe-Süd-West'), 2),
+      (('GD', '04', 'Treppe-Süd-West'), 2),
+      (('GD', '05', 'Treppe-Süd-West'), 2),
+      (('GD', '1', 'Treppe-Süd-West'), 2),
+      (('GD', '2', 'Treppe-Süd-West'), 2),
     ],
   },
-  ('GD', '02', 'WC Nord Ost'): {
+  ('GD', '02', 'WC-Nord-Ost'): {
     'Coordinates': [652, 322],
     'Connections': [
       (('GD', '02', '131'), 35),
       (('GD', '02', 'EN_14'), 42),
     ],
   },
-  ('GD', '02', 'WC Nord West'): {
+  ('GD', '02', 'WC-Nord-West'): {
     'Coordinates': [335, 639],
     'Connections': [
       (('GD', '02', '365'), 42),
       (('GD', '02', 'EN_11'), 34),
     ],
   },
-  ('GD', '02', 'WC Süd Ost'): {
+  ('GD', '02', 'WC-Süd-Ost'): {
     'Coordinates': [898, 565],
     'Connections': [
       (('GD', '02', '161'), 34),
       (('GD', '02', 'EN_18'), 44),
     ],
   },
-  ('GD', '02', 'WC Süd West'): {
+  ('GD', '02', 'WC-Süd-West'): {
     'Coordinates': [583, 882],
     'Connections': [
       (('GD', '02', '335'), 45),
@@ -29419,7 +29419,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '129'), 47),
       (('GD', '03', '135'), 25),
-      (('GD', '03', 'WC Nord Ost'), 36),
+      (('GD', '03', 'WC-Nord-Ost'), 36),
     ],
   },
   ('GD', '03', '135'): {
@@ -29476,7 +29476,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '165'), 23),
       (('GD', '03', 'EN_13'), 34),
-      (('GD', '03', 'WC Süd Ost'), 35),
+      (('GD', '03', 'WC-Süd-Ost'), 35),
     ],
   },
   ('GD', '03', '165'): {
@@ -29770,7 +29770,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '331'), 23),
       (('GD', '03', 'EN_19'), 35),
-      (('GD', '03', 'WC Süd West'), 43),
+      (('GD', '03', 'WC-Süd-West'), 43),
     ],
   },
   ('GD', '03', '337'): {
@@ -29869,7 +29869,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '361'), 20),
       (('GD', '03', '367'), 52),
-      (('GD', '03', 'WC Nord West'), 35),
+      (('GD', '03', 'WC-Nord-West'), 35),
     ],
   },
   ('GD', '03', '366'): {
@@ -29975,7 +29975,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '389'), 22),
       (('GD', '03', '405'), 51),
-      (('GD', '03', 'Eingang Nord West 2'), 57),
+      (('GD', '03', 'Eingang-Nord-West-2'), 57),
     ],
   },
   ('GD', '03', '403'): {
@@ -29995,8 +29995,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '03', '421'): {
     'Coordinates': [404, 240],
     'Connections': [
-      (('GD', '03', 'Eingang Nord Ost'), 95),
-      (('GD', '03', 'Treppe Nord Ost 2'), 62),
+      (('GD', '03', 'Eingang-Nord-Ost'), 95),
+      (('GD', '03', 'Treppe-Nord-Ost-2'), 62),
     ],
   },
   ('GD', '03', '507'): {
@@ -30202,48 +30202,48 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '03', '629'), 14),
     ],
   },
-  ('GD', '03', 'Aufzug Nord Ost'): {
+  ('GD', '03', 'Aufzug-Nord-Ost'): {
     'Coordinates': [515, 188],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord Ost'), 1),
-      (('GD', '03', 'Treppe Nord Ost'), 23),
-      (('GD', '04', 'Aufzug Nord Ost'), 1),
-      (('GD', '05Z', 'Aufzug Nord Ost'), 1),
-      (('GD', '1', 'Aufzug Nord Ost'), 1),
-      (('GD', '2', 'Aufzug Nord Ost'), 1),
+      (('GD', '02', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '03', 'Treppe-Nord-Ost'), 23),
+      (('GD', '04', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '05Z', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '1', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '2', 'Aufzug-Nord-Ost'), 1),
     ],
   },
-  ('GD', '03', 'Aufzug Nord West'): {
+  ('GD', '03', 'Aufzug-Nord-West'): {
     'Coordinates': [195, 504],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord West'), 1),
-      (('GD', '03', 'Treppe Nord West'), 31),
-      (('GD', '04', 'Aufzug Nord West'), 1),
-      (('GD', '06', 'Aufzug Nord West'), 1),
-      (('GD', '1', 'Aufzug Nord West'), 1),
-      (('GD', '2', 'Aufzug Nord West'), 1),
+      (('GD', '02', 'Aufzug-Nord-West'), 1),
+      (('GD', '03', 'Treppe-Nord-West'), 31),
+      (('GD', '04', 'Aufzug-Nord-West'), 1),
+      (('GD', '06', 'Aufzug-Nord-West'), 1),
+      (('GD', '1', 'Aufzug-Nord-West'), 1),
+      (('GD', '2', 'Aufzug-Nord-West'), 1),
     ],
   },
-  ('GD', '03', 'Aufzug Süd Ost'): {
+  ('GD', '03', 'Aufzug-Süd-Ost'): {
     'Coordinates': [1003, 668],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd Ost'), 1),
-      (('GD', '03', 'Treppe Süd Ost'), 30),
-      (('GD', '04', 'Aufzug Süd Ost'), 1),
-      (('GD', '05', 'Aufzug Süd Ost'), 1),
-      (('GD', '1', 'Aufzug Süd Ost'), 1),
-      (('GD', '2', 'Aufzug Süd Ost'), 1),
+      (('GD', '02', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '03', 'Treppe-Süd-Ost'), 30),
+      (('GD', '04', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '05', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '1', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '2', 'Aufzug-Süd-Ost'), 1),
     ],
   },
-  ('GD', '03', 'Aufzug Süd West'): {
+  ('GD', '03', 'Aufzug-Süd-West'): {
     'Coordinates': [684, 988],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd West'), 1),
-      (('GD', '03', 'Treppe Süd West'), 33),
-      (('GD', '04', 'Aufzug Süd West'), 1),
-      (('GD', '05', 'Aufzug Süd West'), 1),
-      (('GD', '1', 'Aufzug Süd West'), 1),
-      (('GD', '2', 'Aufzug Süd West'), 1),
+      (('GD', '02', 'Aufzug-Süd-West'), 1),
+      (('GD', '03', 'Treppe-Süd-West'), 33),
+      (('GD', '04', 'Aufzug-Süd-West'), 1),
+      (('GD', '05', 'Aufzug-Süd-West'), 1),
+      (('GD', '1', 'Aufzug-Süd-West'), 1),
+      (('GD', '2', 'Aufzug-Süd-West'), 1),
     ],
   },
   ('GD', '03', 'EN_0'): {
@@ -30251,7 +30251,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '316'), 52),
       (('GD', '03', '324'), 40),
-      (('GD', '03', 'Treppe Süd West'), 33),
+      (('GD', '03', 'Treppe-Süd-West'), 33),
     ],
   },
   ('GD', '03', 'EN_1'): {
@@ -30259,7 +30259,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '319'), 26),
       (('GD', '03', '323'), 27),
-      (('GD', '03', 'Treppe Süd West'), 41),
+      (('GD', '03', 'Treppe-Süd-West'), 41),
     ],
   },
   ('GD', '03', 'EN_10'): {
@@ -30297,7 +30297,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '173'), 19),
       (('GD', '03', '177'), 23),
-      (('GD', '03', 'Treppe Süd Ost'), 35),
+      (('GD', '03', 'Treppe-Süd-Ost'), 35),
     ],
   },
   ('GD', '03', 'EN_15'): {
@@ -30305,8 +30305,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '182'), 96),
       (('GD', '03', 'EN_25'), 140),
-      (('GD', '03', 'Treppe Süd Ost'), 42),
-      (('GD', '03', 'Treppe Süd Ost 2'), 56),
+      (('GD', '03', 'Treppe-Süd-Ost'), 42),
+      (('GD', '03', 'Treppe-Süd-Ost-2'), 56),
     ],
   },
   ('GD', '03', 'EN_16'): {
@@ -30345,7 +30345,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '373'), 28),
       (('GD', '03', '377'), 28),
-      (('GD', '03', 'Treppe Nord West'), 34),
+      (('GD', '03', 'Treppe-Nord-West'), 34),
     ],
   },
   ('GD', '03', 'EN_20'): {
@@ -30367,7 +30367,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '180'), 54),
       (('GD', '03', '229'), 61),
-      (('GD', '03', 'Treppe Süd Ost 2'), 76),
+      (('GD', '03', 'Treppe-Süd-Ost-2'), 76),
     ],
   },
   ('GD', '03', 'EN_23'): {
@@ -30375,7 +30375,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '403'), 20),
       (('GD', '03', '405'), 23),
-      (('GD', '03', 'Eingang Nord West'), 25),
+      (('GD', '03', 'Eingang-Nord-West'), 25),
     ],
   },
   ('GD', '03', 'EN_25'): {
@@ -30383,7 +30383,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', 'EN_12'), 43),
       (('GD', '03', 'EN_15'), 140),
-      (('GD', '03', 'WC Süd Ost'), 41),
+      (('GD', '03', 'WC-Süd-Ost'), 41),
     ],
   },
   ('GD', '03', 'EN_27'): {
@@ -30391,7 +30391,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '366'), 50),
       (('GD', '03', '507'), 32),
-      (('GD', '03', 'WC Nord West'), 39),
+      (('GD', '03', 'WC-Nord-West'), 39),
     ],
   },
   ('GD', '03', 'EN_28'): {
@@ -30399,7 +30399,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '328'), 42),
       (('GD', '03', '608'), 19),
-      (('GD', '03', 'WC Süd West'), 30),
+      (('GD', '03', 'WC-Süd-West'), 30),
     ],
   },
   ('GD', '03', 'EN_3'): {
@@ -30407,7 +30407,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '372'), 42),
       (('GD', '03', '376'), 59),
-      (('GD', '03', 'Treppe Nord West'), 38),
+      (('GD', '03', 'Treppe-Nord-West'), 38),
     ],
   },
   ('GD', '03', 'EN_4'): {
@@ -30441,7 +30441,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '117'), 52),
       (('GD', '03', '127'), 64),
-      (('GD', '03', 'Treppe Nord Ost'), 37),
+      (('GD', '03', 'Treppe-Nord-Ost'), 37),
     ],
   },
   ('GD', '03', 'EN_8'): {
@@ -30449,7 +30449,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', 'EN_6'), 40),
       (('GD', '03', 'EN_9'), 148),
-      (('GD', '03', 'WC Nord Ost'), 43),
+      (('GD', '03', 'WC-Nord-Ost'), 43),
     ],
   },
   ('GD', '03', 'EN_9'): {
@@ -30457,124 +30457,124 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '03', '118'), 74),
       (('GD', '03', 'EN_8'), 148),
-      (('GD', '03', 'Treppe Nord Ost'), 40),
-      (('GD', '03', 'Treppe Nord Ost 2'), 54),
+      (('GD', '03', 'Treppe-Nord-Ost'), 40),
+      (('GD', '03', 'Treppe-Nord-Ost-2'), 54),
     ],
   },
-  ('GD', '03', 'Eingang Nord Ost'): {
+  ('GD', '03', 'Eingang-Nord-Ost'): {
     'Coordinates': [358, 157],
     'Connections': [
       (('GD', '03', '421'), 95),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GD', '03', 'Eingang Nord West'): {
+  ('GD', '03', 'Eingang-Nord-West'): {
     'Coordinates': [106, 366],
     'Connections': [
       (('GD', '03', 'EN_23'), 25),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GD', '03', 'Eingang Nord West 2'): {
+  ('GD', '03', 'Eingang-Nord-West-2'): {
     'Coordinates': [57, 403],
     'Connections': [
       (('GD', '03', '401'), 57),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('GD', '03', 'Treppe Nord Ost'): {
+  ('GD', '03', 'Treppe-Nord-Ost'): {
     'Coordinates': [532, 203],
     'Connections': [
-      (('GD', '02', 'Treppe Nord Ost'), 2),
-      (('GD', '03', 'Aufzug Nord Ost'), 23),
+      (('GD', '02', 'Treppe-Nord-Ost'), 2),
+      (('GD', '03', 'Aufzug-Nord-Ost'), 23),
       (('GD', '03', 'EN_7'), 37),
       (('GD', '03', 'EN_9'), 40),
-      (('GD', '04', 'Treppe Nord Ost'), 2),
-      (('GD', '05Z', 'Treppe Nord Ost'), 2),
-      (('GD', '06', 'Treppe Nord Ost'), 2),
-      (('GD', '1', 'Treppe Nord Ost'), 2),
-      (('GD', '2', 'Treppe Nord Ost'), 2),
+      (('GD', '04', 'Treppe-Nord-Ost'), 2),
+      (('GD', '05Z', 'Treppe-Nord-Ost'), 2),
+      (('GD', '06', 'Treppe-Nord-Ost'), 2),
+      (('GD', '1', 'Treppe-Nord-Ost'), 2),
+      (('GD', '2', 'Treppe-Nord-Ost'), 2),
     ],
   },
-  ('GD', '03', 'Treppe Nord Ost 2'): {
+  ('GD', '03', 'Treppe-Nord-Ost-2'): {
     'Coordinates': [461, 264],
     'Connections': [
       (('GD', '03', '421'), 62),
       (('GD', '03', 'EN_9'), 54),
-      (('GD', '04', 'Treppe Nord Ost 2'), 2),
+      (('GD', '04', 'Treppe-Nord-Ost-2'), 2),
     ],
   },
-  ('GD', '03', 'Treppe Nord West'): {
+  ('GD', '03', 'Treppe-Nord-West'): {
     'Coordinates': [218, 525],
     'Connections': [
-      (('GD', '02', 'Treppe Nord West'), 2),
-      (('GD', '03', 'Aufzug Nord West'), 31),
+      (('GD', '02', 'Treppe-Nord-West'), 2),
+      (('GD', '03', 'Aufzug-Nord-West'), 31),
       (('GD', '03', 'EN_2'), 34),
       (('GD', '03', 'EN_3'), 38),
-      (('GD', '04', 'Treppe Nord West'), 2),
-      (('GD', '06', 'Treppe Nord West'), 2),
-      (('GD', '1', 'Treppe Nord West'), 2),
-      (('GD', '2', 'Treppe Nord West'), 2),
-      (('GD', '3', 'Treppe Nord West'), 2),
+      (('GD', '04', 'Treppe-Nord-West'), 2),
+      (('GD', '06', 'Treppe-Nord-West'), 2),
+      (('GD', '1', 'Treppe-Nord-West'), 2),
+      (('GD', '2', 'Treppe-Nord-West'), 2),
+      (('GD', '3', 'Treppe-Nord-West'), 2),
     ],
   },
-  ('GD', '03', 'Treppe Süd Ost'): {
+  ('GD', '03', 'Treppe-Süd-Ost'): {
     'Coordinates': [980, 649],
     'Connections': [
-      (('GD', '02', 'Treppe Süd Ost'), 2),
-      (('GD', '03', 'Aufzug Süd Ost'), 30),
+      (('GD', '02', 'Treppe-Süd-Ost'), 2),
+      (('GD', '03', 'Aufzug-Süd-Ost'), 30),
       (('GD', '03', 'EN_14'), 35),
       (('GD', '03', 'EN_15'), 42),
-      (('GD', '04', 'Treppe Süd Ost'), 2),
-      (('GD', '05', 'Treppe Süd Ost'), 2),
-      (('GD', '1', 'Treppe Süd Ost'), 2),
-      (('GD', '2', 'Treppe Süd Ost'), 2),
-      (('GD', '3', 'Treppe Süd Ost'), 2),
+      (('GD', '04', 'Treppe-Süd-Ost'), 2),
+      (('GD', '05', 'Treppe-Süd-Ost'), 2),
+      (('GD', '1', 'Treppe-Süd-Ost'), 2),
+      (('GD', '2', 'Treppe-Süd-Ost'), 2),
+      (('GD', '3', 'Treppe-Süd-Ost'), 2),
     ],
   },
-  ('GD', '03', 'Treppe Süd Ost 2'): {
+  ('GD', '03', 'Treppe-Süd-Ost-2'): {
     'Coordinates': [916, 723],
     'Connections': [
       (('GD', '03', 'EN_15'), 56),
       (('GD', '03', 'EN_22'), 76),
-      (('GD', '04', 'Treppe Süd Ost 2'), 2),
+      (('GD', '04', 'Treppe-Süd-Ost-2'), 2),
     ],
   },
-  ('GD', '03', 'Treppe Süd West'): {
+  ('GD', '03', 'Treppe-Süd-West'): {
     'Coordinates': [662, 963],
     'Connections': [
-      (('GD', '02', 'Treppe Süd West'), 2),
-      (('GD', '03', 'Aufzug Süd West'), 33),
+      (('GD', '02', 'Treppe-Süd-West'), 2),
+      (('GD', '03', 'Aufzug-Süd-West'), 33),
       (('GD', '03', 'EN_0'), 33),
       (('GD', '03', 'EN_1'), 41),
-      (('GD', '04', 'Treppe Süd West'), 2),
-      (('GD', '05', 'Treppe Süd West'), 2),
-      (('GD', '1', 'Treppe Süd West'), 2),
-      (('GD', '2', 'Treppe Süd West'), 2),
+      (('GD', '04', 'Treppe-Süd-West'), 2),
+      (('GD', '05', 'Treppe-Süd-West'), 2),
+      (('GD', '1', 'Treppe-Süd-West'), 2),
+      (('GD', '2', 'Treppe-Süd-West'), 2),
     ],
   },
-  ('GD', '03', 'WC Nord Ost'): {
+  ('GD', '03', 'WC-Nord-Ost'): {
     'Coordinates': [631, 301],
     'Connections': [
       (('GD', '03', '133'), 36),
       (('GD', '03', 'EN_8'), 43),
     ],
   },
-  ('GD', '03', 'WC Nord West'): {
+  ('GD', '03', 'WC-Nord-West'): {
     'Coordinates': [307, 617],
     'Connections': [
       (('GD', '03', '365'), 35),
       (('GD', '03', 'EN_27'), 39),
     ],
   },
-  ('GD', '03', 'WC Süd Ost'): {
+  ('GD', '03', 'WC-Süd-Ost'): {
     'Coordinates': [883, 553],
     'Connections': [
       (('GD', '03', '161'), 35),
       (('GD', '03', 'EN_25'), 41),
     ],
   },
-  ('GD', '03', 'WC Süd West'): {
+  ('GD', '03', 'WC-Süd-West'): {
     'Coordinates': [565, 866],
     'Connections': [
       (('GD', '03', '335'), 43),
@@ -30709,7 +30709,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [73, 429],
     'Connections': [
       (('GD', '04', 'EN_18'), 86),
-      (('GD', '04', 'WC Nord West'), 51),
+      (('GD', '04', 'WC-Nord-West'), 51),
     ],
   },
   ('GD', '04', '520'): {
@@ -30724,55 +30724,55 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '04', 'EN_11'), 33),
     ],
   },
-  ('GD', '04', 'Aufzug Nord Ost'): {
+  ('GD', '04', 'Aufzug-Nord-Ost'): {
     'Coordinates': [459, 128],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord Ost'), 1),
-      (('GD', '03', 'Aufzug Nord Ost'), 1),
-      (('GD', '04', 'Treppe Nord Ost'), 33),
-      (('GD', '05Z', 'Aufzug Nord Ost'), 1),
-      (('GD', '1', 'Aufzug Nord Ost'), 1),
-      (('GD', '2', 'Aufzug Nord Ost'), 1),
+      (('GD', '02', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '03', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '04', 'Treppe-Nord-Ost'), 33),
+      (('GD', '05Z', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '1', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '2', 'Aufzug-Nord-Ost'), 1),
     ],
   },
-  ('GD', '04', 'Aufzug Nord West'): {
+  ('GD', '04', 'Aufzug-Nord-West'): {
     'Coordinates': [145, 448],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord West'), 1),
-      (('GD', '03', 'Aufzug Nord West'), 1),
-      (('GD', '04', 'Treppe Nord West'), 28),
-      (('GD', '06', 'Aufzug Nord West'), 1),
-      (('GD', '1', 'Aufzug Nord West'), 1),
-      (('GD', '2', 'Aufzug Nord West'), 1),
+      (('GD', '02', 'Aufzug-Nord-West'), 1),
+      (('GD', '03', 'Aufzug-Nord-West'), 1),
+      (('GD', '04', 'Treppe-Nord-West'), 28),
+      (('GD', '06', 'Aufzug-Nord-West'), 1),
+      (('GD', '1', 'Aufzug-Nord-West'), 1),
+      (('GD', '2', 'Aufzug-Nord-West'), 1),
     ],
   },
-  ('GD', '04', 'Aufzug Süd'): {
+  ('GD', '04', 'Aufzug-Süd'): {
     'Coordinates': [866, 743],
     'Connections': [
-      (('GD', '04', 'Treppe Süd'), 25),
-      (('GD', '05', 'Aufzug Süd'), 1),
+      (('GD', '04', 'Treppe-Süd'), 25),
+      (('GD', '05', 'Aufzug-Süd'), 1),
     ],
   },
-  ('GD', '04', 'Aufzug Süd Ost'): {
+  ('GD', '04', 'Aufzug-Süd-Ost'): {
     'Coordinates': [942, 613],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd Ost'), 1),
-      (('GD', '03', 'Aufzug Süd Ost'), 1),
-      (('GD', '04', 'Treppe Süd Ost'), 27),
-      (('GD', '05', 'Aufzug Süd Ost'), 1),
-      (('GD', '1', 'Aufzug Süd Ost'), 1),
-      (('GD', '2', 'Aufzug Süd Ost'), 1),
+      (('GD', '02', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '03', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '04', 'Treppe-Süd-Ost'), 27),
+      (('GD', '05', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '1', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '2', 'Aufzug-Süd-Ost'), 1),
     ],
   },
-  ('GD', '04', 'Aufzug Süd West'): {
+  ('GD', '04', 'Aufzug-Süd-West'): {
     'Coordinates': [624, 931],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd West'), 1),
-      (('GD', '03', 'Aufzug Süd West'), 1),
-      (('GD', '04', 'Treppe Süd West'), 27),
-      (('GD', '05', 'Aufzug Süd West'), 1),
-      (('GD', '1', 'Aufzug Süd West'), 1),
-      (('GD', '2', 'Aufzug Süd West'), 1),
+      (('GD', '02', 'Aufzug-Süd-West'), 1),
+      (('GD', '03', 'Aufzug-Süd-West'), 1),
+      (('GD', '04', 'Treppe-Süd-West'), 27),
+      (('GD', '05', 'Aufzug-Süd-West'), 1),
+      (('GD', '1', 'Aufzug-Süd-West'), 1),
+      (('GD', '2', 'Aufzug-Süd-West'), 1),
     ],
   },
   ('GD', '04', 'EN_0'): {
@@ -30780,8 +30780,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '04', '118'), 62),
       (('GD', '04', 'EN_1'), 197),
-      (('GD', '04', 'Treppe Nord Ost'), 42),
-      (('GD', '04', 'Treppe Nord Ost 2'), 114),
+      (('GD', '04', 'Treppe-Nord-Ost'), 42),
+      (('GD', '04', 'Treppe-Nord-Ost-2'), 114),
     ],
   },
   ('GD', '04', 'EN_1'): {
@@ -30790,7 +30790,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '04', 'EN_0'), 197),
       (('GD', '04', 'EN_10'), 85),
       (('GD', '04', 'EN_2'), 52),
-      (('GD', '04', 'Treppe Nord Ost 2'), 110),
+      (('GD', '04', 'Treppe-Nord-Ost-2'), 110),
     ],
   },
   ('GD', '04', 'EN_10'): {
@@ -30808,7 +30808,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '04', '620'), 33),
       (('GD', '04', 'EN_4'), 81),
       (('GD', '04', 'HGD30'), 31),
-      (('GD', '04', 'Treppe Süd Ost 2'), 89),
+      (('GD', '04', 'Treppe-Süd-Ost-2'), 89),
     ],
   },
   ('GD', '04', 'EN_12'): {
@@ -30816,7 +30816,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '04', '182'), 126),
       (('GD', '04', 'EN_17'), 187),
-      (('GD', '04', 'Treppe Süd'), 40),
+      (('GD', '04', 'Treppe-Süd'), 40),
     ],
   },
   ('GD', '04', 'EN_13'): {
@@ -30824,14 +30824,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '04', '316'), 49),
       (('GD', '04', 'EN_21'), 179),
-      (('GD', '04', 'Treppe Süd West'), 35),
+      (('GD', '04', 'Treppe-Süd-West'), 35),
     ],
   },
   ('GD', '04', 'EN_14'): {
     'Coordinates': [583, 942],
     'Connections': [
       (('GD', '04', '312'), 93),
-      (('GD', '04', 'Treppe Süd West'), 40),
+      (('GD', '04', 'Treppe-Süd-West'), 40),
     ],
   },
   ('GD', '04', 'EN_15'): {
@@ -30859,8 +30859,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [134, 489],
     'Connections': [
       (('GD', '04', '385'), 86),
-      (('GD', '04', 'Treppe Nord West'), 35),
-      (('GD', '04', 'WC Nord West'), 61),
+      (('GD', '04', 'Treppe-Nord-West'), 35),
+      (('GD', '04', 'WC-Nord-West'), 61),
     ],
   },
   ('GD', '04', 'EN_19'): {
@@ -30868,7 +30868,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '04', '376'), 51),
       (('GD', '04', 'EN_20'), 174),
-      (('GD', '04', 'Treppe Nord West'), 44),
+      (('GD', '04', 'Treppe-Nord-West'), 44),
     ],
   },
   ('GD', '04', 'EN_2'): {
@@ -30908,7 +30908,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '04', 'EN_3'), 58),
       (('GD', '04', 'EN_5'), 77),
       (('GD', '04', 'EN_7'), 190),
-      (('GD', '04', 'Treppe Süd Ost 2'), 98),
+      (('GD', '04', 'Treppe-Süd-Ost-2'), 98),
     ],
   },
   ('GD', '04', 'EN_5'): {
@@ -30923,7 +30923,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '04', '165'), 40),
       (('GD', '04', '184'), 91),
-      (('GD', '04', 'Treppe Süd Ost'), 39),
+      (('GD', '04', 'Treppe-Süd-Ost'), 39),
     ],
   },
   ('GD', '04', 'EN_7'): {
@@ -30931,8 +30931,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '04', '180'), 74),
       (('GD', '04', 'EN_4'), 190),
-      (('GD', '04', 'Treppe Süd Ost'), 42),
-      (('GD', '04', 'Treppe Süd Ost 2'), 115),
+      (('GD', '04', 'Treppe-Süd-Ost'), 42),
+      (('GD', '04', 'Treppe-Süd-Ost-2'), 115),
     ],
   },
   ('GD', '04', 'EN_8'): {
@@ -30967,93 +30967,93 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '04', 'EN_11'), 31),
     ],
   },
-  ('GD', '04', 'Treppe Nord Ost'): {
+  ('GD', '04', 'Treppe-Nord-Ost'): {
     'Coordinates': [484, 150],
     'Connections': [
-      (('GD', '02', 'Treppe Nord Ost'), 2),
-      (('GD', '03', 'Treppe Nord Ost'), 2),
-      (('GD', '04', 'Aufzug Nord Ost'), 33),
+      (('GD', '02', 'Treppe-Nord-Ost'), 2),
+      (('GD', '03', 'Treppe-Nord-Ost'), 2),
+      (('GD', '04', 'Aufzug-Nord-Ost'), 33),
       (('GD', '04', 'EN_0'), 42),
-      (('GD', '04', 'WC Nord Ost'), 58),
-      (('GD', '05Z', 'Treppe Nord Ost'), 2),
-      (('GD', '06', 'Treppe Nord Ost'), 2),
-      (('GD', '1', 'Treppe Nord Ost'), 2),
-      (('GD', '2', 'Treppe Nord Ost'), 2),
+      (('GD', '04', 'WC-Nord-Ost'), 58),
+      (('GD', '05Z', 'Treppe-Nord-Ost'), 2),
+      (('GD', '06', 'Treppe-Nord-Ost'), 2),
+      (('GD', '1', 'Treppe-Nord-Ost'), 2),
+      (('GD', '2', 'Treppe-Nord-Ost'), 2),
     ],
   },
-  ('GD', '04', 'Treppe Nord Ost 2'): {
+  ('GD', '04', 'Treppe-Nord-Ost-2'): {
     'Coordinates': [478, 281],
     'Connections': [
-      (('GD', '03', 'Treppe Nord Ost 2'), 2),
+      (('GD', '03', 'Treppe-Nord-Ost-2'), 2),
       (('GD', '04', 'EN_0'), 114),
       (('GD', '04', 'EN_1'), 110),
     ],
   },
-  ('GD', '04', 'Treppe Nord West'): {
+  ('GD', '04', 'Treppe-Nord-West'): {
     'Coordinates': [163, 470],
     'Connections': [
-      (('GD', '02', 'Treppe Nord West'), 2),
-      (('GD', '03', 'Treppe Nord West'), 2),
-      (('GD', '04', 'Aufzug Nord West'), 28),
+      (('GD', '02', 'Treppe-Nord-West'), 2),
+      (('GD', '03', 'Treppe-Nord-West'), 2),
+      (('GD', '04', 'Aufzug-Nord-West'), 28),
       (('GD', '04', 'EN_18'), 35),
       (('GD', '04', 'EN_19'), 44),
-      (('GD', '06', 'Treppe Nord West'), 2),
-      (('GD', '1', 'Treppe Nord West'), 2),
-      (('GD', '2', 'Treppe Nord West'), 2),
-      (('GD', '3', 'Treppe Nord West'), 2),
+      (('GD', '06', 'Treppe-Nord-West'), 2),
+      (('GD', '1', 'Treppe-Nord-West'), 2),
+      (('GD', '2', 'Treppe-Nord-West'), 2),
+      (('GD', '3', 'Treppe-Nord-West'), 2),
     ],
   },
-  ('GD', '04', 'Treppe Süd'): {
+  ('GD', '04', 'Treppe-Süd'): {
     'Coordinates': [846, 758],
     'Connections': [
-      (('GD', '04', 'Aufzug Süd'), 25),
+      (('GD', '04', 'Aufzug-Süd'), 25),
       (('GD', '04', 'EN_12'), 40),
-      (('GD', '05', 'Treppe Süd'), 2),
+      (('GD', '05', 'Treppe-Süd'), 2),
     ],
   },
-  ('GD', '04', 'Treppe Süd Ost'): {
+  ('GD', '04', 'Treppe-Süd-Ost'): {
     'Coordinates': [924, 593],
     'Connections': [
-      (('GD', '02', 'Treppe Süd Ost'), 2),
-      (('GD', '03', 'Treppe Süd Ost'), 2),
-      (('GD', '04', 'Aufzug Süd Ost'), 27),
+      (('GD', '02', 'Treppe-Süd-Ost'), 2),
+      (('GD', '03', 'Treppe-Süd-Ost'), 2),
+      (('GD', '04', 'Aufzug-Süd-Ost'), 27),
       (('GD', '04', 'EN_6'), 39),
       (('GD', '04', 'EN_7'), 42),
-      (('GD', '05', 'Treppe Süd Ost'), 2),
-      (('GD', '1', 'Treppe Süd Ost'), 2),
-      (('GD', '2', 'Treppe Süd Ost'), 2),
-      (('GD', '3', 'Treppe Süd Ost'), 2),
+      (('GD', '05', 'Treppe-Süd-Ost'), 2),
+      (('GD', '1', 'Treppe-Süd-Ost'), 2),
+      (('GD', '2', 'Treppe-Süd-Ost'), 2),
+      (('GD', '3', 'Treppe-Süd-Ost'), 2),
     ],
   },
-  ('GD', '04', 'Treppe Süd Ost 2'): {
+  ('GD', '04', 'Treppe-Süd-Ost-2'): {
     'Coordinates': [791, 589],
     'Connections': [
-      (('GD', '03', 'Treppe Süd Ost 2'), 2),
+      (('GD', '03', 'Treppe-Süd-Ost-2'), 2),
       (('GD', '04', 'EN_11'), 89),
       (('GD', '04', 'EN_4'), 98),
       (('GD', '04', 'EN_7'), 115),
     ],
   },
-  ('GD', '04', 'Treppe Süd West'): {
+  ('GD', '04', 'Treppe-Süd-West'): {
     'Coordinates': [607, 910],
     'Connections': [
-      (('GD', '02', 'Treppe Süd West'), 2),
-      (('GD', '03', 'Treppe Süd West'), 2),
-      (('GD', '04', 'Aufzug Süd West'), 27),
+      (('GD', '02', 'Treppe-Süd-West'), 2),
+      (('GD', '03', 'Treppe-Süd-West'), 2),
+      (('GD', '04', 'Aufzug-Süd-West'), 27),
       (('GD', '04', 'EN_13'), 35),
       (('GD', '04', 'EN_14'), 40),
-      (('GD', '05', 'Treppe Süd West'), 2),
-      (('GD', '1', 'Treppe Süd West'), 2),
-      (('GD', '2', 'Treppe Süd West'), 2),
+      (('GD', '05', 'Treppe-Süd-West'), 2),
+      (('GD', '1', 'Treppe-Süd-West'), 2),
+      (('GD', '2', 'Treppe-Süd-West'), 2),
     ],
   },
-  ('GD', '04', 'WC Nord Ost'): {
+  ('GD', '04', 'WC-Nord-Ost'): {
     'Coordinates': [520, 105],
     'Connections': [
-      (('GD', '04', 'Treppe Nord Ost'), 58),
+      (('GD', '04', 'Treppe-Nord-Ost'), 58),
     ],
   },
-  ('GD', '04', 'WC Nord West'): {
+  ('GD', '04', 'WC-Nord-West'): {
     'Coordinates': [74, 480],
     'Connections': [
       (('GD', '04', '385'), 51),
@@ -31241,50 +31241,50 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '05', 'EN_41'), 15),
     ],
   },
-  ('GD', '05', 'Aufzug Süd'): {
+  ('GD', '05', 'Aufzug-Süd'): {
     'Coordinates': [873, 730],
     'Connections': [
-      (('GD', '04', 'Aufzug Süd'), 1),
+      (('GD', '04', 'Aufzug-Süd'), 1),
       (('GD', '05', 'EN_17'), 24),
     ],
   },
-  ('GD', '05', 'Aufzug Süd Ost'): {
+  ('GD', '05', 'Aufzug-Süd-Ost'): {
     'Coordinates': [952, 618],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd Ost'), 1),
-      (('GD', '03', 'Aufzug Süd Ost'), 1),
-      (('GD', '04', 'Aufzug Süd Ost'), 1),
+      (('GD', '02', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '03', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '04', 'Aufzug-Süd-Ost'), 1),
       (('GD', '05', 'EN_0'), 31),
-      (('GD', '1', 'Aufzug Süd Ost'), 1),
-      (('GD', '2', 'Aufzug Süd Ost'), 1),
+      (('GD', '1', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '2', 'Aufzug-Süd-Ost'), 1),
     ],
   },
-  ('GD', '05', 'Aufzug Süd West'): {
+  ('GD', '05', 'Aufzug-Süd-West'): {
     'Coordinates': [636, 937],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd West'), 1),
-      (('GD', '03', 'Aufzug Süd West'), 1),
-      (('GD', '04', 'Aufzug Süd West'), 1),
+      (('GD', '02', 'Aufzug-Süd-West'), 1),
+      (('GD', '03', 'Aufzug-Süd-West'), 1),
+      (('GD', '04', 'Aufzug-Süd-West'), 1),
       (('GD', '05', 'EN_1'), 32),
-      (('GD', '1', 'Aufzug Süd West'), 1),
-      (('GD', '2', 'Aufzug Süd West'), 1),
+      (('GD', '1', 'Aufzug-Süd-West'), 1),
+      (('GD', '2', 'Aufzug-Süd-West'), 1),
     ],
   },
   ('GD', '05', 'EN_0'): {
     'Coordinates': [931, 595],
     'Connections': [
-      (('GD', '05', 'Aufzug Süd Ost'), 31),
+      (('GD', '05', 'Aufzug-Süd-Ost'), 31),
       (('GD', '05', 'EN_38'), 45),
-      (('GD', '05', 'Treppe Süd Ost'), 47),
+      (('GD', '05', 'Treppe-Süd-Ost'), 47),
     ],
   },
   ('GD', '05', 'EN_1'): {
     'Coordinates': [613, 915],
     'Connections': [
-      (('GD', '05', 'Aufzug Süd West'), 32),
+      (('GD', '05', 'Aufzug-Süd-West'), 32),
       (('GD', '05', 'EN_15'), 52),
       (('GD', '05', 'EN_16'), 54),
-      (('GD', '05', 'Treppe Süd West'), 44),
+      (('GD', '05', 'Treppe-Süd-West'), 44),
     ],
   },
   ('GD', '05', 'EN_10'): {
@@ -31345,9 +31345,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '05', 'EN_17'): {
     'Coordinates': [857, 748],
     'Connections': [
-      (('GD', '05', 'Aufzug Süd'), 24),
+      (('GD', '05', 'Aufzug-Süd'), 24),
       (('GD', '05', 'EN_18'), 54),
-      (('GD', '05', 'Treppe Süd'), 65),
+      (('GD', '05', 'Treppe-Süd'), 65),
     ],
   },
   ('GD', '05', 'EN_18'): {
@@ -31489,7 +31489,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [773, 509],
     'Connections': [
       (('GD', '05', 'EN_35'), 55),
-      (('GD', '05', 'WC Süd Ost'), 28),
+      (('GD', '05', 'WC-Süd-Ost'), 28),
     ],
   },
   ('GD', '05', 'EN_35'): {
@@ -31647,37 +31647,37 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '05', 'EN_8'), 35),
     ],
   },
-  ('GD', '05', 'Treppe Süd'): {
+  ('GD', '05', 'Treppe-Süd'): {
     'Coordinates': [810, 793],
     'Connections': [
-      (('GD', '04', 'Treppe Süd'), 2),
+      (('GD', '04', 'Treppe-Süd'), 2),
       (('GD', '05', 'EN_17'), 65),
     ],
   },
-  ('GD', '05', 'Treppe Süd Ost'): {
+  ('GD', '05', 'Treppe-Süd-Ost'): {
     'Coordinates': [897, 563],
     'Connections': [
-      (('GD', '02', 'Treppe Süd Ost'), 2),
-      (('GD', '03', 'Treppe Süd Ost'), 2),
-      (('GD', '04', 'Treppe Süd Ost'), 2),
+      (('GD', '02', 'Treppe-Süd-Ost'), 2),
+      (('GD', '03', 'Treppe-Süd-Ost'), 2),
+      (('GD', '04', 'Treppe-Süd-Ost'), 2),
       (('GD', '05', 'EN_0'), 47),
-      (('GD', '1', 'Treppe Süd Ost'), 2),
-      (('GD', '2', 'Treppe Süd Ost'), 2),
-      (('GD', '3', 'Treppe Süd Ost'), 2),
+      (('GD', '1', 'Treppe-Süd-Ost'), 2),
+      (('GD', '2', 'Treppe-Süd-Ost'), 2),
+      (('GD', '3', 'Treppe-Süd-Ost'), 2),
     ],
   },
-  ('GD', '05', 'Treppe Süd West'): {
+  ('GD', '05', 'Treppe-Süd-West'): {
     'Coordinates': [581, 885],
     'Connections': [
-      (('GD', '02', 'Treppe Süd West'), 2),
-      (('GD', '03', 'Treppe Süd West'), 2),
-      (('GD', '04', 'Treppe Süd West'), 2),
+      (('GD', '02', 'Treppe-Süd-West'), 2),
+      (('GD', '03', 'Treppe-Süd-West'), 2),
+      (('GD', '04', 'Treppe-Süd-West'), 2),
       (('GD', '05', 'EN_1'), 44),
-      (('GD', '1', 'Treppe Süd West'), 2),
-      (('GD', '2', 'Treppe Süd West'), 2),
+      (('GD', '1', 'Treppe-Süd-West'), 2),
+      (('GD', '2', 'Treppe-Süd-West'), 2),
     ],
   },
-  ('GD', '05', 'WC Süd Ost'): {
+  ('GD', '05', 'WC-Süd-Ost'): {
     'Coordinates': [790, 487],
     'Connections': [
       (('GD', '05', 'EN_34'), 28),
@@ -31703,15 +31703,15 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '05Z', 'EN_1'), 64),
     ],
   },
-  ('GD', '05Z', 'Aufzug Nord Ost'): {
+  ('GD', '05Z', 'Aufzug-Nord-Ost'): {
     'Coordinates': [444, 134],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord Ost'), 1),
-      (('GD', '03', 'Aufzug Nord Ost'), 1),
-      (('GD', '04', 'Aufzug Nord Ost'), 1),
+      (('GD', '02', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '03', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '04', 'Aufzug-Nord-Ost'), 1),
       (('GD', '05Z', 'EN_3'), 24),
-      (('GD', '1', 'Aufzug Nord Ost'), 1),
-      (('GD', '2', 'Aufzug Nord Ost'), 1),
+      (('GD', '1', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '2', 'Aufzug-Nord-Ost'), 1),
     ],
   },
   ('GD', '05Z', 'EN_0'): {
@@ -31738,9 +31738,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '05Z', 'EN_3'): {
     'Coordinates': [427, 117],
     'Connections': [
-      (('GD', '05Z', 'Aufzug Nord Ost'), 24),
+      (('GD', '05Z', 'Aufzug-Nord-Ost'), 24),
       (('GD', '05Z', 'EN_4'), 119),
-      (('GD', '05Z', 'Treppe Nord Ost'), 24),
+      (('GD', '05Z', 'Treppe-Nord-Ost'), 24),
     ],
   },
   ('GD', '05Z', 'EN_4'): {
@@ -31750,16 +31750,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '05Z', 'EN_3'), 119),
     ],
   },
-  ('GD', '05Z', 'Treppe Nord Ost'): {
+  ('GD', '05Z', 'Treppe-Nord-Ost'): {
     'Coordinates': [409, 101],
     'Connections': [
-      (('GD', '02', 'Treppe Nord Ost'), 2),
-      (('GD', '03', 'Treppe Nord Ost'), 2),
-      (('GD', '04', 'Treppe Nord Ost'), 2),
+      (('GD', '02', 'Treppe-Nord-Ost'), 2),
+      (('GD', '03', 'Treppe-Nord-Ost'), 2),
+      (('GD', '04', 'Treppe-Nord-Ost'), 2),
       (('GD', '05Z', 'EN_3'), 24),
-      (('GD', '06', 'Treppe Nord Ost'), 2),
-      (('GD', '1', 'Treppe Nord Ost'), 2),
-      (('GD', '2', 'Treppe Nord Ost'), 2),
+      (('GD', '06', 'Treppe-Nord-Ost'), 2),
+      (('GD', '1', 'Treppe-Nord-Ost'), 2),
+      (('GD', '2', 'Treppe-Nord-Ost'), 2),
     ],
   },
   ('GD', '06', '159'): {
@@ -31955,27 +31955,27 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '06', 'EN_13'), 50),
     ],
   },
-  ('GD', '06', 'Aufzug Nord'): {
+  ('GD', '06', 'Aufzug-Nord'): {
     'Coordinates': [515, 370],
     'Connections': [
       (('GD', '06', 'EN_36'), 37),
     ],
   },
-  ('GD', '06', 'Aufzug Nord Ost+'): {
+  ('GD', '06', 'Aufzug-Nord-Ost+'): {
     'Coordinates': [593, 259],
     'Connections': [
       (('GD', '06', 'EN_20'), 38),
     ],
   },
-  ('GD', '06', 'Aufzug Nord West'): {
+  ('GD', '06', 'Aufzug-Nord-West'): {
     'Coordinates': [267, 565],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord West'), 1),
-      (('GD', '03', 'Aufzug Nord West'), 1),
-      (('GD', '04', 'Aufzug Nord West'), 1),
+      (('GD', '02', 'Aufzug-Nord-West'), 1),
+      (('GD', '03', 'Aufzug-Nord-West'), 1),
+      (('GD', '04', 'Aufzug-Nord-West'), 1),
       (('GD', '06', 'EN_28'), 25),
-      (('GD', '1', 'Aufzug Nord West'), 1),
-      (('GD', '2', 'Aufzug Nord West'), 1),
+      (('GD', '1', 'Aufzug-Nord-West'), 1),
+      (('GD', '2', 'Aufzug-Nord-West'), 1),
     ],
   },
   ('GD', '06', 'EN_0'): {
@@ -32084,11 +32084,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '06', 'EN_20'): {
     'Coordinates': [568, 231],
     'Connections': [
-      (('GD', '06', 'Aufzug Nord Ost+'), 38),
+      (('GD', '06', 'Aufzug-Nord-Ost+'), 38),
       (('GD', '06', 'EN_21'), 88),
       (('GD', '06', 'EN_7'), 44),
       (('GD', '06', 'EN_8'), 40),
-      (('GD', '06', 'Treppe Nord Ost'), 28),
+      (('GD', '06', 'Treppe-Nord-Ost'), 28),
     ],
   },
   ('GD', '06', 'EN_21'): {
@@ -32146,10 +32146,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '06', 'EN_28'): {
     'Coordinates': [249, 548],
     'Connections': [
-      (('GD', '06', 'Aufzug Nord West'), 25),
+      (('GD', '06', 'Aufzug-Nord-West'), 25),
       (('GD', '06', 'EN_26'), 35),
       (('GD', '06', 'EN_29'), 48),
-      (('GD', '06', 'Treppe Nord West'), 37),
+      (('GD', '06', 'Treppe-Nord-West'), 37),
     ],
   },
   ('GD', '06', 'EN_29'): {
@@ -32202,8 +32202,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [491, 398],
     'Connections': [
       (('GD', '06', '220'), 58),
-      (('GD', '06', 'Aufzug Nord'), 37),
-      (('GD', '06', 'Treppe Nord'), 72),
+      (('GD', '06', 'Aufzug-Nord'), 37),
+      (('GD', '06', 'Treppe-Nord'), 72),
     ],
   },
   ('GD', '06', 'EN_37'): {
@@ -32271,34 +32271,34 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '06', 'EN_7'), 35),
     ],
   },
-  ('GD', '06', 'Treppe Nord'): {
+  ('GD', '06', 'Treppe-Nord'): {
     'Coordinates': [443, 452],
     'Connections': [
       (('GD', '06', 'EN_36'), 72),
     ],
   },
-  ('GD', '06', 'Treppe Nord Ost'): {
+  ('GD', '06', 'Treppe-Nord-Ost'): {
     'Coordinates': [547, 213],
     'Connections': [
-      (('GD', '02', 'Treppe Nord Ost'), 2),
-      (('GD', '03', 'Treppe Nord Ost'), 2),
-      (('GD', '04', 'Treppe Nord Ost'), 2),
-      (('GD', '05Z', 'Treppe Nord Ost'), 2),
+      (('GD', '02', 'Treppe-Nord-Ost'), 2),
+      (('GD', '03', 'Treppe-Nord-Ost'), 2),
+      (('GD', '04', 'Treppe-Nord-Ost'), 2),
+      (('GD', '05Z', 'Treppe-Nord-Ost'), 2),
       (('GD', '06', 'EN_20'), 28),
-      (('GD', '1', 'Treppe Nord Ost'), 2),
-      (('GD', '2', 'Treppe Nord Ost'), 2),
+      (('GD', '1', 'Treppe-Nord-Ost'), 2),
+      (('GD', '2', 'Treppe-Nord-Ost'), 2),
     ],
   },
-  ('GD', '06', 'Treppe Nord West'): {
+  ('GD', '06', 'Treppe-Nord-West'): {
     'Coordinates': [222, 522],
     'Connections': [
-      (('GD', '02', 'Treppe Nord West'), 2),
-      (('GD', '03', 'Treppe Nord West'), 2),
-      (('GD', '04', 'Treppe Nord West'), 2),
+      (('GD', '02', 'Treppe-Nord-West'), 2),
+      (('GD', '03', 'Treppe-Nord-West'), 2),
+      (('GD', '04', 'Treppe-Nord-West'), 2),
       (('GD', '06', 'EN_28'), 37),
-      (('GD', '1', 'Treppe Nord West'), 2),
-      (('GD', '2', 'Treppe Nord West'), 2),
-      (('GD', '3', 'Treppe Nord West'), 2),
+      (('GD', '1', 'Treppe-Nord-West'), 2),
+      (('GD', '2', 'Treppe-Nord-West'), 2),
+      (('GD', '3', 'Treppe-Nord-West'), 2),
     ],
   },
   ('GD', '1', '107'): {
@@ -33336,48 +33336,48 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '1', 'EN_10'), 35),
     ],
   },
-  ('GD', '1', 'Aufzug Nord Ost'): {
+  ('GD', '1', 'Aufzug-Nord-Ost'): {
     'Coordinates': [521, 191],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord Ost'), 1),
-      (('GD', '03', 'Aufzug Nord Ost'), 1),
-      (('GD', '04', 'Aufzug Nord Ost'), 1),
-      (('GD', '05Z', 'Aufzug Nord Ost'), 1),
+      (('GD', '02', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '03', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '04', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '05Z', 'Aufzug-Nord-Ost'), 1),
       (('GD', '1', 'EN_135'), 33),
-      (('GD', '2', 'Aufzug Nord Ost'), 1),
+      (('GD', '2', 'Aufzug-Nord-Ost'), 1),
     ],
   },
-  ('GD', '1', 'Aufzug Nord West'): {
+  ('GD', '1', 'Aufzug-Nord-West'): {
     'Coordinates': [203, 508],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord West'), 1),
-      (('GD', '03', 'Aufzug Nord West'), 1),
-      (('GD', '04', 'Aufzug Nord West'), 1),
-      (('GD', '06', 'Aufzug Nord West'), 1),
+      (('GD', '02', 'Aufzug-Nord-West'), 1),
+      (('GD', '03', 'Aufzug-Nord-West'), 1),
+      (('GD', '04', 'Aufzug-Nord-West'), 1),
+      (('GD', '06', 'Aufzug-Nord-West'), 1),
       (('GD', '1', 'EN_93'), 38),
-      (('GD', '2', 'Aufzug Nord West'), 1),
+      (('GD', '2', 'Aufzug-Nord-West'), 1),
     ],
   },
-  ('GD', '1', 'Aufzug Süd Ost'): {
+  ('GD', '1', 'Aufzug-Süd-Ost'): {
     'Coordinates': [1032, 700],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd Ost'), 1),
-      (('GD', '03', 'Aufzug Süd Ost'), 1),
-      (('GD', '04', 'Aufzug Süd Ost'), 1),
-      (('GD', '05', 'Aufzug Süd Ost'), 1),
+      (('GD', '02', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '03', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '04', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '05', 'Aufzug-Süd-Ost'), 1),
       (('GD', '1', 'EN_164'), 30),
-      (('GD', '2', 'Aufzug Süd Ost'), 1),
+      (('GD', '2', 'Aufzug-Süd-Ost'), 1),
     ],
   },
-  ('GD', '1', 'Aufzug Süd West'): {
+  ('GD', '1', 'Aufzug-Süd-West'): {
     'Coordinates': [720, 1020],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd West'), 1),
-      (('GD', '03', 'Aufzug Süd West'), 1),
-      (('GD', '04', 'Aufzug Süd West'), 1),
-      (('GD', '05', 'Aufzug Süd West'), 1),
+      (('GD', '02', 'Aufzug-Süd-West'), 1),
+      (('GD', '03', 'Aufzug-Süd-West'), 1),
+      (('GD', '04', 'Aufzug-Süd-West'), 1),
+      (('GD', '05', 'Aufzug-Süd-West'), 1),
       (('GD', '1', 'EN_54'), 40),
-      (('GD', '2', 'Aufzug Süd West'), 1),
+      (('GD', '2', 'Aufzug-Süd-West'), 1),
     ],
   },
   ('GD', '1', 'EN_0'): {
@@ -33626,7 +33626,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '1', '131'), 30),
       (('GD', '1', 'EN_128'), 43),
       (('GD', '1', 'EN_130'), 35),
-      (('GD', '1', 'WC Nord Ost'), 42),
+      (('GD', '1', 'WC-Nord-Ost'), 42),
     ],
   },
   ('GD', '1', 'EN_13'): {
@@ -33674,10 +33674,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '1', 'EN_135'): {
     'Coordinates': [543, 216],
     'Connections': [
-      (('GD', '1', 'Aufzug Nord Ost'), 33),
+      (('GD', '1', 'Aufzug-Nord-Ost'), 33),
       (('GD', '1', 'EN_125'), 35),
       (('GD', '1', 'EN_134'), 43),
-      (('GD', '1', 'Treppe Nord Ost'), 48),
+      (('GD', '1', 'Treppe-Nord-Ost'), 48),
     ],
   },
   ('GD', '1', 'EN_136'): {
@@ -33685,7 +33685,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '1', 'EN_137'), 42),
       (('GD', '1', 'EN_138'), 37),
-      (('GD', '1', 'WC Nord Ost'), 51),
+      (('GD', '1', 'WC-Nord-Ost'), 51),
     ],
   },
   ('GD', '1', 'EN_137'): {
@@ -33711,7 +33711,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '1', 'EN_134'), 153),
       (('GD', '1', 'EN_137'), 54),
-      (('GD', '1', 'WC Nord Ost'), 40),
+      (('GD', '1', 'WC-Nord-Ost'), 40),
     ],
   },
   ('GD', '1', 'EN_14'): {
@@ -33811,7 +33811,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '1', '161'), 30),
       (('GD', '1', 'EN_150'), 35),
       (('GD', '1', 'EN_152'), 34),
-      (('GD', '1', 'WC Süd Ost'), 42),
+      (('GD', '1', 'WC-Süd-Ost'), 42),
     ],
   },
   ('GD', '1', 'EN_152'): {
@@ -33876,7 +33876,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '1', 'EN_10'), 33),
       (('GD', '1', 'EN_160'), 97),
       (('GD', '1', 'EN_163'), 192),
-      (('GD', '1', 'WC Süd Ost'), 40),
+      (('GD', '1', 'WC-Süd-Ost'), 40),
     ],
   },
   ('GD', '1', 'EN_16'): {
@@ -33915,10 +33915,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '1', 'EN_164'): {
     'Coordinates': [1009, 681],
     'Connections': [
-      (('GD', '1', 'Aufzug Süd Ost'), 30),
+      (('GD', '1', 'Aufzug-Süd-Ost'), 30),
       (('GD', '1', 'EN_144'), 35),
       (('GD', '1', 'EN_163'), 42),
-      (('GD', '1', 'Treppe Süd Ost'), 52),
+      (('GD', '1', 'Treppe-Süd-Ost'), 52),
     ],
   },
   ('GD', '1', 'EN_165'): {
@@ -34382,9 +34382,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '1', 'EN_54'): {
     'Coordinates': [690, 993],
     'Connections': [
-      (('GD', '1', 'Aufzug Süd West'), 40),
+      (('GD', '1', 'Aufzug-Süd-West'), 40),
       (('GD', '1', 'EN_55'), 33),
-      (('GD', '1', 'Treppe Süd West'), 50),
+      (('GD', '1', 'Treppe-Süd-West'), 50),
     ],
   },
   ('GD', '1', 'EN_55'): {
@@ -34400,7 +34400,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '1', 'EN_55'), 164),
       (('GD', '1', 'EN_59'), 32),
-      (('GD', '1', 'WC Süd West'), 33),
+      (('GD', '1', 'WC-Süd-West'), 33),
     ],
   },
   ('GD', '1', 'EN_57'): {
@@ -34409,7 +34409,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '1', '335'), 43),
       (('GD', '1', 'EN_60'), 35),
       (('GD', '1', 'EN_76'), 31),
-      (('GD', '1', 'WC Süd West'), 40),
+      (('GD', '1', 'WC-Süd-West'), 40),
     ],
   },
   ('GD', '1', 'EN_58'): {
@@ -34417,7 +34417,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '1', 'EN_59'), 31),
       (('GD', '1', 'EN_60'), 41),
-      (('GD', '1', 'WC Süd West'), 31),
+      (('GD', '1', 'WC-Süd-West'), 31),
     ],
   },
   ('GD', '1', 'EN_59'): {
@@ -34624,7 +34624,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '1', '361'), 44),
       (('GD', '1', 'EN_81'), 38),
       (('GD', '1', 'EN_83'), 30),
-      (('GD', '1', 'WC Nord West'), 42),
+      (('GD', '1', 'WC-Nord-West'), 42),
     ],
   },
   ('GD', '1', 'EN_83'): {
@@ -34633,7 +34633,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '1', '365'), 44),
       (('GD', '1', 'EN_82'), 30),
       (('GD', '1', 'EN_84'), 41),
-      (('GD', '1', 'WC Nord West'), 45),
+      (('GD', '1', 'WC-Nord-West'), 45),
     ],
   },
   ('GD', '1', 'EN_84'): {
@@ -34720,11 +34720,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '1', 'EN_93'): {
     'Coordinates': [227, 537],
     'Connections': [
-      (('GD', '1', 'Aufzug Nord West'), 38),
+      (('GD', '1', 'Aufzug-Nord-West'), 38),
       (('GD', '1', 'EN_86'), 44),
       (('GD', '1', 'EN_87'), 40),
       (('GD', '1', 'EN_94'), 38),
-      (('GD', '1', 'Treppe Nord West'), 56),
+      (('GD', '1', 'Treppe-Nord-West'), 56),
     ],
   },
   ('GD', '1', 'EN_94'): {
@@ -34755,7 +34755,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '1', 'EN_94'), 149),
       (('GD', '1', 'EN_96'), 35),
-      (('GD', '1', 'WC Nord West'), 34),
+      (('GD', '1', 'WC-Nord-West'), 34),
     ],
   },
   ('GD', '1', 'EN_98'): {
@@ -34767,54 +34767,54 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '1', 'EN_94'), 75),
     ],
   },
-  ('GD', '1', 'Treppe Nord Ost'): {
+  ('GD', '1', 'Treppe-Nord-Ost'): {
     'Coordinates': [579, 247],
     'Connections': [
-      (('GD', '02', 'Treppe Nord Ost'), 2),
-      (('GD', '03', 'Treppe Nord Ost'), 2),
-      (('GD', '04', 'Treppe Nord Ost'), 2),
-      (('GD', '05Z', 'Treppe Nord Ost'), 2),
-      (('GD', '06', 'Treppe Nord Ost'), 2),
+      (('GD', '02', 'Treppe-Nord-Ost'), 2),
+      (('GD', '03', 'Treppe-Nord-Ost'), 2),
+      (('GD', '04', 'Treppe-Nord-Ost'), 2),
+      (('GD', '05Z', 'Treppe-Nord-Ost'), 2),
+      (('GD', '06', 'Treppe-Nord-Ost'), 2),
       (('GD', '1', 'EN_135'), 48),
-      (('GD', '2', 'Treppe Nord Ost'), 2),
+      (('GD', '2', 'Treppe-Nord-Ost'), 2),
     ],
   },
-  ('GD', '1', 'Treppe Nord West'): {
+  ('GD', '1', 'Treppe-Nord-West'): {
     'Coordinates': [269, 574],
     'Connections': [
-      (('GD', '02', 'Treppe Nord West'), 2),
-      (('GD', '03', 'Treppe Nord West'), 2),
-      (('GD', '04', 'Treppe Nord West'), 2),
-      (('GD', '06', 'Treppe Nord West'), 2),
+      (('GD', '02', 'Treppe-Nord-West'), 2),
+      (('GD', '03', 'Treppe-Nord-West'), 2),
+      (('GD', '04', 'Treppe-Nord-West'), 2),
+      (('GD', '06', 'Treppe-Nord-West'), 2),
       (('GD', '1', 'EN_93'), 56),
-      (('GD', '2', 'Treppe Nord West'), 2),
-      (('GD', '3', 'Treppe Nord West'), 2),
+      (('GD', '2', 'Treppe-Nord-West'), 2),
+      (('GD', '3', 'Treppe-Nord-West'), 2),
     ],
   },
-  ('GD', '1', 'Treppe Süd Ost'): {
+  ('GD', '1', 'Treppe-Süd-Ost'): {
     'Coordinates': [972, 644],
     'Connections': [
-      (('GD', '02', 'Treppe Süd Ost'), 2),
-      (('GD', '03', 'Treppe Süd Ost'), 2),
-      (('GD', '04', 'Treppe Süd Ost'), 2),
-      (('GD', '05', 'Treppe Süd Ost'), 2),
+      (('GD', '02', 'Treppe-Süd-Ost'), 2),
+      (('GD', '03', 'Treppe-Süd-Ost'), 2),
+      (('GD', '04', 'Treppe-Süd-Ost'), 2),
+      (('GD', '05', 'Treppe-Süd-Ost'), 2),
       (('GD', '1', 'EN_164'), 52),
-      (('GD', '2', 'Treppe Süd Ost'), 2),
-      (('GD', '3', 'Treppe Süd Ost'), 2),
+      (('GD', '2', 'Treppe-Süd-Ost'), 2),
+      (('GD', '3', 'Treppe-Süd-Ost'), 2),
     ],
   },
-  ('GD', '1', 'Treppe Süd West'): {
+  ('GD', '1', 'Treppe-Süd-West'): {
     'Coordinates': [653, 960],
     'Connections': [
-      (('GD', '02', 'Treppe Süd West'), 2),
-      (('GD', '03', 'Treppe Süd West'), 2),
-      (('GD', '04', 'Treppe Süd West'), 2),
-      (('GD', '05', 'Treppe Süd West'), 2),
+      (('GD', '02', 'Treppe-Süd-West'), 2),
+      (('GD', '03', 'Treppe-Süd-West'), 2),
+      (('GD', '04', 'Treppe-Süd-West'), 2),
+      (('GD', '05', 'Treppe-Süd-West'), 2),
       (('GD', '1', 'EN_54'), 50),
-      (('GD', '2', 'Treppe Süd West'), 2),
+      (('GD', '2', 'Treppe-Süd-West'), 2),
     ],
   },
-  ('GD', '1', 'WC Nord Ost'): {
+  ('GD', '1', 'WC-Nord-Ost'): {
     'Coordinates': [651, 325],
     'Connections': [
       (('GD', '1', 'EN_129'), 42),
@@ -34822,7 +34822,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '1', 'EN_139'), 40),
     ],
   },
-  ('GD', '1', 'WC Nord West'): {
+  ('GD', '1', 'WC-Nord-West'): {
     'Coordinates': [336, 642],
     'Connections': [
       (('GD', '1', 'EN_82'), 42),
@@ -34830,14 +34830,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '1', 'EN_97'), 34),
     ],
   },
-  ('GD', '1', 'WC Süd Ost'): {
+  ('GD', '1', 'WC-Süd-Ost'): {
     'Coordinates': [876, 552],
     'Connections': [
       (('GD', '1', 'EN_151'), 42),
       (('GD', '1', 'EN_159'), 40),
     ],
   },
-  ('GD', '1', 'WC Süd West'): {
+  ('GD', '1', 'WC-Süd-West'): {
     'Coordinates': [574, 880],
     'Connections': [
       (('GD', '1', 'EN_56'), 33),
@@ -35912,51 +35912,51 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '2', 'EN_138'), 33),
     ],
   },
-  ('GD', '2', 'Aufzug Nord Ost'): {
+  ('GD', '2', 'Aufzug-Nord-Ost'): {
     'Coordinates': [537, 205],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord Ost'), 1),
-      (('GD', '03', 'Aufzug Nord Ost'), 1),
-      (('GD', '04', 'Aufzug Nord Ost'), 1),
-      (('GD', '05Z', 'Aufzug Nord Ost'), 1),
-      (('GD', '1', 'Aufzug Nord Ost'), 1),
+      (('GD', '02', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '03', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '04', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '05Z', 'Aufzug-Nord-Ost'), 1),
+      (('GD', '1', 'Aufzug-Nord-Ost'), 1),
       (('GD', '2', 'EN_203'), 36),
       (('GD', '2', 'EN_3'), 42),
-      (('GD', '2', 'Treppe Nord Ost'), 54),
+      (('GD', '2', 'Treppe-Nord-Ost'), 54),
     ],
   },
-  ('GD', '2', 'Aufzug Nord West'): {
+  ('GD', '2', 'Aufzug-Nord-West'): {
     'Coordinates': [214, 521],
     'Connections': [
-      (('GD', '02', 'Aufzug Nord West'), 1),
-      (('GD', '03', 'Aufzug Nord West'), 1),
-      (('GD', '04', 'Aufzug Nord West'), 1),
-      (('GD', '06', 'Aufzug Nord West'), 1),
-      (('GD', '1', 'Aufzug Nord West'), 1),
+      (('GD', '02', 'Aufzug-Nord-West'), 1),
+      (('GD', '03', 'Aufzug-Nord-West'), 1),
+      (('GD', '04', 'Aufzug-Nord-West'), 1),
+      (('GD', '06', 'Aufzug-Nord-West'), 1),
+      (('GD', '1', 'Aufzug-Nord-West'), 1),
       (('GD', '2', 'EN_72'), 30),
     ],
   },
-  ('GD', '2', 'Aufzug Süd Ost'): {
+  ('GD', '2', 'Aufzug-Süd-Ost'): {
     'Coordinates': [1017, 682],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd Ost'), 1),
-      (('GD', '03', 'Aufzug Süd Ost'), 1),
-      (('GD', '04', 'Aufzug Süd Ost'), 1),
-      (('GD', '05', 'Aufzug Süd Ost'), 1),
-      (('GD', '1', 'Aufzug Süd Ost'), 1),
+      (('GD', '02', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '03', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '04', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '05', 'Aufzug-Süd-Ost'), 1),
+      (('GD', '1', 'Aufzug-Süd-Ost'), 1),
       (('GD', '2', 'EN_175'), 33),
       (('GD', '2', 'EN_5'), 43),
-      (('GD', '2', 'Treppe Süd Ost'), 48),
+      (('GD', '2', 'Treppe-Süd-Ost'), 48),
     ],
   },
-  ('GD', '2', 'Aufzug Süd West'): {
+  ('GD', '2', 'Aufzug-Süd-West'): {
     'Coordinates': [715, 1012],
     'Connections': [
-      (('GD', '02', 'Aufzug Süd West'), 1),
-      (('GD', '03', 'Aufzug Süd West'), 1),
-      (('GD', '04', 'Aufzug Süd West'), 1),
-      (('GD', '05', 'Aufzug Süd West'), 1),
-      (('GD', '1', 'Aufzug Süd West'), 1),
+      (('GD', '02', 'Aufzug-Süd-West'), 1),
+      (('GD', '03', 'Aufzug-Süd-West'), 1),
+      (('GD', '04', 'Aufzug-Süd-West'), 1),
+      (('GD', '05', 'Aufzug-Süd-West'), 1),
+      (('GD', '1', 'Aufzug-Süd-West'), 1),
       (('GD', '2', 'EN_121'), 38),
     ],
   },
@@ -35992,7 +35992,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '2', 'EN_10'), 46),
       (('GD', '2', 'EN_9'), 33),
-      (('GD', '2', 'WC Süd West'), 35),
+      (('GD', '2', 'WC-Süd-West'), 35),
     ],
   },
   ('GD', '2', 'EN_101'): {
@@ -36008,7 +36008,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '2', 'EN_101'), 36),
       (('GD', '2', 'EN_103'), 36),
-      (('GD', '2', 'WC Süd West'), 30),
+      (('GD', '2', 'WC-Süd-West'), 30),
     ],
   },
   ('GD', '2', 'EN_103'): {
@@ -36151,10 +36151,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '2', 'EN_121'): {
     'Coordinates': [687, 987],
     'Connections': [
-      (('GD', '2', 'Aufzug Süd West'), 38),
+      (('GD', '2', 'Aufzug-Süd-West'), 38),
       (('GD', '2', 'EN_7'), 33),
       (('GD', '2', 'EN_8'), 38),
-      (('GD', '2', 'Treppe Süd West'), 42),
+      (('GD', '2', 'Treppe-Süd-West'), 42),
     ],
   },
   ('GD', '2', 'EN_122'): {
@@ -36567,7 +36567,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [1039, 658],
     'Connections': [
       (('GD', '2', '177'), 30),
-      (('GD', '2', 'Aufzug Süd Ost'), 33),
+      (('GD', '2', 'Aufzug-Süd-Ost'), 33),
       (('GD', '2', 'EN_174'), 33),
       (('GD', '2', 'EN_177'), 39),
     ],
@@ -36627,7 +36627,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '2', '165'), 29),
       (('GD', '2', 'EN_180'), 35),
       (('GD', '2', 'EN_182'), 26),
-      (('GD', '2', 'WC Süd Ost'), 34),
+      (('GD', '2', 'WC-Süd-Ost'), 34),
     ],
   },
   ('GD', '2', 'EN_184'): {
@@ -36635,7 +36635,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '2', 'EN_1'), 60),
       (('GD', '2', 'EN_5'), 142),
-      (('GD', '2', 'WC Süd Ost'), 45),
+      (('GD', '2', 'WC-Süd-Ost'), 45),
     ],
   },
   ('GD', '2', 'EN_185'): {
@@ -36725,7 +36725,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '2', 'EN_2'), 45),
       (('GD', '2', 'EN_212'), 26),
-      (('GD', '2', 'WC Nord Ost'), 41),
+      (('GD', '2', 'WC-Nord-Ost'), 41),
     ],
   },
   ('GD', '2', 'EN_198'): {
@@ -36734,7 +36734,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '2', '135'), 31),
       (('GD', '2', 'EN_196'), 42),
       (('GD', '2', 'EN_199'), 29),
-      (('GD', '2', 'WC Nord Ost'), 35),
+      (('GD', '2', 'WC-Nord-Ost'), 35),
     ],
   },
   ('GD', '2', 'EN_199'): {
@@ -36792,7 +36792,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [565, 183],
     'Connections': [
       (('GD', '2', '119'), 28),
-      (('GD', '2', 'Aufzug Nord Ost'), 36),
+      (('GD', '2', 'Aufzug-Nord-Ost'), 36),
       (('GD', '2', 'EN_202'), 39),
       (('GD', '2', 'EN_205'), 30),
     ],
@@ -36925,7 +36925,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '2', 'EN_3'): {
     'Coordinates': [508, 236],
     'Connections': [
-      (('GD', '2', 'Aufzug Nord Ost'), 42),
+      (('GD', '2', 'Aufzug-Nord-Ost'), 42),
       (('GD', '2', 'EN_211'), 54),
       (('GD', '2', 'EN_212'), 139),
     ],
@@ -37066,7 +37066,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [989, 714],
     'Connections': [
       (('GD', '2', '180'), 54),
-      (('GD', '2', 'Aufzug Süd Ost'), 43),
+      (('GD', '2', 'Aufzug-Süd-Ost'), 43),
       (('GD', '2', 'EN_184'), 142),
     ],
   },
@@ -37243,10 +37243,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '2', 'EN_72'): {
     'Coordinates': [237, 540],
     'Connections': [
-      (('GD', '2', 'Aufzug Nord West'), 30),
+      (('GD', '2', 'Aufzug-Nord-West'), 30),
       (('GD', '2', 'EN_13'), 35),
       (('GD', '2', 'EN_15'), 38),
-      (('GD', '2', 'Treppe Nord West'), 34),
+      (('GD', '2', 'Treppe-Nord-West'), 34),
     ],
   },
   ('GD', '2', 'EN_73'): {
@@ -37279,7 +37279,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '2', 'EN_75'), 53),
       (('GD', '2', 'EN_77'), 23),
       (('GD', '2', 'EN_83'), 18),
-      (('GD', '2', 'WC Nord West'), 33),
+      (('GD', '2', 'WC-Nord-West'), 33),
     ],
   },
   ('GD', '2', 'EN_77'): {
@@ -37295,7 +37295,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('GD', '2', 'EN_11'), 43),
       (('GD', '2', 'EN_13'), 141),
-      (('GD', '2', 'WC Nord West'), 36),
+      (('GD', '2', 'WC-Nord-West'), 36),
     ],
   },
   ('GD', '2', 'EN_8'): {
@@ -37409,75 +37409,75 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('GD', '2', 'EN_95'), 25),
     ],
   },
-  ('GD', '2', 'Treppe Nord Ost'): {
+  ('GD', '2', 'Treppe-Nord-Ost'): {
     'Coordinates': [574, 245],
     'Connections': [
-      (('GD', '02', 'Treppe Nord Ost'), 2),
-      (('GD', '03', 'Treppe Nord Ost'), 2),
-      (('GD', '04', 'Treppe Nord Ost'), 2),
-      (('GD', '05Z', 'Treppe Nord Ost'), 2),
-      (('GD', '06', 'Treppe Nord Ost'), 2),
-      (('GD', '1', 'Treppe Nord Ost'), 2),
-      (('GD', '2', 'Aufzug Nord Ost'), 54),
+      (('GD', '02', 'Treppe-Nord-Ost'), 2),
+      (('GD', '03', 'Treppe-Nord-Ost'), 2),
+      (('GD', '04', 'Treppe-Nord-Ost'), 2),
+      (('GD', '05Z', 'Treppe-Nord-Ost'), 2),
+      (('GD', '06', 'Treppe-Nord-Ost'), 2),
+      (('GD', '1', 'Treppe-Nord-Ost'), 2),
+      (('GD', '2', 'Aufzug-Nord-Ost'), 54),
     ],
   },
-  ('GD', '2', 'Treppe Nord West'): {
+  ('GD', '2', 'Treppe-Nord-West'): {
     'Coordinates': [261, 564],
     'Connections': [
-      (('GD', '02', 'Treppe Nord West'), 2),
-      (('GD', '03', 'Treppe Nord West'), 2),
-      (('GD', '04', 'Treppe Nord West'), 2),
-      (('GD', '06', 'Treppe Nord West'), 2),
-      (('GD', '1', 'Treppe Nord West'), 2),
+      (('GD', '02', 'Treppe-Nord-West'), 2),
+      (('GD', '03', 'Treppe-Nord-West'), 2),
+      (('GD', '04', 'Treppe-Nord-West'), 2),
+      (('GD', '06', 'Treppe-Nord-West'), 2),
+      (('GD', '1', 'Treppe-Nord-West'), 2),
       (('GD', '2', 'EN_72'), 34),
-      (('GD', '3', 'Treppe Nord West'), 2),
+      (('GD', '3', 'Treppe-Nord-West'), 2),
     ],
   },
-  ('GD', '2', 'Treppe Süd Ost'): {
+  ('GD', '2', 'Treppe-Süd-Ost'): {
     'Coordinates': [982, 649],
     'Connections': [
-      (('GD', '02', 'Treppe Süd Ost'), 2),
-      (('GD', '03', 'Treppe Süd Ost'), 2),
-      (('GD', '04', 'Treppe Süd Ost'), 2),
-      (('GD', '05', 'Treppe Süd Ost'), 2),
-      (('GD', '1', 'Treppe Süd Ost'), 2),
-      (('GD', '2', 'Aufzug Süd Ost'), 48),
-      (('GD', '3', 'Treppe Süd Ost'), 2),
+      (('GD', '02', 'Treppe-Süd-Ost'), 2),
+      (('GD', '03', 'Treppe-Süd-Ost'), 2),
+      (('GD', '04', 'Treppe-Süd-Ost'), 2),
+      (('GD', '05', 'Treppe-Süd-Ost'), 2),
+      (('GD', '1', 'Treppe-Süd-Ost'), 2),
+      (('GD', '2', 'Aufzug-Süd-Ost'), 48),
+      (('GD', '3', 'Treppe-Süd-Ost'), 2),
     ],
   },
-  ('GD', '2', 'Treppe Süd West'): {
+  ('GD', '2', 'Treppe-Süd-West'): {
     'Coordinates': [656, 959],
     'Connections': [
-      (('GD', '02', 'Treppe Süd West'), 2),
-      (('GD', '03', 'Treppe Süd West'), 2),
-      (('GD', '04', 'Treppe Süd West'), 2),
-      (('GD', '05', 'Treppe Süd West'), 2),
-      (('GD', '1', 'Treppe Süd West'), 2),
+      (('GD', '02', 'Treppe-Süd-West'), 2),
+      (('GD', '03', 'Treppe-Süd-West'), 2),
+      (('GD', '04', 'Treppe-Süd-West'), 2),
+      (('GD', '05', 'Treppe-Süd-West'), 2),
+      (('GD', '1', 'Treppe-Süd-West'), 2),
       (('GD', '2', 'EN_121'), 42),
     ],
   },
-  ('GD', '2', 'WC Nord Ost'): {
+  ('GD', '2', 'WC-Nord-Ost'): {
     'Coordinates': [653, 324],
     'Connections': [
       (('GD', '2', 'EN_197'), 41),
       (('GD', '2', 'EN_198'), 35),
     ],
   },
-  ('GD', '2', 'WC Nord West'): {
+  ('GD', '2', 'WC-Nord-West'): {
     'Coordinates': [334, 644],
     'Connections': [
       (('GD', '2', 'EN_76'), 33),
       (('GD', '2', 'EN_78'), 36),
     ],
   },
-  ('GD', '2', 'WC Süd Ost'): {
+  ('GD', '2', 'WC-Süd-Ost'): {
     'Coordinates': [908, 575],
     'Connections': [
       (('GD', '2', 'EN_183'), 34),
       (('GD', '2', 'EN_184'), 45),
     ],
   },
-  ('GD', '2', 'WC Süd West'): {
+  ('GD', '2', 'WC-Süd-West'): {
     'Coordinates': [579, 881],
     'Connections': [
       (('GD', '2', 'EN_100'), 35),
@@ -37487,36 +37487,36 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('GD', '3', '138'): {
     'Coordinates': [879, 524],
     'Connections': [
-      (('GD', '3', 'Treppe Süd Ost'), 131),
+      (('GD', '3', 'Treppe-Süd-Ost'), 131),
     ],
   },
   ('GD', '3', '338'): {
     'Coordinates': [359, 690],
     'Connections': [
-      (('GD', '3', 'Treppe Nord West'), 161),
+      (('GD', '3', 'Treppe-Nord-West'), 161),
     ],
   },
-  ('GD', '3', 'Treppe Nord West'): {
+  ('GD', '3', 'Treppe-Nord-West'): {
     'Coordinates': [262, 562],
     'Connections': [
-      (('GD', '02', 'Treppe Nord West'), 2),
-      (('GD', '03', 'Treppe Nord West'), 2),
-      (('GD', '04', 'Treppe Nord West'), 2),
-      (('GD', '06', 'Treppe Nord West'), 2),
-      (('GD', '1', 'Treppe Nord West'), 2),
-      (('GD', '2', 'Treppe Nord West'), 2),
+      (('GD', '02', 'Treppe-Nord-West'), 2),
+      (('GD', '03', 'Treppe-Nord-West'), 2),
+      (('GD', '04', 'Treppe-Nord-West'), 2),
+      (('GD', '06', 'Treppe-Nord-West'), 2),
+      (('GD', '1', 'Treppe-Nord-West'), 2),
+      (('GD', '2', 'Treppe-Nord-West'), 2),
       (('GD', '3', '338'), 161),
     ],
   },
-  ('GD', '3', 'Treppe Süd Ost'): {
+  ('GD', '3', 'Treppe-Süd-Ost'): {
     'Coordinates': [966, 622],
     'Connections': [
-      (('GD', '02', 'Treppe Süd Ost'), 2),
-      (('GD', '03', 'Treppe Süd Ost'), 2),
-      (('GD', '04', 'Treppe Süd Ost'), 2),
-      (('GD', '05', 'Treppe Süd Ost'), 2),
-      (('GD', '1', 'Treppe Süd Ost'), 2),
-      (('GD', '2', 'Treppe Süd Ost'), 2),
+      (('GD', '02', 'Treppe-Süd-Ost'), 2),
+      (('GD', '03', 'Treppe-Süd-Ost'), 2),
+      (('GD', '04', 'Treppe-Süd-Ost'), 2),
+      (('GD', '05', 'Treppe-Süd-Ost'), 2),
+      (('GD', '1', 'Treppe-Süd-Ost'), 2),
+      (('GD', '2', 'Treppe-Süd-Ost'), 2),
       (('GD', '3', '138'), 131),
     ],
   },
@@ -37669,13 +37669,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '0', '406s'): {
     'Coordinates': [323, 668],
     'Connections': [
-      (('IA', '0', 'Treppe Süd 3'), 42),
+      (('IA', '0', 'Treppe-Süd-3'), 42),
     ],
   },
   ('IA', '0', '408'): {
     'Coordinates': [388, 602],
     'Connections': [
-      (('IA', '0', 'Treppe Süd 3'), 50),
+      (('IA', '0', 'Treppe-Süd-3'), 50),
     ],
   },
   ('IA', '0', '65'): {
@@ -37712,41 +37712,41 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '0', 'EN_16'), 38),
     ],
   },
-  ('IA', '0', 'Aufzug Nord'): {
+  ('IA', '0', 'Aufzug-Nord'): {
     'Coordinates': [983, 742],
     'Connections': [
       (('IA', '0', 'EN_29'), 28),
-      (('IA', '01', 'Aufzug Nord'), 1),
-      (('IA', '02', 'Aufzug Nord'), 1),
-      (('IA', '03', 'Aufzug Nord'), 1),
-      (('IA', '1', 'Aufzug Nord'), 1),
-      (('IA', '2', 'Aufzug Nord'), 1),
-      (('IA', '3', 'Aufzug Nord'), 1),
-      (('IA', '4', 'Aufzug Nord'), 1),
-      (('IA', '5', 'Aufzug Nord'), 1),
-      (('IA', '6', 'Aufzug Nord'), 1),
+      (('IA', '01', 'Aufzug-Nord'), 1),
+      (('IA', '02', 'Aufzug-Nord'), 1),
+      (('IA', '03', 'Aufzug-Nord'), 1),
+      (('IA', '1', 'Aufzug-Nord'), 1),
+      (('IA', '2', 'Aufzug-Nord'), 1),
+      (('IA', '3', 'Aufzug-Nord'), 1),
+      (('IA', '4', 'Aufzug-Nord'), 1),
+      (('IA', '5', 'Aufzug-Nord'), 1),
+      (('IA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IA', '0', 'Aufzug Süd'): {
+  ('IA', '0', 'Aufzug-Süd'): {
     'Coordinates': [622, 381],
     'Connections': [
       (('IA', '0', 'EN_6'), 27),
-      (('IA', '01', 'Aufzug Süd'), 1),
-      (('IA', '02', 'Aufzug Süd'), 1),
-      (('IA', '03', 'Aufzug Süd'), 1),
-      (('IA', '1', 'Aufzug Süd'), 1),
-      (('IA', '2', 'Aufzug Süd'), 1),
-      (('IA', '3', 'Aufzug Süd'), 1),
-      (('IA', '4', 'Aufzug Süd'), 1),
-      (('IA', '5', 'Aufzug Süd'), 1),
-      (('IA', '6', 'Aufzug Süd'), 1),
+      (('IA', '01', 'Aufzug-Süd'), 1),
+      (('IA', '02', 'Aufzug-Süd'), 1),
+      (('IA', '03', 'Aufzug-Süd'), 1),
+      (('IA', '1', 'Aufzug-Süd'), 1),
+      (('IA', '2', 'Aufzug-Süd'), 1),
+      (('IA', '3', 'Aufzug-Süd'), 1),
+      (('IA', '4', 'Aufzug-Süd'), 1),
+      (('IA', '5', 'Aufzug-Süd'), 1),
+      (('IA', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IA', '0', 'EN_0'): {
     'Coordinates': [429, 112],
     'Connections': [
-      (('IA', '0', 'Eingang Süd'), 178),
-      (('IA', '0', 'Treppe HZO'), 63),
+      (('IA', '0', 'Eingang-Süd'), 178),
+      (('IA', '0', 'Treppe-HZO'), 63),
     ],
   },
   ('IA', '0', 'EN_1'): {
@@ -37755,7 +37755,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '0', 'EN_2'), 18),
       (('IA', '0', 'EN_3'), 38),
       (('IA', '0', 'EN_4'), 102),
-      (('IA', '0', 'Eingang Süd'), 60),
+      (('IA', '0', 'Eingang-Süd'), 60),
     ],
   },
   ('IA', '0', 'EN_10'): {
@@ -37859,7 +37859,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '0', '175'), 18),
       (('IA', '0', 'EN_22'), 38),
       (('IA', '0', 'EN_26'), 28),
-      (('IA', '0', 'WC Nord'), 39),
+      (('IA', '0', 'WC-Nord'), 39),
     ],
   },
   ('IA', '0', 'EN_22'): {
@@ -37914,9 +37914,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [962, 724],
     'Connections': [
       (('IA', '0', '3'), 53),
-      (('IA', '0', 'Aufzug Nord'), 28),
+      (('IA', '0', 'Aufzug-Nord'), 28),
       (('IA', '0', 'EN_27'), 40),
-      (('IA', '0', 'Treppe Nord'), 38),
+      (('IA', '0', 'Treppe-Nord'), 38),
     ],
   },
   ('IA', '0', 'EN_3'): {
@@ -37924,7 +37924,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '0', '130'), 30),
       (('IA', '0', 'EN_1'), 38),
-      (('IA', '0', 'Eingang Süd'), 32),
+      (('IA', '0', 'Eingang-Süd'), 32),
     ],
   },
   ('IA', '0', 'EN_30'): {
@@ -37961,10 +37961,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '0', 'EN_6'): {
     'Coordinates': [641, 400],
     'Connections': [
-      (('IA', '0', 'Aufzug Süd'), 27),
+      (('IA', '0', 'Aufzug-Süd'), 27),
       (('IA', '0', 'EN_8'), 38),
       (('IA', '0', 'EN_9'), 53),
-      (('IA', '0', 'Treppe Süd'), 31),
+      (('IA', '0', 'Treppe-Süd'), 31),
     ],
   },
   ('IA', '0', 'EN_7'): {
@@ -37972,7 +37972,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '0', 'EN_2'), 93),
       (('IA', '0', 'EN_8'), 16),
-      (('IA', '0', 'Treppe Süd 2'), 37),
+      (('IA', '0', 'Treppe-Süd-2'), 37),
     ],
   },
   ('IA', '0', 'EN_8'): {
@@ -37991,78 +37991,78 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '0', 'EN_6'), 53),
     ],
   },
-  ('IA', '0', 'Eingang Süd'): {
+  ('IA', '0', 'Eingang-Süd'): {
     'Coordinates': [558, 235],
     'Connections': [
       (('IA', '0', 'EN_0'), 178),
       (('IA', '0', 'EN_1'), 60),
       (('IA', '0', 'EN_3'), 32),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
   ('IA', '0', 'I-Südstraße'): {
     'Coordinates': [390, 295],
     'Connections': [],
   },
-  ('IA', '0', 'Treppe HZO'): {
+  ('IA', '0', 'Treppe-HZO'): {
     'Coordinates': [472, 66],
     'Connections': [
       (('IA', '0', 'EN_0'), 63),
     ],
   },
-  ('IA', '0', 'Treppe Nord'): {
+  ('IA', '0', 'Treppe-Nord'): {
     'Coordinates': [935, 697],
     'Connections': [
       (('IA', '0', 'EN_29'), 38),
-      (('IA', '01', 'Treppe Nord'), 2),
-      (('IA', '02', 'Treppe Nord'), 2),
-      (('IA', '03', 'Treppe Nord'), 2),
-      (('IA', '1', 'Treppe Nord'), 2),
-      (('IA', '2', 'Treppe Nord'), 2),
-      (('IA', '3', 'Treppe Nord'), 2),
-      (('IA', '4', 'Treppe Nord'), 2),
-      (('IA', '5', 'Treppe Nord'), 2),
-      (('IA', '6', 'Treppe Nord'), 2),
-      (('IA', '7', 'Treppe Nord'), 2),
+      (('IA', '01', 'Treppe-Nord'), 2),
+      (('IA', '02', 'Treppe-Nord'), 2),
+      (('IA', '03', 'Treppe-Nord'), 2),
+      (('IA', '1', 'Treppe-Nord'), 2),
+      (('IA', '2', 'Treppe-Nord'), 2),
+      (('IA', '3', 'Treppe-Nord'), 2),
+      (('IA', '4', 'Treppe-Nord'), 2),
+      (('IA', '5', 'Treppe-Nord'), 2),
+      (('IA', '6', 'Treppe-Nord'), 2),
+      (('IA', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('IA', '0', 'Treppe Süd'): {
+  ('IA', '0', 'Treppe-Süd'): {
     'Coordinates': [663, 422],
     'Connections': [
       (('IA', '0', 'EN_6'), 31),
-      (('IA', '01', 'Treppe Süd'), 2),
-      (('IA', '02', 'Treppe Süd'), 2),
-      (('IA', '03', 'Treppe Süd'), 2),
-      (('IA', '1', 'Treppe Süd'), 2),
-      (('IA', '2', 'Treppe Süd'), 2),
-      (('IA', '3', 'Treppe Süd'), 2),
-      (('IA', '4', 'Treppe Süd'), 2),
-      (('IA', '5', 'Treppe Süd'), 2),
-      (('IA', '6', 'Treppe Süd'), 2),
-      (('IA', '7', 'Treppe Süd'), 2),
+      (('IA', '01', 'Treppe-Süd'), 2),
+      (('IA', '02', 'Treppe-Süd'), 2),
+      (('IA', '03', 'Treppe-Süd'), 2),
+      (('IA', '1', 'Treppe-Süd'), 2),
+      (('IA', '2', 'Treppe-Süd'), 2),
+      (('IA', '3', 'Treppe-Süd'), 2),
+      (('IA', '4', 'Treppe-Süd'), 2),
+      (('IA', '5', 'Treppe-Süd'), 2),
+      (('IA', '6', 'Treppe-Süd'), 2),
+      (('IA', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('IA', '0', 'Treppe Süd 2'): {
+  ('IA', '0', 'Treppe-Süd-2'): {
     'Coordinates': [707, 381],
     'Connections': [
       (('IA', '0', 'EN_7'), 37),
-      (('IA', '01', 'Treppe Süd 2'), 2),
-      (('IA', '02', 'Treppe Süd 2'), 2),
-      (('IA', '04', 'Treppe Süd 2'), 2),
-      (('IA', '1', 'Treppe Süd 2'), 2),
+      (('IA', '01', 'Treppe-Süd-2'), 2),
+      (('IA', '02', 'Treppe-Süd-2'), 2),
+      (('IA', '04', 'Treppe-Süd-2'), 2),
+      (('IA', '1', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('IA', '0', 'Treppe Süd 3'): {
+  ('IA', '0', 'Treppe-Süd-3'): {
     'Coordinates': [354, 639],
     'Connections': [
       (('IA', '0', '406s'), 42),
       (('IA', '0', '408'), 50),
-      (('IA', '01', 'Treppe Süd 3'), 2),
-      (('IA', '02', 'Treppe Süd 3'), 2),
-      (('IA', '03', 'Treppe Süd 3'), 2),
+      (('IA', '01', 'Treppe-Süd-3'), 2),
+      (('IA', '02', 'Treppe-Süd-3'), 2),
+      (('IA', '03', 'Treppe-Süd-3'), 2),
     ],
   },
-  ('IA', '0', 'WC Nord'): {
+  ('IA', '0', 'WC-Nord'): {
     'Coordinates': [1025, 783],
     'Connections': [
       (('IA', '0', 'EN_21'), 39),
@@ -38375,34 +38375,34 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '01', '9'), 28),
     ],
   },
-  ('IA', '01', 'Aufzug Nord'): {
+  ('IA', '01', 'Aufzug-Nord'): {
     'Coordinates': [1037, 643],
     'Connections': [
-      (('IA', '0', 'Aufzug Nord'), 1),
+      (('IA', '0', 'Aufzug-Nord'), 1),
       (('IA', '01', 'EN_43'), 31),
-      (('IA', '02', 'Aufzug Nord'), 1),
-      (('IA', '03', 'Aufzug Nord'), 1),
-      (('IA', '1', 'Aufzug Nord'), 1),
-      (('IA', '2', 'Aufzug Nord'), 1),
-      (('IA', '3', 'Aufzug Nord'), 1),
-      (('IA', '4', 'Aufzug Nord'), 1),
-      (('IA', '5', 'Aufzug Nord'), 1),
-      (('IA', '6', 'Aufzug Nord'), 1),
+      (('IA', '02', 'Aufzug-Nord'), 1),
+      (('IA', '03', 'Aufzug-Nord'), 1),
+      (('IA', '1', 'Aufzug-Nord'), 1),
+      (('IA', '2', 'Aufzug-Nord'), 1),
+      (('IA', '3', 'Aufzug-Nord'), 1),
+      (('IA', '4', 'Aufzug-Nord'), 1),
+      (('IA', '5', 'Aufzug-Nord'), 1),
+      (('IA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IA', '01', 'Aufzug Süd'): {
+  ('IA', '01', 'Aufzug-Süd'): {
     'Coordinates': [676, 283],
     'Connections': [
-      (('IA', '0', 'Aufzug Süd'), 1),
+      (('IA', '0', 'Aufzug-Süd'), 1),
       (('IA', '01', 'EN_21'), 27),
-      (('IA', '02', 'Aufzug Süd'), 1),
-      (('IA', '03', 'Aufzug Süd'), 1),
-      (('IA', '1', 'Aufzug Süd'), 1),
-      (('IA', '2', 'Aufzug Süd'), 1),
-      (('IA', '3', 'Aufzug Süd'), 1),
-      (('IA', '4', 'Aufzug Süd'), 1),
-      (('IA', '5', 'Aufzug Süd'), 1),
-      (('IA', '6', 'Aufzug Süd'), 1),
+      (('IA', '02', 'Aufzug-Süd'), 1),
+      (('IA', '03', 'Aufzug-Süd'), 1),
+      (('IA', '1', 'Aufzug-Süd'), 1),
+      (('IA', '2', 'Aufzug-Süd'), 1),
+      (('IA', '3', 'Aufzug-Süd'), 1),
+      (('IA', '4', 'Aufzug-Süd'), 1),
+      (('IA', '5', 'Aufzug-Süd'), 1),
+      (('IA', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IA', '01', 'Cafeteria'): {
@@ -38411,7 +38411,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '01', 'EN_7'), 74),
     ],
   },
-  ('IA', '01', 'Durchgang Richtung IB'): {
+  ('IA', '01', 'Durchgang-Richtung-IB'): {
     'Coordinates': [250, 752],
     'Connections': [
       (('IA', '01', 'EN_7'), 54),
@@ -38421,14 +38421,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [163, 393],
     'Connections': [
       (('IA', '01', 'EN_2'), 56),
-      (('IA', '01', 'Eingang HIA'), 77),
+      (('IA', '01', 'Eingang-HIA'), 77),
     ],
   },
   ('IA', '01', 'EN_1'): {
     'Coordinates': [279, 291],
     'Connections': [
       (('IA', '01', 'EN_3'), 44),
-      (('IA', '01', 'Eingang HIA'), 77),
+      (('IA', '01', 'Eingang-HIA'), 77),
     ],
   },
   ('IA', '01', 'EN_10'): {
@@ -38500,7 +38500,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '01', 'EN_17'), 31),
       (('IA', '01', 'EN_24'), 37),
-      (('IA', '01', 'WC Süd'), 35),
+      (('IA', '01', 'WC-Süd'), 35),
     ],
   },
   ('IA', '01', 'EN_19'): {
@@ -38508,7 +38508,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '01', 'EN_11'), 37),
       (('IA', '01', 'EN_17'), 41),
-      (('IA', '01', 'WC Süd'), 29),
+      (('IA', '01', 'WC-Süd'), 29),
     ],
   },
   ('IA', '01', 'EN_2'): {
@@ -38516,7 +38516,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '01', 'EN_0'), 56),
       (('IA', '01', 'EN_4'), 259),
-      (('IA', '01', 'WC Süd West'), 36),
+      (('IA', '01', 'WC-Süd-West'), 36),
     ],
   },
   ('IA', '01', 'EN_20'): {
@@ -38524,16 +38524,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '01', 'EN_11'), 30),
       (('IA', '01', 'EN_12'), 33),
-      (('IA', '01', 'WC Süd'), 42),
+      (('IA', '01', 'WC-Süd'), 42),
     ],
   },
   ('IA', '01', 'EN_21'): {
     'Coordinates': [692, 305],
     'Connections': [
-      (('IA', '01', 'Aufzug Süd'), 27),
+      (('IA', '01', 'Aufzug-Süd'), 27),
       (('IA', '01', 'EN_13'), 46),
       (('IA', '01', 'EN_22'), 37),
-      (('IA', '01', 'Treppe Süd'), 36),
+      (('IA', '01', 'Treppe-Süd'), 36),
     ],
   },
   ('IA', '01', 'EN_22'): {
@@ -38549,7 +38549,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [735, 260],
     'Connections': [
       (('IA', '01', 'EN_22'), 25),
-      (('IA', '01', 'Treppe Süd 2'), 32),
+      (('IA', '01', 'Treppe-Süd-2'), 32),
     ],
   },
   ('IA', '01', 'EN_24'): {
@@ -38606,7 +38606,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '01', 'EN_1'), 44),
       (('IA', '01', 'EN_9'), 148),
-      (('IA', '01', 'WC Süd Ost'), 27),
+      (('IA', '01', 'WC-Süd-Ost'), 27),
     ],
   },
   ('IA', '01', 'EN_30'): {
@@ -38719,10 +38719,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '01', 'EN_43'): {
     'Coordinates': [1013, 623],
     'Connections': [
-      (('IA', '01', 'Aufzug Nord'), 31),
+      (('IA', '01', 'Aufzug-Nord'), 31),
       (('IA', '01', 'EN_42'), 35),
       (('IA', '01', 'EN_44'), 46),
-      (('IA', '01', 'Treppe Nord'), 39),
+      (('IA', '01', 'Treppe-Nord'), 39),
     ],
   },
   ('IA', '01', 'EN_44'): {
@@ -38739,7 +38739,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '01', 'EN_47'), 18),
       (('IA', '01', 'EN_52'), 45),
-      (('IA', '01', 'WC Nord'), 43),
+      (('IA', '01', 'WC-Nord'), 43),
     ],
   },
   ('IA', '01', 'EN_46'): {
@@ -38748,7 +38748,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '01', '175'), 32),
       (('IA', '01', 'EN_42'), 71),
       (('IA', '01', 'EN_55'), 42),
-      (('IA', '01', 'WC Nord'), 36),
+      (('IA', '01', 'WC-Nord'), 36),
     ],
   },
   ('IA', '01', 'EN_47'): {
@@ -38780,7 +38780,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '01', 'EN_4'), 86),
       (('IA', '01', 'EN_6'), 68),
-      (('IA', '01', 'Treppe Süd 3'), 36),
+      (('IA', '01', 'Treppe-Süd-3'), 36),
     ],
   },
   ('IA', '01', 'EN_50'): {
@@ -38858,9 +38858,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [292, 718],
     'Connections': [
       (('IA', '01', 'Cafeteria'), 74),
-      (('IA', '01', 'Durchgang Richtung IB'), 54),
+      (('IA', '01', 'Durchgang-Richtung-IB'), 54),
       (('IA', '01', 'EN_4'), 135),
-      (('IA', '01', 'Treppe Gang 2'), 21),
+      (('IA', '01', 'Treppe-Gang-2'), 21),
     ],
   },
   ('IA', '01', 'EN_8'): {
@@ -38869,7 +38869,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '01', '478'), 42),
       (('IA', '01', 'EN_10'), 74),
       (('IA', '01', 'EN_6'), 99),
-      (('IA', '01', 'Treppe Gang 1'), 26),
+      (('IA', '01', 'Treppe-Gang-1'), 26),
     ],
   },
   ('IA', '01', 'EN_9'): {
@@ -38880,97 +38880,97 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '01', 'EN_6'), 115),
     ],
   },
-  ('IA', '01', 'Eingang HIA'): {
+  ('IA', '01', 'Eingang-HIA'): {
     'Coordinates': [220, 341],
     'Connections': [
       (('IA', '01', 'EN_0'), 77),
       (('IA', '01', 'EN_1'), 77),
       (('IA', '01', 'HIA'), 165),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
   ('IA', '01', 'HIA'): {
     'Coordinates': [336, 458],
     'Connections': [
-      (('IA', '01', 'Eingang HIA'), 165),
+      (('IA', '01', 'Eingang-HIA'), 165),
     ],
   },
-  ('IA', '01', 'Treppe Gang 1'): {
+  ('IA', '01', 'Treppe-Gang-1'): {
     'Coordinates': [578, 459],
     'Connections': [
       (('IA', '01', 'EN_8'), 26),
-      (('IA', '02', 'Treppe Gang 1'), 2),
-      (('IA', '03', 'Treppe Gang 1'), 2),
-      (('IA', '04', 'Treppe Gang 1'), 2),
+      (('IA', '02', 'Treppe-Gang-1'), 2),
+      (('IA', '03', 'Treppe-Gang-1'), 2),
+      (('IA', '04', 'Treppe-Gang-1'), 2),
     ],
   },
-  ('IA', '01', 'Treppe Gang 2'): {
+  ('IA', '01', 'Treppe-Gang-2'): {
     'Coordinates': [307, 733],
     'Connections': [
       (('IA', '01', 'EN_7'), 21),
-      (('IA', '02', 'Treppe Gang 2'), 2),
-      (('IA', '03', 'Treppe Gang 2'), 2),
+      (('IA', '02', 'Treppe-Gang-2'), 2),
+      (('IA', '03', 'Treppe-Gang-2'), 2),
     ],
   },
-  ('IA', '01', 'Treppe Nord'): {
+  ('IA', '01', 'Treppe-Nord'): {
     'Coordinates': [984, 597],
     'Connections': [
-      (('IA', '0', 'Treppe Nord'), 2),
+      (('IA', '0', 'Treppe-Nord'), 2),
       (('IA', '01', 'EN_43'), 39),
-      (('IA', '02', 'Treppe Nord'), 2),
-      (('IA', '03', 'Treppe Nord'), 2),
-      (('IA', '1', 'Treppe Nord'), 2),
-      (('IA', '2', 'Treppe Nord'), 2),
-      (('IA', '3', 'Treppe Nord'), 2),
-      (('IA', '4', 'Treppe Nord'), 2),
-      (('IA', '5', 'Treppe Nord'), 2),
-      (('IA', '6', 'Treppe Nord'), 2),
-      (('IA', '7', 'Treppe Nord'), 2),
+      (('IA', '02', 'Treppe-Nord'), 2),
+      (('IA', '03', 'Treppe-Nord'), 2),
+      (('IA', '1', 'Treppe-Nord'), 2),
+      (('IA', '2', 'Treppe-Nord'), 2),
+      (('IA', '3', 'Treppe-Nord'), 2),
+      (('IA', '4', 'Treppe-Nord'), 2),
+      (('IA', '5', 'Treppe-Nord'), 2),
+      (('IA', '6', 'Treppe-Nord'), 2),
+      (('IA', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('IA', '01', 'Treppe Süd'): {
+  ('IA', '01', 'Treppe-Süd'): {
     'Coordinates': [719, 329],
     'Connections': [
-      (('IA', '0', 'Treppe Süd'), 2),
+      (('IA', '0', 'Treppe-Süd'), 2),
       (('IA', '01', 'EN_21'), 36),
-      (('IA', '02', 'Treppe Süd'), 2),
-      (('IA', '03', 'Treppe Süd'), 2),
-      (('IA', '1', 'Treppe Süd'), 2),
-      (('IA', '2', 'Treppe Süd'), 2),
-      (('IA', '3', 'Treppe Süd'), 2),
-      (('IA', '4', 'Treppe Süd'), 2),
-      (('IA', '5', 'Treppe Süd'), 2),
-      (('IA', '6', 'Treppe Süd'), 2),
-      (('IA', '7', 'Treppe Süd'), 2),
+      (('IA', '02', 'Treppe-Süd'), 2),
+      (('IA', '03', 'Treppe-Süd'), 2),
+      (('IA', '1', 'Treppe-Süd'), 2),
+      (('IA', '2', 'Treppe-Süd'), 2),
+      (('IA', '3', 'Treppe-Süd'), 2),
+      (('IA', '4', 'Treppe-Süd'), 2),
+      (('IA', '5', 'Treppe-Süd'), 2),
+      (('IA', '6', 'Treppe-Süd'), 2),
+      (('IA', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('IA', '01', 'Treppe Süd 2'): {
+  ('IA', '01', 'Treppe-Süd-2'): {
     'Coordinates': [757, 283],
     'Connections': [
-      (('IA', '0', 'Treppe Süd 2'), 2),
+      (('IA', '0', 'Treppe-Süd-2'), 2),
       (('IA', '01', 'EN_23'), 32),
-      (('IA', '02', 'Treppe Süd 2'), 2),
-      (('IA', '04', 'Treppe Süd 2'), 2),
-      (('IA', '1', 'Treppe Süd 2'), 2),
+      (('IA', '02', 'Treppe-Süd-2'), 2),
+      (('IA', '04', 'Treppe-Süd-2'), 2),
+      (('IA', '1', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('IA', '01', 'Treppe Süd 3'): {
+  ('IA', '01', 'Treppe-Süd-3'): {
     'Coordinates': [421, 533],
     'Connections': [
-      (('IA', '0', 'Treppe Süd 3'), 2),
+      (('IA', '0', 'Treppe-Süd-3'), 2),
       (('IA', '01', 'EN_5'), 36),
-      (('IA', '02', 'Treppe Süd 3'), 2),
-      (('IA', '03', 'Treppe Süd 3'), 2),
+      (('IA', '02', 'Treppe-Süd-3'), 2),
+      (('IA', '03', 'Treppe-Süd-3'), 2),
     ],
   },
-  ('IA', '01', 'WC Nord'): {
+  ('IA', '01', 'WC-Nord'): {
     'Coordinates': [1068, 677],
     'Connections': [
       (('IA', '01', 'EN_45'), 43),
       (('IA', '01', 'EN_46'), 36),
     ],
   },
-  ('IA', '01', 'WC Süd'): {
+  ('IA', '01', 'WC-Süd'): {
     'Coordinates': [635, 247],
     'Connections': [
       (('IA', '01', 'EN_18'), 35),
@@ -38978,13 +38978,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '01', 'EN_20'), 42),
     ],
   },
-  ('IA', '01', 'WC Süd Ost'): {
+  ('IA', '01', 'WC-Süd-Ost'): {
     'Coordinates': [288, 338],
     'Connections': [
       (('IA', '01', 'EN_3'), 27),
     ],
   },
-  ('IA', '01', 'WC Süd West'): {
+  ('IA', '01', 'WC-Süd-West'): {
     'Coordinates': [222, 406],
     'Connections': [
       (('IA', '01', 'EN_2'), 36),
@@ -39024,7 +39024,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [558, 80],
     'Connections': [
       (('IA', '02', 'EN_24'), 29),
-      (('IA', '02', 'Eingang Süd Links'), 53),
+      (('IA', '02', 'Eingang-Süd-Links'), 53),
     ],
   },
   ('IA', '02', '132'): {
@@ -39266,43 +39266,43 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '02', 'EN_36'), 25),
     ],
   },
-  ('IA', '02', 'Aufzug Nord'): {
+  ('IA', '02', 'Aufzug-Nord'): {
     'Coordinates': [954, 572],
     'Connections': [
-      (('IA', '0', 'Aufzug Nord'), 1),
-      (('IA', '01', 'Aufzug Nord'), 1),
+      (('IA', '0', 'Aufzug-Nord'), 1),
+      (('IA', '01', 'Aufzug-Nord'), 1),
       (('IA', '02', 'EN_43'), 33),
-      (('IA', '03', 'Aufzug Nord'), 1),
-      (('IA', '1', 'Aufzug Nord'), 1),
-      (('IA', '2', 'Aufzug Nord'), 1),
-      (('IA', '3', 'Aufzug Nord'), 1),
-      (('IA', '4', 'Aufzug Nord'), 1),
-      (('IA', '5', 'Aufzug Nord'), 1),
-      (('IA', '6', 'Aufzug Nord'), 1),
+      (('IA', '03', 'Aufzug-Nord'), 1),
+      (('IA', '1', 'Aufzug-Nord'), 1),
+      (('IA', '2', 'Aufzug-Nord'), 1),
+      (('IA', '3', 'Aufzug-Nord'), 1),
+      (('IA', '4', 'Aufzug-Nord'), 1),
+      (('IA', '5', 'Aufzug-Nord'), 1),
+      (('IA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IA', '02', 'Aufzug Süd'): {
+  ('IA', '02', 'Aufzug-Süd'): {
     'Coordinates': [598, 214],
     'Connections': [
-      (('IA', '0', 'Aufzug Süd'), 1),
-      (('IA', '01', 'Aufzug Süd'), 1),
+      (('IA', '0', 'Aufzug-Süd'), 1),
+      (('IA', '01', 'Aufzug-Süd'), 1),
       (('IA', '02', 'EN_32'), 28),
-      (('IA', '03', 'Aufzug Süd'), 1),
-      (('IA', '1', 'Aufzug Süd'), 1),
-      (('IA', '2', 'Aufzug Süd'), 1),
-      (('IA', '3', 'Aufzug Süd'), 1),
-      (('IA', '4', 'Aufzug Süd'), 1),
-      (('IA', '5', 'Aufzug Süd'), 1),
-      (('IA', '6', 'Aufzug Süd'), 1),
+      (('IA', '03', 'Aufzug-Süd'), 1),
+      (('IA', '1', 'Aufzug-Süd'), 1),
+      (('IA', '2', 'Aufzug-Süd'), 1),
+      (('IA', '3', 'Aufzug-Süd'), 1),
+      (('IA', '4', 'Aufzug-Süd'), 1),
+      (('IA', '5', 'Aufzug-Süd'), 1),
+      (('IA', '6', 'Aufzug-Süd'), 1),
     ],
   },
-  ('IA', '02', 'Durchgang Richtung IB'): {
+  ('IA', '02', 'Durchgang-Richtung-IB'): {
     'Coordinates': [170, 681],
     'Connections': [
       (('IA', '02', 'EN_12'), 37),
     ],
   },
-  ('IA', '02', 'Duschen Süd'): {
+  ('IA', '02', 'Duschen-Süd'): {
     'Coordinates': [693, 314],
     'Connections': [
       (('IA', '02', 'EN_37'), 42),
@@ -39344,7 +39344,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [196, 655],
     'Connections': [
       (('IA', '02', '445'), 91),
-      (('IA', '02', 'Durchgang Richtung IB'), 37),
+      (('IA', '02', 'Durchgang-Richtung-IB'), 37),
       (('IA', '02', 'EN_7'), 57),
     ],
   },
@@ -39398,7 +39398,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '02', 'EN_19'), 39),
       (('IA', '02', 'EN_21'), 29),
-      (('IA', '02', 'WC Süd'), 46),
+      (('IA', '02', 'WC-Süd'), 46),
     ],
   },
   ('IA', '02', 'EN_21'): {
@@ -39423,7 +39423,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '02', '116'), 40),
       (('IA', '02', 'EN_22'), 22),
-      (('IA', '02', 'Eingang Süd Rechts'), 44),
+      (('IA', '02', 'Eingang-Süd-Rechts'), 44),
     ],
   },
   ('IA', '02', 'EN_24'): {
@@ -39431,7 +39431,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '02', '131'), 29),
       (('IA', '02', 'EN_25'), 19),
-      (('IA', '02', 'Eingang Süd Links'), 43),
+      (('IA', '02', 'Eingang-Süd-Links'), 43),
     ],
   },
   ('IA', '02', 'EN_25'): {
@@ -39496,17 +39496,17 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '02', 'EN_30'), 31),
       (('IA', '02', 'EN_32'), 37),
       (('IA', '02', 'EN_42'), 81),
-      (('IA', '02', 'Eingang West'), 57),
-      (('IA', '02', 'Treppe Süd 2'), 47),
+      (('IA', '02', 'Eingang-West'), 57),
+      (('IA', '02', 'Treppe-Süd-2'), 47),
     ],
   },
   ('IA', '02', 'EN_32'): {
     'Coordinates': [617, 235],
     'Connections': [
-      (('IA', '02', 'Aufzug Süd'), 28),
+      (('IA', '02', 'Aufzug-Süd'), 28),
       (('IA', '02', 'EN_31'), 37),
       (('IA', '02', 'EN_33'), 45),
-      (('IA', '02', 'Treppe Süd'), 33),
+      (('IA', '02', 'Treppe-Süd'), 33),
     ],
   },
   ('IA', '02', 'EN_33'): {
@@ -39539,7 +39539,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '02', '156'), 133),
       (('IA', '02', '95'), 25),
-      (('IA', '02', 'Duschen Süd'), 42),
+      (('IA', '02', 'Duschen-Süd'), 42),
       (('IA', '02', 'EN_36'), 34),
     ],
   },
@@ -39579,7 +39579,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [726, 294],
     'Connections': [
       (('IA', '02', '149'), 28),
-      (('IA', '02', 'Duschen Süd'), 39),
+      (('IA', '02', 'Duschen-Süd'), 39),
       (('IA', '02', 'EN_40'), 40),
       (('IA', '02', 'EN_42'), 37),
     ],
@@ -39595,10 +39595,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '02', 'EN_43'): {
     'Coordinates': [929, 550],
     'Connections': [
-      (('IA', '02', 'Aufzug Nord'), 33),
+      (('IA', '02', 'Aufzug-Nord'), 33),
       (('IA', '02', 'EN_46'), 37),
       (('IA', '02', 'EN_47'), 37),
-      (('IA', '02', 'Treppe Nord'), 34),
+      (('IA', '02', 'Treppe-Nord'), 34),
     ],
   },
   ('IA', '02', 'EN_44'): {
@@ -39607,7 +39607,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '02', '65'), 32),
       (('IA', '02', 'EN_47'), 84),
       (('IA', '02', 'EN_48'), 36),
-      (('IA', '02', 'WC Nord'), 42),
+      (('IA', '02', 'WC-Nord'), 42),
     ],
   },
   ('IA', '02', 'EN_45'): {
@@ -39616,7 +39616,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '02', '177'), 33),
       (('IA', '02', 'EN_46'), 69),
       (('IA', '02', 'EN_53'), 42),
-      (('IA', '02', 'WC Nord'), 38),
+      (('IA', '02', 'WC-Nord'), 38),
     ],
   },
   ('IA', '02', 'EN_46'): {
@@ -39650,7 +39650,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '02', '64'), 23),
       (('IA', '02', 'EN_50'), 25),
-      (('IA', '02', 'Eingang Nord Links'), 29),
+      (('IA', '02', 'Eingang-Nord-Links'), 29),
     ],
   },
   ('IA', '02', 'EN_5'): {
@@ -39658,7 +39658,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '02', 'EN_4'), 76),
       (('IA', '02', 'EN_6'), 74),
-      (('IA', '02', 'Treppe Süd 3'), 38),
+      (('IA', '02', 'Treppe-Süd-3'), 38),
     ],
   },
   ('IA', '02', 'EN_50'): {
@@ -39675,7 +39675,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '02', '181'), 31),
       (('IA', '02', '182'), 23),
       (('IA', '02', 'EN_52'), 25),
-      (('IA', '02', 'Eingang Nord Rechts'), 33),
+      (('IA', '02', 'Eingang-Nord-Rechts'), 33),
     ],
   },
   ('IA', '02', 'EN_52'): {
@@ -39757,7 +39757,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '02', '452'), 50),
       (('IA', '02', 'EN_11'), 50),
       (('IA', '02', 'EN_12'), 57),
-      (('IA', '02', 'Treppe Gang 2'), 26),
+      (('IA', '02', 'Treppe-Gang-2'), 26),
     ],
   },
   ('IA', '02', 'EN_8'): {
@@ -39766,7 +39766,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '02', '478'), 46),
       (('IA', '02', 'EN_18'), 58),
       (('IA', '02', 'EN_6'), 108),
-      (('IA', '02', 'Treppe Gang 1'), 23),
+      (('IA', '02', 'Treppe-Gang-1'), 23),
     ],
   },
   ('IA', '02', 'EN_9'): {
@@ -39777,45 +39777,45 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '02', 'EN_13'), 59),
     ],
   },
-  ('IA', '02', 'Eingang Nord Links'): {
+  ('IA', '02', 'Eingang-Nord-Links'): {
     'Coordinates': [1035, 714],
     'Connections': [
       (('IA', '02', 'EN_49'), 29),
-      (('IA', '02', 'Eingang Nord Rechts'), 79),
-      (('RUB', '0', 'Campus'), 1),
+      (('IA', '02', 'Eingang-Nord-Rechts'), 79),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('IA', '02', 'Eingang Nord Rechts'): {
+  ('IA', '02', 'Eingang-Nord-Rechts'): {
     'Coordinates': [1091, 658],
     'Connections': [
       (('IA', '02', 'EN_51'), 33),
-      (('IA', '02', 'Eingang Nord Links'), 79),
-      (('RUB', '0', 'Campus'), 1),
+      (('IA', '02', 'Eingang-Nord-Links'), 79),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('IA', '02', 'Eingang Süd Links'): {
+  ('IA', '02', 'Eingang-Süd-Links'): {
     'Coordinates': [507, 66],
     'Connections': [
       (('IA', '02', '131'), 53),
       (('IA', '02', 'EN_24'), 43),
-      (('IA', '02', 'Eingang Süd Rechts'), 84),
-      (('RUB', '0', 'Campus'), 1),
+      (('IA', '02', 'Eingang-Süd-Rechts'), 84),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('IA', '02', 'Eingang Süd Rechts'): {
+  ('IA', '02', 'Eingang-Süd-Rechts'): {
     'Coordinates': [443, 120],
     'Connections': [
       (('IA', '02', 'EN_23'), 44),
-      (('IA', '02', 'Eingang Süd Links'), 84),
-      (('RUB', '0', 'Campus'), 1),
+      (('IA', '02', 'Eingang-Süd-Links'), 84),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('IA', '02', 'Eingang West'): {
+  ('IA', '02', 'Eingang-West'): {
     'Coordinates': [684, 169],
     'Connections': [
       (('IA', '02', 'EN_31'), 57),
-      (('IA', '02', 'Treppe Süd 2'), 50),
-      (('RUB', '0', 'Campus'), 1),
+      (('IA', '02', 'Treppe-Süd-2'), 50),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
   ('IA', '02', 'HIA'): {
@@ -39824,83 +39824,83 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '02', 'EN_0'), 48),
     ],
   },
-  ('IA', '02', 'Treppe Gang 1'): {
+  ('IA', '02', 'Treppe-Gang-1'): {
     'Coordinates': [504, 378],
     'Connections': [
-      (('IA', '01', 'Treppe Gang 1'), 2),
+      (('IA', '01', 'Treppe-Gang-1'), 2),
       (('IA', '02', 'EN_8'), 23),
-      (('IA', '03', 'Treppe Gang 1'), 2),
-      (('IA', '04', 'Treppe Gang 1'), 2),
+      (('IA', '03', 'Treppe-Gang-1'), 2),
+      (('IA', '04', 'Treppe-Gang-1'), 2),
     ],
   },
-  ('IA', '02', 'Treppe Gang 2'): {
+  ('IA', '02', 'Treppe-Gang-2'): {
     'Coordinates': [253, 632],
     'Connections': [
-      (('IA', '01', 'Treppe Gang 2'), 2),
+      (('IA', '01', 'Treppe-Gang-2'), 2),
       (('IA', '02', 'EN_7'), 26),
-      (('IA', '03', 'Treppe Gang 2'), 2),
+      (('IA', '03', 'Treppe-Gang-2'), 2),
     ],
   },
-  ('IA', '02', 'Treppe Nord'): {
+  ('IA', '02', 'Treppe-Nord'): {
     'Coordinates': [905, 526],
     'Connections': [
-      (('IA', '0', 'Treppe Nord'), 2),
-      (('IA', '01', 'Treppe Nord'), 2),
+      (('IA', '0', 'Treppe-Nord'), 2),
+      (('IA', '01', 'Treppe-Nord'), 2),
       (('IA', '02', 'EN_43'), 34),
-      (('IA', '03', 'Treppe Nord'), 2),
-      (('IA', '1', 'Treppe Nord'), 2),
-      (('IA', '2', 'Treppe Nord'), 2),
-      (('IA', '3', 'Treppe Nord'), 2),
-      (('IA', '4', 'Treppe Nord'), 2),
-      (('IA', '5', 'Treppe Nord'), 2),
-      (('IA', '6', 'Treppe Nord'), 2),
-      (('IA', '7', 'Treppe Nord'), 2),
+      (('IA', '03', 'Treppe-Nord'), 2),
+      (('IA', '1', 'Treppe-Nord'), 2),
+      (('IA', '2', 'Treppe-Nord'), 2),
+      (('IA', '3', 'Treppe-Nord'), 2),
+      (('IA', '4', 'Treppe-Nord'), 2),
+      (('IA', '5', 'Treppe-Nord'), 2),
+      (('IA', '6', 'Treppe-Nord'), 2),
+      (('IA', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('IA', '02', 'Treppe Süd'): {
+  ('IA', '02', 'Treppe-Süd'): {
     'Coordinates': [643, 255],
     'Connections': [
-      (('IA', '0', 'Treppe Süd'), 2),
-      (('IA', '01', 'Treppe Süd'), 2),
+      (('IA', '0', 'Treppe-Süd'), 2),
+      (('IA', '01', 'Treppe-Süd'), 2),
       (('IA', '02', 'EN_32'), 33),
-      (('IA', '03', 'Treppe Süd'), 2),
-      (('IA', '1', 'Treppe Süd'), 2),
-      (('IA', '2', 'Treppe Süd'), 2),
-      (('IA', '3', 'Treppe Süd'), 2),
-      (('IA', '4', 'Treppe Süd'), 2),
-      (('IA', '5', 'Treppe Süd'), 2),
-      (('IA', '6', 'Treppe Süd'), 2),
-      (('IA', '7', 'Treppe Süd'), 2),
+      (('IA', '03', 'Treppe-Süd'), 2),
+      (('IA', '1', 'Treppe-Süd'), 2),
+      (('IA', '2', 'Treppe-Süd'), 2),
+      (('IA', '3', 'Treppe-Süd'), 2),
+      (('IA', '4', 'Treppe-Süd'), 2),
+      (('IA', '5', 'Treppe-Süd'), 2),
+      (('IA', '6', 'Treppe-Süd'), 2),
+      (('IA', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('IA', '02', 'Treppe Süd 2'): {
+  ('IA', '02', 'Treppe-Süd-2'): {
     'Coordinates': [690, 219],
     'Connections': [
-      (('IA', '0', 'Treppe Süd 2'), 2),
-      (('IA', '01', 'Treppe Süd 2'), 2),
+      (('IA', '0', 'Treppe-Süd-2'), 2),
+      (('IA', '01', 'Treppe-Süd-2'), 2),
       (('IA', '02', 'EN_31'), 47),
-      (('IA', '02', 'Eingang West'), 50),
-      (('IA', '04', 'Treppe Süd 2'), 2),
-      (('IA', '1', 'Treppe Süd 2'), 2),
+      (('IA', '02', 'Eingang-West'), 50),
+      (('IA', '04', 'Treppe-Süd-2'), 2),
+      (('IA', '1', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('IA', '02', 'Treppe Süd 3'): {
+  ('IA', '02', 'Treppe-Süd-3'): {
     'Coordinates': [339, 469],
     'Connections': [
-      (('IA', '0', 'Treppe Süd 3'), 2),
-      (('IA', '01', 'Treppe Süd 3'), 2),
+      (('IA', '0', 'Treppe-Süd-3'), 2),
+      (('IA', '01', 'Treppe-Süd-3'), 2),
       (('IA', '02', 'EN_5'), 38),
-      (('IA', '03', 'Treppe Süd 3'), 2),
+      (('IA', '03', 'Treppe-Süd-3'), 2),
     ],
   },
-  ('IA', '02', 'WC Nord'): {
+  ('IA', '02', 'WC-Nord'): {
     'Coordinates': [990, 610],
     'Connections': [
       (('IA', '02', 'EN_44'), 42),
       (('IA', '02', 'EN_45'), 38),
     ],
   },
-  ('IA', '02', 'WC Süd'): {
+  ('IA', '02', 'WC-Süd'): {
     'Coordinates': [552, 171],
     'Connections': [
       (('IA', '02', 'EN_20'), 46),
@@ -40192,41 +40192,41 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '03', 'EN_34'), 26),
     ],
   },
-  ('IA', '03', 'Aufzug Nord'): {
+  ('IA', '03', 'Aufzug-Nord'): {
     'Coordinates': [907, 531],
     'Connections': [
-      (('IA', '0', 'Aufzug Nord'), 1),
-      (('IA', '01', 'Aufzug Nord'), 1),
-      (('IA', '02', 'Aufzug Nord'), 1),
+      (('IA', '0', 'Aufzug-Nord'), 1),
+      (('IA', '01', 'Aufzug-Nord'), 1),
+      (('IA', '02', 'Aufzug-Nord'), 1),
       (('IA', '03', 'EN_48'), 32),
-      (('IA', '1', 'Aufzug Nord'), 1),
-      (('IA', '2', 'Aufzug Nord'), 1),
-      (('IA', '3', 'Aufzug Nord'), 1),
-      (('IA', '4', 'Aufzug Nord'), 1),
-      (('IA', '5', 'Aufzug Nord'), 1),
-      (('IA', '6', 'Aufzug Nord'), 1),
+      (('IA', '1', 'Aufzug-Nord'), 1),
+      (('IA', '2', 'Aufzug-Nord'), 1),
+      (('IA', '3', 'Aufzug-Nord'), 1),
+      (('IA', '4', 'Aufzug-Nord'), 1),
+      (('IA', '5', 'Aufzug-Nord'), 1),
+      (('IA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IA', '03', 'Aufzug Süd'): {
+  ('IA', '03', 'Aufzug-Süd'): {
     'Coordinates': [544, 162],
     'Connections': [
-      (('IA', '0', 'Aufzug Süd'), 1),
-      (('IA', '01', 'Aufzug Süd'), 1),
-      (('IA', '02', 'Aufzug Süd'), 1),
+      (('IA', '0', 'Aufzug-Süd'), 1),
+      (('IA', '01', 'Aufzug-Süd'), 1),
+      (('IA', '02', 'Aufzug-Süd'), 1),
       (('IA', '03', 'EN_32'), 40),
-      (('IA', '1', 'Aufzug Süd'), 1),
-      (('IA', '2', 'Aufzug Süd'), 1),
-      (('IA', '3', 'Aufzug Süd'), 1),
-      (('IA', '4', 'Aufzug Süd'), 1),
-      (('IA', '5', 'Aufzug Süd'), 1),
-      (('IA', '6', 'Aufzug Süd'), 1),
+      (('IA', '1', 'Aufzug-Süd'), 1),
+      (('IA', '2', 'Aufzug-Süd'), 1),
+      (('IA', '3', 'Aufzug-Süd'), 1),
+      (('IA', '4', 'Aufzug-Süd'), 1),
+      (('IA', '5', 'Aufzug-Süd'), 1),
+      (('IA', '6', 'Aufzug-Süd'), 1),
     ],
   },
-  ('IA', '03', 'Durchgang Richtung IB'): {
+  ('IA', '03', 'Durchgang-Richtung-IB'): {
     'Coordinates': [127, 641],
     'Connections': [
       (('IA', '03', 'EN_23'), 16),
-      (('IB', '03', 'Durchgang Richtung IA'), 1),
+      (('IB', '03', 'Durchgang-Richtung-IA'), 1),
     ],
   },
   ('IA', '03', 'EN_0'): {
@@ -40235,7 +40235,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '03', '452'), 39),
       (('IA', '03', 'EN_21'), 19),
       (('IA', '03', 'EN_22'), 40),
-      (('IA', '03', 'Treppe Gang 2'), 22),
+      (('IA', '03', 'Treppe-Gang-2'), 22),
     ],
   },
   ('IA', '03', 'EN_1'): {
@@ -40284,7 +40284,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '03', 'EN_13'), 72),
       (('IA', '03', 'EN_17'), 86),
-      (('IA', '03', 'Treppe Süd 3'), 34),
+      (('IA', '03', 'Treppe-Süd-3'), 34),
     ],
   },
   ('IA', '03', 'EN_16'): {
@@ -40292,7 +40292,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '03', '473'), 81),
       (('IA', '03', 'EN_13'), 79),
-      (('IA', '03', 'Treppe Gang 1'), 23),
+      (('IA', '03', 'Treppe-Gang-1'), 23),
     ],
   },
   ('IA', '03', 'EN_17'): {
@@ -40346,7 +40346,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '03', 'EN_23'): {
     'Coordinates': [137, 629],
     'Connections': [
-      (('IA', '03', 'Durchgang Richtung IB'), 16),
+      (('IA', '03', 'Durchgang-Richtung-IB'), 16),
       (('IA', '03', 'EN_22'), 34),
     ],
   },
@@ -40380,7 +40380,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '03', '107'), 50),
       (('IA', '03', 'EN_28'), 24),
-      (('IA', '03', 'Treppe Gang 1'), 135),
+      (('IA', '03', 'Treppe-Gang-1'), 135),
     ],
   },
   ('IA', '03', 'EN_28'): {
@@ -40428,9 +40428,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [570, 192],
     'Connections': [
       (('IA', '03', '141'), 62),
-      (('IA', '03', 'Aufzug Süd'), 40),
+      (('IA', '03', 'Aufzug-Süd'), 40),
       (('IA', '03', 'EN_33'), 40),
-      (('IA', '03', 'Treppe Süd'), 28),
+      (('IA', '03', 'Treppe-Süd'), 28),
     ],
   },
   ('IA', '03', 'EN_33'): {
@@ -40565,9 +40565,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '03', 'EN_48'): {
     'Coordinates': [884, 509],
     'Connections': [
-      (('IA', '03', 'Aufzug Nord'), 32),
+      (('IA', '03', 'Aufzug-Nord'), 32),
       (('IA', '03', 'EN_45'), 40),
-      (('IA', '03', 'Treppe Nord'), 29),
+      (('IA', '03', 'Treppe-Nord'), 29),
     ],
   },
   ('IA', '03', 'EN_5'): {
@@ -40603,66 +40603,66 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '03', 'EN_1'), 39),
     ],
   },
-  ('IA', '03', 'Treppe Gang 1'): {
+  ('IA', '03', 'Treppe-Gang-1'): {
     'Coordinates': [446, 353],
     'Connections': [
-      (('IA', '01', 'Treppe Gang 1'), 2),
-      (('IA', '02', 'Treppe Gang 1'), 2),
+      (('IA', '01', 'Treppe-Gang-1'), 2),
+      (('IA', '02', 'Treppe-Gang-1'), 2),
       (('IA', '03', 'EN_16'), 23),
       (('IA', '03', 'EN_27'), 135),
-      (('IA', '04', 'Treppe Gang 1'), 2),
+      (('IA', '04', 'Treppe-Gang-1'), 2),
     ],
   },
-  ('IA', '03', 'Treppe Gang 2'): {
+  ('IA', '03', 'Treppe-Gang-2'): {
     'Coordinates': [209, 592],
     'Connections': [
-      (('IA', '01', 'Treppe Gang 2'), 2),
-      (('IA', '02', 'Treppe Gang 2'), 2),
+      (('IA', '01', 'Treppe-Gang-2'), 2),
+      (('IA', '02', 'Treppe-Gang-2'), 2),
       (('IA', '03', 'EN_0'), 22),
     ],
   },
-  ('IA', '03', 'Treppe Nord'): {
+  ('IA', '03', 'Treppe-Nord'): {
     'Coordinates': [864, 488],
     'Connections': [
-      (('IA', '0', 'Treppe Nord'), 2),
-      (('IA', '01', 'Treppe Nord'), 2),
-      (('IA', '02', 'Treppe Nord'), 2),
+      (('IA', '0', 'Treppe-Nord'), 2),
+      (('IA', '01', 'Treppe-Nord'), 2),
+      (('IA', '02', 'Treppe-Nord'), 2),
       (('IA', '03', 'EN_48'), 29),
-      (('IA', '1', 'Treppe Nord'), 2),
-      (('IA', '2', 'Treppe Nord'), 2),
-      (('IA', '3', 'Treppe Nord'), 2),
-      (('IA', '4', 'Treppe Nord'), 2),
-      (('IA', '5', 'Treppe Nord'), 2),
-      (('IA', '6', 'Treppe Nord'), 2),
-      (('IA', '7', 'Treppe Nord'), 2),
+      (('IA', '1', 'Treppe-Nord'), 2),
+      (('IA', '2', 'Treppe-Nord'), 2),
+      (('IA', '3', 'Treppe-Nord'), 2),
+      (('IA', '4', 'Treppe-Nord'), 2),
+      (('IA', '5', 'Treppe-Nord'), 2),
+      (('IA', '6', 'Treppe-Nord'), 2),
+      (('IA', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('IA', '03', 'Treppe Süd'): {
+  ('IA', '03', 'Treppe-Süd'): {
     'Coordinates': [591, 210],
     'Connections': [
-      (('IA', '0', 'Treppe Süd'), 2),
-      (('IA', '01', 'Treppe Süd'), 2),
-      (('IA', '02', 'Treppe Süd'), 2),
+      (('IA', '0', 'Treppe-Süd'), 2),
+      (('IA', '01', 'Treppe-Süd'), 2),
+      (('IA', '02', 'Treppe-Süd'), 2),
       (('IA', '03', 'EN_32'), 28),
-      (('IA', '1', 'Treppe Süd'), 2),
-      (('IA', '2', 'Treppe Süd'), 2),
-      (('IA', '3', 'Treppe Süd'), 2),
-      (('IA', '4', 'Treppe Süd'), 2),
-      (('IA', '5', 'Treppe Süd'), 2),
-      (('IA', '6', 'Treppe Süd'), 2),
-      (('IA', '7', 'Treppe Süd'), 2),
+      (('IA', '1', 'Treppe-Süd'), 2),
+      (('IA', '2', 'Treppe-Süd'), 2),
+      (('IA', '3', 'Treppe-Süd'), 2),
+      (('IA', '4', 'Treppe-Süd'), 2),
+      (('IA', '5', 'Treppe-Süd'), 2),
+      (('IA', '6', 'Treppe-Süd'), 2),
+      (('IA', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('IA', '03', 'Treppe Süd 3'): {
+  ('IA', '03', 'Treppe-Süd-3'): {
     'Coordinates': [298, 422],
     'Connections': [
-      (('IA', '0', 'Treppe Süd 3'), 2),
-      (('IA', '01', 'Treppe Süd 3'), 2),
-      (('IA', '02', 'Treppe Süd 3'), 2),
+      (('IA', '0', 'Treppe-Süd-3'), 2),
+      (('IA', '01', 'Treppe-Süd-3'), 2),
+      (('IA', '02', 'Treppe-Süd-3'), 2),
       (('IA', '03', 'EN_14'), 34),
     ],
   },
-  ('IA', '04', 'Durchgang Richtung IB'): {
+  ('IA', '04', 'Durchgang-Richtung-IB'): {
     'Coordinates': [177, 673],
     'Connections': [
       (('IA', '04', 'EN_1'), 262),
@@ -40671,28 +40671,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '04', 'EN_1'): {
     'Coordinates': [365, 490],
     'Connections': [
-      (('IA', '04', 'Durchgang Richtung IB'), 262),
-      (('IA', '04', 'Treppe Gang 1'), 218),
-      (('IA', '04', 'Treppe Süd 2'), 32),
+      (('IA', '04', 'Durchgang-Richtung-IB'), 262),
+      (('IA', '04', 'Treppe-Gang-1'), 218),
+      (('IA', '04', 'Treppe-Süd-2'), 32),
     ],
   },
-  ('IA', '04', 'Treppe Gang 1'): {
+  ('IA', '04', 'Treppe-Gang-1'): {
     'Coordinates': [518, 335],
     'Connections': [
-      (('IA', '01', 'Treppe Gang 1'), 2),
-      (('IA', '02', 'Treppe Gang 1'), 2),
-      (('IA', '03', 'Treppe Gang 1'), 2),
+      (('IA', '01', 'Treppe-Gang-1'), 2),
+      (('IA', '02', 'Treppe-Gang-1'), 2),
+      (('IA', '03', 'Treppe-Gang-1'), 2),
       (('IA', '04', 'EN_1'), 218),
     ],
   },
-  ('IA', '04', 'Treppe Süd 2'): {
+  ('IA', '04', 'Treppe-Süd-2'): {
     'Coordinates': [345, 465],
     'Connections': [
-      (('IA', '0', 'Treppe Süd 2'), 2),
-      (('IA', '01', 'Treppe Süd 2'), 2),
-      (('IA', '02', 'Treppe Süd 2'), 2),
+      (('IA', '0', 'Treppe-Süd-2'), 2),
+      (('IA', '01', 'Treppe-Süd-2'), 2),
+      (('IA', '02', 'Treppe-Süd-2'), 2),
       (('IA', '04', 'EN_1'), 32),
-      (('IA', '1', 'Treppe Süd 2'), 2),
+      (('IA', '1', 'Treppe-Süd-2'), 2),
     ],
   },
   ('IA', '1', '101'): {
@@ -40875,34 +40875,34 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '1', 'EN_31'), 43),
     ],
   },
-  ('IA', '1', 'Aufzug Nord'): {
+  ('IA', '1', 'Aufzug-Nord'): {
     'Coordinates': [890, 880],
     'Connections': [
-      (('IA', '0', 'Aufzug Nord'), 1),
-      (('IA', '01', 'Aufzug Nord'), 1),
-      (('IA', '02', 'Aufzug Nord'), 1),
-      (('IA', '03', 'Aufzug Nord'), 1),
+      (('IA', '0', 'Aufzug-Nord'), 1),
+      (('IA', '01', 'Aufzug-Nord'), 1),
+      (('IA', '02', 'Aufzug-Nord'), 1),
+      (('IA', '03', 'Aufzug-Nord'), 1),
       (('IA', '1', 'EN_7'), 26),
-      (('IA', '2', 'Aufzug Nord'), 1),
-      (('IA', '3', 'Aufzug Nord'), 1),
-      (('IA', '4', 'Aufzug Nord'), 1),
-      (('IA', '5', 'Aufzug Nord'), 1),
-      (('IA', '6', 'Aufzug Nord'), 1),
+      (('IA', '2', 'Aufzug-Nord'), 1),
+      (('IA', '3', 'Aufzug-Nord'), 1),
+      (('IA', '4', 'Aufzug-Nord'), 1),
+      (('IA', '5', 'Aufzug-Nord'), 1),
+      (('IA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IA', '1', 'Aufzug Süd'): {
+  ('IA', '1', 'Aufzug-Süd'): {
     'Coordinates': [323, 300],
     'Connections': [
-      (('IA', '0', 'Aufzug Süd'), 1),
-      (('IA', '01', 'Aufzug Süd'), 1),
-      (('IA', '02', 'Aufzug Süd'), 1),
-      (('IA', '03', 'Aufzug Süd'), 1),
+      (('IA', '0', 'Aufzug-Süd'), 1),
+      (('IA', '01', 'Aufzug-Süd'), 1),
+      (('IA', '02', 'Aufzug-Süd'), 1),
+      (('IA', '03', 'Aufzug-Süd'), 1),
       (('IA', '1', 'EN_28'), 40),
-      (('IA', '2', 'Aufzug Süd'), 1),
-      (('IA', '3', 'Aufzug Süd'), 1),
-      (('IA', '4', 'Aufzug Süd'), 1),
-      (('IA', '5', 'Aufzug Süd'), 1),
-      (('IA', '6', 'Aufzug Süd'), 1),
+      (('IA', '2', 'Aufzug-Süd'), 1),
+      (('IA', '3', 'Aufzug-Süd'), 1),
+      (('IA', '4', 'Aufzug-Süd'), 1),
+      (('IA', '5', 'Aufzug-Süd'), 1),
+      (('IA', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IA', '1', 'EN_0'): {
@@ -40956,7 +40956,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '1', 'EN_13'), 70),
       (('IA', '1', 'EN_17'), 87),
-      (('IA', '1', 'WC Nord'), 59),
+      (('IA', '1', 'WC-Nord'), 59),
     ],
   },
   ('IA', '1', 'EN_17'): {
@@ -41047,16 +41047,16 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '1', 'EN_26'), 198),
       (('IA', '1', 'EN_28'), 59),
       (('IA', '1', 'EN_46'), 119),
-      (('IA', '1', 'Treppe Süd 2'), 54),
+      (('IA', '1', 'Treppe-Süd-2'), 54),
     ],
   },
   ('IA', '1', 'EN_28'): {
     'Coordinates': [351, 329],
     'Connections': [
-      (('IA', '1', 'Aufzug Süd'), 40),
+      (('IA', '1', 'Aufzug-Süd'), 40),
       (('IA', '1', 'EN_27'), 59),
       (('IA', '1', 'EN_40'), 73),
-      (('IA', '1', 'Treppe Süd'), 34),
+      (('IA', '1', 'Treppe-Süd'), 34),
     ],
   },
   ('IA', '1', 'EN_29'): {
@@ -41072,7 +41072,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '1', 'EN_2'), 43),
       (('IA', '1', 'EN_4'), 66),
-      (('IA', '1', 'WC Nord'), 68),
+      (('IA', '1', 'WC-Nord'), 68),
     ],
   },
   ('IA', '1', 'EN_30'): {
@@ -41178,7 +41178,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '1', '109'), 51),
       (('IA', '1', 'EN_40'), 119),
       (('IA', '1', 'EN_43'), 54),
-      (('IA', '1', 'WC Süd'), 73),
+      (('IA', '1', 'WC-Süd'), 73),
     ],
   },
   ('IA', '1', 'EN_43'): {
@@ -41187,7 +41187,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '1', '109'), 57),
       (('IA', '1', 'EN_42'), 54),
       (('IA', '1', 'EN_44'), 37),
-      (('IA', '1', 'WC Süd'), 68),
+      (('IA', '1', 'WC-Süd'), 68),
     ],
   },
   ('IA', '1', 'EN_44'): {
@@ -41212,7 +41212,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '1', '135'), 56),
       (('IA', '1', 'EN_27'), 119),
       (('IA', '1', 'EN_47'), 83),
-      (('IA', '1', 'WC Süd'), 67),
+      (('IA', '1', 'WC-Süd'), 67),
     ],
   },
   ('IA', '1', 'EN_47'): {
@@ -41252,10 +41252,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '1', 'EN_7'): {
     'Coordinates': [871, 862],
     'Connections': [
-      (('IA', '1', 'Aufzug Nord'), 26),
+      (('IA', '1', 'Aufzug-Nord'), 26),
       (('IA', '1', 'EN_18'), 68),
       (('IA', '1', 'EN_6'), 69),
-      (('IA', '1', 'Treppe Nord'), 52),
+      (('IA', '1', 'Treppe-Nord'), 52),
     ],
   },
   ('IA', '1', 'EN_9'): {
@@ -41266,56 +41266,56 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '1', 'EN_10'), 66),
     ],
   },
-  ('IA', '1', 'Treppe Nord'): {
+  ('IA', '1', 'Treppe-Nord'): {
     'Coordinates': [834, 826],
     'Connections': [
-      (('IA', '0', 'Treppe Nord'), 2),
-      (('IA', '01', 'Treppe Nord'), 2),
-      (('IA', '02', 'Treppe Nord'), 2),
-      (('IA', '03', 'Treppe Nord'), 2),
+      (('IA', '0', 'Treppe-Nord'), 2),
+      (('IA', '01', 'Treppe-Nord'), 2),
+      (('IA', '02', 'Treppe-Nord'), 2),
+      (('IA', '03', 'Treppe-Nord'), 2),
       (('IA', '1', 'EN_7'), 52),
-      (('IA', '2', 'Treppe Nord'), 2),
-      (('IA', '3', 'Treppe Nord'), 2),
-      (('IA', '4', 'Treppe Nord'), 2),
-      (('IA', '5', 'Treppe Nord'), 2),
-      (('IA', '6', 'Treppe Nord'), 2),
-      (('IA', '7', 'Treppe Nord'), 2),
+      (('IA', '2', 'Treppe-Nord'), 2),
+      (('IA', '3', 'Treppe-Nord'), 2),
+      (('IA', '4', 'Treppe-Nord'), 2),
+      (('IA', '5', 'Treppe-Nord'), 2),
+      (('IA', '6', 'Treppe-Nord'), 2),
+      (('IA', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('IA', '1', 'Treppe Süd'): {
+  ('IA', '1', 'Treppe-Süd'): {
     'Coordinates': [373, 355],
     'Connections': [
-      (('IA', '0', 'Treppe Süd'), 2),
-      (('IA', '01', 'Treppe Süd'), 2),
-      (('IA', '02', 'Treppe Süd'), 2),
-      (('IA', '03', 'Treppe Süd'), 2),
+      (('IA', '0', 'Treppe-Süd'), 2),
+      (('IA', '01', 'Treppe-Süd'), 2),
+      (('IA', '02', 'Treppe-Süd'), 2),
+      (('IA', '03', 'Treppe-Süd'), 2),
       (('IA', '1', 'EN_28'), 34),
-      (('IA', '2', 'Treppe Süd'), 2),
-      (('IA', '3', 'Treppe Süd'), 2),
-      (('IA', '4', 'Treppe Süd'), 2),
-      (('IA', '5', 'Treppe Süd'), 2),
-      (('IA', '6', 'Treppe Süd'), 2),
-      (('IA', '7', 'Treppe Süd'), 2),
+      (('IA', '2', 'Treppe-Süd'), 2),
+      (('IA', '3', 'Treppe-Süd'), 2),
+      (('IA', '4', 'Treppe-Süd'), 2),
+      (('IA', '5', 'Treppe-Süd'), 2),
+      (('IA', '6', 'Treppe-Süd'), 2),
+      (('IA', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('IA', '1', 'Treppe Süd 2'): {
+  ('IA', '1', 'Treppe-Süd-2'): {
     'Coordinates': [441, 264],
     'Connections': [
-      (('IA', '0', 'Treppe Süd 2'), 2),
-      (('IA', '01', 'Treppe Süd 2'), 2),
-      (('IA', '02', 'Treppe Süd 2'), 2),
-      (('IA', '04', 'Treppe Süd 2'), 2),
+      (('IA', '0', 'Treppe-Süd-2'), 2),
+      (('IA', '01', 'Treppe-Süd-2'), 2),
+      (('IA', '02', 'Treppe-Süd-2'), 2),
+      (('IA', '04', 'Treppe-Süd-2'), 2),
       (('IA', '1', 'EN_27'), 54),
     ],
   },
-  ('IA', '1', 'WC Nord'): {
+  ('IA', '1', 'WC-Nord'): {
     'Coordinates': [966, 953],
     'Connections': [
       (('IA', '1', 'EN_16'), 59),
       (('IA', '1', 'EN_3'), 68),
     ],
   },
-  ('IA', '1', 'WC Süd'): {
+  ('IA', '1', 'WC-Süd'): {
     'Coordinates': [252, 234],
     'Connections': [
       (('IA', '1', 'EN_42'), 73),
@@ -41762,34 +41762,34 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '2', 'EN_45'), 49),
     ],
   },
-  ('IA', '2', 'Aufzug Nord'): {
+  ('IA', '2', 'Aufzug-Nord'): {
     'Coordinates': [889, 904],
     'Connections': [
-      (('IA', '0', 'Aufzug Nord'), 1),
-      (('IA', '01', 'Aufzug Nord'), 1),
-      (('IA', '02', 'Aufzug Nord'), 1),
-      (('IA', '03', 'Aufzug Nord'), 1),
-      (('IA', '1', 'Aufzug Nord'), 1),
+      (('IA', '0', 'Aufzug-Nord'), 1),
+      (('IA', '01', 'Aufzug-Nord'), 1),
+      (('IA', '02', 'Aufzug-Nord'), 1),
+      (('IA', '03', 'Aufzug-Nord'), 1),
+      (('IA', '1', 'Aufzug-Nord'), 1),
       (('IA', '2', 'EN_69'), 23),
-      (('IA', '3', 'Aufzug Nord'), 1),
-      (('IA', '4', 'Aufzug Nord'), 1),
-      (('IA', '5', 'Aufzug Nord'), 1),
-      (('IA', '6', 'Aufzug Nord'), 1),
+      (('IA', '3', 'Aufzug-Nord'), 1),
+      (('IA', '4', 'Aufzug-Nord'), 1),
+      (('IA', '5', 'Aufzug-Nord'), 1),
+      (('IA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IA', '2', 'Aufzug Süd'): {
+  ('IA', '2', 'Aufzug-Süd'): {
     'Coordinates': [324, 308],
     'Connections': [
-      (('IA', '0', 'Aufzug Süd'), 1),
-      (('IA', '01', 'Aufzug Süd'), 1),
-      (('IA', '02', 'Aufzug Süd'), 1),
-      (('IA', '03', 'Aufzug Süd'), 1),
-      (('IA', '1', 'Aufzug Süd'), 1),
+      (('IA', '0', 'Aufzug-Süd'), 1),
+      (('IA', '01', 'Aufzug-Süd'), 1),
+      (('IA', '02', 'Aufzug-Süd'), 1),
+      (('IA', '03', 'Aufzug-Süd'), 1),
+      (('IA', '1', 'Aufzug-Süd'), 1),
       (('IA', '2', 'EN_68'), 42),
-      (('IA', '3', 'Aufzug Süd'), 1),
-      (('IA', '4', 'Aufzug Süd'), 1),
-      (('IA', '5', 'Aufzug Süd'), 1),
-      (('IA', '6', 'Aufzug Süd'), 1),
+      (('IA', '3', 'Aufzug-Süd'), 1),
+      (('IA', '4', 'Aufzug-Süd'), 1),
+      (('IA', '5', 'Aufzug-Süd'), 1),
+      (('IA', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IA', '2', 'EN_0'): {
@@ -42208,7 +42208,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '2', 'EN_40'), 32),
       (('IA', '2', 'EN_41'), 30),
-      (('IA', '2', 'WC Süd'), 40),
+      (('IA', '2', 'WC-Süd'), 40),
     ],
   },
   ('IA', '2', 'EN_57'): {
@@ -42266,7 +42266,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '2', '67'), 17),
       (('IA', '2', 'EN_61'), 45),
       (('IA', '2', 'EN_63'), 38),
-      (('IA', '2', 'WC Nord'), 70),
+      (('IA', '2', 'WC-Nord'), 70),
     ],
   },
   ('IA', '2', 'EN_63'): {
@@ -42275,7 +42275,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '2', '65'), 40),
       (('IA', '2', 'EN_62'), 38),
       (('IA', '2', 'EN_64'), 23),
-      (('IA', '2', 'WC Nord'), 77),
+      (('IA', '2', 'WC-Nord'), 77),
     ],
   },
   ('IA', '2', 'EN_64'): {
@@ -42305,19 +42305,19 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '2', 'EN_68'): {
     'Coordinates': [355, 336],
     'Connections': [
-      (('IA', '2', 'Aufzug Süd'), 42),
+      (('IA', '2', 'Aufzug-Süd'), 42),
       (('IA', '2', 'EN_24'), 55),
       (('IA', '2', 'EN_43'), 77),
-      (('IA', '2', 'Treppe Süd'), 49),
+      (('IA', '2', 'Treppe-Süd'), 49),
     ],
   },
   ('IA', '2', 'EN_69'): {
     'Coordinates': [872, 888],
     'Connections': [
-      (('IA', '2', 'Aufzug Nord'), 23),
+      (('IA', '2', 'Aufzug-Nord'), 23),
       (('IA', '2', 'EN_10'), 70),
       (('IA', '2', 'EN_60'), 72),
-      (('IA', '2', 'Treppe Nord'), 43),
+      (('IA', '2', 'Treppe-Nord'), 43),
     ],
   },
   ('IA', '2', 'EN_7'): {
@@ -42376,46 +42376,46 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '2', 'EN_8'), 70),
     ],
   },
-  ('IA', '2', 'Treppe Nord'): {
+  ('IA', '2', 'Treppe-Nord'): {
     'Coordinates': [841, 858],
     'Connections': [
-      (('IA', '0', 'Treppe Nord'), 2),
-      (('IA', '01', 'Treppe Nord'), 2),
-      (('IA', '02', 'Treppe Nord'), 2),
-      (('IA', '03', 'Treppe Nord'), 2),
-      (('IA', '1', 'Treppe Nord'), 2),
+      (('IA', '0', 'Treppe-Nord'), 2),
+      (('IA', '01', 'Treppe-Nord'), 2),
+      (('IA', '02', 'Treppe-Nord'), 2),
+      (('IA', '03', 'Treppe-Nord'), 2),
+      (('IA', '1', 'Treppe-Nord'), 2),
       (('IA', '2', 'EN_69'), 43),
-      (('IA', '3', 'Treppe Nord'), 2),
-      (('IA', '4', 'Treppe Nord'), 2),
-      (('IA', '5', 'Treppe Nord'), 2),
-      (('IA', '6', 'Treppe Nord'), 2),
-      (('IA', '7', 'Treppe Nord'), 2),
+      (('IA', '3', 'Treppe-Nord'), 2),
+      (('IA', '4', 'Treppe-Nord'), 2),
+      (('IA', '5', 'Treppe-Nord'), 2),
+      (('IA', '6', 'Treppe-Nord'), 2),
+      (('IA', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('IA', '2', 'Treppe Süd'): {
+  ('IA', '2', 'Treppe-Süd'): {
     'Coordinates': [386, 374],
     'Connections': [
-      (('IA', '0', 'Treppe Süd'), 2),
-      (('IA', '01', 'Treppe Süd'), 2),
-      (('IA', '02', 'Treppe Süd'), 2),
-      (('IA', '03', 'Treppe Süd'), 2),
-      (('IA', '1', 'Treppe Süd'), 2),
+      (('IA', '0', 'Treppe-Süd'), 2),
+      (('IA', '01', 'Treppe-Süd'), 2),
+      (('IA', '02', 'Treppe-Süd'), 2),
+      (('IA', '03', 'Treppe-Süd'), 2),
+      (('IA', '1', 'Treppe-Süd'), 2),
       (('IA', '2', 'EN_68'), 49),
-      (('IA', '3', 'Treppe Süd'), 2),
-      (('IA', '4', 'Treppe Süd'), 2),
-      (('IA', '5', 'Treppe Süd'), 2),
-      (('IA', '6', 'Treppe Süd'), 2),
-      (('IA', '7', 'Treppe Süd'), 2),
+      (('IA', '3', 'Treppe-Süd'), 2),
+      (('IA', '4', 'Treppe-Süd'), 2),
+      (('IA', '5', 'Treppe-Süd'), 2),
+      (('IA', '6', 'Treppe-Süd'), 2),
+      (('IA', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('IA', '2', 'WC Nord'): {
+  ('IA', '2', 'WC-Nord'): {
     'Coordinates': [959, 979],
     'Connections': [
       (('IA', '2', 'EN_62'), 70),
       (('IA', '2', 'EN_63'), 77),
     ],
   },
-  ('IA', '2', 'WC Süd'): {
+  ('IA', '2', 'WC-Süd'): {
     'Coordinates': [241, 250],
     'Connections': [
       (('IA', '2', 'EN_55'), 40),
@@ -42825,34 +42825,34 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '3', 'EN_17'), 36),
     ],
   },
-  ('IA', '3', 'Aufzug Nord'): {
+  ('IA', '3', 'Aufzug-Nord'): {
     'Coordinates': [897, 882],
     'Connections': [
-      (('IA', '0', 'Aufzug Nord'), 1),
-      (('IA', '01', 'Aufzug Nord'), 1),
-      (('IA', '02', 'Aufzug Nord'), 1),
-      (('IA', '03', 'Aufzug Nord'), 1),
-      (('IA', '1', 'Aufzug Nord'), 1),
-      (('IA', '2', 'Aufzug Nord'), 1),
+      (('IA', '0', 'Aufzug-Nord'), 1),
+      (('IA', '01', 'Aufzug-Nord'), 1),
+      (('IA', '02', 'Aufzug-Nord'), 1),
+      (('IA', '03', 'Aufzug-Nord'), 1),
+      (('IA', '1', 'Aufzug-Nord'), 1),
+      (('IA', '2', 'Aufzug-Nord'), 1),
       (('IA', '3', 'EN_11'), 38),
-      (('IA', '4', 'Aufzug Nord'), 1),
-      (('IA', '5', 'Aufzug Nord'), 1),
-      (('IA', '6', 'Aufzug Nord'), 1),
+      (('IA', '4', 'Aufzug-Nord'), 1),
+      (('IA', '5', 'Aufzug-Nord'), 1),
+      (('IA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IA', '3', 'Aufzug Süd'): {
+  ('IA', '3', 'Aufzug-Süd'): {
     'Coordinates': [319, 297],
     'Connections': [
-      (('IA', '0', 'Aufzug Süd'), 1),
-      (('IA', '01', 'Aufzug Süd'), 1),
-      (('IA', '02', 'Aufzug Süd'), 1),
-      (('IA', '03', 'Aufzug Süd'), 1),
-      (('IA', '1', 'Aufzug Süd'), 1),
-      (('IA', '2', 'Aufzug Süd'), 1),
+      (('IA', '0', 'Aufzug-Süd'), 1),
+      (('IA', '01', 'Aufzug-Süd'), 1),
+      (('IA', '02', 'Aufzug-Süd'), 1),
+      (('IA', '03', 'Aufzug-Süd'), 1),
+      (('IA', '1', 'Aufzug-Süd'), 1),
+      (('IA', '2', 'Aufzug-Süd'), 1),
       (('IA', '3', 'EN_60'), 38),
-      (('IA', '4', 'Aufzug Süd'), 1),
-      (('IA', '5', 'Aufzug Süd'), 1),
-      (('IA', '6', 'Aufzug Süd'), 1),
+      (('IA', '4', 'Aufzug-Süd'), 1),
+      (('IA', '5', 'Aufzug-Süd'), 1),
+      (('IA', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IA', '3', 'EN_0'): {
@@ -42873,10 +42873,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '3', 'EN_11'): {
     'Coordinates': [869, 857],
     'Connections': [
-      (('IA', '3', 'Aufzug Nord'), 38),
+      (('IA', '3', 'Aufzug-Nord'), 38),
       (('IA', '3', 'EN_48'), 62),
       (('IA', '3', 'EN_5'), 73),
-      (('IA', '3', 'Treppe Nord'), 43),
+      (('IA', '3', 'Treppe-Nord'), 43),
     ],
   },
   ('IA', '3', 'EN_12'): {
@@ -42961,7 +42961,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '3', '109'), 47),
       (('IA', '3', 'EN_19'), 118),
       (('IA', '3', 'EN_21'), 29),
-      (('IA', '3', 'WC Süd'), 59),
+      (('IA', '3', 'WC-Süd'), 59),
     ],
   },
   ('IA', '3', 'EN_21'): {
@@ -42969,7 +42969,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '3', 'EN_20'), 29),
       (('IA', '3', 'EN_23'), 40),
-      (('IA', '3', 'WC Süd'), 60),
+      (('IA', '3', 'WC-Süd'), 60),
     ],
   },
   ('IA', '3', 'EN_22'): {
@@ -43228,7 +43228,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '3', 'EN_49'), 25),
       (('IA', '3', 'EN_51'), 28),
-      (('IA', '3', 'WC Nord'), 59),
+      (('IA', '3', 'WC-Nord'), 59),
     ],
   },
   ('IA', '3', 'EN_51'): {
@@ -43315,10 +43315,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '3', 'EN_60'): {
     'Coordinates': [348, 322],
     'Connections': [
-      (('IA', '3', 'Aufzug Süd'), 38),
+      (('IA', '3', 'Aufzug-Süd'), 38),
       (('IA', '3', 'EN_19'), 78),
       (('IA', '3', 'EN_33'), 57),
-      (('IA', '3', 'Treppe Süd'), 48),
+      (('IA', '3', 'Treppe-Süd'), 48),
     ],
   },
   ('IA', '3', 'EN_61'): {
@@ -43349,7 +43349,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '3', 'EN_3'), 27),
       (('IA', '3', 'EN_4'), 45),
-      (('IA', '3', 'WC Nord'), 76),
+      (('IA', '3', 'WC-Nord'), 76),
     ],
   },
   ('IA', '3', 'EN_69'): {
@@ -43393,46 +43393,46 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '3', 'EN_8'), 69),
     ],
   },
-  ('IA', '3', 'Treppe Nord'): {
+  ('IA', '3', 'Treppe-Nord'): {
     'Coordinates': [838, 827],
     'Connections': [
-      (('IA', '0', 'Treppe Nord'), 2),
-      (('IA', '01', 'Treppe Nord'), 2),
-      (('IA', '02', 'Treppe Nord'), 2),
-      (('IA', '03', 'Treppe Nord'), 2),
-      (('IA', '1', 'Treppe Nord'), 2),
-      (('IA', '2', 'Treppe Nord'), 2),
+      (('IA', '0', 'Treppe-Nord'), 2),
+      (('IA', '01', 'Treppe-Nord'), 2),
+      (('IA', '02', 'Treppe-Nord'), 2),
+      (('IA', '03', 'Treppe-Nord'), 2),
+      (('IA', '1', 'Treppe-Nord'), 2),
+      (('IA', '2', 'Treppe-Nord'), 2),
       (('IA', '3', 'EN_11'), 43),
-      (('IA', '4', 'Treppe Nord'), 2),
-      (('IA', '5', 'Treppe Nord'), 2),
-      (('IA', '6', 'Treppe Nord'), 2),
-      (('IA', '7', 'Treppe Nord'), 2),
+      (('IA', '4', 'Treppe-Nord'), 2),
+      (('IA', '5', 'Treppe-Nord'), 2),
+      (('IA', '6', 'Treppe-Nord'), 2),
+      (('IA', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('IA', '3', 'Treppe Süd'): {
+  ('IA', '3', 'Treppe-Süd'): {
     'Coordinates': [382, 356],
     'Connections': [
-      (('IA', '0', 'Treppe Süd'), 2),
-      (('IA', '01', 'Treppe Süd'), 2),
-      (('IA', '02', 'Treppe Süd'), 2),
-      (('IA', '03', 'Treppe Süd'), 2),
-      (('IA', '1', 'Treppe Süd'), 2),
-      (('IA', '2', 'Treppe Süd'), 2),
+      (('IA', '0', 'Treppe-Süd'), 2),
+      (('IA', '01', 'Treppe-Süd'), 2),
+      (('IA', '02', 'Treppe-Süd'), 2),
+      (('IA', '03', 'Treppe-Süd'), 2),
+      (('IA', '1', 'Treppe-Süd'), 2),
+      (('IA', '2', 'Treppe-Süd'), 2),
       (('IA', '3', 'EN_60'), 48),
-      (('IA', '4', 'Treppe Süd'), 2),
-      (('IA', '5', 'Treppe Süd'), 2),
-      (('IA', '6', 'Treppe Süd'), 2),
-      (('IA', '7', 'Treppe Süd'), 2),
+      (('IA', '4', 'Treppe-Süd'), 2),
+      (('IA', '5', 'Treppe-Süd'), 2),
+      (('IA', '6', 'Treppe-Süd'), 2),
+      (('IA', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('IA', '3', 'WC Nord'): {
+  ('IA', '3', 'WC-Nord'): {
     'Coordinates': [965, 942],
     'Connections': [
       (('IA', '3', 'EN_50'), 59),
       (('IA', '3', 'EN_66'), 76),
     ],
   },
-  ('IA', '3', 'WC Süd'): {
+  ('IA', '3', 'WC-Süd'): {
     'Coordinates': [241, 234],
     'Connections': [
       (('IA', '3', 'EN_20'), 59),
@@ -43871,34 +43871,34 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '4', 'EN_21'), 50),
     ],
   },
-  ('IA', '4', 'Aufzug Nord'): {
+  ('IA', '4', 'Aufzug-Nord'): {
     'Coordinates': [894, 873],
     'Connections': [
-      (('IA', '0', 'Aufzug Nord'), 1),
-      (('IA', '01', 'Aufzug Nord'), 1),
-      (('IA', '02', 'Aufzug Nord'), 1),
-      (('IA', '03', 'Aufzug Nord'), 1),
-      (('IA', '1', 'Aufzug Nord'), 1),
-      (('IA', '2', 'Aufzug Nord'), 1),
-      (('IA', '3', 'Aufzug Nord'), 1),
+      (('IA', '0', 'Aufzug-Nord'), 1),
+      (('IA', '01', 'Aufzug-Nord'), 1),
+      (('IA', '02', 'Aufzug-Nord'), 1),
+      (('IA', '03', 'Aufzug-Nord'), 1),
+      (('IA', '1', 'Aufzug-Nord'), 1),
+      (('IA', '2', 'Aufzug-Nord'), 1),
+      (('IA', '3', 'Aufzug-Nord'), 1),
       (('IA', '4', 'EN_8'), 33),
-      (('IA', '5', 'Aufzug Nord'), 1),
-      (('IA', '6', 'Aufzug Nord'), 1),
+      (('IA', '5', 'Aufzug-Nord'), 1),
+      (('IA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IA', '4', 'Aufzug Süd'): {
+  ('IA', '4', 'Aufzug-Süd'): {
     'Coordinates': [317, 295],
     'Connections': [
-      (('IA', '0', 'Aufzug Süd'), 1),
-      (('IA', '01', 'Aufzug Süd'), 1),
-      (('IA', '02', 'Aufzug Süd'), 1),
-      (('IA', '03', 'Aufzug Süd'), 1),
-      (('IA', '1', 'Aufzug Süd'), 1),
-      (('IA', '2', 'Aufzug Süd'), 1),
-      (('IA', '3', 'Aufzug Süd'), 1),
+      (('IA', '0', 'Aufzug-Süd'), 1),
+      (('IA', '01', 'Aufzug-Süd'), 1),
+      (('IA', '02', 'Aufzug-Süd'), 1),
+      (('IA', '03', 'Aufzug-Süd'), 1),
+      (('IA', '1', 'Aufzug-Süd'), 1),
+      (('IA', '2', 'Aufzug-Süd'), 1),
+      (('IA', '3', 'Aufzug-Süd'), 1),
       (('IA', '4', 'EN_24'), 37),
-      (('IA', '5', 'Aufzug Süd'), 1),
-      (('IA', '6', 'Aufzug Süd'), 1),
+      (('IA', '5', 'Aufzug-Süd'), 1),
+      (('IA', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IA', '4', 'EN_0'): {
@@ -44044,10 +44044,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '4', 'EN_24'): {
     'Coordinates': [344, 321],
     'Connections': [
-      (('IA', '4', 'Aufzug Süd'), 37),
+      (('IA', '4', 'Aufzug-Süd'), 37),
       (('IA', '4', 'EN_23'), 66),
       (('IA', '4', 'EN_25'), 59),
-      (('IA', '4', 'Treppe Süd'), 37),
+      (('IA', '4', 'Treppe-Süd'), 37),
     ],
   },
   ('IA', '4', 'EN_25'): {
@@ -44081,7 +44081,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '4', '109'), 53),
       (('IA', '4', 'EN_27'), 43),
       (('IA', '4', 'EN_29'), 34),
-      (('IA', '4', 'WC Süd'), 42),
+      (('IA', '4', 'WC-Süd'), 42),
     ],
   },
   ('IA', '4', 'EN_29'): {
@@ -44097,7 +44097,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '4', '67'), 38),
       (('IA', '4', 'EN_4'), 45),
       (('IA', '4', 'EN_43'), 35),
-      (('IA', '4', 'WC Nord'), 50),
+      (('IA', '4', 'WC-Nord'), 50),
     ],
   },
   ('IA', '4', 'EN_31'): {
@@ -44164,7 +44164,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IA', '4', 'EN_3'), 45),
       (('IA', '4', 'EN_5'), 37),
-      (('IA', '4', 'WC Nord'), 49),
+      (('IA', '4', 'WC-Nord'), 49),
     ],
   },
   ('IA', '4', 'EN_40'): {
@@ -44190,7 +44190,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '4', '135'), 45),
       (('IA', '4', 'EN_44'), 63),
       (('IA', '4', 'EN_6'), 38),
-      (('IA', '4', 'WC Süd'), 82),
+      (('IA', '4', 'WC-Süd'), 82),
     ],
   },
   ('IA', '4', 'EN_43'): {
@@ -44428,10 +44428,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '4', 'EN_8'): {
     'Coordinates': [868, 852],
     'Connections': [
-      (('IA', '4', 'Aufzug Nord'), 33),
+      (('IA', '4', 'Aufzug-Nord'), 33),
       (('IA', '4', 'EN_7'), 70),
       (('IA', '4', 'EN_9'), 58),
-      (('IA', '4', 'Treppe Nord'), 45),
+      (('IA', '4', 'Treppe-Nord'), 45),
     ],
   },
   ('IA', '4', 'EN_9'): {
@@ -44443,46 +44443,46 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '4', 'EN_8'), 58),
     ],
   },
-  ('IA', '4', 'Treppe Nord'): {
+  ('IA', '4', 'Treppe-Nord'): {
     'Coordinates': [834, 822],
     'Connections': [
-      (('IA', '0', 'Treppe Nord'), 2),
-      (('IA', '01', 'Treppe Nord'), 2),
-      (('IA', '02', 'Treppe Nord'), 2),
-      (('IA', '03', 'Treppe Nord'), 2),
-      (('IA', '1', 'Treppe Nord'), 2),
-      (('IA', '2', 'Treppe Nord'), 2),
-      (('IA', '3', 'Treppe Nord'), 2),
+      (('IA', '0', 'Treppe-Nord'), 2),
+      (('IA', '01', 'Treppe-Nord'), 2),
+      (('IA', '02', 'Treppe-Nord'), 2),
+      (('IA', '03', 'Treppe-Nord'), 2),
+      (('IA', '1', 'Treppe-Nord'), 2),
+      (('IA', '2', 'Treppe-Nord'), 2),
+      (('IA', '3', 'Treppe-Nord'), 2),
       (('IA', '4', 'EN_8'), 45),
-      (('IA', '5', 'Treppe Nord'), 2),
-      (('IA', '6', 'Treppe Nord'), 2),
-      (('IA', '7', 'Treppe Nord'), 2),
+      (('IA', '5', 'Treppe-Nord'), 2),
+      (('IA', '6', 'Treppe-Nord'), 2),
+      (('IA', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('IA', '4', 'Treppe Süd'): {
+  ('IA', '4', 'Treppe-Süd'): {
     'Coordinates': [370, 348],
     'Connections': [
-      (('IA', '0', 'Treppe Süd'), 2),
-      (('IA', '01', 'Treppe Süd'), 2),
-      (('IA', '02', 'Treppe Süd'), 2),
-      (('IA', '03', 'Treppe Süd'), 2),
-      (('IA', '1', 'Treppe Süd'), 2),
-      (('IA', '2', 'Treppe Süd'), 2),
-      (('IA', '3', 'Treppe Süd'), 2),
+      (('IA', '0', 'Treppe-Süd'), 2),
+      (('IA', '01', 'Treppe-Süd'), 2),
+      (('IA', '02', 'Treppe-Süd'), 2),
+      (('IA', '03', 'Treppe-Süd'), 2),
+      (('IA', '1', 'Treppe-Süd'), 2),
+      (('IA', '2', 'Treppe-Süd'), 2),
+      (('IA', '3', 'Treppe-Süd'), 2),
       (('IA', '4', 'EN_24'), 37),
-      (('IA', '5', 'Treppe Süd'), 2),
-      (('IA', '6', 'Treppe Süd'), 2),
-      (('IA', '7', 'Treppe Süd'), 2),
+      (('IA', '5', 'Treppe-Süd'), 2),
+      (('IA', '6', 'Treppe-Süd'), 2),
+      (('IA', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('IA', '4', 'WC Nord'): {
+  ('IA', '4', 'WC-Nord'): {
     'Coordinates': [943, 965],
     'Connections': [
       (('IA', '4', 'EN_3'), 50),
       (('IA', '4', 'EN_4'), 49),
     ],
   },
-  ('IA', '4', 'WC Süd'): {
+  ('IA', '4', 'WC-Süd'): {
     'Coordinates': [239, 246],
     'Connections': [
       (('IA', '4', 'EN_28'), 42),
@@ -44517,14 +44517,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [222, 277],
     'Connections': [
       (('IA', '5', 'EN_44'), 16),
-      (('IA', '5', 'WC Süd'), 46),
+      (('IA', '5', 'WC-Süd'), 46),
     ],
   },
   ('IA', '5', '110'): {
     'Coordinates': [196, 254],
     'Connections': [
       (('IA', '5', 'EN_46'), 15),
-      (('IA', '5', 'WC Süd'), 52),
+      (('IA', '5', 'WC-Süd'), 52),
     ],
   },
   ('IA', '5', '111'): {
@@ -44628,7 +44628,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [297, 213],
     'Connections': [
       (('IA', '5', '135'), 56),
-      (('IA', '5', 'WC Süd'), 57),
+      (('IA', '5', 'WC-Süd'), 57),
     ],
   },
   ('IA', '5', '141'): {
@@ -44843,14 +44843,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [940, 998],
     'Connections': [
       (('IA', '5', 'EN_19'), 13),
-      (('IA', '5', 'WC Nord'), 47),
+      (('IA', '5', 'WC-Nord'), 47),
     ],
   },
   ('IA', '5', '72'): {
     'Coordinates': [917, 971],
     'Connections': [
       (('IA', '5', 'EN_18'), 19),
-      (('IA', '5', 'WC Nord'), 43),
+      (('IA', '5', 'WC-Nord'), 43),
     ],
   },
   ('IA', '5', '73'): {
@@ -44956,34 +44956,34 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '5', 'EN_38'), 41),
     ],
   },
-  ('IA', '5', 'Aufzug Nord'): {
+  ('IA', '5', 'Aufzug-Nord'): {
     'Coordinates': [890, 876],
     'Connections': [
-      (('IA', '0', 'Aufzug Nord'), 1),
-      (('IA', '01', 'Aufzug Nord'), 1),
-      (('IA', '02', 'Aufzug Nord'), 1),
-      (('IA', '03', 'Aufzug Nord'), 1),
-      (('IA', '1', 'Aufzug Nord'), 1),
-      (('IA', '2', 'Aufzug Nord'), 1),
-      (('IA', '3', 'Aufzug Nord'), 1),
-      (('IA', '4', 'Aufzug Nord'), 1),
+      (('IA', '0', 'Aufzug-Nord'), 1),
+      (('IA', '01', 'Aufzug-Nord'), 1),
+      (('IA', '02', 'Aufzug-Nord'), 1),
+      (('IA', '03', 'Aufzug-Nord'), 1),
+      (('IA', '1', 'Aufzug-Nord'), 1),
+      (('IA', '2', 'Aufzug-Nord'), 1),
+      (('IA', '3', 'Aufzug-Nord'), 1),
+      (('IA', '4', 'Aufzug-Nord'), 1),
       (('IA', '5', 'EN_14'), 35),
-      (('IA', '6', 'Aufzug Nord'), 1),
+      (('IA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IA', '5', 'Aufzug Süd'): {
+  ('IA', '5', 'Aufzug-Süd'): {
     'Coordinates': [321, 298],
     'Connections': [
-      (('IA', '0', 'Aufzug Süd'), 1),
-      (('IA', '01', 'Aufzug Süd'), 1),
-      (('IA', '02', 'Aufzug Süd'), 1),
-      (('IA', '03', 'Aufzug Süd'), 1),
-      (('IA', '1', 'Aufzug Süd'), 1),
-      (('IA', '2', 'Aufzug Süd'), 1),
-      (('IA', '3', 'Aufzug Süd'), 1),
-      (('IA', '4', 'Aufzug Süd'), 1),
+      (('IA', '0', 'Aufzug-Süd'), 1),
+      (('IA', '01', 'Aufzug-Süd'), 1),
+      (('IA', '02', 'Aufzug-Süd'), 1),
+      (('IA', '03', 'Aufzug-Süd'), 1),
+      (('IA', '1', 'Aufzug-Süd'), 1),
+      (('IA', '2', 'Aufzug-Süd'), 1),
+      (('IA', '3', 'Aufzug-Süd'), 1),
+      (('IA', '4', 'Aufzug-Süd'), 1),
       (('IA', '5', 'EN_41'), 30),
-      (('IA', '6', 'Aufzug Süd'), 1),
+      (('IA', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IA', '5', 'EN_0'): {
@@ -45008,7 +45008,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '5', '177'), 43),
       (('IA', '5', 'EN_11'), 31),
       (('IA', '5', 'EN_9'), 52),
-      (('IA', '5', 'WC Nord'), 74),
+      (('IA', '5', 'WC-Nord'), 74),
     ],
   },
   ('IA', '5', 'EN_11'): {
@@ -45040,10 +45040,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '5', 'EN_14'): {
     'Coordinates': [870, 847],
     'Connections': [
-      (('IA', '5', 'Aufzug Nord'), 35),
+      (('IA', '5', 'Aufzug-Nord'), 35),
       (('IA', '5', 'EN_13'), 57),
       (('IA', '5', 'EN_15'), 69),
-      (('IA', '5', 'Treppe Nord'), 35),
+      (('IA', '5', 'Treppe-Nord'), 35),
     ],
   },
   ('IA', '5', 'EN_15'): {
@@ -45270,10 +45270,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '5', 'EN_41'): {
     'Coordinates': [342, 319],
     'Connections': [
-      (('IA', '5', 'Aufzug Süd'), 30),
+      (('IA', '5', 'Aufzug-Süd'), 30),
       (('IA', '5', 'EN_40'), 67),
       (('IA', '5', 'EN_42'), 64),
-      (('IA', '5', 'Treppe Süd'), 39),
+      (('IA', '5', 'Treppe-Süd'), 39),
     ],
   },
   ('IA', '5', 'EN_42'): {
@@ -45544,39 +45544,39 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '5', 'EN_8'), 42),
     ],
   },
-  ('IA', '5', 'Treppe Nord'): {
+  ('IA', '5', 'Treppe-Nord'): {
     'Coordinates': [841, 827],
     'Connections': [
-      (('IA', '0', 'Treppe Nord'), 2),
-      (('IA', '01', 'Treppe Nord'), 2),
-      (('IA', '02', 'Treppe Nord'), 2),
-      (('IA', '03', 'Treppe Nord'), 2),
-      (('IA', '1', 'Treppe Nord'), 2),
-      (('IA', '2', 'Treppe Nord'), 2),
-      (('IA', '3', 'Treppe Nord'), 2),
-      (('IA', '4', 'Treppe Nord'), 2),
+      (('IA', '0', 'Treppe-Nord'), 2),
+      (('IA', '01', 'Treppe-Nord'), 2),
+      (('IA', '02', 'Treppe-Nord'), 2),
+      (('IA', '03', 'Treppe-Nord'), 2),
+      (('IA', '1', 'Treppe-Nord'), 2),
+      (('IA', '2', 'Treppe-Nord'), 2),
+      (('IA', '3', 'Treppe-Nord'), 2),
+      (('IA', '4', 'Treppe-Nord'), 2),
       (('IA', '5', 'EN_14'), 35),
-      (('IA', '6', 'Treppe Nord'), 2),
-      (('IA', '7', 'Treppe Nord'), 2),
+      (('IA', '6', 'Treppe-Nord'), 2),
+      (('IA', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('IA', '5', 'Treppe Süd'): {
+  ('IA', '5', 'Treppe-Süd'): {
     'Coordinates': [365, 351],
     'Connections': [
-      (('IA', '0', 'Treppe Süd'), 2),
-      (('IA', '01', 'Treppe Süd'), 2),
-      (('IA', '02', 'Treppe Süd'), 2),
-      (('IA', '03', 'Treppe Süd'), 2),
-      (('IA', '1', 'Treppe Süd'), 2),
-      (('IA', '2', 'Treppe Süd'), 2),
-      (('IA', '3', 'Treppe Süd'), 2),
-      (('IA', '4', 'Treppe Süd'), 2),
+      (('IA', '0', 'Treppe-Süd'), 2),
+      (('IA', '01', 'Treppe-Süd'), 2),
+      (('IA', '02', 'Treppe-Süd'), 2),
+      (('IA', '03', 'Treppe-Süd'), 2),
+      (('IA', '1', 'Treppe-Süd'), 2),
+      (('IA', '2', 'Treppe-Süd'), 2),
+      (('IA', '3', 'Treppe-Süd'), 2),
+      (('IA', '4', 'Treppe-Süd'), 2),
       (('IA', '5', 'EN_41'), 39),
-      (('IA', '6', 'Treppe Süd'), 2),
-      (('IA', '7', 'Treppe Süd'), 2),
+      (('IA', '6', 'Treppe-Süd'), 2),
+      (('IA', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('IA', '5', 'WC Nord'): {
+  ('IA', '5', 'WC-Nord'): {
     'Coordinates': [956, 954],
     'Connections': [
       (('IA', '5', '70'), 47),
@@ -45584,7 +45584,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '5', 'EN_10'), 74),
     ],
   },
-  ('IA', '5', 'WC Süd'): {
+  ('IA', '5', 'WC-Süd'): {
     'Coordinates': [246, 238],
     'Connections': [
       (('IA', '5', '108'), 46),
@@ -45764,7 +45764,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [977, 919],
     'Connections': [
       (('IA', '6', 'EN_12'), 29),
-      (('IA', '6', 'WC Nord'), 33),
+      (('IA', '6', 'WC-Nord'), 33),
     ],
   },
   ('IA', '6', '177'): {
@@ -45851,7 +45851,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [951, 987],
     'Connections': [
       (('IA', '6', 'EN_21'), 34),
-      (('IA', '6', 'WC Nord'), 42),
+      (('IA', '6', 'WC-Nord'), 42),
     ],
   },
   ('IA', '6', '71'): {
@@ -45864,7 +45864,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [925, 967],
     'Connections': [
       (('IA', '6', 'EN_20'), 26),
-      (('IA', '6', 'WC Nord'), 38),
+      (('IA', '6', 'WC-Nord'), 38),
     ],
   },
   ('IA', '6', '73'): {
@@ -45957,33 +45957,33 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '6', 'EN_38'), 40),
     ],
   },
-  ('IA', '6', 'Aufzug Nord'): {
+  ('IA', '6', 'Aufzug-Nord'): {
     'Coordinates': [896, 880],
     'Connections': [
-      (('IA', '0', 'Aufzug Nord'), 1),
-      (('IA', '01', 'Aufzug Nord'), 1),
-      (('IA', '02', 'Aufzug Nord'), 1),
-      (('IA', '03', 'Aufzug Nord'), 1),
-      (('IA', '1', 'Aufzug Nord'), 1),
-      (('IA', '2', 'Aufzug Nord'), 1),
-      (('IA', '3', 'Aufzug Nord'), 1),
-      (('IA', '4', 'Aufzug Nord'), 1),
-      (('IA', '5', 'Aufzug Nord'), 1),
+      (('IA', '0', 'Aufzug-Nord'), 1),
+      (('IA', '01', 'Aufzug-Nord'), 1),
+      (('IA', '02', 'Aufzug-Nord'), 1),
+      (('IA', '03', 'Aufzug-Nord'), 1),
+      (('IA', '1', 'Aufzug-Nord'), 1),
+      (('IA', '2', 'Aufzug-Nord'), 1),
+      (('IA', '3', 'Aufzug-Nord'), 1),
+      (('IA', '4', 'Aufzug-Nord'), 1),
+      (('IA', '5', 'Aufzug-Nord'), 1),
       (('IA', '6', 'EN_17'), 39),
     ],
   },
-  ('IA', '6', 'Aufzug Süd'): {
+  ('IA', '6', 'Aufzug-Süd'): {
     'Coordinates': [319, 297],
     'Connections': [
-      (('IA', '0', 'Aufzug Süd'), 1),
-      (('IA', '01', 'Aufzug Süd'), 1),
-      (('IA', '02', 'Aufzug Süd'), 1),
-      (('IA', '03', 'Aufzug Süd'), 1),
-      (('IA', '1', 'Aufzug Süd'), 1),
-      (('IA', '2', 'Aufzug Süd'), 1),
-      (('IA', '3', 'Aufzug Süd'), 1),
-      (('IA', '4', 'Aufzug Süd'), 1),
-      (('IA', '5', 'Aufzug Süd'), 1),
+      (('IA', '0', 'Aufzug-Süd'), 1),
+      (('IA', '01', 'Aufzug-Süd'), 1),
+      (('IA', '02', 'Aufzug-Süd'), 1),
+      (('IA', '03', 'Aufzug-Süd'), 1),
+      (('IA', '1', 'Aufzug-Süd'), 1),
+      (('IA', '2', 'Aufzug-Süd'), 1),
+      (('IA', '3', 'Aufzug-Süd'), 1),
+      (('IA', '4', 'Aufzug-Süd'), 1),
+      (('IA', '5', 'Aufzug-Süd'), 1),
       (('IA', '6', 'EN_41'), 38),
     ],
   },
@@ -46065,10 +46065,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '6', 'EN_17'): {
     'Coordinates': [867, 854],
     'Connections': [
-      (('IA', '6', 'Aufzug Nord'), 39),
+      (('IA', '6', 'Aufzug-Nord'), 39),
       (('IA', '6', 'EN_16'), 61),
       (('IA', '6', 'EN_18'), 68),
-      (('IA', '6', 'Treppe Nord'), 42),
+      (('IA', '6', 'Treppe-Nord'), 42),
     ],
   },
   ('IA', '6', 'EN_18'): {
@@ -46268,10 +46268,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '6', 'EN_41'): {
     'Coordinates': [344, 326],
     'Connections': [
-      (('IA', '6', 'Aufzug Süd'), 38),
+      (('IA', '6', 'Aufzug-Süd'), 38),
       (('IA', '6', 'EN_40'), 64),
       (('IA', '6', 'EN_42'), 63),
-      (('IA', '6', 'Treppe Süd'), 43),
+      (('IA', '6', 'Treppe-Süd'), 43),
     ],
   },
   ('IA', '6', 'EN_42'): {
@@ -46338,7 +46338,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '6', '139'), 51),
       (('IA', '6', 'EN_42'), 124),
       (('IA', '6', 'EN_51'), 88),
-      (('IA', '6', 'WC Süd'), 59),
+      (('IA', '6', 'WC-Süd'), 59),
     ],
   },
   ('IA', '6', 'EN_51'): {
@@ -46437,7 +46437,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '6', '109'), 50),
       (('IA', '6', 'EN_62'), 59),
       (('IA', '6', 'EN_64'), 75),
-      (('IA', '6', 'WC Süd'), 67),
+      (('IA', '6', 'WC-Süd'), 67),
     ],
   },
   ('IA', '6', 'EN_64'): {
@@ -46481,39 +46481,39 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '6', 'EN_8'), 23),
     ],
   },
-  ('IA', '6', 'Treppe Nord'): {
+  ('IA', '6', 'Treppe-Nord'): {
     'Coordinates': [837, 824],
     'Connections': [
-      (('IA', '0', 'Treppe Nord'), 2),
-      (('IA', '01', 'Treppe Nord'), 2),
-      (('IA', '02', 'Treppe Nord'), 2),
-      (('IA', '03', 'Treppe Nord'), 2),
-      (('IA', '1', 'Treppe Nord'), 2),
-      (('IA', '2', 'Treppe Nord'), 2),
-      (('IA', '3', 'Treppe Nord'), 2),
-      (('IA', '4', 'Treppe Nord'), 2),
-      (('IA', '5', 'Treppe Nord'), 2),
+      (('IA', '0', 'Treppe-Nord'), 2),
+      (('IA', '01', 'Treppe-Nord'), 2),
+      (('IA', '02', 'Treppe-Nord'), 2),
+      (('IA', '03', 'Treppe-Nord'), 2),
+      (('IA', '1', 'Treppe-Nord'), 2),
+      (('IA', '2', 'Treppe-Nord'), 2),
+      (('IA', '3', 'Treppe-Nord'), 2),
+      (('IA', '4', 'Treppe-Nord'), 2),
+      (('IA', '5', 'Treppe-Nord'), 2),
       (('IA', '6', 'EN_17'), 42),
-      (('IA', '7', 'Treppe Nord'), 2),
+      (('IA', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('IA', '6', 'Treppe Süd'): {
+  ('IA', '6', 'Treppe-Süd'): {
     'Coordinates': [373, 358],
     'Connections': [
-      (('IA', '0', 'Treppe Süd'), 2),
-      (('IA', '01', 'Treppe Süd'), 2),
-      (('IA', '02', 'Treppe Süd'), 2),
-      (('IA', '03', 'Treppe Süd'), 2),
-      (('IA', '1', 'Treppe Süd'), 2),
-      (('IA', '2', 'Treppe Süd'), 2),
-      (('IA', '3', 'Treppe Süd'), 2),
-      (('IA', '4', 'Treppe Süd'), 2),
-      (('IA', '5', 'Treppe Süd'), 2),
+      (('IA', '0', 'Treppe-Süd'), 2),
+      (('IA', '01', 'Treppe-Süd'), 2),
+      (('IA', '02', 'Treppe-Süd'), 2),
+      (('IA', '03', 'Treppe-Süd'), 2),
+      (('IA', '1', 'Treppe-Süd'), 2),
+      (('IA', '2', 'Treppe-Süd'), 2),
+      (('IA', '3', 'Treppe-Süd'), 2),
+      (('IA', '4', 'Treppe-Süd'), 2),
+      (('IA', '5', 'Treppe-Süd'), 2),
       (('IA', '6', 'EN_41'), 43),
-      (('IA', '7', 'Treppe Süd'), 2),
+      (('IA', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('IA', '6', 'WC Nord'): {
+  ('IA', '6', 'WC-Nord'): {
     'Coordinates': [956, 945],
     'Connections': [
       (('IA', '6', '176'), 33),
@@ -46521,7 +46521,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IA', '6', '72'), 38),
     ],
   },
-  ('IA', '6', 'WC Süd'): {
+  ('IA', '6', 'WC-Süd'): {
     'Coordinates': [254, 235],
     'Connections': [
       (('IA', '6', 'EN_50'), 59),
@@ -46531,87 +46531,87 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IA', '7', '148'): {
     'Coordinates': [428, 414],
     'Connections': [
-      (('IA', '7', 'Treppe Süd'), 57),
+      (('IA', '7', 'Treppe-Süd'), 57),
     ],
   },
   ('IA', '7', '16'): {
     'Coordinates': [349, 327],
     'Connections': [
-      (('IA', '7', 'Treppe Süd'), 61),
+      (('IA', '7', 'Treppe-Süd'), 61),
     ],
   },
   ('IA', '7', '168'): {
     'Coordinates': [785, 770],
     'Connections': [
-      (('IA', '7', 'Treppe Nord'), 50),
+      (('IA', '7', 'Treppe-Nord'), 50),
     ],
   },
   ('IA', '7', '4'): {
     'Coordinates': [866, 856],
     'Connections': [
-      (('IA', '7', 'Treppe Nord'), 68),
+      (('IA', '7', 'Treppe-Nord'), 68),
     ],
   },
   ('IA', '7', 'EN_0'): {
     'Coordinates': [443, 329],
     'Connections': [
       (('IA', '7', 'EN_3'), 607),
-      (('IA', '7', 'Treppe Süd'), 65),
+      (('IA', '7', 'Treppe-Süd'), 65),
     ],
   },
   ('IA', '7', 'EN_1'): {
     'Coordinates': [333, 437],
     'Connections': [
       (('IA', '7', 'EN_2'), 622),
-      (('IA', '7', 'Treppe Süd'), 89),
+      (('IA', '7', 'Treppe-Süd'), 89),
     ],
   },
   ('IA', '7', 'EN_2'): {
     'Coordinates': [775, 875],
     'Connections': [
       (('IA', '7', 'EN_1'), 622),
-      (('IA', '7', 'Treppe Nord'), 84),
+      (('IA', '7', 'Treppe-Nord'), 84),
     ],
   },
   ('IA', '7', 'EN_3'): {
     'Coordinates': [871, 759],
     'Connections': [
       (('IA', '7', 'EN_0'), 607),
-      (('IA', '7', 'Treppe Nord'), 68),
+      (('IA', '7', 'Treppe-Nord'), 68),
     ],
   },
-  ('IA', '7', 'Treppe Nord'): {
+  ('IA', '7', 'Treppe-Nord'): {
     'Coordinates': [821, 805],
     'Connections': [
-      (('IA', '0', 'Treppe Nord'), 2),
-      (('IA', '01', 'Treppe Nord'), 2),
-      (('IA', '02', 'Treppe Nord'), 2),
-      (('IA', '03', 'Treppe Nord'), 2),
-      (('IA', '1', 'Treppe Nord'), 2),
-      (('IA', '2', 'Treppe Nord'), 2),
-      (('IA', '3', 'Treppe Nord'), 2),
-      (('IA', '4', 'Treppe Nord'), 2),
-      (('IA', '5', 'Treppe Nord'), 2),
-      (('IA', '6', 'Treppe Nord'), 2),
+      (('IA', '0', 'Treppe-Nord'), 2),
+      (('IA', '01', 'Treppe-Nord'), 2),
+      (('IA', '02', 'Treppe-Nord'), 2),
+      (('IA', '03', 'Treppe-Nord'), 2),
+      (('IA', '1', 'Treppe-Nord'), 2),
+      (('IA', '2', 'Treppe-Nord'), 2),
+      (('IA', '3', 'Treppe-Nord'), 2),
+      (('IA', '4', 'Treppe-Nord'), 2),
+      (('IA', '5', 'Treppe-Nord'), 2),
+      (('IA', '6', 'Treppe-Nord'), 2),
       (('IA', '7', '168'), 50),
       (('IA', '7', '4'), 68),
       (('IA', '7', 'EN_2'), 84),
       (('IA', '7', 'EN_3'), 68),
     ],
   },
-  ('IA', '7', 'Treppe Süd'): {
+  ('IA', '7', 'Treppe-Süd'): {
     'Coordinates': [392, 370],
     'Connections': [
-      (('IA', '0', 'Treppe Süd'), 2),
-      (('IA', '01', 'Treppe Süd'), 2),
-      (('IA', '02', 'Treppe Süd'), 2),
-      (('IA', '03', 'Treppe Süd'), 2),
-      (('IA', '1', 'Treppe Süd'), 2),
-      (('IA', '2', 'Treppe Süd'), 2),
-      (('IA', '3', 'Treppe Süd'), 2),
-      (('IA', '4', 'Treppe Süd'), 2),
-      (('IA', '5', 'Treppe Süd'), 2),
-      (('IA', '6', 'Treppe Süd'), 2),
+      (('IA', '0', 'Treppe-Süd'), 2),
+      (('IA', '01', 'Treppe-Süd'), 2),
+      (('IA', '02', 'Treppe-Süd'), 2),
+      (('IA', '03', 'Treppe-Süd'), 2),
+      (('IA', '1', 'Treppe-Süd'), 2),
+      (('IA', '2', 'Treppe-Süd'), 2),
+      (('IA', '3', 'Treppe-Süd'), 2),
+      (('IA', '4', 'Treppe-Süd'), 2),
+      (('IA', '5', 'Treppe-Süd'), 2),
+      (('IA', '6', 'Treppe-Süd'), 2),
       (('IA', '7', '148'), 57),
       (('IA', '7', '16'), 61),
       (('IA', '7', 'EN_0'), 65),
@@ -46808,32 +46808,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '01', 'EN_15'), 25),
     ],
   },
-  ('IB', '01', 'Aufzug Nord'): {
+  ('IB', '01', 'Aufzug-Nord'): {
     'Coordinates': [893, 894],
     'Connections': [
       (('IB', '01', 'EN_4'), 34),
-      (('IB', '03', 'Aufzug Nord'), 1),
-      (('IB', '04', 'Aufzug Nord'), 1),
-      (('IB', '1', 'Aufzug Nord'), 1),
-      (('IB', '2', 'Aufzug Nord'), 1),
-      (('IB', '3', 'Aufzug Nord'), 1),
-      (('IB', '4', 'Aufzug Nord'), 1),
-      (('IB', '5', 'Aufzug Nord'), 1),
-      (('IB', '6', 'Aufzug Nord'), 1),
+      (('IB', '03', 'Aufzug-Nord'), 1),
+      (('IB', '04', 'Aufzug-Nord'), 1),
+      (('IB', '1', 'Aufzug-Nord'), 1),
+      (('IB', '2', 'Aufzug-Nord'), 1),
+      (('IB', '3', 'Aufzug-Nord'), 1),
+      (('IB', '4', 'Aufzug-Nord'), 1),
+      (('IB', '5', 'Aufzug-Nord'), 1),
+      (('IB', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IB', '01', 'Aufzug Süd'): {
+  ('IB', '01', 'Aufzug-Süd'): {
     'Coordinates': [333, 326],
     'Connections': [
       (('IB', '01', 'EN_26'), 40),
-      (('IB', '03', 'Aufzug Süd'), 1),
-      (('IB', '04', 'Aufzug Süd'), 1),
-      (('IB', '1', 'Aufzug Süd'), 1),
-      (('IB', '2', 'Aufzug Süd'), 1),
-      (('IB', '3', 'Aufzug Süd'), 1),
-      (('IB', '4', 'Aufzug Süd'), 1),
-      (('IB', '5', 'Aufzug Süd'), 1),
-      (('IB', '6', 'Aufzug Süd'), 1),
+      (('IB', '03', 'Aufzug-Süd'), 1),
+      (('IB', '04', 'Aufzug-Süd'), 1),
+      (('IB', '1', 'Aufzug-Süd'), 1),
+      (('IB', '2', 'Aufzug-Süd'), 1),
+      (('IB', '3', 'Aufzug-Süd'), 1),
+      (('IB', '4', 'Aufzug-Süd'), 1),
+      (('IB', '5', 'Aufzug-Süd'), 1),
+      (('IB', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IB', '01', 'EN_0'): {
@@ -46880,7 +46880,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '01', 'EN_13'), 53),
       (('IB', '01', 'EN_16'), 112),
       (('IB', '01', 'EN_17'), 116),
-      (('IB', '01', 'Treppe Süd 2'), 36),
+      (('IB', '01', 'Treppe-Süd-2'), 36),
     ],
   },
   ('IB', '01', 'EN_13'): {
@@ -46922,7 +46922,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '01', '91'), 23),
       (('IB', '01', 'EN_12'), 116),
       (('IB', '01', 'EN_18'), 73),
-      (('IB', '01', 'Treppe Süd 2'), 83),
+      (('IB', '01', 'Treppe-Süd-2'), 83),
     ],
   },
   ('IB', '01', 'EN_18'): {
@@ -47002,10 +47002,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '01', 'EN_26'): {
     'Coordinates': [361, 354],
     'Connections': [
-      (('IB', '01', 'Aufzug Süd'), 40),
+      (('IB', '01', 'Aufzug-Süd'), 40),
       (('IB', '01', 'EN_24'), 68),
       (('IB', '01', 'EN_25'), 94),
-      (('IB', '01', 'Treppe Süd'), 42),
+      (('IB', '01', 'Treppe-Süd'), 42),
     ],
   },
   ('IB', '01', 'EN_28'): {
@@ -47050,10 +47050,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '01', 'EN_4'): {
     'Coordinates': [869, 870],
     'Connections': [
-      (('IB', '01', 'Aufzug Nord'), 34),
+      (('IB', '01', 'Aufzug-Nord'), 34),
       (('IB', '01', 'EN_3'), 67),
       (('IB', '01', 'EN_5'), 71),
-      (('IB', '01', 'Treppe Nord'), 42),
+      (('IB', '01', 'Treppe-Nord'), 42),
     ],
   },
   ('IB', '01', 'EN_5'): {
@@ -47096,40 +47096,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '01', 'EN_10'), 32),
     ],
   },
-  ('IB', '01', 'Treppe Nord'): {
+  ('IB', '01', 'Treppe-Nord'): {
     'Coordinates': [839, 840],
     'Connections': [
       (('IB', '01', 'EN_4'), 42),
-      (('IB', '03', 'Treppe Nord'), 2),
-      (('IB', '04', 'Treppe Nord'), 2),
-      (('IB', '1', 'Treppe Nord'), 2),
-      (('IB', '2', 'Treppe Nord'), 2),
-      (('IB', '3', 'Treppe Nord'), 2),
-      (('IB', '4', 'Treppe Nord'), 2),
-      (('IB', '5', 'Treppe Nord'), 2),
-      (('IB', '6', 'Treppe Nord'), 2),
+      (('IB', '03', 'Treppe-Nord'), 2),
+      (('IB', '04', 'Treppe-Nord'), 2),
+      (('IB', '1', 'Treppe-Nord'), 2),
+      (('IB', '2', 'Treppe-Nord'), 2),
+      (('IB', '3', 'Treppe-Nord'), 2),
+      (('IB', '4', 'Treppe-Nord'), 2),
+      (('IB', '5', 'Treppe-Nord'), 2),
+      (('IB', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IB', '01', 'Treppe Süd'): {
+  ('IB', '01', 'Treppe-Süd'): {
     'Coordinates': [393, 381],
     'Connections': [
       (('IB', '01', 'EN_26'), 42),
-      (('IB', '03', 'Treppe Süd'), 2),
-      (('IB', '04', 'Treppe Süd'), 2),
-      (('IB', '1', 'Treppe Süd'), 2),
-      (('IB', '2', 'Treppe Süd'), 2),
-      (('IB', '3', 'Treppe Süd'), 2),
-      (('IB', '4', 'Treppe Süd'), 2),
-      (('IB', '5', 'Treppe Süd'), 2),
-      (('IB', '6', 'Treppe Süd'), 2),
+      (('IB', '03', 'Treppe-Süd'), 2),
+      (('IB', '04', 'Treppe-Süd'), 2),
+      (('IB', '1', 'Treppe-Süd'), 2),
+      (('IB', '2', 'Treppe-Süd'), 2),
+      (('IB', '3', 'Treppe-Süd'), 2),
+      (('IB', '4', 'Treppe-Süd'), 2),
+      (('IB', '5', 'Treppe-Süd'), 2),
+      (('IB', '6', 'Treppe-Süd'), 2),
     ],
   },
-  ('IB', '01', 'Treppe Süd 2'): {
+  ('IB', '01', 'Treppe-Süd-2'): {
     'Coordinates': [549, 505],
     'Connections': [
       (('IB', '01', 'EN_12'), 36),
       (('IB', '01', 'EN_17'), 83),
-      (('IB', '1', 'Treppe Süd 2'), 2),
+      (('IB', '1', 'Treppe-Süd-2'), 2),
     ],
   },
   ('IB', '03', '101'): {
@@ -47395,38 +47395,38 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '03', '101'), 47),
     ],
   },
-  ('IB', '03', 'Aufzug Nord'): {
+  ('IB', '03', 'Aufzug-Nord'): {
     'Coordinates': [896, 883],
     'Connections': [
-      (('IB', '01', 'Aufzug Nord'), 1),
+      (('IB', '01', 'Aufzug-Nord'), 1),
       (('IB', '03', 'EN_7'), 40),
-      (('IB', '04', 'Aufzug Nord'), 1),
-      (('IB', '1', 'Aufzug Nord'), 1),
-      (('IB', '2', 'Aufzug Nord'), 1),
-      (('IB', '3', 'Aufzug Nord'), 1),
-      (('IB', '4', 'Aufzug Nord'), 1),
-      (('IB', '5', 'Aufzug Nord'), 1),
-      (('IB', '6', 'Aufzug Nord'), 1),
+      (('IB', '04', 'Aufzug-Nord'), 1),
+      (('IB', '1', 'Aufzug-Nord'), 1),
+      (('IB', '2', 'Aufzug-Nord'), 1),
+      (('IB', '3', 'Aufzug-Nord'), 1),
+      (('IB', '4', 'Aufzug-Nord'), 1),
+      (('IB', '5', 'Aufzug-Nord'), 1),
+      (('IB', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IB', '03', 'Aufzug Süd'): {
+  ('IB', '03', 'Aufzug-Süd'): {
     'Coordinates': [332, 302],
     'Connections': [
-      (('IB', '01', 'Aufzug Süd'), 1),
+      (('IB', '01', 'Aufzug-Süd'), 1),
       (('IB', '03', 'EN_35'), 41),
-      (('IB', '04', 'Aufzug Süd'), 1),
-      (('IB', '1', 'Aufzug Süd'), 1),
-      (('IB', '2', 'Aufzug Süd'), 1),
-      (('IB', '3', 'Aufzug Süd'), 1),
-      (('IB', '4', 'Aufzug Süd'), 1),
-      (('IB', '5', 'Aufzug Süd'), 1),
-      (('IB', '6', 'Aufzug Süd'), 1),
+      (('IB', '04', 'Aufzug-Süd'), 1),
+      (('IB', '1', 'Aufzug-Süd'), 1),
+      (('IB', '2', 'Aufzug-Süd'), 1),
+      (('IB', '3', 'Aufzug-Süd'), 1),
+      (('IB', '4', 'Aufzug-Süd'), 1),
+      (('IB', '5', 'Aufzug-Süd'), 1),
+      (('IB', '6', 'Aufzug-Süd'), 1),
     ],
   },
-  ('IB', '03', 'Durchgang Richtung IA'): {
+  ('IB', '03', 'Durchgang-Richtung-IA'): {
     'Coordinates': [455, 247],
     'Connections': [
-      (('IA', '03', 'Durchgang Richtung IB'), 1),
+      (('IA', '03', 'Durchgang-Richtung-IB'), 1),
       (('IB', '03', 'EN_21'), 34),
     ],
   },
@@ -47528,7 +47528,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '03', '137'), 25),
       (('IB', '03', '139'), 35),
       (('IB', '03', '143'), 26),
-      (('IB', '03', 'Durchgang Richtung IA'), 34),
+      (('IB', '03', 'Durchgang-Richtung-IA'), 34),
       (('IB', '03', 'EN_20'), 40),
     ],
   },
@@ -47637,10 +47637,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '03', 'EN_35'): {
     'Coordinates': [361, 331],
     'Connections': [
-      (('IB', '03', 'Aufzug Süd'), 41),
+      (('IB', '03', 'Aufzug-Süd'), 41),
       (('IB', '03', 'EN_20'), 53),
       (('IB', '03', 'EN_34'), 81),
-      (('IB', '03', 'Treppe Süd'), 47),
+      (('IB', '03', 'Treppe-Süd'), 47),
     ],
   },
   ('IB', '03', 'EN_4'): {
@@ -47670,9 +47670,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '03', 'EN_7'): {
     'Coordinates': [869, 854],
     'Connections': [
-      (('IB', '03', 'Aufzug Nord'), 40),
+      (('IB', '03', 'Aufzug-Nord'), 40),
       (('IB', '03', 'EN_6'), 68),
-      (('IB', '03', 'Treppe Nord'), 54),
+      (('IB', '03', 'Treppe-Nord'), 54),
     ],
   },
   ('IB', '03', 'EN_8'): {
@@ -47694,32 +47694,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '03', 'EN_8'), 61),
     ],
   },
-  ('IB', '03', 'Treppe Nord'): {
+  ('IB', '03', 'Treppe-Nord'): {
     'Coordinates': [830, 816],
     'Connections': [
-      (('IB', '01', 'Treppe Nord'), 2),
+      (('IB', '01', 'Treppe-Nord'), 2),
       (('IB', '03', 'EN_7'), 54),
-      (('IB', '04', 'Treppe Nord'), 2),
-      (('IB', '1', 'Treppe Nord'), 2),
-      (('IB', '2', 'Treppe Nord'), 2),
-      (('IB', '3', 'Treppe Nord'), 2),
-      (('IB', '4', 'Treppe Nord'), 2),
-      (('IB', '5', 'Treppe Nord'), 2),
-      (('IB', '6', 'Treppe Nord'), 2),
+      (('IB', '04', 'Treppe-Nord'), 2),
+      (('IB', '1', 'Treppe-Nord'), 2),
+      (('IB', '2', 'Treppe-Nord'), 2),
+      (('IB', '3', 'Treppe-Nord'), 2),
+      (('IB', '4', 'Treppe-Nord'), 2),
+      (('IB', '5', 'Treppe-Nord'), 2),
+      (('IB', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IB', '03', 'Treppe Süd'): {
+  ('IB', '03', 'Treppe-Süd'): {
     'Coordinates': [394, 365],
     'Connections': [
-      (('IB', '01', 'Treppe Süd'), 2),
+      (('IB', '01', 'Treppe-Süd'), 2),
       (('IB', '03', 'EN_35'), 47),
-      (('IB', '04', 'Treppe Süd'), 2),
-      (('IB', '1', 'Treppe Süd'), 2),
-      (('IB', '2', 'Treppe Süd'), 2),
-      (('IB', '3', 'Treppe Süd'), 2),
-      (('IB', '4', 'Treppe Süd'), 2),
-      (('IB', '5', 'Treppe Süd'), 2),
-      (('IB', '6', 'Treppe Süd'), 2),
+      (('IB', '04', 'Treppe-Süd'), 2),
+      (('IB', '1', 'Treppe-Süd'), 2),
+      (('IB', '2', 'Treppe-Süd'), 2),
+      (('IB', '3', 'Treppe-Süd'), 2),
+      (('IB', '4', 'Treppe-Süd'), 2),
+      (('IB', '5', 'Treppe-Süd'), 2),
+      (('IB', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('IB', '04', '110'): {
@@ -47911,32 +47911,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '04', 'EN_15'), 89),
     ],
   },
-  ('IB', '04', 'Aufzug Nord'): {
+  ('IB', '04', 'Aufzug-Nord'): {
     'Coordinates': [924, 893],
     'Connections': [
-      (('IB', '01', 'Aufzug Nord'), 1),
-      (('IB', '03', 'Aufzug Nord'), 1),
+      (('IB', '01', 'Aufzug-Nord'), 1),
+      (('IB', '03', 'Aufzug-Nord'), 1),
       (('IB', '04', 'EN_6'), 24),
-      (('IB', '1', 'Aufzug Nord'), 1),
-      (('IB', '2', 'Aufzug Nord'), 1),
-      (('IB', '3', 'Aufzug Nord'), 1),
-      (('IB', '4', 'Aufzug Nord'), 1),
-      (('IB', '5', 'Aufzug Nord'), 1),
-      (('IB', '6', 'Aufzug Nord'), 1),
+      (('IB', '1', 'Aufzug-Nord'), 1),
+      (('IB', '2', 'Aufzug-Nord'), 1),
+      (('IB', '3', 'Aufzug-Nord'), 1),
+      (('IB', '4', 'Aufzug-Nord'), 1),
+      (('IB', '5', 'Aufzug-Nord'), 1),
+      (('IB', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IB', '04', 'Aufzug Süd'): {
+  ('IB', '04', 'Aufzug-Süd'): {
     'Coordinates': [307, 296],
     'Connections': [
-      (('IB', '01', 'Aufzug Süd'), 1),
-      (('IB', '03', 'Aufzug Süd'), 1),
+      (('IB', '01', 'Aufzug-Süd'), 1),
+      (('IB', '03', 'Aufzug-Süd'), 1),
       (('IB', '04', 'EN_19'), 37),
-      (('IB', '1', 'Aufzug Süd'), 1),
-      (('IB', '2', 'Aufzug Süd'), 1),
-      (('IB', '3', 'Aufzug Süd'), 1),
-      (('IB', '4', 'Aufzug Süd'), 1),
-      (('IB', '5', 'Aufzug Süd'), 1),
-      (('IB', '6', 'Aufzug Süd'), 1),
+      (('IB', '1', 'Aufzug-Süd'), 1),
+      (('IB', '2', 'Aufzug-Süd'), 1),
+      (('IB', '3', 'Aufzug-Süd'), 1),
+      (('IB', '4', 'Aufzug-Süd'), 1),
+      (('IB', '5', 'Aufzug-Süd'), 1),
+      (('IB', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IB', '04', 'EN_0'): {
@@ -48034,9 +48034,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '04', 'EN_19'): {
     'Coordinates': [337, 318],
     'Connections': [
-      (('IB', '04', 'Aufzug Süd'), 37),
+      (('IB', '04', 'Aufzug-Süd'), 37),
       (('IB', '04', 'EN_18'), 52),
-      (('IB', '04', 'Treppe Süd'), 34),
+      (('IB', '04', 'Treppe-Süd'), 34),
     ],
   },
   ('IB', '04', 'EN_2'): {
@@ -48092,9 +48092,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '04', 'EN_6'): {
     'Coordinates': [906, 877],
     'Connections': [
-      (('IB', '04', 'Aufzug Nord'), 24),
+      (('IB', '04', 'Aufzug-Nord'), 24),
       (('IB', '04', 'EN_4'), 48),
-      (('IB', '04', 'Treppe Nord'), 45),
+      (('IB', '04', 'Treppe-Nord'), 45),
     ],
   },
   ('IB', '04', 'EN_7'): {
@@ -48123,32 +48123,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '04', 'EN_8'), 35),
     ],
   },
-  ('IB', '04', 'Treppe Nord'): {
+  ('IB', '04', 'Treppe-Nord'): {
     'Coordinates': [871, 849],
     'Connections': [
-      (('IB', '01', 'Treppe Nord'), 2),
-      (('IB', '03', 'Treppe Nord'), 2),
+      (('IB', '01', 'Treppe-Nord'), 2),
+      (('IB', '03', 'Treppe-Nord'), 2),
       (('IB', '04', 'EN_6'), 45),
-      (('IB', '1', 'Treppe Nord'), 2),
-      (('IB', '2', 'Treppe Nord'), 2),
-      (('IB', '3', 'Treppe Nord'), 2),
-      (('IB', '4', 'Treppe Nord'), 2),
-      (('IB', '5', 'Treppe Nord'), 2),
-      (('IB', '6', 'Treppe Nord'), 2),
+      (('IB', '1', 'Treppe-Nord'), 2),
+      (('IB', '2', 'Treppe-Nord'), 2),
+      (('IB', '3', 'Treppe-Nord'), 2),
+      (('IB', '4', 'Treppe-Nord'), 2),
+      (('IB', '5', 'Treppe-Nord'), 2),
+      (('IB', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IB', '04', 'Treppe Süd'): {
+  ('IB', '04', 'Treppe-Süd'): {
     'Coordinates': [361, 342],
     'Connections': [
-      (('IB', '01', 'Treppe Süd'), 2),
-      (('IB', '03', 'Treppe Süd'), 2),
+      (('IB', '01', 'Treppe-Süd'), 2),
+      (('IB', '03', 'Treppe-Süd'), 2),
       (('IB', '04', 'EN_19'), 34),
-      (('IB', '1', 'Treppe Süd'), 2),
-      (('IB', '2', 'Treppe Süd'), 2),
-      (('IB', '3', 'Treppe Süd'), 2),
-      (('IB', '4', 'Treppe Süd'), 2),
-      (('IB', '5', 'Treppe Süd'), 2),
-      (('IB', '6', 'Treppe Süd'), 2),
+      (('IB', '1', 'Treppe-Süd'), 2),
+      (('IB', '2', 'Treppe-Süd'), 2),
+      (('IB', '3', 'Treppe-Süd'), 2),
+      (('IB', '4', 'Treppe-Süd'), 2),
+      (('IB', '5', 'Treppe-Süd'), 2),
+      (('IB', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('IB', '1', '101'): {
@@ -48412,32 +48412,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '1', '87'), 40),
     ],
   },
-  ('IB', '1', 'Aufzug Nord'): {
+  ('IB', '1', 'Aufzug-Nord'): {
     'Coordinates': [893, 880],
     'Connections': [
-      (('IB', '01', 'Aufzug Nord'), 1),
-      (('IB', '03', 'Aufzug Nord'), 1),
-      (('IB', '04', 'Aufzug Nord'), 1),
+      (('IB', '01', 'Aufzug-Nord'), 1),
+      (('IB', '03', 'Aufzug-Nord'), 1),
+      (('IB', '04', 'Aufzug-Nord'), 1),
       (('IB', '1', 'EN_5'), 39),
-      (('IB', '2', 'Aufzug Nord'), 1),
-      (('IB', '3', 'Aufzug Nord'), 1),
-      (('IB', '4', 'Aufzug Nord'), 1),
-      (('IB', '5', 'Aufzug Nord'), 1),
-      (('IB', '6', 'Aufzug Nord'), 1),
+      (('IB', '2', 'Aufzug-Nord'), 1),
+      (('IB', '3', 'Aufzug-Nord'), 1),
+      (('IB', '4', 'Aufzug-Nord'), 1),
+      (('IB', '5', 'Aufzug-Nord'), 1),
+      (('IB', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IB', '1', 'Aufzug Süd'): {
+  ('IB', '1', 'Aufzug-Süd'): {
     'Coordinates': [332, 314],
     'Connections': [
-      (('IB', '01', 'Aufzug Süd'), 1),
-      (('IB', '03', 'Aufzug Süd'), 1),
-      (('IB', '04', 'Aufzug Süd'), 1),
+      (('IB', '01', 'Aufzug-Süd'), 1),
+      (('IB', '03', 'Aufzug-Süd'), 1),
+      (('IB', '04', 'Aufzug-Süd'), 1),
       (('IB', '1', 'EN_4'), 41),
-      (('IB', '2', 'Aufzug Süd'), 1),
-      (('IB', '3', 'Aufzug Süd'), 1),
-      (('IB', '4', 'Aufzug Süd'), 1),
-      (('IB', '5', 'Aufzug Süd'), 1),
-      (('IB', '6', 'Aufzug Süd'), 1),
+      (('IB', '2', 'Aufzug-Süd'), 1),
+      (('IB', '3', 'Aufzug-Süd'), 1),
+      (('IB', '4', 'Aufzug-Süd'), 1),
+      (('IB', '5', 'Aufzug-Süd'), 1),
+      (('IB', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IB', '1', 'EN_0'): {
@@ -48445,14 +48445,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IB', '1', '80'), 92),
       (('IB', '1', '87'), 106),
-      (('IB', '1', 'Treppe Süd 2'), 78),
+      (('IB', '1', 'Treppe-Süd-2'), 78),
     ],
   },
   ('IB', '1', 'EN_1'): {
     'Coordinates': [577, 467],
     'Connections': [
       (('IB', '1', '175'), 378),
-      (('IB', '1', 'Treppe Süd 2'), 63),
+      (('IB', '1', 'Treppe-Süd-2'), 63),
     ],
   },
   ('IB', '1', 'EN_2'): {
@@ -48477,17 +48477,17 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '1', '103'), 72),
       (('IB', '1', '141'), 68),
       (('IB', '1', '143'), 75),
-      (('IB', '1', 'Aufzug Süd'), 41),
-      (('IB', '1', 'Treppe Süd'), 49),
+      (('IB', '1', 'Aufzug-Süd'), 41),
+      (('IB', '1', 'Treppe-Süd'), 49),
     ],
   },
   ('IB', '1', 'EN_5'): {
     'Coordinates': [865, 853],
     'Connections': [
-      (('IB', '1', 'Aufzug Nord'), 39),
+      (('IB', '1', 'Aufzug-Nord'), 39),
       (('IB', '1', 'EN_6'), 61),
       (('IB', '1', 'EN_8'), 71),
-      (('IB', '1', 'Treppe Nord'), 43),
+      (('IB', '1', 'Treppe-Nord'), 43),
     ],
   },
   ('IB', '1', 'EN_6'): {
@@ -48506,38 +48506,38 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '1', 'EN_5'), 71),
     ],
   },
-  ('IB', '1', 'Treppe Nord'): {
+  ('IB', '1', 'Treppe-Nord'): {
     'Coordinates': [834, 823],
     'Connections': [
-      (('IB', '01', 'Treppe Nord'), 2),
-      (('IB', '03', 'Treppe Nord'), 2),
-      (('IB', '04', 'Treppe Nord'), 2),
+      (('IB', '01', 'Treppe-Nord'), 2),
+      (('IB', '03', 'Treppe-Nord'), 2),
+      (('IB', '04', 'Treppe-Nord'), 2),
       (('IB', '1', 'EN_5'), 43),
-      (('IB', '2', 'Treppe Nord'), 2),
-      (('IB', '3', 'Treppe Nord'), 2),
-      (('IB', '4', 'Treppe Nord'), 2),
-      (('IB', '5', 'Treppe Nord'), 2),
-      (('IB', '6', 'Treppe Nord'), 2),
+      (('IB', '2', 'Treppe-Nord'), 2),
+      (('IB', '3', 'Treppe-Nord'), 2),
+      (('IB', '4', 'Treppe-Nord'), 2),
+      (('IB', '5', 'Treppe-Nord'), 2),
+      (('IB', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IB', '1', 'Treppe Süd'): {
+  ('IB', '1', 'Treppe-Süd'): {
     'Coordinates': [397, 376],
     'Connections': [
-      (('IB', '01', 'Treppe Süd'), 2),
-      (('IB', '03', 'Treppe Süd'), 2),
-      (('IB', '04', 'Treppe Süd'), 2),
+      (('IB', '01', 'Treppe-Süd'), 2),
+      (('IB', '03', 'Treppe-Süd'), 2),
+      (('IB', '04', 'Treppe-Süd'), 2),
       (('IB', '1', 'EN_4'), 49),
-      (('IB', '2', 'Treppe Süd'), 2),
-      (('IB', '3', 'Treppe Süd'), 2),
-      (('IB', '4', 'Treppe Süd'), 2),
-      (('IB', '5', 'Treppe Süd'), 2),
-      (('IB', '6', 'Treppe Süd'), 2),
+      (('IB', '2', 'Treppe-Süd'), 2),
+      (('IB', '3', 'Treppe-Süd'), 2),
+      (('IB', '4', 'Treppe-Süd'), 2),
+      (('IB', '5', 'Treppe-Süd'), 2),
+      (('IB', '6', 'Treppe-Süd'), 2),
     ],
   },
-  ('IB', '1', 'Treppe Süd 2'): {
+  ('IB', '1', 'Treppe-Süd-2'): {
     'Coordinates': [539, 517],
     'Connections': [
-      (('IB', '01', 'Treppe Süd 2'), 2),
+      (('IB', '01', 'Treppe-Süd-2'), 2),
       (('IB', '1', 'EN_0'), 78),
       (('IB', '1', 'EN_1'), 63),
     ],
@@ -49119,32 +49119,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '2', '97'), 70),
     ],
   },
-  ('IB', '2', 'Aufzug Nord'): {
+  ('IB', '2', 'Aufzug-Nord'): {
     'Coordinates': [890, 876],
     'Connections': [
-      (('IB', '01', 'Aufzug Nord'), 1),
-      (('IB', '03', 'Aufzug Nord'), 1),
-      (('IB', '04', 'Aufzug Nord'), 1),
-      (('IB', '1', 'Aufzug Nord'), 1),
+      (('IB', '01', 'Aufzug-Nord'), 1),
+      (('IB', '03', 'Aufzug-Nord'), 1),
+      (('IB', '04', 'Aufzug-Nord'), 1),
+      (('IB', '1', 'Aufzug-Nord'), 1),
       (('IB', '2', 'EN_8'), 37),
-      (('IB', '3', 'Aufzug Nord'), 1),
-      (('IB', '4', 'Aufzug Nord'), 1),
-      (('IB', '5', 'Aufzug Nord'), 1),
-      (('IB', '6', 'Aufzug Nord'), 1),
+      (('IB', '3', 'Aufzug-Nord'), 1),
+      (('IB', '4', 'Aufzug-Nord'), 1),
+      (('IB', '5', 'Aufzug-Nord'), 1),
+      (('IB', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IB', '2', 'Aufzug Süd'): {
+  ('IB', '2', 'Aufzug-Süd'): {
     'Coordinates': [338, 320],
     'Connections': [
-      (('IB', '01', 'Aufzug Süd'), 1),
-      (('IB', '03', 'Aufzug Süd'), 1),
-      (('IB', '04', 'Aufzug Süd'), 1),
-      (('IB', '1', 'Aufzug Süd'), 1),
+      (('IB', '01', 'Aufzug-Süd'), 1),
+      (('IB', '03', 'Aufzug-Süd'), 1),
+      (('IB', '04', 'Aufzug-Süd'), 1),
+      (('IB', '1', 'Aufzug-Süd'), 1),
       (('IB', '2', 'EN_4'), 37),
-      (('IB', '3', 'Aufzug Süd'), 1),
-      (('IB', '4', 'Aufzug Süd'), 1),
-      (('IB', '5', 'Aufzug Süd'), 1),
-      (('IB', '6', 'Aufzug Süd'), 1),
+      (('IB', '3', 'Aufzug-Süd'), 1),
+      (('IB', '4', 'Aufzug-Süd'), 1),
+      (('IB', '5', 'Aufzug-Süd'), 1),
+      (('IB', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IB', '2', 'EN_0'): {
@@ -49188,9 +49188,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [364, 346],
     'Connections': [
       (('IB', '2', '103'), 85),
-      (('IB', '2', 'Aufzug Süd'), 37),
+      (('IB', '2', 'Aufzug-Süd'), 37),
       (('IB', '2', 'EN_3'), 57),
-      (('IB', '2', 'Treppe Süd'), 48),
+      (('IB', '2', 'Treppe-Süd'), 48),
     ],
   },
   ('IB', '2', 'EN_5'): {
@@ -49222,9 +49222,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [862, 852],
     'Connections': [
       (('IB', '2', '171'), 70),
-      (('IB', '2', 'Aufzug Nord'), 37),
+      (('IB', '2', 'Aufzug-Nord'), 37),
       (('IB', '2', 'EN_9'), 73),
-      (('IB', '2', 'Treppe Nord'), 45),
+      (('IB', '2', 'Treppe-Nord'), 45),
     ],
   },
   ('IB', '2', 'EN_9'): {
@@ -49235,32 +49235,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '2', 'EN_8'), 73),
     ],
   },
-  ('IB', '2', 'Treppe Nord'): {
+  ('IB', '2', 'Treppe-Nord'): {
     'Coordinates': [832, 818],
     'Connections': [
-      (('IB', '01', 'Treppe Nord'), 2),
-      (('IB', '03', 'Treppe Nord'), 2),
-      (('IB', '04', 'Treppe Nord'), 2),
-      (('IB', '1', 'Treppe Nord'), 2),
+      (('IB', '01', 'Treppe-Nord'), 2),
+      (('IB', '03', 'Treppe-Nord'), 2),
+      (('IB', '04', 'Treppe-Nord'), 2),
+      (('IB', '1', 'Treppe-Nord'), 2),
       (('IB', '2', 'EN_8'), 45),
-      (('IB', '3', 'Treppe Nord'), 2),
-      (('IB', '4', 'Treppe Nord'), 2),
-      (('IB', '5', 'Treppe Nord'), 2),
-      (('IB', '6', 'Treppe Nord'), 2),
+      (('IB', '3', 'Treppe-Nord'), 2),
+      (('IB', '4', 'Treppe-Nord'), 2),
+      (('IB', '5', 'Treppe-Nord'), 2),
+      (('IB', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IB', '2', 'Treppe Süd'): {
+  ('IB', '2', 'Treppe-Süd'): {
     'Coordinates': [401, 376],
     'Connections': [
-      (('IB', '01', 'Treppe Süd'), 2),
-      (('IB', '03', 'Treppe Süd'), 2),
-      (('IB', '04', 'Treppe Süd'), 2),
-      (('IB', '1', 'Treppe Süd'), 2),
+      (('IB', '01', 'Treppe-Süd'), 2),
+      (('IB', '03', 'Treppe-Süd'), 2),
+      (('IB', '04', 'Treppe-Süd'), 2),
+      (('IB', '1', 'Treppe-Süd'), 2),
       (('IB', '2', 'EN_4'), 48),
-      (('IB', '3', 'Treppe Süd'), 2),
-      (('IB', '4', 'Treppe Süd'), 2),
-      (('IB', '5', 'Treppe Süd'), 2),
-      (('IB', '6', 'Treppe Süd'), 2),
+      (('IB', '3', 'Treppe-Süd'), 2),
+      (('IB', '4', 'Treppe-Süd'), 2),
+      (('IB', '5', 'Treppe-Süd'), 2),
+      (('IB', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('IB', '3', '101'): {
@@ -49757,32 +49757,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '3', 'EN_42'), 13),
     ],
   },
-  ('IB', '3', 'Aufzug Nord'): {
+  ('IB', '3', 'Aufzug-Nord'): {
     'Coordinates': [890, 882],
     'Connections': [
-      (('IB', '01', 'Aufzug Nord'), 1),
-      (('IB', '03', 'Aufzug Nord'), 1),
-      (('IB', '04', 'Aufzug Nord'), 1),
-      (('IB', '1', 'Aufzug Nord'), 1),
-      (('IB', '2', 'Aufzug Nord'), 1),
+      (('IB', '01', 'Aufzug-Nord'), 1),
+      (('IB', '03', 'Aufzug-Nord'), 1),
+      (('IB', '04', 'Aufzug-Nord'), 1),
+      (('IB', '1', 'Aufzug-Nord'), 1),
+      (('IB', '2', 'Aufzug-Nord'), 1),
       (('IB', '3', 'EN_17'), 34),
-      (('IB', '4', 'Aufzug Nord'), 1),
-      (('IB', '5', 'Aufzug Nord'), 1),
-      (('IB', '6', 'Aufzug Nord'), 1),
+      (('IB', '4', 'Aufzug-Nord'), 1),
+      (('IB', '5', 'Aufzug-Nord'), 1),
+      (('IB', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IB', '3', 'Aufzug Süd'): {
+  ('IB', '3', 'Aufzug-Süd'): {
     'Coordinates': [334, 320],
     'Connections': [
-      (('IB', '01', 'Aufzug Süd'), 1),
-      (('IB', '03', 'Aufzug Süd'), 1),
-      (('IB', '04', 'Aufzug Süd'), 1),
-      (('IB', '1', 'Aufzug Süd'), 1),
-      (('IB', '2', 'Aufzug Süd'), 1),
+      (('IB', '01', 'Aufzug-Süd'), 1),
+      (('IB', '03', 'Aufzug-Süd'), 1),
+      (('IB', '04', 'Aufzug-Süd'), 1),
+      (('IB', '1', 'Aufzug-Süd'), 1),
+      (('IB', '2', 'Aufzug-Süd'), 1),
       (('IB', '3', 'EN_46'), 31),
-      (('IB', '4', 'Aufzug Süd'), 1),
-      (('IB', '5', 'Aufzug Süd'), 1),
-      (('IB', '6', 'Aufzug Süd'), 1),
+      (('IB', '4', 'Aufzug-Süd'), 1),
+      (('IB', '5', 'Aufzug-Süd'), 1),
+      (('IB', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IB', '3', 'EN_10'): {
@@ -49838,10 +49838,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '3', 'EN_17'): {
     'Coordinates': [868, 856],
     'Connections': [
-      (('IB', '3', 'Aufzug Nord'), 34),
+      (('IB', '3', 'Aufzug-Nord'), 34),
       (('IB', '3', 'EN_14'), 60),
       (('IB', '3', 'EN_31'), 67),
-      (('IB', '3', 'Treppe Nord'), 38),
+      (('IB', '3', 'Treppe-Nord'), 38),
     ],
   },
   ('IB', '3', 'EN_18'): {
@@ -50098,10 +50098,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '3', 'EN_46'): {
     'Coordinates': [358, 340],
     'Connections': [
-      (('IB', '3', 'Aufzug Süd'), 31),
+      (('IB', '3', 'Aufzug-Süd'), 31),
       (('IB', '3', 'EN_45'), 68),
       (('IB', '3', 'EN_47'), 61),
-      (('IB', '3', 'Treppe Süd'), 39),
+      (('IB', '3', 'Treppe-Süd'), 39),
     ],
   },
   ('IB', '3', 'EN_47'): {
@@ -50345,32 +50345,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '3', 'EN_7'), 40),
     ],
   },
-  ('IB', '3', 'Treppe Nord'): {
+  ('IB', '3', 'Treppe-Nord'): {
     'Coordinates': [840, 830],
     'Connections': [
-      (('IB', '01', 'Treppe Nord'), 2),
-      (('IB', '03', 'Treppe Nord'), 2),
-      (('IB', '04', 'Treppe Nord'), 2),
-      (('IB', '1', 'Treppe Nord'), 2),
-      (('IB', '2', 'Treppe Nord'), 2),
+      (('IB', '01', 'Treppe-Nord'), 2),
+      (('IB', '03', 'Treppe-Nord'), 2),
+      (('IB', '04', 'Treppe-Nord'), 2),
+      (('IB', '1', 'Treppe-Nord'), 2),
+      (('IB', '2', 'Treppe-Nord'), 2),
       (('IB', '3', 'EN_17'), 38),
-      (('IB', '4', 'Treppe Nord'), 2),
-      (('IB', '5', 'Treppe Nord'), 2),
-      (('IB', '6', 'Treppe Nord'), 2),
+      (('IB', '4', 'Treppe-Nord'), 2),
+      (('IB', '5', 'Treppe-Nord'), 2),
+      (('IB', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IB', '3', 'Treppe Süd'): {
+  ('IB', '3', 'Treppe-Süd'): {
     'Coordinates': [385, 368],
     'Connections': [
-      (('IB', '01', 'Treppe Süd'), 2),
-      (('IB', '03', 'Treppe Süd'), 2),
-      (('IB', '04', 'Treppe Süd'), 2),
-      (('IB', '1', 'Treppe Süd'), 2),
-      (('IB', '2', 'Treppe Süd'), 2),
+      (('IB', '01', 'Treppe-Süd'), 2),
+      (('IB', '03', 'Treppe-Süd'), 2),
+      (('IB', '04', 'Treppe-Süd'), 2),
+      (('IB', '1', 'Treppe-Süd'), 2),
+      (('IB', '2', 'Treppe-Süd'), 2),
       (('IB', '3', 'EN_46'), 39),
-      (('IB', '4', 'Treppe Süd'), 2),
-      (('IB', '5', 'Treppe Süd'), 2),
-      (('IB', '6', 'Treppe Süd'), 2),
+      (('IB', '4', 'Treppe-Süd'), 2),
+      (('IB', '5', 'Treppe-Süd'), 2),
+      (('IB', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('IB', '4', '101'): {
@@ -50885,32 +50885,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '4', 'EN_46'), 21),
     ],
   },
-  ('IB', '4', 'Aufzug Nord'): {
+  ('IB', '4', 'Aufzug-Nord'): {
     'Coordinates': [891, 883],
     'Connections': [
-      (('IB', '01', 'Aufzug Nord'), 1),
-      (('IB', '03', 'Aufzug Nord'), 1),
-      (('IB', '04', 'Aufzug Nord'), 1),
-      (('IB', '1', 'Aufzug Nord'), 1),
-      (('IB', '2', 'Aufzug Nord'), 1),
-      (('IB', '3', 'Aufzug Nord'), 1),
+      (('IB', '01', 'Aufzug-Nord'), 1),
+      (('IB', '03', 'Aufzug-Nord'), 1),
+      (('IB', '04', 'Aufzug-Nord'), 1),
+      (('IB', '1', 'Aufzug-Nord'), 1),
+      (('IB', '2', 'Aufzug-Nord'), 1),
+      (('IB', '3', 'Aufzug-Nord'), 1),
       (('IB', '4', 'EN_14'), 36),
-      (('IB', '5', 'Aufzug Nord'), 1),
-      (('IB', '6', 'Aufzug Nord'), 1),
+      (('IB', '5', 'Aufzug-Nord'), 1),
+      (('IB', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IB', '4', 'Aufzug Süd'): {
+  ('IB', '4', 'Aufzug-Süd'): {
     'Coordinates': [333, 316],
     'Connections': [
-      (('IB', '01', 'Aufzug Süd'), 1),
-      (('IB', '03', 'Aufzug Süd'), 1),
-      (('IB', '04', 'Aufzug Süd'), 1),
-      (('IB', '1', 'Aufzug Süd'), 1),
-      (('IB', '2', 'Aufzug Süd'), 1),
-      (('IB', '3', 'Aufzug Süd'), 1),
+      (('IB', '01', 'Aufzug-Süd'), 1),
+      (('IB', '03', 'Aufzug-Süd'), 1),
+      (('IB', '04', 'Aufzug-Süd'), 1),
+      (('IB', '1', 'Aufzug-Süd'), 1),
+      (('IB', '2', 'Aufzug-Süd'), 1),
+      (('IB', '3', 'Aufzug-Süd'), 1),
       (('IB', '4', 'EN_48'), 36),
-      (('IB', '5', 'Aufzug Süd'), 1),
-      (('IB', '6', 'Aufzug Süd'), 1),
+      (('IB', '5', 'Aufzug-Süd'), 1),
+      (('IB', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IB', '4', 'EN_0'): {
@@ -50958,9 +50958,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [866, 857],
     'Connections': [
       (('IB', '4', '73'), 86),
-      (('IB', '4', 'Aufzug Nord'), 36),
+      (('IB', '4', 'Aufzug-Nord'), 36),
       (('IB', '4', 'EN_13'), 60),
-      (('IB', '4', 'Treppe Nord'), 36),
+      (('IB', '4', 'Treppe-Nord'), 36),
     ],
   },
   ('IB', '4', 'EN_15'): {
@@ -51214,9 +51214,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [355, 345],
     'Connections': [
       (('IB', '4', '141'), 89),
-      (('IB', '4', 'Aufzug Süd'), 36),
+      (('IB', '4', 'Aufzug-Süd'), 36),
       (('IB', '4', 'EN_47'), 57),
-      (('IB', '4', 'Treppe Süd'), 43),
+      (('IB', '4', 'Treppe-Süd'), 43),
     ],
   },
   ('IB', '4', 'EN_49'): {
@@ -51459,32 +51459,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '4', 'EN_8'), 34),
     ],
   },
-  ('IB', '4', 'Treppe Nord'): {
+  ('IB', '4', 'Treppe-Nord'): {
     'Coordinates': [841, 831],
     'Connections': [
-      (('IB', '01', 'Treppe Nord'), 2),
-      (('IB', '03', 'Treppe Nord'), 2),
-      (('IB', '04', 'Treppe Nord'), 2),
-      (('IB', '1', 'Treppe Nord'), 2),
-      (('IB', '2', 'Treppe Nord'), 2),
-      (('IB', '3', 'Treppe Nord'), 2),
+      (('IB', '01', 'Treppe-Nord'), 2),
+      (('IB', '03', 'Treppe-Nord'), 2),
+      (('IB', '04', 'Treppe-Nord'), 2),
+      (('IB', '1', 'Treppe-Nord'), 2),
+      (('IB', '2', 'Treppe-Nord'), 2),
+      (('IB', '3', 'Treppe-Nord'), 2),
       (('IB', '4', 'EN_14'), 36),
-      (('IB', '5', 'Treppe Nord'), 2),
-      (('IB', '6', 'Treppe Nord'), 2),
+      (('IB', '5', 'Treppe-Nord'), 2),
+      (('IB', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IB', '4', 'Treppe Süd'): {
+  ('IB', '4', 'Treppe-Süd'): {
     'Coordinates': [385, 376],
     'Connections': [
-      (('IB', '01', 'Treppe Süd'), 2),
-      (('IB', '03', 'Treppe Süd'), 2),
-      (('IB', '04', 'Treppe Süd'), 2),
-      (('IB', '1', 'Treppe Süd'), 2),
-      (('IB', '2', 'Treppe Süd'), 2),
-      (('IB', '3', 'Treppe Süd'), 2),
+      (('IB', '01', 'Treppe-Süd'), 2),
+      (('IB', '03', 'Treppe-Süd'), 2),
+      (('IB', '04', 'Treppe-Süd'), 2),
+      (('IB', '1', 'Treppe-Süd'), 2),
+      (('IB', '2', 'Treppe-Süd'), 2),
+      (('IB', '3', 'Treppe-Süd'), 2),
       (('IB', '4', 'EN_48'), 43),
-      (('IB', '5', 'Treppe Süd'), 2),
-      (('IB', '6', 'Treppe Süd'), 2),
+      (('IB', '5', 'Treppe-Süd'), 2),
+      (('IB', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('IB', '5', '101'): {
@@ -51954,32 +51954,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '5', 'EN_48'), 19),
     ],
   },
-  ('IB', '5', 'Aufzug Nord'): {
+  ('IB', '5', 'Aufzug-Nord'): {
     'Coordinates': [897, 877],
     'Connections': [
-      (('IB', '01', 'Aufzug Nord'), 1),
-      (('IB', '03', 'Aufzug Nord'), 1),
-      (('IB', '04', 'Aufzug Nord'), 1),
-      (('IB', '1', 'Aufzug Nord'), 1),
-      (('IB', '2', 'Aufzug Nord'), 1),
-      (('IB', '3', 'Aufzug Nord'), 1),
-      (('IB', '4', 'Aufzug Nord'), 1),
+      (('IB', '01', 'Aufzug-Nord'), 1),
+      (('IB', '03', 'Aufzug-Nord'), 1),
+      (('IB', '04', 'Aufzug-Nord'), 1),
+      (('IB', '1', 'Aufzug-Nord'), 1),
+      (('IB', '2', 'Aufzug-Nord'), 1),
+      (('IB', '3', 'Aufzug-Nord'), 1),
+      (('IB', '4', 'Aufzug-Nord'), 1),
       (('IB', '5', 'EN_15'), 35),
-      (('IB', '6', 'Aufzug Nord'), 1),
+      (('IB', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IB', '5', 'Aufzug Süd'): {
+  ('IB', '5', 'Aufzug-Süd'): {
     'Coordinates': [331, 313],
     'Connections': [
-      (('IB', '01', 'Aufzug Süd'), 1),
-      (('IB', '03', 'Aufzug Süd'), 1),
-      (('IB', '04', 'Aufzug Süd'), 1),
-      (('IB', '1', 'Aufzug Süd'), 1),
-      (('IB', '2', 'Aufzug Süd'), 1),
-      (('IB', '3', 'Aufzug Süd'), 1),
-      (('IB', '4', 'Aufzug Süd'), 1),
+      (('IB', '01', 'Aufzug-Süd'), 1),
+      (('IB', '03', 'Aufzug-Süd'), 1),
+      (('IB', '04', 'Aufzug-Süd'), 1),
+      (('IB', '1', 'Aufzug-Süd'), 1),
+      (('IB', '2', 'Aufzug-Süd'), 1),
+      (('IB', '3', 'Aufzug-Süd'), 1),
+      (('IB', '4', 'Aufzug-Süd'), 1),
       (('IB', '5', 'EN_45'), 41),
-      (('IB', '6', 'Aufzug Süd'), 1),
+      (('IB', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IB', '5', 'EN_10'): {
@@ -52028,9 +52028,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [870, 854],
     'Connections': [
       (('IB', '5', '73'), 85),
-      (('IB', '5', 'Aufzug Nord'), 35),
+      (('IB', '5', 'Aufzug-Nord'), 35),
       (('IB', '5', 'EN_14'), 57),
-      (('IB', '5', 'Treppe Nord'), 47),
+      (('IB', '5', 'Treppe-Nord'), 47),
     ],
   },
   ('IB', '5', 'EN_17'): {
@@ -52268,10 +52268,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '5', 'EN_45'): {
     'Coordinates': [365, 336],
     'Connections': [
-      (('IB', '5', 'Aufzug Süd'), 41),
+      (('IB', '5', 'Aufzug-Süd'), 41),
       (('IB', '5', 'EN_44'), 52),
       (('IB', '5', 'EN_46'), 67),
-      (('IB', '5', 'Treppe Süd'), 38),
+      (('IB', '5', 'Treppe-Süd'), 38),
     ],
   },
   ('IB', '5', 'EN_46'): {
@@ -52495,32 +52495,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '5', 'EN_8'), 24),
     ],
   },
-  ('IB', '5', 'Treppe Nord'): {
+  ('IB', '5', 'Treppe-Nord'): {
     'Coordinates': [836, 821],
     'Connections': [
-      (('IB', '01', 'Treppe Nord'), 2),
-      (('IB', '03', 'Treppe Nord'), 2),
-      (('IB', '04', 'Treppe Nord'), 2),
-      (('IB', '1', 'Treppe Nord'), 2),
-      (('IB', '2', 'Treppe Nord'), 2),
-      (('IB', '3', 'Treppe Nord'), 2),
-      (('IB', '4', 'Treppe Nord'), 2),
+      (('IB', '01', 'Treppe-Nord'), 2),
+      (('IB', '03', 'Treppe-Nord'), 2),
+      (('IB', '04', 'Treppe-Nord'), 2),
+      (('IB', '1', 'Treppe-Nord'), 2),
+      (('IB', '2', 'Treppe-Nord'), 2),
+      (('IB', '3', 'Treppe-Nord'), 2),
+      (('IB', '4', 'Treppe-Nord'), 2),
       (('IB', '5', 'EN_15'), 47),
-      (('IB', '6', 'Treppe Nord'), 2),
+      (('IB', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IB', '5', 'Treppe Süd'): {
+  ('IB', '5', 'Treppe-Süd'): {
     'Coordinates': [385, 368],
     'Connections': [
-      (('IB', '01', 'Treppe Süd'), 2),
-      (('IB', '03', 'Treppe Süd'), 2),
-      (('IB', '04', 'Treppe Süd'), 2),
-      (('IB', '1', 'Treppe Süd'), 2),
-      (('IB', '2', 'Treppe Süd'), 2),
-      (('IB', '3', 'Treppe Süd'), 2),
-      (('IB', '4', 'Treppe Süd'), 2),
+      (('IB', '01', 'Treppe-Süd'), 2),
+      (('IB', '03', 'Treppe-Süd'), 2),
+      (('IB', '04', 'Treppe-Süd'), 2),
+      (('IB', '1', 'Treppe-Süd'), 2),
+      (('IB', '2', 'Treppe-Süd'), 2),
+      (('IB', '3', 'Treppe-Süd'), 2),
+      (('IB', '4', 'Treppe-Süd'), 2),
       (('IB', '5', 'EN_45'), 38),
-      (('IB', '6', 'Treppe Süd'), 2),
+      (('IB', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('IB', '6', '101'): {
@@ -53037,31 +53037,31 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '6', 'EN_73'), 16),
     ],
   },
-  ('IB', '6', 'Aufzug Nord'): {
+  ('IB', '6', 'Aufzug-Nord'): {
     'Coordinates': [894, 888],
     'Connections': [
-      (('IB', '01', 'Aufzug Nord'), 1),
-      (('IB', '03', 'Aufzug Nord'), 1),
-      (('IB', '04', 'Aufzug Nord'), 1),
-      (('IB', '1', 'Aufzug Nord'), 1),
-      (('IB', '2', 'Aufzug Nord'), 1),
-      (('IB', '3', 'Aufzug Nord'), 1),
-      (('IB', '4', 'Aufzug Nord'), 1),
-      (('IB', '5', 'Aufzug Nord'), 1),
+      (('IB', '01', 'Aufzug-Nord'), 1),
+      (('IB', '03', 'Aufzug-Nord'), 1),
+      (('IB', '04', 'Aufzug-Nord'), 1),
+      (('IB', '1', 'Aufzug-Nord'), 1),
+      (('IB', '2', 'Aufzug-Nord'), 1),
+      (('IB', '3', 'Aufzug-Nord'), 1),
+      (('IB', '4', 'Aufzug-Nord'), 1),
+      (('IB', '5', 'Aufzug-Nord'), 1),
       (('IB', '6', 'EN_7'), 40),
     ],
   },
-  ('IB', '6', 'Aufzug Süd'): {
+  ('IB', '6', 'Aufzug-Süd'): {
     'Coordinates': [337, 314],
     'Connections': [
-      (('IB', '01', 'Aufzug Süd'), 1),
-      (('IB', '03', 'Aufzug Süd'), 1),
-      (('IB', '04', 'Aufzug Süd'), 1),
-      (('IB', '1', 'Aufzug Süd'), 1),
-      (('IB', '2', 'Aufzug Süd'), 1),
-      (('IB', '3', 'Aufzug Süd'), 1),
-      (('IB', '4', 'Aufzug Süd'), 1),
-      (('IB', '5', 'Aufzug Süd'), 1),
+      (('IB', '01', 'Aufzug-Süd'), 1),
+      (('IB', '03', 'Aufzug-Süd'), 1),
+      (('IB', '04', 'Aufzug-Süd'), 1),
+      (('IB', '1', 'Aufzug-Süd'), 1),
+      (('IB', '2', 'Aufzug-Süd'), 1),
+      (('IB', '3', 'Aufzug-Süd'), 1),
+      (('IB', '4', 'Aufzug-Süd'), 1),
+      (('IB', '5', 'Aufzug-Süd'), 1),
       (('IB', '6', 'EN_58'), 34),
     ],
   },
@@ -53480,10 +53480,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '6', 'EN_58'): {
     'Coordinates': [364, 335],
     'Connections': [
-      (('IB', '6', 'Aufzug Süd'), 34),
+      (('IB', '6', 'Aufzug-Süd'), 34),
       (('IB', '6', 'EN_53'), 54),
       (('IB', '6', 'EN_59'), 70),
-      (('IB', '6', 'Treppe Süd'), 39),
+      (('IB', '6', 'Treppe-Süd'), 39),
     ],
   },
   ('IB', '6', 'EN_59'): {
@@ -53580,10 +53580,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IB', '6', 'EN_7'): {
     'Coordinates': [868, 858],
     'Connections': [
-      (('IB', '6', 'Aufzug Nord'), 40),
+      (('IB', '6', 'Aufzug-Nord'), 40),
       (('IB', '6', 'EN_6'), 62),
       (('IB', '6', 'EN_8'), 59),
-      (('IB', '6', 'Treppe Nord'), 51),
+      (('IB', '6', 'Treppe-Nord'), 51),
     ],
   },
   ('IB', '6', 'EN_70'): {
@@ -53637,31 +53637,31 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IB', '6', 'EN_8'), 34),
     ],
   },
-  ('IB', '6', 'Treppe Nord'): {
+  ('IB', '6', 'Treppe-Nord'): {
     'Coordinates': [830, 824],
     'Connections': [
-      (('IB', '01', 'Treppe Nord'), 2),
-      (('IB', '03', 'Treppe Nord'), 2),
-      (('IB', '04', 'Treppe Nord'), 2),
-      (('IB', '1', 'Treppe Nord'), 2),
-      (('IB', '2', 'Treppe Nord'), 2),
-      (('IB', '3', 'Treppe Nord'), 2),
-      (('IB', '4', 'Treppe Nord'), 2),
-      (('IB', '5', 'Treppe Nord'), 2),
+      (('IB', '01', 'Treppe-Nord'), 2),
+      (('IB', '03', 'Treppe-Nord'), 2),
+      (('IB', '04', 'Treppe-Nord'), 2),
+      (('IB', '1', 'Treppe-Nord'), 2),
+      (('IB', '2', 'Treppe-Nord'), 2),
+      (('IB', '3', 'Treppe-Nord'), 2),
+      (('IB', '4', 'Treppe-Nord'), 2),
+      (('IB', '5', 'Treppe-Nord'), 2),
       (('IB', '6', 'EN_7'), 51),
     ],
   },
-  ('IB', '6', 'Treppe Süd'): {
+  ('IB', '6', 'Treppe-Süd'): {
     'Coordinates': [384, 368],
     'Connections': [
-      (('IB', '01', 'Treppe Süd'), 2),
-      (('IB', '03', 'Treppe Süd'), 2),
-      (('IB', '04', 'Treppe Süd'), 2),
-      (('IB', '1', 'Treppe Süd'), 2),
-      (('IB', '2', 'Treppe Süd'), 2),
-      (('IB', '3', 'Treppe Süd'), 2),
-      (('IB', '4', 'Treppe Süd'), 2),
-      (('IB', '5', 'Treppe Süd'), 2),
+      (('IB', '01', 'Treppe-Süd'), 2),
+      (('IB', '03', 'Treppe-Süd'), 2),
+      (('IB', '04', 'Treppe-Süd'), 2),
+      (('IB', '1', 'Treppe-Süd'), 2),
+      (('IB', '2', 'Treppe-Süd'), 2),
+      (('IB', '3', 'Treppe-Süd'), 2),
+      (('IB', '4', 'Treppe-Süd'), 2),
+      (('IB', '5', 'Treppe-Süd'), 2),
       (('IB', '6', 'EN_58'), 39),
     ],
   },
@@ -54713,11 +54713,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '04', '97'), 22),
     ],
   },
-  ('IC', '04', 'Durchgang Richtung ID'): {
+  ('IC', '04', 'Durchgang-Richtung-ID'): {
     'Coordinates': [660, 885],
     'Connections': [
       (('IC', '04', 'EN_7'), 28),
-      (('ID', '04', 'Durchgang Richtung IC'), 1),
+      (('ID', '04', 'Durchgang-Richtung-IC'), 1),
     ],
   },
   ('IC', '04', 'EN_0'): {
@@ -55051,7 +55051,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [635, 873],
     'Connections': [
       (('IC', '04', '422b'), 38),
-      (('IC', '04', 'Durchgang Richtung ID'), 28),
+      (('IC', '04', 'Durchgang-Richtung-ID'), 28),
       (('IC', '04', 'EN_6'), 25),
     ],
   },
@@ -55725,26 +55725,26 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '1', '98'), 23),
     ],
   },
-  ('IC', '1', 'Aufzug Nord'): {
+  ('IC', '1', 'Aufzug-Nord'): {
     'Coordinates': [431, 195],
     'Connections': [
       (('IC', '1', 'EN_1'), 24),
-      (('IC', '2', 'Aufzug Nord'), 1),
-      (('IC', '3', 'Aufzug Nord'), 1),
-      (('IC', '4', 'Aufzug Nord'), 1),
-      (('IC', '5', 'Aufzug Nord'), 1),
-      (('IC', '6', 'Aufzug Nord'), 1),
+      (('IC', '2', 'Aufzug-Nord'), 1),
+      (('IC', '3', 'Aufzug-Nord'), 1),
+      (('IC', '4', 'Aufzug-Nord'), 1),
+      (('IC', '5', 'Aufzug-Nord'), 1),
+      (('IC', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IC', '1', 'Aufzug Süd'): {
+  ('IC', '1', 'Aufzug-Süd'): {
     'Coordinates': [188, 437],
     'Connections': [
       (('IC', '1', 'EN_0'), 20),
-      (('IC', '2', 'Aufzug Süd'), 1),
-      (('IC', '3', 'Aufzug Süd'), 1),
-      (('IC', '4', 'Aufzug Süd'), 1),
-      (('IC', '5', 'Aufzug Süd'), 1),
-      (('IC', '6', 'Aufzug Süd'), 1),
+      (('IC', '2', 'Aufzug-Süd'), 1),
+      (('IC', '3', 'Aufzug-Süd'), 1),
+      (('IC', '4', 'Aufzug-Süd'), 1),
+      (('IC', '5', 'Aufzug-Süd'), 1),
+      (('IC', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IC', '1', 'EN_0'): {
@@ -55752,8 +55752,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IC', '1', '103'), 40),
       (('IC', '1', '141'), 30),
-      (('IC', '1', 'Aufzug Süd'), 20),
-      (('IC', '1', 'Treppe Süd'), 18),
+      (('IC', '1', 'Aufzug-Süd'), 20),
+      (('IC', '1', 'Treppe-Süd'), 18),
     ],
   },
   ('IC', '1', 'EN_1'): {
@@ -55761,8 +55761,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IC', '1', '171'), 33),
       (('IC', '1', '73'), 35),
-      (('IC', '1', 'Aufzug Nord'), 24),
-      (('IC', '1', 'Treppe Nord'), 20),
+      (('IC', '1', 'Aufzug-Nord'), 24),
+      (('IC', '1', 'Treppe-Nord'), 20),
     ],
   },
   ('IC', '1', 'EN_2'): {
@@ -55779,25 +55779,25 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '1', 'EN_2'), 55),
     ],
   },
-  ('IC', '1', 'Treppe Nord'): {
+  ('IC', '1', 'Treppe-Nord'): {
     'Coordinates': [461, 163],
     'Connections': [
       (('IC', '1', 'EN_1'), 20),
-      (('IC', '2', 'Treppe Nord'), 2),
-      (('IC', '3', 'Treppe Nord'), 2),
-      (('IC', '4', 'Treppe Nord'), 2),
-      (('IC', '5', 'Treppe Nord'), 2),
-      (('IC', '6', 'Treppe Nord'), 2),
+      (('IC', '2', 'Treppe-Nord'), 2),
+      (('IC', '3', 'Treppe-Nord'), 2),
+      (('IC', '4', 'Treppe-Nord'), 2),
+      (('IC', '5', 'Treppe-Nord'), 2),
+      (('IC', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IC', '1', 'Treppe Süd'): {
+  ('IC', '1', 'Treppe-Süd'): {
     'Coordinates': [163, 462],
     'Connections': [
       (('IC', '1', 'EN_0'), 18),
-      (('IC', '3', 'Treppe Süd'), 2),
-      (('IC', '4', 'Treppe Süd'), 2),
-      (('IC', '5', 'Treppe Süd'), 2),
-      (('IC', '6', 'Treppe Süd'), 2),
+      (('IC', '3', 'Treppe-Süd'), 2),
+      (('IC', '4', 'Treppe-Süd'), 2),
+      (('IC', '5', 'Treppe-Süd'), 2),
+      (('IC', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('IC', '2', '101'): {
@@ -56305,26 +56305,26 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '2', 'EN_37'), 35),
     ],
   },
-  ('IC', '2', 'Aufzug Nord'): {
+  ('IC', '2', 'Aufzug-Nord'): {
     'Coordinates': [812, 790],
     'Connections': [
-      (('IC', '1', 'Aufzug Nord'), 1),
+      (('IC', '1', 'Aufzug-Nord'), 1),
       (('IC', '2', 'EN_1'), 62),
-      (('IC', '3', 'Aufzug Nord'), 1),
-      (('IC', '4', 'Aufzug Nord'), 1),
-      (('IC', '5', 'Aufzug Nord'), 1),
-      (('IC', '6', 'Aufzug Nord'), 1),
+      (('IC', '3', 'Aufzug-Nord'), 1),
+      (('IC', '4', 'Aufzug-Nord'), 1),
+      (('IC', '5', 'Aufzug-Nord'), 1),
+      (('IC', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IC', '2', 'Aufzug Süd'): {
+  ('IC', '2', 'Aufzug-Süd'): {
     'Coordinates': [388, 370],
     'Connections': [
-      (('IC', '1', 'Aufzug Süd'), 1),
+      (('IC', '1', 'Aufzug-Süd'), 1),
       (('IC', '2', 'EN_9'), 36),
-      (('IC', '3', 'Aufzug Süd'), 1),
-      (('IC', '4', 'Aufzug Süd'), 1),
-      (('IC', '5', 'Aufzug Süd'), 1),
-      (('IC', '6', 'Aufzug Süd'), 1),
+      (('IC', '3', 'Aufzug-Süd'), 1),
+      (('IC', '4', 'Aufzug-Süd'), 1),
+      (('IC', '5', 'Aufzug-Süd'), 1),
+      (('IC', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IC', '2', 'EN_0'): {
@@ -56339,10 +56339,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IC', '2', 'EN_1'): {
     'Coordinates': [857, 832],
     'Connections': [
-      (('IC', '2', 'Aufzug Nord'), 62),
+      (('IC', '2', 'Aufzug-Nord'), 62),
       (('IC', '2', 'EN_2'), 45),
       (('IC', '2', 'EN_50'), 81),
-      (('IC', '2', 'Treppe Nord'), 48),
+      (('IC', '2', 'Treppe-Nord'), 48),
     ],
   },
   ('IC', '2', 'EN_10'): {
@@ -56672,7 +56672,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '2', '69'), 54),
       (('IC', '2', 'EN_51'), 53),
       (('IC', '2', 'EN_53'), 58),
-      (('IC', '2', 'WC Nord'), 55),
+      (('IC', '2', 'WC-Nord'), 55),
     ],
   },
   ('IC', '2', 'EN_53'): {
@@ -56680,7 +56680,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IC', '2', 'EN_52'), 58),
       (('IC', '2', 'EN_55'), 36),
-      (('IC', '2', 'WC Nord'), 60),
+      (('IC', '2', 'WC-Nord'), 60),
     ],
   },
   ('IC', '2', 'EN_55'): {
@@ -56837,7 +56837,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IC', '2', 'EN_9'): {
     'Coordinates': [362, 345],
     'Connections': [
-      (('IC', '2', 'Aufzug Süd'), 36),
+      (('IC', '2', 'Aufzug-Süd'), 36),
       (('IC', '2', 'EN_10'), 58),
       (('IC', '2', 'EN_17'), 66),
       (('IC', '2', 'Treppe'), 46),
@@ -56849,18 +56849,18 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '2', 'EN_9'), 46),
     ],
   },
-  ('IC', '2', 'Treppe Nord'): {
+  ('IC', '2', 'Treppe-Nord'): {
     'Coordinates': [886, 870],
     'Connections': [
-      (('IC', '1', 'Treppe Nord'), 2),
+      (('IC', '1', 'Treppe-Nord'), 2),
       (('IC', '2', 'EN_1'), 48),
-      (('IC', '3', 'Treppe Nord'), 2),
-      (('IC', '4', 'Treppe Nord'), 2),
-      (('IC', '5', 'Treppe Nord'), 2),
-      (('IC', '6', 'Treppe Nord'), 2),
+      (('IC', '3', 'Treppe-Nord'), 2),
+      (('IC', '4', 'Treppe-Nord'), 2),
+      (('IC', '5', 'Treppe-Nord'), 2),
+      (('IC', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IC', '2', 'WC Nord'): {
+  ('IC', '2', 'WC-Nord'): {
     'Coordinates': [923, 934],
     'Connections': [
       (('IC', '2', 'EN_52'), 55),
@@ -57461,26 +57461,26 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '3', '98'), 63),
     ],
   },
-  ('IC', '3', 'Aufzug Nord'): {
+  ('IC', '3', 'Aufzug-Nord'): {
     'Coordinates': [821, 803],
     'Connections': [
-      (('IC', '1', 'Aufzug Nord'), 1),
-      (('IC', '2', 'Aufzug Nord'), 1),
+      (('IC', '1', 'Aufzug-Nord'), 1),
+      (('IC', '2', 'Aufzug-Nord'), 1),
       (('IC', '3', 'EN_4'), 54),
-      (('IC', '4', 'Aufzug Nord'), 1),
-      (('IC', '5', 'Aufzug Nord'), 1),
-      (('IC', '6', 'Aufzug Nord'), 1),
+      (('IC', '4', 'Aufzug-Nord'), 1),
+      (('IC', '5', 'Aufzug-Nord'), 1),
+      (('IC', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IC', '3', 'Aufzug Süd'): {
+  ('IC', '3', 'Aufzug-Süd'): {
     'Coordinates': [391, 374],
     'Connections': [
-      (('IC', '1', 'Aufzug Süd'), 1),
-      (('IC', '2', 'Aufzug Süd'), 1),
+      (('IC', '1', 'Aufzug-Süd'), 1),
+      (('IC', '2', 'Aufzug-Süd'), 1),
       (('IC', '3', 'EN_1'), 50),
-      (('IC', '4', 'Aufzug Süd'), 1),
-      (('IC', '5', 'Aufzug Süd'), 1),
-      (('IC', '6', 'Aufzug Süd'), 1),
+      (('IC', '4', 'Aufzug-Süd'), 1),
+      (('IC', '5', 'Aufzug-Süd'), 1),
+      (('IC', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IC', '3', 'EN_0'): {
@@ -57493,10 +57493,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IC', '3', 'EN_1'): {
     'Coordinates': [358, 336],
     'Connections': [
-      (('IC', '3', 'Aufzug Süd'), 50),
+      (('IC', '3', 'Aufzug-Süd'), 50),
       (('IC', '3', 'EN_0'), 40),
       (('IC', '3', 'EN_2'), 49),
-      (('IC', '3', 'Treppe Süd'), 55),
+      (('IC', '3', 'Treppe-Süd'), 55),
     ],
   },
   ('IC', '3', 'EN_2'): {
@@ -57516,10 +57516,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('IC', '3', 'EN_4'): {
     'Coordinates': [857, 843],
     'Connections': [
-      (('IC', '3', 'Aufzug Nord'), 54),
+      (('IC', '3', 'Aufzug-Nord'), 54),
       (('IC', '3', 'EN_3'), 40),
       (('IC', '3', 'EN_5'), 53),
-      (('IC', '3', 'Treppe Nord'), 62),
+      (('IC', '3', 'Treppe-Nord'), 62),
     ],
   },
   ('IC', '3', 'EN_5'): {
@@ -57536,25 +57536,25 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '3', '156'), 105),
     ],
   },
-  ('IC', '3', 'Treppe Nord'): {
+  ('IC', '3', 'Treppe-Nord'): {
     'Coordinates': [903, 885],
     'Connections': [
-      (('IC', '1', 'Treppe Nord'), 2),
-      (('IC', '2', 'Treppe Nord'), 2),
+      (('IC', '1', 'Treppe-Nord'), 2),
+      (('IC', '2', 'Treppe-Nord'), 2),
       (('IC', '3', 'EN_4'), 62),
-      (('IC', '4', 'Treppe Nord'), 2),
-      (('IC', '5', 'Treppe Nord'), 2),
-      (('IC', '6', 'Treppe Nord'), 2),
+      (('IC', '4', 'Treppe-Nord'), 2),
+      (('IC', '5', 'Treppe-Nord'), 2),
+      (('IC', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IC', '3', 'Treppe Süd'): {
+  ('IC', '3', 'Treppe-Süd'): {
     'Coordinates': [314, 303],
     'Connections': [
-      (('IC', '1', 'Treppe Süd'), 2),
+      (('IC', '1', 'Treppe-Süd'), 2),
       (('IC', '3', 'EN_1'), 55),
-      (('IC', '4', 'Treppe Süd'), 2),
-      (('IC', '5', 'Treppe Süd'), 2),
-      (('IC', '6', 'Treppe Süd'), 2),
+      (('IC', '4', 'Treppe-Süd'), 2),
+      (('IC', '5', 'Treppe-Süd'), 2),
+      (('IC', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('IC', '4', '101'): {
@@ -58169,26 +58169,26 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '4', '97'), 53),
     ],
   },
-  ('IC', '4', 'Aufzug Nord'): {
+  ('IC', '4', 'Aufzug-Nord'): {
     'Coordinates': [815, 814],
     'Connections': [
-      (('IC', '1', 'Aufzug Nord'), 1),
-      (('IC', '2', 'Aufzug Nord'), 1),
-      (('IC', '3', 'Aufzug Nord'), 1),
+      (('IC', '1', 'Aufzug-Nord'), 1),
+      (('IC', '2', 'Aufzug-Nord'), 1),
+      (('IC', '3', 'Aufzug-Nord'), 1),
       (('IC', '4', 'EN_1'), 43),
-      (('IC', '5', 'Aufzug Nord'), 1),
-      (('IC', '6', 'Aufzug Nord'), 1),
+      (('IC', '5', 'Aufzug-Nord'), 1),
+      (('IC', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IC', '4', 'Aufzug Süd'): {
+  ('IC', '4', 'Aufzug-Süd'): {
     'Coordinates': [384, 378],
     'Connections': [
-      (('IC', '1', 'Aufzug Süd'), 1),
-      (('IC', '2', 'Aufzug Süd'), 1),
-      (('IC', '3', 'Aufzug Süd'), 1),
+      (('IC', '1', 'Aufzug-Süd'), 1),
+      (('IC', '2', 'Aufzug-Süd'), 1),
+      (('IC', '3', 'Aufzug-Süd'), 1),
       (('IC', '4', 'EN_0'), 45),
-      (('IC', '5', 'Aufzug Süd'), 1),
-      (('IC', '6', 'Aufzug Süd'), 1),
+      (('IC', '5', 'Aufzug-Süd'), 1),
+      (('IC', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IC', '4', 'EN_0'): {
@@ -58196,8 +58196,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IC', '4', '103'), 67),
       (('IC', '4', '141'), 69),
-      (('IC', '4', 'Aufzug Süd'), 45),
-      (('IC', '4', 'Treppe Süd'), 56),
+      (('IC', '4', 'Aufzug-Süd'), 45),
+      (('IC', '4', 'Treppe-Süd'), 56),
     ],
   },
   ('IC', '4', 'EN_1'): {
@@ -58205,8 +58205,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IC', '4', '171'), 66),
       (('IC', '4', '73'), 73),
-      (('IC', '4', 'Aufzug Nord'), 43),
-      (('IC', '4', 'Treppe Nord'), 38),
+      (('IC', '4', 'Aufzug-Nord'), 43),
+      (('IC', '4', 'Treppe-Nord'), 38),
     ],
   },
   ('IC', '4', 'EN_3'): {
@@ -58230,25 +58230,25 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '4', '133'), 21),
     ],
   },
-  ('IC', '4', 'Treppe Nord'): {
+  ('IC', '4', 'Treppe-Nord'): {
     'Coordinates': [876, 868],
     'Connections': [
-      (('IC', '1', 'Treppe Nord'), 2),
-      (('IC', '2', 'Treppe Nord'), 2),
-      (('IC', '3', 'Treppe Nord'), 2),
+      (('IC', '1', 'Treppe-Nord'), 2),
+      (('IC', '2', 'Treppe-Nord'), 2),
+      (('IC', '3', 'Treppe-Nord'), 2),
       (('IC', '4', 'EN_1'), 38),
-      (('IC', '5', 'Treppe Nord'), 2),
-      (('IC', '6', 'Treppe Nord'), 2),
+      (('IC', '5', 'Treppe-Nord'), 2),
+      (('IC', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('IC', '4', 'Treppe Süd'): {
+  ('IC', '4', 'Treppe-Süd'): {
     'Coordinates': [318, 302],
     'Connections': [
-      (('IC', '1', 'Treppe Süd'), 2),
-      (('IC', '3', 'Treppe Süd'), 2),
+      (('IC', '1', 'Treppe-Süd'), 2),
+      (('IC', '3', 'Treppe-Süd'), 2),
       (('IC', '4', 'EN_0'), 56),
-      (('IC', '5', 'Treppe Süd'), 2),
-      (('IC', '6', 'Treppe Süd'), 2),
+      (('IC', '5', 'Treppe-Süd'), 2),
+      (('IC', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('IC', '5', '101'): {
@@ -58843,26 +58843,26 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '5', '97'), 29),
     ],
   },
-  ('IC', '5', 'Aufzug Nord'): {
+  ('IC', '5', 'Aufzug-Nord'): {
     'Coordinates': [815, 814],
     'Connections': [
-      (('IC', '1', 'Aufzug Nord'), 1),
-      (('IC', '2', 'Aufzug Nord'), 1),
-      (('IC', '3', 'Aufzug Nord'), 1),
-      (('IC', '4', 'Aufzug Nord'), 1),
+      (('IC', '1', 'Aufzug-Nord'), 1),
+      (('IC', '2', 'Aufzug-Nord'), 1),
+      (('IC', '3', 'Aufzug-Nord'), 1),
+      (('IC', '4', 'Aufzug-Nord'), 1),
       (('IC', '5', 'Treppe-4'), 51),
-      (('IC', '6', 'Aufzug Nord'), 1),
+      (('IC', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('IC', '5', 'Aufzug Süd'): {
+  ('IC', '5', 'Aufzug-Süd'): {
     'Coordinates': [389, 368],
     'Connections': [
-      (('IC', '1', 'Aufzug Süd'), 1),
-      (('IC', '2', 'Aufzug Süd'), 1),
-      (('IC', '3', 'Aufzug Süd'), 1),
-      (('IC', '4', 'Aufzug Süd'), 1),
+      (('IC', '1', 'Aufzug-Süd'), 1),
+      (('IC', '2', 'Aufzug-Süd'), 1),
+      (('IC', '3', 'Aufzug-Süd'), 1),
+      (('IC', '4', 'Aufzug-Süd'), 1),
       (('IC', '5', 'EN_6'), 33),
-      (('IC', '6', 'Aufzug Süd'), 1),
+      (('IC', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('IC', '5', 'EN_0'): {
@@ -58913,29 +58913,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IC', '5', '103'), 75),
       (('IC', '5', '141'), 54),
-      (('IC', '5', 'Aufzug Süd'), 33),
-      (('IC', '5', 'Treppe Süd'), 64),
-    ],
-  },
-  ('IC', '5', 'Treppe Nord'): {
-    'Coordinates': [890, 872],
-    'Connections': [
-      (('IC', '1', 'Treppe Nord'), 2),
-      (('IC', '2', 'Treppe Nord'), 2),
-      (('IC', '3', 'Treppe Nord'), 2),
-      (('IC', '4', 'Treppe Nord'), 2),
-      (('IC', '5', 'Treppe-4'), 44),
-      (('IC', '6', 'Treppe Nord'), 2),
-    ],
-  },
-  ('IC', '5', 'Treppe Süd'): {
-    'Coordinates': [315, 306],
-    'Connections': [
-      (('IC', '1', 'Treppe Süd'), 2),
-      (('IC', '3', 'Treppe Süd'), 2),
-      (('IC', '4', 'Treppe Süd'), 2),
-      (('IC', '5', 'EN_6'), 64),
-      (('IC', '6', 'Treppe Süd'), 2),
+      (('IC', '5', 'Aufzug-Süd'), 33),
+      (('IC', '5', 'Treppe-Süd'), 64),
     ],
   },
   ('IC', '5', 'Treppe-4'): {
@@ -58943,8 +58922,29 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IC', '5', '171'), 66),
       (('IC', '5', '73'), 74),
-      (('IC', '5', 'Aufzug Nord'), 51),
-      (('IC', '5', 'Treppe Nord'), 44),
+      (('IC', '5', 'Aufzug-Nord'), 51),
+      (('IC', '5', 'Treppe-Nord'), 44),
+    ],
+  },
+  ('IC', '5', 'Treppe-Nord'): {
+    'Coordinates': [890, 872],
+    'Connections': [
+      (('IC', '1', 'Treppe-Nord'), 2),
+      (('IC', '2', 'Treppe-Nord'), 2),
+      (('IC', '3', 'Treppe-Nord'), 2),
+      (('IC', '4', 'Treppe-Nord'), 2),
+      (('IC', '5', 'Treppe-4'), 44),
+      (('IC', '6', 'Treppe-Nord'), 2),
+    ],
+  },
+  ('IC', '5', 'Treppe-Süd'): {
+    'Coordinates': [315, 306],
+    'Connections': [
+      (('IC', '1', 'Treppe-Süd'), 2),
+      (('IC', '3', 'Treppe-Süd'), 2),
+      (('IC', '4', 'Treppe-Süd'), 2),
+      (('IC', '5', 'EN_6'), 64),
+      (('IC', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('IC', '6', '101'): {
@@ -59526,25 +59526,25 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('IC', '6', '97'), 54),
     ],
   },
-  ('IC', '6', 'Aufzug Nord'): {
+  ('IC', '6', 'Aufzug-Nord'): {
     'Coordinates': [818, 805],
     'Connections': [
-      (('IC', '1', 'Aufzug Nord'), 1),
-      (('IC', '2', 'Aufzug Nord'), 1),
-      (('IC', '3', 'Aufzug Nord'), 1),
-      (('IC', '4', 'Aufzug Nord'), 1),
-      (('IC', '5', 'Aufzug Nord'), 1),
+      (('IC', '1', 'Aufzug-Nord'), 1),
+      (('IC', '2', 'Aufzug-Nord'), 1),
+      (('IC', '3', 'Aufzug-Nord'), 1),
+      (('IC', '4', 'Aufzug-Nord'), 1),
+      (('IC', '5', 'Aufzug-Nord'), 1),
       (('IC', '6', 'EN_2'), 48),
     ],
   },
-  ('IC', '6', 'Aufzug Süd'): {
+  ('IC', '6', 'Aufzug-Süd'): {
     'Coordinates': [391, 369],
     'Connections': [
-      (('IC', '1', 'Aufzug Süd'), 1),
-      (('IC', '2', 'Aufzug Süd'), 1),
-      (('IC', '3', 'Aufzug Süd'), 1),
-      (('IC', '4', 'Aufzug Süd'), 1),
-      (('IC', '5', 'Aufzug Süd'), 1),
+      (('IC', '1', 'Aufzug-Süd'), 1),
+      (('IC', '2', 'Aufzug-Süd'), 1),
+      (('IC', '3', 'Aufzug-Süd'), 1),
+      (('IC', '4', 'Aufzug-Süd'), 1),
+      (('IC', '5', 'Aufzug-Süd'), 1),
       (('IC', '6', 'EN_5'), 37),
     ],
   },
@@ -59566,8 +59566,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IC', '6', '171'), 64),
       (('IC', '6', '73'), 73),
-      (('IC', '6', 'Aufzug Nord'), 48),
-      (('IC', '6', 'Treppe Nord'), 48),
+      (('IC', '6', 'Aufzug-Nord'), 48),
+      (('IC', '6', 'Treppe-Nord'), 48),
     ],
   },
   ('IC', '6', 'EN_5'): {
@@ -59575,28 +59575,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('IC', '6', '103'), 76),
       (('IC', '6', '141'), 56),
-      (('IC', '6', 'Aufzug Süd'), 37),
-      (('IC', '6', 'Treppe Süd'), 57),
+      (('IC', '6', 'Aufzug-Süd'), 37),
+      (('IC', '6', 'Treppe-Süd'), 57),
     ],
   },
-  ('IC', '6', 'Treppe Nord'): {
+  ('IC', '6', 'Treppe-Nord'): {
     'Coordinates': [890, 868],
     'Connections': [
-      (('IC', '1', 'Treppe Nord'), 2),
-      (('IC', '2', 'Treppe Nord'), 2),
-      (('IC', '3', 'Treppe Nord'), 2),
-      (('IC', '4', 'Treppe Nord'), 2),
-      (('IC', '5', 'Treppe Nord'), 2),
+      (('IC', '1', 'Treppe-Nord'), 2),
+      (('IC', '2', 'Treppe-Nord'), 2),
+      (('IC', '3', 'Treppe-Nord'), 2),
+      (('IC', '4', 'Treppe-Nord'), 2),
+      (('IC', '5', 'Treppe-Nord'), 2),
       (('IC', '6', 'EN_2'), 48),
     ],
   },
-  ('IC', '6', 'Treppe Süd'): {
+  ('IC', '6', 'Treppe-Süd'): {
     'Coordinates': [322, 306],
     'Connections': [
-      (('IC', '1', 'Treppe Süd'), 2),
-      (('IC', '3', 'Treppe Süd'), 2),
-      (('IC', '4', 'Treppe Süd'), 2),
-      (('IC', '5', 'Treppe Süd'), 2),
+      (('IC', '1', 'Treppe-Süd'), 2),
+      (('IC', '3', 'Treppe-Süd'), 2),
+      (('IC', '4', 'Treppe-Süd'), 2),
+      (('IC', '5', 'Treppe-Süd'), 2),
       (('IC', '6', 'EN_5'), 57),
     ],
   },
@@ -60183,7 +60183,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ID', '03', 'EN_8'), 32),
     ],
   },
-  ('ID', '03', 'Durchgang Richtung IC'): {
+  ('ID', '03', 'Durchgang-Richtung-IC'): {
     'Coordinates': [556, 102],
     'Connections': [
       (('ID', '03', 'EN_8'), 49),
@@ -60364,7 +60364,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ID', '03', 'EN_12'), 84),
       (('ID', '03', 'EN_7'), 22),
-      (('ID', '03', 'Treppe Süd'), 57),
+      (('ID', '03', 'Treppe-Süd'), 57),
     ],
   },
   ('ID', '03', 'EN_7'): {
@@ -60379,7 +60379,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [517, 132],
     'Connections': [
       (('ID', '03', '653'), 32),
-      (('ID', '03', 'Durchgang Richtung IC'), 49),
+      (('ID', '03', 'Durchgang-Richtung-IC'), 49),
       (('ID', '03', 'EN_19'), 69),
     ],
   },
@@ -60397,11 +60397,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ID', '03', 'EN_18'), 48),
     ],
   },
-  ('ID', '03', 'Treppe Süd'): {
+  ('ID', '03', 'Treppe-Süd'): {
     'Coordinates': [296, 255],
     'Connections': [
       (('ID', '03', 'EN_6'), 57),
-      (('ID', '04', 'Treppe Süd'), 2),
+      (('ID', '04', 'Treppe-Süd'), 2),
     ],
   },
   ('ID', '04', '103'): {
@@ -60846,10 +60846,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ID', '04', '521'), 19),
     ],
   },
-  ('ID', '04', 'Durchgang Richtung IC'): {
+  ('ID', '04', 'Durchgang-Richtung-IC'): {
     'Coordinates': [537, 100],
     'Connections': [
-      (('IC', '04', 'Durchgang Richtung ID'), 1),
+      (('IC', '04', 'Durchgang-Richtung-ID'), 1),
       (('ID', '04', 'EN_11'), 93),
     ],
   },
@@ -60859,7 +60859,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ID', '04', '103'), 66),
       (('ID', '04', '131'), 179),
       (('ID', '04', '523a'), 36),
-      (('ID', '04', 'Eingang Nord'), 61),
+      (('ID', '04', 'Eingang-Nord'), 61),
     ],
   },
   ('ID', '04', 'EN_1'): {
@@ -60881,9 +60881,9 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ID', '04', 'EN_11'): {
     'Coordinates': [474, 168],
     'Connections': [
-      (('ID', '04', 'Durchgang Richtung IC'), 93),
+      (('ID', '04', 'Durchgang-Richtung-IC'), 93),
       (('ID', '04', 'EN_13'), 86),
-      (('ID', '04', 'Eingang IC'), 93),
+      (('ID', '04', 'Eingang-IC'), 93),
     ],
   },
   ('ID', '04', 'EN_12'): {
@@ -60955,29 +60955,29 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ID', '04', 'EN_10'), 41),
       (('ID', '04', 'EN_5'), 86),
-      (('ID', '04', 'Eingang Süd'), 58),
-      (('ID', '04', 'Treppe Süd'), 48),
+      (('ID', '04', 'Eingang-Süd'), 58),
+      (('ID', '04', 'Treppe-Süd'), 48),
     ],
   },
-  ('ID', '04', 'Eingang IC'): {
+  ('ID', '04', 'Eingang-IC'): {
     'Coordinates': [537, 100],
     'Connections': [
       (('ID', '04', 'EN_11'), 93),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ID', '04', 'Eingang Nord'): {
+  ('ID', '04', 'Eingang-Nord'): {
     'Coordinates': [728, 635],
     'Connections': [
       (('ID', '04', 'EN_0'), 61),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ID', '04', 'Eingang Süd'): {
+  ('ID', '04', 'Eingang-Süd'): {
     'Coordinates': [298, 208],
     'Connections': [
       (('ID', '04', 'EN_9'), 58),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
   ('ID', '04', 'HID'): {
@@ -60992,10 +60992,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ID', '04', '145'), 47),
     ],
   },
-  ('ID', '04', 'Treppe Süd'): {
+  ('ID', '04', 'Treppe-Süd'): {
     'Coordinates': [290, 235],
     'Connections': [
-      (('ID', '03', 'Treppe Süd'), 2),
+      (('ID', '03', 'Treppe-Süd'), 2),
       (('ID', '04', 'EN_9'), 48),
     ],
   },
@@ -61009,7 +61009,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [272, 396],
     'Connections': [
       (('MA', '02', '20a'), 33),
-      (('MA', '02', 'Treppe Süd'), 24),
+      (('MA', '02', 'Treppe-Süd'), 24),
     ],
   },
   ('MA', '02', '20'): {
@@ -61064,7 +61064,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '02', '7'), 37),
       (('MA', '02', 'EN_1'), 124),
-      (('MA', '02', 'Treppe Süd'), 51),
+      (('MA', '02', 'Treppe-Süd'), 51),
     ],
   },
   ('MA', '02', 'EN_1'): {
@@ -61075,15 +61075,15 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '02', 'EN_0'), 124),
     ],
   },
-  ('MA', '02', 'Treppe Süd'): {
+  ('MA', '02', 'Treppe-Süd'): {
     'Coordinates': [285, 416],
     'Connections': [
       (('MA', '02', '2'), 24),
       (('MA', '02', 'EN_0'), 51),
-      (('MA', '2', 'Treppe Süd'), 2),
-      (('MA', '4', 'Treppe Süd'), 2),
-      (('MA', '5', 'Treppe Süd'), 2),
-      (('MA', '6', 'Treppe Süd'), 2),
+      (('MA', '2', 'Treppe-Süd'), 2),
+      (('MA', '4', 'Treppe-Süd'), 2),
+      (('MA', '5', 'Treppe-Süd'), 2),
+      (('MA', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('MA', '2', '122'): {
@@ -61204,7 +61204,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '2', '78'), 23),
     ],
   },
-  ('MA', '2', '15 9'): {
+  ('MA', '2', '15-9'): {
     'Coordinates': [1005, 1117],
     'Connections': [
       (('MA', '2', '157'), 44),
@@ -61217,8 +61217,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '2', '155'), 114),
       (('MA', '2', '177'), 52),
-      (('MA', '2', 'Aufzug Nord'), 49),
-      (('MA', '2', 'Treppe Nord'), 34),
+      (('MA', '2', 'Aufzug-Nord'), 49),
+      (('MA', '2', 'Treppe-Nord'), 34),
     ],
   },
   ('MA', '2', '155'): {
@@ -61240,7 +61240,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('MA', '2', '157'): {
     'Coordinates': [966, 1096],
     'Connections': [
-      (('MA', '2', '15 9'), 44),
+      (('MA', '2', '15-9'), 44),
       (('MA', '2', '156'), 48),
       (('MA', '2', '166'), 18),
     ],
@@ -61248,13 +61248,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('MA', '2', '159a'): {
     'Coordinates': [1043, 1162],
     'Connections': [
-      (('MA', '2', '15 9'), 59),
+      (('MA', '2', '15-9'), 59),
     ],
   },
   ('MA', '2', '163'): {
     'Coordinates': [1015, 1102],
     'Connections': [
-      (('MA', '2', '15 9'), 18),
+      (('MA', '2', '15-9'), 18),
       (('MA', '2', '63'), 67),
     ],
   },
@@ -61574,25 +61574,25 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '2', 'EN_3'), 68),
     ],
   },
-  ('MA', '2', 'Aufzug Nord'): {
+  ('MA', '2', 'Aufzug-Nord'): {
     'Coordinates': [869, 904],
     'Connections': [
       (('MA', '2', '150'), 49),
       (('MA', '2', 'EN_4'), 52),
-      (('MA', '2', 'Treppe Nord'), 83),
-      (('MA', '4', 'Aufzug Nord'), 1),
-      (('MA', '5', 'Aufzug Nord'), 1),
-      (('MA', '6', 'Aufzug Nord'), 1),
+      (('MA', '2', 'Treppe-Nord'), 83),
+      (('MA', '4', 'Aufzug-Nord'), 1),
+      (('MA', '5', 'Aufzug-Nord'), 1),
+      (('MA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('MA', '2', 'Aufzug Süd'): {
+  ('MA', '2', 'Aufzug-Süd'): {
     'Coordinates': [360, 379],
     'Connections': [
       (('MA', '2', 'EN_3'), 63),
       (('MA', '2', 'EN_9'), 61),
-      (('MA', '4', 'Aufzug Süd'), 1),
-      (('MA', '5', 'Aufzug Süd'), 1),
-      (('MA', '6', 'Aufzug Süd'), 1),
+      (('MA', '4', 'Aufzug-Süd'), 1),
+      (('MA', '5', 'Aufzug-Süd'), 1),
+      (('MA', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('MA', '2', 'EN_0'): {
@@ -61621,7 +61621,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [408, 338],
     'Connections': [
       (('MA', '2', '99'), 68),
-      (('MA', '2', 'Aufzug Süd'), 63),
+      (('MA', '2', 'Aufzug-Süd'), 63),
       (('MA', '2', 'EN_2'), 50),
     ],
   },
@@ -61629,7 +61629,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [906, 868],
     'Connections': [
       (('MA', '2', '51'), 43),
-      (('MA', '2', 'Aufzug Nord'), 52),
+      (('MA', '2', 'Aufzug-Nord'), 52),
     ],
   },
   ('MA', '2', 'EN_5'): {
@@ -61661,28 +61661,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '2', '137'), 57),
       (('MA', '2', '199'), 65),
-      (('MA', '2', 'Aufzug Süd'), 61),
-      (('MA', '2', 'Treppe Süd'), 35),
+      (('MA', '2', 'Aufzug-Süd'), 61),
+      (('MA', '2', 'Treppe-Süd'), 35),
     ],
   },
-  ('MA', '2', 'Treppe Nord'): {
+  ('MA', '2', 'Treppe-Nord'): {
     'Coordinates': [809, 961],
     'Connections': [
       (('MA', '2', '150'), 34),
-      (('MA', '2', 'Aufzug Nord'), 83),
-      (('MA', '4', 'Treppe Nord'), 2),
-      (('MA', '5', 'Treppe Nord'), 2),
-      (('MA', '6', 'Treppe Nord'), 2),
+      (('MA', '2', 'Aufzug-Nord'), 83),
+      (('MA', '4', 'Treppe-Nord'), 2),
+      (('MA', '5', 'Treppe-Nord'), 2),
+      (('MA', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('MA', '2', 'Treppe Süd'): {
+  ('MA', '2', 'Treppe-Süd'): {
     'Coordinates': [283, 435],
     'Connections': [
-      (('MA', '02', 'Treppe Süd'), 2),
+      (('MA', '02', 'Treppe-Süd'), 2),
       (('MA', '2', 'EN_9'), 35),
-      (('MA', '4', 'Treppe Süd'), 2),
-      (('MA', '5', 'Treppe Süd'), 2),
-      (('MA', '6', 'Treppe Süd'), 2),
+      (('MA', '4', 'Treppe-Süd'), 2),
+      (('MA', '5', 'Treppe-Süd'), 2),
+      (('MA', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('MA', '4', '122'): {
@@ -62169,24 +62169,24 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '4', '39'), 26),
     ],
   },
-  ('MA', '4', 'Aufzug Nord'): {
+  ('MA', '4', 'Aufzug-Nord'): {
     'Coordinates': [865, 855],
     'Connections': [
-      (('MA', '2', 'Aufzug Nord'), 1),
+      (('MA', '2', 'Aufzug-Nord'), 1),
       (('MA', '4', 'EN_0'), 54),
       (('MA', '4', 'EN_1'), 66),
-      (('MA', '5', 'Aufzug Nord'), 1),
-      (('MA', '6', 'Aufzug Nord'), 1),
+      (('MA', '5', 'Aufzug-Nord'), 1),
+      (('MA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('MA', '4', 'Aufzug Süd'): {
+  ('MA', '4', 'Aufzug-Süd'): {
     'Coordinates': [354, 335],
     'Connections': [
-      (('MA', '2', 'Aufzug Süd'), 1),
+      (('MA', '2', 'Aufzug-Süd'), 1),
       (('MA', '4', 'EN_2'), 50),
       (('MA', '4', 'EN_4'), 65),
-      (('MA', '5', 'Aufzug Süd'), 1),
-      (('MA', '6', 'Aufzug Süd'), 1),
+      (('MA', '5', 'Aufzug-Süd'), 1),
+      (('MA', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('MA', '4', 'EN_0'): {
@@ -62194,7 +62194,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '4', '51'), 70),
       (('MA', '4', '70'), 95),
-      (('MA', '4', 'Aufzug Nord'), 54),
+      (('MA', '4', 'Aufzug-Nord'), 54),
     ],
   },
   ('MA', '4', 'EN_1'): {
@@ -62202,8 +62202,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '4', '151'), 76),
       (('MA', '4', '170'), 94),
-      (('MA', '4', 'Aufzug Nord'), 66),
-      (('MA', '4', 'Treppe Nord'), 32),
+      (('MA', '4', 'Aufzug-Nord'), 66),
+      (('MA', '4', 'Treppe-Nord'), 32),
     ],
   },
   ('MA', '4', 'EN_2'): {
@@ -62211,15 +62211,15 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '4', '136'), 98),
       (('MA', '4', '199'), 59),
-      (('MA', '4', 'Aufzug Süd'), 50),
-      (('MA', '4', 'Treppe Süd'), 37),
+      (('MA', '4', 'Aufzug-Süd'), 50),
+      (('MA', '4', 'Treppe-Süd'), 37),
     ],
   },
   ('MA', '4', 'EN_4'): {
     'Coordinates': [403, 293],
     'Connections': [
       (('MA', '4', '39'), 86),
-      (('MA', '4', 'Aufzug Süd'), 65),
+      (('MA', '4', 'Aufzug-Süd'), 65),
       (('MA', '4', 'EN_5'), 121),
     ],
   },
@@ -62261,23 +62261,23 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '4', '47b'), 73),
     ],
   },
-  ('MA', '4', 'Treppe Nord'): {
+  ('MA', '4', 'Treppe-Nord'): {
     'Coordinates': [802, 929],
     'Connections': [
-      (('MA', '2', 'Treppe Nord'), 2),
+      (('MA', '2', 'Treppe-Nord'), 2),
       (('MA', '4', 'EN_1'), 32),
-      (('MA', '5', 'Treppe Nord'), 2),
-      (('MA', '6', 'Treppe Nord'), 2),
+      (('MA', '5', 'Treppe-Nord'), 2),
+      (('MA', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('MA', '4', 'Treppe Süd'): {
+  ('MA', '4', 'Treppe-Süd'): {
     'Coordinates': [289, 393],
     'Connections': [
-      (('MA', '02', 'Treppe Süd'), 2),
-      (('MA', '2', 'Treppe Süd'), 2),
+      (('MA', '02', 'Treppe-Süd'), 2),
+      (('MA', '2', 'Treppe-Süd'), 2),
       (('MA', '4', 'EN_2'), 37),
-      (('MA', '5', 'Treppe Süd'), 2),
-      (('MA', '6', 'Treppe Süd'), 2),
+      (('MA', '5', 'Treppe-Süd'), 2),
+      (('MA', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('MA', '5', '120'): {
@@ -62457,8 +62457,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '5', '150'), 90),
       (('MA', '5', '155a'), 72),
       (('MA', '5', '172'), 46),
-      (('MA', '5', 'Aufzug Nord'), 62),
-      (('MA', '5', 'Treppe Nord'), 30),
+      (('MA', '5', 'Aufzug-Nord'), 62),
+      (('MA', '5', 'Treppe-Nord'), 30),
     ],
   },
   ('MA', '5', '155'): {
@@ -62787,7 +62787,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [905, 846],
     'Connections': [
       (('MA', '5', '50'), 76),
-      (('MA', '5', 'Aufzug Nord'), 61),
+      (('MA', '5', 'Aufzug-Nord'), 61),
       (('MA', '5', 'EN_7'), 47),
     ],
   },
@@ -62906,24 +62906,24 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '5', '40'), 32),
     ],
   },
-  ('MA', '5', 'Aufzug Nord'): {
+  ('MA', '5', 'Aufzug-Nord'): {
     'Coordinates': [867, 894],
     'Connections': [
-      (('MA', '2', 'Aufzug Nord'), 1),
-      (('MA', '4', 'Aufzug Nord'), 1),
+      (('MA', '2', 'Aufzug-Nord'), 1),
+      (('MA', '4', 'Aufzug-Nord'), 1),
       (('MA', '5', '152'), 62),
       (('MA', '5', '52'), 61),
-      (('MA', '6', 'Aufzug Nord'), 1),
+      (('MA', '6', 'Aufzug-Nord'), 1),
     ],
   },
-  ('MA', '5', 'Aufzug Süd'): {
+  ('MA', '5', 'Aufzug-Süd'): {
     'Coordinates': [357, 379],
     'Connections': [
-      (('MA', '2', 'Aufzug Süd'), 1),
-      (('MA', '4', 'Aufzug Süd'), 1),
+      (('MA', '2', 'Aufzug-Süd'), 1),
+      (('MA', '4', 'Aufzug-Süd'), 1),
       (('MA', '5', 'EN_1'), 50),
       (('MA', '5', 'EN_3'), 75),
-      (('MA', '6', 'Aufzug Süd'), 1),
+      (('MA', '6', 'Aufzug-Süd'), 1),
     ],
   },
   ('MA', '5', 'EN_0'): {
@@ -62939,8 +62939,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '5', '120'), 62),
       (('MA', '5', '139'), 64),
-      (('MA', '5', 'Aufzug Süd'), 50),
-      (('MA', '5', 'Treppe Süd'), 37),
+      (('MA', '5', 'Aufzug-Süd'), 50),
+      (('MA', '5', 'Treppe-Süd'), 37),
     ],
   },
   ('MA', '5', 'EN_2'): {
@@ -62956,7 +62956,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '5', '29'), 63),
       (('MA', '5', '39'), 70),
-      (('MA', '5', 'Aufzug Süd'), 75),
+      (('MA', '5', 'Aufzug-Süd'), 75),
     ],
   },
   ('MA', '5', 'EN_5'): {
@@ -62995,23 +62995,23 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '5', '72'), 52),
     ],
   },
-  ('MA', '5', 'Treppe Nord'): {
+  ('MA', '5', 'Treppe-Nord'): {
     'Coordinates': [811, 964],
     'Connections': [
-      (('MA', '2', 'Treppe Nord'), 2),
-      (('MA', '4', 'Treppe Nord'), 2),
+      (('MA', '2', 'Treppe-Nord'), 2),
+      (('MA', '4', 'Treppe-Nord'), 2),
       (('MA', '5', '152'), 30),
-      (('MA', '6', 'Treppe Nord'), 2),
+      (('MA', '6', 'Treppe-Nord'), 2),
     ],
   },
-  ('MA', '5', 'Treppe Süd'): {
+  ('MA', '5', 'Treppe-Süd'): {
     'Coordinates': [289, 433],
     'Connections': [
-      (('MA', '02', 'Treppe Süd'), 2),
-      (('MA', '2', 'Treppe Süd'), 2),
-      (('MA', '4', 'Treppe Süd'), 2),
+      (('MA', '02', 'Treppe-Süd'), 2),
+      (('MA', '2', 'Treppe-Süd'), 2),
+      (('MA', '4', 'Treppe-Süd'), 2),
       (('MA', '5', 'EN_1'), 37),
-      (('MA', '6', 'Treppe Süd'), 2),
+      (('MA', '6', 'Treppe-Süd'), 2),
     ],
   },
   ('MA', '6', '120'): {
@@ -63662,22 +63662,22 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '6', 'EN_5'), 60),
     ],
   },
-  ('MA', '6', 'Aufzug Nord'): {
+  ('MA', '6', 'Aufzug-Nord'): {
     'Coordinates': [908, 912],
     'Connections': [
-      (('MA', '2', 'Aufzug Nord'), 1),
-      (('MA', '4', 'Aufzug Nord'), 1),
-      (('MA', '5', 'Aufzug Nord'), 1),
+      (('MA', '2', 'Aufzug-Nord'), 1),
+      (('MA', '4', 'Aufzug-Nord'), 1),
+      (('MA', '5', 'Aufzug-Nord'), 1),
       (('MA', '6', 'EN_3'), 52),
       (('MA', '6', 'EN_7'), 54),
     ],
   },
-  ('MA', '6', 'Aufzug Süd'): {
+  ('MA', '6', 'Aufzug-Süd'): {
     'Coordinates': [346, 354],
     'Connections': [
-      (('MA', '2', 'Aufzug Süd'), 1),
-      (('MA', '4', 'Aufzug Süd'), 1),
-      (('MA', '5', 'Aufzug Süd'), 1),
+      (('MA', '2', 'Aufzug-Süd'), 1),
+      (('MA', '4', 'Aufzug-Süd'), 1),
+      (('MA', '5', 'Aufzug-Süd'), 1),
       (('MA', '6', 'EN_10'), 58),
       (('MA', '6', 'EN_5'), 65),
     ],
@@ -63702,8 +63702,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '6', '136'), 68),
       (('MA', '6', '199'), 61),
-      (('MA', '6', 'Aufzug Süd'), 58),
-      (('MA', '6', 'Treppe Süd'), 36),
+      (('MA', '6', 'Aufzug-Süd'), 58),
+      (('MA', '6', 'Treppe-Süd'), 36),
     ],
   },
   ('MA', '6', 'EN_2'): {
@@ -63719,8 +63719,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '6', '152'), 44),
       (('MA', '6', '171'), 56),
-      (('MA', '6', 'Aufzug Nord'), 52),
-      (('MA', '6', 'Treppe Nord'), 37),
+      (('MA', '6', 'Aufzug-Nord'), 52),
+      (('MA', '6', 'Treppe-Nord'), 37),
     ],
   },
   ('MA', '6', 'EN_4'): {
@@ -63736,7 +63736,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '6', '20'), 73),
       (('MA', '6', '99'), 60),
-      (('MA', '6', 'Aufzug Süd'), 65),
+      (('MA', '6', 'Aufzug-Süd'), 65),
     ],
   },
   ('MA', '6', 'EN_7'): {
@@ -63744,7 +63744,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('MA', '6', '52'), 36),
       (('MA', '6', '70'), 62),
-      (('MA', '6', 'Aufzug Nord'), 54),
+      (('MA', '6', 'Aufzug-Nord'), 54),
     ],
   },
   ('MA', '6', 'EN_8'): {
@@ -63763,22 +63763,22 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('MA', '6', '95'), 31),
     ],
   },
-  ('MA', '6', 'Treppe Nord'): {
+  ('MA', '6', 'Treppe-Nord'): {
     'Coordinates': [843, 972],
     'Connections': [
-      (('MA', '2', 'Treppe Nord'), 2),
-      (('MA', '4', 'Treppe Nord'), 2),
-      (('MA', '5', 'Treppe Nord'), 2),
+      (('MA', '2', 'Treppe-Nord'), 2),
+      (('MA', '4', 'Treppe-Nord'), 2),
+      (('MA', '5', 'Treppe-Nord'), 2),
       (('MA', '6', 'EN_3'), 37),
     ],
   },
-  ('MA', '6', 'Treppe Süd'): {
+  ('MA', '6', 'Treppe-Süd'): {
     'Coordinates': [276, 417],
     'Connections': [
-      (('MA', '02', 'Treppe Süd'), 2),
-      (('MA', '2', 'Treppe Süd'), 2),
-      (('MA', '4', 'Treppe Süd'), 2),
-      (('MA', '5', 'Treppe Süd'), 2),
+      (('MA', '02', 'Treppe-Süd'), 2),
+      (('MA', '2', 'Treppe-Süd'), 2),
+      (('MA', '4', 'Treppe-Süd'), 2),
+      (('MA', '5', 'Treppe-Süd'), 2),
       (('MA', '6', 'EN_10'), 36),
     ],
   },
@@ -63865,7 +63865,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [413, 505],
     'Connections': [
       (('NB', '03', 'EN_323'), 56),
-      (('NB', '03', 'Eingang Nord West'), 92),
+      (('NB', '03', 'Eingang-Nord-West'), 92),
     ],
   },
   ('NB', '03', '57a'): {
@@ -63985,29 +63985,29 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '03', '35'), 52),
     ],
   },
-  ('NB', '03', 'Aufzug Nord'): {
+  ('NB', '03', 'Aufzug-Nord'): {
     'Coordinates': [487, 491],
     'Connections': [
       (('NB', '03', 'EN_323'), 36),
-      (('NB', '2', 'Aufzug Nord'), 1),
-      (('NB', '3', 'Aufzug Nord'), 1),
-      (('NB', '4', 'Aufzug Nord'), 1),
-      (('NB', '5', 'Aufzug Nord'), 1),
-      (('NB', '6', 'Aufzug Nord'), 1),
-      (('NB', '7', 'Aufzug Nord'), 1),
+      (('NB', '2', 'Aufzug-Nord'), 1),
+      (('NB', '3', 'Aufzug-Nord'), 1),
+      (('NB', '4', 'Aufzug-Nord'), 1),
+      (('NB', '5', 'Aufzug-Nord'), 1),
+      (('NB', '6', 'Aufzug-Nord'), 1),
+      (('NB', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NB', '03', 'Aufzug Süd'): {
+  ('NB', '03', 'Aufzug-Süd'): {
     'Coordinates': [780, 785],
     'Connections': [
       (('NB', '03', 'EN_4'), 50),
-      (('NB', '1', 'Aufzug Süd'), 1),
-      (('NB', '2', 'Aufzug Süd'), 1),
-      (('NB', '3', 'Aufzug Süd'), 1),
-      (('NB', '4', 'Aufzug Süd'), 1),
-      (('NB', '5', 'Aufzug Süd'), 1),
-      (('NB', '6', 'Aufzug Süd'), 1),
-      (('NB', '7', 'Aufzug Süd'), 1),
+      (('NB', '1', 'Aufzug-Süd'), 1),
+      (('NB', '2', 'Aufzug-Süd'), 1),
+      (('NB', '3', 'Aufzug-Süd'), 1),
+      (('NB', '4', 'Aufzug-Süd'), 1),
+      (('NB', '5', 'Aufzug-Süd'), 1),
+      (('NB', '6', 'Aufzug-Süd'), 1),
+      (('NB', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NB', '03', 'EN_0'): {
@@ -64023,7 +64023,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [268, 367],
     'Connections': [
       (('NB', '03', 'EN_5'), 129),
-      (('NB', '03', 'Eingang Nord West'), 108),
+      (('NB', '03', 'Eingang-Nord-West'), 108),
     ],
   },
   ('NB', '03', 'EN_2'): {
@@ -64046,25 +64046,25 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [457, 471],
     'Connections': [
       (('NB', '03', '37'), 56),
-      (('NB', '03', 'Aufzug Nord'), 36),
+      (('NB', '03', 'Aufzug-Nord'), 36),
       (('NB', '03', 'EN_7'), 54),
-      (('NB', '03', 'Treppe Nord'), 59),
+      (('NB', '03', 'Treppe-Nord'), 59),
     ],
   },
   ('NB', '03', 'EN_4'): {
     'Coordinates': [812, 824],
     'Connections': [
       (('NB', '03', '70'), 53),
-      (('NB', '03', 'Aufzug Süd'), 50),
+      (('NB', '03', 'Aufzug-Süd'), 50),
       (('NB', '03', 'EN_3'), 49),
-      (('NB', '03', 'Treppe Süd'), 30),
+      (('NB', '03', 'Treppe-Süd'), 30),
     ],
   },
   ('NB', '03', 'EN_5'): {
     'Coordinates': [359, 276],
     'Connections': [
       (('NB', '03', 'EN_1'), 129),
-      (('NB', '03', 'Eingang Nord Ost'), 104),
+      (('NB', '03', 'Eingang-Nord-Ost'), 104),
     ],
   },
   ('NB', '03', 'EN_7'): {
@@ -64072,7 +64072,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NB', '03', '110'), 104),
       (('NB', '03', 'EN_323'), 54),
-      (('NB', '03', 'Eingang Nord Ost'), 98),
+      (('NB', '03', 'Eingang-Nord-Ost'), 98),
     ],
   },
   ('NB', '03', 'EN_8'): {
@@ -64083,45 +64083,45 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '03', '75'), 19),
     ],
   },
-  ('NB', '03', 'Eingang Nord Ost'): {
+  ('NB', '03', 'Eingang-Nord-Ost'): {
     'Coordinates': [425, 356],
     'Connections': [
       (('NB', '03', 'EN_5'), 104),
       (('NB', '03', 'EN_7'), 98),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('NB', '03', 'Eingang Nord West'): {
+  ('NB', '03', 'Eingang-Nord-West'): {
     'Coordinates': [349, 439],
     'Connections': [
       (('NB', '03', '37'), 92),
       (('NB', '03', 'EN_1'), 108),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('NB', '03', 'Treppe Nord'): {
+  ('NB', '03', 'Treppe-Nord'): {
     'Coordinates': [419, 426],
     'Connections': [
       (('NB', '03', 'EN_323'), 59),
-      (('NB', '2', 'Treppe Nord'), 2),
-      (('NB', '3', 'Treppe Nord'), 2),
-      (('NB', '4', 'Treppe Nord'), 2),
-      (('NB', '5', 'Treppe Nord'), 2),
-      (('NB', '6', 'Treppe Nord'), 2),
-      (('NB', '7', 'Treppe Nord'), 2),
+      (('NB', '2', 'Treppe-Nord'), 2),
+      (('NB', '3', 'Treppe-Nord'), 2),
+      (('NB', '4', 'Treppe-Nord'), 2),
+      (('NB', '5', 'Treppe-Nord'), 2),
+      (('NB', '6', 'Treppe-Nord'), 2),
+      (('NB', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NB', '03', 'Treppe Süd'): {
+  ('NB', '03', 'Treppe-Süd'): {
     'Coordinates': [834, 845],
     'Connections': [
       (('NB', '03', 'EN_4'), 30),
-      (('NB', '1', 'Treppe Süd'), 2),
-      (('NB', '2', 'Treppe Süd'), 2),
-      (('NB', '3', 'Treppe Süd'), 2),
-      (('NB', '4', 'Treppe Süd'), 2),
-      (('NB', '5', 'Treppe Süd'), 2),
-      (('NB', '6', 'Treppe Süd'), 2),
-      (('NB', '7', 'Treppe Süd'), 2),
+      (('NB', '1', 'Treppe-Süd'), 2),
+      (('NB', '2', 'Treppe-Süd'), 2),
+      (('NB', '3', 'Treppe-Süd'), 2),
+      (('NB', '4', 'Treppe-Süd'), 2),
+      (('NB', '5', 'Treppe-Süd'), 2),
+      (('NB', '6', 'Treppe-Süd'), 2),
+      (('NB', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NB', '04', '123'): {
@@ -64969,7 +64969,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NB', '1', '174'), 68),
       (('NB', '1', '74'), 50),
-      (('NB', '1', 'Treppe Mitte'), 48),
+      (('NB', '1', 'Treppe-Mitte'), 48),
     ],
   },
   ('NB', '1', '91'): {
@@ -64993,17 +64993,17 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '1', '91a'), 28),
     ],
   },
-  ('NB', '1', 'Aufzug Süd'): {
+  ('NB', '1', 'Aufzug-Süd'): {
     'Coordinates': [753, 753],
     'Connections': [
-      (('NB', '03', 'Aufzug Süd'), 1),
+      (('NB', '03', 'Aufzug-Süd'), 1),
       (('NB', '1', 'EN_4'), 37),
-      (('NB', '2', 'Aufzug Süd'), 1),
-      (('NB', '3', 'Aufzug Süd'), 1),
-      (('NB', '4', 'Aufzug Süd'), 1),
-      (('NB', '5', 'Aufzug Süd'), 1),
-      (('NB', '6', 'Aufzug Süd'), 1),
-      (('NB', '7', 'Aufzug Süd'), 1),
+      (('NB', '2', 'Aufzug-Süd'), 1),
+      (('NB', '3', 'Aufzug-Süd'), 1),
+      (('NB', '4', 'Aufzug-Süd'), 1),
+      (('NB', '5', 'Aufzug-Süd'), 1),
+      (('NB', '6', 'Aufzug-Süd'), 1),
+      (('NB', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NB', '1', 'EN_0'): {
@@ -65035,42 +65035,42 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NB', '1', '168'), 53),
       (('NB', '1', 'EN_2'), 64),
-      (('NB1.png', '1', 'Aufzug Nord'), 48),
-      (('NB1.png', '1', 'Treppe Nord'), 44),
+      (('NB1.png', '1', 'Aufzug-Nord'), 48),
+      (('NB1.png', '1', 'Treppe-Nord'), 44),
     ],
   },
   ('NB', '1', 'EN_4'): {
     'Coordinates': [779, 779],
     'Connections': [
-      (('NB', '1', 'Aufzug Süd'), 37),
+      (('NB', '1', 'Aufzug-Süd'), 37),
       (('NB', '1', 'EN_0'), 66),
       (('NB', '1', 'EN_1'), 56),
-      (('NB', '1', 'Treppe Süd'), 50),
+      (('NB', '1', 'Treppe-Süd'), 50),
     ],
   },
-  ('NB', '1', 'Treppe Mitte'): {
+  ('NB', '1', 'Treppe-Mitte'): {
     'Coordinates': [692, 527],
     'Connections': [
       (('NB', '1', '75'), 48),
-      (('NB', '2', 'Treppe Mitte'), 2),
-      (('NB', '3', 'Treppe Mitte'), 2),
-      (('NB', '4', 'Treppe Mitte'), 2),
-      (('NB', '5', 'Treppe Mitte'), 2),
-      (('NB', '6', 'Treppe Mitte'), 2),
-      (('NB', '7', 'Treppe Mitte'), 2),
+      (('NB', '2', 'Treppe-Mitte'), 2),
+      (('NB', '3', 'Treppe-Mitte'), 2),
+      (('NB', '4', 'Treppe-Mitte'), 2),
+      (('NB', '5', 'Treppe-Mitte'), 2),
+      (('NB', '6', 'Treppe-Mitte'), 2),
+      (('NB', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NB', '1', 'Treppe Süd'): {
+  ('NB', '1', 'Treppe-Süd'): {
     'Coordinates': [816, 813],
     'Connections': [
-      (('NB', '03', 'Treppe Süd'), 2),
+      (('NB', '03', 'Treppe-Süd'), 2),
       (('NB', '1', 'EN_4'), 50),
-      (('NB', '2', 'Treppe Süd'), 2),
-      (('NB', '3', 'Treppe Süd'), 2),
-      (('NB', '4', 'Treppe Süd'), 2),
-      (('NB', '5', 'Treppe Süd'), 2),
-      (('NB', '6', 'Treppe Süd'), 2),
-      (('NB', '7', 'Treppe Süd'), 2),
+      (('NB', '2', 'Treppe-Süd'), 2),
+      (('NB', '3', 'Treppe-Süd'), 2),
+      (('NB', '4', 'Treppe-Süd'), 2),
+      (('NB', '5', 'Treppe-Süd'), 2),
+      (('NB', '6', 'Treppe-Süd'), 2),
+      (('NB', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NB', '2', '117'): {
@@ -65508,32 +65508,32 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NB', '2', '174'), 86),
       (('NB', '2', '75'), 109),
-      (('NB', '2', 'Treppe Mitte'), 36),
+      (('NB', '2', 'Treppe-Mitte'), 36),
     ],
   },
-  ('NB', '2', 'Aufzug Nord'): {
+  ('NB', '2', 'Aufzug-Nord'): {
     'Coordinates': [413, 398],
     'Connections': [
-      (('NB', '03', 'Aufzug Nord'), 1),
+      (('NB', '03', 'Aufzug-Nord'), 1),
       (('NB', '2', 'EN_2342'), 50),
-      (('NB', '3', 'Aufzug Nord'), 1),
-      (('NB', '4', 'Aufzug Nord'), 1),
-      (('NB', '5', 'Aufzug Nord'), 1),
-      (('NB', '6', 'Aufzug Nord'), 1),
-      (('NB', '7', 'Aufzug Nord'), 1),
+      (('NB', '3', 'Aufzug-Nord'), 1),
+      (('NB', '4', 'Aufzug-Nord'), 1),
+      (('NB', '5', 'Aufzug-Nord'), 1),
+      (('NB', '6', 'Aufzug-Nord'), 1),
+      (('NB', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NB', '2', 'Aufzug Süd'): {
+  ('NB', '2', 'Aufzug-Süd'): {
     'Coordinates': [802, 814],
     'Connections': [
-      (('NB', '03', 'Aufzug Süd'), 1),
-      (('NB', '1', 'Aufzug Süd'), 1),
+      (('NB', '03', 'Aufzug-Süd'), 1),
+      (('NB', '1', 'Aufzug-Süd'), 1),
       (('NB', '2', 'EN_32'), 65),
-      (('NB', '3', 'Aufzug Süd'), 1),
-      (('NB', '4', 'Aufzug Süd'), 1),
-      (('NB', '5', 'Aufzug Süd'), 1),
-      (('NB', '6', 'Aufzug Süd'), 1),
-      (('NB', '7', 'Aufzug Süd'), 1),
+      (('NB', '3', 'Aufzug-Süd'), 1),
+      (('NB', '4', 'Aufzug-Süd'), 1),
+      (('NB', '5', 'Aufzug-Süd'), 1),
+      (('NB', '6', 'Aufzug-Süd'), 1),
+      (('NB', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NB', '2', 'EN_0'): {
@@ -65563,10 +65563,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NB', '2', 'EN_2342'): {
     'Coordinates': [376, 364],
     'Connections': [
-      (('NB', '2', 'Aufzug Nord'), 50),
+      (('NB', '2', 'Aufzug-Nord'), 50),
       (('NB', '2', 'EN_3'), 53),
       (('NB', '2', 'EN_4'), 48),
-      (('NB', '2', 'Treppe Nord'), 76),
+      (('NB', '2', 'Treppe-Nord'), 76),
     ],
   },
   ('NB', '2', 'EN_3'): {
@@ -65580,10 +65580,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NB', '2', 'EN_32'): {
     'Coordinates': [853, 854],
     'Connections': [
-      (('NB', '2', 'Aufzug Süd'), 65),
+      (('NB', '2', 'Aufzug-Süd'), 65),
       (('NB', '2', 'EN_1'), 52),
       (('NB', '2', 'EN_2'), 58),
-      (('NB', '2', 'Treppe Süd'), 48),
+      (('NB', '2', 'Treppe-Süd'), 48),
     ],
   },
   ('NB', '2', 'EN_4'): {
@@ -65593,41 +65593,41 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '2', 'EN_2342'), 48),
     ],
   },
-  ('NB', '2', 'Treppe Mitte'): {
+  ('NB', '2', 'Treppe-Mitte'): {
     'Coordinates': [682, 538],
     'Connections': [
-      (('NB', '1', 'Treppe Mitte'), 2),
+      (('NB', '1', 'Treppe-Mitte'), 2),
       (('NB', '2', '99'), 36),
-      (('NB', '3', 'Treppe Mitte'), 2),
-      (('NB', '4', 'Treppe Mitte'), 2),
-      (('NB', '5', 'Treppe Mitte'), 2),
-      (('NB', '6', 'Treppe Mitte'), 2),
-      (('NB', '7', 'Treppe Mitte'), 2),
+      (('NB', '3', 'Treppe-Mitte'), 2),
+      (('NB', '4', 'Treppe-Mitte'), 2),
+      (('NB', '5', 'Treppe-Mitte'), 2),
+      (('NB', '6', 'Treppe-Mitte'), 2),
+      (('NB', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NB', '2', 'Treppe Nord'): {
+  ('NB', '2', 'Treppe-Nord'): {
     'Coordinates': [320, 312],
     'Connections': [
-      (('NB', '03', 'Treppe Nord'), 2),
+      (('NB', '03', 'Treppe-Nord'), 2),
       (('NB', '2', 'EN_2342'), 76),
-      (('NB', '3', 'Treppe Nord'), 2),
-      (('NB', '4', 'Treppe Nord'), 2),
-      (('NB', '5', 'Treppe Nord'), 2),
-      (('NB', '6', 'Treppe Nord'), 2),
-      (('NB', '7', 'Treppe Nord'), 2),
+      (('NB', '3', 'Treppe-Nord'), 2),
+      (('NB', '4', 'Treppe-Nord'), 2),
+      (('NB', '5', 'Treppe-Nord'), 2),
+      (('NB', '6', 'Treppe-Nord'), 2),
+      (('NB', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NB', '2', 'Treppe Süd'): {
+  ('NB', '2', 'Treppe-Süd'): {
     'Coordinates': [886, 889],
     'Connections': [
-      (('NB', '03', 'Treppe Süd'), 2),
-      (('NB', '1', 'Treppe Süd'), 2),
+      (('NB', '03', 'Treppe-Süd'), 2),
+      (('NB', '1', 'Treppe-Süd'), 2),
       (('NB', '2', 'EN_32'), 48),
-      (('NB', '3', 'Treppe Süd'), 2),
-      (('NB', '4', 'Treppe Süd'), 2),
-      (('NB', '5', 'Treppe Süd'), 2),
-      (('NB', '6', 'Treppe Süd'), 2),
-      (('NB', '7', 'Treppe Süd'), 2),
+      (('NB', '3', 'Treppe-Süd'), 2),
+      (('NB', '4', 'Treppe-Süd'), 2),
+      (('NB', '5', 'Treppe-Süd'), 2),
+      (('NB', '6', 'Treppe-Süd'), 2),
+      (('NB', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NB', '3', '117'): {
@@ -66043,29 +66043,29 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '3', 'EN_324'), 37),
     ],
   },
-  ('NB', '3', 'Aufzug Nord'): {
+  ('NB', '3', 'Aufzug-Nord'): {
     'Coordinates': [386, 392],
     'Connections': [
-      (('NB', '03', 'Aufzug Nord'), 1),
-      (('NB', '2', 'Aufzug Nord'), 1),
+      (('NB', '03', 'Aufzug-Nord'), 1),
+      (('NB', '2', 'Aufzug-Nord'), 1),
       (('NB', '3', 'EN_3245'), 42),
-      (('NB', '4', 'Aufzug Nord'), 1),
-      (('NB', '5', 'Aufzug Nord'), 1),
-      (('NB', '6', 'Aufzug Nord'), 1),
-      (('NB', '7', 'Aufzug Nord'), 1),
+      (('NB', '4', 'Aufzug-Nord'), 1),
+      (('NB', '5', 'Aufzug-Nord'), 1),
+      (('NB', '6', 'Aufzug-Nord'), 1),
+      (('NB', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NB', '3', 'Aufzug Süd'): {
+  ('NB', '3', 'Aufzug-Süd'): {
     'Coordinates': [808, 826],
     'Connections': [
-      (('NB', '03', 'Aufzug Süd'), 1),
-      (('NB', '1', 'Aufzug Süd'), 1),
-      (('NB', '2', 'Aufzug Süd'), 1),
+      (('NB', '03', 'Aufzug-Süd'), 1),
+      (('NB', '1', 'Aufzug-Süd'), 1),
+      (('NB', '2', 'Aufzug-Süd'), 1),
       (('NB', '3', 'EN_2345'), 40),
-      (('NB', '4', 'Aufzug Süd'), 1),
-      (('NB', '5', 'Aufzug Süd'), 1),
-      (('NB', '6', 'Aufzug Süd'), 1),
-      (('NB', '7', 'Aufzug Süd'), 1),
+      (('NB', '4', 'Aufzug-Süd'), 1),
+      (('NB', '5', 'Aufzug-Süd'), 1),
+      (('NB', '6', 'Aufzug-Süd'), 1),
+      (('NB', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NB', '3', 'EN_0'): {
@@ -66097,8 +66097,8 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NB', '3', '31'), 69),
       (('NB', '3', '71'), 63),
-      (('NB', '3', 'Aufzug Süd'), 40),
-      (('NB', '3', 'Treppe Süd'), 49),
+      (('NB', '3', 'Aufzug-Süd'), 40),
+      (('NB', '3', 'Treppe-Süd'), 49),
     ],
   },
   ('NB', '3', 'EN_3'): {
@@ -66115,53 +66115,53 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '3', '174'), 63),
       (('NB', '3', '75'), 110),
       (('NB', '3', '99'), 37),
-      (('NB', '3', 'Treppe Mitte'), 49),
+      (('NB', '3', 'Treppe-Mitte'), 49),
     ],
   },
   ('NB', '3', 'EN_3245'): {
     'Coordinates': [355, 363],
     'Connections': [
-      (('NB', '3', 'Aufzug Nord'), 42),
+      (('NB', '3', 'Aufzug-Nord'), 42),
       (('NB', '3', 'EN_2'), 58),
       (('NB', '3', 'EN_3'), 60),
-      (('NB', '3', 'Treppe Nord'), 53),
+      (('NB', '3', 'Treppe-Nord'), 53),
     ],
   },
-  ('NB', '3', 'Treppe Mitte'): {
+  ('NB', '3', 'Treppe-Mitte'): {
     'Coordinates': [673, 527],
     'Connections': [
-      (('NB', '1', 'Treppe Mitte'), 2),
-      (('NB', '2', 'Treppe Mitte'), 2),
+      (('NB', '1', 'Treppe-Mitte'), 2),
+      (('NB', '2', 'Treppe-Mitte'), 2),
       (('NB', '3', 'EN_324'), 49),
-      (('NB', '4', 'Treppe Mitte'), 2),
-      (('NB', '5', 'Treppe Mitte'), 2),
-      (('NB', '6', 'Treppe Mitte'), 2),
-      (('NB', '7', 'Treppe Mitte'), 2),
+      (('NB', '4', 'Treppe-Mitte'), 2),
+      (('NB', '5', 'Treppe-Mitte'), 2),
+      (('NB', '6', 'Treppe-Mitte'), 2),
+      (('NB', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NB', '3', 'Treppe Nord'): {
+  ('NB', '3', 'Treppe-Nord'): {
     'Coordinates': [318, 325],
     'Connections': [
-      (('NB', '03', 'Treppe Nord'), 2),
-      (('NB', '2', 'Treppe Nord'), 2),
+      (('NB', '03', 'Treppe-Nord'), 2),
+      (('NB', '2', 'Treppe-Nord'), 2),
       (('NB', '3', 'EN_3245'), 53),
-      (('NB', '4', 'Treppe Nord'), 2),
-      (('NB', '5', 'Treppe Nord'), 2),
-      (('NB', '6', 'Treppe Nord'), 2),
-      (('NB', '7', 'Treppe Nord'), 2),
+      (('NB', '4', 'Treppe-Nord'), 2),
+      (('NB', '5', 'Treppe-Nord'), 2),
+      (('NB', '6', 'Treppe-Nord'), 2),
+      (('NB', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NB', '3', 'Treppe Süd'): {
+  ('NB', '3', 'Treppe-Süd'): {
     'Coordinates': [876, 883],
     'Connections': [
-      (('NB', '03', 'Treppe Süd'), 2),
-      (('NB', '1', 'Treppe Süd'), 2),
-      (('NB', '2', 'Treppe Süd'), 2),
+      (('NB', '03', 'Treppe-Süd'), 2),
+      (('NB', '1', 'Treppe-Süd'), 2),
+      (('NB', '2', 'Treppe-Süd'), 2),
       (('NB', '3', 'EN_2345'), 49),
-      (('NB', '4', 'Treppe Süd'), 2),
-      (('NB', '5', 'Treppe Süd'), 2),
-      (('NB', '6', 'Treppe Süd'), 2),
-      (('NB', '7', 'Treppe Süd'), 2),
+      (('NB', '4', 'Treppe-Süd'), 2),
+      (('NB', '5', 'Treppe-Süd'), 2),
+      (('NB', '6', 'Treppe-Süd'), 2),
+      (('NB', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NB', '4', '117'): {
@@ -66553,29 +66553,29 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '4', '35'), 74),
     ],
   },
-  ('NB', '4', 'Aufzug Nord'): {
+  ('NB', '4', 'Aufzug-Nord'): {
     'Coordinates': [395, 392],
     'Connections': [
-      (('NB', '03', 'Aufzug Nord'), 1),
-      (('NB', '2', 'Aufzug Nord'), 1),
-      (('NB', '3', 'Aufzug Nord'), 1),
+      (('NB', '03', 'Aufzug-Nord'), 1),
+      (('NB', '2', 'Aufzug-Nord'), 1),
+      (('NB', '3', 'Aufzug-Nord'), 1),
       (('NB', '4', 'EN_2134'), 42),
-      (('NB', '5', 'Aufzug Nord'), 1),
-      (('NB', '6', 'Aufzug Nord'), 1),
-      (('NB', '7', 'Aufzug Nord'), 1),
+      (('NB', '5', 'Aufzug-Nord'), 1),
+      (('NB', '6', 'Aufzug-Nord'), 1),
+      (('NB', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NB', '4', 'Aufzug Süd'): {
+  ('NB', '4', 'Aufzug-Süd'): {
     'Coordinates': [827, 828],
     'Connections': [
-      (('NB', '03', 'Aufzug Süd'), 1),
-      (('NB', '1', 'Aufzug Süd'), 1),
-      (('NB', '2', 'Aufzug Süd'), 1),
-      (('NB', '3', 'Aufzug Süd'), 1),
+      (('NB', '03', 'Aufzug-Süd'), 1),
+      (('NB', '1', 'Aufzug-Süd'), 1),
+      (('NB', '2', 'Aufzug-Süd'), 1),
+      (('NB', '3', 'Aufzug-Süd'), 1),
       (('NB', '4', 'EN_2132'), 43),
-      (('NB', '5', 'Aufzug Süd'), 1),
-      (('NB', '6', 'Aufzug Süd'), 1),
-      (('NB', '7', 'Aufzug Süd'), 1),
+      (('NB', '5', 'Aufzug-Süd'), 1),
+      (('NB', '6', 'Aufzug-Süd'), 1),
+      (('NB', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NB', '4', 'EN_0'): {
@@ -66597,19 +66597,19 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NB', '4', 'EN_2132'): {
     'Coordinates': [859, 857],
     'Connections': [
-      (('NB', '4', 'Aufzug Süd'), 43),
+      (('NB', '4', 'Aufzug-Süd'), 43),
       (('NB', '4', 'EN_0'), 55),
       (('NB', '4', 'EN_2'), 59),
-      (('NB', '4', 'Treppe Süd'), 45),
+      (('NB', '4', 'Treppe-Süd'), 45),
     ],
   },
   ('NB', '4', 'EN_2134'): {
     'Coordinates': [364, 364],
     'Connections': [
       (('NB', '4', '131'), 59),
-      (('NB', '4', 'Aufzug Nord'), 42),
+      (('NB', '4', 'Aufzug-Nord'), 42),
       (('NB', '4', 'EN_3'), 56),
-      (('NB', '4', 'Treppe Nord'), 74),
+      (('NB', '4', 'Treppe-Nord'), 74),
     ],
   },
   ('NB', '4', 'EN_23'): {
@@ -66617,7 +66617,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NB', '4', '174'), 102),
       (('NB', '4', '75'), 102),
-      (('NB', '4', 'Treppe Mitte'), 48),
+      (('NB', '4', 'Treppe-Mitte'), 48),
     ],
   },
   ('NB', '4', 'EN_3'): {
@@ -66635,41 +66635,41 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '4', '131'), 17),
     ],
   },
-  ('NB', '4', 'Treppe Mitte'): {
+  ('NB', '4', 'Treppe-Mitte'): {
     'Coordinates': [677, 517],
     'Connections': [
-      (('NB', '1', 'Treppe Mitte'), 2),
-      (('NB', '2', 'Treppe Mitte'), 2),
-      (('NB', '3', 'Treppe Mitte'), 2),
+      (('NB', '1', 'Treppe-Mitte'), 2),
+      (('NB', '2', 'Treppe-Mitte'), 2),
+      (('NB', '3', 'Treppe-Mitte'), 2),
       (('NB', '4', 'EN_23'), 48),
-      (('NB', '5', 'Treppe Mitte'), 2),
-      (('NB', '6', 'Treppe Mitte'), 2),
-      (('NB', '7', 'Treppe Mitte'), 2),
+      (('NB', '5', 'Treppe-Mitte'), 2),
+      (('NB', '6', 'Treppe-Mitte'), 2),
+      (('NB', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NB', '4', 'Treppe Nord'): {
+  ('NB', '4', 'Treppe-Nord'): {
     'Coordinates': [316, 308],
     'Connections': [
-      (('NB', '03', 'Treppe Nord'), 2),
-      (('NB', '2', 'Treppe Nord'), 2),
-      (('NB', '3', 'Treppe Nord'), 2),
+      (('NB', '03', 'Treppe-Nord'), 2),
+      (('NB', '2', 'Treppe-Nord'), 2),
+      (('NB', '3', 'Treppe-Nord'), 2),
       (('NB', '4', 'EN_2134'), 74),
-      (('NB', '5', 'Treppe Nord'), 2),
-      (('NB', '6', 'Treppe Nord'), 2),
-      (('NB', '7', 'Treppe Nord'), 2),
+      (('NB', '5', 'Treppe-Nord'), 2),
+      (('NB', '6', 'Treppe-Nord'), 2),
+      (('NB', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NB', '4', 'Treppe Süd'): {
+  ('NB', '4', 'Treppe-Süd'): {
     'Coordinates': [891, 888],
     'Connections': [
-      (('NB', '03', 'Treppe Süd'), 2),
-      (('NB', '1', 'Treppe Süd'), 2),
-      (('NB', '2', 'Treppe Süd'), 2),
-      (('NB', '3', 'Treppe Süd'), 2),
+      (('NB', '03', 'Treppe-Süd'), 2),
+      (('NB', '1', 'Treppe-Süd'), 2),
+      (('NB', '2', 'Treppe-Süd'), 2),
+      (('NB', '3', 'Treppe-Süd'), 2),
       (('NB', '4', 'EN_2132'), 45),
-      (('NB', '5', 'Treppe Süd'), 2),
-      (('NB', '6', 'Treppe Süd'), 2),
-      (('NB', '7', 'Treppe Süd'), 2),
+      (('NB', '5', 'Treppe-Süd'), 2),
+      (('NB', '6', 'Treppe-Süd'), 2),
+      (('NB', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NB', '5', '102'): {
@@ -67050,47 +67050,47 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '5', 'EN_25'), 31),
     ],
   },
-  ('NB', '5', 'Aufzug Nord'): {
-    'Coordinates': [395, 382],
-    'Connections': [
-      (('NB', '03', 'Aufzug Nord'), 1),
-      (('NB', '2', 'Aufzug Nord'), 1),
-      (('NB', '3', 'Aufzug Nord'), 1),
-      (('NB', '4', 'Aufzug Nord'), 1),
-      (('NB', '5', 'Aufzug-107'), 31),
-      (('NB', '6', 'Aufzug Nord'), 1),
-      (('NB', '7', 'Aufzug Nord'), 1),
-    ],
-  },
-  ('NB', '5', 'Aufzug Süd'): {
-    'Coordinates': [811, 805],
-    'Connections': [
-      (('NB', '03', 'Aufzug Süd'), 1),
-      (('NB', '1', 'Aufzug Süd'), 1),
-      (('NB', '2', 'Aufzug Süd'), 1),
-      (('NB', '3', 'Aufzug Süd'), 1),
-      (('NB', '4', 'Aufzug Süd'), 1),
-      (('NB', '5', 'Aufzug-7'), 47),
-      (('NB', '6', 'Aufzug Süd'), 1),
-      (('NB', '7', 'Aufzug Süd'), 1),
-    ],
-  },
   ('NB', '5', 'Aufzug-107'): {
     'Coordinates': [373, 360],
     'Connections': [
-      (('NB', '5', 'Aufzug Nord'), 31),
+      (('NB', '5', 'Aufzug-Nord'), 31),
       (('NB', '5', 'EN_31'), 27),
       (('NB', '5', 'EN_32'), 26),
-      (('NB', '5', 'Treppe Nord'), 36),
+      (('NB', '5', 'Treppe-Nord'), 36),
     ],
   },
   ('NB', '5', 'Aufzug-7'): {
     'Coordinates': [840, 842],
     'Connections': [
-      (('NB', '5', 'Aufzug Süd'), 47),
+      (('NB', '5', 'Aufzug-Süd'), 47),
       (('NB', '5', 'EN_7'), 33),
       (('NB', '5', 'EN_8'), 37),
-      (('NB', '5', 'Treppe Süd'), 35),
+      (('NB', '5', 'Treppe-Süd'), 35),
+    ],
+  },
+  ('NB', '5', 'Aufzug-Nord'): {
+    'Coordinates': [395, 382],
+    'Connections': [
+      (('NB', '03', 'Aufzug-Nord'), 1),
+      (('NB', '2', 'Aufzug-Nord'), 1),
+      (('NB', '3', 'Aufzug-Nord'), 1),
+      (('NB', '4', 'Aufzug-Nord'), 1),
+      (('NB', '5', 'Aufzug-107'), 31),
+      (('NB', '6', 'Aufzug-Nord'), 1),
+      (('NB', '7', 'Aufzug-Nord'), 1),
+    ],
+  },
+  ('NB', '5', 'Aufzug-Süd'): {
+    'Coordinates': [811, 805],
+    'Connections': [
+      (('NB', '03', 'Aufzug-Süd'), 1),
+      (('NB', '1', 'Aufzug-Süd'), 1),
+      (('NB', '2', 'Aufzug-Süd'), 1),
+      (('NB', '3', 'Aufzug-Süd'), 1),
+      (('NB', '4', 'Aufzug-Süd'), 1),
+      (('NB', '5', 'Aufzug-7'), 47),
+      (('NB', '6', 'Aufzug-Süd'), 1),
+      (('NB', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NB', '5', 'EN_0'): {
@@ -67237,7 +67237,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '5', '99'), 31),
       (('NB', '5', 'EN_24'), 73),
       (('NB', '5', 'EN_26'), 68),
-      (('NB', '5', 'Treppe Mitte'), 21),
+      (('NB', '5', 'Treppe-Mitte'), 21),
     ],
   },
   ('NB', '5', 'EN_26'): {
@@ -67493,41 +67493,41 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '5', 'EN_8'), 23),
     ],
   },
-  ('NB', '5', 'Treppe Mitte'): {
+  ('NB', '5', 'Treppe-Mitte'): {
     'Coordinates': [647, 521],
     'Connections': [
-      (('NB', '1', 'Treppe Mitte'), 2),
-      (('NB', '2', 'Treppe Mitte'), 2),
-      (('NB', '3', 'Treppe Mitte'), 2),
-      (('NB', '4', 'Treppe Mitte'), 2),
+      (('NB', '1', 'Treppe-Mitte'), 2),
+      (('NB', '2', 'Treppe-Mitte'), 2),
+      (('NB', '3', 'Treppe-Mitte'), 2),
+      (('NB', '4', 'Treppe-Mitte'), 2),
       (('NB', '5', 'EN_25'), 21),
-      (('NB', '6', 'Treppe Mitte'), 2),
-      (('NB', '7', 'Treppe Mitte'), 2),
+      (('NB', '6', 'Treppe-Mitte'), 2),
+      (('NB', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NB', '5', 'Treppe Nord'): {
+  ('NB', '5', 'Treppe-Nord'): {
     'Coordinates': [349, 333],
     'Connections': [
-      (('NB', '03', 'Treppe Nord'), 2),
-      (('NB', '2', 'Treppe Nord'), 2),
-      (('NB', '3', 'Treppe Nord'), 2),
-      (('NB', '4', 'Treppe Nord'), 2),
+      (('NB', '03', 'Treppe-Nord'), 2),
+      (('NB', '2', 'Treppe-Nord'), 2),
+      (('NB', '3', 'Treppe-Nord'), 2),
+      (('NB', '4', 'Treppe-Nord'), 2),
       (('NB', '5', 'Aufzug-107'), 36),
-      (('NB', '6', 'Treppe Nord'), 2),
-      (('NB', '7', 'Treppe Nord'), 2),
+      (('NB', '6', 'Treppe-Nord'), 2),
+      (('NB', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NB', '5', 'Treppe Süd'): {
+  ('NB', '5', 'Treppe-Süd'): {
     'Coordinates': [870, 860],
     'Connections': [
-      (('NB', '03', 'Treppe Süd'), 2),
-      (('NB', '1', 'Treppe Süd'), 2),
-      (('NB', '2', 'Treppe Süd'), 2),
-      (('NB', '3', 'Treppe Süd'), 2),
-      (('NB', '4', 'Treppe Süd'), 2),
+      (('NB', '03', 'Treppe-Süd'), 2),
+      (('NB', '1', 'Treppe-Süd'), 2),
+      (('NB', '2', 'Treppe-Süd'), 2),
+      (('NB', '3', 'Treppe-Süd'), 2),
+      (('NB', '4', 'Treppe-Süd'), 2),
       (('NB', '5', 'Aufzug-7'), 35),
-      (('NB', '6', 'Treppe Süd'), 2),
-      (('NB', '7', 'Treppe Süd'), 2),
+      (('NB', '6', 'Treppe-Süd'), 2),
+      (('NB', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NB', '6', '1'): {
@@ -68003,29 +68003,29 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '6', 'EN_34'), 39),
     ],
   },
-  ('NB', '6', 'Aufzug Nord'): {
+  ('NB', '6', 'Aufzug-Nord'): {
     'Coordinates': [396, 398],
     'Connections': [
-      (('NB', '03', 'Aufzug Nord'), 1),
-      (('NB', '2', 'Aufzug Nord'), 1),
-      (('NB', '3', 'Aufzug Nord'), 1),
-      (('NB', '4', 'Aufzug Nord'), 1),
-      (('NB', '5', 'Aufzug Nord'), 1),
+      (('NB', '03', 'Aufzug-Nord'), 1),
+      (('NB', '2', 'Aufzug-Nord'), 1),
+      (('NB', '3', 'Aufzug-Nord'), 1),
+      (('NB', '4', 'Aufzug-Nord'), 1),
+      (('NB', '5', 'Aufzug-Nord'), 1),
       (('NB', '6', 'EN_214'), 45),
-      (('NB', '7', 'Aufzug Nord'), 1),
+      (('NB', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NB', '6', 'Aufzug Süd'): {
+  ('NB', '6', 'Aufzug-Süd'): {
     'Coordinates': [807, 813],
     'Connections': [
-      (('NB', '03', 'Aufzug Süd'), 1),
-      (('NB', '1', 'Aufzug Süd'), 1),
-      (('NB', '2', 'Aufzug Süd'), 1),
-      (('NB', '3', 'Aufzug Süd'), 1),
-      (('NB', '4', 'Aufzug Süd'), 1),
-      (('NB', '5', 'Aufzug Süd'), 1),
+      (('NB', '03', 'Aufzug-Süd'), 1),
+      (('NB', '1', 'Aufzug-Süd'), 1),
+      (('NB', '2', 'Aufzug-Süd'), 1),
+      (('NB', '3', 'Aufzug-Süd'), 1),
+      (('NB', '4', 'Aufzug-Süd'), 1),
+      (('NB', '5', 'Aufzug-Süd'), 1),
       (('NB', '6', 'EN_234'), 45),
-      (('NB', '7', 'Aufzug Süd'), 1),
+      (('NB', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NB', '6', 'EN_0'): {
@@ -68143,10 +68143,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NB', '6', 'EN_214'): {
     'Coordinates': [361, 369],
     'Connections': [
-      (('NB', '6', 'Aufzug Nord'), 45),
+      (('NB', '6', 'Aufzug-Nord'), 45),
       (('NB', '6', 'EN_45'), 30),
       (('NB', '6', 'EN_46'), 25),
-      (('NB', '6', 'Treppe Nord'), 50),
+      (('NB', '6', 'Treppe-Nord'), 50),
     ],
   },
   ('NB', '6', 'EN_22'): {
@@ -68170,10 +68170,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NB', '6', 'EN_234'): {
     'Coordinates': [837, 847],
     'Connections': [
-      (('NB', '6', 'Aufzug Süd'), 45),
+      (('NB', '6', 'Aufzug-Süd'), 45),
       (('NB', '6', 'EN_13'), 38),
       (('NB', '6', 'EN_14'), 33),
-      (('NB', '6', 'Treppe Süd'), 52),
+      (('NB', '6', 'Treppe-Süd'), 52),
     ],
   },
   ('NB', '6', 'EN_24'): {
@@ -68269,7 +68269,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '6', '99'), 39),
       (('NB', '6', 'EN_33'), 72),
       (('NB', '6', 'EN_35'), 66),
-      (('NB', '6', 'Treppe Mitte'), 39),
+      (('NB', '6', 'Treppe-Mitte'), 39),
     ],
   },
   ('NB', '6', 'EN_35'): {
@@ -68582,41 +68582,41 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '6', 'EN_8'), 40),
     ],
   },
-  ('NB', '6', 'Treppe Mitte'): {
+  ('NB', '6', 'Treppe-Mitte'): {
     'Coordinates': [666, 535],
     'Connections': [
-      (('NB', '1', 'Treppe Mitte'), 2),
-      (('NB', '2', 'Treppe Mitte'), 2),
-      (('NB', '3', 'Treppe Mitte'), 2),
-      (('NB', '4', 'Treppe Mitte'), 2),
-      (('NB', '5', 'Treppe Mitte'), 2),
+      (('NB', '1', 'Treppe-Mitte'), 2),
+      (('NB', '2', 'Treppe-Mitte'), 2),
+      (('NB', '3', 'Treppe-Mitte'), 2),
+      (('NB', '4', 'Treppe-Mitte'), 2),
+      (('NB', '5', 'Treppe-Mitte'), 2),
       (('NB', '6', 'EN_34'), 39),
-      (('NB', '7', 'Treppe Mitte'), 2),
+      (('NB', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NB', '6', 'Treppe Nord'): {
+  ('NB', '6', 'Treppe-Nord'): {
     'Coordinates': [325, 335],
     'Connections': [
-      (('NB', '03', 'Treppe Nord'), 2),
-      (('NB', '2', 'Treppe Nord'), 2),
-      (('NB', '3', 'Treppe Nord'), 2),
-      (('NB', '4', 'Treppe Nord'), 2),
-      (('NB', '5', 'Treppe Nord'), 2),
+      (('NB', '03', 'Treppe-Nord'), 2),
+      (('NB', '2', 'Treppe-Nord'), 2),
+      (('NB', '3', 'Treppe-Nord'), 2),
+      (('NB', '4', 'Treppe-Nord'), 2),
+      (('NB', '5', 'Treppe-Nord'), 2),
       (('NB', '6', 'EN_214'), 50),
-      (('NB', '7', 'Treppe Nord'), 2),
+      (('NB', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NB', '6', 'Treppe Süd'): {
+  ('NB', '6', 'Treppe-Süd'): {
     'Coordinates': [878, 879],
     'Connections': [
-      (('NB', '03', 'Treppe Süd'), 2),
-      (('NB', '1', 'Treppe Süd'), 2),
-      (('NB', '2', 'Treppe Süd'), 2),
-      (('NB', '3', 'Treppe Süd'), 2),
-      (('NB', '4', 'Treppe Süd'), 2),
-      (('NB', '5', 'Treppe Süd'), 2),
+      (('NB', '03', 'Treppe-Süd'), 2),
+      (('NB', '1', 'Treppe-Süd'), 2),
+      (('NB', '2', 'Treppe-Süd'), 2),
+      (('NB', '3', 'Treppe-Süd'), 2),
+      (('NB', '4', 'Treppe-Süd'), 2),
+      (('NB', '5', 'Treppe-Süd'), 2),
       (('NB', '6', 'EN_234'), 52),
-      (('NB', '7', 'Treppe Süd'), 2),
+      (('NB', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NB', '7', '102'): {
@@ -69083,28 +69083,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '7', 'EN_30'), 16),
     ],
   },
-  ('NB', '7', 'Aufzug Nord'): {
+  ('NB', '7', 'Aufzug-Nord'): {
     'Coordinates': [398, 377],
     'Connections': [
-      (('NB', '03', 'Aufzug Nord'), 1),
-      (('NB', '2', 'Aufzug Nord'), 1),
-      (('NB', '3', 'Aufzug Nord'), 1),
-      (('NB', '4', 'Aufzug Nord'), 1),
-      (('NB', '5', 'Aufzug Nord'), 1),
-      (('NB', '6', 'Aufzug Nord'), 1),
+      (('NB', '03', 'Aufzug-Nord'), 1),
+      (('NB', '2', 'Aufzug-Nord'), 1),
+      (('NB', '3', 'Aufzug-Nord'), 1),
+      (('NB', '4', 'Aufzug-Nord'), 1),
+      (('NB', '5', 'Aufzug-Nord'), 1),
+      (('NB', '6', 'Aufzug-Nord'), 1),
       (('NB', '7', 'EN_55'), 37),
     ],
   },
-  ('NB', '7', 'Aufzug Süd'): {
+  ('NB', '7', 'Aufzug-Süd'): {
     'Coordinates': [815, 807],
     'Connections': [
-      (('NB', '03', 'Aufzug Süd'), 1),
-      (('NB', '1', 'Aufzug Süd'), 1),
-      (('NB', '2', 'Aufzug Süd'), 1),
-      (('NB', '3', 'Aufzug Süd'), 1),
-      (('NB', '4', 'Aufzug Süd'), 1),
-      (('NB', '5', 'Aufzug Süd'), 1),
-      (('NB', '6', 'Aufzug Süd'), 1),
+      (('NB', '03', 'Aufzug-Süd'), 1),
+      (('NB', '1', 'Aufzug-Süd'), 1),
+      (('NB', '2', 'Aufzug-Süd'), 1),
+      (('NB', '3', 'Aufzug-Süd'), 1),
+      (('NB', '4', 'Aufzug-Süd'), 1),
+      (('NB', '5', 'Aufzug-Süd'), 1),
+      (('NB', '6', 'Aufzug-Süd'), 1),
       (('NB', '7', 'EN_66'), 45),
     ],
   },
@@ -69322,7 +69322,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NB', '7', 'EN_31'), 76),
       (('NB', '7', 'EN_33'), 66),
-      (('NB', '7', 'Treppe Mitte'), 42),
+      (('NB', '7', 'Treppe-Mitte'), 42),
     ],
   },
   ('NB', '7', 'EN_33'): {
@@ -69526,10 +69526,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NB', '7', 'EN_55'): {
     'Coordinates': [373, 350],
     'Connections': [
-      (('NB', '7', 'Aufzug Nord'), 37),
+      (('NB', '7', 'Aufzug-Nord'), 37),
       (('NB', '7', 'EN_44'), 37),
       (('NB', '7', 'EN_45'), 21),
-      (('NB', '7', 'Treppe Nord'), 51),
+      (('NB', '7', 'Treppe-Nord'), 51),
     ],
   },
   ('NB', '7', 'EN_56'): {
@@ -69623,10 +69623,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NB', '7', 'EN_66'): {
     'Coordinates': [852, 832],
     'Connections': [
-      (('NB', '7', 'Aufzug Süd'), 45),
+      (('NB', '7', 'Aufzug-Süd'), 45),
       (('NB', '7', 'EN_12'), 30),
       (('NB', '7', 'EN_13'), 33),
-      (('NB', '7', 'Treppe Süd'), 58),
+      (('NB', '7', 'Treppe-Süd'), 58),
     ],
   },
   ('NB', '7', 'EN_7'): {
@@ -69654,50 +69654,50 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NB', '7', 'EN_8'), 38),
     ],
   },
-  ('NB', '7', 'Treppe Mitte'): {
+  ('NB', '7', 'Treppe-Mitte'): {
     'Coordinates': [672, 511],
     'Connections': [
-      (('NB', '1', 'Treppe Mitte'), 2),
-      (('NB', '2', 'Treppe Mitte'), 2),
-      (('NB', '3', 'Treppe Mitte'), 2),
-      (('NB', '4', 'Treppe Mitte'), 2),
-      (('NB', '5', 'Treppe Mitte'), 2),
-      (('NB', '6', 'Treppe Mitte'), 2),
+      (('NB', '1', 'Treppe-Mitte'), 2),
+      (('NB', '2', 'Treppe-Mitte'), 2),
+      (('NB', '3', 'Treppe-Mitte'), 2),
+      (('NB', '4', 'Treppe-Mitte'), 2),
+      (('NB', '5', 'Treppe-Mitte'), 2),
+      (('NB', '6', 'Treppe-Mitte'), 2),
       (('NB', '7', 'EN_32'), 42),
     ],
   },
-  ('NB', '7', 'Treppe Nord'): {
+  ('NB', '7', 'Treppe-Nord'): {
     'Coordinates': [335, 316],
     'Connections': [
-      (('NB', '03', 'Treppe Nord'), 2),
-      (('NB', '2', 'Treppe Nord'), 2),
-      (('NB', '3', 'Treppe Nord'), 2),
-      (('NB', '4', 'Treppe Nord'), 2),
-      (('NB', '5', 'Treppe Nord'), 2),
-      (('NB', '6', 'Treppe Nord'), 2),
+      (('NB', '03', 'Treppe-Nord'), 2),
+      (('NB', '2', 'Treppe-Nord'), 2),
+      (('NB', '3', 'Treppe-Nord'), 2),
+      (('NB', '4', 'Treppe-Nord'), 2),
+      (('NB', '5', 'Treppe-Nord'), 2),
+      (('NB', '6', 'Treppe-Nord'), 2),
       (('NB', '7', 'EN_55'), 51),
     ],
   },
-  ('NB', '7', 'Treppe Süd'): {
+  ('NB', '7', 'Treppe-Süd'): {
     'Coordinates': [889, 877],
     'Connections': [
-      (('NB', '03', 'Treppe Süd'), 2),
-      (('NB', '1', 'Treppe Süd'), 2),
-      (('NB', '2', 'Treppe Süd'), 2),
-      (('NB', '3', 'Treppe Süd'), 2),
-      (('NB', '4', 'Treppe Süd'), 2),
-      (('NB', '5', 'Treppe Süd'), 2),
-      (('NB', '6', 'Treppe Süd'), 2),
+      (('NB', '03', 'Treppe-Süd'), 2),
+      (('NB', '1', 'Treppe-Süd'), 2),
+      (('NB', '2', 'Treppe-Süd'), 2),
+      (('NB', '3', 'Treppe-Süd'), 2),
+      (('NB', '4', 'Treppe-Süd'), 2),
+      (('NB', '5', 'Treppe-Süd'), 2),
+      (('NB', '6', 'Treppe-Süd'), 2),
       (('NB', '7', 'EN_66'), 58),
     ],
   },
-  ('NB1.png', '1', 'Aufzug Nord'): {
+  ('NB1.png', '1', 'Aufzug-Nord'): {
     'Coordinates': [407, 388],
     'Connections': [
       (('NB', '1', 'EN_3'), 48),
     ],
   },
-  ('NB1.png', '1', 'Treppe Nord'): {
+  ('NB1.png', '1', 'Treppe-Nord'): {
     'Coordinates': [342, 324],
     'Connections': [
       (('NB', '1', 'EN_3'), 44),
@@ -69886,28 +69886,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '1', 'EN_12'), 68),
     ],
   },
-  ('NC', '1', 'Aufzug Nord'): {
+  ('NC', '1', 'Aufzug-Nord'): {
     'Coordinates': [406, 396],
     'Connections': [
       (('NC', '1', 'EN_324'), 36),
-      (('NC', '2', 'Aufzug Nord'), 1),
-      (('NC', '3', 'Aufzug Nord'), 1),
-      (('NC', '4', 'Aufzug Nord'), 1),
-      (('NC', '5', 'Aufzug Nord'), 1),
-      (('NC', '6', 'Aufzug Nord'), 1),
-      (('NC', '7', 'Aufzug Nord'), 1),
+      (('NC', '2', 'Aufzug-Nord'), 1),
+      (('NC', '3', 'Aufzug-Nord'), 1),
+      (('NC', '4', 'Aufzug-Nord'), 1),
+      (('NC', '5', 'Aufzug-Nord'), 1),
+      (('NC', '6', 'Aufzug-Nord'), 1),
+      (('NC', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NC', '1', 'Aufzug Süd'): {
+  ('NC', '1', 'Aufzug-Süd'): {
     'Coordinates': [805, 812],
     'Connections': [
       (('NC', '1', 'EN_23'), 57),
-      (('NC', '2', 'Aufzug Süd'), 1),
-      (('NC', '3', 'Aufzug Süd'), 1),
-      (('NC', '4', 'Aufzug Süd'), 1),
-      (('NC', '5', 'Aufzug Süd'), 1),
-      (('NC', '6', 'Aufzug Süd'), 1),
-      (('NC', '7', 'Aufzug Süd'), 1),
+      (('NC', '2', 'Aufzug-Süd'), 1),
+      (('NC', '3', 'Aufzug-Süd'), 1),
+      (('NC', '4', 'Aufzug-Süd'), 1),
+      (('NC', '5', 'Aufzug-Süd'), 1),
+      (('NC', '6', 'Aufzug-Süd'), 1),
+      (('NC', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NC', '1', 'EN_0'): {
@@ -69955,7 +69955,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NC', '1', 'EN_13'), 89),
       (('NC', '1', 'EN_15'), 56),
-      (('NC', '1', 'Treppe Mitte'), 35),
+      (('NC', '1', 'Treppe-Mitte'), 35),
     ],
   },
   ('NC', '1', 'EN_15'): {
@@ -70033,10 +70033,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '1', 'EN_23'): {
     'Coordinates': [850, 847],
     'Connections': [
-      (('NC', '1', 'Aufzug Süd'), 57),
+      (('NC', '1', 'Aufzug-Süd'), 57),
       (('NC', '1', 'EN_7'), 31),
       (('NC', '1', 'EN_8'), 21),
-      (('NC', '1', 'Treppe Süd'), 52),
+      (('NC', '1', 'Treppe-Süd'), 52),
     ],
   },
   ('NC', '1', 'EN_3'): {
@@ -70049,10 +70049,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '1', 'EN_324'): {
     'Coordinates': [380, 371],
     'Connections': [
-      (('NC', '1', 'Aufzug Nord'), 36),
+      (('NC', '1', 'Aufzug-Nord'), 36),
       (('NC', '1', 'EN_20'), 27),
       (('NC', '1', 'EN_21'), 36),
-      (('NC', '1', 'Treppe Nord'), 69),
+      (('NC', '1', 'Treppe-Nord'), 69),
     ],
   },
   ('NC', '1', 'EN_6'): {
@@ -70087,40 +70087,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '1', 'EN_8'), 39),
     ],
   },
-  ('NC', '1', 'Treppe Mitte'): {
+  ('NC', '1', 'Treppe-Mitte'): {
     'Coordinates': [675, 528],
     'Connections': [
       (('NC', '1', 'EN_14'), 35),
-      (('NC', '2', 'Treppe Mitte'), 2),
-      (('NC', '3', 'Treppe Mitte'), 2),
-      (('NC', '4', 'Treppe Mitte'), 2),
-      (('NC', '5', 'Treppe Mitte'), 2),
-      (('NC', '6', 'Treppe Mitte'), 2),
-      (('NC', '7', 'Treppe Mitte'), 2),
+      (('NC', '2', 'Treppe-Mitte'), 2),
+      (('NC', '3', 'Treppe-Mitte'), 2),
+      (('NC', '4', 'Treppe-Mitte'), 2),
+      (('NC', '5', 'Treppe-Mitte'), 2),
+      (('NC', '6', 'Treppe-Mitte'), 2),
+      (('NC', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NC', '1', 'Treppe Nord'): {
+  ('NC', '1', 'Treppe-Nord'): {
     'Coordinates': [333, 320],
     'Connections': [
       (('NC', '1', 'EN_324'), 69),
-      (('NC', '2', 'Treppe Nord'), 2),
-      (('NC', '3', 'Treppe Nord'), 2),
-      (('NC', '4', 'Treppe Nord'), 2),
-      (('NC', '5', 'Treppe Nord'), 2),
-      (('NC', '6', 'Treppe Nord'), 2),
-      (('NC', '7', 'Treppe Nord'), 2),
+      (('NC', '2', 'Treppe-Nord'), 2),
+      (('NC', '3', 'Treppe-Nord'), 2),
+      (('NC', '4', 'Treppe-Nord'), 2),
+      (('NC', '5', 'Treppe-Nord'), 2),
+      (('NC', '6', 'Treppe-Nord'), 2),
+      (('NC', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NC', '1', 'Treppe Süd'): {
+  ('NC', '1', 'Treppe-Süd'): {
     'Coordinates': [885, 886],
     'Connections': [
       (('NC', '1', 'EN_23'), 52),
-      (('NC', '2', 'Treppe Süd'), 2),
-      (('NC', '3', 'Treppe Süd'), 2),
-      (('NC', '4', 'Treppe Süd'), 2),
-      (('NC', '5', 'Treppe Süd'), 2),
-      (('NC', '6', 'Treppe Süd'), 2),
-      (('NC', '7', 'Treppe Süd'), 2),
+      (('NC', '2', 'Treppe-Süd'), 2),
+      (('NC', '3', 'Treppe-Süd'), 2),
+      (('NC', '4', 'Treppe-Süd'), 2),
+      (('NC', '5', 'Treppe-Süd'), 2),
+      (('NC', '6', 'Treppe-Süd'), 2),
+      (('NC', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NC', '2', '102'): {
@@ -70510,28 +70510,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '2', 'EN_25'), 42),
     ],
   },
-  ('NC', '2', 'Aufzug Nord'): {
+  ('NC', '2', 'Aufzug-Nord'): {
     'Coordinates': [406, 398],
     'Connections': [
-      (('NC', '1', 'Aufzug Nord'), 1),
+      (('NC', '1', 'Aufzug-Nord'), 1),
       (('NC', '2', 'EN_32434'), 38),
-      (('NC', '3', 'Aufzug Nord'), 1),
-      (('NC', '4', 'Aufzug Nord'), 1),
-      (('NC', '5', 'Aufzug Nord'), 1),
-      (('NC', '6', 'Aufzug Nord'), 1),
-      (('NC', '7', 'Aufzug Nord'), 1),
+      (('NC', '3', 'Aufzug-Nord'), 1),
+      (('NC', '4', 'Aufzug-Nord'), 1),
+      (('NC', '5', 'Aufzug-Nord'), 1),
+      (('NC', '6', 'Aufzug-Nord'), 1),
+      (('NC', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NC', '2', 'Aufzug Süd'): {
+  ('NC', '2', 'Aufzug-Süd'): {
     'Coordinates': [808, 809],
     'Connections': [
-      (('NC', '1', 'Aufzug Süd'), 1),
+      (('NC', '1', 'Aufzug-Süd'), 1),
       (('NC', '2', 'EN_324'), 55),
-      (('NC', '3', 'Aufzug Süd'), 1),
-      (('NC', '4', 'Aufzug Süd'), 1),
-      (('NC', '5', 'Aufzug Süd'), 1),
-      (('NC', '6', 'Aufzug Süd'), 1),
-      (('NC', '7', 'Aufzug Süd'), 1),
+      (('NC', '3', 'Aufzug-Süd'), 1),
+      (('NC', '4', 'Aufzug-Süd'), 1),
+      (('NC', '5', 'Aufzug-Süd'), 1),
+      (('NC', '6', 'Aufzug-Süd'), 1),
+      (('NC', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NC', '2', 'EN_0'): {
@@ -70650,7 +70650,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NC', '2', 'EN_23'), 49),
       (('NC', '2', 'EN_25'), 37),
-      (('NC', '2', 'Treppe Mitte'), 44),
+      (('NC', '2', 'Treppe-Mitte'), 44),
     ],
   },
   ('NC', '2', 'EN_25'): {
@@ -70728,19 +70728,19 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '2', 'EN_324'): {
     'Coordinates': [847, 848],
     'Connections': [
-      (('NC', '2', 'Aufzug Süd'), 55),
+      (('NC', '2', 'Aufzug-Süd'), 55),
       (('NC', '2', 'EN_10'), 35),
       (('NC', '2', 'EN_9'), 29),
-      (('NC', '2', 'Treppe Süd'), 47),
+      (('NC', '2', 'Treppe-Süd'), 47),
     ],
   },
   ('NC', '2', 'EN_32434'): {
     'Coordinates': [378, 373],
     'Connections': [
-      (('NC', '2', 'Aufzug Nord'), 38),
+      (('NC', '2', 'Aufzug-Nord'), 38),
       (('NC', '2', 'EN_35'), 35),
       (('NC', '2', 'EN_36'), 19),
-      (('NC', '2', 'Treppe Nord'), 62),
+      (('NC', '2', 'Treppe-Nord'), 62),
     ],
   },
   ('NC', '2', 'EN_33'): {
@@ -70965,40 +70965,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '2', 'EN_8'), 23),
     ],
   },
-  ('NC', '2', 'Treppe Mitte'): {
+  ('NC', '2', 'Treppe-Mitte'): {
     'Coordinates': [681, 534],
     'Connections': [
-      (('NC', '1', 'Treppe Mitte'), 2),
+      (('NC', '1', 'Treppe-Mitte'), 2),
       (('NC', '2', 'EN_24'), 44),
-      (('NC', '3', 'Treppe Mitte'), 2),
-      (('NC', '4', 'Treppe Mitte'), 2),
-      (('NC', '5', 'Treppe Mitte'), 2),
-      (('NC', '6', 'Treppe Mitte'), 2),
-      (('NC', '7', 'Treppe Mitte'), 2),
+      (('NC', '3', 'Treppe-Mitte'), 2),
+      (('NC', '4', 'Treppe-Mitte'), 2),
+      (('NC', '5', 'Treppe-Mitte'), 2),
+      (('NC', '6', 'Treppe-Mitte'), 2),
+      (('NC', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NC', '2', 'Treppe Nord'): {
+  ('NC', '2', 'Treppe-Nord'): {
     'Coordinates': [332, 332],
     'Connections': [
-      (('NC', '1', 'Treppe Nord'), 2),
+      (('NC', '1', 'Treppe-Nord'), 2),
       (('NC', '2', 'EN_32434'), 62),
-      (('NC', '3', 'Treppe Nord'), 2),
-      (('NC', '4', 'Treppe Nord'), 2),
-      (('NC', '5', 'Treppe Nord'), 2),
-      (('NC', '6', 'Treppe Nord'), 2),
-      (('NC', '7', 'Treppe Nord'), 2),
+      (('NC', '3', 'Treppe-Nord'), 2),
+      (('NC', '4', 'Treppe-Nord'), 2),
+      (('NC', '5', 'Treppe-Nord'), 2),
+      (('NC', '6', 'Treppe-Nord'), 2),
+      (('NC', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NC', '2', 'Treppe Süd'): {
+  ('NC', '2', 'Treppe-Süd'): {
     'Coordinates': [882, 879],
     'Connections': [
-      (('NC', '1', 'Treppe Süd'), 2),
+      (('NC', '1', 'Treppe-Süd'), 2),
       (('NC', '2', 'EN_324'), 47),
-      (('NC', '3', 'Treppe Süd'), 2),
-      (('NC', '4', 'Treppe Süd'), 2),
-      (('NC', '5', 'Treppe Süd'), 2),
-      (('NC', '6', 'Treppe Süd'), 2),
-      (('NC', '7', 'Treppe Süd'), 2),
+      (('NC', '3', 'Treppe-Süd'), 2),
+      (('NC', '4', 'Treppe-Süd'), 2),
+      (('NC', '5', 'Treppe-Süd'), 2),
+      (('NC', '6', 'Treppe-Süd'), 2),
+      (('NC', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NC', '3', '102'): {
@@ -71384,28 +71384,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '3', 'EN_27'), 38),
     ],
   },
-  ('NC', '3', 'Aufzug Nord'): {
+  ('NC', '3', 'Aufzug-Nord'): {
     'Coordinates': [402, 393],
     'Connections': [
-      (('NC', '1', 'Aufzug Nord'), 1),
-      (('NC', '2', 'Aufzug Nord'), 1),
+      (('NC', '1', 'Aufzug-Nord'), 1),
+      (('NC', '2', 'Aufzug-Nord'), 1),
       (('NC', '3', 'EN_325'), 47),
-      (('NC', '4', 'Aufzug Nord'), 1),
-      (('NC', '5', 'Aufzug Nord'), 1),
-      (('NC', '6', 'Aufzug Nord'), 1),
-      (('NC', '7', 'Aufzug Nord'), 1),
+      (('NC', '4', 'Aufzug-Nord'), 1),
+      (('NC', '5', 'Aufzug-Nord'), 1),
+      (('NC', '6', 'Aufzug-Nord'), 1),
+      (('NC', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NC', '3', 'Aufzug Süd'): {
+  ('NC', '3', 'Aufzug-Süd'): {
     'Coordinates': [804, 803],
     'Connections': [
-      (('NC', '1', 'Aufzug Süd'), 1),
-      (('NC', '2', 'Aufzug Süd'), 1),
+      (('NC', '1', 'Aufzug-Süd'), 1),
+      (('NC', '2', 'Aufzug-Süd'), 1),
       (('NC', '3', 'EN_3678'), 40),
-      (('NC', '4', 'Aufzug Süd'), 1),
-      (('NC', '5', 'Aufzug Süd'), 1),
-      (('NC', '6', 'Aufzug Süd'), 1),
-      (('NC', '7', 'Aufzug Süd'), 1),
+      (('NC', '4', 'Aufzug-Süd'), 1),
+      (('NC', '5', 'Aufzug-Süd'), 1),
+      (('NC', '6', 'Aufzug-Süd'), 1),
+      (('NC', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NC', '3', 'EN_0'): {
@@ -71575,7 +71575,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '3', '99'), 38),
       (('NC', '3', 'EN_26'), 54),
       (('NC', '3', 'EN_28'), 39),
-      (('NC', '3', 'Treppe Mitte'), 40),
+      (('NC', '3', 'Treppe-Mitte'), 40),
     ],
   },
   ('NC', '3', 'EN_28'): {
@@ -71632,10 +71632,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '3', 'EN_325'): {
     'Coordinates': [367, 362],
     'Connections': [
-      (('NC', '3', 'Aufzug Nord'), 47),
+      (('NC', '3', 'Aufzug-Nord'), 47),
       (('NC', '3', 'EN_42'), 34),
       (('NC', '3', 'EN_45'), 27),
-      (('NC', '3', 'Treppe Nord'), 50),
+      (('NC', '3', 'Treppe-Nord'), 50),
     ],
   },
   ('NC', '3', 'EN_33'): {
@@ -71674,10 +71674,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '3', 'EN_3678'): {
     'Coordinates': [831, 832],
     'Connections': [
-      (('NC', '3', 'Aufzug Süd'), 40),
+      (('NC', '3', 'Aufzug-Süd'), 40),
       (('NC', '3', 'EN_11'), 32),
       (('NC', '3', 'EN_12'), 24),
-      (('NC', '3', 'Treppe Süd'), 59),
+      (('NC', '3', 'Treppe-Süd'), 59),
     ],
   },
   ('NC', '3', 'EN_38'): {
@@ -71808,40 +71808,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '3', 'EN_6'), 44),
     ],
   },
-  ('NC', '3', 'Treppe Mitte'): {
+  ('NC', '3', 'Treppe-Mitte'): {
     'Coordinates': [677, 529],
     'Connections': [
-      (('NC', '1', 'Treppe Mitte'), 2),
-      (('NC', '2', 'Treppe Mitte'), 2),
+      (('NC', '1', 'Treppe-Mitte'), 2),
+      (('NC', '2', 'Treppe-Mitte'), 2),
       (('NC', '3', 'EN_27'), 40),
-      (('NC', '4', 'Treppe Mitte'), 2),
-      (('NC', '5', 'Treppe Mitte'), 2),
-      (('NC', '6', 'Treppe Mitte'), 2),
-      (('NC', '7', 'Treppe Mitte'), 2),
+      (('NC', '4', 'Treppe-Mitte'), 2),
+      (('NC', '5', 'Treppe-Mitte'), 2),
+      (('NC', '6', 'Treppe-Mitte'), 2),
+      (('NC', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NC', '3', 'Treppe Nord'): {
+  ('NC', '3', 'Treppe-Nord'): {
     'Coordinates': [334, 324],
     'Connections': [
-      (('NC', '1', 'Treppe Nord'), 2),
-      (('NC', '2', 'Treppe Nord'), 2),
+      (('NC', '1', 'Treppe-Nord'), 2),
+      (('NC', '2', 'Treppe-Nord'), 2),
       (('NC', '3', 'EN_325'), 50),
-      (('NC', '4', 'Treppe Nord'), 2),
-      (('NC', '5', 'Treppe Nord'), 2),
-      (('NC', '6', 'Treppe Nord'), 2),
-      (('NC', '7', 'Treppe Nord'), 2),
+      (('NC', '4', 'Treppe-Nord'), 2),
+      (('NC', '5', 'Treppe-Nord'), 2),
+      (('NC', '6', 'Treppe-Nord'), 2),
+      (('NC', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NC', '3', 'Treppe Süd'): {
+  ('NC', '3', 'Treppe-Süd'): {
     'Coordinates': [874, 873],
     'Connections': [
-      (('NC', '1', 'Treppe Süd'), 2),
-      (('NC', '2', 'Treppe Süd'), 2),
+      (('NC', '1', 'Treppe-Süd'), 2),
+      (('NC', '2', 'Treppe-Süd'), 2),
       (('NC', '3', 'EN_3678'), 59),
-      (('NC', '4', 'Treppe Süd'), 2),
-      (('NC', '5', 'Treppe Süd'), 2),
-      (('NC', '6', 'Treppe Süd'), 2),
-      (('NC', '7', 'Treppe Süd'), 2),
+      (('NC', '4', 'Treppe-Süd'), 2),
+      (('NC', '5', 'Treppe-Süd'), 2),
+      (('NC', '6', 'Treppe-Süd'), 2),
+      (('NC', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NC', '4', '102'): {
@@ -72168,28 +72168,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '4', 'EN_22'), 42),
     ],
   },
-  ('NC', '4', 'Aufzug Nord'): {
+  ('NC', '4', 'Aufzug-Nord'): {
     'Coordinates': [409, 391],
     'Connections': [
-      (('NC', '1', 'Aufzug Nord'), 1),
-      (('NC', '2', 'Aufzug Nord'), 1),
-      (('NC', '3', 'Aufzug Nord'), 1),
+      (('NC', '1', 'Aufzug-Nord'), 1),
+      (('NC', '2', 'Aufzug-Nord'), 1),
+      (('NC', '3', 'Aufzug-Nord'), 1),
       (('NC', '4', 'EN_8'), 42),
-      (('NC', '5', 'Aufzug Nord'), 1),
-      (('NC', '6', 'Aufzug Nord'), 1),
-      (('NC', '7', 'Aufzug Nord'), 1),
+      (('NC', '5', 'Aufzug-Nord'), 1),
+      (('NC', '6', 'Aufzug-Nord'), 1),
+      (('NC', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NC', '4', 'Aufzug Süd'): {
+  ('NC', '4', 'Aufzug-Süd'): {
     'Coordinates': [811, 815],
     'Connections': [
-      (('NC', '1', 'Aufzug Süd'), 1),
-      (('NC', '2', 'Aufzug Süd'), 1),
-      (('NC', '3', 'Aufzug Süd'), 1),
+      (('NC', '1', 'Aufzug-Süd'), 1),
+      (('NC', '2', 'Aufzug-Süd'), 1),
+      (('NC', '3', 'Aufzug-Süd'), 1),
       (('NC', '4', 'EN_30'), 47),
-      (('NC', '5', 'Aufzug Süd'), 1),
-      (('NC', '6', 'Aufzug Süd'), 1),
-      (('NC', '7', 'Aufzug Süd'), 1),
+      (('NC', '5', 'Aufzug-Süd'), 1),
+      (('NC', '6', 'Aufzug-Süd'), 1),
+      (('NC', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NC', '4', 'EN_0'): {
@@ -72320,7 +72320,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NC', '4', 'EN_23'), 50),
       (('NC', '4', 'EN_25'), 54),
-      (('NC', '4', 'Treppe Mitte'), 35),
+      (('NC', '4', 'Treppe-Mitte'), 35),
     ],
   },
   ('NC', '4', 'EN_25'): {
@@ -72374,10 +72374,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '4', 'EN_30'): {
     'Coordinates': [843, 850],
     'Connections': [
-      (('NC', '4', 'Aufzug Süd'), 47),
+      (('NC', '4', 'Aufzug-Süd'), 47),
       (('NC', '4', 'EN_10'), 24),
       (('NC', '4', 'EN_9'), 22),
-      (('NC', '4', 'Treppe Süd'), 47),
+      (('NC', '4', 'Treppe-Süd'), 47),
     ],
   },
   ('NC', '4', 'EN_31'): {
@@ -72563,10 +72563,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '4', 'EN_8'): {
     'Coordinates': [377, 364],
     'Connections': [
-      (('NC', '4', 'Aufzug Nord'), 42),
+      (('NC', '4', 'Aufzug-Nord'), 42),
       (('NC', '4', 'EN_36'), 26),
       (('NC', '4', 'EN_37'), 29),
-      (('NC', '4', 'Treppe Nord'), 49),
+      (('NC', '4', 'Treppe-Nord'), 49),
     ],
   },
   ('NC', '4', 'EN_9'): {
@@ -72577,40 +72577,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '4', 'EN_6'), 31),
     ],
   },
-  ('NC', '4', 'Treppe Mitte'): {
+  ('NC', '4', 'Treppe-Mitte'): {
     'Coordinates': [683, 530],
     'Connections': [
-      (('NC', '1', 'Treppe Mitte'), 2),
-      (('NC', '2', 'Treppe Mitte'), 2),
-      (('NC', '3', 'Treppe Mitte'), 2),
+      (('NC', '1', 'Treppe-Mitte'), 2),
+      (('NC', '2', 'Treppe-Mitte'), 2),
+      (('NC', '3', 'Treppe-Mitte'), 2),
       (('NC', '4', 'EN_24'), 35),
-      (('NC', '5', 'Treppe Mitte'), 2),
-      (('NC', '6', 'Treppe Mitte'), 2),
-      (('NC', '7', 'Treppe Mitte'), 2),
+      (('NC', '5', 'Treppe-Mitte'), 2),
+      (('NC', '6', 'Treppe-Mitte'), 2),
+      (('NC', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NC', '4', 'Treppe Nord'): {
+  ('NC', '4', 'Treppe-Nord'): {
     'Coordinates': [343, 329],
     'Connections': [
-      (('NC', '1', 'Treppe Nord'), 2),
-      (('NC', '2', 'Treppe Nord'), 2),
-      (('NC', '3', 'Treppe Nord'), 2),
+      (('NC', '1', 'Treppe-Nord'), 2),
+      (('NC', '2', 'Treppe-Nord'), 2),
+      (('NC', '3', 'Treppe-Nord'), 2),
       (('NC', '4', 'EN_8'), 49),
-      (('NC', '5', 'Treppe Nord'), 2),
-      (('NC', '6', 'Treppe Nord'), 2),
-      (('NC', '7', 'Treppe Nord'), 2),
+      (('NC', '5', 'Treppe-Nord'), 2),
+      (('NC', '6', 'Treppe-Nord'), 2),
+      (('NC', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NC', '4', 'Treppe Süd'): {
+  ('NC', '4', 'Treppe-Süd'): {
     'Coordinates': [879, 880],
     'Connections': [
-      (('NC', '1', 'Treppe Süd'), 2),
-      (('NC', '2', 'Treppe Süd'), 2),
-      (('NC', '3', 'Treppe Süd'), 2),
+      (('NC', '1', 'Treppe-Süd'), 2),
+      (('NC', '2', 'Treppe-Süd'), 2),
+      (('NC', '3', 'Treppe-Süd'), 2),
       (('NC', '4', 'EN_30'), 47),
-      (('NC', '5', 'Treppe Süd'), 2),
-      (('NC', '6', 'Treppe Süd'), 2),
-      (('NC', '7', 'Treppe Süd'), 2),
+      (('NC', '5', 'Treppe-Süd'), 2),
+      (('NC', '6', 'Treppe-Süd'), 2),
+      (('NC', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NC', '5', '102'): {
@@ -72975,28 +72975,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '5', 'EN_33'), 45),
     ],
   },
-  ('NC', '5', 'Aufzug Nord'): {
+  ('NC', '5', 'Aufzug-Nord'): {
     'Coordinates': [396, 384],
     'Connections': [
-      (('NC', '1', 'Aufzug Nord'), 1),
-      (('NC', '2', 'Aufzug Nord'), 1),
-      (('NC', '3', 'Aufzug Nord'), 1),
-      (('NC', '4', 'Aufzug Nord'), 1),
+      (('NC', '1', 'Aufzug-Nord'), 1),
+      (('NC', '2', 'Aufzug-Nord'), 1),
+      (('NC', '3', 'Aufzug-Nord'), 1),
+      (('NC', '4', 'Aufzug-Nord'), 1),
       (('NC', '5', 'EN_51'), 48),
-      (('NC', '6', 'Aufzug Nord'), 1),
-      (('NC', '7', 'Aufzug Nord'), 1),
+      (('NC', '6', 'Aufzug-Nord'), 1),
+      (('NC', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NC', '5', 'Aufzug Süd'): {
+  ('NC', '5', 'Aufzug-Süd'): {
     'Coordinates': [812, 811],
     'Connections': [
-      (('NC', '1', 'Aufzug Süd'), 1),
-      (('NC', '2', 'Aufzug Süd'), 1),
-      (('NC', '3', 'Aufzug Süd'), 1),
-      (('NC', '4', 'Aufzug Süd'), 1),
+      (('NC', '1', 'Aufzug-Süd'), 1),
+      (('NC', '2', 'Aufzug-Süd'), 1),
+      (('NC', '3', 'Aufzug-Süd'), 1),
+      (('NC', '4', 'Aufzug-Süd'), 1),
       (('NC', '5', 'EN_14'), 46),
-      (('NC', '6', 'Aufzug Süd'), 1),
-      (('NC', '7', 'Aufzug Süd'), 1),
+      (('NC', '6', 'Aufzug-Süd'), 1),
+      (('NC', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NC', '5', 'EN_0'): {
@@ -73051,10 +73051,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '5', 'EN_14'): {
     'Coordinates': [845, 843],
     'Connections': [
-      (('NC', '5', 'Aufzug Süd'), 46),
+      (('NC', '5', 'Aufzug-Süd'), 46),
       (('NC', '5', 'EN_16'), 25),
       (('NC', '5', 'EN_2'), 29),
-      (('NC', '5', 'Treppe Süd'), 54),
+      (('NC', '5', 'Treppe-Süd'), 54),
     ],
   },
   ('NC', '5', 'EN_16'): {
@@ -73232,7 +73232,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('NC', '5', 'EN_32'), 44),
       (('NC', '5', 'EN_33'), 35),
-      (('NC', '5', 'Treppe Mitte'), 42),
+      (('NC', '5', 'Treppe-Mitte'), 42),
     ],
   },
   ('NC', '5', 'EN_36'): {
@@ -73358,10 +73358,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '5', 'EN_51'): {
     'Coordinates': [360, 352],
     'Connections': [
-      (('NC', '5', 'Aufzug Nord'), 48),
+      (('NC', '5', 'Aufzug-Nord'), 48),
       (('NC', '5', 'EN_0'), 27),
       (('NC', '5', 'EN_50'), 30),
-      (('NC', '5', 'Treppe Nord'), 43),
+      (('NC', '5', 'Treppe-Nord'), 43),
     ],
   },
   ('NC', '5', 'EN_52'): {
@@ -73451,40 +73451,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '5', 'EN_8'), 33),
     ],
   },
-  ('NC', '5', 'Treppe Mitte'): {
+  ('NC', '5', 'Treppe-Mitte'): {
     'Coordinates': [679, 528],
     'Connections': [
-      (('NC', '1', 'Treppe Mitte'), 2),
-      (('NC', '2', 'Treppe Mitte'), 2),
-      (('NC', '3', 'Treppe Mitte'), 2),
-      (('NC', '4', 'Treppe Mitte'), 2),
+      (('NC', '1', 'Treppe-Mitte'), 2),
+      (('NC', '2', 'Treppe-Mitte'), 2),
+      (('NC', '3', 'Treppe-Mitte'), 2),
+      (('NC', '4', 'Treppe-Mitte'), 2),
       (('NC', '5', 'EN_35'), 42),
-      (('NC', '6', 'Treppe Mitte'), 2),
-      (('NC', '7', 'Treppe Mitte'), 2),
+      (('NC', '6', 'Treppe-Mitte'), 2),
+      (('NC', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NC', '5', 'Treppe Nord'): {
+  ('NC', '5', 'Treppe-Nord'): {
     'Coordinates': [328, 323],
     'Connections': [
-      (('NC', '1', 'Treppe Nord'), 2),
-      (('NC', '2', 'Treppe Nord'), 2),
-      (('NC', '3', 'Treppe Nord'), 2),
-      (('NC', '4', 'Treppe Nord'), 2),
+      (('NC', '1', 'Treppe-Nord'), 2),
+      (('NC', '2', 'Treppe-Nord'), 2),
+      (('NC', '3', 'Treppe-Nord'), 2),
+      (('NC', '4', 'Treppe-Nord'), 2),
       (('NC', '5', 'EN_51'), 43),
-      (('NC', '6', 'Treppe Nord'), 2),
-      (('NC', '7', 'Treppe Nord'), 2),
+      (('NC', '6', 'Treppe-Nord'), 2),
+      (('NC', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NC', '5', 'Treppe Süd'): {
+  ('NC', '5', 'Treppe-Süd'): {
     'Coordinates': [883, 881],
     'Connections': [
-      (('NC', '1', 'Treppe Süd'), 2),
-      (('NC', '2', 'Treppe Süd'), 2),
-      (('NC', '3', 'Treppe Süd'), 2),
-      (('NC', '4', 'Treppe Süd'), 2),
+      (('NC', '1', 'Treppe-Süd'), 2),
+      (('NC', '2', 'Treppe-Süd'), 2),
+      (('NC', '3', 'Treppe-Süd'), 2),
+      (('NC', '4', 'Treppe-Süd'), 2),
       (('NC', '5', 'EN_14'), 54),
-      (('NC', '6', 'Treppe Süd'), 2),
-      (('NC', '7', 'Treppe Süd'), 2),
+      (('NC', '6', 'Treppe-Süd'), 2),
+      (('NC', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NC', '6', '1'): {
@@ -73960,28 +73960,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '6', 'EN_37'), 19),
     ],
   },
-  ('NC', '6', 'Aufzug Nord'): {
+  ('NC', '6', 'Aufzug-Nord'): {
     'Coordinates': [403, 388],
     'Connections': [
-      (('NC', '1', 'Aufzug Nord'), 1),
-      (('NC', '2', 'Aufzug Nord'), 1),
-      (('NC', '3', 'Aufzug Nord'), 1),
-      (('NC', '4', 'Aufzug Nord'), 1),
-      (('NC', '5', 'Aufzug Nord'), 1),
+      (('NC', '1', 'Aufzug-Nord'), 1),
+      (('NC', '2', 'Aufzug-Nord'), 1),
+      (('NC', '3', 'Aufzug-Nord'), 1),
+      (('NC', '4', 'Aufzug-Nord'), 1),
+      (('NC', '5', 'Aufzug-Nord'), 1),
       (('NC', '6', 'EN_53'), 43),
-      (('NC', '7', 'Aufzug Nord'), 1),
+      (('NC', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('NC', '6', 'Aufzug Süd'): {
+  ('NC', '6', 'Aufzug-Süd'): {
     'Coordinates': [828, 811],
     'Connections': [
-      (('NC', '1', 'Aufzug Süd'), 1),
-      (('NC', '2', 'Aufzug Süd'), 1),
-      (('NC', '3', 'Aufzug Süd'), 1),
-      (('NC', '4', 'Aufzug Süd'), 1),
-      (('NC', '5', 'Aufzug Süd'), 1),
+      (('NC', '1', 'Aufzug-Süd'), 1),
+      (('NC', '2', 'Aufzug-Süd'), 1),
+      (('NC', '3', 'Aufzug-Süd'), 1),
+      (('NC', '4', 'Aufzug-Süd'), 1),
+      (('NC', '5', 'Aufzug-Süd'), 1),
       (('NC', '6', 'EN_24'), 45),
-      (('NC', '7', 'Aufzug Süd'), 1),
+      (('NC', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('NC', '6', 'EN_0'): {
@@ -74116,10 +74116,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '6', 'EN_24'): {
     'Coordinates': [861, 842],
     'Connections': [
-      (('NC', '6', 'Aufzug Süd'), 45),
+      (('NC', '6', 'Aufzug-Süd'), 45),
       (('NC', '6', 'EN_23'), 28),
       (('NC', '6', 'EN_25'), 19),
-      (('NC', '6', 'Treppe Süd'), 45),
+      (('NC', '6', 'Treppe-Süd'), 45),
     ],
   },
   ('NC', '6', 'EN_25'): {
@@ -74230,7 +74230,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '6', '99'), 19),
       (('NC', '6', 'EN_36'), 82),
       (('NC', '6', 'EN_38'), 47),
-      (('NC', '6', 'Treppe Mitte'), 47),
+      (('NC', '6', 'Treppe-Mitte'), 47),
     ],
   },
   ('NC', '6', 'EN_38'): {
@@ -74375,10 +74375,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '6', 'EN_53'): {
     'Coordinates': [374, 356],
     'Connections': [
-      (('NC', '6', 'Aufzug Nord'), 43),
+      (('NC', '6', 'Aufzug-Nord'), 43),
       (('NC', '6', 'EN_52'), 35),
       (('NC', '6', 'EN_54'), 15),
-      (('NC', '6', 'Treppe Nord'), 46),
+      (('NC', '6', 'Treppe-Nord'), 46),
     ],
   },
   ('NC', '6', 'EN_54'): {
@@ -74527,40 +74527,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '6', 'EN_7'), 45),
     ],
   },
-  ('NC', '6', 'Treppe Mitte'): {
+  ('NC', '6', 'Treppe-Mitte'): {
     'Coordinates': [679, 522],
     'Connections': [
-      (('NC', '1', 'Treppe Mitte'), 2),
-      (('NC', '2', 'Treppe Mitte'), 2),
-      (('NC', '3', 'Treppe Mitte'), 2),
-      (('NC', '4', 'Treppe Mitte'), 2),
-      (('NC', '5', 'Treppe Mitte'), 2),
+      (('NC', '1', 'Treppe-Mitte'), 2),
+      (('NC', '2', 'Treppe-Mitte'), 2),
+      (('NC', '3', 'Treppe-Mitte'), 2),
+      (('NC', '4', 'Treppe-Mitte'), 2),
+      (('NC', '5', 'Treppe-Mitte'), 2),
       (('NC', '6', 'EN_37'), 47),
-      (('NC', '7', 'Treppe Mitte'), 2),
+      (('NC', '7', 'Treppe-Mitte'), 2),
     ],
   },
-  ('NC', '6', 'Treppe Nord'): {
+  ('NC', '6', 'Treppe-Nord'): {
     'Coordinates': [339, 326],
     'Connections': [
-      (('NC', '1', 'Treppe Nord'), 2),
-      (('NC', '2', 'Treppe Nord'), 2),
-      (('NC', '3', 'Treppe Nord'), 2),
-      (('NC', '4', 'Treppe Nord'), 2),
-      (('NC', '5', 'Treppe Nord'), 2),
+      (('NC', '1', 'Treppe-Nord'), 2),
+      (('NC', '2', 'Treppe-Nord'), 2),
+      (('NC', '3', 'Treppe-Nord'), 2),
+      (('NC', '4', 'Treppe-Nord'), 2),
+      (('NC', '5', 'Treppe-Nord'), 2),
       (('NC', '6', 'EN_53'), 46),
-      (('NC', '7', 'Treppe Nord'), 2),
+      (('NC', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('NC', '6', 'Treppe Süd'): {
+  ('NC', '6', 'Treppe-Süd'): {
     'Coordinates': [893, 874],
     'Connections': [
-      (('NC', '1', 'Treppe Süd'), 2),
-      (('NC', '2', 'Treppe Süd'), 2),
-      (('NC', '3', 'Treppe Süd'), 2),
-      (('NC', '4', 'Treppe Süd'), 2),
-      (('NC', '5', 'Treppe Süd'), 2),
+      (('NC', '1', 'Treppe-Süd'), 2),
+      (('NC', '2', 'Treppe-Süd'), 2),
+      (('NC', '3', 'Treppe-Süd'), 2),
+      (('NC', '4', 'Treppe-Süd'), 2),
+      (('NC', '5', 'Treppe-Süd'), 2),
       (('NC', '6', 'EN_24'), 45),
-      (('NC', '7', 'Treppe Süd'), 2),
+      (('NC', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('NC', '7', '1'): {
@@ -74973,27 +74973,27 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '7', 'EN_45'), 15),
     ],
   },
-  ('NC', '7', 'Aufzug Nord'): {
+  ('NC', '7', 'Aufzug-Nord'): {
     'Coordinates': [398, 382],
     'Connections': [
-      (('NC', '1', 'Aufzug Nord'), 1),
-      (('NC', '2', 'Aufzug Nord'), 1),
-      (('NC', '3', 'Aufzug Nord'), 1),
-      (('NC', '4', 'Aufzug Nord'), 1),
-      (('NC', '5', 'Aufzug Nord'), 1),
-      (('NC', '6', 'Aufzug Nord'), 1),
+      (('NC', '1', 'Aufzug-Nord'), 1),
+      (('NC', '2', 'Aufzug-Nord'), 1),
+      (('NC', '3', 'Aufzug-Nord'), 1),
+      (('NC', '4', 'Aufzug-Nord'), 1),
+      (('NC', '5', 'Aufzug-Nord'), 1),
+      (('NC', '6', 'Aufzug-Nord'), 1),
       (('NC', '7', 'EN_78'), 42),
     ],
   },
-  ('NC', '7', 'Aufzug Süd'): {
+  ('NC', '7', 'Aufzug-Süd'): {
     'Coordinates': [817, 819],
     'Connections': [
-      (('NC', '1', 'Aufzug Süd'), 1),
-      (('NC', '2', 'Aufzug Süd'), 1),
-      (('NC', '3', 'Aufzug Süd'), 1),
-      (('NC', '4', 'Aufzug Süd'), 1),
-      (('NC', '5', 'Aufzug Süd'), 1),
-      (('NC', '6', 'Aufzug Süd'), 1),
+      (('NC', '1', 'Aufzug-Süd'), 1),
+      (('NC', '2', 'Aufzug-Süd'), 1),
+      (('NC', '3', 'Aufzug-Süd'), 1),
+      (('NC', '4', 'Aufzug-Süd'), 1),
+      (('NC', '5', 'Aufzug-Süd'), 1),
+      (('NC', '6', 'Aufzug-Süd'), 1),
       (('NC', '7', 'EN_2'), 44),
     ],
   },
@@ -75072,10 +75072,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '7', 'EN_2'): {
     'Coordinates': [846, 852],
     'Connections': [
-      (('NC', '7', 'Aufzug Süd'), 44),
+      (('NC', '7', 'Aufzug-Süd'), 44),
       (('NC', '7', 'EN_22'), 60),
       (('NC', '7', 'EN_30'), 56),
-      (('NC', '7', 'Treppe Süd'), 45),
+      (('NC', '7', 'Treppe-Süd'), 45),
     ],
   },
   ('NC', '7', 'EN_20'): {
@@ -75250,7 +75250,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '7', '97'), 18),
       (('NC', '7', 'EN_42'), 36),
       (('NC', '7', 'EN_45'), 46),
-      (('NC', '7', 'Treppe Mitte'), 42),
+      (('NC', '7', 'Treppe-Mitte'), 42),
     ],
   },
   ('NC', '7', 'EN_45'): {
@@ -75259,7 +75259,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '7', '97b'), 15),
       (('NC', '7', 'EN_43'), 46),
       (('NC', '7', 'EN_49'), 55),
-      (('NC', '7', 'Treppe Mitte'), 42),
+      (('NC', '7', 'Treppe-Mitte'), 42),
     ],
   },
   ('NC', '7', 'EN_47'): {
@@ -75513,10 +75513,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('NC', '7', 'EN_78'): {
     'Coordinates': [369, 351],
     'Connections': [
-      (('NC', '7', 'Aufzug Nord'), 42),
+      (('NC', '7', 'Aufzug-Nord'), 42),
       (('NC', '7', 'EN_77'), 21),
       (('NC', '7', 'EN_79'), 29),
-      (('NC', '7', 'Treppe Nord'), 45),
+      (('NC', '7', 'Treppe-Nord'), 45),
     ],
   },
   ('NC', '7', 'EN_79'): {
@@ -75550,40 +75550,40 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('NC', '7', 'EN_80'), 21),
     ],
   },
-  ('NC', '7', 'Treppe Mitte'): {
+  ('NC', '7', 'Treppe-Mitte'): {
     'Coordinates': [672, 523],
     'Connections': [
-      (('NC', '1', 'Treppe Mitte'), 2),
-      (('NC', '2', 'Treppe Mitte'), 2),
-      (('NC', '3', 'Treppe Mitte'), 2),
-      (('NC', '4', 'Treppe Mitte'), 2),
-      (('NC', '5', 'Treppe Mitte'), 2),
-      (('NC', '6', 'Treppe Mitte'), 2),
+      (('NC', '1', 'Treppe-Mitte'), 2),
+      (('NC', '2', 'Treppe-Mitte'), 2),
+      (('NC', '3', 'Treppe-Mitte'), 2),
+      (('NC', '4', 'Treppe-Mitte'), 2),
+      (('NC', '5', 'Treppe-Mitte'), 2),
+      (('NC', '6', 'Treppe-Mitte'), 2),
       (('NC', '7', 'EN_43'), 42),
       (('NC', '7', 'EN_45'), 42),
     ],
   },
-  ('NC', '7', 'Treppe Nord'): {
+  ('NC', '7', 'Treppe-Nord'): {
     'Coordinates': [338, 319],
     'Connections': [
-      (('NC', '1', 'Treppe Nord'), 2),
-      (('NC', '2', 'Treppe Nord'), 2),
-      (('NC', '3', 'Treppe Nord'), 2),
-      (('NC', '4', 'Treppe Nord'), 2),
-      (('NC', '5', 'Treppe Nord'), 2),
-      (('NC', '6', 'Treppe Nord'), 2),
+      (('NC', '1', 'Treppe-Nord'), 2),
+      (('NC', '2', 'Treppe-Nord'), 2),
+      (('NC', '3', 'Treppe-Nord'), 2),
+      (('NC', '4', 'Treppe-Nord'), 2),
+      (('NC', '5', 'Treppe-Nord'), 2),
+      (('NC', '6', 'Treppe-Nord'), 2),
       (('NC', '7', 'EN_78'), 45),
     ],
   },
-  ('NC', '7', 'Treppe Süd'): {
+  ('NC', '7', 'Treppe-Süd'): {
     'Coordinates': [879, 882],
     'Connections': [
-      (('NC', '1', 'Treppe Süd'), 2),
-      (('NC', '2', 'Treppe Süd'), 2),
-      (('NC', '3', 'Treppe Süd'), 2),
-      (('NC', '4', 'Treppe Süd'), 2),
-      (('NC', '5', 'Treppe Süd'), 2),
-      (('NC', '6', 'Treppe Süd'), 2),
+      (('NC', '1', 'Treppe-Süd'), 2),
+      (('NC', '2', 'Treppe-Süd'), 2),
+      (('NC', '3', 'Treppe-Süd'), 2),
+      (('NC', '4', 'Treppe-Süd'), 2),
+      (('NC', '5', 'Treppe-Süd'), 2),
+      (('NC', '6', 'Treppe-Süd'), 2),
       (('NC', '7', 'EN_2'), 45),
     ],
   },
@@ -75840,33 +75840,33 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '04', 'EN_20'), 47),
     ],
   },
-  ('ND', '04', 'Aufzug Nord'): {
+  ('ND', '04', 'Aufzug-Nord'): {
     'Coordinates': [490, 520],
     'Connections': [
       (('ND', '04', 'EN_345'), 35),
-      (('ND', '05', 'Aufzug Nord'), 1),
-      (('ND', '1', 'Aufzug Nord'), 1),
-      (('ND', '2', 'Aufzug Nord'), 1),
-      (('ND', '3', 'Aufzug Nord'), 1),
-      (('ND', '4', 'Aufzug Nord'), 1),
-      (('ND', '5', 'Aufzug Nord'), 1),
-      (('ND', '6', 'Aufzug Nord'), 1),
-      (('ND', '7', 'Aufzug Nord'), 1),
+      (('ND', '05', 'Aufzug-Nord'), 1),
+      (('ND', '1', 'Aufzug-Nord'), 1),
+      (('ND', '2', 'Aufzug-Nord'), 1),
+      (('ND', '3', 'Aufzug-Nord'), 1),
+      (('ND', '4', 'Aufzug-Nord'), 1),
+      (('ND', '5', 'Aufzug-Nord'), 1),
+      (('ND', '6', 'Aufzug-Nord'), 1),
+      (('ND', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('ND', '04', 'Aufzug Süd'): {
+  ('ND', '04', 'Aufzug-Süd'): {
     'Coordinates': [796, 841],
     'Connections': [
       (('ND', '04', 'EN_324'), 43),
-      (('ND', '05', 'Aufzug Süd'), 1),
-      (('ND', '06', 'Aufzug Süd'), 1),
-      (('ND', '1', 'Aufzug Süd'), 1),
-      (('ND', '2', 'Aufzug Süd'), 1),
-      (('ND', '3', 'Aufzug Süd'), 1),
-      (('ND', '4', 'Aufzug Süd'), 1),
-      (('ND', '5', 'Aufzug Süd'), 1),
-      (('ND', '6', 'Aufzug Süd'), 1),
-      (('ND', '7', 'Aufzug Süd'), 1),
+      (('ND', '05', 'Aufzug-Süd'), 1),
+      (('ND', '06', 'Aufzug-Süd'), 1),
+      (('ND', '1', 'Aufzug-Süd'), 1),
+      (('ND', '2', 'Aufzug-Süd'), 1),
+      (('ND', '3', 'Aufzug-Süd'), 1),
+      (('ND', '4', 'Aufzug-Süd'), 1),
+      (('ND', '5', 'Aufzug-Süd'), 1),
+      (('ND', '6', 'Aufzug-Süd'), 1),
+      (('ND', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('ND', '04', 'EN_0'): {
@@ -76057,10 +76057,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '04', 'EN_324'): {
     'Coordinates': [829, 869],
     'Connections': [
-      (('ND', '04', 'Aufzug Süd'), 43),
+      (('ND', '04', 'Aufzug-Süd'), 43),
       (('ND', '04', 'EN_8'), 35),
       (('ND', '04', 'EN_9'), 31),
-      (('ND', '04', 'Treppe Süd'), 36),
+      (('ND', '04', 'Treppe-Süd'), 36),
     ],
   },
   ('ND', '04', 'EN_33'): {
@@ -76068,7 +76068,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '04', 'EN_32'), 50),
       (('ND', '04', 'EN_34'), 35),
-      (('ND', '04', 'Eingang ND Süd-2'), 73),
+      (('ND', '04', 'Eingang-ND-Süd-2'), 73),
     ],
   },
   ('ND', '04', 'EN_34'): {
@@ -76081,10 +76081,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '04', 'EN_345'): {
     'Coordinates': [464, 497],
     'Connections': [
-      (('ND', '04', 'Aufzug Nord'), 35),
+      (('ND', '04', 'Aufzug-Nord'), 35),
       (('ND', '04', 'EN_31'), 28),
       (('ND', '04', 'EN_32'), 33),
-      (('ND', '04', 'Treppe Nord'), 50),
+      (('ND', '04', 'Treppe-Nord'), 50),
     ],
   },
   ('ND', '04', 'EN_35'): {
@@ -76124,7 +76124,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [511, 426],
     'Connections': [
       (('ND', '04', 'EN_29'), 33),
-      (('ND', '04', 'Eingang ND Süd-1'), 53),
+      (('ND', '04', 'Eingang-ND-Süd-1'), 53),
     ],
   },
   ('ND', '04', 'EN_4'): {
@@ -76176,47 +76176,47 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '04', 'EN_324'), 31),
     ],
   },
-  ('ND', '04', 'Eingang ND Süd-1'): {
+  ('ND', '04', 'Eingang-ND-Süd-1'): {
     'Coordinates': [468, 395],
     'Connections': [
       (('ND', '04', 'EN_39'), 53),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ND', '04', 'Eingang ND Süd-2'): {
+  ('ND', '04', 'Eingang-ND-Süd-2'): {
     'Coordinates': [340, 513],
     'Connections': [
       (('ND', '04', 'EN_33'), 73),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ND', '04', 'Treppe Nord'): {
+  ('ND', '04', 'Treppe-Nord'): {
     'Coordinates': [429, 461],
     'Connections': [
       (('ND', '04', 'EN_345'), 50),
-      (('ND', '05', 'Treppe Nord'), 2),
-      (('ND', '1', 'Treppe Nord'), 2),
-      (('ND', '2', 'Treppe Nord'), 2),
-      (('ND', '3', 'Treppe Nord'), 2),
-      (('ND', '4', 'Treppe Nord'), 2),
-      (('ND', '5', 'Treppe Nord'), 2),
-      (('ND', '6', 'Treppe Nord'), 2),
-      (('ND', '7', 'Treppe Nord'), 2),
+      (('ND', '05', 'Treppe-Nord'), 2),
+      (('ND', '1', 'Treppe-Nord'), 2),
+      (('ND', '2', 'Treppe-Nord'), 2),
+      (('ND', '3', 'Treppe-Nord'), 2),
+      (('ND', '4', 'Treppe-Nord'), 2),
+      (('ND', '5', 'Treppe-Nord'), 2),
+      (('ND', '6', 'Treppe-Nord'), 2),
+      (('ND', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('ND', '04', 'Treppe Süd'): {
+  ('ND', '04', 'Treppe-Süd'): {
     'Coordinates': [860, 888],
     'Connections': [
       (('ND', '04', 'EN_324'), 36),
-      (('ND', '05', 'Treppe Süd'), 2),
-      (('ND', '06', 'Treppe Süd'), 2),
-      (('ND', '1', 'Treppe Süd'), 2),
-      (('ND', '2', 'Treppe Süd'), 2),
-      (('ND', '3', 'Treppe Süd'), 2),
-      (('ND', '4', 'Treppe Süd'), 2),
-      (('ND', '5', 'Treppe Süd'), 2),
-      (('ND', '6', 'Treppe Süd'), 2),
-      (('ND', '7', 'Treppe Süd'), 2),
+      (('ND', '05', 'Treppe-Süd'), 2),
+      (('ND', '06', 'Treppe-Süd'), 2),
+      (('ND', '1', 'Treppe-Süd'), 2),
+      (('ND', '2', 'Treppe-Süd'), 2),
+      (('ND', '3', 'Treppe-Süd'), 2),
+      (('ND', '4', 'Treppe-Süd'), 2),
+      (('ND', '5', 'Treppe-Süd'), 2),
+      (('ND', '6', 'Treppe-Süd'), 2),
+      (('ND', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('ND', '04', 'Treppenhaus-95'): {
@@ -76605,33 +76605,33 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '05', 'EN_67'), 35),
     ],
   },
-  ('ND', '05', 'Aufzug Nord'): {
+  ('ND', '05', 'Aufzug-Nord'): {
     'Coordinates': [778, 784],
     'Connections': [
-      (('ND', '04', 'Aufzug Nord'), 1),
+      (('ND', '04', 'Aufzug-Nord'), 1),
       (('ND', '05', 'EN_26'), 70),
-      (('ND', '1', 'Aufzug Nord'), 1),
-      (('ND', '2', 'Aufzug Nord'), 1),
-      (('ND', '3', 'Aufzug Nord'), 1),
-      (('ND', '4', 'Aufzug Nord'), 1),
-      (('ND', '5', 'Aufzug Nord'), 1),
-      (('ND', '6', 'Aufzug Nord'), 1),
-      (('ND', '7', 'Aufzug Nord'), 1),
+      (('ND', '1', 'Aufzug-Nord'), 1),
+      (('ND', '2', 'Aufzug-Nord'), 1),
+      (('ND', '3', 'Aufzug-Nord'), 1),
+      (('ND', '4', 'Aufzug-Nord'), 1),
+      (('ND', '5', 'Aufzug-Nord'), 1),
+      (('ND', '6', 'Aufzug-Nord'), 1),
+      (('ND', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('ND', '05', 'Aufzug Süd'): {
+  ('ND', '05', 'Aufzug-Süd'): {
     'Coordinates': [480, 483],
     'Connections': [
-      (('ND', '04', 'Aufzug Süd'), 1),
+      (('ND', '04', 'Aufzug-Süd'), 1),
       (('ND', '05', 'EN_33'), 43),
-      (('ND', '06', 'Aufzug Süd'), 1),
-      (('ND', '1', 'Aufzug Süd'), 1),
-      (('ND', '2', 'Aufzug Süd'), 1),
-      (('ND', '3', 'Aufzug Süd'), 1),
-      (('ND', '4', 'Aufzug Süd'), 1),
-      (('ND', '5', 'Aufzug Süd'), 1),
-      (('ND', '6', 'Aufzug Süd'), 1),
-      (('ND', '7', 'Aufzug Süd'), 1),
+      (('ND', '06', 'Aufzug-Süd'), 1),
+      (('ND', '1', 'Aufzug-Süd'), 1),
+      (('ND', '2', 'Aufzug-Süd'), 1),
+      (('ND', '3', 'Aufzug-Süd'), 1),
+      (('ND', '4', 'Aufzug-Süd'), 1),
+      (('ND', '5', 'Aufzug-Süd'), 1),
+      (('ND', '6', 'Aufzug-Süd'), 1),
+      (('ND', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('ND', '05', 'Brücke-zu-NI'): {
@@ -76774,11 +76774,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '05', 'EN_26'): {
     'Coordinates': [829, 832],
     'Connections': [
-      (('ND', '05', 'Aufzug Nord'), 70),
+      (('ND', '05', 'Aufzug-Nord'), 70),
       (('ND', '05', 'EN_22'), 31),
       (('ND', '05', 'EN_23'), 25),
-      (('ND', '05', 'Treppe Nord'), 45),
-      (('ND', '05', 'WC Nord'), 20),
+      (('ND', '05', 'Treppe-Nord'), 45),
+      (('ND', '05', 'WC-Nord'), 20),
     ],
   },
   ('ND', '05', 'EN_27'): {
@@ -76838,11 +76838,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '05', 'EN_33'): {
     'Coordinates': [450, 452],
     'Connections': [
-      (('ND', '05', 'Aufzug Süd'), 43),
+      (('ND', '05', 'Aufzug-Süd'), 43),
       (('ND', '05', 'EN_32'), 42),
       (('ND', '05', 'EN_34'), 31),
-      (('ND', '05', 'Treppe Süd'), 57),
-      (('ND', '05', 'WC Süd'), 22),
+      (('ND', '05', 'Treppe-Süd'), 57),
+      (('ND', '05', 'WC-Süd'), 22),
     ],
   },
   ('ND', '05', 'EN_34'): {
@@ -77050,7 +77050,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '05', 'EN_11'), 155),
       (('ND', '05', 'EN_7'), 55),
-      (('ND', '05', 'Eingang Nord'), 28),
+      (('ND', '05', 'Eingang-Nord'), 28),
     ],
   },
   ('ND', '05', 'EN_60'): {
@@ -77181,49 +77181,49 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '05', 'EN_8'), 22),
     ],
   },
-  ('ND', '05', 'Eingang Nord'): {
+  ('ND', '05', 'Eingang-Nord'): {
     'Coordinates': [1197, 999],
     'Connections': [
       (('ND', '05', 'EN_6'), 28),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ND', '05', 'Treppe Nord'): {
+  ('ND', '05', 'Treppe-Nord'): {
     'Coordinates': [861, 864],
     'Connections': [
-      (('ND', '04', 'Treppe Nord'), 2),
+      (('ND', '04', 'Treppe-Nord'), 2),
       (('ND', '05', 'EN_26'), 45),
-      (('ND', '1', 'Treppe Nord'), 2),
-      (('ND', '2', 'Treppe Nord'), 2),
-      (('ND', '3', 'Treppe Nord'), 2),
-      (('ND', '4', 'Treppe Nord'), 2),
-      (('ND', '5', 'Treppe Nord'), 2),
-      (('ND', '6', 'Treppe Nord'), 2),
-      (('ND', '7', 'Treppe Nord'), 2),
+      (('ND', '1', 'Treppe-Nord'), 2),
+      (('ND', '2', 'Treppe-Nord'), 2),
+      (('ND', '3', 'Treppe-Nord'), 2),
+      (('ND', '4', 'Treppe-Nord'), 2),
+      (('ND', '5', 'Treppe-Nord'), 2),
+      (('ND', '6', 'Treppe-Nord'), 2),
+      (('ND', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('ND', '05', 'Treppe Süd'): {
+  ('ND', '05', 'Treppe-Süd'): {
     'Coordinates': [410, 411],
     'Connections': [
-      (('ND', '04', 'Treppe Süd'), 2),
+      (('ND', '04', 'Treppe-Süd'), 2),
       (('ND', '05', 'EN_33'), 57),
-      (('ND', '06', 'Treppe Süd'), 2),
-      (('ND', '1', 'Treppe Süd'), 2),
-      (('ND', '2', 'Treppe Süd'), 2),
-      (('ND', '3', 'Treppe Süd'), 2),
-      (('ND', '4', 'Treppe Süd'), 2),
-      (('ND', '5', 'Treppe Süd'), 2),
-      (('ND', '6', 'Treppe Süd'), 2),
-      (('ND', '7', 'Treppe Süd'), 2),
+      (('ND', '06', 'Treppe-Süd'), 2),
+      (('ND', '1', 'Treppe-Süd'), 2),
+      (('ND', '2', 'Treppe-Süd'), 2),
+      (('ND', '3', 'Treppe-Süd'), 2),
+      (('ND', '4', 'Treppe-Süd'), 2),
+      (('ND', '5', 'Treppe-Süd'), 2),
+      (('ND', '6', 'Treppe-Süd'), 2),
+      (('ND', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('ND', '05', 'WC Nord'): {
+  ('ND', '05', 'WC-Nord'): {
     'Coordinates': [842, 847],
     'Connections': [
       (('ND', '05', 'EN_26'), 20),
     ],
   },
-  ('ND', '05', 'WC Süd'): {
+  ('ND', '05', 'WC-Süd'): {
     'Coordinates': [437, 434],
     'Connections': [
       (('ND', '05', 'EN_33'), 22),
@@ -77290,19 +77290,19 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '06', 'EN_4'), 38),
     ],
   },
-  ('ND', '06', 'Aufzug Süd'): {
+  ('ND', '06', 'Aufzug-Süd'): {
     'Coordinates': [501, 490],
     'Connections': [
-      (('ND', '04', 'Aufzug Süd'), 1),
-      (('ND', '05', 'Aufzug Süd'), 1),
+      (('ND', '04', 'Aufzug-Süd'), 1),
+      (('ND', '05', 'Aufzug-Süd'), 1),
       (('ND', '06', 'EN_9'), 41),
-      (('ND', '1', 'Aufzug Süd'), 1),
-      (('ND', '2', 'Aufzug Süd'), 1),
-      (('ND', '3', 'Aufzug Süd'), 1),
-      (('ND', '4', 'Aufzug Süd'), 1),
-      (('ND', '5', 'Aufzug Süd'), 1),
-      (('ND', '6', 'Aufzug Süd'), 1),
-      (('ND', '7', 'Aufzug Süd'), 1),
+      (('ND', '1', 'Aufzug-Süd'), 1),
+      (('ND', '2', 'Aufzug-Süd'), 1),
+      (('ND', '3', 'Aufzug-Süd'), 1),
+      (('ND', '4', 'Aufzug-Süd'), 1),
+      (('ND', '5', 'Aufzug-Süd'), 1),
+      (('ND', '6', 'Aufzug-Süd'), 1),
+      (('ND', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('ND', '06', 'EN_0'): {
@@ -77310,7 +77310,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '06', 'EN_1'), 159),
       (('ND', '06', 'EN_3'), 329),
-      (('ND', '06', 'Eingang Nord Links'), 187),
+      (('ND', '06', 'Eingang-Nord-Links'), 187),
     ],
   },
   ('ND', '06', 'EN_1'): {
@@ -77318,7 +77318,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '06', 'EN_0'), 159),
       (('ND', '06', 'EN_2'), 311),
-      (('ND', '06', 'Eingang Nord Rechts'), 210),
+      (('ND', '06', 'Eingang-Nord-Rechts'), 210),
     ],
   },
   ('ND', '06', 'EN_10'): {
@@ -77456,7 +77456,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '06', 'EN_13'), 209),
       (('ND', '06', 'EN_8'), 268),
-      (('ND', '06', 'Eingang Süd Links'), 296),
+      (('ND', '06', 'Eingang-Süd-Links'), 296),
     ],
   },
   ('ND', '06', 'EN_8'): {
@@ -77464,63 +77464,63 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '06', 'EN_10'), 211),
       (('ND', '06', 'EN_7'), 268),
-      (('ND', '06', 'Eingang Süd Rechts'), 292),
+      (('ND', '06', 'Eingang-Süd-Rechts'), 292),
     ],
   },
   ('ND', '06', 'EN_9'): {
     'Coordinates': [472, 461],
     'Connections': [
-      (('ND', '06', 'Aufzug Süd'), 41),
+      (('ND', '06', 'Aufzug-Süd'), 41),
       (('ND', '06', 'EN_11'), 56),
       (('ND', '06', 'EN_12'), 45),
-      (('ND', '06', 'Treppe Süd'), 56),
-      (('ND', '06', 'WC Süd'), 18),
+      (('ND', '06', 'Treppe-Süd'), 56),
+      (('ND', '06', 'WC-Süd'), 18),
     ],
   },
-  ('ND', '06', 'Eingang Nord Links'): {
+  ('ND', '06', 'Eingang-Nord-Links'): {
     'Coordinates': [1028, 1126],
     'Connections': [
       (('ND', '06', 'EN_0'), 187),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ND', '06', 'Eingang Nord Rechts'): {
+  ('ND', '06', 'Eingang-Nord-Rechts'): {
     'Coordinates': [1149, 1025],
     'Connections': [
       (('ND', '06', 'EN_1'), 210),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ND', '06', 'Eingang Süd Links'): {
+  ('ND', '06', 'Eingang-Süd-Links'): {
     'Coordinates': [207, 9],
     'Connections': [
       (('ND', '06', 'EN_7'), 296),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ND', '06', 'Eingang Süd Rechts'): {
+  ('ND', '06', 'Eingang-Süd-Rechts'): {
     'Coordinates': [10, 203],
     'Connections': [
       (('ND', '06', 'EN_8'), 292),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ND', '06', 'Treppe Süd'): {
+  ('ND', '06', 'Treppe-Süd'): {
     'Coordinates': [434, 420],
     'Connections': [
-      (('ND', '04', 'Treppe Süd'), 2),
-      (('ND', '05', 'Treppe Süd'), 2),
+      (('ND', '04', 'Treppe-Süd'), 2),
+      (('ND', '05', 'Treppe-Süd'), 2),
       (('ND', '06', 'EN_9'), 56),
-      (('ND', '1', 'Treppe Süd'), 2),
-      (('ND', '2', 'Treppe Süd'), 2),
-      (('ND', '3', 'Treppe Süd'), 2),
-      (('ND', '4', 'Treppe Süd'), 2),
-      (('ND', '5', 'Treppe Süd'), 2),
-      (('ND', '6', 'Treppe Süd'), 2),
-      (('ND', '7', 'Treppe Süd'), 2),
+      (('ND', '1', 'Treppe-Süd'), 2),
+      (('ND', '2', 'Treppe-Süd'), 2),
+      (('ND', '3', 'Treppe-Süd'), 2),
+      (('ND', '4', 'Treppe-Süd'), 2),
+      (('ND', '5', 'Treppe-Süd'), 2),
+      (('ND', '6', 'Treppe-Süd'), 2),
+      (('ND', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('ND', '06', 'WC Süd'): {
+  ('ND', '06', 'WC-Süd'): {
     'Coordinates': [478, 444],
     'Connections': [
       (('ND', '06', 'EN_9'), 18),
@@ -77530,7 +77530,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [287, 268],
     'Connections': [
       (('ND', '07', 'EN_5'), 104),
-      (('ND', '07', 'Eingang Süd'), 229),
+      (('ND', '07', 'Eingang-Süd'), 229),
     ],
   },
   ('ND', '07', 'EN_0'): {
@@ -77538,7 +77538,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '07', 'EN_1'), 83),
       (('ND', '07', 'EN_4'), 89),
-      (('ND', '07', 'Eingang Nord'), 151),
+      (('ND', '07', 'Eingang-Nord'), 151),
     ],
   },
   ('ND', '07', 'EN_1'): {
@@ -77591,18 +77591,18 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '07', 'EN_5'), 89),
     ],
   },
-  ('ND', '07', 'Eingang Nord'): {
+  ('ND', '07', 'Eingang-Nord'): {
     'Coordinates': [1068, 1060],
     'Connections': [
       (('ND', '07', 'EN_0'), 151),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ND', '07', 'Eingang Süd'): {
+  ('ND', '07', 'Eingang-Süd'): {
     'Coordinates': [124, 107],
     'Connections': [
       (('ND', '07', '158'), 229),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
   ('ND', '1', '116'): {
@@ -77779,33 +77779,33 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '1', 'EN_18'), 64),
     ],
   },
-  ('ND', '1', 'Aufzug Nord'): {
+  ('ND', '1', 'Aufzug-Nord'): {
     'Coordinates': [802, 833],
     'Connections': [
-      (('ND', '04', 'Aufzug Nord'), 1),
-      (('ND', '05', 'Aufzug Nord'), 1),
+      (('ND', '04', 'Aufzug-Nord'), 1),
+      (('ND', '05', 'Aufzug-Nord'), 1),
       (('ND', '1', 'EN_42'), 59),
-      (('ND', '2', 'Aufzug Nord'), 1),
-      (('ND', '3', 'Aufzug Nord'), 1),
-      (('ND', '4', 'Aufzug Nord'), 1),
-      (('ND', '5', 'Aufzug Nord'), 1),
-      (('ND', '6', 'Aufzug Nord'), 1),
-      (('ND', '7', 'Aufzug Nord'), 1),
+      (('ND', '2', 'Aufzug-Nord'), 1),
+      (('ND', '3', 'Aufzug-Nord'), 1),
+      (('ND', '4', 'Aufzug-Nord'), 1),
+      (('ND', '5', 'Aufzug-Nord'), 1),
+      (('ND', '6', 'Aufzug-Nord'), 1),
+      (('ND', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('ND', '1', 'Aufzug Süd'): {
+  ('ND', '1', 'Aufzug-Süd'): {
     'Coordinates': [420, 428],
     'Connections': [
-      (('ND', '04', 'Aufzug Süd'), 1),
-      (('ND', '05', 'Aufzug Süd'), 1),
-      (('ND', '06', 'Aufzug Süd'), 1),
+      (('ND', '04', 'Aufzug-Süd'), 1),
+      (('ND', '05', 'Aufzug-Süd'), 1),
+      (('ND', '06', 'Aufzug-Süd'), 1),
       (('ND', '1', 'EN_16'), 52),
-      (('ND', '2', 'Aufzug Süd'), 1),
-      (('ND', '3', 'Aufzug Süd'), 1),
-      (('ND', '4', 'Aufzug Süd'), 1),
-      (('ND', '5', 'Aufzug Süd'), 1),
-      (('ND', '6', 'Aufzug Süd'), 1),
-      (('ND', '7', 'Aufzug Süd'), 1),
+      (('ND', '2', 'Aufzug-Süd'), 1),
+      (('ND', '3', 'Aufzug-Süd'), 1),
+      (('ND', '4', 'Aufzug-Süd'), 1),
+      (('ND', '5', 'Aufzug-Süd'), 1),
+      (('ND', '6', 'Aufzug-Süd'), 1),
+      (('ND', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('ND', '1', 'EN_0'): {
@@ -77875,11 +77875,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '1', 'EN_16'): {
     'Coordinates': [380, 394],
     'Connections': [
-      (('ND', '1', 'Aufzug Süd'), 52),
+      (('ND', '1', 'Aufzug-Süd'), 52),
       (('ND', '1', 'EN_3'), 47),
       (('ND', '1', 'EN_6'), 62),
-      (('ND', '1', 'Treppe Süd'), 52),
-      (('ND', '1', 'WC Süd'), 21),
+      (('ND', '1', 'Treppe-Süd'), 52),
+      (('ND', '1', 'WC-Süd'), 21),
     ],
   },
   ('ND', '1', 'EN_17'): {
@@ -77887,7 +77887,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '1', 'EN_14'), 59),
       (('ND', '1', 'EN_18'), 68),
-      (('ND', '1', 'Treppe Süd 2'), 43),
+      (('ND', '1', 'Treppe-Süd-2'), 43),
     ],
   },
   ('ND', '1', 'EN_18'): {
@@ -77966,7 +77966,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '1', 'EN_0'), 29),
       (('ND', '1', 'EN_15'), 146),
       (('ND', '1', 'EN_16'), 47),
-      (('ND', '1', 'WC Süd'), 62),
+      (('ND', '1', 'WC-Süd'), 62),
     ],
   },
   ('ND', '1', 'EN_30'): {
@@ -78057,11 +78057,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '1', 'EN_42'): {
     'Coordinates': [843, 876],
     'Connections': [
-      (('ND', '1', 'Aufzug Nord'), 59),
+      (('ND', '1', 'Aufzug-Nord'), 59),
       (('ND', '1', 'EN_25'), 64),
       (('ND', '1', 'EN_33'), 62),
-      (('ND', '1', 'Treppe Nord'), 59),
-      (('ND', '1', 'WC Nord'), 26),
+      (('ND', '1', 'Treppe-Nord'), 59),
+      (('ND', '1', 'WC-Nord'), 26),
     ],
   },
   ('ND', '1', 'EN_43'): {
@@ -78094,7 +78094,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '1', 'EN_10'), 54),
       (('ND', '1', 'EN_16'), 62),
       (('ND', '1', 'EN_7'), 38),
-      (('ND', '1', 'WC Süd'), 57),
+      (('ND', '1', 'WC-Süd'), 57),
     ],
   },
   ('ND', '1', 'EN_7'): {
@@ -78120,50 +78120,50 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '1', 'EN_7'), 43),
     ],
   },
-  ('ND', '1', 'Treppe Nord'): {
+  ('ND', '1', 'Treppe-Nord'): {
     'Coordinates': [888, 914],
     'Connections': [
-      (('ND', '04', 'Treppe Nord'), 2),
-      (('ND', '05', 'Treppe Nord'), 2),
+      (('ND', '04', 'Treppe-Nord'), 2),
+      (('ND', '05', 'Treppe-Nord'), 2),
       (('ND', '1', 'EN_42'), 59),
-      (('ND', '2', 'Treppe Nord'), 2),
-      (('ND', '3', 'Treppe Nord'), 2),
-      (('ND', '4', 'Treppe Nord'), 2),
-      (('ND', '5', 'Treppe Nord'), 2),
-      (('ND', '6', 'Treppe Nord'), 2),
-      (('ND', '7', 'Treppe Nord'), 2),
+      (('ND', '2', 'Treppe-Nord'), 2),
+      (('ND', '3', 'Treppe-Nord'), 2),
+      (('ND', '4', 'Treppe-Nord'), 2),
+      (('ND', '5', 'Treppe-Nord'), 2),
+      (('ND', '6', 'Treppe-Nord'), 2),
+      (('ND', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('ND', '1', 'Treppe Süd'): {
+  ('ND', '1', 'Treppe-Süd'): {
     'Coordinates': [340, 361],
     'Connections': [
-      (('ND', '04', 'Treppe Süd'), 2),
-      (('ND', '05', 'Treppe Süd'), 2),
-      (('ND', '06', 'Treppe Süd'), 2),
+      (('ND', '04', 'Treppe-Süd'), 2),
+      (('ND', '05', 'Treppe-Süd'), 2),
+      (('ND', '06', 'Treppe-Süd'), 2),
       (('ND', '1', 'EN_16'), 52),
-      (('ND', '2', 'Treppe Süd'), 2),
-      (('ND', '3', 'Treppe Süd'), 2),
-      (('ND', '4', 'Treppe Süd'), 2),
-      (('ND', '5', 'Treppe Süd'), 2),
-      (('ND', '6', 'Treppe Süd'), 2),
-      (('ND', '7', 'Treppe Süd'), 2),
+      (('ND', '2', 'Treppe-Süd'), 2),
+      (('ND', '3', 'Treppe-Süd'), 2),
+      (('ND', '4', 'Treppe-Süd'), 2),
+      (('ND', '5', 'Treppe-Süd'), 2),
+      (('ND', '6', 'Treppe-Süd'), 2),
+      (('ND', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('ND', '1', 'Treppe Süd 2'): {
+  ('ND', '1', 'Treppe-Süd-2'): {
     'Coordinates': [691, 574],
     'Connections': [
       (('ND', '1', 'EN_17'), 43),
-      (('ND', '5', 'Treppe Süd 2'), 2),
-      (('ND', '7', 'Treppe Süd 2'), 2),
+      (('ND', '5', 'Treppe-Süd-2'), 2),
+      (('ND', '7', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('ND', '1', 'WC Nord'): {
+  ('ND', '1', 'WC-Nord'): {
     'Coordinates': [852, 900],
     'Connections': [
       (('ND', '1', 'EN_42'), 26),
     ],
   },
-  ('ND', '1', 'WC Süd'): {
+  ('ND', '1', 'WC-Süd'): {
     'Coordinates': [360, 389],
     'Connections': [
       (('ND', '1', 'EN_16'), 21),
@@ -78637,42 +78637,42 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '2', 'EN_12'), 40),
     ],
   },
-  ('ND', '2', 'Aufzug Nord'): {
-    'Coordinates': [393, 390],
-    'Connections': [
-      (('ND', '04', 'Aufzug Nord'), 1),
-      (('ND', '05', 'Aufzug Nord'), 1),
-      (('ND', '1', 'Aufzug Nord'), 1),
-      (('ND', '2', 'EN_16'), 43),
-      (('ND', '3', 'Aufzug Nord'), 1),
-      (('ND', '4', 'Aufzug Nord'), 1),
-      (('ND', '5', 'Aufzug Nord'), 1),
-      (('ND', '6', 'Aufzug Nord'), 1),
-      (('ND', '7', 'Aufzug Nord'), 1),
-    ],
-  },
-  ('ND', '2', 'Aufzug Süd'): {
-    'Coordinates': [814, 835],
-    'Connections': [
-      (('ND', '04', 'Aufzug Süd'), 1),
-      (('ND', '05', 'Aufzug Süd'), 1),
-      (('ND', '06', 'Aufzug Süd'), 1),
-      (('ND', '1', 'Aufzug Süd'), 1),
-      (('ND', '2', 'Aufzug-7'), 45),
-      (('ND', '3', 'Aufzug Süd'), 1),
-      (('ND', '4', 'Aufzug Süd'), 1),
-      (('ND', '5', 'Aufzug Süd'), 1),
-      (('ND', '6', 'Aufzug Süd'), 1),
-      (('ND', '7', 'Aufzug Süd'), 1),
-    ],
-  },
   ('ND', '2', 'Aufzug-7'): {
     'Coordinates': [848, 864],
     'Connections': [
-      (('ND', '2', 'Aufzug Süd'), 45),
+      (('ND', '2', 'Aufzug-Süd'), 45),
       (('ND', '2', 'EN_47'), 31),
       (('ND', '2', 'EN_48'), 38),
-      (('ND', '2', 'Treppe Süd'), 40),
+      (('ND', '2', 'Treppe-Süd'), 40),
+    ],
+  },
+  ('ND', '2', 'Aufzug-Nord'): {
+    'Coordinates': [393, 390],
+    'Connections': [
+      (('ND', '04', 'Aufzug-Nord'), 1),
+      (('ND', '05', 'Aufzug-Nord'), 1),
+      (('ND', '1', 'Aufzug-Nord'), 1),
+      (('ND', '2', 'EN_16'), 43),
+      (('ND', '3', 'Aufzug-Nord'), 1),
+      (('ND', '4', 'Aufzug-Nord'), 1),
+      (('ND', '5', 'Aufzug-Nord'), 1),
+      (('ND', '6', 'Aufzug-Nord'), 1),
+      (('ND', '7', 'Aufzug-Nord'), 1),
+    ],
+  },
+  ('ND', '2', 'Aufzug-Süd'): {
+    'Coordinates': [814, 835],
+    'Connections': [
+      (('ND', '04', 'Aufzug-Süd'), 1),
+      (('ND', '05', 'Aufzug-Süd'), 1),
+      (('ND', '06', 'Aufzug-Süd'), 1),
+      (('ND', '1', 'Aufzug-Süd'), 1),
+      (('ND', '2', 'Aufzug-7'), 45),
+      (('ND', '3', 'Aufzug-Süd'), 1),
+      (('ND', '4', 'Aufzug-Süd'), 1),
+      (('ND', '5', 'Aufzug-Süd'), 1),
+      (('ND', '6', 'Aufzug-Süd'), 1),
+      (('ND', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('ND', '2', 'EN_0'): {
@@ -78714,7 +78714,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '2', '99'), 40),
       (('ND', '2', 'EN_11'), 62),
       (('ND', '2', 'EN_13'), 135),
-      (('ND', '2', 'Treppe Mitte'), 48),
+      (('ND', '2', 'Treppe-Mitte'), 48),
     ],
   },
   ('ND', '2', 'EN_13'): {
@@ -78744,10 +78744,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '2', 'EN_16'): {
     'Coordinates': [363, 359],
     'Connections': [
-      (('ND', '2', 'Aufzug Nord'), 43),
+      (('ND', '2', 'Aufzug-Nord'), 43),
       (('ND', '2', 'EN_15'), 23),
       (('ND', '2', 'EN_17'), 39),
-      (('ND', '2', 'Treppe Nord'), 48),
+      (('ND', '2', 'Treppe-Nord'), 48),
     ],
   },
   ('ND', '2', 'EN_17'): {
@@ -79228,41 +79228,41 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '2', 'EN_8'), 87),
     ],
   },
-  ('ND', '2', 'Treppe Mitte'): {
+  ('ND', '2', 'Treppe-Mitte'): {
     'Coordinates': [673, 536],
     'Connections': [
       (('ND', '2', 'EN_12'), 48),
-      (('ND', '3', 'Treppe Mitte'), 2),
-      (('ND', '4', 'Treppe Mitte'), 2),
+      (('ND', '3', 'Treppe-Mitte'), 2),
+      (('ND', '4', 'Treppe-Mitte'), 2),
     ],
   },
-  ('ND', '2', 'Treppe Nord'): {
+  ('ND', '2', 'Treppe-Nord'): {
     'Coordinates': [328, 326],
     'Connections': [
-      (('ND', '04', 'Treppe Nord'), 2),
-      (('ND', '05', 'Treppe Nord'), 2),
-      (('ND', '1', 'Treppe Nord'), 2),
+      (('ND', '04', 'Treppe-Nord'), 2),
+      (('ND', '05', 'Treppe-Nord'), 2),
+      (('ND', '1', 'Treppe-Nord'), 2),
       (('ND', '2', 'EN_16'), 48),
-      (('ND', '3', 'Treppe Nord'), 2),
-      (('ND', '4', 'Treppe Nord'), 2),
-      (('ND', '5', 'Treppe Nord'), 2),
-      (('ND', '6', 'Treppe Nord'), 2),
-      (('ND', '7', 'Treppe Nord'), 2),
+      (('ND', '3', 'Treppe-Nord'), 2),
+      (('ND', '4', 'Treppe-Nord'), 2),
+      (('ND', '5', 'Treppe-Nord'), 2),
+      (('ND', '6', 'Treppe-Nord'), 2),
+      (('ND', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('ND', '2', 'Treppe Süd'): {
+  ('ND', '2', 'Treppe-Süd'): {
     'Coordinates': [875, 894],
     'Connections': [
-      (('ND', '04', 'Treppe Süd'), 2),
-      (('ND', '05', 'Treppe Süd'), 2),
-      (('ND', '06', 'Treppe Süd'), 2),
-      (('ND', '1', 'Treppe Süd'), 2),
+      (('ND', '04', 'Treppe-Süd'), 2),
+      (('ND', '05', 'Treppe-Süd'), 2),
+      (('ND', '06', 'Treppe-Süd'), 2),
+      (('ND', '1', 'Treppe-Süd'), 2),
       (('ND', '2', 'Aufzug-7'), 40),
-      (('ND', '3', 'Treppe Süd'), 2),
-      (('ND', '4', 'Treppe Süd'), 2),
-      (('ND', '5', 'Treppe Süd'), 2),
-      (('ND', '6', 'Treppe Süd'), 2),
-      (('ND', '7', 'Treppe Süd'), 2),
+      (('ND', '3', 'Treppe-Süd'), 2),
+      (('ND', '4', 'Treppe-Süd'), 2),
+      (('ND', '5', 'Treppe-Süd'), 2),
+      (('ND', '6', 'Treppe-Süd'), 2),
+      (('ND', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('ND', '3', '105'): {
@@ -79681,33 +79681,33 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '3', 'EN_27'), 35),
     ],
   },
-  ('ND', '3', 'Aufzug Nord'): {
+  ('ND', '3', 'Aufzug-Nord'): {
     'Coordinates': [394, 385],
     'Connections': [
-      (('ND', '04', 'Aufzug Nord'), 1),
-      (('ND', '05', 'Aufzug Nord'), 1),
-      (('ND', '1', 'Aufzug Nord'), 1),
-      (('ND', '2', 'Aufzug Nord'), 1),
+      (('ND', '04', 'Aufzug-Nord'), 1),
+      (('ND', '05', 'Aufzug-Nord'), 1),
+      (('ND', '1', 'Aufzug-Nord'), 1),
+      (('ND', '2', 'Aufzug-Nord'), 1),
       (('ND', '3', 'EN_34'), 49),
-      (('ND', '4', 'Aufzug Nord'), 1),
-      (('ND', '5', 'Aufzug Nord'), 1),
-      (('ND', '6', 'Aufzug Nord'), 1),
-      (('ND', '7', 'Aufzug Nord'), 1),
+      (('ND', '4', 'Aufzug-Nord'), 1),
+      (('ND', '5', 'Aufzug-Nord'), 1),
+      (('ND', '6', 'Aufzug-Nord'), 1),
+      (('ND', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('ND', '3', 'Aufzug Süd'): {
+  ('ND', '3', 'Aufzug-Süd'): {
     'Coordinates': [826, 820],
     'Connections': [
-      (('ND', '04', 'Aufzug Süd'), 1),
-      (('ND', '05', 'Aufzug Süd'), 1),
-      (('ND', '06', 'Aufzug Süd'), 1),
-      (('ND', '1', 'Aufzug Süd'), 1),
-      (('ND', '2', 'Aufzug Süd'), 1),
+      (('ND', '04', 'Aufzug-Süd'), 1),
+      (('ND', '05', 'Aufzug-Süd'), 1),
+      (('ND', '06', 'Aufzug-Süd'), 1),
+      (('ND', '1', 'Aufzug-Süd'), 1),
+      (('ND', '2', 'Aufzug-Süd'), 1),
       (('ND', '3', 'EN_5'), 33),
-      (('ND', '4', 'Aufzug Süd'), 1),
-      (('ND', '5', 'Aufzug Süd'), 1),
-      (('ND', '6', 'Aufzug Süd'), 1),
-      (('ND', '7', 'Aufzug Süd'), 1),
+      (('ND', '4', 'Aufzug-Süd'), 1),
+      (('ND', '5', 'Aufzug-Süd'), 1),
+      (('ND', '6', 'Aufzug-Süd'), 1),
+      (('ND', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('ND', '3', 'EN_0'): {
@@ -79871,7 +79871,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '3', '99'), 35),
       (('ND', '3', 'EN_21'), 91),
       (('ND', '3', 'EN_28'), 67),
-      (('ND', '3', 'Treppe Mitte'), 41),
+      (('ND', '3', 'Treppe-Mitte'), 41),
     ],
   },
   ('ND', '3', 'EN_28'): {
@@ -79936,10 +79936,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [359, 351],
     'Connections': [
       (('ND', '3', '105'), 36),
-      (('ND', '3', 'Aufzug Nord'), 49),
+      (('ND', '3', 'Aufzug-Nord'), 49),
       (('ND', '3', 'EN_33'), 52),
       (('ND', '3', 'EN_35'), 32),
-      (('ND', '3', 'Treppe Nord'), 42),
+      (('ND', '3', 'Treppe-Nord'), 42),
     ],
   },
   ('ND', '3', 'EN_35'): {
@@ -80071,10 +80071,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '3', 'EN_5'): {
     'Coordinates': [852, 841],
     'Connections': [
-      (('ND', '3', 'Aufzug Süd'), 33),
+      (('ND', '3', 'Aufzug-Süd'), 33),
       (('ND', '3', 'EN_7'), 29),
       (('ND', '3', 'EN_8'), 29),
-      (('ND', '3', 'Treppe Süd'), 55),
+      (('ND', '3', 'Treppe-Süd'), 55),
     ],
   },
   ('ND', '3', 'EN_50'): {
@@ -80135,41 +80135,41 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '3', 'EN_8'), 21),
     ],
   },
-  ('ND', '3', 'Treppe Mitte'): {
+  ('ND', '3', 'Treppe-Mitte'): {
     'Coordinates': [667, 519],
     'Connections': [
-      (('ND', '2', 'Treppe Mitte'), 2),
+      (('ND', '2', 'Treppe-Mitte'), 2),
       (('ND', '3', 'EN_27'), 41),
-      (('ND', '4', 'Treppe Mitte'), 2),
+      (('ND', '4', 'Treppe-Mitte'), 2),
     ],
   },
-  ('ND', '3', 'Treppe Nord'): {
+  ('ND', '3', 'Treppe-Nord'): {
     'Coordinates': [331, 320],
     'Connections': [
-      (('ND', '04', 'Treppe Nord'), 2),
-      (('ND', '05', 'Treppe Nord'), 2),
-      (('ND', '1', 'Treppe Nord'), 2),
-      (('ND', '2', 'Treppe Nord'), 2),
+      (('ND', '04', 'Treppe-Nord'), 2),
+      (('ND', '05', 'Treppe-Nord'), 2),
+      (('ND', '1', 'Treppe-Nord'), 2),
+      (('ND', '2', 'Treppe-Nord'), 2),
       (('ND', '3', 'EN_34'), 42),
-      (('ND', '4', 'Treppe Nord'), 2),
-      (('ND', '5', 'Treppe Nord'), 2),
-      (('ND', '6', 'Treppe Nord'), 2),
-      (('ND', '7', 'Treppe Nord'), 2),
+      (('ND', '4', 'Treppe-Nord'), 2),
+      (('ND', '5', 'Treppe-Nord'), 2),
+      (('ND', '6', 'Treppe-Nord'), 2),
+      (('ND', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('ND', '3', 'Treppe Süd'): {
+  ('ND', '3', 'Treppe-Süd'): {
     'Coordinates': [890, 881],
     'Connections': [
-      (('ND', '04', 'Treppe Süd'), 2),
-      (('ND', '05', 'Treppe Süd'), 2),
-      (('ND', '06', 'Treppe Süd'), 2),
-      (('ND', '1', 'Treppe Süd'), 2),
-      (('ND', '2', 'Treppe Süd'), 2),
+      (('ND', '04', 'Treppe-Süd'), 2),
+      (('ND', '05', 'Treppe-Süd'), 2),
+      (('ND', '06', 'Treppe-Süd'), 2),
+      (('ND', '1', 'Treppe-Süd'), 2),
+      (('ND', '2', 'Treppe-Süd'), 2),
       (('ND', '3', 'EN_5'), 55),
-      (('ND', '4', 'Treppe Süd'), 2),
-      (('ND', '5', 'Treppe Süd'), 2),
-      (('ND', '6', 'Treppe Süd'), 2),
-      (('ND', '7', 'Treppe Süd'), 2),
+      (('ND', '4', 'Treppe-Süd'), 2),
+      (('ND', '5', 'Treppe-Süd'), 2),
+      (('ND', '6', 'Treppe-Süd'), 2),
+      (('ND', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('ND', '4', '10'): {
@@ -80607,42 +80607,42 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '4', 'EN_23'), 20),
     ],
   },
-  ('ND', '4', 'Aufzug Nord'): {
+  ('ND', '4', 'Aufzug-Nord'): {
     'Coordinates': [400, 382],
     'Connections': [
-      (('ND', '04', 'Aufzug Nord'), 1),
-      (('ND', '05', 'Aufzug Nord'), 1),
-      (('ND', '1', 'Aufzug Nord'), 1),
-      (('ND', '2', 'Aufzug Nord'), 1),
-      (('ND', '3', 'Aufzug Nord'), 1),
+      (('ND', '04', 'Aufzug-Nord'), 1),
+      (('ND', '05', 'Aufzug-Nord'), 1),
+      (('ND', '1', 'Aufzug-Nord'), 1),
+      (('ND', '2', 'Aufzug-Nord'), 1),
+      (('ND', '3', 'Aufzug-Nord'), 1),
       (('ND', '4', 'EN_0'), 48),
-      (('ND', '5', 'Aufzug Nord'), 1),
-      (('ND', '6', 'Aufzug Nord'), 1),
-      (('ND', '7', 'Aufzug Nord'), 1),
+      (('ND', '5', 'Aufzug-Nord'), 1),
+      (('ND', '6', 'Aufzug-Nord'), 1),
+      (('ND', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('ND', '4', 'Aufzug Süd'): {
+  ('ND', '4', 'Aufzug-Süd'): {
     'Coordinates': [822, 811],
     'Connections': [
-      (('ND', '04', 'Aufzug Süd'), 1),
-      (('ND', '05', 'Aufzug Süd'), 1),
-      (('ND', '06', 'Aufzug Süd'), 1),
-      (('ND', '1', 'Aufzug Süd'), 1),
-      (('ND', '2', 'Aufzug Süd'), 1),
-      (('ND', '3', 'Aufzug Süd'), 1),
+      (('ND', '04', 'Aufzug-Süd'), 1),
+      (('ND', '05', 'Aufzug-Süd'), 1),
+      (('ND', '06', 'Aufzug-Süd'), 1),
+      (('ND', '1', 'Aufzug-Süd'), 1),
+      (('ND', '2', 'Aufzug-Süd'), 1),
+      (('ND', '3', 'Aufzug-Süd'), 1),
       (('ND', '4', 'EN_11'), 40),
-      (('ND', '5', 'Aufzug Süd'), 1),
-      (('ND', '6', 'Aufzug Süd'), 1),
-      (('ND', '7', 'Aufzug Süd'), 1),
+      (('ND', '5', 'Aufzug-Süd'), 1),
+      (('ND', '6', 'Aufzug-Süd'), 1),
+      (('ND', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('ND', '4', 'EN_0'): {
     'Coordinates': [365, 349],
     'Connections': [
-      (('ND', '4', 'Aufzug Nord'), 48),
+      (('ND', '4', 'Aufzug-Nord'), 48),
       (('ND', '4', 'EN_44'), 33),
       (('ND', '4', 'EN_45'), 26),
-      (('ND', '4', 'Treppe Nord'), 45),
+      (('ND', '4', 'Treppe-Nord'), 45),
     ],
   },
   ('ND', '4', 'EN_1'): {
@@ -80663,10 +80663,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '4', 'EN_11'): {
     'Coordinates': [851, 838],
     'Connections': [
-      (('ND', '4', 'Aufzug Süd'), 40),
+      (('ND', '4', 'Aufzug-Süd'), 40),
       (('ND', '4', 'EN_7'), 31),
       (('ND', '4', 'EN_8'), 25),
-      (('ND', '4', 'Treppe Süd'), 38),
+      (('ND', '4', 'Treppe-Süd'), 38),
     ],
   },
   ('ND', '4', 'EN_12'): {
@@ -80812,7 +80812,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '4', 'EN_28'), 71),
       (('ND', '4', 'EN_30'), 59),
-      (('ND', '4', 'Treppe Mitte'), 38),
+      (('ND', '4', 'Treppe-Mitte'), 38),
     ],
   },
   ('ND', '4', 'EN_3'): {
@@ -81147,41 +81147,41 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '4', 'EN_8'), 26),
     ],
   },
-  ('ND', '4', 'Treppe Mitte'): {
+  ('ND', '4', 'Treppe-Mitte'): {
     'Coordinates': [672, 512],
     'Connections': [
-      (('ND', '2', 'Treppe Mitte'), 2),
-      (('ND', '3', 'Treppe Mitte'), 2),
+      (('ND', '2', 'Treppe-Mitte'), 2),
+      (('ND', '3', 'Treppe-Mitte'), 2),
       (('ND', '4', 'EN_29'), 38),
     ],
   },
-  ('ND', '4', 'Treppe Nord'): {
+  ('ND', '4', 'Treppe-Nord'): {
     'Coordinates': [335, 316],
     'Connections': [
-      (('ND', '04', 'Treppe Nord'), 2),
-      (('ND', '05', 'Treppe Nord'), 2),
-      (('ND', '1', 'Treppe Nord'), 2),
-      (('ND', '2', 'Treppe Nord'), 2),
-      (('ND', '3', 'Treppe Nord'), 2),
+      (('ND', '04', 'Treppe-Nord'), 2),
+      (('ND', '05', 'Treppe-Nord'), 2),
+      (('ND', '1', 'Treppe-Nord'), 2),
+      (('ND', '2', 'Treppe-Nord'), 2),
+      (('ND', '3', 'Treppe-Nord'), 2),
       (('ND', '4', 'EN_0'), 45),
-      (('ND', '5', 'Treppe Nord'), 2),
-      (('ND', '6', 'Treppe Nord'), 2),
-      (('ND', '7', 'Treppe Nord'), 2),
+      (('ND', '5', 'Treppe-Nord'), 2),
+      (('ND', '6', 'Treppe-Nord'), 2),
+      (('ND', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('ND', '4', 'Treppe Süd'): {
+  ('ND', '4', 'Treppe-Süd'): {
     'Coordinates': [878, 865],
     'Connections': [
-      (('ND', '04', 'Treppe Süd'), 2),
-      (('ND', '05', 'Treppe Süd'), 2),
-      (('ND', '06', 'Treppe Süd'), 2),
-      (('ND', '1', 'Treppe Süd'), 2),
-      (('ND', '2', 'Treppe Süd'), 2),
-      (('ND', '3', 'Treppe Süd'), 2),
+      (('ND', '04', 'Treppe-Süd'), 2),
+      (('ND', '05', 'Treppe-Süd'), 2),
+      (('ND', '06', 'Treppe-Süd'), 2),
+      (('ND', '1', 'Treppe-Süd'), 2),
+      (('ND', '2', 'Treppe-Süd'), 2),
+      (('ND', '3', 'Treppe-Süd'), 2),
       (('ND', '4', 'EN_11'), 38),
-      (('ND', '5', 'Treppe Süd'), 2),
-      (('ND', '6', 'Treppe Süd'), 2),
-      (('ND', '7', 'Treppe Süd'), 2),
+      (('ND', '5', 'Treppe-Süd'), 2),
+      (('ND', '6', 'Treppe-Süd'), 2),
+      (('ND', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('ND', '5', '10'): {
@@ -81685,33 +81685,33 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '5', 'EN_32'), 95),
     ],
   },
-  ('ND', '5', 'Aufzug Nord'): {
+  ('ND', '5', 'Aufzug-Nord'): {
     'Coordinates': [805, 792],
     'Connections': [
-      (('ND', '04', 'Aufzug Nord'), 1),
-      (('ND', '05', 'Aufzug Nord'), 1),
-      (('ND', '1', 'Aufzug Nord'), 1),
-      (('ND', '2', 'Aufzug Nord'), 1),
-      (('ND', '3', 'Aufzug Nord'), 1),
-      (('ND', '4', 'Aufzug Nord'), 1),
+      (('ND', '04', 'Aufzug-Nord'), 1),
+      (('ND', '05', 'Aufzug-Nord'), 1),
+      (('ND', '1', 'Aufzug-Nord'), 1),
+      (('ND', '2', 'Aufzug-Nord'), 1),
+      (('ND', '3', 'Aufzug-Nord'), 1),
+      (('ND', '4', 'Aufzug-Nord'), 1),
       (('ND', '5', 'EN_68'), 76),
-      (('ND', '6', 'Aufzug Nord'), 1),
-      (('ND', '7', 'Aufzug Nord'), 1),
+      (('ND', '6', 'Aufzug-Nord'), 1),
+      (('ND', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('ND', '5', 'Aufzug Süd'): {
+  ('ND', '5', 'Aufzug-Süd'): {
     'Coordinates': [408, 385],
     'Connections': [
-      (('ND', '04', 'Aufzug Süd'), 1),
-      (('ND', '05', 'Aufzug Süd'), 1),
-      (('ND', '06', 'Aufzug Süd'), 1),
-      (('ND', '1', 'Aufzug Süd'), 1),
-      (('ND', '2', 'Aufzug Süd'), 1),
-      (('ND', '3', 'Aufzug Süd'), 1),
-      (('ND', '4', 'Aufzug Süd'), 1),
+      (('ND', '04', 'Aufzug-Süd'), 1),
+      (('ND', '05', 'Aufzug-Süd'), 1),
+      (('ND', '06', 'Aufzug-Süd'), 1),
+      (('ND', '1', 'Aufzug-Süd'), 1),
+      (('ND', '2', 'Aufzug-Süd'), 1),
+      (('ND', '3', 'Aufzug-Süd'), 1),
+      (('ND', '4', 'Aufzug-Süd'), 1),
       (('ND', '5', 'EN_56'), 51),
-      (('ND', '6', 'Aufzug Süd'), 1),
-      (('ND', '7', 'Aufzug Süd'), 1),
+      (('ND', '6', 'Aufzug-Süd'), 1),
+      (('ND', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('ND', '5', 'EN_0'): {
@@ -81933,7 +81933,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '5', '99'), 95),
       (('ND', '5', 'EN_31'), 75),
       (('ND', '5', 'EN_33'), 60),
-      (('ND', '5', 'Treppe Süd 2'), 34),
+      (('ND', '5', 'Treppe-Süd-2'), 34),
     ],
   },
   ('ND', '5', 'EN_33'): {
@@ -82022,7 +82022,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '5', 'EN_41'), 27),
       (('ND', '5', 'EN_56'), 29),
-      (('ND', '5', 'WC Süd'), 41),
+      (('ND', '5', 'WC-Süd'), 41),
     ],
   },
   ('ND', '5', 'EN_43'): {
@@ -82030,7 +82030,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '5', 'EN_44'), 30),
       (('ND', '5', 'EN_56'), 34),
-      (('ND', '5', 'WC Süd'), 29),
+      (('ND', '5', 'WC-Süd'), 29),
     ],
   },
   ('ND', '5', 'EN_44'): {
@@ -82143,11 +82143,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '5', 'EN_56'): {
     'Coordinates': [370, 351],
     'Connections': [
-      (('ND', '5', 'Aufzug Süd'), 51),
+      (('ND', '5', 'Aufzug-Süd'), 51),
       (('ND', '5', 'EN_42'), 29),
       (('ND', '5', 'EN_43'), 34),
-      (('ND', '5', 'Treppe Süd'), 64),
-      (('ND', '5', 'WC Süd'), 23),
+      (('ND', '5', 'Treppe-Süd'), 64),
+      (('ND', '5', 'WC-Süd'), 23),
     ],
   },
   ('ND', '5', 'EN_57'): {
@@ -82251,10 +82251,10 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '5', 'EN_68'): {
     'Coordinates': [859, 845],
     'Connections': [
-      (('ND', '5', 'Aufzug Nord'), 76),
+      (('ND', '5', 'Aufzug-Nord'), 76),
       (('ND', '5', 'EN_8'), 40),
       (('ND', '5', 'EN_9'), 41),
-      (('ND', '5', 'Treppe Nord'), 50),
+      (('ND', '5', 'Treppe-Nord'), 50),
     ],
   },
   ('ND', '5', 'EN_69'): {
@@ -82278,7 +82278,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '5', 'EN_68'), 40),
       (('ND', '5', 'EN_7'), 21),
-      (('ND', '5', 'WC Nord'), 52),
+      (('ND', '5', 'WC-Nord'), 52),
     ],
   },
   ('ND', '5', 'EN_9'): {
@@ -82286,54 +82286,54 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '5', 'EN_10'), 39),
       (('ND', '5', 'EN_68'), 41),
-      (('ND', '5', 'WC Nord'), 35),
+      (('ND', '5', 'WC-Nord'), 35),
     ],
   },
-  ('ND', '5', 'Treppe Nord'): {
+  ('ND', '5', 'Treppe-Nord'): {
     'Coordinates': [892, 883],
     'Connections': [
-      (('ND', '04', 'Treppe Nord'), 2),
-      (('ND', '05', 'Treppe Nord'), 2),
-      (('ND', '1', 'Treppe Nord'), 2),
-      (('ND', '2', 'Treppe Nord'), 2),
-      (('ND', '3', 'Treppe Nord'), 2),
-      (('ND', '4', 'Treppe Nord'), 2),
+      (('ND', '04', 'Treppe-Nord'), 2),
+      (('ND', '05', 'Treppe-Nord'), 2),
+      (('ND', '1', 'Treppe-Nord'), 2),
+      (('ND', '2', 'Treppe-Nord'), 2),
+      (('ND', '3', 'Treppe-Nord'), 2),
+      (('ND', '4', 'Treppe-Nord'), 2),
       (('ND', '5', 'EN_68'), 50),
-      (('ND', '6', 'Treppe Nord'), 2),
-      (('ND', '7', 'Treppe Nord'), 2),
+      (('ND', '6', 'Treppe-Nord'), 2),
+      (('ND', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('ND', '5', 'Treppe Süd'): {
+  ('ND', '5', 'Treppe-Süd'): {
     'Coordinates': [324, 306],
     'Connections': [
-      (('ND', '04', 'Treppe Süd'), 2),
-      (('ND', '05', 'Treppe Süd'), 2),
-      (('ND', '06', 'Treppe Süd'), 2),
-      (('ND', '1', 'Treppe Süd'), 2),
-      (('ND', '2', 'Treppe Süd'), 2),
-      (('ND', '3', 'Treppe Süd'), 2),
-      (('ND', '4', 'Treppe Süd'), 2),
+      (('ND', '04', 'Treppe-Süd'), 2),
+      (('ND', '05', 'Treppe-Süd'), 2),
+      (('ND', '06', 'Treppe-Süd'), 2),
+      (('ND', '1', 'Treppe-Süd'), 2),
+      (('ND', '2', 'Treppe-Süd'), 2),
+      (('ND', '3', 'Treppe-Süd'), 2),
+      (('ND', '4', 'Treppe-Süd'), 2),
       (('ND', '5', 'EN_56'), 64),
-      (('ND', '6', 'Treppe Süd'), 2),
-      (('ND', '7', 'Treppe Süd'), 2),
+      (('ND', '6', 'Treppe-Süd'), 2),
+      (('ND', '7', 'Treppe-Süd'), 2),
     ],
   },
-  ('ND', '5', 'Treppe Süd 2'): {
+  ('ND', '5', 'Treppe-Süd-2'): {
     'Coordinates': [684, 528],
     'Connections': [
-      (('ND', '1', 'Treppe Süd 2'), 2),
+      (('ND', '1', 'Treppe-Süd-2'), 2),
       (('ND', '5', 'EN_32'), 34),
-      (('ND', '7', 'Treppe Süd 2'), 2),
+      (('ND', '7', 'Treppe-Süd-2'), 2),
     ],
   },
-  ('ND', '5', 'WC Nord'): {
+  ('ND', '5', 'WC-Nord'): {
     'Coordinates': [858, 860],
     'Connections': [
       (('ND', '5', 'EN_8'), 52),
       (('ND', '5', 'EN_9'), 35),
     ],
   },
-  ('ND', '5', 'WC Süd'): {
+  ('ND', '5', 'WC-Süd'): {
     'Coordinates': [348, 344],
     'Connections': [
       (('ND', '5', 'EN_42'), 41),
@@ -82765,33 +82765,33 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '6', 'EN_33'), 36),
     ],
   },
-  ('ND', '6', 'Aufzug Nord'): {
+  ('ND', '6', 'Aufzug-Nord'): {
     'Coordinates': [798, 789],
     'Connections': [
-      (('ND', '04', 'Aufzug Nord'), 1),
-      (('ND', '05', 'Aufzug Nord'), 1),
-      (('ND', '1', 'Aufzug Nord'), 1),
-      (('ND', '2', 'Aufzug Nord'), 1),
-      (('ND', '3', 'Aufzug Nord'), 1),
-      (('ND', '4', 'Aufzug Nord'), 1),
-      (('ND', '5', 'Aufzug Nord'), 1),
+      (('ND', '04', 'Aufzug-Nord'), 1),
+      (('ND', '05', 'Aufzug-Nord'), 1),
+      (('ND', '1', 'Aufzug-Nord'), 1),
+      (('ND', '2', 'Aufzug-Nord'), 1),
+      (('ND', '3', 'Aufzug-Nord'), 1),
+      (('ND', '4', 'Aufzug-Nord'), 1),
+      (('ND', '5', 'Aufzug-Nord'), 1),
       (('ND', '6', 'EN_4'), 67),
-      (('ND', '7', 'Aufzug Nord'), 1),
+      (('ND', '7', 'Aufzug-Nord'), 1),
     ],
   },
-  ('ND', '6', 'Aufzug Süd'): {
+  ('ND', '6', 'Aufzug-Süd'): {
     'Coordinates': [400, 389],
     'Connections': [
-      (('ND', '04', 'Aufzug Süd'), 1),
-      (('ND', '05', 'Aufzug Süd'), 1),
-      (('ND', '06', 'Aufzug Süd'), 1),
-      (('ND', '1', 'Aufzug Süd'), 1),
-      (('ND', '2', 'Aufzug Süd'), 1),
-      (('ND', '3', 'Aufzug Süd'), 1),
-      (('ND', '4', 'Aufzug Süd'), 1),
-      (('ND', '5', 'Aufzug Süd'), 1),
+      (('ND', '04', 'Aufzug-Süd'), 1),
+      (('ND', '05', 'Aufzug-Süd'), 1),
+      (('ND', '06', 'Aufzug-Süd'), 1),
+      (('ND', '1', 'Aufzug-Süd'), 1),
+      (('ND', '2', 'Aufzug-Süd'), 1),
+      (('ND', '3', 'Aufzug-Süd'), 1),
+      (('ND', '4', 'Aufzug-Süd'), 1),
+      (('ND', '5', 'Aufzug-Süd'), 1),
       (('ND', '6', 'EN_27'), 55),
-      (('ND', '7', 'Aufzug Süd'), 1),
+      (('ND', '7', 'Aufzug-Süd'), 1),
     ],
   },
   ('ND', '6', 'EN_1'): {
@@ -82931,11 +82931,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '6', 'EN_27'): {
     'Coordinates': [360, 351],
     'Connections': [
-      (('ND', '6', 'Aufzug Süd'), 55),
+      (('ND', '6', 'Aufzug-Süd'), 55),
       (('ND', '6', 'EN_39'), 66),
       (('ND', '6', 'EN_41'), 33),
-      (('ND', '6', 'Treppe Süd'), 65),
-      (('ND', '6', 'WC Süd'), 16),
+      (('ND', '6', 'Treppe-Süd'), 65),
+      (('ND', '6', 'WC-Süd'), 16),
     ],
   },
   ('ND', '6', 'EN_28'): {
@@ -83045,17 +83045,17 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '6', 'EN_27'), 66),
       (('ND', '6', 'EN_38'), 70),
       (('ND', '6', 'EN_62'), 41),
-      (('ND', '6', 'WC Süd'), 53),
+      (('ND', '6', 'WC-Süd'), 53),
     ],
   },
   ('ND', '6', 'EN_4'): {
     'Coordinates': [841, 840],
     'Connections': [
-      (('ND', '6', 'Aufzug Nord'), 67),
+      (('ND', '6', 'Aufzug-Nord'), 67),
       (('ND', '6', 'EN_10'), 30),
       (('ND', '6', 'EN_11'), 35),
-      (('ND', '6', 'Treppe Nord'), 59),
-      (('ND', '6', 'WC Nord'), 18),
+      (('ND', '6', 'Treppe-Nord'), 59),
+      (('ND', '6', 'WC-Nord'), 18),
     ],
   },
   ('ND', '6', 'EN_41'): {
@@ -83287,33 +83287,33 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '6', 'EN_8'), 89),
     ],
   },
-  ('ND', '6', 'Treppe Nord'): {
+  ('ND', '6', 'Treppe-Nord'): {
     'Coordinates': [886, 878],
     'Connections': [
-      (('ND', '04', 'Treppe Nord'), 2),
-      (('ND', '05', 'Treppe Nord'), 2),
-      (('ND', '1', 'Treppe Nord'), 2),
-      (('ND', '2', 'Treppe Nord'), 2),
-      (('ND', '3', 'Treppe Nord'), 2),
-      (('ND', '4', 'Treppe Nord'), 2),
-      (('ND', '5', 'Treppe Nord'), 2),
+      (('ND', '04', 'Treppe-Nord'), 2),
+      (('ND', '05', 'Treppe-Nord'), 2),
+      (('ND', '1', 'Treppe-Nord'), 2),
+      (('ND', '2', 'Treppe-Nord'), 2),
+      (('ND', '3', 'Treppe-Nord'), 2),
+      (('ND', '4', 'Treppe-Nord'), 2),
+      (('ND', '5', 'Treppe-Nord'), 2),
       (('ND', '6', 'EN_4'), 59),
-      (('ND', '7', 'Treppe Nord'), 2),
+      (('ND', '7', 'Treppe-Nord'), 2),
     ],
   },
-  ('ND', '6', 'Treppe Süd'): {
+  ('ND', '6', 'Treppe-Süd'): {
     'Coordinates': [317, 302],
     'Connections': [
-      (('ND', '04', 'Treppe Süd'), 2),
-      (('ND', '05', 'Treppe Süd'), 2),
-      (('ND', '06', 'Treppe Süd'), 2),
-      (('ND', '1', 'Treppe Süd'), 2),
-      (('ND', '2', 'Treppe Süd'), 2),
-      (('ND', '3', 'Treppe Süd'), 2),
-      (('ND', '4', 'Treppe Süd'), 2),
-      (('ND', '5', 'Treppe Süd'), 2),
+      (('ND', '04', 'Treppe-Süd'), 2),
+      (('ND', '05', 'Treppe-Süd'), 2),
+      (('ND', '06', 'Treppe-Süd'), 2),
+      (('ND', '1', 'Treppe-Süd'), 2),
+      (('ND', '2', 'Treppe-Süd'), 2),
+      (('ND', '3', 'Treppe-Süd'), 2),
+      (('ND', '4', 'Treppe-Süd'), 2),
+      (('ND', '5', 'Treppe-Süd'), 2),
       (('ND', '6', 'EN_27'), 65),
-      (('ND', '7', 'Treppe Süd'), 2),
+      (('ND', '7', 'Treppe-Süd'), 2),
     ],
   },
   ('ND', '6', 'Treppenhaus-95'): {
@@ -83322,13 +83322,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '6', 'EN_33'), 21),
     ],
   },
-  ('ND', '6', 'WC Nord'): {
+  ('ND', '6', 'WC-Nord'): {
     'Coordinates': [858, 845],
     'Connections': [
       (('ND', '6', 'EN_4'), 18),
     ],
   },
-  ('ND', '6', 'WC Süd'): {
+  ('ND', '6', 'WC-Süd'): {
     'Coordinates': [363, 335],
     'Connections': [
       (('ND', '6', 'EN_27'), 16),
@@ -83770,42 +83770,42 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '7', 'EN_57'), 54),
     ],
   },
-  ('ND', '7', 'Aufzug Nord'): {
+  ('ND', '7', 'Aufzug-Nord'): {
     'Coordinates': [827, 811],
     'Connections': [
-      (('ND', '04', 'Aufzug Nord'), 1),
-      (('ND', '05', 'Aufzug Nord'), 1),
-      (('ND', '1', 'Aufzug Nord'), 1),
-      (('ND', '2', 'Aufzug Nord'), 1),
-      (('ND', '3', 'Aufzug Nord'), 1),
-      (('ND', '4', 'Aufzug Nord'), 1),
-      (('ND', '5', 'Aufzug Nord'), 1),
-      (('ND', '6', 'Aufzug Nord'), 1),
+      (('ND', '04', 'Aufzug-Nord'), 1),
+      (('ND', '05', 'Aufzug-Nord'), 1),
+      (('ND', '1', 'Aufzug-Nord'), 1),
+      (('ND', '2', 'Aufzug-Nord'), 1),
+      (('ND', '3', 'Aufzug-Nord'), 1),
+      (('ND', '4', 'Aufzug-Nord'), 1),
+      (('ND', '5', 'Aufzug-Nord'), 1),
+      (('ND', '6', 'Aufzug-Nord'), 1),
       (('ND', '7', 'EN_51'), 34),
     ],
   },
-  ('ND', '7', 'Aufzug Süd'): {
+  ('ND', '7', 'Aufzug-Süd'): {
     'Coordinates': [381, 362],
     'Connections': [
-      (('ND', '04', 'Aufzug Süd'), 1),
-      (('ND', '05', 'Aufzug Süd'), 1),
-      (('ND', '06', 'Aufzug Süd'), 1),
-      (('ND', '1', 'Aufzug Süd'), 1),
-      (('ND', '2', 'Aufzug Süd'), 1),
-      (('ND', '3', 'Aufzug Süd'), 1),
-      (('ND', '4', 'Aufzug Süd'), 1),
-      (('ND', '5', 'Aufzug Süd'), 1),
-      (('ND', '6', 'Aufzug Süd'), 1),
+      (('ND', '04', 'Aufzug-Süd'), 1),
+      (('ND', '05', 'Aufzug-Süd'), 1),
+      (('ND', '06', 'Aufzug-Süd'), 1),
+      (('ND', '1', 'Aufzug-Süd'), 1),
+      (('ND', '2', 'Aufzug-Süd'), 1),
+      (('ND', '3', 'Aufzug-Süd'), 1),
+      (('ND', '4', 'Aufzug-Süd'), 1),
+      (('ND', '5', 'Aufzug-Süd'), 1),
+      (('ND', '6', 'Aufzug-Süd'), 1),
       (('ND', '7', 'EN_0'), 33),
     ],
   },
   ('ND', '7', 'EN_0'): {
     'Coordinates': [357, 340],
     'Connections': [
-      (('ND', '7', 'Aufzug Süd'), 33),
+      (('ND', '7', 'Aufzug-Süd'), 33),
       (('ND', '7', 'EN_1'), 56),
-      (('ND', '7', 'Treppe Süd'), 59),
-      (('ND', '7', 'WC Süd'), 25),
+      (('ND', '7', 'Treppe-Süd'), 59),
+      (('ND', '7', 'WC-Süd'), 25),
     ],
   },
   ('ND', '7', 'EN_1'): {
@@ -83902,7 +83902,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '7', 'EN_10'), 19),
       (('ND', '7', 'EN_9'), 24),
-      (('ND', '7', 'WC Süd'), 39),
+      (('ND', '7', 'WC-Süd'), 39),
     ],
   },
   ('ND', '7', 'EN_20'): {
@@ -84043,7 +84043,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '7', 'EN_3'), 44),
       (('ND', '7', 'EN_38'), 73),
-      (('ND', '7', 'Treppe Süd 2'), 35),
+      (('ND', '7', 'Treppe-Süd-2'), 35),
     ],
   },
   ('ND', '7', 'EN_38'): {
@@ -84174,11 +84174,11 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('ND', '7', 'EN_51'): {
     'Coordinates': [851, 835],
     'Connections': [
-      (('ND', '7', 'Aufzug Nord'), 34),
+      (('ND', '7', 'Aufzug-Nord'), 34),
       (('ND', '7', 'EN_45'), 50),
       (('ND', '7', 'EN_52'), 56),
-      (('ND', '7', 'Treppe Nord'), 57),
-      (('ND', '7', 'WC Nord'), 17),
+      (('ND', '7', 'Treppe-Nord'), 57),
+      (('ND', '7', 'WC-Nord'), 17),
     ],
   },
   ('ND', '7', 'EN_52'): {
@@ -84346,50 +84346,50 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '7', 'EN_8'), 47),
     ],
   },
-  ('ND', '7', 'Treppe Nord'): {
+  ('ND', '7', 'Treppe-Nord'): {
     'Coordinates': [887, 879],
     'Connections': [
-      (('ND', '04', 'Treppe Nord'), 2),
-      (('ND', '05', 'Treppe Nord'), 2),
-      (('ND', '1', 'Treppe Nord'), 2),
-      (('ND', '2', 'Treppe Nord'), 2),
-      (('ND', '3', 'Treppe Nord'), 2),
-      (('ND', '4', 'Treppe Nord'), 2),
-      (('ND', '5', 'Treppe Nord'), 2),
-      (('ND', '6', 'Treppe Nord'), 2),
+      (('ND', '04', 'Treppe-Nord'), 2),
+      (('ND', '05', 'Treppe-Nord'), 2),
+      (('ND', '1', 'Treppe-Nord'), 2),
+      (('ND', '2', 'Treppe-Nord'), 2),
+      (('ND', '3', 'Treppe-Nord'), 2),
+      (('ND', '4', 'Treppe-Nord'), 2),
+      (('ND', '5', 'Treppe-Nord'), 2),
+      (('ND', '6', 'Treppe-Nord'), 2),
       (('ND', '7', 'EN_51'), 57),
     ],
   },
-  ('ND', '7', 'Treppe Süd'): {
+  ('ND', '7', 'Treppe-Süd'): {
     'Coordinates': [317, 296],
     'Connections': [
-      (('ND', '04', 'Treppe Süd'), 2),
-      (('ND', '05', 'Treppe Süd'), 2),
-      (('ND', '06', 'Treppe Süd'), 2),
-      (('ND', '1', 'Treppe Süd'), 2),
-      (('ND', '2', 'Treppe Süd'), 2),
-      (('ND', '3', 'Treppe Süd'), 2),
-      (('ND', '4', 'Treppe Süd'), 2),
-      (('ND', '5', 'Treppe Süd'), 2),
-      (('ND', '6', 'Treppe Süd'), 2),
+      (('ND', '04', 'Treppe-Süd'), 2),
+      (('ND', '05', 'Treppe-Süd'), 2),
+      (('ND', '06', 'Treppe-Süd'), 2),
+      (('ND', '1', 'Treppe-Süd'), 2),
+      (('ND', '2', 'Treppe-Süd'), 2),
+      (('ND', '3', 'Treppe-Süd'), 2),
+      (('ND', '4', 'Treppe-Süd'), 2),
+      (('ND', '5', 'Treppe-Süd'), 2),
+      (('ND', '6', 'Treppe-Süd'), 2),
       (('ND', '7', 'EN_0'), 59),
     ],
   },
-  ('ND', '7', 'Treppe Süd 2'): {
+  ('ND', '7', 'Treppe-Süd-2'): {
     'Coordinates': [663, 502],
     'Connections': [
-      (('ND', '1', 'Treppe Süd 2'), 2),
-      (('ND', '5', 'Treppe Süd 2'), 2),
+      (('ND', '1', 'Treppe-Süd-2'), 2),
+      (('ND', '5', 'Treppe-Süd-2'), 2),
       (('ND', '7', 'EN_37'), 35),
     ],
   },
-  ('ND', '7', 'WC Nord'): {
+  ('ND', '7', 'WC-Nord'): {
     'Coordinates': [845, 851],
     'Connections': [
       (('ND', '7', 'EN_51'), 17),
     ],
   },
-  ('ND', '7', 'WC Süd'): {
+  ('ND', '7', 'WC-Süd'): {
     'Coordinates': [370, 319],
     'Connections': [
       (('ND', '7', 'EN_0'), 25),
@@ -84419,7 +84419,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '8', '102'), 47),
       (('ND', '8', 'EN_1'), 30),
-      (('ND', '8', 'Eingang Süd / West'), 31),
+      (('ND', '8', 'Eingang-Süd-/-West'), 31),
     ],
   },
   ('ND', '8', 'EN_1'): {
@@ -84427,7 +84427,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '8', 'EN_0'), 30),
       (('ND', '8', 'EN_2'), 29),
-      (('ND', '8', 'Treppenhaus Süd'), 39),
+      (('ND', '8', 'Treppenhaus-Süd'), 39),
     ],
   },
   ('ND', '8', 'EN_10'): {
@@ -84510,7 +84510,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '8', 'EN_1'), 29),
       (('ND', '8', 'EN_3'), 21),
-      (('ND', '8', 'Eingang Süd / Ost'), 23),
+      (('ND', '8', 'Eingang-Süd-/-Ost'), 23),
     ],
   },
   ('ND', '8', 'EN_20'): {
@@ -84547,7 +84547,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('ND', '8', 'EN_18'), 57),
       (('ND', '8', 'EN_23'), 33),
-      (('ND', '8', 'Treppenhaus Nord'), 28),
+      (('ND', '8', 'Treppenhaus-Nord'), 28),
     ],
   },
   ('ND', '8', 'EN_3'): {
@@ -84568,28 +84568,28 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [492, 395],
     'Connections': [
       (('ND', '8', 'EN_11'), 60),
-      (('ND', '8', 'Eingang Süd / West'), 155),
+      (('ND', '8', 'Eingang-Süd-/-West'), 155),
     ],
   },
   ('ND', '8', 'EN_6'): {
     'Coordinates': [405, 476],
     'Connections': [
       (('ND', '8', 'EN_11'), 59),
-      (('ND', '8', 'Eingang Süd / Ost'), 151),
+      (('ND', '8', 'Eingang-Süd-/-Ost'), 151),
     ],
   },
   ('ND', '8', 'EN_7'): {
     'Coordinates': [188, 264],
     'Connections': [
       (('ND', '8', 'EN_10'), 64),
-      (('ND', '8', 'Eingang Süd / Ost'), 153),
+      (('ND', '8', 'Eingang-Süd-/-Ost'), 153),
     ],
   },
   ('ND', '8', 'EN_8'): {
     'Coordinates': [274, 184],
     'Connections': [
       (('ND', '8', 'EN_10'), 54),
-      (('ND', '8', 'Eingang Süd / West'), 149),
+      (('ND', '8', 'Eingang-Süd-/-West'), 149),
     ],
   },
   ('ND', '8', 'EN_9'): {
@@ -84598,31 +84598,31 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('ND', '8', 'EN_10'), 148),
     ],
   },
-  ('ND', '8', 'Eingang Süd / Ost'): {
+  ('ND', '8', 'Eingang-Süd-/-Ost'): {
     'Coordinates': [303, 365],
     'Connections': [
       (('ND', '8', 'EN_2'), 23),
       (('ND', '8', 'EN_6'), 151),
       (('ND', '8', 'EN_7'), 153),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ND', '8', 'Eingang Süd / West'): {
+  ('ND', '8', 'Eingang-Süd-/-West'): {
     'Coordinates': [382, 286],
     'Connections': [
       (('ND', '8', 'EN_0'), 31),
       (('ND', '8', 'EN_5'), 155),
       (('ND', '8', 'EN_8'), 149),
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
     ],
   },
-  ('ND', '8', 'Treppenhaus Nord'): {
+  ('ND', '8', 'Treppenhaus-Nord'): {
     'Coordinates': [888, 891],
     'Connections': [
       (('ND', '8', 'EN_24'), 28),
     ],
   },
-  ('ND', '8', 'Treppenhaus Süd'): {
+  ('ND', '8', 'Treppenhaus-Süd'): {
     'Coordinates': [315, 305],
     'Connections': [
       (('ND', '8', 'EN_1'), 39),
@@ -84631,58 +84631,58 @@ final Map<dynamic, Map<String, dynamic>> graph = {
   ('RUB', '0', 'Campus'): {
     'Coordinates': [0, 0],
     'Connections': [
-      (('GA', '02', 'Eingang Nord'), 1),
-      (('GA', '03', 'Eingang Nord Links'), 1),
-      (('GA', '03', 'Eingang Nord Rechts'), 1),
-      (('GA', '03', 'Eingang Süd Links'), 1),
-      (('GA', '03', 'Eingang Süd Rechts'), 1),
-      (('GA', '05', 'Eingang Süd Links'), 1),
-      (('GA', '05', 'Eingang Süd Rechts'), 1),
-      (('GA', '06', 'Eingang Süd'), 1),
-      (('GABF', '02', 'Eingang HGB 10 Oben'), 1),
-      (('GABF', '02', 'Eingang HGB 10 Unten Links'), 1),
-      (('GABF', '02', 'Eingang HGB 10 Unten Rechts'), 1),
-      (('GABF', '02', 'Eingang Nord'), 1),
-      (('GABF', '05', 'Eingang Süd'), 1),
-      (('GAFO', '02', 'Eingang Nord'), 1),
-      (('GAFO', '03', 'Eingang Nord Ost'), 1),
-      (('GAFO', '03', 'Eingang Nord West'), 1),
-      (('GAFO', '05', 'Eingang'), 1),
-      (('GB', '02', 'Eingang Nord'), 1),
-      (('GB', '03', 'Eingang Nord Links'), 1),
-      (('GB', '03', 'Eingang Nord Rechts'), 1),
-      (('GB', '05', 'Eingang Süd Links'), 1),
-      (('GB', '05', 'Eingang Süd Rechts'), 1),
-      (('GD', '03', 'Eingang Nord Ost'), 1),
-      (('GD', '03', 'Eingang Nord West'), 1),
-      (('GD', '03', 'Eingang Nord West 2'), 1),
-      (('IA', '0', 'Eingang Süd'), 1),
-      (('IA', '01', 'Eingang HIA'), 1),
-      (('IA', '02', 'Eingang Nord Links'), 1),
-      (('IA', '02', 'Eingang Nord Rechts'), 1),
-      (('IA', '02', 'Eingang Süd Links'), 1),
-      (('IA', '02', 'Eingang Süd Rechts'), 1),
-      (('IA', '02', 'Eingang West'), 1),
-      (('ID', '04', 'Eingang IC'), 1),
-      (('ID', '04', 'Eingang Nord'), 1),
-      (('ID', '04', 'Eingang Süd'), 1),
-      (('NB', '03', 'Eingang Nord Ost'), 1),
-      (('NB', '03', 'Eingang Nord West'), 1),
-      (('ND', '04', 'Eingang ND Süd-1'), 1),
-      (('ND', '04', 'Eingang ND Süd-2'), 1),
-      (('ND', '05', 'Eingang Nord'), 1),
-      (('ND', '06', 'Eingang Nord Links'), 1),
-      (('ND', '06', 'Eingang Nord Rechts'), 1),
-      (('ND', '06', 'Eingang Süd Links'), 1),
-      (('ND', '06', 'Eingang Süd Rechts'), 1),
-      (('ND', '07', 'Eingang Nord'), 1),
-      (('ND', '07', 'Eingang Süd'), 1),
-      (('ND', '8', 'Eingang Süd / Ost'), 1),
-      (('ND', '8', 'Eingang Süd / West'), 1),
-      (('SH', '0', 'Eingang Kultur Café'), 1),
-      (('SH', '0', 'Eingang Nord'), 1),
-      (('SH', '0', 'Eingang Nord 2'), 1),
-      (('SH', '0', 'Eingang Süd'), 1),
+      (('GA', '02', 'Eingang-Nord'), 10000),
+      (('GA', '03', 'Eingang-Nord-Links'), 10000),
+      (('GA', '03', 'Eingang-Nord-Rechts'), 10000),
+      (('GA', '03', 'Eingang-Süd-Links'), 10000),
+      (('GA', '03', 'Eingang-Süd-Rechts'), 10000),
+      (('GA', '05', 'Eingang-Süd-Links'), 10000),
+      (('GA', '05', 'Eingang-Süd-Rechts'), 10000),
+      (('GA', '06', 'Eingang-Süd'), 10000),
+      (('GABF', '02', 'Eingang-HGB-10-Oben'), 10000),
+      (('GABF', '02', 'Eingang-HGB-10-Unten-Links'), 10000),
+      (('GABF', '02', 'Eingang-HGB-10-Unten-Rechts'), 10000),
+      (('GABF', '02', 'Eingang-Nord'), 10000),
+      (('GABF', '05', 'Eingang-Süd'), 10000),
+      (('GAFO', '02', 'Eingang-Nord'), 10000),
+      (('GAFO', '03', 'Eingang-Nord-Ost'), 10000),
+      (('GAFO', '03', 'Eingang-Nord-West'), 10000),
+      (('GAFO', '05', 'Eingang'), 10000),
+      (('GB', '02', 'Eingang-Nord'), 10000),
+      (('GB', '03', 'Eingang-Nord-Links'), 10000),
+      (('GB', '03', 'Eingang-Nord-Rechts'), 10000),
+      (('GB', '05', 'Eingang-Süd-Links'), 10000),
+      (('GB', '05', 'Eingang-Süd-Rechts'), 10000),
+      (('GD', '03', 'Eingang-Nord-Ost'), 10000),
+      (('GD', '03', 'Eingang-Nord-West'), 10000),
+      (('GD', '03', 'Eingang-Nord-West-2'), 10000),
+      (('IA', '0', 'Eingang-Süd'), 10000),
+      (('IA', '01', 'Eingang-HIA'), 10000),
+      (('IA', '02', 'Eingang-Nord-Links'), 10000),
+      (('IA', '02', 'Eingang-Nord-Rechts'), 10000),
+      (('IA', '02', 'Eingang-Süd-Links'), 10000),
+      (('IA', '02', 'Eingang-Süd-Rechts'), 10000),
+      (('IA', '02', 'Eingang-West'), 10000),
+      (('ID', '04', 'Eingang-IC'), 10000),
+      (('ID', '04', 'Eingang-Nord'), 10000),
+      (('ID', '04', 'Eingang-Süd'), 10000),
+      (('NB', '03', 'Eingang-Nord-Ost'), 10000),
+      (('NB', '03', 'Eingang-Nord-West'), 10000),
+      (('ND', '04', 'Eingang-ND-Süd-1'), 10000),
+      (('ND', '04', 'Eingang-ND-Süd-2'), 10000),
+      (('ND', '05', 'Eingang-Nord'), 10000),
+      (('ND', '06', 'Eingang-Nord-Links'), 10000),
+      (('ND', '06', 'Eingang-Nord-Rechts'), 10000),
+      (('ND', '06', 'Eingang-Süd-Links'), 10000),
+      (('ND', '06', 'Eingang-Süd-Rechts'), 10000),
+      (('ND', '07', 'Eingang-Nord'), 10000),
+      (('ND', '07', 'Eingang-Süd'), 10000),
+      (('ND', '8', 'Eingang-Süd-/-Ost'), 10000),
+      (('ND', '8', 'Eingang-Süd-/-West'), 10000),
+      (('SH', '0', 'Eingang-Kultur-Café'), 10000),
+      (('SH', '0', 'Eingang-Nord'), 10000),
+      (('SH', '0', 'Eingang-Nord-2'), 10000),
+      (('SH', '0', 'Eingang-Süd'), 10000),
     ],
   },
   ('SH', '0', '004'): {
@@ -84902,7 +84902,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [713, 462],
     'Connections': [
       (('SH', '0', 'EN_31'), 123),
-      (('SH', '0', 'Eingang Kultur Café'), 72),
+      (('SH', '0', 'Eingang-Kultur-Café'), 72),
     ],
   },
   ('SH', '0', '087'): {
@@ -84919,13 +84919,13 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('SH', '0', 'EN_6'), 49),
     ],
   },
-  ('SH', '0', 'Ausländer:innenzentrum (AZ)'): {
+  ('SH', '0', 'Ausländer:innenzentrum-(AZ)'): {
     'Coordinates': [555, 280],
     'Connections': [
       (('SH', '0', 'EN_32'), 64),
     ],
   },
-  ('SH', '0', 'Behinderten WC'): {
+  ('SH', '0', 'Behinderten-WC'): {
     'Coordinates': [620, 567],
     'Connections': [
       (('SH', '0', 'EN_28'), 31),
@@ -85027,7 +85027,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('SH', '0', '062'), 52),
       (('SH', '0', '065'), 40),
       (('SH', '0', 'EN_18'), 71),
-      (('SH', '0', 'Treppenhaus Süd'), 52),
+      (('SH', '0', 'Treppenhaus-Süd'), 52),
     ],
   },
   ('SH', '0', 'EN_2'): {
@@ -85099,14 +85099,14 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [706, 526],
     'Connections': [
       (('SH', '0', 'EN_28'), 88),
-      (('SH', '0', 'Eingang Nord 2'), 28),
+      (('SH', '0', 'Eingang-Nord-2'), 28),
       (('SH', '0', 'WC'), 73),
     ],
   },
   ('SH', '0', 'EN_28'): {
     'Coordinates': [643, 588],
     'Connections': [
-      (('SH', '0', 'Behinderten WC'), 31),
+      (('SH', '0', 'Behinderten-WC'), 31),
       (('SH', '0', 'EN_27'), 88),
       (('SH', '0', 'EN_33'), 30),
     ],
@@ -85116,7 +85116,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('SH', '0', 'EN_24'), 45),
       (('SH', '0', 'EN_33'), 88),
-      (('SH', '0', 'Eingang Nord'), 29),
+      (('SH', '0', 'Eingang-Nord'), 29),
     ],
   },
   ('SH', '0', 'EN_3'): {
@@ -85132,7 +85132,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('SH', '0', 'EN_31'), 42),
       (('SH', '0', 'EN_32'), 120),
       (('SH', '0', 'EN_36'), 22),
-      (('SH', '0', 'Treppenhaus Nord'), 48),
+      (('SH', '0', 'Treppenhaus-Nord'), 48),
     ],
   },
   ('SH', '0', 'EN_31'): {
@@ -85147,7 +85147,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Connections': [
       (('SH', '0', '081'), 59),
       (('SH', '0', '083'), 46),
-      (('SH', '0', 'Ausländer:innenzentrum (AZ)'), 64),
+      (('SH', '0', 'Ausländer:innenzentrum-(AZ)'), 64),
       (('SH', '0', 'EN_30'), 120),
     ],
   },
@@ -85171,7 +85171,7 @@ final Map<dynamic, Map<String, dynamic>> graph = {
     'Coordinates': [511, 489],
     'Connections': [
       (('SH', '0', 'EN_34'), 33),
-      (('SH', '0', 'Treppenhaus Nord'), 62),
+      (('SH', '0', 'Treppenhaus-Nord'), 62),
     ],
   },
   ('SH', '0', 'EN_36'): {
@@ -85214,46 +85214,46 @@ final Map<dynamic, Map<String, dynamic>> graph = {
       (('SH', '0', 'EN_8'), 29),
     ],
   },
-  ('SH', '0', 'Eingang Kultur Café'): {
+  ('SH', '0', 'Eingang-Kultur-Café'): {
     'Coordinates': [760, 516],
     'Connections': [
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
       (('SH', '0', '085'), 72),
     ],
   },
-  ('SH', '0', 'Eingang Nord'): {
+  ('SH', '0', 'Eingang-Nord'): {
     'Coordinates': [582, 690],
     'Connections': [
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
       (('SH', '0', 'EN_29'), 29),
     ],
   },
-  ('SH', '0', 'Eingang Nord 2'): {
+  ('SH', '0', 'Eingang-Nord-2'): {
     'Coordinates': [726, 546],
     'Connections': [
-      (('RUB', '0', 'Campus'), 1),
+      (('RUB', '0', 'Campus'), 10000),
       (('SH', '0', 'EN_27'), 28),
     ],
   },
-  ('SH', '0', 'Eingang Süd'): {
+  ('SH', '0', 'Eingang-Süd'): {
     'Coordinates': [127, 870],
     'Connections': [
-      (('RUB', '0', 'Campus'), 1),
-      (('SH', '0', 'Treppenhaus Süd'), 63),
+      (('RUB', '0', 'Campus'), 10000),
+      (('SH', '0', 'Treppenhaus-Süd'), 63),
     ],
   },
-  ('SH', '0', 'Treppenhaus Nord'): {
+  ('SH', '0', 'Treppenhaus-Nord'): {
     'Coordinates': [556, 446],
     'Connections': [
       (('SH', '0', 'EN_30'), 48),
       (('SH', '0', 'EN_35'), 62),
     ],
   },
-  ('SH', '0', 'Treppenhaus Süd'): {
+  ('SH', '0', 'Treppenhaus-Süd'): {
     'Coordinates': [75, 834],
     'Connections': [
       (('SH', '0', 'EN_19'), 52),
-      (('SH', '0', 'Eingang Süd'), 63),
+      (('SH', '0', 'Eingang-Süd'), 63),
     ],
   },
   ('SH', '0', 'WC'): {
