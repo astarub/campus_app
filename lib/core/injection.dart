@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:campus_app/pages/navigation/navigation_datasource.dart';
 import 'package:campus_app/utils/pages/navigation_utils.dart';
 import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -58,20 +59,14 @@ Future<void> init() async {
     ),
   );
 
-  sl.registerLazySingleton(() {
-    return TicketDataSource(
-      secureStorage: sl(),
-    );
-  });
+  sl.registerLazySingleton(() => TicketDataSource(secureStorage: sl()));
+  sl.registerLazySingleton(() => NavigationDatasource(appwriteClient: sl()));
 
   //!
   //! Repositories
   //!
 
-  sl.registerLazySingleton(() {
-    final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
-    return BackendRepository(client: client);
-  });
+  sl.registerLazySingleton(() => BackendRepository(client: sl()));
 
   sl.registerSingletonWithDependencies(
     () => NewsRepository(newsDatasource: sl()),
@@ -145,6 +140,9 @@ Future<void> init() async {
       aOptions: AndroidOptions(encryptedSharedPreferences: true),
     ),
   );
+
+  // AppWrite Client
+  sl.registerLazySingleton<Client>(() => Client().setEndpoint(appwrite).setProject('campus_app'));
 
   await sl.allReady();
 }

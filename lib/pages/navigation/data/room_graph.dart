@@ -3,9 +3,10 @@
 
 // Record shapes for clarity in Dart 3+
 typedef NodeId = (String, String, String);
+typedef NavigationGraph = Map<NodeId, Map<String, dynamic>>;
 
 // Map<NodeId, {'Coordinates': [x,y], 'Connections': [(NodeId, weight), ...] }>
-final Map<dynamic, Map<String, dynamic>> graph = {
+final NavigationGraph graph = {
   ('GA', '02', '109'): {
     'Coordinates': [1032, 1015],
     'Connections': [

@@ -45,8 +45,8 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
 
   SearchStatus searchStatus = SearchStatus.wait;
 
-  double scale = 2;
-  double previousScale = 2;
+  double scale = 2.5;
+  double previousScale = 2.5;
   Offset position = Offset.zero;
   Offset startFocalPoint = Offset.zero;
   Offset startPosition = Offset.zero;
@@ -394,7 +394,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
                                           final screenHeight = constraints.maxHeight;
 
                                           setState(() {
-                                            scale = 1.5;
+                                            scale = 2.5;
                                             rotation = 0.0;
                                             position = Offset(
                                               (screenWidth - startPoint.dx * scale) / 2,
@@ -448,7 +448,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
             onNext: () {
               setState(() {
                 currentIndex = currentIndex + 1;
-                scale = 1.5;
+                scale = 2.5;
                 rotation = 0.0;
                 position = Offset.zero;
               });
