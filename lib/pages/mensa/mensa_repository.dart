@@ -1,17 +1,25 @@
 import 'dart:async';
 
-import 'package:dartz/dartz.dart';
-import 'package:intl/intl.dart';
-
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_datasource.dart';
+import 'package:dartz/dartz.dart';
+import 'package:intl/intl.dart';
 
 class MensaRepository {
   final MensaDataSource mensaDatasource;
 
   MensaRepository({required this.mensaDatasource});
+
+  /// Returns a list of [DishEntity] widgets or a failure
+  Either<Failure, List<DishEntity>> getCachedDishes(int restaurant) {
+    try {
+      return Right(mensaDatasource.readDishEntitiesFromCache(restaurant));
+    } catch (e) {
+      return Left(CachFailure());
+    }
+  }
 
   /// Returns a list of [DishEntity] widgets or a failure.
   /// Reataurant is 1 (Mensa) by default. Theire are the following possible values:
@@ -36,40 +44,40 @@ class MensaRepository {
         // Correct DateFormat is e.g. "Mo., 10.10." instead of "Mo, 10.10."
         final datetime = DateFormat('E, y.d.M.', 'de_DE').parse(day.replaceRange(2, 4, '., ${firstDayOfWeek.year}.'));
 
-        late int date;
+        int date = -1;
         switch (datetime.weekday) {
           case 1: // Monday
             if (datetime.compareTo(lastDayOfWeek) > 0) {
               date = 5;
-            } else {
+            } else if (datetime.compareTo(firstDayOfWeek) >= 0) {
               date = 0;
             }
             break;
           case 2: // Tuesday
             if (datetime.compareTo(lastDayOfWeek) > 0) {
               date = 6;
-            } else {
+            } else if (datetime.compareTo(firstDayOfWeek) > 0) {
               date = 1;
             }
             break;
           case 3: // Wednesday
             if (datetime.compareTo(lastDayOfWeek) > 0) {
               date = 7;
-            } else {
+            } else if (datetime.compareTo(firstDayOfWeek) > 0) {
               date = 2;
             }
             break;
           case 4: // Thursday
             if (datetime.compareTo(lastDayOfWeek) > 0) {
               date = 8;
-            } else {
+            } else if (datetime.compareTo(firstDayOfWeek) > 0) {
               date = 3;
             }
             break;
           default: // Friday, Saturday or Sunday
             if (datetime.compareTo(lastDayOfWeek) > 0) {
               date = 9;
-            } else {
+            } else if (datetime.compareTo(firstDayOfWeek) > 0) {
               date = 4;
             }
             break;
@@ -127,15 +135,6 @@ class MensaRepository {
         default:
           return Left(GeneralFailure());
       }
-    }
-  }
-
-  /// Returns a list of [DishEntity] widgets or a failure
-  Either<Failure, List<DishEntity>> getCachedDishes(int restaurant) {
-    try {
-      return Right(mensaDatasource.readDishEntitiesFromCache(restaurant));
-    } catch (e) {
-      return Left(CachFailure());
     }
   }
 }
