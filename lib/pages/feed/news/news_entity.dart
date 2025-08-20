@@ -87,6 +87,12 @@ class NewsEntity {
       multiLine: true,
     );
 
+    final List<String> copyright = imageData['copyright'];
+
+    if (copyright.isNotEmpty) {
+      copyright[0] = copyright[0].trim();
+    }
+
     return NewsEntity(
       content: content.replaceAll(htmlTags, ''),
       title: title,
@@ -94,7 +100,7 @@ class NewsEntity {
       description: description,
       pubDate: pubDate,
       imageUrl: imageDataList.isNotEmpty ? imageDataList[0] : 'false',
-      copyright: imageData['copyright'],
+      copyright: copyright,
     );
   }
 
