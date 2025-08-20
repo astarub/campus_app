@@ -625,15 +625,13 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   //-----------------------------------------------------------------------------
 
   Future<void> changeSelectedLocation(String selectedOption) async {
-    final String buildingName = selectedOption.split(' ')[0];
-
     searchController.text = selectedOption;
     selectedLocationGlobal = selectedOption;
-    placeSymbol(buildingName);
+    placeSymbol(selectedOption);
 
     try {
       if (currentLocation == null) {
-        final LatLng? endLocation = predefinedLocations[buildingName];
+        final LatLng? endLocation = predefinedLocations[selectedOption];
         if (endLocation != null) {
           mapController.move(endLocation, 17);
         }
@@ -644,7 +642,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
         currentLocation!.latitude!,
         currentLocation!.longitude!,
       );
-      final LatLng? endLocation = predefinedLocations[buildingName];
+      final LatLng? endLocation = predefinedLocations[selectedOption];
       if (endLocation == null) return;
 
       await setShortestPath(startLocation, endLocation);
