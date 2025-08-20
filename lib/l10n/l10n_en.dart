@@ -1,10 +1,12 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'l10n.dart';
 
-import 'package:campus_app/l10n/l10n.dart';
+// ignore_for_file: type=lint
 
 /// The translations for English (`en`).
 class AppLocalizationsEn extends AppLocalizations {
-  AppLocalizationsEn([super.locale = 'en']);
+  AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
   String get helloWorld => 'Hello World!';
@@ -22,10 +24,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unexpectedError => 'An unexpected error occured...';
 
   @override
-  String get invalid2FATokenFailureMessage => 'Your TOTP is incorrect. Please try again!';
+  String get invalid2FATokenFailureMessage =>
+      'Your TOTP is incorrect. Please try again!';
 
   @override
-  String get invalidLoginIDAndPasswordFailureMessage => 'The credentials are invalid!';
+  String get invalidLoginIDAndPasswordFailureMessage =>
+      'The credentials are invalid!';
 
   @override
   String get welcome => 'Welcome!';

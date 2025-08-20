@@ -41,7 +41,10 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
         url.contains('instagram') ||
         url.contains('facebook') ||
         url.contains('twitch') ||
+        url.contains('tiktok') ||
         url.contains('mailto:') ||
+        // Nextcloud Form doesn't render correctly in webview
+        url.contains('next.asta-bochum.de') ||
         url.contains('tel:')) {
       // Open in external browser
       launchUrl(
@@ -132,6 +135,12 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                               ),
                               Expanded(
                                 child: SocialMediaButton(
+                                  iconPath: 'assets/img/icons/tiktok.svg',
+                                  onTap: () => openLink(context, 'https://www.tiktok.com/@asta_rub'),
+                                ),
+                              ),
+                              Expanded(
+                                child: SocialMediaButton(
                                   iconPath: 'assets/img/icons/facebook.svg',
                                   onTap: () => openLink(context, 'https://www.facebook.com/AStA.Bochum/'),
                                 ),
@@ -190,6 +199,14 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                               'https://buchung.hochschulsport.ruhr-uni-bochum.de/angebote/aktueller_zeitraum/m.html',
                             ),
                           ),
+                          ExternalLinkButton(
+                            title: 'Was tun bei Diskriminierung?',
+                            leadingIconPath: 'assets/img/icons/info.svg',
+                            onTap: () => openLink(
+                              context,
+                              'https://einrichtungen.ruhr-uni-bochum.de/de/was-tun-bei-diskriminierung',
+                            ),
+                          ),
                         ],
                       ),
                       // Additional sites and links
@@ -246,7 +263,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             title: 'Feedback',
                             leadingIconPath: 'assets/img/icons/message-square.svg',
                             onTap: () =>
-                                openLink(context, 'https://next.asta-bochum.de/index.php/apps/forms/jb2Z4mge9yj2z56E'),
+                                openLink(context, 'https://next.asta-bochum.de/apps/forms/s/QB2resxiSwf5atFaNsp2eEgY'),
                           ),
                         ],
                       ),

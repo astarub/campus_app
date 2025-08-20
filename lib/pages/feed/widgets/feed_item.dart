@@ -8,7 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:get_thumbnail_video/video_thumbnail.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/calendar/calendar_detail_page.dart';
@@ -113,11 +113,9 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
       quality: 80,
     );
 
-    if (file != null) {
-      setState(() {
-        videoThumbnailFile = File(file);
-      });
-    }
+    setState(() {
+      videoThumbnailFile = File(file.path);
+    });
   }
 
   @override
@@ -132,7 +130,7 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
     }
 
     void openDetailsPage() {
-      if (widget.webViewUrl != null) {
+      if (widget.webViewUrl != null && widget.webViewUrl!.isNotEmpty) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)),

@@ -67,6 +67,7 @@ class Settings {
   final double? lastMensaBalance;
   final double? lastMensaTransaction;
   final List<Map<String, dynamic>>? mensaRestaurantConfig;
+  final bool firstTimePathfinder;
 
   Settings({
     this.useSystemDarkmode = true,
@@ -90,6 +91,7 @@ class Settings {
     this.displayFullscreenTicket = false,
     this.lastMensaBalance,
     this.lastMensaTransaction,
+    this.firstTimePathfinder = true,
   });
 
   Settings copyWith({
@@ -114,6 +116,7 @@ class Settings {
     bool? displayFullscreenTicket,
     double? lastMensaBalance,
     double? lastMensaTransaction,
+    bool? firstTimePathfinder,
   }) =>
       Settings(
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
@@ -137,6 +140,7 @@ class Settings {
         lastMensaBalance: lastMensaBalance ?? this.lastMensaBalance,
         lastMensaTransaction: lastMensaTransaction ?? this.lastMensaTransaction,
         mensaRestaurantConfig: mensaRestaurantConfig ?? this.mensaRestaurantConfig,
+        firstTimePathfinder: firstTimePathfinder ?? this.firstTimePathfinder,
       );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
@@ -185,6 +189,7 @@ class Settings {
       displayFullscreenTicket: json['displayFullscreenTicket'] ?? false,
       lastMensaBalance: json['lastMensaBalance'],
       lastMensaTransaction: json['lastMensaTransaction'],
+      firstTimePathfinder: json['firstTimePathfinder'] ?? true,
     );
   }
 
@@ -215,6 +220,7 @@ class Settings {
       'displayFullscreenTicket': displayFullscreenTicket,
       'lastMensaBalance': lastMensaBalance,
       'lastMensaTransaction': lastMensaTransaction,
+      'firstTimePathfinder': firstTimePathfinder,
     };
   }
 }

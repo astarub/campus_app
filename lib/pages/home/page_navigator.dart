@@ -7,8 +7,9 @@ import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/wallet/wallet_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/navigation/outdoor_navigation_page.dart';
 
-enum PageItem { feed, events, coupons, mensa, wallet, more }
+enum PageItem { feed, events, coupons, navigation, mensa, wallet, more }
 
 class PageNavigatorRoutes {
   /// The root-page is shown initially when this navbar-tab is the active one.
@@ -72,6 +73,12 @@ class NavBarNavigator extends StatelessWidget {
       case PageItem.mensa:
         rootPage = MensaPage(
           mainNavigatorKey: mainNavigatorKey,
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
+        );
+        break;
+      case PageItem.navigation:
+        rootPage = NavigationPage(
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );

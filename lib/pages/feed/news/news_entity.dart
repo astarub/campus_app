@@ -49,11 +49,11 @@ class NewsEntity {
   final String? videoUrl;
 
   /// Pinned
-  @HiveField(10)
+  @HiveField(10, defaultValue: false)
   final bool pinned;
 
   /// URL for a webview
-  @HiveField(11)
+  @HiveField(11, defaultValue: null)
   final String? webViewUrl;
 
   const NewsEntity({
@@ -73,11 +73,12 @@ class NewsEntity {
 
   /// Returns a NewsEntity based on a single XML element given by the web server
   factory NewsEntity.fromXML(XmlElement xml, Map<String, dynamic> imageData) {
-    final content = xml.getElement('content')!.innerText;
+    final content = xml.getElement('content:encoded')!.innerText;
     final title = xml.getElement('title')!.innerText;
     final url = xml.getElement('link')!.innerText;
     final description = xml.getElement('description')!.innerText;
     final pubDate = DateFormat('E, d MMM yyyy hh:mm:ss Z', 'en_US').parse(xml.getElement('pubDate')!.innerText);
+    final imageDataList = List.castFrom(imageData['imageUrls']);
 
     /// Regular Expression to remove unwanted HTML-Tags
     final RegExp htmlTags = RegExp(
@@ -86,14 +87,20 @@ class NewsEntity {
       multiLine: true,
     );
 
+    final List<String> copyright = imageData['copyright'];
+
+    if (copyright.isNotEmpty) {
+      copyright[0] = copyright[0].trim();
+    }
+
     return NewsEntity(
       content: content.replaceAll(htmlTags, ''),
       title: title,
       url: url,
       description: description,
       pubDate: pubDate,
-      imageUrl: List.castFrom(imageData['imageUrls'])[0],
-      copyright: imageData['copyright'],
+      imageUrl: imageDataList.isNotEmpty ? imageDataList[0] : 'false',
+      copyright: copyright,
     );
   }
 
@@ -104,14 +111,16 @@ class NewsEntity {
     final url = json['link'];
     final author = json['author'];
     final categories = json['categories'];
-    final content = Bidi.stripHtmlIfNeeded(Map<String, dynamic>.from(json['content'])['rendered'] as String);
+    final content = Map<String, dynamic>.from(json['content'])['rendered'] as String;
     String description = '';
 
     // Remove html and whitespaces from the content
     final String formattedContent = content
         .replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '')
         .replaceAll(RegExp(' {2,}'), ' ')
-        .replaceAll('\n', ' ');
+        // Remove wordpress featured images from content
+        .replaceAll(RegExp('<figure class="wp-block-post-featured-image">.*?</figure>', dotAll: true), '')
+        .replaceAll('\n', '');
     final List<String> descWords = formattedContent.split(' ');
     final List<String> descriptionList = [];
 

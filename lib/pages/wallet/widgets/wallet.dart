@@ -88,6 +88,24 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
     );
   }
 
+  Future<void> loadAndRenderTicket() async {
+    // Pre-render ticket
+    await renderTicket();
+
+    final String? oldAztecCode = await ticketRepository.getAztecCode();
+
+    await ticketRepository.loadTicket().catchError((error) {
+      debugPrint('Wallet widget: $error');
+    });
+
+    final String? newAztecCode = await ticketRepository.getAztecCode();
+
+    // Compare aztec code from before re-loading the ticket with the new one
+    if (oldAztecCode != newAztecCode) {
+      await renderTicket();
+    }
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -95,10 +113,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   void initState() {
     super.initState();
 
-    ticketRepository.loadTicket().catchError((error) {
-      debugPrint('Wallet widget: $error');
-    });
-    renderTicket();
+    loadAndRenderTicket();
   }
 
   @override

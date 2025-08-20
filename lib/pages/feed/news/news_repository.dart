@@ -25,7 +25,7 @@ class NewsRepository {
 
       for (final e in astaFeed) {
         final entity = NewsEntity.fromJSON(json: e, copyright: ['© AStA']);
-        final past = DateTime.now().subtract(const Duration(days: 21));
+        final past = DateTime.now().subtract(const Duration(days: 60));
 
         if (entity.pubDate.compareTo(past) > 0) {
           entities.add(entity);
@@ -34,7 +34,7 @@ class NewsRepository {
 
       for (final e in appFeed) {
         final entity = NewsEntity.fromJSON(json: e, copyright: ['© AStA']);
-        final past = DateTime.now().subtract(const Duration(days: 21));
+        final past = DateTime.now().subtract(const Duration(days: 60));
 
         if (entity.pubDate.compareTo(past) > 0) {
           entities.add(entity);

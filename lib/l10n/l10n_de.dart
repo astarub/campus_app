@@ -1,16 +1,19 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'l10n.dart';
 
-import 'package:campus_app/l10n/l10n.dart';
+// ignore_for_file: type=lint
 
 /// The translations for German (`de`).
 class AppLocalizationsDe extends AppLocalizations {
-  AppLocalizationsDe([super.locale = 'de']);
+  AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
   String get helloWorld => 'Hallo Welt!';
 
   @override
-  String get serverFailureMessage => 'Serverdaten konnten nicht geladen werden.';
+  String get serverFailureMessage =>
+      'Serverdaten konnten nicht geladen werden.';
 
   @override
   String get generalFailureMessage => 'Ein Fehler ist aufgetreten.';
@@ -22,16 +25,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get unexpectedError => 'Ein unerwarteter Fehler ist aufgetreten...';
 
   @override
-  String get invalid2FATokenFailureMessage => 'Dein Einmalcode (TOTP) is ungültig. Bitte versuche es erneut!';
+  String get invalid2FATokenFailureMessage =>
+      'Dein Einmalcode (TOTP) is ungültig. Bitte versuche es erneut!';
 
   @override
-  String get invalidLoginIDAndPasswordFailureMessage => 'Die Anmeldedaten sind ungültig!';
+  String get invalidLoginIDAndPasswordFailureMessage =>
+      'Die Anmeldedaten sind ungültig!';
 
   @override
   String get welcome => 'Willkommen!';
 
   @override
-  String get login_prompt => 'Bitte melde dich mit deiner RUB-ID und deinem Passwort an.';
+  String get login_prompt =>
+      'Bitte melde dich mit deiner RUB-ID und deinem Passwort an.';
 
   @override
   String get rubid => 'Login-ID von deinem RUB-Account';
