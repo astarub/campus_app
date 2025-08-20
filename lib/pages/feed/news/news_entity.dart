@@ -73,7 +73,7 @@ class NewsEntity {
 
   /// Returns a NewsEntity based on a single XML element given by the web server
   factory NewsEntity.fromXML(XmlElement xml, Map<String, dynamic> imageData) {
-    final content = xml.getElement('content')!.innerText;
+    final content = xml.getElement('content:encoded')!.innerText;
     final title = xml.getElement('title')!.innerText;
     final url = xml.getElement('link')!.innerText;
     final description = xml.getElement('description')!.innerText;
