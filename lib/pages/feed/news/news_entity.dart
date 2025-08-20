@@ -118,8 +118,8 @@ class NewsEntity {
     final String formattedContent = content
         .replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '')
         .replaceAll(RegExp(' {2,}'), ' ')
-        // Remove first figure if post starts with a figure
-        .replaceAll(RegExp('^<figure[^>]*>.*?</figure>', dotAll: true), '')
+        // Remove wordpress featured images from content
+        .replaceAll(RegExp('<figure class="wp-block-post-featured-image">.*?</figure>', dotAll: true), '')
         .replaceAll('\n', '');
     final List<String> descWords = formattedContent.split(' ');
     final List<String> descriptionList = [];
