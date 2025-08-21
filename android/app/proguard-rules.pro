@@ -1,45 +1,61 @@
-#Flutter Wrapper
+############################################
+# Flutter + Dart
+############################################
+# Keep Flutter engine classes
+-keep class io.flutter.** { *; }
 -keep class io.flutter.app.** { *; }
--keep class io.flutter.plugin.**  { *; }
+-keep class io.flutter.embedding.** { *; }
+-keep class io.flutter.plugins.** { *; }
 -keep class io.flutter.util.**  { *; }
 -keep class io.flutter.view.**  { *; }
--keep class io.flutter.**  { *; }
--keep class io.flutter.plugins.**  { *; }
+-dontwarn io.flutter.**
 
-# Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in /usr/local/google/home/samstern/android-sdk-linux/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
-# directive in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
-
-# Add any project specific keep options here:
-
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
-
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
--keepattributes SourceFile,LineNumberTable
-
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
-
-# Keep custom model classes
+############################################
+# Firebase
+############################################
+# Keep Firebase core classes
 -keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
 
+# Keep Google Play Services (needed for Firebase)
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
 
-# To ignore minifyEnabled: true error
-# https://github.com/flutter/flutter/issues/19250
-#https://github.com/flutter/flutter/issues/37441
--ignorewarnings
--keep class * {
-    public private *;
+############################################
+# AndroidX / Jetpack (used by Flutter plugins)
+############################################
+-keep class androidx.lifecycle.** { *; }
+-dontwarn androidx.lifecycle.**
+
+############################################
+# Gson / JSON serialization (used by Firebase + plugins)
+############################################
+-keep class com.google.gson.** { *; }
+-dontwarn com.google.gson.**
+
+############################################
+# Kotlin coroutines (used by many plugins)
+############################################
+-keep class kotlinx.coroutines.** { *; }
+-dontwarn kotlinx.coroutines.**
+
+############################################
+# Prevent stripping of any classes loaded via reflection
+############################################
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+############################################
+# Miscellaneous
+############################################
+# Keep constructors
+-keepclassmembers class * {
+    public <init>(...);
+}
+
+# Keep enums
+-keepclassmembers enum * {
+    **[] $VALUES;
+    public *;
 }

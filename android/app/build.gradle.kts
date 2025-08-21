@@ -72,14 +72,14 @@ android {
     buildTypes {
         getByName("release") {
             // TODO: Add your own signing config for the release build.
-            // signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("release")
 
             isMinifyEnabled = true
             isShrinkResources = true
 
             // preserve entire Flutter wrapper code
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+                getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro"
             )   
         }
