@@ -40,8 +40,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // Minimal change approach: render all items in a fixed-width row but clip to
     // show only 5 slots. Animate a horizontal translation so one end icon slides
     // off-screen depending on the active page.
-  // Slightly reduce horizontal padding to avoid accidental right overflow
-  final horizontalPadding = 6.0;
+  final horizontalPadding = 10.0; // matches previous symmetric horizontal padding
     final visibleCount = 5;
     final items = <PageItem>[
       PageItem.feed,
@@ -64,18 +63,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // Compute height based on platform base and device bottom inset to avoid
     // overflow when system navigation/home bars reduce available height.
   final bottomInset = MediaQuery.of(context).padding.bottom;
-  // include bottom inset so the nav bar occupies enough height above system UI
-  // Reduce base heights slightly to make the navigation bar more compact.
-  final baseHeight = Platform.isIOS ? 76.0 : 86.0;
-  // Use the device bottom inset but avoid adding extra slack so the bar is
-  // noticeably shorter while still respecting safe areas.
-  final containerHeight = (baseHeight + bottomInset).clamp(baseHeight, baseHeight + 64.0);
+  // Keep the measured containerHeight equal to the base height so the
+  // container's bottom edge sits flush with the page bottom. Add the
+  // device bottom inset as inner padding so content doesn't overlap system UI.
+  final baseHeight = Platform.isIOS ? 88.0 : 98.0;
+  final containerHeight = baseHeight;
 
     return Container(
       height: containerHeight,
-      // remove the explicit bottom padding which reduced inner space and
-      // caused bottom overflow; keep only horizontal left padding
-      padding: Platform.isIOS ? const EdgeInsets.only(left: 5) : const EdgeInsets.only(left: 7),
+      // keep left padding but add bottom padding equal to the system inset so
+      // the visual content is above system UI while the container remains
+      // flush at the page bottom.
+      padding: Platform.isIOS
+          ? EdgeInsets.only(left: 5, bottom: bottomInset)
+          : EdgeInsets.only(left: 7, bottom: bottomInset),
       decoration: BoxDecoration(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
         borderRadius: const BorderRadius.only(
@@ -98,108 +99,100 @@ class _BottomNavBarState extends State<BottomNavBar> {
               final navHeight = constraints.maxHeight;
               final effectiveContainerWidth = constraints.maxWidth;
               final computedSlotWidth = effectiveContainerWidth / visibleCount;
-              // computedTotalRowWidth and animatedLeft no longer needed because
-              // we render only the visible slice via AnimatedSwitcher.
+
+              // Determine which slice of items to show (no off-screen items)
+              final startIndex = desiredShift;
+              final visibleItems = items.sublist(startIndex, startIndex + visibleCount);
+
+              // Decide animation direction based on previous shift
+              final animateForward = desiredShift >= _prevShift;
+              // Update prevShift for next frame
+              _prevShift = desiredShift;
 
               return SizedBox(
                 height: navHeight,
                 width: effectiveContainerWidth,
-                child: SizedBox(
-                  height: navHeight,
-                  width: effectiveContainerWidth,
-                  child: Builder(builder: (context) {
-                    // Determine which slice of items to show (no off-screen items)
-                    final startIndex = desiredShift;
-                    final visibleItems = items.sublist(startIndex, startIndex + visibleCount);
-
-                    // Decide animation direction based on previous shift
-                    final animateForward = desiredShift >= _prevShift;
-                    // Update prevShift for next frame
-                    _prevShift = desiredShift;
-
-                    return AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) {
-                        final offsetAnimation = Tween<Offset>(
-                          begin: Offset(animateForward ? 1.0 : -1.0, 0),
-                          end: Offset.zero,
-                        ).animate(animation);
-                        return SlideTransition(position: offsetAnimation, child: child);
-                      },
-                      child: SizedBox(
-                            width: effectiveContainerWidth,
-                            child: Row(
-                              key: ValueKey<int>(desiredShift),
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                            for (final p in visibleItems)
-                              SizedBox(
-                                width: computedSlotWidth,
-                                child: (() {
-                                  switch (p) {
-                                    case PageItem.feed:
-                                      return BottomNavBarItem(
-                                        title: 'Feed',
-                                        imagePathActive: 'assets/img/icons/home-filled.png',
-                                        imagePathInactive: 'assets/img/icons/home-outlined.png',
-                                        onTap: () => widget.onSelectedPage(PageItem.feed),
-                                        isActive: widget.currentPage == PageItem.feed,
-                                        iconPaddingLeft: 0,
-                                      );
-                                    case PageItem.events:
-                                      return BottomNavBarItem(
-                                        title: 'Events',
-                                        imagePathActive: 'assets/img/icons/calendar-filled.png',
-                                        imagePathInactive: 'assets/img/icons/calendar-outlined.png',
-                                        onTap: () => widget.onSelectedPage(PageItem.events),
-                                        isActive: widget.currentPage == PageItem.events,
-                                        iconPaddingLeft: 14,
-                                      );
-                                    case PageItem.mensa:
-                                      return BottomNavBarItem(
-                                        title: 'Mensa',
-                                        imagePathActive: 'assets/img/icons/mensa-filled.png',
-                                        imagePathInactive: 'assets/img/icons/mensa-outlined.png',
-                                        onTap: () => widget.onSelectedPage(PageItem.mensa),
-                                        isActive: widget.currentPage == PageItem.mensa,
-                                      );
-                                    case PageItem.navigation:
-                                      return BottomNavBarItem(
-                                        title: 'Navigation',
-                                        imagePathActive: 'assets/img/icons/map-filled.png',
-                                        imagePathInactive: 'assets/img/icons/map-outlined.png',
-                                        onTap: () => widget.onSelectedPage(PageItem.navigation),
-                                        isActive: widget.currentPage == PageItem.navigation,
-                                      );
-                                    case PageItem.wallet:
-                                      return BottomNavBarItem(
-                                        title: 'Wallet',
-                                        imagePathActive: 'assets/img/icons/wallet-filled.png',
-                                        imagePathInactive: 'assets/img/icons/wallet-outlined.png',
-                                        onTap: () => widget.onSelectedPage(PageItem.wallet),
-                                        isActive: widget.currentPage == PageItem.wallet,
-                                      );
-                                    case PageItem.more:
-                                      return BottomNavBarItem(
-                                        title: 'Mehr',
-                                        imagePathActive: 'assets/img/icons/more.png',
-                                        imagePathInactive: 'assets/img/icons/more.png',
-                                        onTap: () => widget.onSelectedPage(PageItem.more),
-                                        isActive: widget.currentPage == PageItem.more,
-                                        iconPaddingLeft: 5,
-                                        iconPaddingRight: 0,
-                                      );
-                                    default:
-                                      return const SizedBox.shrink();
-                                  }
-                                })(),
-                              ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, animation) {
+                    final offsetAnimation = Tween<Offset>(
+                      begin: Offset(animateForward ? 1.0 : -1.0, 0),
+                      end: Offset.zero,
+                    ).animate(animation);
+                    return SlideTransition(position: offsetAnimation, child: child);
+                  },
+                  child: SizedBox(
+                    width: effectiveContainerWidth,
+                    key: ValueKey<int>(desiredShift),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        for (final p in visibleItems)
+                          SizedBox(
+                            width: computedSlotWidth,
+                            child: (() {
+                              switch (p) {
+                                case PageItem.feed:
+                                  return BottomNavBarItem(
+                                    title: 'Feed',
+                                    imagePathActive: 'assets/img/icons/home-filled.png',
+                                    imagePathInactive: 'assets/img/icons/home-outlined.png',
+                                    onTap: () => widget.onSelectedPage(PageItem.feed),
+                                    isActive: widget.currentPage == PageItem.feed,
+                                    iconPaddingLeft: 0,
+                                  );
+                                case PageItem.events:
+                                  return BottomNavBarItem(
+                                    title: 'Events',
+                                    imagePathActive: 'assets/img/icons/calendar-filled.png',
+                                    imagePathInactive: 'assets/img/icons/calendar-outlined.png',
+                                    onTap: () => widget.onSelectedPage(PageItem.events),
+                                    isActive: widget.currentPage == PageItem.events,
+                                    iconPaddingLeft: 14,
+                                  );
+                                case PageItem.mensa:
+                                  return BottomNavBarItem(
+                                    title: 'Mensa',
+                                    imagePathActive: 'assets/img/icons/mensa-filled.png',
+                                    imagePathInactive: 'assets/img/icons/mensa-outlined.png',
+                                    onTap: () => widget.onSelectedPage(PageItem.mensa),
+                                    isActive: widget.currentPage == PageItem.mensa,
+                                  );
+                                case PageItem.navigation:
+                                  return BottomNavBarItem(
+                                    title: 'Navigation',
+                                    imagePathActive: 'assets/img/icons/map-filled.png',
+                                    imagePathInactive: 'assets/img/icons/map-outlined.png',
+                                    onTap: () => widget.onSelectedPage(PageItem.navigation),
+                                    isActive: widget.currentPage == PageItem.navigation,
+                                  );
+                                case PageItem.wallet:
+                                  return BottomNavBarItem(
+                                    title: 'Wallet',
+                                    imagePathActive: 'assets/img/icons/wallet-filled.png',
+                                    imagePathInactive: 'assets/img/icons/wallet-outlined.png',
+                                    onTap: () => widget.onSelectedPage(PageItem.wallet),
+                                    isActive: widget.currentPage == PageItem.wallet,
+                                  );
+                                case PageItem.more:
+                                  return BottomNavBarItem(
+                                    title: 'Mehr',
+                                    imagePathActive: 'assets/img/icons/more.png',
+                                    imagePathInactive: 'assets/img/icons/more.png',
+                                    onTap: () => widget.onSelectedPage(PageItem.more),
+                                    isActive: widget.currentPage == PageItem.more,
+                                    iconPaddingLeft: 5,
+                                    iconPaddingRight: 0,
+                                  );
+                                default:
+                                  return const SizedBox.shrink();
+                              }
+                            })(),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
               );
             },
@@ -209,3 +202,4 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 }
+

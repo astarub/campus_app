@@ -68,45 +68,49 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
         duration: animationDuration,
         curve: animationCurve,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          // Allow the column to expand to the available height from the
+          // parent slot; the icon area is wrapped in a Flexible with
+          // loose fit so it doesn't scale beyond its intrinsic size. This
+          // prevents vertical overflow while keeping the icon small.
+          mainAxisSize: MainAxisSize.max,
           children: [
-            // Icon-button
-            CustomButton(
-              tapHandler: () => widget.onTap(),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: widget.iconVerticalPadding,
-                  bottom: widget.iconVerticalPadding,
-                ),
-                child: Image.asset(
-                  widget.isActive ? widget.imagePathActive : widget.imagePathInactive,
-                  height: iconHeight,
-                  color: widget.isActive
-                      ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary
-                      : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                          ? Colors.black
-                          : const Color.fromRGBO(184, 186, 191, 1),
-                  filterQuality: FilterQuality.high,
+            // Icon-button wrapped so it can flex if parent is constrained
+            Flexible(
+              fit: FlexFit.loose,
+              child: CustomButton(
+                tapHandler: () => widget.onTap(),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: widget.iconVerticalPadding,
+                    bottom: widget.iconVerticalPadding,
+                  ),
+                  child: Image.asset(
+                    widget.isActive ? widget.imagePathActive : widget.imagePathInactive,
+                    height: iconHeight,
+                    color: widget.isActive
+                        ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary
+                        : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? Colors.black
+                            : const Color.fromRGBO(184, 186, 191, 1),
+                    filterQuality: FilterQuality.high,
+                  ),
                 ),
               ),
             ),
-            // Text: use AnimatedSwitcher so inactive title does not reserve vertical
-            // space (prevents bottom overflow). This keeps a fade animation.
+
+            // Text: keep single line and avoid reserving vertical space when
+            // inactive. Use maxLines:1 to guarantee no wrapping.
             AnimatedSwitcher(
               duration: animationDuration,
               switchInCurve: animationCurve,
               switchOutCurve: animationCurve,
               child: widget.isActive
-                  ? FittedBox(
+                  ? Text(
+                      widget.title,
                       key: ValueKey('title-${widget.title}'),
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.center,
-                      child: Text(
-                        widget.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
-                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
                     )
                   : const SizedBox.shrink(key: ValueKey('title-empty')),
             ),
