@@ -30,7 +30,7 @@ class BottomNavBarItem extends StatefulWidget {
   /// Callback that should be called whenever the button is tapped
   final VoidCallback onTap;
 
-  /// Wether the refered page is the currently displayed one
+  /// Whether the referred page is the currently displayed one
   final bool isActive;
 
   const BottomNavBarItem({
@@ -38,9 +38,9 @@ class BottomNavBarItem extends StatefulWidget {
     required this.imagePathActive,
     required this.imagePathInactive,
     required this.title,
-  this.iconVerticalPadding = 8,
-  this.iconPaddingLeft = 0,
-  this.iconPaddingRight = 0,
+    this.iconVerticalPadding = 8,
+    this.iconPaddingLeft = 0,
+    this.iconPaddingRight = 0,
     required this.onTap,
     this.isActive = false,
   });
@@ -64,7 +64,7 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
     return Padding(
       padding: EdgeInsets.only(left: widget.iconPaddingLeft, right: widget.iconPaddingRight),
       child: AnimatedPadding(
-  padding: widget.isActive ? const EdgeInsets.only(top: 2) : const EdgeInsets.only(top: 6),
+        padding: widget.isActive ? const EdgeInsets.only(top: 2) : const EdgeInsets.only(top: 6),
         duration: animationDuration,
         curve: animationCurve,
         child: Column(

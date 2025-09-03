@@ -35,20 +35,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // previous value so AnimatedSwitcher transition direction can be derived.
     // No-op here: _prevShift is updated in build to avoid extra setState.
   }
+
   @override
   Widget build(BuildContext context) {
     // Minimal change approach: render all items in a fixed-width row but clip to
     // show only 5 slots. Animate a horizontal translation so one end icon slides
     // off-screen depending on the active page.
-  final horizontalPadding = 10.0; // matches previous symmetric horizontal padding
-    final visibleCount = 5;
-    final items = <PageItem>[
+    final horizontalPadding = 10.0; // matches previous symmetric horizontal padding
+    const items = <PageItem>[
       PageItem.feed,
       PageItem.events,
       PageItem.mensa,
       PageItem.navigation,
       PageItem.wallet,
       PageItem.more,
+    ];
     ];
 
     final totalItems = items.length;
@@ -59,15 +60,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // requested behavior: when on first page show first 5, when on last show last 5.
     final desiredShift = (activeIndex - 2).clamp(0, maxShift).toInt();
 
-
     // Compute height based on platform base and device bottom inset to avoid
     // overflow when system navigation/home bars reduce available height.
-  final bottomInset = MediaQuery.of(context).padding.bottom;
-  // Keep the measured containerHeight equal to the base height so the
-  // container's bottom edge sits flush with the page bottom. Add the
-  // device bottom inset as inner padding so content doesn't overlap system UI.
-  final baseHeight = Platform.isIOS ? 88.0 : 98.0;
-  final containerHeight = baseHeight;
+    final bottomInset = MediaQuery.of(context).padding.bottom;
+    // Keep the measured containerHeight equal to the base height so the
+    // container's bottom edge sits flush with the page bottom. Add the
+    // device bottom inset as inner padding so content doesn't overlap system UI.
+    final baseHeight = Platform.isIOS ? 88.0 : 98.0;
+    final containerHeight = baseHeight;
 
     return Container(
       height: containerHeight,
@@ -202,4 +202,3 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 }
-
