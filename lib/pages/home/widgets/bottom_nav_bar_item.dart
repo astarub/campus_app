@@ -38,9 +38,9 @@ class BottomNavBarItem extends StatefulWidget {
     required this.imagePathActive,
     required this.imagePathInactive,
     required this.title,
-    this.iconVerticalPadding = 10,
-    this.iconPaddingLeft = 10,
-    this.iconPaddingRight = 10,
+  this.iconVerticalPadding = 8,
+  this.iconPaddingLeft = 0,
+  this.iconPaddingRight = 0,
     required this.onTap,
     this.isActive = false,
   });
@@ -64,7 +64,7 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
     return Padding(
       padding: EdgeInsets.only(left: widget.iconPaddingLeft, right: widget.iconPaddingRight),
       child: AnimatedPadding(
-        padding: widget.isActive ? const EdgeInsets.only(top: 2) : const EdgeInsets.only(top: 11),
+  padding: widget.isActive ? const EdgeInsets.only(top: 2) : const EdgeInsets.only(top: 6),
         duration: animationDuration,
         curve: animationCurve,
         child: Column(
@@ -86,30 +86,29 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
                       : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                           ? Colors.black
                           : const Color.fromRGBO(184, 186, 191, 1),
-                  /* Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? widget.isActive
-                        ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary
-                        : Colors.black
-                    : widget.isActive
-                        ? const Color.fromRGBO(255, 107, 1, 1)
-                        : const Color.fromRGBO(184, 186, 191, 1), */
                   filterQuality: FilterQuality.high,
                 ),
               ),
             ),
-            // Text
-            AnimatedPadding(
-              padding: widget.isActive ? EdgeInsets.zero : const EdgeInsets.only(top: 10),
+            // Text: use AnimatedSwitcher so inactive title does not reserve vertical
+            // space (prevents bottom overflow). This keeps a fade animation.
+            AnimatedSwitcher(
               duration: animationDuration,
-              curve: animationCurve,
-              child: AnimatedOpacity(
-                opacity: widget.isActive ? 1 : 0,
-                duration: animationDuration,
-                child: Text(
-                  widget.title,
-                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
-                ),
-              ),
+              switchInCurve: animationCurve,
+              switchOutCurve: animationCurve,
+              child: widget.isActive
+                  ? FittedBox(
+                      key: ValueKey('title-${widget.title}'),
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.center,
+                      child: Text(
+                        widget.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
+                      ),
+                    )
+                  : const SizedBox.shrink(key: ValueKey('title-empty')),
             ),
           ],
         ),
