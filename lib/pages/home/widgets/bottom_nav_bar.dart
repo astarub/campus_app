@@ -42,6 +42,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // show only 5 slots. Animate a horizontal translation so one end icon slides
     // off-screen depending on the active page.
     final horizontalPadding = 10.0; // matches previous symmetric horizontal padding
+    const visibleCount = 5;
     const items = <PageItem>[
       PageItem.feed,
       PageItem.events,
@@ -50,8 +51,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
       PageItem.wallet,
       PageItem.more,
     ];
-    ];
-
     final totalItems = items.length;
     final maxShift = (totalItems - visibleCount).clamp(0, totalItems);
     final activeIndex = items.indexOf(widget.currentPage);
