@@ -41,7 +41,10 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
         url.contains('instagram') ||
         url.contains('facebook') ||
         url.contains('twitch') ||
+        url.contains('tiktok') ||
         url.contains('mailto:') ||
+        // Nextcloud Form doesn't render correctly in webview
+        url.contains('next.asta-bochum.de') ||
         url.contains('tel:')) {
       // Open in external browser
       launchUrl(
@@ -128,6 +131,12 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                                 child: SocialMediaButton(
                                   iconPath: 'assets/img/icons/instagram.svg',
                                   onTap: () => openLink(context, 'https://www.instagram.com/astarub/'),
+                                ),
+                              ),
+                              Expanded(
+                                child: SocialMediaButton(
+                                  iconPath: 'assets/img/icons/tiktok.svg',
+                                  onTap: () => openLink(context, 'https://www.tiktok.com/@asta_rub'),
                                 ),
                               ),
                               Expanded(
@@ -246,7 +255,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             title: 'Feedback',
                             leadingIconPath: 'assets/img/icons/message-square.svg',
                             onTap: () =>
-                                openLink(context, 'https://next.asta-bochum.de/index.php/apps/forms/jb2Z4mge9yj2z56E'),
+                                openLink(context, 'https://next.asta-bochum.de/apps/forms/s/QB2resxiSwf5atFaNsp2eEgY'),
                           ),
                         ],
                       ),

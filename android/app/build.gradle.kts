@@ -86,4 +86,17 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.appcompat:appcompat-resources:1.6.1")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+
+    // Remove Campus App's requirement of Google Play Services
+    //
+    // The Dio packages uses [cronet_http] libary to perform network requests. 
+    // At default, this libary depends on Google Play services instead of 
+    // of the embedded version of Cronet. Setting the embedded version (based on
+    // native libaries) here will remove the dependency on Google Play services.
+    //
+    // Note: https://github.com/cfug/dio/issues/2042
+    // Note: https://github.com/dart-lang/http/blob/master/pkgs/cronet_http/android/build.gradle
+    // Note: https://mvnrepository.com/artifact/org.chromium.net/cronet-embedded
+    //
+    implementation("org.chromium.net:cronet-embedded:119.6045.31")
 }
