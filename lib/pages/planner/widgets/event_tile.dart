@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 
+Color getContrastingTextColor(Color backgroundColor) {
+  final double brightness = backgroundColor.red * 0.299 + backgroundColor.green * 0.587 + backgroundColor.blue * 0.114;
+  return brightness > 186 ? Colors.black : Colors.white;
+}
+
 // EventTile UI widget.
 class EventTile extends StatelessWidget {
   const EventTile({
@@ -33,8 +38,11 @@ class EventTile extends StatelessWidget {
               ),
               child: Text(
                 ev.title,
-                style: theme.textTheme.bodyMedium?.copyWith(color: theme.primaryColor, fontSize: 12),
                 maxLines: 1,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: getContrastingTextColor(ev.color), // ↩️ automatische Kontrastfarbe
+                  fontSize: 12,
+                ),
               ),
             ),
           ),

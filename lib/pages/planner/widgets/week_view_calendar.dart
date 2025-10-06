@@ -44,6 +44,7 @@ class WeekViewCalendar extends StatelessWidget {
     return WeekView<PlannerEventEntity>(
       key: ValueKey('week_view_$focusedDay'),
       controller: eventController,
+      showLiveTimeLineInAllDays: true,
       initialDay: focusedDay,
       onDateTap: (date) {
         final events = eventController.getEventsOnDay(date);
@@ -51,7 +52,12 @@ class WeekViewCalendar extends StatelessWidget {
       },
       timeLineWidth: timeLineWidth,
       backgroundColor: theme.colorScheme.surface,
-      liveTimeIndicatorSettings: LiveTimeIndicatorSettings(color: theme.colorScheme.secondary),
+      liveTimeIndicatorSettings: (DateTime.now().year == focusedDay.year &&
+              DateTime.now().month == focusedDay.month &&
+              DateTime.now().day == focusedDay.day)
+          ? LiveTimeIndicatorSettings(color: theme.colorScheme.secondary) // heute → Linie anzeigen
+          : LiveTimeIndicatorSettings(color: const Color.fromARGB(0, 184, 4, 4)), // andere Tage → unsichtbar
+
       weekDayStringBuilder: (d) => DateFormat.E().format(DateTime(2024, 1, d == 7 ? 8 : d + 1)),
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: theme.cardColor),

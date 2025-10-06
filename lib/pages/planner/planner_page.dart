@@ -15,10 +15,8 @@ import 'package:campus_app/pages/planner/widgets/week_view_calendar.dart';
 import 'package:campus_app/pages/planner/widgets/day_view_calendar.dart';
 import 'package:campus_app/pages/planner/studytimer_page.dart';
 
-// Available calendar views for the planner UI.
 enum CalendarViewMode { month, week, day }
 
-// StatefulWidget representing the Planner screen.
 class PlannerPage extends StatefulWidget {
   final GlobalKey<NavigatorState>? mainNavigatorKey;
   final GlobalKey<AnimatedEntryState>? pageEntryAnimationKey;
@@ -35,7 +33,6 @@ class PlannerPage extends StatefulWidget {
   State<PlannerPage> createState() => _PlannerPageState();
 }
 
-// State class holding current view & reacting to PlannerState changes.
 class _PlannerPageState extends State<PlannerPage> {
   final EventController<PlannerEventEntity> _eventController = EventController();
 
@@ -45,11 +42,11 @@ class _PlannerPageState extends State<PlannerPage> {
   bool _showActionOptions = false;
 
   @override
-  void initState() {
-    super.initState();
-    _plannerState = Provider.of<PlannerState>(context, listen: false);
-    _syncEventController(_plannerState.events);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _plannerState = Provider.of<PlannerState>(context);
     _plannerState.addListener(_onPlannerStateChanged);
+    _syncEventController(_plannerState.events);
   }
 
   void _onPlannerStateChanged() {
@@ -60,6 +57,37 @@ class _PlannerPageState extends State<PlannerPage> {
     final mapped = mapPlannerEvents(events);
     _eventController.removeWhere((_) => true);
     _eventController.addAll(mapped);
+  }
+
+  // 🟡 Recurring Event erstellen → jede Woche bis zu einem bestimmten Enddatum
+  void _createRecurringEventUntil(DateTime startDate, DateTime endDate, DateTime cutoffDate) {
+    DateTime currentStart = startDate;
+    DateTime currentEnd = endDate;
+
+    while (currentStart.isBefore(cutoffDate)) {
+      final recurringEvent = PlannerEventEntity(
+        title: 'Wöchentliche Vorlesung',
+        description: 'Automatisch generiertes wöchentliches Event',
+        startDateTime: currentStart, // ✅ richtiges Feld
+        endDateTime: currentEnd, // ✅ richtiges Feld
+      );
+
+      _plannerState.addEvent(recurringEvent);
+
+      // Gehe zur nächsten Woche
+      currentStart = currentStart.add(const Duration(days: 7));
+      currentEnd = currentEnd.add(const Duration(days: 7));
+    }
+  }
+
+  void _deleteRecurringEventsAfter(DateTime cutoffDate) {
+    _plannerState.events.removeWhere((event) {
+      final eventDate = event.startDateTime;
+      return eventDate.isAfter(cutoffDate);
+    });
+
+    _syncEventController(_plannerState.events);
+    setState(() {});
   }
 
   Future<void> _showAddOrEditEventDialog({
@@ -94,7 +122,10 @@ class _PlannerPageState extends State<PlannerPage> {
       backgroundColor: themesNotifier.currentThemeData.colorScheme.surface,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Planner', style: themesNotifier.currentThemeData.textTheme.displayMedium),
+        title: Text(
+          'Planner',
+          style: themesNotifier.currentThemeData.textTheme.displayMedium,
+        ),
         backgroundColor: themesNotifier.currentThemeData.colorScheme.surface,
         elevation: 0,
         actions: [
@@ -104,7 +135,6 @@ class _PlannerPageState extends State<PlannerPage> {
           ),
         ],
       ),
-      body: _buildCalendarView(themesNotifier),
       floatingActionButton: _showActionOptions
           ? Padding(
               padding: const EdgeInsets.only(bottom: 90.0, right: 20.0),
@@ -112,16 +142,22 @@ class _PlannerPageState extends State<PlannerPage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  // 🟦 Timer Button
                   _buildActionButton(
                     icon: Icons.timer,
                     tooltip: 'Timer',
                     color: Colors.blueAccent,
                     onPressed: () {
                       setState(() => _showActionOptions = false);
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const StudyTimerPage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const StudyTimerPage()),
+                      );
                     },
                   ),
                   const SizedBox(height: 16),
+
+                  // 🟩 Add Event
                   _buildActionButton(
                     icon: Icons.event,
                     tooltip: 'Add Event',
@@ -132,6 +168,39 @@ class _PlannerPageState extends State<PlannerPage> {
                     },
                   ),
                   const SizedBox(height: 16),
+
+                  // 🟠 Recurring Event intern hinzufügen
+                  _buildActionButton(
+                    icon: Icons.repeat,
+                    tooltip: 'Wöchentliche Events bis Enddatum',
+                    color: Colors.orange,
+                    onPressed: () {
+                      setState(() => _showActionOptions = false);
+
+                      final now = DateTime.now();
+                      final start = DateTime(now.year, now.month, now.day, 10, 0);
+                      final end = start.add(const Duration(hours: 2));
+                      final cutoff = DateTime(now.year, 12, 20); // Semesterende
+
+                      _createRecurringEventUntil(start, end, cutoff);
+                    },
+                  ),
+                  const SizedBox(height: 16),
+
+                  // 🔴 Recurring Events nach Datum löschen
+                  _buildActionButton(
+                    icon: Icons.delete_forever,
+                    tooltip: 'Events nach Enddatum löschen',
+                    color: Colors.redAccent,
+                    onPressed: () {
+                      setState(() => _showActionOptions = false);
+                      final cutoff = DateTime(DateTime.now().year, 12, 20);
+                      _deleteRecurringEventsAfter(cutoff);
+                    },
+                  ),
+                  const SizedBox(height: 16),
+
+                  // ❌ Menü schließen
                   _buildActionButton(
                     icon: Icons.close,
                     tooltip: 'Close Menu',
@@ -151,6 +220,7 @@ class _PlannerPageState extends State<PlannerPage> {
               },
               child: const Icon(Icons.add),
             ),
+      body: _buildCalendarView(themesNotifier),
     );
   }
 
