@@ -41,7 +41,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // Minimal change approach: render all items in a fixed-width row but clip to
     // show only 5 slots. Animate a horizontal translation so one end icon slides
     // off-screen depending on the active page.
-    final horizontalPadding = 10.0; // matches previous symmetric horizontal padding
+    const horizontalPadding = 10.0; // matches previous symmetric horizontal padding
     const visibleCount = 5;
     const items = <PageItem>[
       PageItem.feed,
@@ -57,7 +57,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // Aim to keep the active item roughly centered when possible; because
     // totalItems-visibleCount == 1 here, shift will be 0 or 1 which matches the
     // requested behavior: when on first page show first 5, when on last show last 5.
-    final desiredShift = (activeIndex - 2).clamp(0, maxShift).toInt();
+    final desiredShift = (activeIndex - 2).clamp(0, maxShift);
 
     // Compute height based on platform base and device bottom inset to avoid
     // overflow when system navigation/home bars reduce available height.
@@ -88,7 +88,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: ClipRect(
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -122,7 +122,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     key: ValueKey<int>(desiredShift),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         for (final p in visibleItems)
                           SizedBox(
@@ -136,7 +135,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                     imagePathInactive: 'assets/img/icons/home-outlined.png',
                                     onTap: () => widget.onSelectedPage(PageItem.feed),
                                     isActive: widget.currentPage == PageItem.feed,
-                                    iconPaddingLeft: 0,
                                   );
                                 case PageItem.events:
                                   return BottomNavBarItem(
@@ -179,7 +177,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                     onTap: () => widget.onSelectedPage(PageItem.more),
                                     isActive: widget.currentPage == PageItem.more,
                                     iconPaddingLeft: 5,
-                                    iconPaddingRight: 0,
                                   );
                                 default:
                                   return const SizedBox.shrink();

@@ -68,15 +68,9 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
         duration: animationDuration,
         curve: animationCurve,
         child: Column(
-          // Allow the column to expand to the available height from the
-          // parent slot; the icon area is wrapped in a Flexible with
-          // loose fit so it doesn't scale beyond its intrinsic size. This
-          // prevents vertical overflow while keeping the icon small.
-          mainAxisSize: MainAxisSize.max,
           children: [
             // Icon-button wrapped so it can flex if parent is constrained
             Flexible(
-              fit: FlexFit.loose,
               child: CustomButton(
                 tapHandler: () => widget.onTap(),
                 child: Padding(
