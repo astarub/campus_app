@@ -62,14 +62,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // Compute height based on platform base and device bottom inset to avoid
     // overflow when system navigation/home bars reduce available height.
     final bottomInset = MediaQuery.of(context).padding.bottom;
-    // Keep the measured containerHeight equal to the base height so the
-    // container's bottom edge sits flush with the page bottom. Add the
-    // device bottom inset as inner padding so content doesn't overlap system UI.
-    final baseHeight = Platform.isIOS ? 88.0 : 98.0;
-    final containerHeight = baseHeight;
+    // 66 = 26 Icon + 2*8 Vertical Padding + 14 Label Text + 12 Active Animation
+    const navbarHeight = 68;
 
     return Container(
-      height: containerHeight,
+      height: bottomInset + navbarHeight, // System UI + Campus App Navbar
       // keep left padding but add bottom padding equal to the system inset so
       // the visual content is above system UI while the container remains
       // flush at the page bottom.
