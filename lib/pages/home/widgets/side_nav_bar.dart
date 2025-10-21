@@ -59,6 +59,13 @@ class _SideNavBarState extends State<SideNavBar> {
             onTap: () => widget.onSelectedPage(PageItem.mensa),
             isActive: widget.currentPage == PageItem.mensa,
           ),
+          SideNavBarItem(
+            title: 'Karte',
+            imagePathActive: 'assets/img/icons/mensa-filled.png',
+            imagePathInactive: 'assets/img/icons/mensa-outlined.png',
+            onTap: () => widget.onSelectedPage(PageItem.navigation),
+            isActive: widget.currentPage == PageItem.navigation,
+          ),
           // Wallet
           SideNavBarItem(
             title: 'Wallet',

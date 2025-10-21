@@ -24,10 +24,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unexpectedError => 'An unexpected error occured...';
 
   @override
-  String get invalid2FATokenFailureMessage => 'Your TOTP is incorrect. Please try again!';
+  String get invalid2FATokenFailureMessage =>
+      'Your TOTP is incorrect. Please try again!';
 
   @override
-  String get invalidLoginIDAndPasswordFailureMessage => 'The credentials are invalid!';
+  String get invalidLoginIDAndPasswordFailureMessage =>
+      'The credentials are invalid!';
 
   @override
   String get welcome => 'Welcome!';

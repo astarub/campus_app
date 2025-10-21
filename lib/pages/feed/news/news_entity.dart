@@ -73,7 +73,7 @@ class NewsEntity {
 
   /// Returns a NewsEntity based on a single XML element given by the web server
   factory NewsEntity.fromXML(XmlElement xml, Map<String, dynamic> imageData) {
-    final content = xml.getElement('content')!.innerText;
+    final content = xml.getElement('content:encoded')!.innerText;
     final title = xml.getElement('title')!.innerText;
     final url = xml.getElement('link')!.innerText;
     final description = xml.getElement('description')!.innerText;
@@ -87,6 +87,12 @@ class NewsEntity {
       multiLine: true,
     );
 
+    final List<String> copyright = imageData['copyright'];
+
+    if (copyright.isNotEmpty) {
+      copyright[0] = copyright[0].trim();
+    }
+
     return NewsEntity(
       content: content.replaceAll(htmlTags, ''),
       title: title,
@@ -94,7 +100,7 @@ class NewsEntity {
       description: description,
       pubDate: pubDate,
       imageUrl: imageDataList.isNotEmpty ? imageDataList[0] : 'false',
-      copyright: imageData['copyright'],
+      copyright: copyright,
     );
   }
 
@@ -105,14 +111,16 @@ class NewsEntity {
     final url = json['link'];
     final author = json['author'];
     final categories = json['categories'];
-    final content = Bidi.stripHtmlIfNeeded(Map<String, dynamic>.from(json['content'])['rendered'] as String);
+    final content = Map<String, dynamic>.from(json['content'])['rendered'] as String;
     String description = '';
 
     // Remove html and whitespaces from the content
     final String formattedContent = content
         .replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '')
         .replaceAll(RegExp(' {2,}'), ' ')
-        .replaceAll('\n', ' ');
+        // Remove wordpress featured images from content
+        .replaceAll(RegExp('<figure class="wp-block-post-featured-image">.*?</figure>', dotAll: true), '')
+        .replaceAll('\n', '');
     final List<String> descWords = formattedContent.split(' ');
     final List<String> descriptionList = [];
 
