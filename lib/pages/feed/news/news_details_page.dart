@@ -62,6 +62,15 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
       } catch (e) {}
     }
 
+
+
+    //Source label based on link host
+    final Uri? sourceUri = Uri.tryParse(widget.link);
+    final String sourceHost = sourceUri?.host ?? '';
+    final String displaySource = sourceHost =='asta-bochum.de' ? 'AStA RUB' : sourceHost;
+
+
+
     return Dismissible(
       dismissThresholds: const {DismissDirection.endToStart: 0.3},
       key: UniqueKey(),
@@ -205,7 +214,7 @@ class NewsDetailsPageState extends State<NewsDetailsPage> {
                       padding: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
                       child: StyledHTML(
                         context: context,
-                        text: 'Quelle: <a href="${widget.link}">${Uri.parse(widget.link).host}</a>',
+                        text: 'Quelle: <a href="${widget.link}">$displaySource</a>',
                         textAlign: TextAlign.justify,
                       ),
                     ),
