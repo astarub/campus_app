@@ -117,9 +117,17 @@ class CalendarRepository {
 
       // update list of saved events
       if (event != null) {
-        if (savedEvents.contains(event)) {
-          savedEvents.remove(event);
+        final int index = savedEvents.indexWhere(
+            (e) =>
+                e.id == event.id &&
+                Uri.parse(e.url).host == Uri.parse(event.url).host,
+        );
+
+        if(index >= 0){
+          //Event is already saved -> remove it
+          savedEvents.removeAt(index);
         } else {
+          //Event not yet saved -> add it
           savedEvents.add(event);
         }
       }

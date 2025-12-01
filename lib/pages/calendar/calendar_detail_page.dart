@@ -71,10 +71,15 @@ class _CalendarDetailState extends State<CalendarDetailPage> {
   @override
   void initState() {
     super.initState();
-
+    //updateSavedEvents returns a list of Event objects that are saved
     calendarRepository.updateSavedEvents().then((savedEvents) {
       savedEvents.fold((failure) => null, (list) {
-        if (list.contains(widget.event)) {
+        final bool isSaved = list.any(
+            (event) =>
+                event.id == widget.event.id &&
+                Uri.parse(event.url).host == Uri.parse(widget.event.url).host,
+        );
+        if (isSaved){
           setState(() => savedEvent = true);
         }
       });

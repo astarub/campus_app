@@ -150,9 +150,18 @@ class CalendarDatasource {
     }
   }
 
-  /// Clears the cache
+  /// Clears only the "normal" cache
   Future<void> clearEventEntityCache() async {
-    await eventCache.clear();
+    //how many normal events were stored before
+    final int cntEntities = eventCache.get(keyCnt) ?? 0;
+
+    //delete the normal events by their numeric keys
+    for (int i = 0; i < cntEntities; i++){
+      await eventCache.delete(i);
+    }
+
+    //remove the counter for normal events
+    await eventCache.delete(keyCnt);
   }
 
   /// Read cache of event entities and return them.
