@@ -45,7 +45,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // News Feed
+            // Feed
             BottomNavBarItem(
               title: 'Feed',
               imagePathActive: 'assets/img/icons/home-filled.png',
@@ -53,7 +53,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
               onTap: () => widget.onSelectedPage(PageItem.feed),
               isActive: widget.currentPage == PageItem.feed,
             ),
-            // Calendar
+
+            // Events
             BottomNavBarItem(
               title: 'Events',
               imagePathActive: 'assets/img/icons/calendar-filled.png',
@@ -61,6 +62,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               onTap: () => widget.onSelectedPage(PageItem.events),
               isActive: widget.currentPage == PageItem.events,
             ),
+
             // Mensa
             BottomNavBarItem(
               title: 'Mensa',
@@ -69,6 +71,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               onTap: () => widget.onSelectedPage(PageItem.mensa),
               isActive: widget.currentPage == PageItem.mensa,
             ),
+
             // Wallet
             BottomNavBarItem(
               title: 'Wallet',
@@ -77,7 +80,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
               onTap: () => widget.onSelectedPage(PageItem.wallet),
               isActive: widget.currentPage == PageItem.wallet,
             ),
-            // More
+
+            // Mehr
             BottomNavBarItem(
               title: 'Mehr',
               imagePathActive: 'assets/img/icons/more.png',

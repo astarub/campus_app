@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
 
-// EventDetailsDialog UI widget.
 class EventDetailsDialog extends StatelessWidget {
   const EventDetailsDialog({
     super.key,
@@ -20,67 +19,75 @@ class EventDetailsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final plannerState = context.read<PlannerState>();
-    final bool userEvent = event.id.contains('-');
+    final bool isUserEvent = event.id.contains('-'); // user-created events
+
     return AlertDialog(
       title: Text(event.title),
       content: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
-            Text('From:     ${DateFormat.yMMMEd().add_jm().format(event.startDateTime.toLocal())}'),
-            Text('To:           ${DateFormat.yMMMEd().add_jm().format(event.endDateTime.toLocal())}'),
+            Text("From: ${DateFormat.yMMMEd().add_jm().format(event.startDateTime)}"),
+            Text("To:       ${DateFormat.yMMMEd().add_jm().format(event.endDateTime)}"),
             const SizedBox(height: 16),
+
             StyledHTML(
               context: context,
-              text: (event.description?.isNotEmpty ?? false) ? event.description! : 'No description.',
+              text: (event.description?.isNotEmpty ?? false)
+                  ? event.description!
+                  : "No description.",
               textAlign: TextAlign.left,
             ),
           ],
         ),
       ),
+
       actions: [
+        // 🔴 DELETE BUTTON (fix)
         TextButton.icon(
           icon: const Icon(Icons.delete, color: Colors.red),
-          label: const Text('Delete', style: TextStyle(color: Colors.red)),
+          label: const Text("Delete", style: TextStyle(color: Colors.red)),
           onPressed: () async {
             final confirmed = await showDialog<bool>(
               context: context,
-              builder: (c) => AlertDialog(
-                title: const Text('Confirm Delete'),
-                content: const Text('Are you sure you want to delete this event?'),
+              builder: (ctx) => AlertDialog(
+                title: const Text("Confirm Delete"),
+                content: const Text("Are you sure you want to delete this event?"),
                 actions: [
                   TextButton(
-                    child: const Text('Cancel'),
-                    onPressed: () => Navigator.pop(c, false),
+                    child: const Text("Cancel"),
+                    onPressed: () => Navigator.pop(ctx, false),
                   ),
                   TextButton(
                     style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    child: const Text('Delete'),
-                    onPressed: () => Navigator.pop(c, true),
+                    child: const Text("Delete"),
+                    onPressed: () => Navigator.pop(ctx, true),
                   ),
                 ],
               ),
             );
-            if (!context.mounted) return;
 
-            if (confirmed ?? false) {
+            if (confirmed == true) {
+              // ❗ KORREKTES LÖSCHEN
               await plannerState.deleteEvent(event.id);
-              if (!context.mounted) return;
-              Navigator.pop(context);
+
+              // Schließe Dialog
+              if (context.mounted) Navigator.pop(context);
             }
           },
         ),
-        if (userEvent)
+
+        if (isUserEvent)
           TextButton(
-            child: const Text('Edit'),
+            child: const Text("Edit"),
             onPressed: () {
               Navigator.pop(context);
               onEdit();
             },
           ),
+
         TextButton(
-          child: const Text('Close'),
+          child: const Text("Close"),
           onPressed: () => Navigator.pop(context),
         ),
       ],

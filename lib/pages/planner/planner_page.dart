@@ -9,25 +9,20 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/pages/planner/planner_state.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/planner/widgets/month_view_calendar.dart';
 import 'package:campus_app/pages/planner/widgets/week_view_calendar.dart';
 import 'package:campus_app/pages/planner/widgets/day_view_calendar.dart';
 import 'package:campus_app/pages/planner/studytimer_page.dart';
 
+// Fakultäten
+import 'package:campus_app/pages/courses/faculties_page.dart';
+
 enum CalendarViewMode { month, week, day }
 
 class PlannerPage extends StatefulWidget {
   final GlobalKey<NavigatorState>? mainNavigatorKey;
-  final GlobalKey<AnimatedEntryState>? pageEntryAnimationKey;
-  final GlobalKey<AnimatedExitState>? pageExitAnimationKey;
 
-  const PlannerPage({
-    super.key,
-    this.mainNavigatorKey,
-    this.pageEntryAnimationKey,
-    this.pageExitAnimationKey,
-  });
+  const PlannerPage({super.key, this.mainNavigatorKey});
 
   @override
   State<PlannerPage> createState() => _PlannerPageState();
@@ -57,37 +52,6 @@ class _PlannerPageState extends State<PlannerPage> {
     final mapped = mapPlannerEvents(events);
     _eventController.removeWhere((_) => true);
     _eventController.addAll(mapped);
-  }
-
-  // 🟡 Recurring Event erstellen → jede Woche bis zu einem bestimmten Enddatum
-  void _createRecurringEventUntil(DateTime startDate, DateTime endDate, DateTime cutoffDate) {
-    DateTime currentStart = startDate;
-    DateTime currentEnd = endDate;
-
-    while (currentStart.isBefore(cutoffDate)) {
-      final recurringEvent = PlannerEventEntity(
-        title: 'Wöchentliche Vorlesung',
-        description: 'Automatisch generiertes wöchentliches Event',
-        startDateTime: currentStart, // ✅ richtiges Feld
-        endDateTime: currentEnd, // ✅ richtiges Feld
-      );
-
-      _plannerState.addEvent(recurringEvent);
-
-      // Gehe zur nächsten Woche
-      currentStart = currentStart.add(const Duration(days: 7));
-      currentEnd = currentEnd.add(const Duration(days: 7));
-    }
-  }
-
-  void _deleteRecurringEventsAfter(DateTime cutoffDate) {
-    _plannerState.events.removeWhere((event) {
-      final eventDate = event.startDateTime;
-      return eventDate.isAfter(cutoffDate);
-    });
-
-    _syncEventController(_plannerState.events);
-    setState(() {});
   }
 
   Future<void> _showAddOrEditEventDialog({
@@ -121,6 +85,15 @@ class _PlannerPageState extends State<PlannerPage> {
     return Scaffold(
       backgroundColor: themesNotifier.currentThemeData.colorScheme.surface,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const FacultiesPage()),
+            );
+          },
+        ),
         centerTitle: true,
         title: Text(
           'Planner',
@@ -135,91 +108,55 @@ class _PlannerPageState extends State<PlannerPage> {
           ),
         ],
       ),
+
+      // -----------------------------
+      //      FLOATING ACTIONS
+      // -----------------------------
       floatingActionButton: _showActionOptions
-          ? Padding(
-              padding: const EdgeInsets.only(bottom: 90.0, right: 20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  // 🟦 Timer Button
-                  _buildActionButton(
-                    icon: Icons.timer,
-                    tooltip: 'Timer',
-                    color: Colors.blueAccent,
-                    onPressed: () {
-                      setState(() => _showActionOptions = false);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const StudyTimerPage()),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 16),
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // TIMER BUTTON
+                _modernActionButton(
+                  icon: Icons.timer,
+                  tooltip: 'Timer',
+                  onPressed: () {
+                    setState(() => _showActionOptions = false);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const StudyTimerPage(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 12),
 
-                  // 🟩 Add Event
-                  _buildActionButton(
-                    icon: Icons.event,
-                    tooltip: 'Add Event',
-                    color: Colors.green,
-                    onPressed: () {
-                      setState(() => _showActionOptions = false);
-                      _showAddOrEditEventDialog(date: DateTime.now());
-                    },
-                  ),
-                  const SizedBox(height: 16),
+                // ADD EVENT BUTTON
+                _modernActionButton(
+                  icon: Icons.event,
+                  tooltip: 'Add Event',
+                  onPressed: () {
+                    setState(() => _showActionOptions = false);
+                    _showAddOrEditEventDialog(date: DateTime.now());
+                  },
+                ),
+                const SizedBox(height: 12),
 
-                  // 🟠 Recurring Event intern hinzufügen
-                  _buildActionButton(
-                    icon: Icons.repeat,
-                    tooltip: 'Wöchentliche Events bis Enddatum',
-                    color: Colors.orange,
-                    onPressed: () {
-                      setState(() => _showActionOptions = false);
-
-                      final now = DateTime.now();
-                      final start = DateTime(now.year, now.month, now.day, 10, 0);
-                      final end = start.add(const Duration(hours: 2));
-                      final cutoff = DateTime(now.year, 12, 20); // Semesterende
-
-                      _createRecurringEventUntil(start, end, cutoff);
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // 🔴 Recurring Events nach Datum löschen
-                  _buildActionButton(
-                    icon: Icons.delete_forever,
-                    tooltip: 'Events nach Enddatum löschen',
-                    color: Colors.redAccent,
-                    onPressed: () {
-                      setState(() => _showActionOptions = false);
-                      final cutoff = DateTime(DateTime.now().year, 12, 20);
-                      _deleteRecurringEventsAfter(cutoff);
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // ❌ Menü schließen
-                  _buildActionButton(
-                    icon: Icons.close,
-                    tooltip: 'Close Menu',
-                    color: Colors.red,
-                    mini: true,
-                    onPressed: () {
-                      setState(() => _showActionOptions = false);
-                    },
-                  ),
-                ],
-              ),
+                // CLOSE BUTTON
+                _modernActionButton(
+                  icon: Icons.close,
+                  tooltip: 'Close',
+                  mini: true,
+                  onPressed: () {
+                    setState(() => _showActionOptions = false);
+                  },
+                ),
+              ],
             )
-          : FloatingActionButton(
-              tooltip: 'Show Options',
-              onPressed: () {
-                setState(() => _showActionOptions = true);
-              },
-              child: const Icon(Icons.add),
-            ),
+          : _modernMainButton(),
+
       body: _buildCalendarView(themesNotifier),
     );
   }
@@ -243,9 +180,7 @@ class _PlannerPageState extends State<PlannerPage> {
           focusedDay: _focusedDay,
           eventController: _eventController,
           onEventTap: _showEventDetailsDialog,
-          onDateTap: (_, date) {
-            _showAddOrEditEventDialog(date: date);
-          },
+          onDateTap: (_, date) => _showAddOrEditEventDialog(date: date),
         );
       case CalendarViewMode.day:
         return DayViewCalendar(
@@ -253,9 +188,7 @@ class _PlannerPageState extends State<PlannerPage> {
           focusedDay: _focusedDay,
           eventController: _eventController,
           onEventTap: _showEventDetailsDialog,
-          onDateTap: (date) {
-            _showAddOrEditEventDialog(date: date);
-          },
+          onDateTap: (date) => _showAddOrEditEventDialog(date: date),
         );
     }
   }
@@ -268,21 +201,61 @@ class _PlannerPageState extends State<PlannerPage> {
     super.dispose();
   }
 
-  Widget _buildActionButton({
+  // MAIN FAB (+)
+  Widget _modernMainButton() {
+    return FloatingActionButton(
+      backgroundColor: Colors.black,
+      elevation: 10,
+      shape: const CircleBorder(),
+      child: const Icon(Icons.add, size: 32, color: Colors.white),
+      onPressed: () => setState(() => _showActionOptions = true),
+    );
+  }
+
+  // SUB BUTTONS
+  Widget _modernActionButton({
     required IconData icon,
     required String tooltip,
-    required Color color,
     required VoidCallback onPressed,
     bool mini = false,
   }) {
-    return FloatingActionButton(
-      heroTag: tooltip,
-      tooltip: tooltip,
-      mini: mini,
-      backgroundColor: color,
-      elevation: 6,
-      child: Icon(icon, size: 24),
-      onPressed: onPressed,
+    const double sizeNormal = 64;
+    const double sizeMini = 56;
+    final double size = mini ? sizeMini : sizeNormal;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 160),
+      curve: Curves.easeOut,
+      decoration: BoxDecoration(
+        color: Colors.black, // <<<< ICON-BUTTON SCHWARZ
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 14,
+            spreadRadius: 1,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(18),
+          onTap: onPressed,
+          child: SizedBox(
+            width: size,
+            height: size,
+            child: Center(
+              child: Icon(
+                icon,
+                color: Colors.white, // Icon bleibt sichtbar auf schwarz
+                size: mini ? 24 : 28,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -4,6 +4,15 @@ import 'package:intl/intl.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/core/themes.dart';
 
+/// AUTOMATISCHE TEXTFARBE – KONTRAST
+Color getReadableTextColor(Color backgroundColor) {
+  double brightness = (backgroundColor.red * 0.299) +
+      (backgroundColor.green * 0.587) +
+      (backgroundColor.blue * 0.114);
+
+  return brightness < 150 ? Colors.white : Colors.black;
+}
+
 // MonthViewCalendar UI widget.
 class MonthViewCalendar extends StatelessWidget {
   const MonthViewCalendar({
@@ -53,6 +62,7 @@ class MonthViewCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = themesNotifier.currentThemeData;
+
     return MonthView<PlannerEventEntity>(
       key: ValueKey('month_view_$focusedDay'),
       controller: eventController,
@@ -68,6 +78,8 @@ class MonthViewCalendar extends StatelessWidget {
           color: theme.colorScheme.primary,
         ),
       ),
+
+      // WEEKDAY HEADER
       weekDayBuilder: (dayIndex) {
         final day = DateTime(2024).add(Duration(days: dayIndex));
         return Container(
@@ -75,19 +87,21 @@ class MonthViewCalendar extends StatelessWidget {
             border: Border(bottom: BorderSide(color: theme.dividerColor)),
           ),
           child: Center(
-            child: Text(DateFormat.E().format(day), style: theme.textTheme.bodyMedium),
+            child: Text(
+              DateFormat.E().format(day),
+              style: theme.textTheme.bodyMedium,
+            ),
           ),
         );
       },
+
+      // INDIVIDUAL CELLS
       cellBuilder: (date, events, isToday, isInMonth, _) {
         if (!isInMonth) {
           return Container(
             alignment: Alignment.topRight,
             padding: const EdgeInsets.all(3),
-            child: Text(
-              '${date.day}',
-              style: theme.textTheme.bodyMedium,
-            ),
+            child: Text('${date.day}', style: theme.textTheme.bodyMedium),
           );
         }
 
@@ -104,7 +118,9 @@ class MonthViewCalendar extends StatelessWidget {
                   '${date.day}',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
-                    color: isToday ? theme.colorScheme.secondary : theme.colorScheme.primary,
+                    color: isToday
+                        ? theme.colorScheme.secondary
+                        : theme.colorScheme.primary,
                   ),
                 ),
               ),
@@ -113,34 +129,50 @@ class MonthViewCalendar extends StatelessWidget {
             final visible = events.take(maxRows).toList();
             final hidden = events.length - visible.length;
 
+            /// EVENT BOXES
             for (final ev in visible) {
               rows.add(
                 GestureDetector(
                   onTap: () => onEventTap(ev.event!),
+
                   child: Container(
                     width: cellW - 2,
                     height: rowH,
                     margin: const EdgeInsets.only(right: 2, top: 1),
                     decoration: BoxDecoration(
-                      color: ev.color,
+                      color: ev.color.withOpacity(0.90),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
-                    child: Text(
-                      ev.title,
-                      style: theme.textTheme.bodyMedium?.copyWith(color: theme.primaryColor, fontSize: 12),
-                      maxLines: 1,
+
+                    child: Builder(
+                      builder: (context) {
+                        final textColor = getReadableTextColor(ev.color);
+
+                        return Text(
+                          ev.title,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: textColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      },
                     ),
                   ),
                 ),
               );
             }
 
+            /// "+ more"
             if (hidden > 0) {
               rows.add(
                 GestureDetector(
-                  onTap: () => _showMoreSheet(ctx, events.skip(maxRows).toList(), onEventTap),
+                  onTap: () =>
+                      _showMoreSheet(ctx, events.skip(maxRows).toList(), onEventTap),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 1),
                     child: Text(

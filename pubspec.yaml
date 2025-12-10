@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # vibration PLUGIN ENTFERNT – wir nutzen native Haptics
   flutter_localizations:
     sdk: flutter
   percent_indicator: ^4.2.2
@@ -70,7 +72,6 @@ dependencies:
   flutter_colorpicker: ^1.1.0
 
 dev_dependencies:
-
   flutter_test:
     sdk: flutter
   build_runner: ^2.4.13
@@ -78,12 +79,10 @@ dev_dependencies:
   mockito: ^5.4.3
   envied_generator: ^1.1.1
   flutter_launcher_icons: ^0.14.3
-  analyzer: ^6.11.0
+  analyzer: ^6.4.1
+
 dependency_overrides:
-  # AppWrite depends on outdated package.
-  #  - https://github.com/appwrite/sdk-for-flutter/issues/214#issuecomment-2278577156
   flutter_web_auth_2: ^4.1.0
-  # Override js version as flutter_inappwebview depends on flutter_inappwebview_web which uses js version ^0.6.4 but as the web package is not used, this is risk-free
   js: ^0.7.2
 
 flutter_native_splash:
@@ -95,7 +94,6 @@ flutter_native_splash:
   branding_dark_android: "assets/img/SplashScreen-AStA-branding-dark.png"
   branding_ios: "assets/img/SplashScreen-AStA-branding-ios.png"
   branding_dark_ios: "assets/img/SplashScreen-AStA-branding-dark-ios.png"
-  # Android 12 handles the splash screen differently than previous versions
   android_12:
     image: "assets/img/SplashScreen-logo.png"
     color: "#ffffff"

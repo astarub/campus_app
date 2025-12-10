@@ -4,6 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:campus_app/pages/planner/entities/planner_event_entity.dart';
 import 'package:campus_app/core/themes.dart';
 
+/// AUTOMATISCHE TEXTFARBE – KONTRAST
+Color getReadableTextColor(Color backgroundColor) {
+  double brightness = (backgroundColor.red * 0.299) +
+      (backgroundColor.green * 0.587) +
+      (backgroundColor.blue * 0.114);
+
+  return brightness < 150 ? Colors.white : Colors.black;
+}
+
 // DayViewCalendar UI widget.
 class DayViewCalendar extends StatelessWidget {
   const DayViewCalendar({
@@ -24,6 +33,7 @@ class DayViewCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = themesNotifier.currentThemeData;
+
     return DayView<PlannerEventEntity>(
       key: ValueKey('day_view_$focusedDay'),
       controller: eventController,
@@ -32,42 +42,55 @@ class DayViewCalendar extends StatelessWidget {
       showLiveTimeLineInAllDays: true,
       timeLineWidth: 50,
       backgroundColor: theme.colorScheme.surface,
-      liveTimeIndicatorSettings: LiveTimeIndicatorSettings(color: theme.colorScheme.secondary),
+
+      liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
+        color: theme.colorScheme.secondary,
+      ),
+
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: theme.cardColor),
         headerTextStyle: theme.textTheme.headlineSmall,
-        leftIconConfig: IconDataConfig(
-          color: theme.colorScheme.primary,
-        ),
-        rightIconConfig: IconDataConfig(
-          color: theme.colorScheme.primary,
-        ),
+        leftIconConfig: IconDataConfig(color: theme.colorScheme.primary),
+        rightIconConfig: IconDataConfig(color: theme.colorScheme.primary),
       ),
+
+      /// *** DAY EVENT BUILDER ***
       eventTileBuilder: (date, events, boundary, start, end) {
+        final ev = events.first;
+        final backgroundColor = ev.color.withOpacity(0.90);
+        final textColor = getReadableTextColor(ev.color);
+
         return GestureDetector(
-          onTap: () => onEventTap(events.first.event!),
+          onTap: () => onEventTap(ev.event!),
+
           child: Container(
-            padding: const EdgeInsets.all(2),
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: events.first.color,
+              color: backgroundColor,
               borderRadius: BorderRadius.circular(6),
             ),
+
             child: Text(
-              events.first.title,
+              ev.title,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.primary,
+                color: textColor,
                 fontSize: 12,
+                fontWeight: FontWeight.w600,
               ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         );
       },
+
       fullDayEventBuilder: (events, date) {
         return EventTile(
           events: events,
           onEventTap: onEventTap,
         );
       },
+
       hourIndicatorSettings: HourIndicatorSettings(
         color: theme.dividerColor,
       ),

@@ -37,6 +37,7 @@ class HomePageState extends State<HomePage> {
   Map<PageItem, GlobalKey<AnimatedExitState>> exitAnimationKeys = {
     PageItem.feed: GlobalKey<AnimatedExitState>(),
     PageItem.events: GlobalKey<AnimatedExitState>(),
+
     //PageItem.pathfinder: GlobalKey<AnimatedExitState>(),
     PageItem.mensa: GlobalKey<AnimatedExitState>(),
     PageItem.wallet: GlobalKey<AnimatedExitState>(),
