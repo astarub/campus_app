@@ -141,18 +141,43 @@ class TicketDataSource {
             await controller.evaluateJavascript(
               source: '''
               const ticketClickInterval = setInterval(function(){
-                document.getElementsByClassName("abo-card-wrapper")[0].click();
+                const cards = document.getElementsByClassName("abo-card-wrapper");
+                if (cards.length > 0) cards[0].click();
               }, 100);
+              
+              // variable to count successful ticket info pulls
+              let success = 0;
 
-              setInterval(function(){
+              const ticketInfoInterval = setInterval(function(){
                 if(document.URL.startsWith("https://abo.ride-ticketing.de/app/ticket")) {
                   clearInterval(ticketClickInterval);
                   const ticket_details = document.getElementsByClassName("value-column");
                   const arr = [];
                   for(const detail of ticket_details) {
-                    arr.push(detail.innerText);
+                    arr.push(detail.innerText.trim());
                   }
-                  window.flutter_inappwebview.callHandler('ticket', document.getElementsByClassName("barcode")[0].src, arr);
+
+                  let emptyItem = false;
+
+                  //checking if a text item was loaded empty, if yes we wait for next interval
+                  for (const item of arr) {
+                    if (item === ''){
+                    emptyItem = true;
+                    }
+                  }
+                  
+                  //check if our pull was a success, at least 4 items and not empty items
+                  if (arr.length >= 4 && emptyItem == false) {
+                    success++;
+                  } else {
+                    success = 0;
+                  }
+
+                  // fire handler ater 2 successful pulls -> stability check
+                  if(success >= 2) {
+                    clearInterval(ticketInfoInterval); // stop pulling
+                    window.flutter_inappwebview.callHandler('ticket', document.getElementsByClassName("barcode")[0].src, arr);
+                  }
                 } 
               }, 200);
               ''',
