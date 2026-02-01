@@ -45,9 +45,25 @@ class TicketDataSource {
           controller.addJavaScriptHandler(
             handlerName: 'ticket',
             callback: (args) {
-              if (args.isEmpty || List.of(args)[1] is! List || List.of(args[1]).isEmpty) {
-                completer.completeError('Invalid ticket details');
+              /* Important to understand:
+                  args = [document.getElementsByClassName("barcode")[0].src, arr] with args[0] image source and args[1]/arr ticket details
+              */
+              //Sanity Check Completer
+              if (completer.isCompleted == true) return;
+
+              if (args.length < 2 || args.isEmpty || args[1] is! List || List.of(args[1]).isEmpty) {
+                if (!completer.isCompleted) {
+                  completer.completeError('Invalid ticket details');
+                  return; //don't let an invalid ticket continue filling information
+                }
+                return;
               }
+
+              // debugging prints to check args validity, currently args is often missing the ticket details
+              // (Prints will be removed after degugging the issue)
+              final partialargs = args[1];
+              debugPrint('-------------!!!! Full args: $args');
+              debugPrint('-------------!!!! Details: $partialargs');
 
               final List<dynamic> arguments = List.of(args)[1];
               final String image = List<dynamic>.from(args)[0].toString().split(',')[1];
@@ -69,7 +85,7 @@ class TicketDataSource {
 
               debugPrint('Loaded semesterticket.');
 
-              completer.complete(ticket);
+              if (!completer.isCompleted) completer.complete(ticket);
               headlessWebView!.dispose();
             },
           );
@@ -84,7 +100,7 @@ class TicketDataSource {
                 loginTimer!.cancel();
               }
 
-              completer.completeError(args[0]);
+              if (!completer.isCompleted) completer.completeError(args[0]);
               headlessWebView!.dispose();
             },
           );
@@ -164,12 +180,12 @@ class TicketDataSource {
               ''',
             );
           }
-          completer.completeError('Could not open ticket page.');
+          if (!completer.isCompleted) completer.completeError('Could not open ticket page.');
           await headlessWebView.dispose();
         }
       });
     } else {
-      completer.completeError('No login credentials found.');
+      if (!completer.isCompleted) completer.completeError('No login credentials found.');
     }
 
     return completer.future;
