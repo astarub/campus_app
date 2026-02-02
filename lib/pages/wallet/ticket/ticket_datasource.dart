@@ -26,6 +26,7 @@ class TicketDataSource {
       'validity_region': '',
       'owner': '',
       'birthdate': '',
+      'date_issued': '',
     };
 
     // Load the user's credentials
@@ -37,6 +38,20 @@ class TicketDataSource {
     if (loginId != null && password != null) {
       // Create a headless web view
       HeadlessInAppWebView? headlessWebView;
+
+      // centralize dispose calls and guard against dispose being called on a disposed webview
+      bool webViewDisposed = false;
+
+      Future<void> webDispose() async {
+        if (webViewDisposed == true) return;
+        try {
+          await headlessWebView?.dispose();
+          webViewDisposed = true;
+        } catch (e) {
+          debugPrint('Semesterticket: Failed to dispose webview!');
+        }
+      }
+
       headlessWebView = HeadlessInAppWebView(
         initialUrlRequest: URLRequest(url: WebUri(rideTicketing)),
         initialSettings: InAppWebViewSettings(cacheEnabled: false, clearCache: true),
@@ -49,44 +64,60 @@ class TicketDataSource {
                   args = [document.getElementsByClassName("barcode")[0].src, arr] with args[0] image source and args[1]/arr ticket details
               */
               //Sanity Check Completer
-              if (completer.isCompleted == true) return;
+              if (completer.isCompleted == true) {
+                webDispose();
+                return;
+              }
 
               if (args.length < 2 || args.isEmpty || args[1] is! List || List.of(args[1]).isEmpty) {
                 if (!completer.isCompleted) {
                   completer.completeError('Invalid ticket details');
+                  webDispose();
                   return; //don't let an invalid ticket continue filling information
                 }
+                webDispose();
                 return;
               }
 
               // debugging prints to check args validity, currently args is often missing the ticket details
               // (Prints will be removed after degugging the issue)
               final partialargs = args[1];
+              final len = args[1].length;
               debugPrint('-------------!!!! Full args: $args');
               debugPrint('-------------!!!! Details: $partialargs');
+              debugPrint('--------------!!!!!! Details length: $len');
 
               final List<dynamic> arguments = List.of(args)[1];
               final String image = List<dynamic>.from(args)[0].toString().split(',')[1];
 
               ticket['aztec_code'] = image;
 
-              if (arguments.length == 4) {
+              if (arguments.length == 6) {
+                //changing to 6 since this is the amount of details currently pulled + correct assignments
                 ticket['valid_from'] = arguments[0];
                 ticket['valid_till'] = arguments[1];
-                ticket['owner'] = arguments[2];
-                ticket['birthdate'] = arguments[3];
+                ticket['date_issued'] = arguments[2];
+                ticket['validity_region'] = arguments[3];
+                ticket['owner'] = arguments[4];
+                ticket['birthdate'] = arguments[5];
               } else {
-                ticket['valid_from'] = arguments[0];
-                ticket['valid_till'] = arguments[1];
-                ticket['validity_region'] = arguments[2];
-                ticket['owner'] = arguments[3];
-                ticket['birthdate'] = arguments[4];
+                // if the details aren't there, complete with error ideally
+                if (!completer.isCompleted) {
+                  completer.completeError('Invalid ticket details!');
+                  webDispose();
+                  return;
+                }
+                debugPrint(
+                  'Invalid ticket details: $arguments and completer is already completed: ${completer.isCompleted}',
+                );
+                webDispose();
+                return;
               }
 
               debugPrint('Loaded semesterticket.');
 
               if (!completer.isCompleted) completer.complete(ticket);
-              headlessWebView!.dispose();
+              webDispose();
             },
           );
 
@@ -101,7 +132,7 @@ class TicketDataSource {
               }
 
               if (!completer.isCompleted) completer.completeError(args[0]);
-              headlessWebView!.dispose();
+              webDispose();
             },
           );
         },
@@ -167,7 +198,7 @@ class TicketDataSource {
                   }
                   
                   //check if our pull was a success, at least 4 items and not empty items
-                  if (arr.length >= 4 && emptyItem == false) {
+                  if (arr.length >= 6 && emptyItem == false) {
                     success++;
                   } else {
                     success = 0;
@@ -206,7 +237,7 @@ class TicketDataSource {
             );
           }
           if (!completer.isCompleted) completer.completeError('Could not open ticket page.');
-          await headlessWebView.dispose();
+          await webDispose();
         }
       });
     } else {

@@ -194,13 +194,14 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                                           .headlineSmall!
                                           .copyWith(color: Colors.black, fontSize: 12.5),
                                     ),
+                                    // in following changing to 11 font Size to fit original designed container
                                     Text(
                                       'Geburtstag: ${ticketDetails['birthdate']}',
                                       style: Provider.of<ThemesNotifier>(context)
                                           .currentThemeData
                                           .textTheme
                                           .bodyMedium!
-                                          .copyWith(color: Colors.black, fontSize: 12),
+                                          .copyWith(color: Colors.black, fontSize: 11),
                                     ),
                                     Text(
                                       'Von: ${ticketDetails['valid_from']}',
@@ -208,7 +209,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                                           .currentThemeData
                                           .textTheme
                                           .bodyMedium!
-                                          .copyWith(color: Colors.black, fontSize: 12),
+                                          .copyWith(color: Colors.black, fontSize: 11),
                                     ),
                                     Text(
                                       'Bis: ${ticketDetails['valid_till']}',
@@ -216,7 +217,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                                           .currentThemeData
                                           .textTheme
                                           .bodyMedium!
-                                          .copyWith(color: Colors.black, fontSize: 12),
+                                          .copyWith(color: Colors.black, fontSize: 11),
                                     ),
                                     if (ticketDetails['validity_region'].toString().isNotEmpty)
                                       Text(
@@ -225,8 +226,16 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                                             .currentThemeData
                                             .textTheme
                                             .bodyMedium!
-                                            .copyWith(color: Colors.black, fontSize: 12),
+                                            .copyWith(color: Colors.black, fontSize: 11),
                                       ),
+                                    Text(
+                                      'Ausgestellt: ${ticketDetails['date_issued']}',
+                                      style: Provider.of<ThemesNotifier>(context)
+                                          .currentThemeData
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(color: Colors.black, fontSize: 11),
+                                    ),
                                   ],
                                 ),
                               ),
