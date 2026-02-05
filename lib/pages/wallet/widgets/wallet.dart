@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campus_app/core/exceptions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -94,9 +95,41 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
 
     final String? oldAztecCode = await ticketRepository.getAztecCode();
 
-    await ticketRepository.loadTicket().catchError((error) {
-      debugPrint('Wallet widget: $error');
-    });
+    //prepare for retrying loading
+    const int retries = 5;
+    bool successfullLoad = false;
+
+    // i = 0 is the inital Attempt, from i = 1 and up are the 5 retry attempts
+    for (int i = 0; i <= retries; i++) {
+      try {
+        await ticketRepository.loadTicket();
+        debugPrint('Wallet widget: Ticket loaded successfully on retry $i');
+        successfullLoad = true;
+        break; // jump out of for loop
+      } on InvalidLoginIDAndPasswordException {
+        // the two on error cases are "Fatal Cases" no reason to retry, only user can fix these by adding creds or entering right creds
+        debugPrint('Wallet Widget: Invalid Credentials.');
+        return;
+      } on MissingCredentialsException {
+        debugPrint('Wallet Widget: Initializing.');
+        return;
+      } catch (e) {
+        debugPrint('Load failed. Retry number $i with error $e');
+
+        if (i == retries) {
+          debugPrint('Wallet widget: Retries have failed. Notify User of failure and potentially outdated ticket.');
+          return;
+        }
+
+        // prevent any parallel fetching or overlaps
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
+    }
+
+    if (successfullLoad == false) {
+      debugPrint('Wallet widget: Load failed');
+      return;
+    }
 
     final String? newAztecCode = await ticketRepository.getAztecCode();
 
@@ -196,7 +229,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                                     ),
                                     // in following changing to 11 font Size to fit original designed container
                                     Text(
-                                      'Geburtstag: ${ticketDetails['birthdate']}',
+                                      'Geburtsdatum: ${ticketDetails['birthdate']}',
                                       style: Provider.of<ThemesNotifier>(context)
                                           .currentThemeData
                                           .textTheme
