@@ -7,6 +7,7 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
+import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
 import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_textfield.dart';
@@ -154,6 +155,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                       try {
                         await ticketRepository.loadTicket();
                         widget.onTicketLoaded();
+                        context.read<TicketWarningNotifier>().set(false);
                         navigator.pop();
                       } catch (e) {
                         if (e is InvalidLoginIDAndPasswordException) {
@@ -165,6 +167,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                           setState(() {
                             errorMessage = 'Fehler beim Laden des Tickets!';
                             showErrorMessage = true;
+                            context.read<TicketWarningNotifier>().set(true);
                           });
                         }
 

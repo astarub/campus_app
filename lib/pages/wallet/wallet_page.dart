@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
 import 'package:campus_app/pages/wallet/faq_page.dart';
 import 'package:campus_app/pages/wallet/mensa_balance_page.dart';
 import 'package:campus_app/utils/widgets/subpage_button.dart';
@@ -33,6 +34,8 @@ class _WalletPageState extends State<WalletPage>
   Widget build(BuildContext context) {
     super.build(context);
 
+    final showTicketWarning = context.watch<TicketWarningNotifier>().showWarning;
+
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       body: Center(
@@ -50,16 +53,58 @@ class _WalletPageState extends State<WalletPage>
                     style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                   ),
                 ),
-                const SizedBox(
-                  height: 265,
-                  child: CampusWallet(),
+                SizedBox(
+                  height: 300,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 265,
+                        child: CampusWallet(),
+                      ),
+                      // conditional Ticket Warning
+                      Visibility(
+                        visible: showTicketWarning,
+                        child: Column(
+                          children: [
+                            const Padding(padding: EdgeInsets.only(top: 10)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/img/icons/error.svg',
+                                  colorFilter: const ColorFilter.mode(
+                                    Colors.redAccent,
+                                    BlendMode.srcIn,
+                                  ),
+                                  width: 18,
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                ),
+                                Text(
+                                  'Ticket ist eventuell abgelaufen!',
+                                  style: Provider.of<ThemesNotifier>(context)
+                                      .currentThemeData
+                                      .textTheme
+                                      .labelSmall!
+                                      .copyWith(
+                                        color: Colors.redAccent,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Expanded(
                   child: ListView(
                     children: [
                       // Leitwarte button
                       const Padding(
-                        padding: EdgeInsets.only(top: 40, left: 20, right: 20),
+                        padding: EdgeInsets.only(top: 20, left: 20, right: 20),
                         child: LeitwarteButton(),
                       ),
                       // Other useful features

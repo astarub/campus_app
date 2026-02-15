@@ -6,6 +6,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:campus_app/utils/constants.dart';
 
+/* Developer Note:
+  - the current ticket filling logic as well as JS Injection works because the RIDE ticket page displays
+    information exactly as it does right now (15.02.2026) (6 Ticket Details, In a Column)
+  - as soon as the RIDE ticket page UI changes or the details change this is no longer guaranteed to work and might need to be adjusted!!!
+*/
+
 class TicketDataSource {
   final FlutterSecureStorage secureStorage;
 
@@ -197,7 +203,7 @@ class TicketDataSource {
                     }
                   }
                   
-                  //check if our pull was a success, at least 4 items and not empty items
+                  //check if our pull was a success, at least 6 items and not empty items
                   if (arr.length >= 6 && emptyItem == false) {
                     success++;
                   } else {

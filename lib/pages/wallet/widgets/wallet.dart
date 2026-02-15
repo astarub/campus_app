@@ -14,6 +14,7 @@ import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
 import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
 import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
+import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
@@ -105,10 +106,12 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
         await ticketRepository.loadTicket();
         debugPrint('Wallet widget: Ticket loaded successfully on retry $i');
         successfullLoad = true;
+        context.read<TicketWarningNotifier>().set(false);
         break; // jump out of for loop
       } on InvalidLoginIDAndPasswordException {
         // the two on error cases are "Fatal Cases" no reason to retry, only user can fix these by adding creds or entering right creds
         debugPrint('Wallet Widget: Invalid Credentials.');
+        context.read<TicketWarningNotifier>().set(true);
         return;
       } on MissingCredentialsException {
         debugPrint('Wallet Widget: Initializing.');
@@ -118,6 +121,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
 
         if (i == retries) {
           debugPrint('Wallet widget: Retries have failed. Notify User of failure and potentially outdated ticket.');
+          context.read<TicketWarningNotifier>().set(true);
           return;
         }
 
