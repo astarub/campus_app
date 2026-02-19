@@ -50,6 +50,7 @@ class TicketDataSource {
 
       Future<void> webDispose() async {
         if (webViewDisposed == true) return;
+        if (loginTimer != null) loginTimer!.cancel();
         try {
           await headlessWebView?.dispose();
           webViewDisposed = true;
@@ -150,17 +151,25 @@ class TicketDataSource {
             Timer(const Duration(milliseconds: 300), () async {
               await controller.evaluateJavascript(
                 source: """
-                document.getElementById('username').value="$loginId";
-                document.getElementById('password').value="$password";
-                setTimeout(function(){
-                  document.getElementById('shibbutton').click();
-                }, 100);
+                (function fillCreds() {
+                  const username = document.getElementById('username');
+                  const password = document.getElementById('password');
+                  const btn = document.getElementById('shibbutton');
+
+                  if (username && password && btn) {
+                    username.value = "$loginId";
+                    password.value = "$password";
+                    btn.click();
+                  } else {
+                    setTimeout(fillCreds, 500);
+                  }
+                })();
                 """,
               );
             });
           } else if (url.startsWith('https://aai.ruhr-uni-bochum.de/idp/profile/SAML2/POST/SSO') &&
               url.endsWith('s2')) {
-            Timer.periodic(const Duration(milliseconds: 100), (ti) async {
+            Timer.periodic(const Duration(milliseconds: 500), (ti) async {
               loginTimer = ti;
 
               if (headlessWebView != null && headlessWebView.isRunning()) {
@@ -169,7 +178,8 @@ class TicketDataSource {
                 if(document.getElementsByClassName("form-error").length == 1) {
                   window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
                 }
-                document.getElementById('consentbutton_2').click();
+                const btn = document.getElementById('consentbutton_2');
+                if (btn) btn.click();
                 """,
                 );
               }
@@ -177,15 +187,15 @@ class TicketDataSource {
           } else if (url.startsWith('https://abo.ride-ticketing.de')) {
             await controller.evaluateJavascript(
               source: '''
-              const ticketClickInterval = setInterval(function(){
+              var ticketClickInterval = setInterval(function(){
                 const cards = document.getElementsByClassName("abo-card-wrapper");
                 if (cards.length > 0) cards[0].click();
-              }, 100);
+              }, 500);
               
               // variable to count successful ticket info pulls
-              let success = 0;
+              var success = 0;
 
-              const ticketInfoInterval = setInterval(function(){
+              var ticketInfoInterval = setInterval(function(){
                 if(document.URL.startsWith("https://abo.ride-ticketing.de/app/ticket")) {
                   clearInterval(ticketClickInterval);
                   const ticket_details = document.getElementsByClassName("value-column");
@@ -216,7 +226,7 @@ class TicketDataSource {
                     window.flutter_inappwebview.callHandler('ticket', document.getElementsByClassName("barcode")[0].src, arr);
                   }
                 } 
-              }, 200);
+              }, 500);
               ''',
             );
           }

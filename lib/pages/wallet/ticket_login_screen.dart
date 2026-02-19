@@ -157,19 +157,17 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                         widget.onTicketLoaded();
                         context.read<TicketWarningNotifier>().set(false);
                         navigator.pop();
+                      } on InvalidLoginIDAndPasswordException {
+                        setState(() {
+                          errorMessage = 'Falsche LoginID und/oder Passwort!';
+                          showErrorMessage = true;
+                        });
                       } catch (e) {
-                        if (e is InvalidLoginIDAndPasswordException) {
-                          setState(() {
-                            errorMessage = 'Falsche LoginID und/oder Passwort!';
-                            showErrorMessage = true;
-                          });
-                        } else {
-                          setState(() {
-                            errorMessage = 'Fehler beim Laden des Tickets!';
-                            showErrorMessage = true;
-                            context.read<TicketWarningNotifier>().set(true);
-                          });
-                        }
+                        setState(() {
+                          errorMessage = 'Fehler beim Laden des Tickets!';
+                          showErrorMessage = true;
+                          context.read<TicketWarningNotifier>().set(true);
+                        });
 
                         if (previousLoginId != null && previousPassword != null) {
                           await secureStorage.write(key: 'loginId', value: previousLoginId);
