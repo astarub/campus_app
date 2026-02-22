@@ -23,6 +23,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 String? selectedLocationGlobal;
@@ -41,7 +42,8 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => NavigationPageState();
 }
 
-class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveClientMixin {
+class NavigationPageState extends State<NavigationPage>
+    with AutomaticKeepAliveClientMixin {
   LocationData? currentLocation;
   FocusNode focusNode = FocusNode();
   final TextEditingController searchController = TextEditingController();
@@ -60,7 +62,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   Timer? navigationMessageTimer;
   final Location locationService = Location.instance;
   final MapController mapController = MapController();
-  Future<TileLayer>? tileLayerFuture;
+  Future<VectorTileLayer>? tileLayerFuture;
   bool isTileLoading = true;
   @override
   bool get wantKeepAlive => true;
@@ -80,7 +82,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   }
 
   void addGraphEntriesToPredefinedLocations() {
-    final mergedLocations = OutdoorNavigationUtils.addGraphEntriesToPredefinedLocations(
+    final mergedLocations =
+        OutdoorNavigationUtils.addGraphEntriesToPredefinedLocations(
       graphData: graph,
       predefinedLocations: predefinedLocations,
     );
@@ -91,7 +94,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
 
   @override
   Widget build(BuildContext context) {
-    final currentThemeData = Provider.of<ThemesNotifier>(context).currentThemeData;
+    final currentThemeData =
+        Provider.of<ThemesNotifier>(context).currentThemeData;
 
     super.build(context);
     if (!hasAutoUnfocused) {
@@ -100,6 +104,29 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
       });
       hasAutoUnfocused = true;
     }
+    final bool isLightTheme =
+        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+            AppThemes.light;
+    final bool isPhoneLayout = MediaQuery.of(context).size.shortestSide < 600;
+    final double bottomNavHeight = Platform.isIOS ? 88 : 98;
+    final double homePageBottomPadding = Platform.isIOS ? 80 : 60;
+    final double fabBottomOffset =
+        isPhoneLayout ? (bottomNavHeight - homePageBottomPadding + 12) : 0;
+    final Color indoorButtonBackgroundColor = isLightTheme
+        ? Color.alphaBlend(
+            const Color.fromRGBO(165, 216, 255, 0.32),
+            Colors.white,
+          )
+        : currentThemeData.colorScheme.surface;
+    final Color indoorButtonTextColor = isLightTheme
+        ? const Color.fromRGBO(128, 195, 255, 1)
+        : currentThemeData.colorScheme.secondary;
+    final Color indoorButtonIconColor = isLightTheme
+        ? const Color.fromRGBO(128, 195, 255, 1)
+        : currentThemeData.colorScheme.secondary;
+    final Color indoorButtonIconHighlightColor = isLightTheme
+        ? const Color.fromRGBO(165, 216, 255, 0.35)
+        : Colors.transparent;
 
     // Display guide if first time use
     if (isFirstTime) {
@@ -111,10 +138,11 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
       );
     } else {
       Widget buildTileLayer() {
-        return FutureBuilder<TileLayer>(
+        return FutureBuilder<VectorTileLayer>(
           future: tileLayerFuture,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.hasData) {
               return snapshot.data!;
             } else {
               return const SizedBox.shrink();
@@ -170,7 +198,9 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                      color: Provider.of<ThemesNotifier>(context)
+                          .currentThemeData
+                          .cardColor,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15),
@@ -197,7 +227,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                 polylines: [
                                   Polyline(
                                     points: waypoints,
-                                    color: const Color.fromARGB(169, 33, 149, 243),
+                                    color:
+                                        const Color.fromARGB(169, 33, 149, 243),
                                     strokeWidth: 3,
                                   ),
                                 ],
@@ -213,8 +244,12 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                     ),
                                   ),
                                   markerSize: const Size.square(40),
-                                  accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withValues(alpha: 0.1),
-                                  headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withValues(alpha: 0.8),
+                                  accuracyCircleColor:
+                                      const Color.fromARGB(255, 113, 143, 243)
+                                          .withValues(alpha: 0.1),
+                                  headingSectorColor:
+                                      const Color.fromARGB(255, 118, 221, 247)
+                                          .withValues(alpha: 0.8),
                                   headingSectorRadius: 120,
                                 ),
                                 moveAnimationDuration: Duration.zero,
@@ -245,32 +280,41 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                              color: Provider.of<ThemesNotifier>(context,
+                                              listen: false)
+                                          .currentTheme ==
+                                      AppThemes.light
                                   ? const Color.fromRGBO(245, 246, 250, 1)
                                   : const Color.fromRGBO(34, 40, 54, 1),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 children: [
                                   Expanded(
                                     child: Autocomplete<String>(
-                                      optionsBuilder: (TextEditingValue textEditingValue) {
+                                      optionsBuilder:
+                                          (TextEditingValue textEditingValue) {
                                         return predefinedLocations.keys.where(
-                                          (String option) => option.toLowerCase().contains(
-                                                textEditingValue.text.toLowerCase(),
-                                              ),
+                                          (String option) =>
+                                              option.toLowerCase().contains(
+                                                    textEditingValue.text
+                                                        .toLowerCase(),
+                                                  ),
                                         );
                                       },
                                       onSelected: selectDestination,
                                       optionsViewBuilder: (
                                         BuildContext context,
-                                        AutocompleteOnSelected<String> onSelected,
+                                        AutocompleteOnSelected<String>
+                                            onSelected,
                                         Iterable<String> options,
                                       ) {
                                         final int itemCount = options.length;
-                                        final double containerHeight = itemCount * 80.0;
+                                        final double containerHeight =
+                                            itemCount * 80.0;
                                         return Align(
                                           alignment: Alignment.topLeft,
                                           child: Container(
@@ -283,7 +327,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                               child: ListView(
                                                 children: options
                                                     .map(
-                                                      (String option) => GestureDetector(
+                                                      (String option) =>
+                                                          GestureDetector(
                                                         onTap: () {
                                                           onSelected(option);
                                                         },
@@ -300,7 +345,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                       },
                                       fieldViewBuilder: (
                                         BuildContext context,
-                                        TextEditingController textEditingController,
+                                        TextEditingController
+                                            textEditingController,
                                         FocusNode focusNode,
                                         VoidCallback onFieldSubmitted,
                                       ) {
@@ -313,13 +359,14 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                             border: InputBorder.none,
                                             hintText: 'Nach Gebäude Suchen',
                                             hintStyle: TextStyle(
-                                              color: Provider.of<ThemesNotifier>(
-                                                        context,
-                                                        listen: false,
-                                                      ).currentTheme ==
-                                                      AppThemes.light
-                                                  ? Colors.black
-                                                  : null,
+                                              color:
+                                                  Provider.of<ThemesNotifier>(
+                                                            context,
+                                                            listen: false,
+                                                          ).currentTheme ==
+                                                          AppThemes.light
+                                                      ? Colors.black
+                                                      : null,
                                             ),
                                           ),
                                           onChanged: (value) {},
@@ -330,17 +377,24 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                   ),
                                   CampusIconButton(
                                     iconPath: 'assets/img/icons/search.svg',
-                                    backgroundColorDark:
-                                        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-                                                AppThemes.light
-                                            ? const Color.fromRGBO(245, 246, 250, 1)
-                                            : const Color.fromRGBO(34, 40, 54, 1),
-                                    backgroundColorLight:
-                                        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-                                                AppThemes.light
-                                            ? const Color.fromRGBO(245, 246, 250, 1)
-                                            : const Color.fromRGBO(34, 40, 54, 1),
-                                    borderColorDark: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                    backgroundColorDark: Provider.of<
+                                                        ThemesNotifier>(context,
+                                                    listen: false)
+                                                .currentTheme ==
+                                            AppThemes.light
+                                        ? const Color.fromRGBO(245, 246, 250, 1)
+                                        : const Color.fromRGBO(34, 40, 54, 1),
+                                    backgroundColorLight: Provider.of<
+                                                        ThemesNotifier>(context,
+                                                    listen: false)
+                                                .currentTheme ==
+                                            AppThemes.light
+                                        ? const Color.fromRGBO(245, 246, 250, 1)
+                                        : const Color.fromRGBO(34, 40, 54, 1),
+                                    borderColorDark: Provider.of<
+                                                        ThemesNotifier>(context,
+                                                    listen: false)
+                                                .currentTheme ==
                                             AppThemes.light
                                         ? const Color.fromRGBO(245, 246, 250, 1)
                                         : const Color.fromRGBO(34, 40, 54, 1),
@@ -354,25 +408,38 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                     width: 42,
                                     height: 42,
                                     decoration: BoxDecoration(
-                                      color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
+                                      color:
+                                          Provider.of<ThemesNotifier>(context)
+                                              .currentThemeData
+                                              .colorScheme
+                                              .surface,
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: Material(
-                                      color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                      color: Provider.of<ThemesNotifier>(
+                                                      context,
+                                                      listen: false)
+                                                  .currentTheme ==
                                               AppThemes.light
-                                          ? const Color.fromRGBO(245, 246, 250, 1)
+                                          ? const Color.fromRGBO(
+                                              245, 246, 250, 1)
                                           : const Color.fromRGBO(34, 40, 54, 1),
                                       borderRadius: BorderRadius.circular(15),
                                       child: InkWell(
                                         borderRadius: BorderRadius.circular(15),
-                                        onTap: routeFromCurrentLocationToSelectedDestination,
+                                        onTap:
+                                            routeFromCurrentLocationToSelectedDestination,
                                         child: Icon(
                                           Icons.my_location_rounded,
                                           size: 22,
-                                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                          color: Provider.of<ThemesNotifier>(
+                                                          context,
+                                                          listen: false)
+                                                      .currentTheme ==
                                                   AppThemes.light
                                               ? Colors.black
-                                              : const Color.fromRGBO(184, 186, 191, 1),
+                                              : const Color.fromRGBO(
+                                                  184, 186, 191, 1),
                                         ),
                                       ),
                                     ),
@@ -453,7 +520,10 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                           Center(
                             child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                Provider.of<ThemesNotifier>(context,
+                                                listen: false)
+                                            .currentTheme ==
+                                        AppThemes.light
                                     ? Colors.black
                                     : Colors.white,
                               ),
@@ -465,30 +535,55 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                 ),
               ],
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                //TODO: Move function call into indoorNav into async call to update graph and images
-                /*
-            final graph2 = await ensureLatestGraph();
-            graph = graph2;
-            await syncMapImages();
-            */
-                //------
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const IndoorNavigation()),
-                );
-              },
-              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-              child: SvgPicture.asset(
-                'assets/img/icons/door-closed.svg',
-                colorFilter: ColorFilter.mode(
-                  Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                      ? Colors.black
-                      : const Color.fromRGBO(184, 186, 191, 1),
-                  BlendMode.srcIn,
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButton: Padding(
+              padding: EdgeInsets.only(bottom: fabBottomOffset),
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  //TODO: Move function call into indoorNav into async call to update graph and images
+                  /*
+              final graph2 = await ensureLatestGraph();
+              graph = graph2;
+              await syncMapImages();
+              */
+                  //------
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const IndoorNavigation()),
+                  );
+                },
+                elevation: 9,
+                highlightElevation: 12,
+                extendedPadding: const EdgeInsets.symmetric(horizontal: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                width: 24,
+                backgroundColor: indoorButtonBackgroundColor,
+                icon: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: indoorButtonIconHighlightColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/img/icons/door-closed.svg',
+                    colorFilter: ColorFilter.mode(
+                      indoorButtonIconColor,
+                      BlendMode.srcIn,
+                    ),
+                    width: 22,
+                  ),
+                ),
+                label: Text(
+                  'Raumfinder',
+                  style: (currentThemeData.textTheme.labelMedium ??
+                          const TextStyle())
+                      .copyWith(
+                    color: indoorButtonTextColor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
             ),
           ),
@@ -504,7 +599,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     }
 
     final LocationData? currentLocationData = await getUserLocation();
-    if (currentLocationData?.latitude == null || currentLocationData?.longitude == null) {
+    if (currentLocationData?.latitude == null ||
+        currentLocationData?.longitude == null) {
       showNavigationMessage('Aktuelle Position konnte nicht ermittelt werden.');
       return;
     }
@@ -544,19 +640,25 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
 
   Future<void> checkFirstTimeUser() async {
     setState(() {
-      isFirstTime = Provider.of<SettingsHandler>(context, listen: false).currentSettings.firstTimePathfinder;
+      isFirstTime = Provider.of<SettingsHandler>(context, listen: false)
+          .currentSettings
+          .firstTimePathfinder;
     });
 
     if (isFirstTime) {
       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-          Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(firstTimePathfinder: false);
+          Provider.of<SettingsHandler>(context, listen: false)
+              .currentSettings
+              .copyWith(firstTimePathfinder: false);
     }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!hasProcessedGlobalLocation && selectedLocationGlobal != null && selectedLocationGlobal!.isNotEmpty) {
+    if (!hasProcessedGlobalLocation &&
+        selectedLocationGlobal != null &&
+        selectedLocationGlobal!.isNotEmpty) {
       hasProcessedGlobalLocation = true;
       Future.delayed(const Duration(milliseconds: 100), () {
         final location = selectedLocationGlobal!;
@@ -584,7 +686,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
         if (!requestIfMissing) return false;
         serviceEnabled = await locationService.requestService();
         if (!serviceEnabled) {
-          showNavigationMessage('Bitte aktiviere die Ortungsdienste auf deinem Gerät.');
+          showNavigationMessage(
+              'Bitte aktiviere die Ortungsdienste auf deinem Gerät.');
           return false;
         }
       }
@@ -595,19 +698,23 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
       }
 
       if (permission == PermissionStatus.deniedForever) {
-        showNavigationMessage('Standortzugriff ist dauerhaft blockiert. Bitte in den Systemeinstellungen aktivieren.');
+        showNavigationMessage(
+            'Standortzugriff ist dauerhaft blockiert. Bitte in den Systemeinstellungen aktivieren.');
         return false;
       }
 
       if (permission == PermissionStatus.denied) {
-        showNavigationMessage('Standortzugriff erforderlich, um eine Route von deinem Standort zu starten.');
+        showNavigationMessage(
+            'Standortzugriff erforderlich, um eine Route von deinem Standort zu starten.');
         return false;
       }
 
-      return permission == PermissionStatus.granted || permission == PermissionStatus.grantedLimited;
+      return permission == PermissionStatus.granted ||
+          permission == PermissionStatus.grantedLimited;
     } catch (e) {
       debugPrint('Error ensuring location access: $e');
-      showNavigationMessage('Standortberechtigung konnte nicht geprüft werden.');
+      showNavigationMessage(
+          'Standortberechtigung konnte nicht geprüft werden.');
       return false;
     }
   }
@@ -728,7 +835,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
       });
       focusMapToRouteOrDestination(endLocation);
     } catch (e, stacktrace) {
-      debugPrint('Error while routing to selected destination: $e\n$stacktrace');
+      debugPrint(
+          'Error while routing to selected destination: $e\n$stacktrace');
       showNavigationMessage('Route konnte nicht berechnet werden.');
     }
   }

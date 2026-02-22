@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:campus_app/pages/navigation/navigation_datasource.dart';
-import 'package:campus_app/utils/pages/navigation_utils.dart';
+import 'package:campus_app/utils/pages/indoor_navigation_utils.dart';
+import 'package:campus_app/utils/pages/outdoor_navigation_utils.dart';
 import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -126,7 +127,8 @@ Future<void> init() async {
   sl.registerLazySingleton(MensaUtils.new);
   sl.registerLazySingleton(MainUtils.new);
   sl.registerLazySingleton(WalletUtils.new);
-  sl.registerLazySingleton(NavigationUtils.new);
+  sl.registerLazySingleton(IndoorNavigationUtils.new);
+  sl.registerLazySingleton(OutdoorNavigationUtils.new);
 
   //!
   //! External
