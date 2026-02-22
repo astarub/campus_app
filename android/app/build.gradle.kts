@@ -9,16 +9,6 @@ plugins {
     id("com.google.gms.google-services")
 }
 
-val localProperties = Properties().apply {
-    val localPropertiesFile = rootProject.file("local.properties")
-    if (localPropertiesFile.exists()) {
-        localPropertiesFile.reader(Charsets.UTF_8).use { load(it) }
-    }
-}
-
-val flutterVersionCode = localProperties.getProperty("flutter.versionCode") ?: "1"
-val flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0"
-
 val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("key.properties")
 if (keystorePropertiesFile.exists()) {
@@ -26,9 +16,9 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdk = 35
-
     namespace = "de.asta_bochum.campus_app"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         // Flag to enable support for the new language APIs
@@ -43,16 +33,15 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // Application ID: https://developer.android.com/studio/build/application-id.html
         applicationId = "de.asta_bochum.campus_app"
+        
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-
-        multiDexEnabled = true
 
         // Add the Dart define flag for Cronet HTTP without Play Services
         applicationVariants.all { 
@@ -70,9 +59,18 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             // TODO: Add your own signing config for the release build.
             signingConfig = signingConfigs.getByName("release")
+
+            isMinifyEnabled = true
+            isShrinkResources = true
+
+            // preserve entire Flutter wrapper code
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
@@ -82,10 +80,15 @@ flutter {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.appcompat:appcompat-resources:1.6.1")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    // Dependencies for Mensa card PopupActivity
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.10")
+    implementation("androidx.appcompat:appcompat:1.7.1")
+    implementation("androidx.appcompat:appcompat-resources:1.7.1")
+
+    // `desugar_jdk_libs` is a core Android development library that 
+    // enables you to use modern Java features and APIs in your app 
+    // even on older Android devices with lower API levels. 
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 
     // Remove Campus App's requirement of Google Play Services
     //
