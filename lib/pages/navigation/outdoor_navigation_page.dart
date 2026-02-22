@@ -339,8 +339,15 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                                   : null,
                                             ),
                                           ),
-                                          onChanged: (value) {},
-                                          onSubmitted: selectDestination,
+                                          onChanged: (value) {
+                                            searchController.text = value;
+                                          },
+                                          onSubmitted: (value) {
+                                            centerMapOnSearchInput(
+                                              query: value,
+                                              showMessageOnMiss: true,
+                                            );
+                                          },
                                         );
                                       },
                                     ),
@@ -363,6 +370,9 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                         : const Color.fromRGBO(34, 40, 54, 1),
                                     transparent: true,
                                     onTap: () {
+                                      centerMapOnSearchInput(
+                                        showMessageOnMiss: true,
+                                      );
                                       FocusScope.of(context).unfocus();
                                     },
                                   ),
@@ -579,6 +589,26 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     } else {
       return;
     }
+  }
+
+  Future<void> centerMapOnSearchInput({
+    String? query,
+    bool showMessageOnMiss = false,
+  }) async {
+    final String selectedOption = (query ?? searchController.text).trim();
+    if (selectedOption.isEmpty) {
+      return;
+    }
+
+    final LatLng? endLocation = predefinedLocations[selectedOption];
+    if (endLocation == null) {
+      if (showMessageOnMiss) {
+        showNavigationMessage('Das ausgewählte Ziel wurde nicht gefunden.');
+      }
+      return;
+    }
+
+    await selectDestination(selectedOption);
   }
 
   Future<void> checkFirstTimeUser() async {
