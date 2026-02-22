@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:campus_app/core/injection.dart';
@@ -11,6 +12,7 @@ import 'package:campus_app/pages/navigation/data/room_graph.dart';
 import 'package:campus_app/pages/navigation/data/vending_machines.dart';
 import 'package:campus_app/pages/navigation/indoor_navigation_page.dart';
 import 'package:campus_app/pages/navigation/navigation_onboarding.dart';
+import 'package:campus_app/pages/navigation/widgets/error_bubble.dart';
 import 'package:campus_app/utils/pages/navigation_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:flutter/foundation.dart';
@@ -30,10 +32,13 @@ Map<String, LatLng> addGraphEntriesToPredefinedLocationsIsolate(
 ) {
   final rawGraph = params['graph'] as Map<dynamic, dynamic>;
   final Map<List<String>, dynamic> graph = {
-    for (final entry in rawGraph.entries) (entry.key as List<dynamic>).map((e) => e.toString()).toList(): entry.value,
+    for (final entry in rawGraph.entries)
+      (entry.key as List<dynamic>).map((e) => e.toString()).toList():
+          entry.value,
   };
 
-  final Map<String, LatLng> predefined = Map<String, LatLng>.from(params['predefined']);
+  final Map<String, LatLng> predefined =
+      Map<String, LatLng>.from(params['predefined']);
 
   String findClosestMatch(String target, List<String> candidates) {
     int computeSimilarity(String a, String b) {
@@ -91,7 +96,7 @@ Future<TileLayer> buildTileLayerInIsolate() async {
 TileLayer _buildTileLayerWorker(dynamic _) {
   return TileLayer(
     // URL template
-    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    urlTemplate: 'https://api-dev-app.asta-bochum.de/tile/{z}/{x}/{y}.png',
   );
 }
 
@@ -109,7 +114,8 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => NavigationPageState();
 }
 
-class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveClientMixin {
+class NavigationPageState extends State<NavigationPage>
+    with AutomaticKeepAliveClientMixin {
   LocationData? currentLocation;
   FocusNode focusNode = FocusNode();
   final TextEditingController searchController = TextEditingController();
@@ -122,6 +128,11 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   bool isSidebarOpen = false;
   bool hasProcessedGlobalLocation = false;
   bool hasAutoUnfocused = false;
+  bool hasInitializedOnVisible = false;
+  bool isInitializingOnVisible = false;
+  String? navigationMessage;
+  Timer? navigationMessageTimer;
+  final Location locationService = Location.instance;
   final MapController mapController = MapController();
   Future<TileLayer>? tileLayerFuture;
   bool isTileLoading = true;
@@ -193,22 +204,10 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     setState(() {});
   }
 
-  Future<void> animateCameraAlongRoute(List<LatLng> waypoints, {double zoom = 19.0, int stepDurationMs = 40}) async {
-    if (waypoints.length < 2) return;
-
-    mapController.move(waypoints.first, zoom);
-    await Future.delayed(const Duration(seconds: 1));
-
-    for (final point in waypoints.skip(1)) {
-      if (!mounted) return;
-      mapController.move(point, zoom);
-      await Future.delayed(Duration(milliseconds: stepDurationMs));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final currentThemeData = Provider.of<ThemesNotifier>(context).currentThemeData;
+    final currentThemeData =
+        Provider.of<ThemesNotifier>(context).currentThemeData;
 
     super.build(context);
     if (!hasAutoUnfocused) {
@@ -217,11 +216,6 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
       });
       hasAutoUnfocused = true;
     }
-    final double sidebarTop = MediaQuery.of(context).size.height / 2 - 100;
-    final bool isLightTheme = Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light;
-    final Color sidebarBackgroundColor =
-        isLightTheme ? const Color.fromRGBO(245, 246, 250, 1) : const Color.fromRGBO(34, 40, 54, 1);
-    final Color iconColor = isLightTheme ? Colors.black : Colors.white;
 
     // Display guide if first time use
     if (isFirstTime) {
@@ -236,7 +230,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
         return FutureBuilder<TileLayer>(
           future: tileLayerFuture,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.hasData) {
               return snapshot.data!;
             } else {
               return const SizedBox.shrink();
@@ -258,6 +253,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
             final bool isVisible = info.visibleFraction > 0;
 
             if (isVisible) {
+              initializeOnFirstVisible();
               if (homeKey.currentState != null) {
                 homeKey.currentState!.setSwipeDisabled(disableSwipe: true);
               }
@@ -291,7 +287,9 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                      color: Provider.of<ThemesNotifier>(context)
+                          .currentThemeData
+                          .cardColor,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15),
@@ -318,7 +316,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                 polylines: [
                                   Polyline(
                                     points: waypoints,
-                                    color: const Color.fromARGB(169, 33, 149, 243),
+                                    color:
+                                        const Color.fromARGB(169, 33, 149, 243),
                                     strokeWidth: 3,
                                   ),
                                 ],
@@ -334,8 +333,12 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                     ),
                                   ),
                                   markerSize: const Size.square(40),
-                                  accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withValues(alpha: 0.1),
-                                  headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withValues(alpha: 0.8),
+                                  accuracyCircleColor:
+                                      const Color.fromARGB(255, 113, 143, 243)
+                                          .withValues(alpha: 0.1),
+                                  headingSectorColor:
+                                      const Color.fromARGB(255, 118, 221, 247)
+                                          .withValues(alpha: 0.8),
                                   headingSectorRadius: 120,
                                 ),
                                 moveAnimationDuration: Duration.zero,
@@ -366,32 +369,41 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                              color: Provider.of<ThemesNotifier>(context,
+                                              listen: false)
+                                          .currentTheme ==
+                                      AppThemes.light
                                   ? const Color.fromRGBO(245, 246, 250, 1)
                                   : const Color.fromRGBO(34, 40, 54, 1),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 children: [
                                   Expanded(
                                     child: Autocomplete<String>(
-                                      optionsBuilder: (TextEditingValue textEditingValue) {
+                                      optionsBuilder:
+                                          (TextEditingValue textEditingValue) {
                                         return predefinedLocations.keys.where(
-                                          (String option) => option.toLowerCase().contains(
-                                                textEditingValue.text.toLowerCase(),
-                                              ),
+                                          (String option) =>
+                                              option.toLowerCase().contains(
+                                                    textEditingValue.text
+                                                        .toLowerCase(),
+                                                  ),
                                         );
                                       },
-                                      onSelected: changeSelectedLocation,
+                                      onSelected: selectDestination,
                                       optionsViewBuilder: (
                                         BuildContext context,
-                                        AutocompleteOnSelected<String> onSelected,
+                                        AutocompleteOnSelected<String>
+                                            onSelected,
                                         Iterable<String> options,
                                       ) {
                                         final int itemCount = options.length;
-                                        final double containerHeight = itemCount * 80.0;
+                                        final double containerHeight =
+                                            itemCount * 80.0;
                                         return Align(
                                           alignment: Alignment.topLeft,
                                           child: Container(
@@ -404,7 +416,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                               child: ListView(
                                                 children: options
                                                     .map(
-                                                      (String option) => GestureDetector(
+                                                      (String option) =>
+                                                          GestureDetector(
                                                         onTap: () {
                                                           onSelected(option);
                                                         },
@@ -421,7 +434,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                       },
                                       fieldViewBuilder: (
                                         BuildContext context,
-                                        TextEditingController textEditingController,
+                                        TextEditingController
+                                            textEditingController,
                                         FocusNode focusNode,
                                         VoidCallback onFieldSubmitted,
                                       ) {
@@ -434,34 +448,42 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                             border: InputBorder.none,
                                             hintText: 'Nach Gebäude Suchen',
                                             hintStyle: TextStyle(
-                                              color: Provider.of<ThemesNotifier>(
-                                                        context,
-                                                        listen: false,
-                                                      ).currentTheme ==
-                                                      AppThemes.light
-                                                  ? Colors.black
-                                                  : null,
+                                              color:
+                                                  Provider.of<ThemesNotifier>(
+                                                            context,
+                                                            listen: false,
+                                                          ).currentTheme ==
+                                                          AppThemes.light
+                                                      ? Colors.black
+                                                      : null,
                                             ),
                                           ),
                                           onChanged: (value) {},
-                                          onSubmitted: changeSelectedLocation,
+                                          onSubmitted: selectDestination,
                                         );
                                       },
                                     ),
                                   ),
                                   CampusIconButton(
                                     iconPath: 'assets/img/icons/search.svg',
-                                    backgroundColorDark:
-                                        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-                                                AppThemes.light
-                                            ? const Color.fromRGBO(245, 246, 250, 1)
-                                            : const Color.fromRGBO(34, 40, 54, 1),
-                                    backgroundColorLight:
-                                        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-                                                AppThemes.light
-                                            ? const Color.fromRGBO(245, 246, 250, 1)
-                                            : const Color.fromRGBO(34, 40, 54, 1),
-                                    borderColorDark: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                    backgroundColorDark: Provider.of<
+                                                        ThemesNotifier>(context,
+                                                    listen: false)
+                                                .currentTheme ==
+                                            AppThemes.light
+                                        ? const Color.fromRGBO(245, 246, 250, 1)
+                                        : const Color.fromRGBO(34, 40, 54, 1),
+                                    backgroundColorLight: Provider.of<
+                                                        ThemesNotifier>(context,
+                                                    listen: false)
+                                                .currentTheme ==
+                                            AppThemes.light
+                                        ? const Color.fromRGBO(245, 246, 250, 1)
+                                        : const Color.fromRGBO(34, 40, 54, 1),
+                                    borderColorDark: Provider.of<
+                                                        ThemesNotifier>(context,
+                                                    listen: false)
+                                                .currentTheme ==
                                             AppThemes.light
                                         ? const Color.fromRGBO(245, 246, 250, 1)
                                         : const Color.fromRGBO(34, 40, 54, 1),
@@ -470,10 +492,54 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                       FocusScope.of(context).unfocus();
                                     },
                                   ),
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    width: 42,
+                                    height: 42,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Provider.of<ThemesNotifier>(context)
+                                              .currentThemeData
+                                              .colorScheme
+                                              .surface,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Material(
+                                      color: Provider.of<ThemesNotifier>(
+                                                      context,
+                                                      listen: false)
+                                                  .currentTheme ==
+                                              AppThemes.light
+                                          ? const Color.fromRGBO(
+                                              245, 246, 250, 1)
+                                          : const Color.fromRGBO(34, 40, 54, 1),
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: InkWell(
+                                        borderRadius: BorderRadius.circular(15),
+                                        onTap:
+                                            routeFromCurrentLocationToSelectedDestination,
+                                        child: Icon(
+                                          Icons.my_location_rounded,
+                                          size: 22,
+                                          color: Provider.of<ThemesNotifier>(
+                                                          context,
+                                                          listen: false)
+                                                      .currentTheme ==
+                                                  AppThemes.light
+                                              ? Colors.black
+                                              : const Color.fromRGBO(
+                                                  184, 186, 191, 1),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ),
+                        ),
+                        NavigationErrorBubble(
+                          message: navigationMessage,
                         ),
                         // TODO: Add data for emergencyAssemblyPoints, vendingMachines etc.
                         // AnimatedPositioned(
@@ -543,7 +609,10 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                           Center(
                             child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                                Provider.of<ThemesNotifier>(context,
+                                                listen: false)
+                                            .currentTheme ==
+                                        AppThemes.light
                                     ? Colors.black
                                     : Colors.white,
                               ),
@@ -566,14 +635,19 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                 //------
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const IndoorNavigation()),
+                  MaterialPageRoute(
+                      builder: (context) => const IndoorNavigation()),
                 );
               },
-              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+              backgroundColor: Provider.of<ThemesNotifier>(context)
+                  .currentThemeData
+                  .cardColor,
               child: SvgPicture.asset(
                 'assets/img/icons/door-closed.svg',
                 colorFilter: ColorFilter.mode(
-                  Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                  Provider.of<ThemesNotifier>(context, listen: false)
+                              .currentTheme ==
+                          AppThemes.light
                       ? Colors.black
                       : const Color.fromRGBO(184, 186, 191, 1),
                   BlendMode.srcIn,
@@ -588,12 +662,21 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   }
 
   Future<void> calcNearestLoc(Map<String, LatLng> locations) async {
-    if (currentLocation == null) {
+    final bool hasAccess = await ensureLocationAccess();
+    if (!hasAccess) {
       return;
     }
+
+    final LocationData? currentLocationData = await getUserLocation();
+    if (currentLocationData?.latitude == null ||
+        currentLocationData?.longitude == null) {
+      showNavigationMessage('Aktuelle Position konnte nicht ermittelt werden.');
+      return;
+    }
+
     final LatLng currentPos = LatLng(
-      currentLocation!.latitude!,
-      currentLocation!.longitude!,
+      currentLocationData!.latitude!,
+      currentLocationData.longitude!,
     );
 
     const Distance distance = Distance();
@@ -615,8 +698,10 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
 
       await setShortestPath(currentPos, destination);
       setState(() {
+        currentLocation = currentLocationData;
         showCurrentLocation = true;
       });
+      focusMapToRouteOrDestination(destination);
     } else {
       return;
     }
@@ -624,63 +709,167 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
 
   //-----------------------------------------------------------------------------
 
-  Future<void> changeSelectedLocation(String selectedOption) async {
+  void showNavigationMessage(String message) {
+    if (!mounted) return;
+    navigationMessageTimer?.cancel();
+    setState(() {
+      navigationMessage = message;
+    });
+    navigationMessageTimer = Timer(const Duration(seconds: 3), () {
+      if (!mounted) return;
+      setState(() {
+        navigationMessage = null;
+      });
+    });
+  }
+
+  Future<bool> ensureLocationAccess({bool requestIfMissing = true}) async {
+    try {
+      bool serviceEnabled = await locationService.serviceEnabled();
+      if (!serviceEnabled) {
+        if (!requestIfMissing) return false;
+        serviceEnabled = await locationService.requestService();
+        if (!serviceEnabled) {
+          showNavigationMessage(
+              'Bitte aktiviere die Ortungsdienste auf deinem Gerät.');
+          return false;
+        }
+      }
+
+      PermissionStatus permission = await locationService.hasPermission();
+      if (permission == PermissionStatus.denied && requestIfMissing) {
+        permission = await locationService.requestPermission();
+      }
+
+      if (permission == PermissionStatus.deniedForever) {
+        showNavigationMessage(
+            'Standortzugriff ist dauerhaft blockiert. Bitte in den Systemeinstellungen aktivieren.');
+        return false;
+      }
+
+      if (permission == PermissionStatus.denied) {
+        showNavigationMessage(
+            'Standortzugriff erforderlich, um eine Route von deinem Standort zu starten.');
+        return false;
+      }
+
+      return permission == PermissionStatus.granted ||
+          permission == PermissionStatus.grantedLimited;
+    } catch (e) {
+      debugPrint('Error ensuring location access: $e');
+      showNavigationMessage(
+          'Standortberechtigung konnte nicht geprüft werden.');
+      return false;
+    }
+  }
+
+  void focusMapToRouteOrDestination(LatLng destination) {
+    if (waypoints.length >= 2) {
+      mapController.fitCamera(
+        CameraFit.coordinates(
+          coordinates: waypoints,
+          padding: const EdgeInsets.fromLTRB(60, 160, 60, 80),
+          maxZoom: 18,
+        ),
+      );
+      return;
+    }
+
+    if (waypoints.length == 1) {
+      mapController.move(waypoints.first, 18);
+      return;
+    }
+
+    mapController.move(destination, 17);
+  }
+
+  Future<void> selectDestination(String selectedOption) async {
     searchController.text = selectedOption;
     selectedLocationGlobal = selectedOption;
     placeSymbol(selectedOption);
 
+    final LatLng? endLocation = predefinedLocations[selectedOption];
+    if (endLocation == null) return;
+
+    setState(() {
+      waypoints = [];
+    });
+    mapController.move(endLocation, 17);
+  }
+
+  Future<void> routeFromCurrentLocationToSelectedDestination() async {
+    final String selectedOption = searchController.text.trim();
+
+    if (selectedOption.isEmpty) {
+      showNavigationMessage('Bitte wähle zuerst ein Ziel aus.');
+      return;
+    }
+
+    final LatLng? endLocation = predefinedLocations[selectedOption];
+    if (endLocation == null) {
+      showNavigationMessage('Das ausgewählte Ziel wurde nicht gefunden.');
+      return;
+    }
+
+    final bool hasAccess = await ensureLocationAccess();
+    if (!hasAccess) {
+      return;
+    }
+
+    final LocationData? userLocation = await getUserLocation();
+    if (userLocation?.latitude == null || userLocation?.longitude == null) {
+      showNavigationMessage('Aktuelle Position konnte nicht ermittelt werden.');
+      return;
+    }
+
+    final LatLng startLocation = LatLng(
+      userLocation!.latitude!,
+      userLocation.longitude!,
+    );
+
     try {
-      if (currentLocation == null) {
-        final LatLng? endLocation = predefinedLocations[selectedOption];
-        if (endLocation != null) {
-          mapController.move(endLocation, 17);
-        }
-        return;
-      }
-
-      final LatLng startLocation = LatLng(
-        currentLocation!.latitude!,
-        currentLocation!.longitude!,
-      );
-      final LatLng? endLocation = predefinedLocations[selectedOption];
-      if (endLocation == null) return;
-
       await setShortestPath(startLocation, endLocation);
 
       setState(() {
+        currentLocation = userLocation;
         showCurrentLocation = true;
       });
-
-      if (waypoints.isNotEmpty) {
-        await animateCameraAlongRoute(List<LatLng>.from(waypoints.reversed));
-      }
+      focusMapToRouteOrDestination(endLocation);
     } catch (e, stacktrace) {
-      debugPrint('Error $stacktrace');
+      debugPrint(
+          'Error while routing to selected destination: $e\n$stacktrace');
+      showNavigationMessage('Route konnte nicht berechnet werden.');
     }
   }
 
   Future<void> checkFirstTimeUser() async {
     setState(() {
-      isFirstTime = Provider.of<SettingsHandler>(context, listen: false).currentSettings.firstTimePathfinder;
+      isFirstTime = Provider.of<SettingsHandler>(context, listen: false)
+          .currentSettings
+          .firstTimePathfinder;
     });
 
     if (isFirstTime) {
       Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-          Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(firstTimePathfinder: false);
+          Provider.of<SettingsHandler>(context, listen: false)
+              .currentSettings
+              .copyWith(firstTimePathfinder: false);
     }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!hasProcessedGlobalLocation && selectedLocationGlobal != null && selectedLocationGlobal!.isNotEmpty) {
+    if (!hasProcessedGlobalLocation &&
+        selectedLocationGlobal != null &&
+        selectedLocationGlobal!.isNotEmpty) {
       hasProcessedGlobalLocation = true;
       Future.delayed(const Duration(milliseconds: 100), () {
         final location = selectedLocationGlobal!;
         searchController.text = location;
         final query = searchController.text.trim();
         if (query.isNotEmpty) {
-          changeSelectedLocation(query);
+          selectDestination(query);
         }
       });
     }
@@ -688,8 +877,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
 
   Future<LocationData?> getUserLocation() async {
     try {
-      final location = Location();
-      return await location.getLocation();
+      return await locationService.getLocation();
     } catch (e) {
       debugPrint('Error getting location: $e');
       return null;
@@ -708,21 +896,29 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   Future<void> initializePage() async {
     predefinedLocations = sortPredefinedLocations(predefinedLocations);
     tileLayerFuture = buildTileLayerInIsolate();
-    currentLocation = await getUserLocation();
 
     setState(() {
-      showCurrentLocation = currentLocation != null;
       isTileLoading = false;
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() async {
+  Future<void> initializeOnFirstVisible() async {
+    if (hasInitializedOnVisible || isInitializingOnVisible) return;
+    isInitializingOnVisible = true;
+
+    try {
       await checkFirstTimeUser();
       await initializePage();
-    });
+    } finally {
+      isInitializingOnVisible = false;
+      if (mounted) {
+        setState(() {
+          hasInitializedOnVisible = true;
+        });
+      } else {
+        hasInitializedOnVisible = true;
+      }
+    }
   }
 
   void placeSymbol(String locationKey) {
@@ -736,11 +932,11 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
 
   Future<void> setInitialLocation() async {
     try {
+      final bool hasAccess = await ensureLocationAccess();
+      if (!hasAccess) return;
       waypoints = [];
-
-      final Location location = Location();
-
-      final LocationData currentLocation2 = await location.getLocation();
+      final LocationData? currentLocation2 = await getUserLocation();
+      if (currentLocation2 == null) return;
 
       setState(() {
         currentLocation = currentLocation2;
@@ -749,6 +945,14 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     } catch (e) {
       debugPrint('Error getting location: $e');
     }
+  }
+
+  @override
+  void dispose() {
+    navigationMessageTimer?.cancel();
+    focusNode.dispose();
+    searchController.dispose();
+    super.dispose();
   }
 
   Future<void> setShortestPath(LatLng start, LatLng end) async {
@@ -769,7 +973,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   }
 
   Map<String, LatLng> sortPredefinedLocations(Map<String, LatLng> locations) {
-    final sortedEntries = locations.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
+    final sortedEntries = locations.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
     return Map<String, LatLng>.fromEntries(sortedEntries);
   }
 
