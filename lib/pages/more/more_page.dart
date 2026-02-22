@@ -199,6 +199,14 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                               'https://buchung.hochschulsport.ruhr-uni-bochum.de/angebote/aktueller_zeitraum/m.html',
                             ),
                           ),
+                          ExternalLinkButton(
+                            title: 'Was tun bei Diskriminierung?',
+                            leadingIconPath: 'assets/img/icons/info.svg',
+                            onTap: () => openLink(
+                              context,
+                              'https://einrichtungen.ruhr-uni-bochum.de/de/was-tun-bei-diskriminierung',
+                            ),
+                          ),
                         ],
                       ),
                       // Additional sites and links
