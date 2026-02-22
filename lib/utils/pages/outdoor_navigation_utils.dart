@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:campus_app/utils/constants.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:http/http.dart' as http;
@@ -130,7 +131,9 @@ class OutdoorNavigationUtils {
 
   static TileLayer _buildTileLayerWorker(dynamic _) {
     return TileLayer(
-      urlTemplate: 'https://api-dev-app.asta-bochum.de/tile/{z}/{x}/{y}.png',
+      urlTemplate: osmBackend,
+      fallbackUrl: osmBackendFallback,
+      errorImage: const AssetImage('RUB0.png'),
     );
   }
 
