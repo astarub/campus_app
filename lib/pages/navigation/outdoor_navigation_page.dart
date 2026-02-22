@@ -13,7 +13,7 @@ import 'package:campus_app/pages/navigation/data/vending_machines.dart';
 import 'package:campus_app/pages/navigation/indoor_navigation_page.dart';
 import 'package:campus_app/pages/navigation/navigation_onboarding.dart';
 import 'package:campus_app/pages/navigation/widgets/error_bubble.dart';
-import 'package:campus_app/utils/pages/navigation_utils.dart';
+import 'package:campus_app/utils/pages/outdoor_navigation_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,79 +26,6 @@ import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 String? selectedLocationGlobal;
-
-Map<String, LatLng> addGraphEntriesToPredefinedLocationsIsolate(
-  Map<String, dynamic> params,
-) {
-  final rawGraph = params['graph'] as Map<dynamic, dynamic>;
-  final Map<List<String>, dynamic> graph = {
-    for (final entry in rawGraph.entries)
-      (entry.key as List<dynamic>).map((e) => e.toString()).toList():
-          entry.value,
-  };
-
-  final Map<String, LatLng> predefined =
-      Map<String, LatLng>.from(params['predefined']);
-
-  String findClosestMatch(String target, List<String> candidates) {
-    int computeSimilarity(String a, String b) {
-      final int minLength = a.length < b.length ? a.length : b.length;
-      int matches = 0;
-      for (int i = 0; i < minLength; i++) {
-        if (a[i] == b[i]) {
-          matches++;
-        }
-      }
-      return matches;
-    }
-
-    String? closest = candidates.isNotEmpty ? candidates.first : null;
-    int maxSimilarity = 0;
-
-    for (final candidate in candidates) {
-      final int similarity = computeSimilarity(target, candidate);
-      if (similarity > maxSimilarity) {
-        maxSimilarity = similarity;
-        closest = candidate;
-      }
-    }
-
-    return closest ?? '';
-  }
-
-  for (final entry in graph.entries) {
-    final key = entry.key;
-    final building = key[0];
-    final level = key[1];
-    final room = key[2];
-
-    if (!room.contains('EN_')) {
-      final name = '$building $level/$room';
-      final closestMatchKey = findClosestMatch(
-        name,
-        predefined.keys.toList(),
-      );
-
-      if (closestMatchKey.isNotEmpty) {
-        predefined.putIfAbsent(name, () => predefined[closestMatchKey]!);
-      }
-    }
-  }
-
-  return predefined;
-}
-
-// Isolate responsible for providing map tiles using backend-server
-Future<TileLayer> buildTileLayerInIsolate() async {
-  return compute(_buildTileLayerWorker, null);
-}
-
-TileLayer _buildTileLayerWorker(dynamic _) {
-  return TileLayer(
-    // URL template
-    urlTemplate: 'https://api-dev-app.asta-bochum.de/tile/{z}/{x}/{y}.png',
-  );
-}
 
 class NavigationPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -114,15 +41,14 @@ class NavigationPage extends StatefulWidget {
   State<NavigationPage> createState() => NavigationPageState();
 }
 
-class NavigationPageState extends State<NavigationPage>
-    with AutomaticKeepAliveClientMixin {
+class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveClientMixin {
   LocationData? currentLocation;
   FocusNode focusNode = FocusNode();
   final TextEditingController searchController = TextEditingController();
   bool showCurrentLocation = false;
   List<String> suggestions = [];
   LatLng? symbolPosition;
-  final NavigationUtils utils = sl<NavigationUtils>();
+  final OutdoorNavigationUtils utils = sl<OutdoorNavigationUtils>();
   List<LatLng> waypoints = [];
   bool isFirstTime = false;
   bool isSidebarOpen = false;
@@ -141,7 +67,7 @@ class NavigationPageState extends State<NavigationPage>
 
   Future<void> addGraphEntriesInIsolate() async {
     final result = await compute(
-      addGraphEntriesToPredefinedLocationsIsolate,
+      OutdoorNavigationUtils.addGraphEntriesToPredefinedLocationsIsolate,
       {
         'graph': graph.map((k, v) => MapEntry([k.$1, k.$2, k.$3], v)),
         'predefined': predefinedLocations,
@@ -154,60 +80,18 @@ class NavigationPageState extends State<NavigationPage>
   }
 
   void addGraphEntriesToPredefinedLocations() {
-    String findClosestMatch(String target, List<String> candidates) {
-      int computeSimilarity(String a, String b) {
-        final int minLength = a.length < b.length ? a.length : b.length;
-        int matches = 0;
-
-        for (int i = 0; i < minLength; i++) {
-          if (a[i] == b[i]) {
-            matches++;
-          }
-        }
-        return matches;
-      }
-
-      String? closest = candidates.isNotEmpty ? candidates.first : null;
-      int maxSimilarity = 0;
-
-      for (final candidate in candidates) {
-        final int similarity = computeSimilarity(target, candidate);
-        if (similarity > maxSimilarity) {
-          maxSimilarity = similarity;
-          closest = candidate;
-        }
-      }
-
-      return closest ?? '';
-    }
-
-    graph.forEach((key, value) {
-      final building = key.$1;
-      final level = key.$2;
-      final room = key.$3;
-
-      if (!room.contains('EN_')) {
-        final name = '$building $level/$room';
-        final closestMatchKey = findClosestMatch(
-          name,
-          predefinedLocations.keys.toList(),
-        );
-
-        if (closestMatchKey.isNotEmpty) {
-          predefinedLocations.putIfAbsent(
-            name,
-            () => predefinedLocations[closestMatchKey]!,
-          );
-        }
-      }
+    final mergedLocations = OutdoorNavigationUtils.addGraphEntriesToPredefinedLocations(
+      graphData: graph,
+      predefinedLocations: predefinedLocations,
+    );
+    setState(() {
+      predefinedLocations = mergedLocations;
     });
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentThemeData =
-        Provider.of<ThemesNotifier>(context).currentThemeData;
+    final currentThemeData = Provider.of<ThemesNotifier>(context).currentThemeData;
 
     super.build(context);
     if (!hasAutoUnfocused) {
@@ -230,8 +114,7 @@ class NavigationPageState extends State<NavigationPage>
         return FutureBuilder<TileLayer>(
           future: tileLayerFuture,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
               return snapshot.data!;
             } else {
               return const SizedBox.shrink();
@@ -287,9 +170,7 @@ class NavigationPageState extends State<NavigationPage>
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .cardColor,
+                      color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15),
@@ -316,8 +197,7 @@ class NavigationPageState extends State<NavigationPage>
                                 polylines: [
                                   Polyline(
                                     points: waypoints,
-                                    color:
-                                        const Color.fromARGB(169, 33, 149, 243),
+                                    color: const Color.fromARGB(169, 33, 149, 243),
                                     strokeWidth: 3,
                                   ),
                                 ],
@@ -333,12 +213,8 @@ class NavigationPageState extends State<NavigationPage>
                                     ),
                                   ),
                                   markerSize: const Size.square(40),
-                                  accuracyCircleColor:
-                                      const Color.fromARGB(255, 113, 143, 243)
-                                          .withValues(alpha: 0.1),
-                                  headingSectorColor:
-                                      const Color.fromARGB(255, 118, 221, 247)
-                                          .withValues(alpha: 0.8),
+                                  accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withValues(alpha: 0.1),
+                                  headingSectorColor: const Color.fromARGB(255, 118, 221, 247).withValues(alpha: 0.8),
                                   headingSectorRadius: 120,
                                 ),
                                 moveAnimationDuration: Duration.zero,
@@ -369,41 +245,32 @@ class NavigationPageState extends State<NavigationPage>
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Provider.of<ThemesNotifier>(context,
-                                              listen: false)
-                                          .currentTheme ==
-                                      AppThemes.light
+                              color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                   ? const Color.fromRGBO(245, 246, 250, 1)
                                   : const Color.fromRGBO(34, 40, 54, 1),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
                                 children: [
                                   Expanded(
                                     child: Autocomplete<String>(
-                                      optionsBuilder:
-                                          (TextEditingValue textEditingValue) {
+                                      optionsBuilder: (TextEditingValue textEditingValue) {
                                         return predefinedLocations.keys.where(
-                                          (String option) =>
-                                              option.toLowerCase().contains(
-                                                    textEditingValue.text
-                                                        .toLowerCase(),
-                                                  ),
+                                          (String option) => option.toLowerCase().contains(
+                                                textEditingValue.text.toLowerCase(),
+                                              ),
                                         );
                                       },
                                       onSelected: selectDestination,
                                       optionsViewBuilder: (
                                         BuildContext context,
-                                        AutocompleteOnSelected<String>
-                                            onSelected,
+                                        AutocompleteOnSelected<String> onSelected,
                                         Iterable<String> options,
                                       ) {
                                         final int itemCount = options.length;
-                                        final double containerHeight =
-                                            itemCount * 80.0;
+                                        final double containerHeight = itemCount * 80.0;
                                         return Align(
                                           alignment: Alignment.topLeft,
                                           child: Container(
@@ -416,8 +283,7 @@ class NavigationPageState extends State<NavigationPage>
                                               child: ListView(
                                                 children: options
                                                     .map(
-                                                      (String option) =>
-                                                          GestureDetector(
+                                                      (String option) => GestureDetector(
                                                         onTap: () {
                                                           onSelected(option);
                                                         },
@@ -434,8 +300,7 @@ class NavigationPageState extends State<NavigationPage>
                                       },
                                       fieldViewBuilder: (
                                         BuildContext context,
-                                        TextEditingController
-                                            textEditingController,
+                                        TextEditingController textEditingController,
                                         FocusNode focusNode,
                                         VoidCallback onFieldSubmitted,
                                       ) {
@@ -448,14 +313,13 @@ class NavigationPageState extends State<NavigationPage>
                                             border: InputBorder.none,
                                             hintText: 'Nach Gebäude Suchen',
                                             hintStyle: TextStyle(
-                                              color:
-                                                  Provider.of<ThemesNotifier>(
-                                                            context,
-                                                            listen: false,
-                                                          ).currentTheme ==
-                                                          AppThemes.light
-                                                      ? Colors.black
-                                                      : null,
+                                              color: Provider.of<ThemesNotifier>(
+                                                        context,
+                                                        listen: false,
+                                                      ).currentTheme ==
+                                                      AppThemes.light
+                                                  ? Colors.black
+                                                  : null,
                                             ),
                                           ),
                                           onChanged: (value) {},
@@ -466,24 +330,17 @@ class NavigationPageState extends State<NavigationPage>
                                   ),
                                   CampusIconButton(
                                     iconPath: 'assets/img/icons/search.svg',
-                                    backgroundColorDark: Provider.of<
-                                                        ThemesNotifier>(context,
-                                                    listen: false)
-                                                .currentTheme ==
-                                            AppThemes.light
-                                        ? const Color.fromRGBO(245, 246, 250, 1)
-                                        : const Color.fromRGBO(34, 40, 54, 1),
-                                    backgroundColorLight: Provider.of<
-                                                        ThemesNotifier>(context,
-                                                    listen: false)
-                                                .currentTheme ==
-                                            AppThemes.light
-                                        ? const Color.fromRGBO(245, 246, 250, 1)
-                                        : const Color.fromRGBO(34, 40, 54, 1),
-                                    borderColorDark: Provider.of<
-                                                        ThemesNotifier>(context,
-                                                    listen: false)
-                                                .currentTheme ==
+                                    backgroundColorDark:
+                                        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                                AppThemes.light
+                                            ? const Color.fromRGBO(245, 246, 250, 1)
+                                            : const Color.fromRGBO(34, 40, 54, 1),
+                                    backgroundColorLight:
+                                        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                                AppThemes.light
+                                            ? const Color.fromRGBO(245, 246, 250, 1)
+                                            : const Color.fromRGBO(34, 40, 54, 1),
+                                    borderColorDark: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
                                             AppThemes.light
                                         ? const Color.fromRGBO(245, 246, 250, 1)
                                         : const Color.fromRGBO(34, 40, 54, 1),
@@ -497,38 +354,25 @@ class NavigationPageState extends State<NavigationPage>
                                     width: 42,
                                     height: 42,
                                     decoration: BoxDecoration(
-                                      color:
-                                          Provider.of<ThemesNotifier>(context)
-                                              .currentThemeData
-                                              .colorScheme
-                                              .surface,
+                                      color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: Material(
-                                      color: Provider.of<ThemesNotifier>(
-                                                      context,
-                                                      listen: false)
-                                                  .currentTheme ==
+                                      color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
                                               AppThemes.light
-                                          ? const Color.fromRGBO(
-                                              245, 246, 250, 1)
+                                          ? const Color.fromRGBO(245, 246, 250, 1)
                                           : const Color.fromRGBO(34, 40, 54, 1),
                                       borderRadius: BorderRadius.circular(15),
                                       child: InkWell(
                                         borderRadius: BorderRadius.circular(15),
-                                        onTap:
-                                            routeFromCurrentLocationToSelectedDestination,
+                                        onTap: routeFromCurrentLocationToSelectedDestination,
                                         child: Icon(
                                           Icons.my_location_rounded,
                                           size: 22,
-                                          color: Provider.of<ThemesNotifier>(
-                                                          context,
-                                                          listen: false)
-                                                      .currentTheme ==
+                                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
                                                   AppThemes.light
                                               ? Colors.black
-                                              : const Color.fromRGBO(
-                                                  184, 186, 191, 1),
+                                              : const Color.fromRGBO(184, 186, 191, 1),
                                         ),
                                       ),
                                     ),
@@ -609,10 +453,7 @@ class NavigationPageState extends State<NavigationPage>
                           Center(
                             child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                Provider.of<ThemesNotifier>(context,
-                                                listen: false)
-                                            .currentTheme ==
-                                        AppThemes.light
+                                Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                                     ? Colors.black
                                     : Colors.white,
                               ),
@@ -635,19 +476,14 @@ class NavigationPageState extends State<NavigationPage>
                 //------
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const IndoorNavigation()),
+                  MaterialPageRoute(builder: (context) => const IndoorNavigation()),
                 );
               },
-              backgroundColor: Provider.of<ThemesNotifier>(context)
-                  .currentThemeData
-                  .cardColor,
+              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
               child: SvgPicture.asset(
                 'assets/img/icons/door-closed.svg',
                 colorFilter: ColorFilter.mode(
-                  Provider.of<ThemesNotifier>(context, listen: false)
-                              .currentTheme ==
-                          AppThemes.light
+                  Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                       ? Colors.black
                       : const Color.fromRGBO(184, 186, 191, 1),
                   BlendMode.srcIn,
@@ -668,8 +504,7 @@ class NavigationPageState extends State<NavigationPage>
     }
 
     final LocationData? currentLocationData = await getUserLocation();
-    if (currentLocationData?.latitude == null ||
-        currentLocationData?.longitude == null) {
+    if (currentLocationData?.latitude == null || currentLocationData?.longitude == null) {
       showNavigationMessage('Aktuelle Position konnte nicht ermittelt werden.');
       return;
     }
@@ -707,20 +542,39 @@ class NavigationPageState extends State<NavigationPage>
     }
   }
 
-  //-----------------------------------------------------------------------------
-
-  void showNavigationMessage(String message) {
-    if (!mounted) return;
-    navigationMessageTimer?.cancel();
+  Future<void> checkFirstTimeUser() async {
     setState(() {
-      navigationMessage = message;
+      isFirstTime = Provider.of<SettingsHandler>(context, listen: false).currentSettings.firstTimePathfinder;
     });
-    navigationMessageTimer = Timer(const Duration(seconds: 3), () {
-      if (!mounted) return;
-      setState(() {
-        navigationMessage = null;
+
+    if (isFirstTime) {
+      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
+          Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(firstTimePathfinder: false);
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!hasProcessedGlobalLocation && selectedLocationGlobal != null && selectedLocationGlobal!.isNotEmpty) {
+      hasProcessedGlobalLocation = true;
+      Future.delayed(const Duration(milliseconds: 100), () {
+        final location = selectedLocationGlobal!;
+        searchController.text = location;
+        final query = searchController.text.trim();
+        if (query.isNotEmpty) {
+          selectDestination(query);
+        }
       });
-    });
+    }
+  }
+
+  @override
+  void dispose() {
+    navigationMessageTimer?.cancel();
+    focusNode.dispose();
+    searchController.dispose();
+    super.dispose();
   }
 
   Future<bool> ensureLocationAccess({bool requestIfMissing = true}) async {
@@ -730,8 +584,7 @@ class NavigationPageState extends State<NavigationPage>
         if (!requestIfMissing) return false;
         serviceEnabled = await locationService.requestService();
         if (!serviceEnabled) {
-          showNavigationMessage(
-              'Bitte aktiviere die Ortungsdienste auf deinem Gerät.');
+          showNavigationMessage('Bitte aktiviere die Ortungsdienste auf deinem Gerät.');
           return false;
         }
       }
@@ -742,23 +595,19 @@ class NavigationPageState extends State<NavigationPage>
       }
 
       if (permission == PermissionStatus.deniedForever) {
-        showNavigationMessage(
-            'Standortzugriff ist dauerhaft blockiert. Bitte in den Systemeinstellungen aktivieren.');
+        showNavigationMessage('Standortzugriff ist dauerhaft blockiert. Bitte in den Systemeinstellungen aktivieren.');
         return false;
       }
 
       if (permission == PermissionStatus.denied) {
-        showNavigationMessage(
-            'Standortzugriff erforderlich, um eine Route von deinem Standort zu starten.');
+        showNavigationMessage('Standortzugriff erforderlich, um eine Route von deinem Standort zu starten.');
         return false;
       }
 
-      return permission == PermissionStatus.granted ||
-          permission == PermissionStatus.grantedLimited;
+      return permission == PermissionStatus.granted || permission == PermissionStatus.grantedLimited;
     } catch (e) {
       debugPrint('Error ensuring location access: $e');
-      showNavigationMessage(
-          'Standortberechtigung konnte nicht geprüft werden.');
+      showNavigationMessage('Standortberechtigung konnte nicht geprüft werden.');
       return false;
     }
   }
@@ -783,18 +632,61 @@ class NavigationPageState extends State<NavigationPage>
     mapController.move(destination, 17);
   }
 
-  Future<void> selectDestination(String selectedOption) async {
-    searchController.text = selectedOption;
-    selectedLocationGlobal = selectedOption;
-    placeSymbol(selectedOption);
+  Future<LocationData?> getUserLocation() async {
+    try {
+      return await locationService.getLocation();
+    } catch (e) {
+      debugPrint('Error getting location: $e');
+      return null;
+    }
+  }
 
-    final LatLng? endLocation = predefinedLocations[selectedOption];
-    if (endLocation == null) return;
+  Future<void> handleInitialLoading() async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (mounted) {
+      setState(() {
+        isTileLoading = false;
+      });
+    }
+  }
+
+  Future<void> initializeOnFirstVisible() async {
+    if (hasInitializedOnVisible || isInitializingOnVisible) return;
+    isInitializingOnVisible = true;
+
+    try {
+      await checkFirstTimeUser();
+      await initializePage();
+    } finally {
+      isInitializingOnVisible = false;
+      if (mounted) {
+        setState(() {
+          hasInitializedOnVisible = true;
+        });
+      } else {
+        hasInitializedOnVisible = true;
+      }
+    }
+  }
+
+  Future<void> initializePage() async {
+    predefinedLocations = OutdoorNavigationUtils.sortPredefinedLocations(
+      predefinedLocations,
+    );
+    tileLayerFuture = OutdoorNavigationUtils.buildTileLayerInIsolate();
 
     setState(() {
-      waypoints = [];
+      isTileLoading = false;
     });
-    mapController.move(endLocation, 17);
+  }
+
+  void placeSymbol(String locationKey) {
+    if (predefinedLocations.containsKey(locationKey)) {
+      setState(() {
+        symbolPosition = predefinedLocations[locationKey];
+        debugPrint('Position aktualisiert!');
+      });
+    }
   }
 
   Future<void> routeFromCurrentLocationToSelectedDestination() async {
@@ -836,98 +728,23 @@ class NavigationPageState extends State<NavigationPage>
       });
       focusMapToRouteOrDestination(endLocation);
     } catch (e, stacktrace) {
-      debugPrint(
-          'Error while routing to selected destination: $e\n$stacktrace');
+      debugPrint('Error while routing to selected destination: $e\n$stacktrace');
       showNavigationMessage('Route konnte nicht berechnet werden.');
     }
   }
 
-  Future<void> checkFirstTimeUser() async {
-    setState(() {
-      isFirstTime = Provider.of<SettingsHandler>(context, listen: false)
-          .currentSettings
-          .firstTimePathfinder;
-    });
+  Future<void> selectDestination(String selectedOption) async {
+    searchController.text = selectedOption;
+    selectedLocationGlobal = selectedOption;
+    placeSymbol(selectedOption);
 
-    if (isFirstTime) {
-      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-          Provider.of<SettingsHandler>(context, listen: false)
-              .currentSettings
-              .copyWith(firstTimePathfinder: false);
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!hasProcessedGlobalLocation &&
-        selectedLocationGlobal != null &&
-        selectedLocationGlobal!.isNotEmpty) {
-      hasProcessedGlobalLocation = true;
-      Future.delayed(const Duration(milliseconds: 100), () {
-        final location = selectedLocationGlobal!;
-        searchController.text = location;
-        final query = searchController.text.trim();
-        if (query.isNotEmpty) {
-          selectDestination(query);
-        }
-      });
-    }
-  }
-
-  Future<LocationData?> getUserLocation() async {
-    try {
-      return await locationService.getLocation();
-    } catch (e) {
-      debugPrint('Error getting location: $e');
-      return null;
-    }
-  }
-
-  Future<void> handleInitialLoading() async {
-    await Future.delayed(const Duration(seconds: 1));
-    if (mounted) {
-      setState(() {
-        isTileLoading = false;
-      });
-    }
-  }
-
-  Future<void> initializePage() async {
-    predefinedLocations = sortPredefinedLocations(predefinedLocations);
-    tileLayerFuture = buildTileLayerInIsolate();
+    final LatLng? endLocation = predefinedLocations[selectedOption];
+    if (endLocation == null) return;
 
     setState(() {
-      isTileLoading = false;
+      waypoints = [];
     });
-  }
-
-  Future<void> initializeOnFirstVisible() async {
-    if (hasInitializedOnVisible || isInitializingOnVisible) return;
-    isInitializingOnVisible = true;
-
-    try {
-      await checkFirstTimeUser();
-      await initializePage();
-    } finally {
-      isInitializingOnVisible = false;
-      if (mounted) {
-        setState(() {
-          hasInitializedOnVisible = true;
-        });
-      } else {
-        hasInitializedOnVisible = true;
-      }
-    }
-  }
-
-  void placeSymbol(String locationKey) {
-    if (predefinedLocations.containsKey(locationKey)) {
-      setState(() {
-        symbolPosition = predefinedLocations[locationKey];
-        debugPrint('Position aktualisiert!');
-      });
-    }
+    mapController.move(endLocation, 17);
   }
 
   Future<void> setInitialLocation() async {
@@ -947,14 +764,6 @@ class NavigationPageState extends State<NavigationPage>
     }
   }
 
-  @override
-  void dispose() {
-    navigationMessageTimer?.cancel();
-    focusNode.dispose();
-    searchController.dispose();
-    super.dispose();
-  }
-
   Future<void> setShortestPath(LatLng start, LatLng end) async {
     setState(() {
       waypoints = [];
@@ -972,10 +781,20 @@ class NavigationPageState extends State<NavigationPage>
     }
   }
 
-  Map<String, LatLng> sortPredefinedLocations(Map<String, LatLng> locations) {
-    final sortedEntries = locations.entries.toList()
-      ..sort((a, b) => a.key.compareTo(b.key));
-    return Map<String, LatLng>.fromEntries(sortedEntries);
+  //-----------------------------------------------------------------------------
+
+  void showNavigationMessage(String message) {
+    if (!mounted) return;
+    navigationMessageTimer?.cancel();
+    setState(() {
+      navigationMessage = message;
+    });
+    navigationMessageTimer = Timer(const Duration(seconds: 3), () {
+      if (!mounted) return;
+      setState(() {
+        navigationMessage = null;
+      });
+    });
   }
 
   void toggleSidebar() {

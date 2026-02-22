@@ -1,8 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:campus_app/core/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class StartWaypoint extends StatelessWidget {
   final Offset position;
@@ -16,8 +14,6 @@ class StartWaypoint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentThemeData = Provider.of<ThemesNotifier>(context).currentThemeData;
-
     double textRot = -rotation;
     textRot = ((textRot + math.pi) % (2 * math.pi)) - math.pi;
 
