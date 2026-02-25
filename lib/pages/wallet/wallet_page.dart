@@ -29,6 +29,7 @@ class WalletPage extends StatefulWidget {
 class _WalletPageState extends State<WalletPage>
     with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<WalletPage> {
   List<Widget> faqExpandables = [const LeitwarteButton()];
+  final GlobalKey<BogestraTicketState> _ticketKey = GlobalKey<BogestraTicketState>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,144 +39,170 @@ class _WalletPageState extends State<WalletPage>
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
-      body: Center(
-        child: AnimatedExit(
-          key: widget.pageExitAnimationKey,
-          child: AnimatedEntry(
-            key: widget.pageEntryAnimationKey,
-            child: Column(
-              children: [
-                // Header
-                Container(
-                  padding: EdgeInsets.only(top: Platform.isAndroid ? 14 : 0, bottom: 40),
-                  child: Text(
-                    'Wallet',
-                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
-                  ),
-                ),
-                SizedBox(
-                  height: 300,
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 265,
-                        child: CampusWallet(),
-                      ),
-                      // conditional Ticket Warning
-                      Visibility(
-                        visible: showTicketWarning,
+      body: Column(
+        children: [
+          // pinned Header
+          Container(
+            padding: EdgeInsets.only(top: Platform.isAndroid ? 14 : 0, bottom: 20),
+            child: Text(
+              'Wallet',
+              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+            ),
+          ),
+          // Scrollable page content for Refresh
+          Expanded(
+            // manual Ticket Reload
+            child: RefreshIndicator(
+              onRefresh: () async {
+                final state = _ticketKey.currentState;
+                if (state != null) {
+                  await state.loadAndRenderTicket();
+                }
+              },
+              child: ListView(
+                children: [
+                  Center(
+                    child: AnimatedExit(
+                      key: widget.pageExitAnimationKey,
+                      child: AnimatedEntry(
+                        key: widget.pageEntryAnimationKey,
                         child: Column(
                           children: [
-                            const Padding(padding: EdgeInsets.only(top: 10)),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/img/icons/error.svg',
-                                  colorFilter: const ColorFilter.mode(
-                                    Colors.redAccent,
-                                    BlendMode.srcIn,
+                            SizedBox(
+                              height: 300,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 265,
+                                    child: CampusWallet(ticketKey: _ticketKey),
                                   ),
-                                  width: 18,
-                                ),
+                                  // conditional Ticket Warning
+                                  Visibility(
+                                    visible: showTicketWarning,
+                                    child: Column(
+                                      children: [
+                                        const Padding(padding: EdgeInsets.only(top: 10)),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/img/icons/error.svg',
+                                              colorFilter: const ColorFilter.mode(
+                                                Colors.redAccent,
+                                                BlendMode.srcIn,
+                                              ),
+                                              width: 18,
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.only(left: 5),
+                                            ),
+                                            Text(
+                                              'Ticket ist eventuell abgelaufen!',
+                                              style: Provider.of<ThemesNotifier>(context)
+                                                  .currentThemeData
+                                                  .textTheme
+                                                  .labelSmall!
+                                                  .copyWith(
+                                                    color: Colors.redAccent,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            ListView(
+                              shrinkWrap: true,
+                              children: [
+                                // Leitwarte button
                                 const Padding(
-                                  padding: EdgeInsets.only(left: 5),
+                                  padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                                  child: LeitwarteButton(),
                                 ),
-                                Text(
-                                  'Ticket ist eventuell abgelaufen!',
-                                  style: Provider.of<ThemesNotifier>(context)
-                                      .currentThemeData
-                                      .textTheme
-                                      .labelSmall!
-                                      .copyWith(
-                                        color: Colors.redAccent,
+                                // Other useful features
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  child: Column(
+                                    children: [
+                                      // AKAFÖ card balance
+                                      SubPageButton(
+                                        title: 'Mensa Guthaben',
+                                        leadingIconPath: 'assets/img/icons/euro.svg',
+                                        trailingIconPath: 'assets/img/icons/chevron-right.svg',
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => const MensaBalancePage(),
+                                            ),
+                                          );
+                                        },
                                       ),
+                                      // FAQ
+                                      SubPageButton(
+                                        title: 'Campus ABC',
+                                        leadingIconPath: 'assets/img/icons/help-circle.svg',
+                                        trailingIconPath: 'assets/img/icons/chevron-right.svg',
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => FaqPage(),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Future features info
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 40, bottom: 60, left: 20, right: 20),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/img/icons/info-message.svg',
+                                        height: 24,
+                                        colorFilter: ColorFilter.mode(
+                                          Provider.of<ThemesNotifier>(context)
+                                              .currentThemeData
+                                              .textTheme
+                                              .bodyMedium!
+                                              .color!,
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 16),
+                                          child: Text(
+                                            'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen in die App zu integrieren.',
+                                            style: Provider.of<ThemesNotifier>(context)
+                                                .currentThemeData
+                                                .textTheme
+                                                .bodyMedium,
+                                            overflow: TextOverflow.visible,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: ListView(
-                    children: [
-                      // Leitwarte button
-                      const Padding(
-                        padding: EdgeInsets.only(top: 20, left: 20, right: 20),
-                        child: LeitwarteButton(),
-                      ),
-                      // Other useful features
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        child: Column(
-                          children: [
-                            // AKAFÖ card balance
-                            SubPageButton(
-                              title: 'Mensa Guthaben',
-                              leadingIconPath: 'assets/img/icons/euro.svg',
-                              trailingIconPath: 'assets/img/icons/chevron-right.svg',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MensaBalancePage(),
-                                  ),
-                                );
-                              },
-                            ),
-                            // FAQ
-                            SubPageButton(
-                              title: 'Campus ABC',
-                              leadingIconPath: 'assets/img/icons/help-circle.svg',
-                              trailingIconPath: 'assets/img/icons/chevron-right.svg',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FaqPage(),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Future features info
-                      Padding(
-                        padding: const EdgeInsets.only(top: 40, bottom: 60, left: 20, right: 20),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              'assets/img/icons/info-message.svg',
-                              height: 24,
-                              colorFilter: ColorFilter.mode(
-                                Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 16),
-                                child: Text(
-                                  'Dieser Bereich wird in zukünftigen Versionen stetig ergänzt und um nützliche Hilfen in die App zu integrieren.',
-                                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

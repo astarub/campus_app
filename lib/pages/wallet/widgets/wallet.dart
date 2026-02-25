@@ -19,7 +19,8 @@ import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
 class CampusWallet extends StatelessWidget {
-  const CampusWallet({super.key});
+  final GlobalKey<BogestraTicketState> ticketKey;
+  const CampusWallet({super.key, required this.ticketKey});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class CampusWallet extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.shortestSide < 600 ? MediaQuery.of(context).size.width - 70 : 330,
           height: 217,
-          child: const BogestraTicket(),
+          child: BogestraTicket(key: ticketKey),
         ),
       ],
     );
@@ -48,10 +49,11 @@ class BogestraTicket extends StatefulWidget {
   const BogestraTicket({super.key});
 
   @override
-  State<BogestraTicket> createState() => _BogestraTicketState();
+  State<BogestraTicket> createState() => BogestraTicketState();
 }
 
-class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAliveClientMixin<BogestraTicket> {
+// public in Order to update the ticket manually
+class BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAliveClientMixin<BogestraTicket> {
   bool scanned = false;
   String scannedValue = '';
 
