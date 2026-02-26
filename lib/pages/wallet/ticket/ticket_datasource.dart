@@ -86,14 +86,6 @@ class TicketDataSource {
                 return;
               }
 
-              // debugging prints to check args validity, currently args is often missing the ticket details
-              // (Prints will be removed after degugging the issue)
-              final partialargs = args[1];
-              final len = args[1].length;
-              debugPrint('-------------!!!! Full args: $args');
-              debugPrint('-------------!!!! Details: $partialargs');
-              debugPrint('--------------!!!!!! Details length: $len');
-
               final List<dynamic> arguments = List.of(args)[1];
               final String image = List<dynamic>.from(args)[0].toString().split(',')[1];
 
@@ -152,9 +144,9 @@ class TicketDataSource {
               await controller.evaluateJavascript(
                 source: """
                 (function fillCreds() {
-                  const username = document.getElementById('username');
-                  const password = document.getElementById('password');
-                  const btn = document.getElementById('shibbutton');
+                  let username = document.getElementById('username');
+                  let password = document.getElementById('password');
+                  let btn = document.getElementById('shibbutton');
 
                   if (username && password && btn) {
                     username.value = "$loginId";
@@ -178,7 +170,7 @@ class TicketDataSource {
                 if(document.getElementsByClassName("form-error").length == 1) {
                   window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
                 }
-                const btn = document.getElementById('consentbutton_2');
+                let btn = document.getElementById('consentbutton_2');
                 if (btn) btn.click();
                 """,
                 );
@@ -188,7 +180,7 @@ class TicketDataSource {
             await controller.evaluateJavascript(
               source: '''
               var ticketClickInterval = setInterval(function(){
-                const cards = document.getElementsByClassName("abo-card-wrapper");
+                let cards = document.getElementsByClassName("abo-card-wrapper");
                 if (cards.length > 0) cards[0].click();
               }, 500);
               
@@ -198,8 +190,8 @@ class TicketDataSource {
               var ticketInfoInterval = setInterval(function(){
                 if(document.URL.startsWith("https://abo.ride-ticketing.de/app/ticket")) {
                   clearInterval(ticketClickInterval);
-                  const ticket_details = document.getElementsByClassName("value-column");
-                  const arr = [];
+                  let ticket_details = document.getElementsByClassName("value-column");
+                  let arr = [];
                   for(const detail of ticket_details) {
                     arr.push(detail.innerText.trim());
                   }
@@ -223,6 +215,7 @@ class TicketDataSource {
                   // fire handler ater 2 successful pulls -> stability check
                   if(success >= 2) {
                     clearInterval(ticketInfoInterval); // stop pulling
+                    clearInterval(ticketClickInterval);
                     window.flutter_inappwebview.callHandler('ticket', document.getElementsByClassName("barcode")[0].src, arr);
                   }
                 } 
