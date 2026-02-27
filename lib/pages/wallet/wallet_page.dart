@@ -31,6 +31,8 @@ class _WalletPageState extends State<WalletPage>
   List<Widget> faqExpandables = [const LeitwarteButton()];
   final GlobalKey<BogestraTicketState> _ticketKey = GlobalKey<BogestraTicketState>();
 
+  final double bottomBarHeight = Platform.isIOS ? 88 : 98;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -57,6 +59,23 @@ class _WalletPageState extends State<WalletPage>
                 final state = _ticketKey.currentState;
                 if (state != null) {
                   await state.loadAndRenderTicket();
+                  // short confirmation notification of reload
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const SizedBox(
+                        height: 30,
+                        child: Center(child: Text('Reloaded Ticket')),
+                      ),
+                      duration: const Duration(milliseconds: 2000),
+                      behavior: SnackBarBehavior.floating,
+                      padding: const EdgeInsets.symmetric(horizontal: 0.8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      backgroundColor: Colors.green[200]!.withAlpha(180),
+                      margin: EdgeInsets.fromLTRB(70, 0, 70, bottomBarHeight),
+                    ),
+                  );
                 }
               },
               child: ListView(
@@ -69,7 +88,7 @@ class _WalletPageState extends State<WalletPage>
                         child: Column(
                           children: [
                             SizedBox(
-                              height: 300,
+                              height: 310,
                               child: Column(
                                 children: [
                                   SizedBox(
@@ -81,7 +100,7 @@ class _WalletPageState extends State<WalletPage>
                                     visible: showTicketWarning,
                                     child: Column(
                                       children: [
-                                        const Padding(padding: EdgeInsets.only(top: 10)),
+                                        const Padding(padding: EdgeInsets.only(top: 5)),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
@@ -96,15 +115,30 @@ class _WalletPageState extends State<WalletPage>
                                             const Padding(
                                               padding: EdgeInsets.only(left: 5),
                                             ),
-                                            Text(
-                                              'Ticket ist eventuell abgelaufen!',
-                                              style: Provider.of<ThemesNotifier>(context)
-                                                  .currentThemeData
-                                                  .textTheme
-                                                  .labelSmall!
-                                                  .copyWith(
-                                                    color: Colors.redAccent,
-                                                  ),
+                                            const Padding(padding: EdgeInsetsGeometry.only(left: 5)),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  'Ticket ist eventuell abgelaufen!',
+                                                  style: Provider.of<ThemesNotifier>(context)
+                                                      .currentThemeData
+                                                      .textTheme
+                                                      .labelSmall!
+                                                      .copyWith(
+                                                        color: Colors.redAccent,
+                                                      ),
+                                                ),
+                                                Text(
+                                                  'Gebe deine Login Daten erneut ein.',
+                                                  style: Provider.of<ThemesNotifier>(context)
+                                                      .currentThemeData
+                                                      .textTheme
+                                                      .labelSmall!
+                                                      .copyWith(
+                                                        color: Colors.redAccent,
+                                                      ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),

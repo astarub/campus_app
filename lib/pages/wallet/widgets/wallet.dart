@@ -53,7 +53,8 @@ class BogestraTicket extends StatefulWidget {
 }
 
 // public in Order to update the ticket manually
-class BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAliveClientMixin<BogestraTicket> {
+class BogestraTicketState extends State<BogestraTicket>
+    with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<BogestraTicket> {
   bool scanned = false;
   String scannedValue = '';
 
@@ -61,6 +62,9 @@ class BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAliveC
   late Map<String, dynamic> ticketDetails;
 
   bool showAztecCode = false;
+  bool _isLoading = false;
+
+  Timer? _refreshTimer;
 
   TicketRepository ticketRepository = sl<TicketRepository>();
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
@@ -93,56 +97,73 @@ class BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAliveC
   }
 
   Future<void> loadAndRenderTicket() async {
-    // Pre-render ticket
-    await renderTicket();
+    //don't allow multiple loadAndRenderTicket calls (such as periodic and manual User refresh)
+    if (_isLoading) return;
+    _isLoading = true;
 
-    final String? oldAztecCode = await ticketRepository.getAztecCode();
+    try {
+      // Pre-render ticket if not already scanned
+      if (!scanned) await renderTicket();
 
-    //prepare for retrying loading
-    const int retries = 5;
-    bool successfullLoad = false;
+      final String? oldAztecCode = await ticketRepository.getAztecCode();
 
-    // i = 0 is the inital Attempt, from i = 1 and up are the 5 retry attempts
-    for (int i = 0; i <= retries; i++) {
-      try {
-        await ticketRepository.loadTicket();
-        debugPrint('Wallet widget: Ticket loaded successfully on retry $i');
-        successfullLoad = true;
-        context.read<TicketWarningNotifier>().set(false);
-        break; // jump out of for loop
-      } on InvalidLoginIDAndPasswordException {
-        // the two on error cases are "Fatal Cases" no reason to retry, only user can fix these by adding creds or entering right creds
-        debugPrint('Wallet Widget: Invalid Credentials.');
-        context.read<TicketWarningNotifier>().set(true);
-        return;
-      } on MissingCredentialsException {
-        debugPrint('Wallet Widget: Initializing.');
-        return;
-      } catch (e) {
-        debugPrint('Load failed. Retry number $i with error $e');
+      //prepare for retrying loading
+      const int retries = 5;
+      bool successfullLoad = false;
 
-        if (i == retries) {
-          debugPrint('Wallet widget: Retries have failed. Notify User of failure and potentially outdated ticket.');
+      // i = 0 is the inital Attempt, from i = 1 and up are the 5 retry attempts
+      for (int i = 0; i <= retries; i++) {
+        try {
+          await ticketRepository.loadTicket();
+          debugPrint('Wallet widget: Ticket loaded successfully on retry $i');
+          successfullLoad = true;
+          context.read<TicketWarningNotifier>().set(false);
+          break; // jump out of for loop
+        } on InvalidLoginIDAndPasswordException {
+          // the two on error cases are "Fatal Cases" no reason to retry, only user can fix these by adding creds or entering right creds
+          debugPrint('Wallet Widget: Invalid Credentials.');
           context.read<TicketWarningNotifier>().set(true);
           return;
+        } on MissingCredentialsException {
+          debugPrint('Wallet Widget: Initializing.');
+          return;
+        } catch (e) {
+          debugPrint('Load failed. Retry number $i with error $e');
+
+          if (i == retries) {
+            debugPrint('Wallet widget: Retries have failed. Notify User of failure and potentially outdated ticket.');
+            context.read<TicketWarningNotifier>().set(true);
+            return;
+          }
+
+          // prevent any parallel fetching or overlaps
+          await Future.delayed(const Duration(milliseconds: 500));
         }
-
-        // prevent any parallel fetching or overlaps
-        await Future.delayed(const Duration(milliseconds: 500));
       }
-    }
 
-    if (successfullLoad == false) {
-      debugPrint('Wallet widget: Load failed');
-      return;
-    }
+      if (successfullLoad == false) {
+        debugPrint('Wallet widget: Load failed');
+        return;
+      }
 
-    final String? newAztecCode = await ticketRepository.getAztecCode();
+      final String? newAztecCode = await ticketRepository.getAztecCode();
 
-    // Compare aztec code from before re-loading the ticket with the new one
-    if (oldAztecCode != newAztecCode) {
-      await renderTicket();
+      // Compare aztec code from before re-loading the ticket with the new one
+      if (oldAztecCode != newAztecCode) {
+        await renderTicket();
+      }
+    } finally {
+      _isLoading = false;
     }
+  }
+
+  Future<void> periodicRefresh() async {
+    _refreshTimer?.cancel();
+
+    // refresh automatically every 30 minutes
+    _refreshTimer = Timer.periodic(const Duration(minutes: 30), (_) {
+      loadAndRenderTicket();
+    });
   }
 
   @override
@@ -152,7 +173,28 @@ class BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAliveC
   void initState() {
     super.initState();
 
+    //added in Order to use the Lifecylce observation
+    WidgetsBinding.instance.addObserver(this);
+
     loadAndRenderTicket();
+    periodicRefresh();
+  }
+
+  @override
+  void dispose() {
+    //remove the observer and timer
+    WidgetsBinding.instance.removeObserver(this);
+    _refreshTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    //refresh Ticket data when App comes back into foreground
+    if (state == AppLifecycleState.resumed) {
+      loadAndRenderTicket();
+      debugPrint('Ticket wird aktualisiert...');
+    }
   }
 
   @override
