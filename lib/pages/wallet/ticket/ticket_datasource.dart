@@ -167,11 +167,13 @@ class TicketDataSource {
               if (headlessWebView != null && headlessWebView.isRunning()) {
                 await controller.evaluateJavascript(
                   source: """
-                if(document.getElementsByClassName("form-error").length == 1) {
-                  window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
-                }
-                let btn = document.getElementById('consentbutton_2');
-                if (btn) btn.click();
+                  (function(){
+                    if(document.getElementsByClassName("form-error").length == 1) {
+                    window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
+                    }
+                    let btn = document.getElementById('consentbutton_2');
+                    if (btn) btn.click();
+                })();
                 """,
                 );
               }

@@ -163,10 +163,12 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                           showErrorMessage = true;
                         });
                       } catch (e) {
+                        final ticketLoaded = await ticketRepository.getAztecCode();
+
                         setState(() {
                           errorMessage = 'Fehler beim Laden des Tickets!';
                           showErrorMessage = true;
-                          context.read<TicketWarningNotifier>().set(true);
+                          if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
                         });
 
                         if (previousLoginId != null && previousPassword != null) {

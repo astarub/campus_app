@@ -122,7 +122,8 @@ class BogestraTicketState extends State<BogestraTicket>
         } on InvalidLoginIDAndPasswordException {
           // the two on error cases are "Fatal Cases" no reason to retry, only user can fix these by adding creds or entering right creds
           debugPrint('Wallet Widget: Invalid Credentials.');
-          context.read<TicketWarningNotifier>().set(true);
+          final ticketLoaded = await ticketRepository.getAztecCode();
+          if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
           return;
         } on MissingCredentialsException {
           debugPrint('Wallet Widget: Initializing.');
@@ -132,7 +133,8 @@ class BogestraTicketState extends State<BogestraTicket>
 
           if (i == retries) {
             debugPrint('Wallet widget: Retries have failed. Notify User of failure and potentially outdated ticket.');
-            context.read<TicketWarningNotifier>().set(true);
+            final ticketLoaded = await ticketRepository.getAztecCode();
+            if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
             return;
           }
 
@@ -309,14 +311,15 @@ class BogestraTicketState extends State<BogestraTicket>
                                             .bodyMedium!
                                             .copyWith(color: Colors.black, fontSize: 11),
                                       ),
-                                    Text(
-                                      'Ausgestellt: ${ticketDetails['date_issued']}',
-                                      style: Provider.of<ThemesNotifier>(context)
-                                          .currentThemeData
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(color: Colors.black, fontSize: 11),
-                                    ),
+                                    if (ticketDetails['date_issued'].toString().isNotEmpty)
+                                      Text(
+                                        'Ausgestellt: ${ticketDetails['date_issued']}',
+                                        style: Provider.of<ThemesNotifier>(context)
+                                            .currentThemeData
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(color: Colors.black, fontSize: 11),
+                                      ),
                                   ],
                                 ),
                               ),
