@@ -13,7 +13,7 @@ class Email {
   final bool isStarred; // Whether the email is marked as important/starred
   final List<String> attachments; // Filenames of any attachments
   final EmailFolder folder; // The folder where this email is stored
-
+  final String? mailboxName; // real IMAP mailbox this email came from
   // Added for IMAP operations
   final int uid; // IMAP UID for server operations (used to identify emails remotely)
 
@@ -30,6 +30,7 @@ class Email {
     this.isStarred = false,
     this.attachments = const [],
     this.folder = EmailFolder.inbox,
+    this.mailboxName, 
     this.uid = 0, // Default to 0 for local/dummy emails
   });
 
@@ -81,6 +82,7 @@ class Email {
         isStarred: json['isStarred'],
         attachments: List<String>.from(json['attachments']),
         folder: EmailFolder.values.byName(json['folder']),
+        mailboxName: json['mailboxName'],
         uid: json['uid'] ?? 0,
       );
 
@@ -98,6 +100,7 @@ class Email {
     bool? isStarred,
     List<String>? attachments,
     EmailFolder? folder,
+    String? mailboxName,
     int? uid,
     bool? isRead, // Optional override using isRead instead of isUnread
   }) =>
@@ -114,6 +117,7 @@ class Email {
         isStarred: isStarred ?? this.isStarred,
         attachments: attachments ?? this.attachments,
         folder: folder ?? this.folder,
+        mailboxName: mailboxName ?? this.mailboxName,
         uid: uid ?? this.uid,
       );
 

@@ -59,7 +59,7 @@ class ImapEmailRepository implements EmailRepository {
   }
 
   @override
-  Future<bool> deleteEmail(int uid, {String mailboxName = 'INBOX'}) {
+  Future<bool> deleteEmail(int uid, { required String mailboxName }) {
     // Delete email from specified mailbox
     return _imapService.deleteEmail(uid, mailboxName: mailboxName);
   }
@@ -69,6 +69,17 @@ class ImapEmailRepository implements EmailRepository {
     // Move email to another mailbox
     return _imapService.moveEmail(uid, targetMailbox);
   }
+  @override 
+  Future<List<String>> listMailboxes() async {
+  try {
+    // Holen der Mailboxen vom IMAP-Service
+    final mailboxes = await _imapService.getMailboxes();
+    return mailboxes; // Rückgabe der Liste der Mailboxen
+  } catch (e) {
+    // Fehlerbehandlung, falls das Abrufen der Mailboxen fehlschlägt
+    throw Exception('Fehler beim Abrufen der Mailboxen: $e');
+  }
+}
 
   @override
   Future<List<Email>> searchEmails({

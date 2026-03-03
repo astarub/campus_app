@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:campus_app/pages/email_client/email_drawer/archives.dart';
-import 'package:campus_app/pages/email_client/email_drawer/drafts.dart';
-import 'package:campus_app/pages/email_client/email_drawer/sent.dart';
-import 'package:campus_app/pages/email_client/email_drawer/trash.dart';
+//import 'package:campus_app/pages/email_client/email_drawer/archives.dart';
+//import 'package:campus_app/pages/email_client/email_drawer/drafts.dart';
+//import 'package:campus_app/pages/email_client/email_drawer/sent.dart';
+//import 'package:campus_app/pages/email_client/email_drawer/trash.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 // TODO: Create this page and import it
-import 'package:campus_app/pages/email_client/email_drawer/spam.dart';
+//import 'package:campus_app/pages/email_client/email_drawer/spam.dart';
+import 'package:campus_app/pages/email_client/email_pages/folder_emails_page.dart';
+
 
 class EmailDrawer extends StatelessWidget {
   const EmailDrawer({super.key});
@@ -15,6 +17,8 @@ class EmailDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // Watch so the drawer updates when folders arrive
+    final emailService = context.watch<EmailService>();
 
     return Drawer(
       child: Container(
@@ -22,7 +26,7 @@ class EmailDrawer extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            // === Drawer header with user info ===
+            // Drawer header with user info 
             DrawerHeader(
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceVariant,
@@ -36,11 +40,13 @@ class EmailDrawer extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Your Name',
+                    //'Your Name',
+                    'Mail' ,  // dynamic
                     style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'you@example.com',
+                    //'you@example.com',
+                     'Folders from server',// dynamic
                     style: theme.textTheme.bodySmall,
                   ),
                 ],
@@ -48,27 +54,60 @@ class EmailDrawer extends StatelessWidget {
             ),
 
             // === Drawer navigation options ===
-            ListTile(
-              leading: Icon(Icons.inbox, color: theme.iconTheme.color),
-              title: Text('Inbox', style: theme.textTheme.bodyLarge),
-              onTap: () => Navigator.pop(context),
-            ),
-            _buildDrawerItem(context, icon: Icons.send, title: 'Sent', page: const SentPage()),
-            _buildDrawerItem(context, icon: Icons.archive, title: 'Archives', page: const ArchivesPage()),
-            _buildDrawerItem(context, icon: Icons.drafts, title: 'Drafts', page: const DraftsPage()),
-            _buildDrawerItem(context, icon: Icons.delete, title: 'Trash', page: const TrashPage()),
+            //ListTile(
+              //leading: Icon(Icons.inbox, color: theme.iconTheme.color),
+             // title: Text('Inbox', style: theme.textTheme.bodyLarge),
+             // onTap: () => Navigator.pop(context),
+            //),
+            //_buildDrawerItem(context, icon: Icons.send, title: 'Sent', page: const SentPage()),
+            //_buildDrawerItem(context, icon: Icons.archive, title: 'Archives', page: const ArchivesPage()),
+            //_buildDrawerItem(context, icon: Icons.drafts, title: 'Drafts', page: const DraftsPage()),
+            //_buildDrawerItem(context, icon: Icons.delete, title: 'Trash', page: const TrashPage()),
 
             // === NEW: Spam folder ===
-            _buildDrawerItem(
-              context,
-              icon: Icons.report_gmailerrorred,
-              title: 'Spam',
-              page: const SpamPage(), // Make sure you define this page
+            //_buildDrawerItem(
+              //context,
+              //icon: Icons.report_gmailerrorred,
+              //title: 'Spam',
+              //page: const SpamPage(), // Make sure you define this page
+            //),
+
+            //const Divider(),
+
+            // === Folders from server (dynamic) ===
+if (emailService.userFolders.isEmpty)
+  ListTile(
+    leading: Icon(Icons.folder, color: theme.iconTheme.color),
+    title: Text('No folders loaded yet', style: theme.textTheme.bodyLarge),
+    subtitle: Text('Check connection or refresh', style: theme.textTheme.bodySmall),
+  )
+else
+  ...emailService.userFolders.map((folder) {
+    return ListTile(
+      leading: Icon(Icons.folder, color: theme.iconTheme.color),
+      title: Text(folder.displayName, style: theme.textTheme.bodyLarge),
+      subtitle: Text(folder.mailboxName, style: theme.textTheme.bodySmall),
+      onTap: () {
+        Navigator.pop(context);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => FolderEmailsPage(
+                mailboxName: folder.mailboxName,
+                title: folder.displayName,
+              ),
             ),
+          );
+        });
+      },
+    );
+  }),
 
-            const Divider(),
+const Divider(),
 
-            // === Settings option (placeholder) ===
+
+            //  Settings option (placeholder)
             ListTile(
               leading: Icon(Icons.settings, color: theme.iconTheme.color),
               title: Text('Settings', style: theme.textTheme.bodyLarge),
@@ -103,7 +142,7 @@ class EmailDrawer extends StatelessWidget {
       onTap: () {
         Navigator.pop(context); // close drawer first
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => page),
           );

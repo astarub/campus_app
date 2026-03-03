@@ -35,11 +35,20 @@ import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/pages/email_client/repositories/email_repository.dart';
 import 'package:campus_app/pages/email_client/repositories/imap_email_repository.dart';
+import 'package:background_fetch/background_fetch.dart';
+import 'package:campus_app/pages/email_client/services/email_background_service.dart';
+
+
+
 
 Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // Keeps the native splash screen onscreen until all loading is done
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  BackgroundFetch.registerHeadlessTask(EmailBackgroundService.headlessTask);
+  // initialize background service 
+  await EmailBackgroundService.init();  
+
 
   // Disable all logs in production mode
   if (!kDebugMode) debugPrint = (String? message, {int? wrapWidth}) => '';

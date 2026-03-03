@@ -28,7 +28,7 @@ abstract class EmailRepository {
   Future<bool> markAsUnread(int uid);
 
   // Delete a specific email from a mailbox (defaults to INBOX)
-  Future<bool> deleteEmail(int uid, {String mailboxName});
+  Future<bool> deleteEmail(int uid, { required String mailboxName});
 
   // Move an email to a different mailbox (e.g., Archive, Trash)
   Future<bool> moveEmail(int uid, String targetMailbox);
@@ -39,7 +39,8 @@ abstract class EmailRepository {
     String? from,
     String? subject,
     bool unreadOnly = false,
-    String mailboxName = 'INBOX',
+    //String mailboxName = 'INBOX',
+    required String mailboxName,
   });
 
   // Check if a connection to the server is active
@@ -50,4 +51,7 @@ abstract class EmailRepository {
 
   // Fetch drafts from the "Drafts" mailbox
   Future<List<Email>> fetchDrafts({int count = 50});
+  
+  // list all mailboxes folders available on  the server 
+  Future<List<String>> listMailboxes(); 
 }

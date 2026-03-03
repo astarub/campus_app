@@ -77,7 +77,8 @@ dependencies:
   crypto: ^3.0.3
   flutter_compass: ^0.8.1
   vector_math: ^2.1.4
-
+  background_fetch: ^1.0.0 
+  enough_mail: ^2.1.7
 dev_dependencies:
   flutter_test:
     sdk: flutter
