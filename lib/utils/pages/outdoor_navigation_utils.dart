@@ -133,7 +133,8 @@ class OutdoorNavigationUtils {
     return TileLayer(
       urlTemplate: osmBackend,
       fallbackUrl: osmBackendFallback,
-      errorImage: const AssetImage('RUB0.png'),
+      errorImage: const AssetImage('assets/maps/RUB0.png'),
+      errorTileCallback: (_, e, __) => debugPrint('could not load tile layer: $e'),
     );
   }
 

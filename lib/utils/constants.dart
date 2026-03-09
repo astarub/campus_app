@@ -14,7 +14,7 @@ const String mensaData = 'https://api-app.asta-bochum.de/get_meal';
 
 const String osmBackend = 'https://api-app.asta-bochum.de/osm/styles/osm-bright/512/{z}/{x}/{y}.png';
 const String osmBackendFallback = 'https://api-dev-app.asta-bochum.de/osm/styles/osm-bright/512/{z}/{x}/{y}.png';
-const String osrmBackend = 'https://api-dev-app.asta-bochum.de/osm/route/v1';
+const String osrmBackend = 'https://api-app.asta-bochum.de/osrm/route/v1';
 
 const String rideTicketing =
     'https://auth.ride-ticketing.de/auth/realms/ride/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fabo.ride-ticketing.de%2Fapp%2Fprofile%3FpartnerId%3D61b1cbf4604e623aef325ef0e4226cea';
