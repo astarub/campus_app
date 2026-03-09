@@ -321,8 +321,6 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                         FocusNode focusNode,
                                         VoidCallback onFieldSubmitted,
                                       ) {
-                                        focusNode = focusNode;
-
                                         return TextField(
                                           controller: textEditingController,
                                           focusNode: focusNode,
