@@ -28,8 +28,10 @@ class NewsDatasource {
   /// Request news feed from news.rub.de/newsfeed.
   /// Throws a server excpetion if respond code is not 200.
   Future<XmlDocument> getNewsfeedAsXml() async {
-    // return type is xml-v1.
+    //added
     final response = await client.get(rubNewsfeed);
+    print("RUB STATUS: ${response.statusCode}");
+    print("RUB DATA: ${response.data.toString().substring(0, 100)}");
 
     if (response.statusCode != 200) {
       throw ServerException();
@@ -86,7 +88,8 @@ class NewsDatasource {
   /// Throws a server exception if respond code is not 200.
   Future<List<dynamic>> getAStAFeedAsJson() async {
     final response = await client.get(astaFeed);
-
+    print("ASTA STATUS: ${response.statusCode}");
+    print("ASTA DATA LENGTH: ${response.data.length}");
     if (response.statusCode != 200) {
       throw ServerException();
     } else {
@@ -98,7 +101,7 @@ class NewsDatasource {
   /// Throws a server exception if respond code is not 200.
   Future<List<dynamic>> getAppFeedAsJson() async {
     final response = await client.get(appFeed);
-
+    print("APP FEED LENGTH: ${response.data.length}");
     if (response.statusCode != 200) {
       throw ServerException();
     }

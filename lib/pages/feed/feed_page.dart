@@ -17,9 +17,12 @@ import 'package:campus_app/pages/feed/widgets/feed_filter_popup.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
-import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/campus_search_bar.dart';
 import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
+//added
+import 'package:campus_app/pages/calendar/calendar_usecases.dart';
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
+
 
 class FeedPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -49,10 +52,14 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   List<Failure> failures = [];
   List<Widget> parsedNewsWidgets = [];
   List<Widget> searchNewsWidgets = [];
+  //added
+  List<Event> events = [];
 
   final NewsUsecases _newsUsecases = sl<NewsUsecases>();
   final FeedUtils _feedUtils = sl<FeedUtils>();
   final BackendRepository backendRepository = sl<BackendRepository>();
+  //added
+  final CalendarUsecases _calendarUsecases = sl<CalendarUsecases>();
 
   late final SnappingSheetController popupController;
 
@@ -63,42 +70,42 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   /// lists of events, news and failures.
   Future<void> updateStateWithFeed({bool withAnimation = false}) async {
     if (withAnimation) setState(() => newsWidgetOpacity = 0);
-
     try {
       await backendRepository.loadPublishers(Provider.of<SettingsHandler>(context, listen: false));
       // ignore: empty_catches
     } catch (e) {}
-
     final newsData = await _newsUsecases.updateFeedAndFailures();
-
+    final eventData = await _calendarUsecases.updateEventsAndFailures();
+    print("RAW NEWS: ${newsData['news']}");
+    print("NEWS LENGTH: ${(newsData['news'] as List?)?.length}");
+    print("EVENT LENGTH: ${(eventData['events'] as List?)?.length}");
     try {
       setState(() {
         news = newsData['news'] != null ? newsData['news']! as List<NewsEntity> : [];
+        //added
+        events = eventData['events'] != null ? eventData['events']! as List<Event> : [];
         parsedNewsWidgets = parseUpdateToWidgets();
       });
     } catch (e) {
       debugPrint('Error: $e');
     }
-
     // Apply search to newly parsed feed items
     onSearch(searchWord);
-
     debugPrint('Feed aktualisiert.');
   }
 
   /// Parse the updated news data into widgets and mix them with events if needed
   List<Widget> parseUpdateToWidgets() {
     setState(() => newsWidgetOpacity = 1);
-
     return _feedUtils.fromEntitiesToWidgetList(
       news: news,
+      events: events,
     );
   }
 
   void saveChangedFilters(List<Publisher> newFilters) {
     final Settings newSettings =
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(feedFilter: newFilters);
-
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(feedFilter: newFilters);
     debugPrint('Saving new feed filters: ${newSettings.feedFilter.map((e) => e.name).toList()}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
   }
@@ -106,13 +113,10 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   void saveFeedExplore(int selected) {
     bool explore = false;
     if (selected == 1) explore = true;
-
     final Settings newSettings =
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(newsExplore: explore);
-
+    Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(newsExplore: explore);
     debugPrint('Saving newsExplore: ${newSettings.newsExplore}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
-
     // Mix in widget when changed to the explore section and vice versa
     setState(() {
       parsedNewsWidgets = parseUpdateToWidgets();
@@ -123,7 +127,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   /// Filters the feed based on the search input of the user
   void onSearch(String search) {
     final List<Widget> filteredWidgets = [];
-
     for (final Widget e in parsedNewsWidgets) {
       if (e is FeedItem) {
         if (e.title.toUpperCase().contains(search.toUpperCase())) {
@@ -133,7 +136,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
         filteredWidgets.add(e);
       }
     }
-
     setState(() {
       searchNewsWidgets = filteredWidgets;
       searchWord = search;
@@ -143,10 +145,8 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   @override
   void initState() {
     super.initState();
-
     // Add observer in order to listen to `didChangeAppLifecycleState`
     WidgetsBinding.instance.addObserver(this);
-
     _scrollController = ScrollController()
       ..addListener(() {
         if (_scrollController.offset > (scrollControllerLastOffset + 80) && _scrollController.offset > 0) {
@@ -160,7 +160,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
           if (headerOpacity != 1) setState(() => headerOpacity = 1);
         }
       });
-
     popupController = SnappingSheetController();
 
     // initial data request
@@ -177,7 +176,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-
     // Refresh feed data when app gets back into foreground
     if (state == AppLifecycleState.resumed) {
       updateStateWithFeed();
@@ -187,17 +185,10 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     // Filter the feed items based on the selected filters
     final filters = Provider.of<SettingsHandler>(context, listen: false).currentSettings.feedFilter;
-    final explore = Provider.of<SettingsHandler>(context, listen: false).currentSettings.newsExplore;
-
-    final List<Widget> filteredFeedItems = !explore
-        ? _feedUtils.filterFeedWidgets(
-            filters,
-            searchWord != '' ? searchNewsWidgets : parsedNewsWidgets,
-          )
-        : (searchWord != '' ? searchNewsWidgets : parsedNewsWidgets);
+    final List<Widget> filteredFeedItems =
+      searchWord != '' ? searchNewsWidgets : parsedNewsWidgets;
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
@@ -212,7 +203,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
               children: [
                 // News feed
                 Container(
-                  margin: EdgeInsets.only(top: Platform.isAndroid ? 70 : 60),
+                  margin: EdgeInsets.only(top: Platform.isAndroid ? 36 : 30),
                   child: RefreshIndicator(
                     key: refreshIndicatorKey,
                     displacement: 75,
@@ -228,7 +219,10 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                       itemBuilder: (context, index) => AnimatedOpacity(
                         opacity: newsWidgetOpacity,
                         duration: Duration(milliseconds: 100 + (index * 200)),
-                        child: filteredFeedItems[index],
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: filteredFeedItems[index],
+                        ),
                       ),
                     ),
                   ),
@@ -237,7 +231,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                 Container(
                   padding: EdgeInsets.only(
                     top: Platform.isAndroid ? 10 : 0,
-                    bottom: 20,
+                    bottom: 6,
                   ),
                   color: headerOpacity == 1
                       ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface
@@ -246,11 +240,15 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Headline
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Text(
-                          'Feed',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                      AnimatedOpacity(
+                        opacity: headerOpacity,
+                        duration: const Duration(milliseconds: 200),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            'Feed',
+                            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                          ),
                         ),
                       ),
                       // FeedPicker & filter
@@ -262,64 +260,51 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                           duration: const Duration(milliseconds: 400),
                           child: showSearchBar
                               ? CampusSearchBar(
-                                  onChange: onSearch,
-                                  onBack: () {
+                            onChange: onSearch,
+                            onBack: () {
+                              setState(() {
+                                searchNewsWidgets = parsedNewsWidgets;
+                                showSearchBar = false;
+                                searchWord = '';
+                              });
+                            },
+                          )
+                              : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Search button
+                                CampusIconButton(
+                                  iconPath: 'assets/img/icons/search.svg',
+                                  onTap: () {
                                     setState(() {
-                                      searchNewsWidgets = parsedNewsWidgets;
-                                      showSearchBar = false;
-                                      searchWord = '';
+                                      showSearchBar = true;
                                     });
                                   },
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(top: 8.5),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      // Search button
-                                      CampusIconButton(
-                                        iconPath: 'assets/img/icons/search.svg',
-                                        onTap: () {
-                                          setState(() {
-                                            showSearchBar = true;
-                                          });
-                                        },
-                                      ),
-                                      // FeedPicker
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                                        child: CampusSegmentedControl(
-                                          leftTitle: 'Feed',
-                                          rightTitle: 'Explore',
-                                          onChanged: saveFeedExplore,
-                                          selected:
-                                              Provider.of<SettingsHandler>(context).currentSettings.newsExplore == false
-                                                  ? 0
-                                                  : 1,
+                                ),
+                                // Filter button
+                                CampusIconButton(
+                                  iconPath: 'assets/img/icons/filter.svg',
+                                  onTap: () {
+                                    widget.mainNavigatorKey.currentState?.push(
+                                      PageRouteBuilder(
+                                        opaque: false,
+                                        pageBuilder: (context, _, __) => FeedFilterPopup(
+                                          selectedFilters: List.from(
+                                            Provider.of<SettingsHandler>(
+                                              context,
+                                            ).currentSettings.feedFilter,
+                                          ),
+                                          onClose: saveChangedFilters,
                                         ),
                                       ),
-                                      // Filter button
-                                      CampusIconButton(
-                                        iconPath: 'assets/img/icons/filter.svg',
-                                        onTap: () {
-                                          widget.mainNavigatorKey.currentState?.push(
-                                            PageRouteBuilder(
-                                              opaque: false,
-                                              pageBuilder: (context, _, __) => FeedFilterPopup(
-                                                selectedFilters: List.from(
-                                                  Provider.of<SettingsHandler>(
-                                                    context,
-                                                  ).currentSettings.feedFilter,
-                                                ),
-                                                onClose: saveChangedFilters,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                    );
+                                  },
                                 ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ],

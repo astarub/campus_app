@@ -1,3 +1,4 @@
+import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:campus_app/pages/home/widgets/bottom_nav_bar.dart';
@@ -38,7 +39,7 @@ class NavBarNavigator extends StatelessWidget {
 
     switch (pageItem) {
       case PageItem.feed:
-        rootPage = CalendarPage(
+        rootPage = FeedPage(
           mainNavigatorKey: mainNavigatorKey,
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
