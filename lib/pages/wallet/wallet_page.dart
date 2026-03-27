@@ -70,7 +70,7 @@ class _WalletPageState extends State<WalletPage>
                   if (ticketLoaded != null) {
                     BubbleService().show(
                       context,
-                      message: 'Ticket reloaded!',
+                      message: 'Ticket aktualisiert!',
                       top: 98,
                     );
                   }
