@@ -4,13 +4,16 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/faq_page.dart';
 import 'package:campus_app/pages/wallet/mensa_balance_page.dart';
 import 'package:campus_app/utils/widgets/subpage_button.dart';
 import 'package:campus_app/pages/wallet/widgets/leitwarte_button.dart';
 import 'package:campus_app/pages/wallet/widgets/wallet.dart';
+import 'package:campus_app/utils/widgets/bubble_service.dart';
 
 class WalletPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -30,6 +33,7 @@ class _WalletPageState extends State<WalletPage>
     with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<WalletPage> {
   List<Widget> faqExpandables = [const LeitwarteButton()];
   final GlobalKey<BogestraTicketState> _ticketKey = GlobalKey<BogestraTicketState>();
+  final TicketRepository ticketRepository = sl<TicketRepository>();
 
   final double bottomBarHeight = Platform.isIOS ? 88 : 98;
 
@@ -57,25 +61,19 @@ class _WalletPageState extends State<WalletPage>
             child: RefreshIndicator(
               onRefresh: () async {
                 final state = _ticketKey.currentState;
+
+                final ticketLoaded = await ticketRepository.getAztecCode();
+
                 if (state != null) {
                   await state.loadAndRenderTicket();
-                  // short confirmation notification of reload
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const SizedBox(
-                        height: 30,
-                        child: Center(child: Text('Reloaded Ticket')),
-                      ),
-                      duration: const Duration(milliseconds: 2000),
-                      behavior: SnackBarBehavior.floating,
-                      padding: const EdgeInsets.symmetric(horizontal: 0.8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      backgroundColor: Colors.green[200]!.withAlpha(180),
-                      margin: EdgeInsets.fromLTRB(70, 0, 70, bottomBarHeight),
-                    ),
-                  );
+
+                  if (ticketLoaded != null) {
+                    BubbleService().show(
+                      context,
+                      message: 'Ticket reloaded!',
+                      top: 98,
+                    );
+                  }
                 }
               },
               child: ListView(
@@ -96,64 +94,66 @@ class _WalletPageState extends State<WalletPage>
                                     child: CampusWallet(ticketKey: _ticketKey),
                                   ),
                                   // conditional Ticket Warning
-                                  Visibility(
-                                    visible: showTicketWarning,
-                                    child: Column(
-                                      children: [
-                                        const Padding(padding: EdgeInsets.only(top: 5)),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/img/icons/error.svg',
-                                              colorFilter: const ColorFilter.mode(
-                                                Colors.redAccent,
-                                                BlendMode.srcIn,
+                                  if (showTicketWarning)
+                                    Visibility(
+                                      visible: showTicketWarning,
+                                      child: Column(
+                                        children: [
+                                          const Padding(padding: EdgeInsets.only(top: 5)),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/img/icons/error.svg',
+                                                colorFilter: const ColorFilter.mode(
+                                                  Colors.redAccent,
+                                                  BlendMode.srcIn,
+                                                ),
+                                                width: 18,
                                               ),
-                                              width: 18,
-                                            ),
-                                            const Padding(
-                                              padding: EdgeInsets.only(left: 5),
-                                            ),
-                                            const Padding(padding: EdgeInsetsGeometry.only(left: 5)),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  'Ticket ist eventuell abgelaufen!',
-                                                  style: Provider.of<ThemesNotifier>(context)
-                                                      .currentThemeData
-                                                      .textTheme
-                                                      .labelSmall!
-                                                      .copyWith(
-                                                        color: Colors.redAccent,
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Gebe deine Login Daten erneut ein.',
-                                                  style: Provider.of<ThemesNotifier>(context)
-                                                      .currentThemeData
-                                                      .textTheme
-                                                      .labelSmall!
-                                                      .copyWith(
-                                                        color: Colors.redAccent,
-                                                      ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                              const Padding(
+                                                padding: EdgeInsets.only(left: 5),
+                                              ),
+                                              const Padding(padding: EdgeInsetsGeometry.only(left: 5)),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    'Ticket ist eventuell abgelaufen!',
+                                                    style: Provider.of<ThemesNotifier>(context)
+                                                        .currentThemeData
+                                                        .textTheme
+                                                        .labelSmall!
+                                                        .copyWith(
+                                                          color: Colors.redAccent,
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    'Gebe deine Login Daten erneut ein.',
+                                                    style: Provider.of<ThemesNotifier>(context)
+                                                        .currentThemeData
+                                                        .textTheme
+                                                        .labelSmall!
+                                                        .copyWith(
+                                                          color: Colors.redAccent,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
                                 ],
                               ),
                             ),
                             ListView(
                               shrinkWrap: true,
                               children: [
+                                if (showTicketWarning) const SizedBox(height: 20),
                                 // Leitwarte button
                                 const Padding(
-                                  padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                                  padding: EdgeInsets.only(left: 20, right: 20),
                                   child: LeitwarteButton(),
                                 ),
                                 // Other useful features
