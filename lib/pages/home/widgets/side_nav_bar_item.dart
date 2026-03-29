@@ -73,7 +73,7 @@ class _SideNavBarItemState extends State<SideNavBarItem> {
                       : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                           ? Colors.black
                           : const Color.fromRGBO(184, 186, 191, 1),
-                  filterQuality: FilterQuality.high,
+                  filterQuality: FilterQuality.none,
                 ),
               ),
               // Text

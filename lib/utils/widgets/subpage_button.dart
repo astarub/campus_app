@@ -81,7 +81,7 @@ class SubPageButton extends StatelessWidget {
                     leadingIconPath,
                     color: disabled ? buttonContentColor.withOpacity(0.5) : buttonContentColor,
                     width: 20,
-                    filterQuality: FilterQuality.high,
+                    filterQuality: FilterQuality.none,
                   ),
                 // Title
                 Padding(
