@@ -1,39 +1,40 @@
-# Rubnews Page
+# Feed / News Page
 
-> Not full implemented yet!
-
-This page is to provide a basic overview about the "Rubnews" feature located inside
-`lib/pages/rubnews`.
+This page is to provide a basic overview about the "Feed / News" feature located inside
+`lib/pages/feed/news`.
 
 ---
 
-## RubnewsUsecases
+## NewsUsecases
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<Either<Failure, List\<RubnewsNewsEntity>>> | getNewsList() | Return a list of `RubnewsNewsEntity` or a Failure. It wil store the returned list for further caching in a local datsource.
+| Future<Map<String, List\<dynamic>>> | updateFeedAndFailures() | Returns a map with `failures` and `news`. |
+| Map<String, List\<dynamic>> | getCachedFeedAndFailures() | Returns cached news and failures only. |
 
 ---
 
-## RubnewsRepository
+## NewsRepository
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<Either<Failure, List\<RubnewsNewsEntity>>> | getNewsfeedAsXml() | Return a list of `RubnewsNewsEntity` or a Failure. With the help of `RubnewsNewsModel` it will parse the XML response of `RubnewsRemoteDatasource` to the corresponding entity. The requested events are coming from the RUB News site at [news.rub.de/newsfeed](https://news.rub.de/newsfeed).
+| Future<Either<Failure, List\<NewsEntity>>> | getRemoteNewsfeed() | Loads AStA and RUB news, parses entities and updates cache. |
+| Either<Failure, List\<NewsEntity>> | getCachedNewsfeed() | Returns cached news list. |
 
 ---
 
-## RubnewsRemoteDatasource
+## NewsDatasource
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future\<XmlDocument> | getNewsfeedAsXml() | Request news feed from [news.rub.de/newsfeed](https://news.rub.de/newsfeed). Throws a server exception if respond code is not 200.
-| Future\<CachedNetworkImage> | getImageFromNewsUrl() | Request image of linked news. Throws a server excpetion if respond code is not 200. (Disclaimer: Image-handling should not part of this layer.)
-| Future\<String> | getImageUrlFromNewsUrl() | Read out the image source url, based on the news url. Throws a server exception if respond code is not 200.
+| Future\<XmlDocument> | getNewsfeedAsXml() | Requests the RUB XML feed from `news.rub.de/newsfeed`. |
+| Future<Map<String, dynamic>> | getImageDataFromNewsUrl(String url) | Requests image and copyright data for a news detail page. |
+| Future<List\<dynamic>> | getAStAFeedAsJson() | Requests WordPress posts from `asta-bochum.de`. |
+| Future<List\<dynamic>> | getAppFeedAsJson() | Requests WordPress posts from `app.asta-bochum.de`. |
 
 ---
 
-## RubnewsNewsEntity
+## NewsEntity
 
 ### Attributes
 
@@ -44,4 +45,4 @@ This page is to provide a basic overview about the "Rubnews" feature located ins
 | String | description | Short Summary |
 | String | url | |
 | DateTime | pubDate | Date of Publishing |
-| List\<String> | imageUrls | List of Urls to images source. Usually only one image. |
+| List\<String> | imageUrls | List of image URLs. |

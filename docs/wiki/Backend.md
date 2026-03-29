@@ -4,7 +4,7 @@ All commands are for Linux only. If you wish to use another OS, you will have to
 
 # Basic Concept 
 
-The backend of the Campus App serves as the main management unit for all processes the involve push notifications and data storage. 
+The backend of the Campus App serves as the main management unit for all processes that involve push notifications and data storage. 
 As of right now, [Appwrite](https://appwrite.io/) is used as our backend software. 
 
 Upon startup of the app a new user account or session, depending on whether an account already exists, is created.
@@ -25,7 +25,7 @@ The following features are currently backed by our backend:
 System requirements:
 - 1 CPU Core and 2GB of RAM
 - Docker 
-- Docker Dompose Version 2 
+- Docker Compose Version 2 
 
 Follow the installation guide as instructed here: https://appwrite.io/docs/installation
 
