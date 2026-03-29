@@ -103,6 +103,7 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
     }
   }
 
+
   /// Initialises the NFC session and starts scanning for a tag, if NFC is activated on the device.
   /// If a tag was scanned, it's parsed to display the current card balance.
   Future<void> initialiseNFC() async {
