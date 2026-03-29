@@ -120,13 +120,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   switchOutCurve: Curves.easeOutCubic,
                   layoutBuilder: (currentChild, previousChildren) {
                     return ClipRect(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: <Widget>[
-                          ...previousChildren,
-                          if (currentChild != null) currentChild,
-                        ],
-                      ),
+                      child: currentChild ?? const SizedBox.shrink(),
                     );
                   },
                   transitionBuilder: (child, animation) {
@@ -179,7 +173,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                     imagePathInactive: 'assets/img/icons/calendar-outlined.png',
                                     onTap: () => widget.onSelectedPage(PageItem.events),
                                     isActive: widget.currentPage == PageItem.events,
-                                    iconPaddingLeft: 14,
                                   );
                                 case PageItem.mensa:
                                   return BottomNavBarItem(
@@ -212,7 +205,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                     imagePathInactive: 'assets/img/icons/more.png',
                                     onTap: () => widget.onSelectedPage(PageItem.more),
                                     isActive: widget.currentPage == PageItem.more,
-                                    iconPaddingLeft: 5,
                                   );
                                 default:
                                   return const SizedBox.shrink();
