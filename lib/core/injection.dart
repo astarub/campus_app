@@ -153,7 +153,11 @@ Future<void> init() async {
   //!
 
   //sl.registerLazySingleton(http.Client.new);
-  sl.registerLazySingleton(Dio.new);
+  sl.registerLazySingleton((){
+    final client = Dio();
+    client.httpClientAdapter = NativeAdapter();
+    return client;
+  });
   sl.registerLazySingleton(CookieJar.new);
   sl.registerLazySingleton(
     () => const FlutterSecureStorage(

@@ -26,7 +26,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 36
 
     namespace = "de.asta_bochum.campus_app"
 

@@ -25,32 +25,46 @@ class NewsRepository {
 
       for (final e in astaFeed) {
         final entity = NewsEntity.fromJSON(json: e, copyright: ['© AStA']);
-        final past = DateTime.now().subtract(const Duration(days: 21));
+        final past = DateTime.now().subtract(const Duration(days: 365));
+        print("ASTA DATE: ${entity.pubDate}");
 
-        if (entity.pubDate.compareTo(past) > 0) {
+        if (entity.pubDate != null) {
           entities.add(entity);
         }
       }
 
       for (final e in appFeed) {
         final entity = NewsEntity.fromJSON(json: e, copyright: ['© AStA']);
-        final past = DateTime.now().subtract(const Duration(days: 21));
-
+        final past = DateTime.now().subtract(const Duration(days: 365));
+        print("APP DATE: ${entity.pubDate}");
         if (entity.pubDate.compareTo(past) > 0) {
           entities.add(entity);
         }
       }
 
-      await Future.forEach(newsXmlList.map((news) => news), (XmlElement e) async {
-        final link = e.getElement('link')!.innerText;
-        final imageData = await newsDatasource.getImageDataFromNewsUrl(link);
+      await Future.forEach(newsXmlList, (XmlElement e) async {
+        try {
+          final linkElement = e.getElement('link');
 
-        entities.add(NewsEntity.fromXML(e, imageData));
+          if (linkElement == null) {
+            print("SKIPPED ITEM: no link");
+            return;
+          }
+
+          final link = linkElement.innerText;
+
+          final imageData = await newsDatasource.getImageDataFromNewsUrl(link);
+
+          entities.add(NewsEntity.fromXML(e, imageData));
+        } catch (err) {
+          print("XML ITEM ERROR: $err");
+        }
       });
 
       // write entities to cache
-      unawaited(newsDatasource.clearNewsEntityCache().then((_) => newsDatasource.writeNewsEntitiesToCache(entities)));
-
+      await newsDatasource.clearNewsEntityCache();
+      await newsDatasource.writeNewsEntitiesToCache(entities);
+      print("ENTITIES COUNT BEFORE RETURN: ${entities.length}");
       return Right(entities);
     } catch (e) {
       switch (e.runtimeType) {

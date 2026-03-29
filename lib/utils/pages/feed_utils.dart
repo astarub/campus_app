@@ -6,6 +6,8 @@ import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 import 'package:campus_app/pages/feed/news/news_entity.dart';
 import 'package:campus_app/pages/feed/widgets/feed_item.dart';
 import 'package:campus_app/utils/constants.dart';
+//added
+import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 
 class FeedUtils {
   // Save the shuffeled list to prevent constant re-shuffeling
@@ -15,39 +17,38 @@ class FeedUtils {
   /// For Padding insert at first position a SizedBox with heigth := 80 or given heigth.
   List<Widget> fromEntitiesToWidgetList({
     required List<NewsEntity> news,
+    required List<Event> events,
     double? heigth,
     bool shuffle = false,
   }) {
+    //added
+    print("NEWS COUNT: ${news.length}");
+    print("EVENT COUNT: ${events.length}");
+
     List<dynamic> feedItemOrEventWidget = <dynamic>[];
-
     List<Widget> widgets = <Widget>[];
-
     final List<Widget> pinnedWidgets = <Widget>[];
-
     final feedItems = <FeedItem>[];
 
     // parse news in widget
     for (final n in news) {
       // Removes empty lines and white spaces
       final String formattedDescription =
-          n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
-
+      n.description.replaceAll(RegExp('(?:[\t ]*(?:\r?\n|\r))+'), '').replaceAll(RegExp(' {2,}'), '');
       bool fotolia = false;
-
       for (final c in n.copyright) {
         if (c.toLowerCase().contains('fotolia')) {
           fotolia = true;
         }
       }
-
       feedItems.add(
         FeedItem(
           title: n.title,
           date: n.pubDate,
           image: n.imageUrl != 'false' && (n.copyright.isNotEmpty && !fotolia)
               ? CachedNetworkImage(
-                  imageUrl: n.imageUrl,
-                )
+            imageUrl: n.imageUrl,
+          )
               : null,
           content: n.content,
           link: n.url,
@@ -61,16 +62,42 @@ class FeedUtils {
         ),
       );
     }
-
+    //parse events in widget
+    final eventItems = <FeedItem>[];
+    final now = DateTime.now();
+    int maxEvents = 20;
+    for (final e in events.take(maxEvents)) {
+      print("EVENT ITEMS USED IN FEED: ${eventItems.length}");
+      if (e.startDate.isAfter(now.subtract(const Duration(days: 1))) &&
+          e.startDate.isBefore(now.add(const Duration(days: 15)))) {
+        final cleanDescription = e.description
+            .replaceAll(RegExp(r'<[^>]*>'), '')
+            .replaceAll(RegExp(r'\s+'), ' ')
+            .trim();
+        eventItems.add(
+          FeedItem(
+            title: e.title,
+            date: e.startDate,
+            image: e.imageUrl != null ?? e.imageUrl!.isNotEmpty
+                ? CachedNetworkImage(
+              imageUrl: e.imageUrl!,
+              fit: BoxFit.cover,
+            )
+                : null,
+            content: e.description,
+            description: cleanDescription,
+            event: e,
+          ),
+        );
+      }
+    }
     feedItems.sort(sortFeedDesc);
-
+    eventItems.sort(sortFeedDesc);
     if (shuffle) {
       feedItemOrEventWidget.addAll(feedItems);
-
       // Remove all outdated feed items
       final List<String> feedItemLinks = feedItems.map((e) => e.link).toList();
       List tshuffeledFeedItems = [];
-
       for (final n in shuffeledItemOrEventWidgets) {
         if (n is FeedItem) {
           try {
@@ -81,21 +108,33 @@ class FeedUtils {
           } catch (e) {}
         }
       }
-
       if (tshuffeledFeedItems.length < feedItemOrEventWidget.length) {
         feedItemOrEventWidget.shuffle();
-
         tshuffeledFeedItems = feedItemOrEventWidget;
         shuffeledItemOrEventWidgets = tshuffeledFeedItems;
       }
-
       feedItemOrEventWidget = tshuffeledFeedItems;
     } else {
       // sort widgets according to date
-      feedItemOrEventWidget.addAll(feedItems);
-      feedItemOrEventWidget.sort(sortFeedDesc);
-    }
+      feedItems.sort(sortFeedDesc);
+      eventItems.sort(sortFeedAsc);
+      //added
+      int eventIndex = 0;
+      int newsIndex = 0;
 
+      while (newsIndex < feedItems.length) {
+        feedItemOrEventWidget.add(feedItems[newsIndex]);
+        newsIndex++;
+
+        if (eventIndex < eventItems.length) {
+          feedItemOrEventWidget.add(eventItems[eventIndex]);
+          eventIndex++;
+        }
+      }
+      if (eventIndex < eventItems.length) {
+        feedItemOrEventWidget.addAll(eventItems.sublist(eventIndex));
+      }
+    }
     // add all FeedItems or CalendarEventWidgets to list of Widget
     for (final widget in feedItemOrEventWidget) {
       if (widget is FeedItem && widget.pinned) {
@@ -104,22 +143,22 @@ class FeedUtils {
         widgets.add(widget as Widget);
       }
     }
-
     widgets = pinnedWidgets + widgets;
-
     // add a SizedBox as padding
     widgets.insert(0, SizedBox(height: heigth ?? 80));
-
     return widgets;
   }
 
   List<Widget> filterFeedWidgets(List<Publisher> filters, List<Widget> parsedFeedItems) {
     final List<Widget> filteredFeedItems = [];
-
     final List<String> filterNames = filters.map((e) => e.name).toList();
-
     for (final Widget f in parsedFeedItems) {
       if (f is FeedItem) {
+        //EVENTS
+        if (f.link.isEmpty){
+          filteredFeedItems.add(f);
+          continue;
+        }
         if (f.link.startsWith('https://news.rub.de') && filterNames.contains('RUB')) {
           filteredFeedItems.add(f);
         }
@@ -135,7 +174,6 @@ class FeedUtils {
         filteredFeedItems.add(f);
       }
     }
-
     return filteredFeedItems;
   }
 

@@ -16,6 +16,8 @@ import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/feed/news/news_details_page.dart';
 import 'package:campus_app/utils/widgets/styled_html.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
+//added
+import 'package:html/parser.dart' as html_parser;
 
 /// This widget displays a news item in the news feed page.
 
@@ -133,11 +135,13 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
       if (widget.webViewUrl != null && widget.webViewUrl!.isNotEmpty) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)),
+          MaterialPageRoute(
+              builder: (context) => InAppWebViewPage(url: widget.webViewUrl!)),
         );
       } else {
         if (widget.event != null) {
-          context.pushTransparentRoute(CalendarDetailPage(event: widget.event!));
+          context.pushTransparentRoute(
+              CalendarDetailPage(event: widget.event!));
         } else {
           context.pushTransparentRoute(
             NewsDetailsPage(
@@ -157,128 +161,267 @@ class FeedItemState extends State<FeedItem> with AutomaticKeepAliveClientMixin {
 
     return CustomButton(
       borderRadius: BorderRadius.circular(15),
-      highlightColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+      highlightColor: Provider
+          .of<ThemesNotifier>(context)
+          .currentTheme == AppThemes.light
           ? const Color.fromRGBO(0, 0, 0, 0.03)
           : const Color.fromRGBO(255, 255, 255, 0.03),
-      splashColor: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+      splashColor: Provider
+          .of<ThemesNotifier>(context)
+          .currentTheme == AppThemes.light
           ? const Color.fromRGBO(0, 0, 0, 0.04)
           : const Color.fromRGBO(255, 255, 255, 0.04),
       tapHandler: openDetailsPage,
       longPressHandler: openDetailsPage,
       child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: [
-            // Image & Date
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                if (widget.image != null || widget.videoUrl != null)
-                  // Image
-                  SizedBox(
-                    height: widget.image == null && videoThumbnailFile != null ? 230 : null,
-                    child: Hero(
-                      tag: 'news_details_page_hero_tag',
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: widget.image == null && videoThumbnailFile != null
-                            ? Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  Image.file(
-                                    videoThumbnailFile!,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Align(
-                                    child: Container(
-                                      height: 60,
-                                      width: 60,
-                                      decoration: BoxDecoration(
-                                        color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-                                            ? const Color.fromRGBO(245, 246, 250, 0.5)
-                                            : const Color.fromRGBO(34, 40, 54, 0.5),
-                                        borderRadius: const BorderRadius.all(Radius.circular(30)),
-                                      ),
-                                      child: Icon(
-                                        Icons.play_arrow_sharp,
-                                        color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-                                            ? const Color.fromRGBO(34, 40, 54, 1)
-                                            : const Color.fromRGBO(245, 246, 250, 1),
-                                      ),
+            if(widget.event != null)
+              _buildEventLayout(context)
+            else
+              ...[
+                // Image & Date
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (widget.image != null || widget.videoUrl != null)
+                    // Image
+                      SizedBox(
+                        height: widget.image == null &&
+                            videoThumbnailFile != null ? 230 : null,
+                        child: Hero(
+                          tag: 'news_details_page_hero_tag',
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: widget.image == null &&
+                                videoThumbnailFile != null
+                                ? Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Image.file(
+                                  videoThumbnailFile!,
+                                  fit: BoxFit.cover,
+                                ),
+                                Align(
+                                  child: Container(
+                                    height: 60,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                      color: Provider
+                                          .of<ThemesNotifier>(context)
+                                          .currentTheme == AppThemes.light
+                                          ? const Color.fromRGBO(
+                                          245, 246, 250, 0.5)
+                                          : const Color.fromRGBO(
+                                          34, 40, 54, 0.5),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(30)),
+                                    ),
+                                    child: Icon(
+                                      Icons.play_arrow_sharp,
+                                      color: Provider
+                                          .of<ThemesNotifier>(context)
+                                          .currentTheme == AppThemes.light
+                                          ? const Color.fromRGBO(34, 40, 54, 1)
+                                          : const Color.fromRGBO(
+                                          245, 246, 250, 1),
                                     ),
                                   ),
-                                ],
-                              )
-                            : widget.image,
-                      ),
-                    ),
-                  ),
-                // Date
-                if (widget.event != null)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    margin: const EdgeInsets.only(right: 4, bottom: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          month,
-                          style: Provider.of<ThemesNotifier>(context)
-                              .currentThemeData
-                              .textTheme
-                              .headlineMedium
-                              ?.copyWith(fontSize: 14),
+                                ),
+                              ],
+                            )
+                                : widget.image,
+                          ),
                         ),
-                        Text(
-                          day,
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineMedium,
+                      ),
+                    // Date
+                    if (widget.event != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 4),
+                        margin: const EdgeInsets.only(right: 4, bottom: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              month,
+                              style: Provider
+                                  .of<ThemesNotifier>(context)
+                                  .currentThemeData
+                                  .textTheme
+                                  .headlineMedium
+                                  ?.copyWith(fontSize: 14),
+                            ),
+                            Text(
+                              day,
+                              style: Provider
+                                  .of<ThemesNotifier>(context)
+                                  .currentThemeData
+                                  .textTheme
+                                  .headlineMedium,
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+                // Title
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Row(
+                    children: [
+                      if (widget.pinned) ...[
+                        Icon(
+                          Icons.push_pin,
+                          color: Provider
+                              .of<ThemesNotifier>(context)
+                              .currentTheme == AppThemes.light
+                              ? const Color.fromRGBO(34, 40, 54, 1)
+                              : const Color.fromRGBO(245, 246, 250, 1),
                         ),
                       ],
-                    ),
+                      SizedBox(
+                        width:
+                        widget.pinned ? MediaQuery
+                            .of(context)
+                            .size
+                            .width - 65 : MediaQuery
+                            .of(context)
+                            .size
+                            .width - 40,
+                        child: StyledHTML(
+                          context: context,
+                          text: widget.title,
+                          textStyle: Provider
+                              .of<ThemesNotifier>(context)
+                              .currentThemeData
+                              .textTheme
+                              .headlineSmall,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+                // Description
+                StyledHTML(
+                  context: context,
+                  text: widget.event != null
+                      ? (() {
+                    final clean = widget.description.replaceAll(
+                        RegExp(r'<[^>]*>'), '').trim();
+                    final sentences = clean.split(RegExp(r'(?<=[.!?])\s+'));
+                    return sentences.first;
+                  })()
+                      : widget.description,
+                  textStyle: Provider
+                      .of<ThemesNotifier>(context)
+                      .currentThemeData
+                      .textTheme
+                      .bodyMedium,
+                ),
               ],
-            ),
-            // Title
-            Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Row(
-                children: [
-                  if (widget.pinned) ...[
-                    Icon(
-                      Icons.push_pin,
-                      color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-                          ? const Color.fromRGBO(34, 40, 54, 1)
-                          : const Color.fromRGBO(245, 246, 250, 1),
-                    ),
-                  ],
-                  SizedBox(
-                    width:
-                        widget.pinned ? MediaQuery.of(context).size.width - 65 : MediaQuery.of(context).size.width - 40,
-                    child: StyledHTML(
-                      context: context,
-                      text: widget.title,
-                      textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.headlineSmall,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Description
-            StyledHTML(
-              context: context,
-              text: widget.description,
-              textStyle: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
-            ),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildEventLayout(BuildContext context) {
+    final month = DateFormat('LLL').format(widget.date);
+    final day = DateFormat('dd').format(widget.date);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: SizedBox(
+                  height: 200,
+                  width: double.infinity,
+                  child: widget.image ??
+                      Image.asset("assets/img/SplashScreen-logo.png",
+                        fit: BoxFit.cover,
+                      ),
+                ),
+              ),
+
+              Positioned(
+                left: 12,
+                bottom: 12,
+                child: Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(month, style: const TextStyle(fontSize: 14)),
+                      Text(
+                        day,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 6),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: StyledHTML(
+              context: context,
+              text: widget.title,
+              textStyle: Provider
+                  .of<ThemesNotifier>(context)
+                  .currentThemeData
+                  .textTheme
+                  .headlineSmall,
+            ),
+          ),
+
+          const SizedBox(height: 6),
+
+          StyledHTML(
+            context: context,
+            text: ((){
+              final clean = widget.description
+                  .replaceAll(RegExp(r'<[^>]*>'), '')
+                  .trim();
+              if(clean.isEmpty) return '';
+              final sentences = clean.split(RegExp(r'(?<=[.!?])\s+'));
+              return sentences.first;
+            })(),
+            textStyle: Provider
+                .of<ThemesNotifier>(context)
+                .currentThemeData
+                .textTheme
+                .bodyMedium,
+          ),
+        ],
+      ),
+    );
+  }
+
 
   @override
   bool get wantKeepAlive => true;
