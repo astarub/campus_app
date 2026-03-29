@@ -83,22 +83,22 @@ about this architecture. For future reading you can read the [explaination by Mi
 Let's start with a visualization of this architecture:
 
 ```mermaid
-graph BT;
-subgraph <h3>Infrastructure Layer
- api{API} -->|Raw Data| rds(Remote Datasource)
- db{DB} -->|Raw Data| lds(Local Datasource)
+flowchart BT
+subgraph infra[Infrastructure Layer]
+	api{API} -->|Raw Data| rds[Remote Datasource]
+	db{DB} -->|Raw Data| lds[Local Datasource]
 end
-subgraph <h3>Domain Layer
- rds -->|Model| repo
- lds -->|Model| repo
- repo(Repository) -->|Entity| uc(Use Cases)
+subgraph domain[Domain Layer]
+	rds -->|Model| repo[Repository]
+	lds -->|Model| repo
+	repo -->|Entity| uc[Use Cases]
 end
-subgraph <h3>Application Layer
- uc --> appl(Presentation <br> Logic Holder)
- repo -.->|Entity| appl
+subgraph app[Application Layer]
+	uc --> appl[Presentation Logic Holder]
+	repo -.->|Entity| appl
 end
-subgraph <h3>Presentation Layer
- appl --> wid(Widgets)
+subgraph presentation[Presentation Layer]
+	appl --> wid[Widgets]
 end
 ```
 
