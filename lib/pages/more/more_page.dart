@@ -209,6 +209,22 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                           ),
                         ],
                       ),
+                      // Gesundheitspartner Techniker Krankenkasse
+                      ButtonGroup(
+                        headline: 'Gesundheitspartner - Techniker Krankenkasse',
+                        buttons: [
+                          ExternalLinkButton(
+                            title: 'Marc Rohde (Hochschulberater)',
+                            leadingIconPath: 'assets/img/icons/tk_icon.svg',
+                            onTap: () => openLink(context, 'https://www.tk.de/kontakt/marc.rohde'),
+                          ),
+                          ExternalLinkButton(
+                            title: 'TK-TerminService',
+                            leadingIconPath: 'assets/img/icons/tk_icon.svg',
+                            onTap: () => openLink(context, 'https://www.tk.de/service/form/2028156/terminservice.form'),
+                          ),
+                        ],
+                      ),
                       // Additional sites and links
                       ButtonGroup(
                         headline: 'Sonstiges',
