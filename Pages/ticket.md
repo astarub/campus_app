@@ -1,33 +1,33 @@
 # Semesterticket
 
-This page is to provide a basic overview about the "Calendar" feature located inside
+This page is to provide a basic overview about the semesterticket feature located inside
 `lib/pages/wallet/ticket`.
 
 ---
 
-## Ticket usescases
+## TicketUsecases
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<Image?> | renderAztecCode() | Returns an Image object, containing the resized Aztec code loaded from storage.
-| Future<Map<String, dynamic>?> | getTicketDetails() | Returns a map, containing the ticket details such as the name of the owner, the birthdate and validity information.
+| Future<Image?> | renderAztecCode({int width = 200, int height = 200}) | Returns an Image widget with a resized Aztec code loaded from secure storage. |
+| Future<Map<String, dynamic>?> | getTicketDetails() | Returns parsed ticket details from secure storage. |
 
 ---
 
-## Ticket repository
+## TicketRepository
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<void> | loadTicket() | Calls the ticket datasource to load the remote ticket and then saves it to storage or deletes the exisiting one if it expired or was removed.
+| Future<void> | loadTicket() | Loads the remote ticket and stores it securely. Deletes local ticket if remote ticket was removed. |
 | Future<String?> | getAztecCode() | Returns the Aztec code as a Base64 String
 | Future<String?> | getTicketDetails() | Returns the whole ticket map as JSON
-| Future<void> | saveTicket(Map<String, dynamic> ticket) | Saves the Aztec Code and ticket details to two separate files using the passed Map
-| Future<void> | deleteTicket() | Deletes the ticket from storage
+| Future<void> | saveTicket(Map<String, dynamic> ticket) | Saves the Aztec code and ticket details to secure storage. |
+| Future<void> | deleteTicket() | Deletes the ticket from secure storage. |
 
 ---
 
-## Ticket datasource
+## TicketDataSource
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<Map<String, dynamic>> | getRemoteTicket() | Loads the remote ticket using a headless webview which clicks through the RUB login process and then extracts the Aztec code and ticket details from the RIDE website.
+| Future<Map<String, dynamic>> | getRemoteTicket() | Loads the ticket using a headless webview and extracts Aztec code + ticket details from the RIDE website. |

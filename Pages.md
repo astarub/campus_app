@@ -1,92 +1,4 @@
-# Rubnews Page
-
-> Not full implemented yet!
-
-This page is to provide a basic overview about the "Rubnews" feature located inside
-`lib/pages/rubnews`.
-
----
-
-## RubnewsUsecases
-
-| Type | Name | Description |
-|------|------|-------------|
-| Future<Either<Failure, List\<RubnewsNewsEntity>>> | getNewsList() | Return a list of `RubnewsNewsEntity` or a Failure. It wil store the returned list for further caching in a local datsource.
-
----
-
-## RubnewsRepository
-
-| Type | Name | Description |
-|------|------|-------------|
-| Future<Either<Failure, List\<RubnewsNewsEntity>>> | getNewsfeedAsXml() | Return a list of `RubnewsNewsEntity` or a Failure. With the help of `RubnewsNewsModel` it will parse the XML response of `RubnewsRemoteDatasource` to the corresponding entity. The requested events are coming from the RUB News site at [news.rub.de/newsfeed](https://news.rub.de/newsfeed).
-
----
-
-## RubnewsRemoteDatasource
-
-| Type | Name | Description |
-|------|------|-------------|
-| Future\<XmlDocument> | getNewsfeedAsXml() | Request news feed from [news.rub.de/newsfeed](https://news.rub.de/newsfeed). Throws a server exception if respond code is not 200.
-| Future\<CachedNetworkImage> | getImageFromNewsUrl() | Request image of linked news. Throws a server excpetion if respond code is not 200. (Disclaimer: Image-handling should not part of this layer.)
-| Future\<String> | getImageUrlFromNewsUrl() | Read out the image source url, based on the news url. Throws a server exception if respond code is not 200.
-
----
-
-## RubnewsNewsEntity
-
-### Attributes
-
-| Type | Name | Description |
-|------|------|-------------|
-| String | content | HTML Content of News |
-| String | title | |
-| String | description | Short Summary |
-| String | url | |
-| DateTime | pubDate | Date of Publishing |
-| List\<String> | imageUrls | List of Urls to images source. Usually only one image. |
-
----
-
-# Semesterticket
-
-This page is to provide a basic overview about the "Calendar" feature located inside
-`lib/pages/wallet/ticket`.
-
----
-
-## Ticket usescases
-
-| Type | Name | Description |
-|------|------|-------------|
-| Future<Image?> | renderAztecCode() | Returns an Image object, containing the resized Aztec code loaded from storage.
-| Future<Map<String, dynamic>?> | getTicketDetails() | Returns a map, containing the ticket details such as the name of the owner, the birthdate and validity information.
-
----
-
-## Ticket repository
-
-| Type | Name | Description |
-|------|------|-------------|
-| Future<void> | loadTicket() | Calls the ticket datasource to load the remote ticket and then saves it to storage or deletes the exisiting one if it expired or was removed.
-| Future<String?> | getAztecCode() | Returns the Aztec code as a Base64 String
-| Future<String?> | getTicketDetails() | Returns the whole ticket map as JSON
-| Future<void> | saveTicket(Map<String, dynamic> ticket) | Saves the Aztec Code and ticket details to two separate files using the passed Map
-| Future<void> | deleteTicket() | Deletes the ticket from storage
-
----
-
-## Ticket datasource
-
-| Type | Name | Description |
-|------|------|-------------|
-| Future<Map<String, dynamic>> | getRemoteTicket() | Loads the remote ticket using a headless webview which clicks through the RUB login process and then extracts the Aztec code and ticket details from the RIDE website.
-
----
-
 # Calendar Page
-
-> Not full implemented yet!
 
 This page is to provide a basic overview about the "Calendar" feature located inside
 `lib/pages/calendar`.
@@ -97,7 +9,8 @@ This page is to provide a basic overview about the "Calendar" feature located in
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<Either<Failure, List\<CalendarEventEntity>>> | getEventsList() | Return a list of `CalendarEventEntitiy` or a Failure. It wil store the returned list for further caching in a local datasource.
+| Future<Map<String, List\<dynamic>>> | updateEventsAndFailures() | Returns a map with `failures`, `events` and `saved` event lists. |
+| Map<String, List\<dynamic>> | getCachedEventsAndFailures() | Returns cached events and failures only. |
 
 ---
 
@@ -105,20 +18,25 @@ This page is to provide a basic overview about the "Calendar" feature located in
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<Either<Failure, List\<CalendarEventEntity>>> | getAStAEvents() | Return a list of `CalendarEventEntitiy` or a Failure. With the help of `CalendarEventModel` it will parse the JSON response of `CalendarRemoteDatasource` to the corresponding entity. The requested events are coming from the AStA Wordpress instance at [asta-bochum.de](asta-bochum.de)
+| Future<Either<Failure, List\<Event>>> | getAStAEvents() | Loads AStA events, parses them and caches them. |
+| Future<Either<Failure, List\<Event>>> | getAppEvents() | Loads app events, parses them and caches them. |
+| Either<Failure, List\<Event>> | getCachedEvents() | Returns cached AStA + app events. |
+| Future<Either<Failure, List\<Event>>> | updateSavedEvents({Event? event}) | Updates and returns locally saved events. |
 
 ---
 
-## CalendarRemoteDatasource
+## CalendarDatasource
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<List\<dynamic>> | getAStAEventsAsJsonArray() | Request events from tribe API at [asta-bochum.de/wp-json/tribe/v1/events](asta-bochum.de/wp-json/tribe/v1/events). Throws a server excpetion if respond code is not 200.
-| Future\<XmlDocument> | getAStAEventfeedAsXML() | Not implemented and properly unnecessary.
+| Future<List\<dynamic>> | getAStAEventsAsJsonArray() | Requests AStA events as JSON array. |
+| Future<List\<dynamic>> | getAppEventsAsJsonArray() | Requests app events as JSON array. |
+| Future<void> | writeEventsToCache(List\<Event> entities, {bool saved = false, bool app = false}) | Writes event lists to cache. |
+| List\<Event> | readEventsFromCache({bool saved = false, bool app = false}) | Reads event lists from cache. |
 
 ---
 
-## CalendarEventEntity
+## Event
 
 ### Attributes
 
@@ -138,14 +56,13 @@ This page is to provide a basic overview about the "Calendar" feature located in
 | String | timeZone | |
 | Map<String, String> | cost | JSON object of value and currency |
 | String | website | website of event |
-| List\<CalendarCategoryEntity> | categories | list can be empty |
-| List\<CalendarTagEntity> | tags | list can be empty |
-| CalendarVenueEntity | venue | |
-| List\<CalendarOrganizerEntity> | organizers | list can be empty |
+| List\<Category> | categories | list can be empty |
+| Venue | venue | |
+| List\<Organizer> | organizers | list can be empty |
 
 ---
 
-## CalendarVenueEntity
+## Venue
 
 ### Attributes
 
@@ -164,7 +81,7 @@ This page is to provide a basic overview about the "Calendar" feature located in
 
 ---
 
-## CalendarOrganizerEntity
+## Organizer
 
 ### Attributes
 
@@ -180,7 +97,7 @@ This page is to provide a basic overview about the "Calendar" feature located in
 
 ---
 
-## CalendarCategoryEntity
+## Category
 
 ### Attributes
 
@@ -194,17 +111,262 @@ This page is to provide a basic overview about the "Calendar" feature located in
 
 ---
 
-## CalendarTagEntity
+
+
+---
+
+# Mensa Page
+
+This page is to provide a basic overview about the "Mensa" feature located inside
+`lib/pages/mensa`.
+
+---
+
+## MensaUsecases
+
+| Type | Name | Description |
+|------|------|-------------|
+| Future<Map<String, List\<dynamic>>> | updateDishesAndFailures() | Returns a map with `failures`, `mensa`, `roteBeete` and `qwest`. |
+| Map<String, List\<dynamic>> | getCachedDishesAndFailures() | Returns cached dishes and failures only. |
+
+---
+
+## MensaRepository
+
+| Type | Name | Description |
+|------|------|-------------|
+| Future<Either<Failure, List\<DishEntity>>> | getRemoteDishes(int restaurant) | Loads dishes for one restaurant, parses them and caches them. |
+| Either<Failure, List\<DishEntity>> | getCachedDishes(int restaurant) | Returns cached dishes for one restaurant. |
+
+---
+
+## MensaDataSource
+
+| Type | Name | Description |
+|------|------|-------------|
+| Future<Map<String, dynamic>> | getRemoteData(int restaurant) | Requests menu data from backend API. |
+| Future<void> | writeDishEntitiesToCache(List\<DishEntity> entities, int restaurant) | Writes dish entities to cache. |
+| List\<DishEntity> | readDishEntitiesFromCache(int restaurant) | Reads dish entities from cache. |
+
+---
+
+## DishEntity
+
+Represents one dish in the mensa feature.
+
+---
+
+# Wallet Page
+
+This page is to provide a basic overview about the "Wallet" feature located inside
+`lib/pages/wallet`.
+
+---
+
+## WalletPage
+
+The wallet page is the entry point for wallet related features and views.
+
+Current content includes:
+
+- Semesterticket views
+- Mensa balance page
+- FAQ/guide screens
+
+Main implementation:
+
+- `lib/pages/wallet/wallet_page.dart`
+- `lib/pages/wallet/ticket_login_screen.dart`
+- `lib/pages/wallet/mensa_balance_page.dart`
+- `lib/pages/wallet/faq_page.dart`
+- `lib/pages/wallet/guide_content.dart`
+
+Detailed semesterticket logic is documented in `docs/wiki/Pages/ticket.md`.
+
+---
+
+# More Page
+
+This page is to provide a basic overview about the "More" feature located inside
+`lib/pages/more`.
+
+---
+
+## MorePage
+
+The `MorePage` bundles settings and external links.
+
+It includes:
+
+- Settings entry points
+- Imprint and privacy policy pages
+- External links (AStA and RUB related resources)
+- In-app web view or external browser routing based on settings
+
+Main implementation:
+
+- `lib/pages/more/more_page.dart`
+- `lib/pages/more/settings_page.dart`
+- `lib/pages/more/in_app_web_view_page.dart`
+- `lib/pages/more/imprint_page.dart`
+- `lib/pages/more/privacy_policy_page.dart`
+
+---
+
+# Semesterticket
+
+This page is to provide a basic overview about the semesterticket feature located inside
+`lib/pages/wallet/ticket`.
+
+---
+
+## TicketUsecases
+
+| Type | Name | Description |
+|------|------|-------------|
+| Future<Image?> | renderAztecCode({int width = 200, int height = 200}) | Returns an Image widget with a resized Aztec code loaded from secure storage. |
+| Future<Map<String, dynamic>?> | getTicketDetails() | Returns parsed ticket details from secure storage. |
+
+---
+
+## TicketRepository
+
+| Type | Name | Description |
+|------|------|-------------|
+| Future<void> | loadTicket() | Loads the remote ticket and stores it securely. Deletes local ticket if remote ticket was removed. |
+| Future<String?> | getAztecCode() | Returns the Aztec code as a Base64 String
+| Future<String?> | getTicketDetails() | Returns the whole ticket map as JSON
+| Future<void> | saveTicket(Map<String, dynamic> ticket) | Saves the Aztec code and ticket details to secure storage. |
+| Future<void> | deleteTicket() | Deletes the ticket from secure storage. |
+
+---
+
+## TicketDataSource
+
+| Type | Name | Description |
+|------|------|-------------|
+| Future<Map<String, dynamic>> | getRemoteTicket() | Loads the ticket using a headless webview and extracts Aztec code + ticket details from the RIDE website. |
+
+---
+
+# Home Page
+
+This page is to provide a basic overview about the "Home" feature located inside
+`lib/pages/home`.
+
+---
+
+## HomePage
+
+The `HomePage` is the app shell for the main navigation.
+
+It handles:
+
+- Bottom/side navigation
+- Page switching between the main features
+- Nested navigator keys per page
+- Entry/exit animations for pages
+
+---
+
+## NavBarNavigator
+
+`NavBarNavigator` creates a dedicated navigator stack per tab.
+
+Configured page items:
+
+- Feed
+- Events
+- Mensa
+- Navigation
+- Wallet
+- More
+
+Main implementation:
+
+- `lib/pages/home/home_page.dart`
+- `lib/pages/home/page_navigator.dart`
+
+---
+
+# Feed / News Page
+
+This page is to provide a basic overview about the "Feed / News" feature located inside
+`lib/pages/feed/news`.
+
+---
+
+## NewsUsecases
+
+| Type | Name | Description |
+|------|------|-------------|
+| Future<Map<String, List\<dynamic>>> | updateFeedAndFailures() | Returns a map with `failures` and `news`. |
+| Map<String, List\<dynamic>> | getCachedFeedAndFailures() | Returns cached news and failures only. |
+
+---
+
+## NewsRepository
+
+| Type | Name | Description |
+|------|------|-------------|
+| Future<Either<Failure, List\<NewsEntity>>> | getRemoteNewsfeed() | Loads AStA and RUB news, parses entities and updates cache. |
+| Either<Failure, List\<NewsEntity>> | getCachedNewsfeed() | Returns cached news list. |
+
+---
+
+## NewsDatasource
+
+| Type | Name | Description |
+|------|------|-------------|
+| Future\<XmlDocument> | getNewsfeedAsXml() | Requests the RUB XML feed from `news.rub.de/newsfeed`. |
+| Future<Map<String, dynamic>> | getImageDataFromNewsUrl(String url) | Requests image and copyright data for a news detail page. |
+| Future<List\<dynamic>> | getAStAFeedAsJson() | Requests WordPress posts from `asta-bochum.de`. |
+| Future<List\<dynamic>> | getAppFeedAsJson() | Requests WordPress posts from `app.asta-bochum.de`. |
+
+---
+
+## NewsEntity
 
 ### Attributes
 
 | Type | Name | Description |
 |------|------|-------------|
-| int | id|  |
-| String | url|  |
-| String | name|  |
-| String | slug| url identifier |
-| String | description|  |
+| String | content | HTML Content of News |
+| String | title | |
+| String | description | Short Summary |
+| String | url | |
+| DateTime | pubDate | Date of Publishing |
+| List\<String> | imageUrls | List of image URLs. |
+
+---
+
+# Navigation Page
+
+This page is to provide a basic overview about the "Navigation" feature located inside
+`lib/pages/navigation`.
+
+---
+
+## Navigation Views
+
+The feature currently contains:
+
+- `outdoor_navigation_page.dart`
+- `indoor_navigation_page.dart`
+- Multiple widgets and static data files for room/path rendering
+
+---
+
+## NavigationDatasource
+
+| Type | Name | Description |
+|------|------|-------------|
+| Future<NavigationGraph> | syncGraphOnUpdate() | Syncs graph data from remote Appwrite storage to local file. |
+| Future<NavigationGraph> | loadGraphFromFile() | Loads graph data from local file. |
+| NavigationGraph | loadGraphFromString(String jsonString) | Parses a JSON graph to app graph format. |
+| Future<void> | syncMaps() | Syncs map image files from remote storage. |
+
+Note: The datasource currently contains a comment that it is not yet used in production flow.
 
 ---
 
