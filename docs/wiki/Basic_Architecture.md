@@ -5,16 +5,15 @@ design patterns and principles.
 
 ## Folder Structure
 
-All the source code is located inside the `lib` folder and the corresponding unit
-tests inside the `test` folder. The first level inside these folders is always a
-main feature of the app like the Moodle, Flexnow or eCampus integration. Each
-of these features is structured via a [layerized architecture](https://medium.com/kayvan-kaseb/the-layered-architecture-pattern-in-software-architecture-324922d381ad).
+All source code is located inside the `lib` folder and unit tests inside the `test` folder.
+Feature modules are mainly organized below `lib/pages` and follow the project layering
+approach where applicable.
 
-The source code inside the `lib` folder is separated in three parts `core`, `pages`
-and `utils`. The `core` folder contain all features (like authentication) and basic
-functionalities which are used in multiple pages. The `pages` folder contain all
-independent features and inside `utils` you can find all helper functions and classes
-like APIs. The `test` folder is structured the same way.  
+The source code inside `lib` is mainly separated into `core`, `pages`, `utils`, `env`
+and `l10n`. The `core` folder contains shared app services and infrastructure
+(e.g. backend repository, settings and dependency injection). The `pages` folder
+contains feature modules. Inside `utils` you can find shared helper classes.
+Current tests are mainly located in `test/pages`.
 
 As a tree-structure our project looks at follows:
 
@@ -32,15 +31,22 @@ As a tree-structure our project looks at follows:
 │   ├── core
 │   │   ├── feature-xyz
 │   │   ├── themes
+│   │   ├── settings
+│   │   ├── ...
+│   ├── env
+│   │   ├── env.dart
+│   │   ├── env.g.dart
+│   ├── l10n
 │   │   ├── ...
 │   ├── pages
 │   │   ├── feature-xyz
 │   │   ├── ...
 │   ├── utils
-│   │   ├── apis
 │   │   ├── pages
+│   │   ├── widgets
 │   │   ├── ...
-|    ...
+│   ├── main.dart
+│   ├── firebase_options.dart
 ├── test
 │   ├── core
 │   │   ├── ...
@@ -120,9 +126,9 @@ interactions.
 The Application Layer handles the state of our App. All user requests coming from the
 UI are validated and handled at this point. So validation also into this layer. It could be argued that Validation goes into the domain, but the risk there is that errors raised may reference fields not present in the View Model which would cause confusion.
 
-In Flutter their a Stateful-Widgets which can handle the State by them self and
-global states can be handled by Change Notifiers. So their aren't different files
-for the Presentation and Application Layer. [¹]
+In Flutter there are StatefulWidgets which can handle state by themselves and
+global state can be handled by ChangeNotifiers. Therefore there are not always separate
+files for Presentation and Application Layer. [¹]
 
 ### Domain Layer
 
