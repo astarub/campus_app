@@ -30,7 +30,7 @@ class BottomNavBarItem extends StatefulWidget {
   /// Callback that should be called whenever the button is tapped
   final VoidCallback onTap;
 
-  /// Wether the refered page is the currently displayed one
+  /// Whether the referred page is the currently displayed one
   final bool isActive;
 
   const BottomNavBarItem({
@@ -38,9 +38,9 @@ class BottomNavBarItem extends StatefulWidget {
     required this.imagePathActive,
     required this.imagePathInactive,
     required this.title,
-    this.iconVerticalPadding = 10,
-    this.iconPaddingLeft = 10,
-    this.iconPaddingRight = 10,
+    this.iconVerticalPadding = 8,
+    this.iconPaddingLeft = 0,
+    this.iconPaddingRight = 0,
     required this.onTap,
     this.isActive = false,
   });
@@ -64,52 +64,49 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
     return Padding(
       padding: EdgeInsets.only(left: widget.iconPaddingLeft, right: widget.iconPaddingRight),
       child: AnimatedPadding(
-        padding: widget.isActive ? const EdgeInsets.only(top: 2) : const EdgeInsets.only(top: 11),
+        padding: widget.isActive ? const EdgeInsets.only(top: 2) : const EdgeInsets.only(top: 6),
         duration: animationDuration,
         curve: animationCurve,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            // Icon-button
-            CustomButton(
-              tapHandler: () => widget.onTap(),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: widget.iconVerticalPadding,
-                  bottom: widget.iconVerticalPadding,
-                ),
-                child: Image.asset(
-                  widget.isActive ? widget.imagePathActive : widget.imagePathInactive,
-                  height: iconHeight,
-                  color: widget.isActive
-                      ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary
-                      : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                          ? Colors.black
-                          : const Color.fromRGBO(184, 186, 191, 1),
-                  /* Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                    ? widget.isActive
+            // Icon-button wrapped so it can flex if parent is constrained
+            Flexible(
+              child: CustomButton(
+                tapHandler: () => widget.onTap(),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: widget.iconVerticalPadding,
+                    bottom: widget.iconVerticalPadding,
+                  ),
+                  child: Image.asset(
+                    widget.isActive ? widget.imagePathActive : widget.imagePathInactive,
+                    height: iconHeight,
+                    color: widget.isActive
                         ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.secondary
-                        : Colors.black
-                    : widget.isActive
-                        ? const Color.fromRGBO(255, 107, 1, 1)
-                        : const Color.fromRGBO(184, 186, 191, 1), */
-                  filterQuality: FilterQuality.high,
+                        : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
+                            ? Colors.black
+                            : const Color.fromRGBO(184, 186, 191, 1),
+                    filterQuality: FilterQuality.none,
+                  ),
                 ),
               ),
             ),
-            // Text
-            AnimatedPadding(
-              padding: widget.isActive ? EdgeInsets.zero : const EdgeInsets.only(top: 10),
+
+            // Text: keep single line and avoid reserving vertical space when
+            // inactive. Use maxLines:1 to guarantee no wrapping.
+            AnimatedSwitcher(
               duration: animationDuration,
-              curve: animationCurve,
-              child: AnimatedOpacity(
-                opacity: widget.isActive ? 1 : 0,
-                duration: animationDuration,
-                child: Text(
-                  widget.title,
-                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
-                ),
-              ),
+              switchInCurve: animationCurve,
+              switchOutCurve: animationCurve,
+              child: widget.isActive
+                  ? Text(
+                      widget.title,
+                      key: ValueKey('title-${widget.title}'),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall,
+                    )
+                  : const SizedBox.shrink(key: ValueKey('title-empty')),
             ),
           ],
         ),

@@ -76,7 +76,7 @@ class ExternalLinkButton extends StatelessWidget {
                     leadingIconPath,
                     color: buttonContentColor,
                     width: 20,
-                    filterQuality: FilterQuality.high,
+                    filterQuality: FilterQuality.none,
                   ),
                 // Title
                 Padding(
