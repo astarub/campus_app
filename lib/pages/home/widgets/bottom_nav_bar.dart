@@ -94,7 +94,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             builder: (context, constraints) {
               final navHeight = constraints.maxHeight;
               final effectiveContainerWidth = constraints.maxWidth;
-              final computedSlotWidth = effectiveContainerWidth / visibleCount;
+              const indicatorWidth = 12.0;
 
               // Determine which slice of items to show (no off-screen items)
               final startIndex = desiredShift;
@@ -104,6 +104,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
               final animateForward = desiredShift >= _prevShift;
               // Update prevShift for next frame
               _prevShift = desiredShift;
+              final hasHiddenLeftItems = desiredShift > 0;
+              final hasHiddenRightItems = desiredShift < maxShift;
+              final indicatorColor = Provider.of<ThemesNotifier>(
+                context,
+                listen: false,
+              ).currentThemeData.textTheme.labelSmall?.color?.withValues(alpha: 0.55);
 
               return SizedBox(
                 height: navHeight,
@@ -137,9 +143,19 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(
+                          width: indicatorWidth,
+                          child: AnimatedOpacity(
+                            duration: const Duration(milliseconds: 180),
+                            opacity: hasHiddenLeftItems ? 1 : 0,
+                            child: Center(
+                              child: Icon(Icons.chevron_left, size: 14, color: indicatorColor),
+                            ),
+                          ),
+                        ),
                         for (final p in visibleItems)
                           SizedBox(
-                            width: computedSlotWidth,
+                            width: (effectiveContainerWidth - (2 * indicatorWidth)) / visibleCount,
                             child: (() {
                               switch (p) {
                                 case PageItem.feed:
@@ -197,6 +213,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
                               }
                             })(),
                           ),
+                        SizedBox(
+                          width: indicatorWidth,
+                          child: AnimatedOpacity(
+                            duration: const Duration(milliseconds: 180),
+                            opacity: hasHiddenRightItems ? 1 : 0,
+                            child: Center(
+                              child: Icon(Icons.chevron_right, size: 14, color: indicatorColor),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
