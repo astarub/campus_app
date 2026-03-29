@@ -120,7 +120,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   switchOutCurve: Curves.easeOutCubic,
                   layoutBuilder: (currentChild, previousChildren) {
                     return ClipRect(
-                      child: currentChild ?? const SizedBox.shrink(),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          ...previousChildren,
+                          if (currentChild != null) currentChild,
+                        ],
+                      ),
                     );
                   },
                   transitionBuilder: (child, animation) {
