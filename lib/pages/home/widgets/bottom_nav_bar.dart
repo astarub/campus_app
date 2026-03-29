@@ -110,12 +110,26 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 width: effectiveContainerWidth,
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
+                  switchInCurve: Curves.easeOutCubic,
+                  switchOutCurve: Curves.easeOutCubic,
+                  layoutBuilder: (currentChild, previousChildren) {
+                    return ClipRect(
+                      child: currentChild ?? const SizedBox.shrink(),
+                    );
+                  },
                   transitionBuilder: (child, animation) {
+                    final curvedAnimation = CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOutCubic,
+                    );
                     final offsetAnimation = Tween<Offset>(
-                      begin: Offset(animateForward ? 1.0 : -1.0, 0),
+                      begin: Offset(animateForward ? 0.22 : -0.22, 0),
                       end: Offset.zero,
-                    ).animate(animation);
-                    return SlideTransition(position: offsetAnimation, child: child);
+                    ).animate(curvedAnimation);
+                    return FadeTransition(
+                      opacity: curvedAnimation,
+                      child: SlideTransition(position: offsetAnimation, child: child),
+                    );
                   },
                   child: SizedBox(
                     width: effectiveContainerWidth,
