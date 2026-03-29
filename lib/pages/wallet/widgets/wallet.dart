@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campus_app/core/exceptions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,11 +14,13 @@ import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
 import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
 import 'package:campus_app/pages/wallet/ticket_fullscreen.dart';
+import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
 import 'package:campus_app/pages/wallet/widgets/stacked_card_carousel.dart';
 import 'package:campus_app/utils/widgets/custom_button.dart';
 
 class CampusWallet extends StatelessWidget {
-  const CampusWallet({super.key});
+  final GlobalKey<BogestraTicketState> ticketKey;
+  const CampusWallet({super.key, required this.ticketKey});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class CampusWallet extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.shortestSide < 600 ? MediaQuery.of(context).size.width - 70 : 330,
           height: 217,
-          child: const BogestraTicket(),
+          child: BogestraTicket(key: ticketKey),
         ),
       ],
     );
@@ -46,10 +49,12 @@ class BogestraTicket extends StatefulWidget {
   const BogestraTicket({super.key});
 
   @override
-  State<BogestraTicket> createState() => _BogestraTicketState();
+  State<BogestraTicket> createState() => BogestraTicketState();
 }
 
-class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAliveClientMixin<BogestraTicket> {
+// public in Order to update the ticket manually
+class BogestraTicketState extends State<BogestraTicket>
+    with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<BogestraTicket> {
   bool scanned = false;
   String scannedValue = '';
 
@@ -57,6 +62,9 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   late Map<String, dynamic> ticketDetails;
 
   bool showAztecCode = false;
+  bool _isLoading = false;
+
+  Timer? _refreshTimer;
 
   TicketRepository ticketRepository = sl<TicketRepository>();
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
@@ -89,21 +97,75 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   }
 
   Future<void> loadAndRenderTicket() async {
-    // Pre-render ticket
-    await renderTicket();
+    //don't allow multiple loadAndRenderTicket calls (such as periodic and manual User refresh)
+    if (_isLoading) return;
+    _isLoading = true;
 
-    final String? oldAztecCode = await ticketRepository.getAztecCode();
+    try {
+      // Pre-render ticket if not already scanned
+      if (!scanned) await renderTicket();
 
-    await ticketRepository.loadTicket().catchError((error) {
-      debugPrint('Wallet widget: $error');
-    });
+      final String? oldAztecCode = await ticketRepository.getAztecCode();
 
-    final String? newAztecCode = await ticketRepository.getAztecCode();
+      //prepare for retrying loading
+      const int retries = 5;
+      bool successfullLoad = false;
 
-    // Compare aztec code from before re-loading the ticket with the new one
-    if (oldAztecCode != newAztecCode) {
-      await renderTicket();
+      // i = 0 is the inital Attempt, from i = 1 and up are the 5 retry attempts
+      for (int i = 0; i <= retries; i++) {
+        try {
+          await ticketRepository.loadTicket();
+          debugPrint('Wallet widget: Ticket loaded successfully on retry $i');
+          successfullLoad = true;
+          context.read<TicketWarningNotifier>().set(false);
+          break; // jump out of for loop
+        } on InvalidLoginIDAndPasswordException {
+          // the two on error cases are "Fatal Cases" no reason to retry, only user can fix these by adding creds or entering right creds
+          debugPrint('Wallet Widget: Invalid Credentials.');
+          final ticketLoaded = await ticketRepository.getAztecCode();
+          if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
+          return;
+        } on MissingCredentialsException {
+          debugPrint('Wallet Widget: Initializing.');
+          return;
+        } catch (e) {
+          debugPrint('Load failed. Retry number $i with error $e');
+
+          if (i == retries) {
+            debugPrint('Wallet widget: Retries have failed. Notify User of failure and potentially outdated ticket.');
+            final ticketLoaded = await ticketRepository.getAztecCode();
+            if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
+            return;
+          }
+
+          // prevent any parallel fetching or overlaps
+          await Future.delayed(const Duration(milliseconds: 500));
+        }
+      }
+
+      if (successfullLoad == false) {
+        debugPrint('Wallet widget: Load failed');
+        return;
+      }
+
+      final String? newAztecCode = await ticketRepository.getAztecCode();
+
+      // Compare aztec code from before re-loading the ticket with the new one
+      if (oldAztecCode != newAztecCode) {
+        await renderTicket();
+      }
+    } finally {
+      _isLoading = false;
     }
+  }
+
+  Future<void> periodicRefresh() async {
+    _refreshTimer?.cancel();
+
+    // refresh automatically every 30 minutes
+    _refreshTimer = Timer.periodic(const Duration(minutes: 30), (_) {
+      loadAndRenderTicket();
+    });
   }
 
   @override
@@ -113,7 +175,28 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
   void initState() {
     super.initState();
 
+    //added in Order to use the Lifecylce observation
+    WidgetsBinding.instance.addObserver(this);
+
     loadAndRenderTicket();
+    periodicRefresh();
+  }
+
+  @override
+  void dispose() {
+    //remove the observer and timer
+    WidgetsBinding.instance.removeObserver(this);
+    _refreshTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    //refresh Ticket data when App comes back into foreground
+    if (state == AppLifecycleState.resumed) {
+      loadAndRenderTicket();
+      debugPrint('Ticket wird aktualisiert...');
+    }
   }
 
   @override
@@ -194,13 +277,14 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                                           .headlineSmall!
                                           .copyWith(color: Colors.black, fontSize: 12.5),
                                     ),
+                                    // in following changing to 11 font Size to fit original designed container
                                     Text(
-                                      'Geburtstag: ${ticketDetails['birthdate']}',
+                                      'Geburtsdatum: ${ticketDetails['birthdate']}',
                                       style: Provider.of<ThemesNotifier>(context)
                                           .currentThemeData
                                           .textTheme
                                           .bodyMedium!
-                                          .copyWith(color: Colors.black, fontSize: 12),
+                                          .copyWith(color: Colors.black, fontSize: 11),
                                     ),
                                     Text(
                                       'Von: ${ticketDetails['valid_from']}',
@@ -208,7 +292,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                                           .currentThemeData
                                           .textTheme
                                           .bodyMedium!
-                                          .copyWith(color: Colors.black, fontSize: 12),
+                                          .copyWith(color: Colors.black, fontSize: 11),
                                     ),
                                     Text(
                                       'Bis: ${ticketDetails['valid_till']}',
@@ -216,7 +300,7 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                                           .currentThemeData
                                           .textTheme
                                           .bodyMedium!
-                                          .copyWith(color: Colors.black, fontSize: 12),
+                                          .copyWith(color: Colors.black, fontSize: 11),
                                     ),
                                     if (ticketDetails['validity_region'].toString().isNotEmpty)
                                       Text(
@@ -225,7 +309,16 @@ class _BogestraTicketState extends State<BogestraTicket> with AutomaticKeepAlive
                                             .currentThemeData
                                             .textTheme
                                             .bodyMedium!
-                                            .copyWith(color: Colors.black, fontSize: 12),
+                                            .copyWith(color: Colors.black, fontSize: 11),
+                                      ),
+                                    if (ticketDetails['date_issued'].toString().isNotEmpty)
+                                      Text(
+                                        'Ausgestellt: ${ticketDetails['date_issued']}',
+                                        style: Provider.of<ThemesNotifier>(context)
+                                            .currentThemeData
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(color: Colors.black, fontSize: 11),
                                       ),
                                   ],
                                 ),

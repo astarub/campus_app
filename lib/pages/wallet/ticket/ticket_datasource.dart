@@ -6,6 +6,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:campus_app/utils/constants.dart';
 
+/* Developer Note:
+  - the current ticket filling logic as well as JS Injection works because the RIDE ticket page displays
+    information exactly as it does right now (15.02.2026) (6 Ticket Details, In a Column)
+  - as soon as the RIDE ticket page UI changes or the details change this is no longer guaranteed to work and might need to be adjusted!!!
+*/
+
 class TicketDataSource {
   final FlutterSecureStorage secureStorage;
 
@@ -26,6 +32,7 @@ class TicketDataSource {
       'validity_region': '',
       'owner': '',
       'birthdate': '',
+      'date_issued': '',
     };
 
     // Load the user's credentials
@@ -37,6 +44,21 @@ class TicketDataSource {
     if (loginId != null && password != null) {
       // Create a headless web view
       HeadlessInAppWebView? headlessWebView;
+
+      // centralize dispose calls and guard against dispose being called on a disposed webview
+      bool webViewDisposed = false;
+
+      Future<void> webDispose() async {
+        if (webViewDisposed == true) return;
+        if (loginTimer != null) loginTimer!.cancel();
+        try {
+          await headlessWebView?.dispose();
+          webViewDisposed = true;
+        } catch (e) {
+          debugPrint('Semesterticket: Failed to dispose webview!');
+        }
+      }
+
       headlessWebView = HeadlessInAppWebView(
         initialUrlRequest: URLRequest(url: WebUri(rideTicketing)),
         initialSettings: InAppWebViewSettings(cacheEnabled: false, clearCache: true),
@@ -45,8 +67,23 @@ class TicketDataSource {
           controller.addJavaScriptHandler(
             handlerName: 'ticket',
             callback: (args) {
-              if (args.isEmpty || List.of(args)[1] is! List || List.of(args[1]).isEmpty) {
-                completer.completeError('Invalid ticket details');
+              /* Important to understand:
+                  args = [document.getElementsByClassName("barcode")[0].src, arr] with args[0] image source and args[1]/arr ticket details
+              */
+              //Sanity Check Completer
+              if (completer.isCompleted == true) {
+                webDispose();
+                return;
+              }
+
+              if (args.length < 2 || args.isEmpty || args[1] is! List || List.of(args[1]).isEmpty) {
+                if (!completer.isCompleted) {
+                  completer.completeError('Invalid ticket details');
+                  webDispose();
+                  return; //don't let an invalid ticket continue filling information
+                }
+                webDispose();
+                return;
               }
 
               final List<dynamic> arguments = List.of(args)[1];
@@ -54,23 +91,32 @@ class TicketDataSource {
 
               ticket['aztec_code'] = image;
 
-              if (arguments.length == 4) {
+              if (arguments.length == 6) {
+                //changing to 6 since this is the amount of details currently pulled + correct assignments
                 ticket['valid_from'] = arguments[0];
                 ticket['valid_till'] = arguments[1];
-                ticket['owner'] = arguments[2];
-                ticket['birthdate'] = arguments[3];
+                ticket['date_issued'] = arguments[2];
+                ticket['validity_region'] = arguments[3];
+                ticket['owner'] = arguments[4];
+                ticket['birthdate'] = arguments[5];
               } else {
-                ticket['valid_from'] = arguments[0];
-                ticket['valid_till'] = arguments[1];
-                ticket['validity_region'] = arguments[2];
-                ticket['owner'] = arguments[3];
-                ticket['birthdate'] = arguments[4];
+                // if the details aren't there, complete with error ideally
+                if (!completer.isCompleted) {
+                  completer.completeError('Invalid ticket details!');
+                  webDispose();
+                  return;
+                }
+                debugPrint(
+                  'Invalid ticket details: $arguments and completer is already completed: ${completer.isCompleted}',
+                );
+                webDispose();
+                return;
               }
 
               debugPrint('Loaded semesterticket.');
 
-              completer.complete(ticket);
-              headlessWebView!.dispose();
+              if (!completer.isCompleted) completer.complete(ticket);
+              webDispose();
             },
           );
 
@@ -84,8 +130,8 @@ class TicketDataSource {
                 loginTimer!.cancel();
               }
 
-              completer.completeError(args[0]);
-              headlessWebView!.dispose();
+              if (!completer.isCompleted) completer.completeError(args[0]);
+              webDispose();
             },
           );
         },
@@ -97,26 +143,37 @@ class TicketDataSource {
             Timer(const Duration(milliseconds: 300), () async {
               await controller.evaluateJavascript(
                 source: """
-                document.getElementById('username').value="$loginId";
-                document.getElementById('password').value="$password";
-                setTimeout(function(){
-                  document.getElementById('shibbutton').click();
-                }, 100);
+                (function fillCreds() {
+                  let username = document.getElementById('username');
+                  let password = document.getElementById('password');
+                  let btn = document.getElementById('shibbutton');
+
+                  if (username && password && btn) {
+                    username.value = "$loginId";
+                    password.value = "$password";
+                    btn.click();
+                  } else {
+                    setTimeout(fillCreds, 500);
+                  }
+                })();
                 """,
               );
             });
           } else if (url.startsWith('https://aai.ruhr-uni-bochum.de/idp/profile/SAML2/POST/SSO') &&
               url.endsWith('s2')) {
-            Timer.periodic(const Duration(milliseconds: 100), (ti) async {
+            Timer.periodic(const Duration(milliseconds: 500), (ti) async {
               loginTimer = ti;
 
               if (headlessWebView != null && headlessWebView.isRunning()) {
                 await controller.evaluateJavascript(
                   source: """
-                if(document.getElementsByClassName("form-error").length == 1) {
-                  window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
-                }
-                document.getElementById('consentbutton_2').click();
+                  (function(){
+                    if(document.getElementsByClassName("form-error").length == 1) {
+                    window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
+                    }
+                    let btn = document.getElementById('consentbutton_2');
+                    if (btn) btn.click();
+                })();
                 """,
                 );
               }
@@ -124,21 +181,47 @@ class TicketDataSource {
           } else if (url.startsWith('https://abo.ride-ticketing.de')) {
             await controller.evaluateJavascript(
               source: '''
-              const ticketClickInterval = setInterval(function(){
-                document.getElementsByClassName("abo-card-wrapper")[0].click();
-              }, 100);
+              var ticketClickInterval = setInterval(function(){
+                let cards = document.getElementsByClassName("abo-card-wrapper");
+                if (cards.length > 0) cards[0].click();
+              }, 500);
+              
+              // variable to count successful ticket info pulls
+              var success = 0;
 
-              setInterval(function(){
+              var ticketInfoInterval = setInterval(function(){
                 if(document.URL.startsWith("https://abo.ride-ticketing.de/app/ticket")) {
                   clearInterval(ticketClickInterval);
-                  const ticket_details = document.getElementsByClassName("value-column");
-                  const arr = [];
+                  let ticket_details = document.getElementsByClassName("value-column");
+                  let arr = [];
                   for(const detail of ticket_details) {
-                    arr.push(detail.innerText);
+                    arr.push(detail.innerText.trim());
                   }
-                  window.flutter_inappwebview.callHandler('ticket', document.getElementsByClassName("barcode")[0].src, arr);
+
+                  let emptyItem = false;
+
+                  //checking if a text item was loaded empty, if yes we wait for next interval
+                  for (const item of arr) {
+                    if (item === ''){
+                    emptyItem = true;
+                    }
+                  }
+                  
+                  //check if our pull was a success, at least 6 items and not empty items
+                  if (arr.length >= 6 && emptyItem == false) {
+                    success++;
+                  } else {
+                    success = 0;
+                  }
+
+                  // fire handler ater 2 successful pulls -> stability check
+                  if(success >= 2) {
+                    clearInterval(ticketInfoInterval); // stop pulling
+                    clearInterval(ticketClickInterval);
+                    window.flutter_inappwebview.callHandler('ticket', document.getElementsByClassName("barcode")[0].src, arr);
+                  }
                 } 
-              }, 200);
+              }, 500);
               ''',
             );
           }
@@ -164,12 +247,12 @@ class TicketDataSource {
               ''',
             );
           }
-          completer.completeError('Could not open ticket page.');
-          await headlessWebView.dispose();
+          if (!completer.isCompleted) completer.completeError('Could not open ticket page.');
+          await webDispose();
         }
       });
     } else {
-      completer.completeError('No login credentials found.');
+      if (!completer.isCompleted) completer.completeError('No login credentials found.');
     }
 
     return completer.future;

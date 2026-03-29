@@ -77,13 +77,17 @@
             android:theme="@style/AppTheme.Dialog"
             android:exported="true"
             android:configChanges="uiMode">
-            <intent-filter>
+            <!-- The intent below tells Android that whenever any NFC Tag is detected, launch the PopupActivity 
+            even if the app is not open, so we have to delete this part so that the app does not open,
+            this is a part of fixing the bug 177, I did not delete the whole PopupActivity as it could be used for 
+            other things -->
+            <!--<intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
-                android:resource="@xml/tech" />
+                android:resource="@xml/tech" />-->
         </activity>
         <!-- Don't delete the meta-data below.
             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
