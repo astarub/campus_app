@@ -56,15 +56,17 @@ class ImprintPage extends StatelessWidget {
                     44780 Bochum<br>
                     <br>
                     Inhaltlich Verantwortlich:<br>
-                    Henry Herrmann (Vorsitzender)<br>
+                    Jasmin Al Osman (Vorsitzende)<br>
                     <br>
                     Vertretungsberechtigter Vorstand:<br>
-                    Ron Agethen<br>
                     Tim Barsch<br>
                     Tobias Beckschulte<br>
-                    Hanife Demir<br>
-                    Marc Gallert<br>
+                    Jan Hendrick Gallert<br>
+                    Viviane Götten<br>
                     Paul Hoffstiepel<br>
+                    Nathalie Lämmer<br>
+                    Roni Özdemir<br>
+                    Meliena Walm<br>
                     <br>
                     Telefon: <a href="tel:+492343222416">+49 234 3222416</a><br>
                     E-Mail: <a href="mailto:info@asta-bochum.de">info@asta-bochum.de</a><br>
