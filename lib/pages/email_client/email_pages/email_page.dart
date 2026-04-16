@@ -80,7 +80,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     } else {
       // Show login screen if not authenticated
       setState(() {
-        _isLoading = false;
+        _isLoading = false; // this should be true i believe, leading to no loading indicator after login
       });
     }
   }
