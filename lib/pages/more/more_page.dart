@@ -289,7 +289,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                         'assets/img/asta_logo.png',
                         width: 50,
                         height: 50,
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         alignment: Alignment.bottomCenter,
                       ),
                     ],
