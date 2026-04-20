@@ -105,7 +105,6 @@ linter:
     - file_names
     - hash_and_equals
     - implementation_imports
-    - invariant_booleans
     - collection_methods_unrelated_type
     - join_return_with_assignment
     - leading_newlines_in_multiline_strings
@@ -140,8 +139,6 @@ linter:
     - prefer_const_literals_to_create_immutables
     - prefer_constructors_over_static_methods
     - prefer_contains
-    - prefer_equal_for_default_values
-    - prefer_final_fields
     - prefer_final_in_for_each
     - prefer_final_locals
     - prefer_for_elements_to_map_fromIterable

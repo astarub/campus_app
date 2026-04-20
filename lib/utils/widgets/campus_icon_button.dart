@@ -86,6 +86,7 @@ class CampusIconButton extends StatelessWidget {
                     color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                         ? Colors.black
                         : const Color.fromRGBO(184, 186, 191, 1),
+                    filterQuality: FilterQuality.none,
                     width: 20,
                   ),
           ),

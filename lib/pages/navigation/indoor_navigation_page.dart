@@ -7,13 +7,12 @@ import 'package:campus_app/main.dart';
 import 'package:campus_app/pages/navigation/data/room_graph.dart';
 import 'package:campus_app/pages/navigation/models/floor_map.dart';
 import 'package:campus_app/pages/navigation/outdoor_navigation_page.dart';
-import 'package:campus_app/pages/navigation/widgets/compass.dart';
 import 'package:campus_app/pages/navigation/widgets/destination_waypoint.dart';
 import 'package:campus_app/pages/navigation/widgets/navigation_buttons.dart';
 import 'package:campus_app/pages/navigation/widgets/room_label.dart';
 import 'package:campus_app/pages/navigation/widgets/start_waypoint.dart';
 import 'package:campus_app/pages/navigation/widgets/waypoint_arrow.dart';
-import 'package:campus_app/utils/pages/navigation_utils.dart';
+import 'package:campus_app/utils/pages/indoor_navigation_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
 import 'package:flutter/foundation.dart';
@@ -54,7 +53,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
   double previousRotation = 0;
 
   final TransformationController controller = TransformationController();
-  final NavigationUtils utils = sl<NavigationUtils>();
+  final IndoorNavigationUtils utils = sl<IndoorNavigationUtils>();
   final TextEditingController startController = TextEditingController();
   final TextEditingController zielController = TextEditingController();
 

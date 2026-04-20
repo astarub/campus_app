@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/navigation/models/room_label.dart';
-import 'package:campus_app/utils/pages/navigation_utils.dart';
+import 'package:campus_app/utils/pages/indoor_navigation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +26,7 @@ class RoomLabelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentThemeData = Provider.of<ThemesNotifier>(context).currentThemeData;
-    final NavigationUtils utils = sl<NavigationUtils>();
+    final IndoorNavigationUtils utils = sl<IndoorNavigationUtils>();
 
     // Normalize angle to (-π, π)
     double textRot = -rotation;
