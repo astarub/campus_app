@@ -1,3 +1,9 @@
+// This is a temporary file to provide a login screen visually and basically functionally identical to the ticket login screen
+// The goal is to eventually replace both the ticket and email login screen with a central login portal screen
+
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,23 +12,22 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/exceptions.dart';
-import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
-import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
 import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_textfield.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 
-class TicketLoginScreen extends StatefulWidget {
-  final void Function() onTicketLoaded;
-  const TicketLoginScreen({super.key, required this.onTicketLoaded});
+class EmailLoginScreen extends StatefulWidget {
+  final Future<void> Function(String username, String password) onLogin;
+  final void Function()? onLoginSuccess;
+  const EmailLoginScreen({super.key, required this.onLoginSuccess, required this.onLogin});
 
   @override
-  State<TicketLoginScreen> createState() => _TicketLoginScreenState();
+  State<EmailLoginScreen> createState() => _EmailLoginScreenState();
 }
 
-class _TicketLoginScreenState extends State<TicketLoginScreen> {
-  final TicketRepository ticketRepository = sl<TicketRepository>();
+class _EmailLoginScreenState extends State<EmailLoginScreen> {
+  //final TicketRepository ticketRepository = sl<TicketRepository>();
   final FlutterSecureStorage secureStorage = sl<FlutterSecureStorage>();
   final WalletUtils walletUtils = sl<WalletUtils>();
 
@@ -34,6 +39,83 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
   String errorMessage = '';
 
   bool loading = false;
+  bool _disposed = false;
+
+  Future<void> _restorePreviousCredentials(String? previousUsername, String? previousPassword) async {
+    try {
+      if (previousUsername != null && previousPassword != null) {
+        await secureStorage.write(key: 'loginId', value: previousUsername);
+        await secureStorage.write(key: 'password', value: previousPassword);
+      }
+    } catch (e) {
+      debugPrint('Error restoring credentials: $e');
+    }
+  }
+
+  Future<void> _handleLogin() async {
+    if (_disposed) return;
+
+    final navigator = Navigator.of(context);
+    final userName = usernameController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (userName.isEmpty || password.isEmpty) {
+      _showError('Bitte fülle beide Felder aus!');
+      return;
+    }
+
+    if (await walletUtils.hasNetwork() == false) {
+      _showError('Überprüfe deine Internetverbindung!');
+      return;
+    }
+
+    setState(() {
+      showErrorMessage = false;
+      loading = true;
+    });
+
+    final previousLoginId = await secureStorage.read(key: 'loginId');
+    final previousPassword = await secureStorage.read(key: 'password');
+
+    await secureStorage.write(key: 'loginId', value: usernameController.text);
+    await secureStorage.write(key: 'password', value: passwordController.text);
+
+    try {
+      await widget.onLogin(userName, password).timeout(const Duration(seconds: 30));
+
+      if (!_disposed) {
+        widget.onLoginSuccess?.call();
+        navigator.pop();
+      }
+    } on TimeoutException {
+      _showError('Server antwortet nicht. Versuche es später erneut.');
+      await _restorePreviousCredentials(previousLoginId, previousPassword);
+    } on SocketException {
+      _showError('Überprüfe deine Netzwerkverbindung!');
+      await _restorePreviousCredentials(previousLoginId, previousPassword);
+    } on InvalidLoginIDAndPasswordException {
+      _showError('Falsche LoginID und/oder Password!');
+      await _restorePreviousCredentials(previousLoginId, previousPassword);
+    } catch (e) {
+      debugPrint('Login error type: ${e.runtimeType}, message: $e');
+      await _restorePreviousCredentials(previousLoginId, previousPassword);
+    } finally {
+      if (!_disposed) {
+        setState(() {
+          loading = false;
+        });
+      }
+    }
+  }
+
+  void _showError(String message) {
+    if (!_disposed) {
+      setState(() {
+        errorMessage = message;
+        showErrorMessage = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,64 +204,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                   const Padding(padding: EdgeInsets.only(top: 15)),
                   CampusButton(
                     text: 'Login',
-                    onTap: () async {
-                      final NavigatorState navigator = Navigator.of(context);
-
-                      if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
-                        setState(() {
-                          errorMessage = 'Bitte fülle beide Felder aus!';
-                          showErrorMessage = true;
-                        });
-                        return;
-                      }
-
-                      if (await walletUtils.hasNetwork() == false) {
-                        setState(() {
-                          errorMessage = 'Überprüfe deine Internetverbindung!';
-                          showErrorMessage = true;
-                        });
-                        return;
-                      }
-
-                      setState(() {
-                        showErrorMessage = false;
-                        loading = true;
-                      });
-
-                      final previousLoginId = await secureStorage.read(key: 'loginId');
-                      final previousPassword = await secureStorage.read(key: 'password');
-
-                      await secureStorage.write(key: 'loginId', value: usernameController.text);
-                      await secureStorage.write(key: 'password', value: passwordController.text);
-
-                      try {
-                        await ticketRepository.loadTicket();
-                        widget.onTicketLoaded();
-                        context.read<TicketWarningNotifier>().set(false);
-                        navigator.pop();
-                      } on InvalidLoginIDAndPasswordException {
-                        setState(() {
-                          errorMessage = 'Falsche LoginID und/oder Passwort!';
-                          showErrorMessage = true;
-                        });
-                      } catch (e) {
-                        final ticketLoaded = await ticketRepository.getAztecCode();
-
-                        setState(() {
-                          errorMessage = 'Fehler beim Laden des Tickets!';
-                          showErrorMessage = true;
-                          if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
-                        });
-
-                        if (previousLoginId != null && previousPassword != null) {
-                          await secureStorage.write(key: 'loginId', value: previousLoginId);
-                          await secureStorage.write(key: 'password', value: previousPassword);
-                        }
-                      }
-                      setState(() {
-                        loading = false;
-                      });
-                    },
+                    onTap: _handleLogin,
                   ),
                   const Padding(padding: EdgeInsets.only(top: 25)),
                   Row(
@@ -227,5 +252,13 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

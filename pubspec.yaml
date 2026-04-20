@@ -1,7 +1,7 @@
 name: campus_app
 description: Simplifie, improve and facilitate everyday students life.
-publish_to: 'none'
-version: 2.3.4
+publish_to: "none"
+version: 2.4.2+65
 
 environment:
   sdk: ">=3.6.0 <4.0.0"
@@ -153,6 +153,7 @@ flutter:
     - assets/img/icons/twitch.svg
     - assets/img/icons/tiktok.svg
     - assets/img/icons/website.svg
+    - assets/img/icons/warning.svg
     - assets/img/icons/mail.svg
     - assets/img/icons/search.svg
     - assets/img/icons/filter.svg
@@ -179,12 +180,14 @@ flutter:
     - assets/img/icons/flexnow-link.png
     - assets/img/icons/rub-link.png
     - assets/img/icons/siren.svg
+    - assets/img/icons/success.svg
     - assets/img/icons/message-square.svg
     - assets/img/icons/share.svg
     - assets/img/icons/discord-filled.svg
     - assets/img/icons/github.svg
     - assets/img/icons/help-circle.svg
     - assets/img/icons/euro.svg
+    - assets/img/icons/tk_icon.svg
     - assets/animations/nfc-light.json
     - assets/animations/nfc-dark.json
     - assets/animations/coin-flip.json

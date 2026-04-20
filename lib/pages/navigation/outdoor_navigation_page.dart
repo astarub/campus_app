@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:campus_app/core/injection.dart';
@@ -11,7 +12,8 @@ import 'package:campus_app/pages/navigation/data/room_graph.dart';
 import 'package:campus_app/pages/navigation/data/vending_machines.dart';
 import 'package:campus_app/pages/navigation/indoor_navigation_page.dart';
 import 'package:campus_app/pages/navigation/navigation_onboarding.dart';
-import 'package:campus_app/utils/pages/navigation_utils.dart';
+import 'package:campus_app/pages/navigation/widgets/error_bubble.dart';
+import 'package:campus_app/utils/pages/outdoor_navigation_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,76 +26,6 @@ import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 String? selectedLocationGlobal;
-
-Map<String, LatLng> addGraphEntriesToPredefinedLocationsIsolate(
-  Map<String, dynamic> params,
-) {
-  final rawGraph = params['graph'] as Map<dynamic, dynamic>;
-  final Map<List<String>, dynamic> graph = {
-    for (final entry in rawGraph.entries) (entry.key as List<dynamic>).map((e) => e.toString()).toList(): entry.value,
-  };
-
-  final Map<String, LatLng> predefined = Map<String, LatLng>.from(params['predefined']);
-
-  String findClosestMatch(String target, List<String> candidates) {
-    int computeSimilarity(String a, String b) {
-      final int minLength = a.length < b.length ? a.length : b.length;
-      int matches = 0;
-      for (int i = 0; i < minLength; i++) {
-        if (a[i] == b[i]) {
-          matches++;
-        }
-      }
-      return matches;
-    }
-
-    String? closest = candidates.isNotEmpty ? candidates.first : null;
-    int maxSimilarity = 0;
-
-    for (final candidate in candidates) {
-      final int similarity = computeSimilarity(target, candidate);
-      if (similarity > maxSimilarity) {
-        maxSimilarity = similarity;
-        closest = candidate;
-      }
-    }
-
-    return closest ?? '';
-  }
-
-  for (final entry in graph.entries) {
-    final key = entry.key;
-    final building = key[0];
-    final level = key[1];
-    final room = key[2];
-
-    if (!room.contains('EN_')) {
-      final name = '$building $level/$room';
-      final closestMatchKey = findClosestMatch(
-        name,
-        predefined.keys.toList(),
-      );
-
-      if (closestMatchKey.isNotEmpty) {
-        predefined.putIfAbsent(name, () => predefined[closestMatchKey]!);
-      }
-    }
-  }
-
-  return predefined;
-}
-
-// Isolate responsible for providing map tiles using backend-server
-Future<TileLayer> buildTileLayerInIsolate() async {
-  return compute(_buildTileLayerWorker, null);
-}
-
-TileLayer _buildTileLayerWorker(dynamic _) {
-  return TileLayer(
-    // URL template
-    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-  );
-}
 
 class NavigationPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -116,12 +48,17 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   bool showCurrentLocation = false;
   List<String> suggestions = [];
   LatLng? symbolPosition;
-  final NavigationUtils utils = sl<NavigationUtils>();
+  final OutdoorNavigationUtils utils = sl<OutdoorNavigationUtils>();
   List<LatLng> waypoints = [];
   bool isFirstTime = false;
   bool isSidebarOpen = false;
   bool hasProcessedGlobalLocation = false;
   bool hasAutoUnfocused = false;
+  bool hasInitializedOnVisible = false;
+  bool isInitializingOnVisible = false;
+  String? navigationMessage;
+  Timer? navigationMessageTimer;
+  final Location locationService = Location.instance;
   final MapController mapController = MapController();
   Future<TileLayer>? tileLayerFuture;
   bool isTileLoading = true;
@@ -130,7 +67,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
 
   Future<void> addGraphEntriesInIsolate() async {
     final result = await compute(
-      addGraphEntriesToPredefinedLocationsIsolate,
+      OutdoorNavigationUtils.addGraphEntriesToPredefinedLocationsIsolate,
       {
         'graph': graph.map((k, v) => MapEntry([k.$1, k.$2, k.$3], v)),
         'predefined': predefinedLocations,
@@ -143,67 +80,13 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   }
 
   void addGraphEntriesToPredefinedLocations() {
-    String findClosestMatch(String target, List<String> candidates) {
-      int computeSimilarity(String a, String b) {
-        final int minLength = a.length < b.length ? a.length : b.length;
-        int matches = 0;
-
-        for (int i = 0; i < minLength; i++) {
-          if (a[i] == b[i]) {
-            matches++;
-          }
-        }
-        return matches;
-      }
-
-      String? closest = candidates.isNotEmpty ? candidates.first : null;
-      int maxSimilarity = 0;
-
-      for (final candidate in candidates) {
-        final int similarity = computeSimilarity(target, candidate);
-        if (similarity > maxSimilarity) {
-          maxSimilarity = similarity;
-          closest = candidate;
-        }
-      }
-
-      return closest ?? '';
-    }
-
-    graph.forEach((key, value) {
-      final building = key.$1;
-      final level = key.$2;
-      final room = key.$3;
-
-      if (!room.contains('EN_')) {
-        final name = '$building $level/$room';
-        final closestMatchKey = findClosestMatch(
-          name,
-          predefinedLocations.keys.toList(),
-        );
-
-        if (closestMatchKey.isNotEmpty) {
-          predefinedLocations.putIfAbsent(
-            name,
-            () => predefinedLocations[closestMatchKey]!,
-          );
-        }
-      }
+    final mergedLocations = OutdoorNavigationUtils.addGraphEntriesToPredefinedLocations(
+      graphData: graph,
+      predefinedLocations: predefinedLocations,
+    );
+    setState(() {
+      predefinedLocations = mergedLocations;
     });
-    setState(() {});
-  }
-
-  Future<void> animateCameraAlongRoute(List<LatLng> waypoints, {double zoom = 19.0, int stepDurationMs = 40}) async {
-    if (waypoints.length < 2) return;
-
-    mapController.move(waypoints.first, zoom);
-    await Future.delayed(const Duration(seconds: 1));
-
-    for (final point in waypoints.skip(1)) {
-      if (!mounted) return;
-      mapController.move(point, zoom);
-      await Future.delayed(Duration(milliseconds: stepDurationMs));
-    }
   }
 
   @override
@@ -217,11 +100,23 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
       });
       hasAutoUnfocused = true;
     }
-    final double sidebarTop = MediaQuery.of(context).size.height / 2 - 100;
     final bool isLightTheme = Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light;
-    final Color sidebarBackgroundColor =
-        isLightTheme ? const Color.fromRGBO(245, 246, 250, 1) : const Color.fromRGBO(34, 40, 54, 1);
-    final Color iconColor = isLightTheme ? Colors.black : Colors.white;
+    final bool isPhoneLayout = MediaQuery.of(context).size.shortestSide < 600;
+    final double bottomNavHeight = Platform.isIOS ? 88 : 98;
+    final double homePageBottomPadding = Platform.isIOS ? 80 : 60;
+    final double fabBottomOffset = isPhoneLayout ? (bottomNavHeight - homePageBottomPadding + 12) : 0;
+    final Color indoorButtonBackgroundColor = isLightTheme
+        ? Color.alphaBlend(
+            const Color.fromRGBO(165, 216, 255, 0.32),
+            Colors.white,
+          )
+        : currentThemeData.colorScheme.surface;
+    final Color indoorButtonTextColor =
+        isLightTheme ? const Color.fromRGBO(128, 195, 255, 1) : currentThemeData.colorScheme.secondary;
+    final Color indoorButtonIconColor =
+        isLightTheme ? const Color.fromRGBO(128, 195, 255, 1) : currentThemeData.colorScheme.secondary;
+    final Color indoorButtonIconHighlightColor =
+        isLightTheme ? const Color.fromRGBO(165, 216, 255, 0.35) : Colors.transparent;
 
     // Display guide if first time use
     if (isFirstTime) {
@@ -258,6 +153,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
             final bool isVisible = info.visibleFraction > 0;
 
             if (isVisible) {
+              initializeOnFirstVisible();
               if (homeKey.currentState != null) {
                 homeKey.currentState!.setSwipeDisabled(disableSwipe: true);
               }
@@ -384,7 +280,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                               ),
                                         );
                                       },
-                                      onSelected: changeSelectedLocation,
+                                      onSelected: selectDestination,
                                       optionsViewBuilder: (
                                         BuildContext context,
                                         AutocompleteOnSelected<String> onSelected,
@@ -425,8 +321,6 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                         FocusNode focusNode,
                                         VoidCallback onFieldSubmitted,
                                       ) {
-                                        focusNode = focusNode;
-
                                         return TextField(
                                           controller: textEditingController,
                                           focusNode: focusNode,
@@ -443,8 +337,15 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                                   : null,
                                             ),
                                           ),
-                                          onChanged: (value) {},
-                                          onSubmitted: changeSelectedLocation,
+                                          onChanged: (value) {
+                                            searchController.text = value;
+                                          },
+                                          onSubmitted: (value) {
+                                            centerMapOnSearchInput(
+                                              query: value,
+                                              showMessageOnMiss: true,
+                                            );
+                                          },
                                         );
                                       },
                                     ),
@@ -467,13 +368,47 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                         : const Color.fromRGBO(34, 40, 54, 1),
                                     transparent: true,
                                     onTap: () {
+                                      centerMapOnSearchInput(
+                                        showMessageOnMiss: true,
+                                      );
                                       FocusScope.of(context).unfocus();
                                     },
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    width: 42,
+                                    height: 42,
+                                    decoration: BoxDecoration(
+                                      color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Material(
+                                      color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                              AppThemes.light
+                                          ? const Color.fromRGBO(245, 246, 250, 1)
+                                          : const Color.fromRGBO(34, 40, 54, 1),
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: InkWell(
+                                        borderRadius: BorderRadius.circular(15),
+                                        onTap: routeFromCurrentLocationToSelectedDestination,
+                                        child: Icon(
+                                          Icons.my_location_rounded,
+                                          size: 22,
+                                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
+                                                  AppThemes.light
+                                              ? Colors.black
+                                              : const Color.fromRGBO(184, 186, 191, 1),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
+                        ),
+                        NavigationErrorBubble(
+                          message: navigationMessage,
                         ),
                         // TODO: Add data for emergencyAssemblyPoints, vendingMachines etc.
                         // AnimatedPositioned(
@@ -555,30 +490,52 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                 ),
               ],
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                //TODO: Move function call into indoorNav into async call to update graph and images
-                /*
-            final graph2 = await ensureLatestGraph();
-            graph = graph2;
-            await syncMapImages();
-            */
-                //------
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const IndoorNavigation()),
-                );
-              },
-              backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-              child: SvgPicture.asset(
-                'assets/img/icons/door-closed.svg',
-                colorFilter: ColorFilter.mode(
-                  Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                      ? Colors.black
-                      : const Color.fromRGBO(184, 186, 191, 1),
-                  BlendMode.srcIn,
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButton: Padding(
+              padding: EdgeInsets.only(bottom: fabBottomOffset),
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  //TODO: Move function call into indoorNav into async call to update graph and images
+                  /*
+              final graph2 = await ensureLatestGraph();
+              graph = graph2;
+              await syncMapImages();
+              */
+                  //------
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const IndoorNavigation()),
+                  );
+                },
+                elevation: 9,
+                highlightElevation: 12,
+                extendedPadding: const EdgeInsets.symmetric(horizontal: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                width: 24,
+                backgroundColor: indoorButtonBackgroundColor,
+                icon: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: indoorButtonIconHighlightColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/img/icons/door-closed.svg',
+                    colorFilter: ColorFilter.mode(
+                      indoorButtonIconColor,
+                      BlendMode.srcIn,
+                    ),
+                    width: 22,
+                  ),
+                ),
+                label: Text(
+                  'Raumfinder',
+                  style: (currentThemeData.textTheme.labelMedium ?? const TextStyle()).copyWith(
+                    color: indoorButtonTextColor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
             ),
           ),
@@ -588,12 +545,20 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   }
 
   Future<void> calcNearestLoc(Map<String, LatLng> locations) async {
-    if (currentLocation == null) {
+    final bool hasAccess = await ensureLocationAccess();
+    if (!hasAccess) {
       return;
     }
+
+    final LocationData? currentLocationData = await getUserLocation();
+    if (currentLocationData?.latitude == null || currentLocationData?.longitude == null) {
+      showNavigationMessage('Aktuelle Position konnte nicht ermittelt werden.');
+      return;
+    }
+
     final LatLng currentPos = LatLng(
-      currentLocation!.latitude!,
-      currentLocation!.longitude!,
+      currentLocationData!.latitude!,
+      currentLocationData.longitude!,
     );
 
     const Distance distance = Distance();
@@ -615,48 +580,33 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
 
       await setShortestPath(currentPos, destination);
       setState(() {
+        currentLocation = currentLocationData;
         showCurrentLocation = true;
       });
+      focusMapToRouteOrDestination(destination);
     } else {
       return;
     }
   }
 
-  //-----------------------------------------------------------------------------
-
-  Future<void> changeSelectedLocation(String selectedOption) async {
-    searchController.text = selectedOption;
-    selectedLocationGlobal = selectedOption;
-    placeSymbol(selectedOption);
-
-    try {
-      if (currentLocation == null) {
-        final LatLng? endLocation = predefinedLocations[selectedOption];
-        if (endLocation != null) {
-          mapController.move(endLocation, 17);
-        }
-        return;
-      }
-
-      final LatLng startLocation = LatLng(
-        currentLocation!.latitude!,
-        currentLocation!.longitude!,
-      );
-      final LatLng? endLocation = predefinedLocations[selectedOption];
-      if (endLocation == null) return;
-
-      await setShortestPath(startLocation, endLocation);
-
-      setState(() {
-        showCurrentLocation = true;
-      });
-
-      if (waypoints.isNotEmpty) {
-        await animateCameraAlongRoute(List<LatLng>.from(waypoints.reversed));
-      }
-    } catch (e, stacktrace) {
-      debugPrint('Error $stacktrace');
+  Future<void> centerMapOnSearchInput({
+    String? query,
+    bool showMessageOnMiss = false,
+  }) async {
+    final String selectedOption = (query ?? searchController.text).trim();
+    if (selectedOption.isEmpty) {
+      return;
     }
+
+    final LatLng? endLocation = predefinedLocations[selectedOption];
+    if (endLocation == null) {
+      if (showMessageOnMiss) {
+        showNavigationMessage('Das ausgewählte Ziel wurde nicht gefunden.');
+      }
+      return;
+    }
+
+    await selectDestination(selectedOption);
   }
 
   Future<void> checkFirstTimeUser() async {
@@ -680,16 +630,78 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
         searchController.text = location;
         final query = searchController.text.trim();
         if (query.isNotEmpty) {
-          changeSelectedLocation(query);
+          selectDestination(query);
         }
       });
     }
   }
 
+  @override
+  void dispose() {
+    navigationMessageTimer?.cancel();
+    focusNode.dispose();
+    searchController.dispose();
+    super.dispose();
+  }
+
+  Future<bool> ensureLocationAccess({bool requestIfMissing = true}) async {
+    try {
+      bool serviceEnabled = await locationService.serviceEnabled();
+      if (!serviceEnabled) {
+        if (!requestIfMissing) return false;
+        serviceEnabled = await locationService.requestService();
+        if (!serviceEnabled) {
+          showNavigationMessage('Bitte aktiviere die Ortungsdienste auf deinem Gerät.');
+          return false;
+        }
+      }
+
+      PermissionStatus permission = await locationService.hasPermission();
+      if (permission == PermissionStatus.denied && requestIfMissing) {
+        permission = await locationService.requestPermission();
+      }
+
+      if (permission == PermissionStatus.deniedForever) {
+        showNavigationMessage('Standortzugriff ist dauerhaft blockiert. Bitte in den Systemeinstellungen aktivieren.');
+        return false;
+      }
+
+      if (permission == PermissionStatus.denied) {
+        showNavigationMessage('Standortzugriff erforderlich, um eine Route von deinem Standort zu starten.');
+        return false;
+      }
+
+      return permission == PermissionStatus.granted || permission == PermissionStatus.grantedLimited;
+    } catch (e) {
+      debugPrint('Error ensuring location access: $e');
+      showNavigationMessage('Standortberechtigung konnte nicht geprüft werden.');
+      return false;
+    }
+  }
+
+  void focusMapToRouteOrDestination(LatLng destination) {
+    if (waypoints.length >= 2) {
+      mapController.fitCamera(
+        CameraFit.coordinates(
+          coordinates: waypoints,
+          padding: const EdgeInsets.fromLTRB(60, 160, 60, 80),
+          maxZoom: 18,
+        ),
+      );
+      return;
+    }
+
+    if (waypoints.length == 1) {
+      mapController.move(waypoints.first, 18);
+      return;
+    }
+
+    mapController.move(destination, 17);
+  }
+
   Future<LocationData?> getUserLocation() async {
     try {
-      final location = Location();
-      return await location.getLocation();
+      return await locationService.getLocation();
     } catch (e) {
       debugPrint('Error getting location: $e');
       return null;
@@ -705,23 +717,33 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     }
   }
 
-  Future<void> initializePage() async {
-    predefinedLocations = sortPredefinedLocations(predefinedLocations);
-    tileLayerFuture = buildTileLayerInIsolate();
-    currentLocation = await getUserLocation();
+  Future<void> initializeOnFirstVisible() async {
+    if (hasInitializedOnVisible || isInitializingOnVisible) return;
+    isInitializingOnVisible = true;
 
-    setState(() {
-      showCurrentLocation = currentLocation != null;
-      isTileLoading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() async {
+    try {
       await checkFirstTimeUser();
       await initializePage();
+    } finally {
+      isInitializingOnVisible = false;
+      if (mounted) {
+        setState(() {
+          hasInitializedOnVisible = true;
+        });
+      } else {
+        hasInitializedOnVisible = true;
+      }
+    }
+  }
+
+  Future<void> initializePage() async {
+    predefinedLocations = OutdoorNavigationUtils.sortPredefinedLocations(
+      predefinedLocations,
+    );
+    tileLayerFuture = OutdoorNavigationUtils.buildTileLayerInIsolate();
+
+    setState(() {
+      isTileLoading = false;
     });
   }
 
@@ -734,13 +756,71 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     }
   }
 
+  Future<void> routeFromCurrentLocationToSelectedDestination() async {
+    final String selectedOption = searchController.text.trim();
+
+    if (selectedOption.isEmpty) {
+      showNavigationMessage('Bitte wähle zuerst ein Ziel aus.');
+      return;
+    }
+
+    final LatLng? endLocation = predefinedLocations[selectedOption];
+    if (endLocation == null) {
+      showNavigationMessage('Das ausgewählte Ziel wurde nicht gefunden.');
+      return;
+    }
+
+    final bool hasAccess = await ensureLocationAccess();
+    if (!hasAccess) {
+      return;
+    }
+
+    final LocationData? userLocation = await getUserLocation();
+    if (userLocation?.latitude == null || userLocation?.longitude == null) {
+      showNavigationMessage('Aktuelle Position konnte nicht ermittelt werden.');
+      return;
+    }
+
+    final LatLng startLocation = LatLng(
+      userLocation!.latitude!,
+      userLocation.longitude!,
+    );
+
+    try {
+      await setShortestPath(startLocation, endLocation);
+
+      setState(() {
+        currentLocation = userLocation;
+        showCurrentLocation = true;
+      });
+      focusMapToRouteOrDestination(endLocation);
+    } catch (e, stacktrace) {
+      debugPrint('Error while routing to selected destination: $e\n$stacktrace');
+      showNavigationMessage('Route konnte nicht berechnet werden.');
+    }
+  }
+
+  Future<void> selectDestination(String selectedOption) async {
+    searchController.text = selectedOption;
+    selectedLocationGlobal = selectedOption;
+    placeSymbol(selectedOption);
+
+    final LatLng? endLocation = predefinedLocations[selectedOption];
+    if (endLocation == null) return;
+
+    setState(() {
+      waypoints = [];
+    });
+    mapController.move(endLocation, 17);
+  }
+
   Future<void> setInitialLocation() async {
     try {
+      final bool hasAccess = await ensureLocationAccess();
+      if (!hasAccess) return;
       waypoints = [];
-
-      final Location location = Location();
-
-      final LocationData currentLocation2 = await location.getLocation();
+      final LocationData? currentLocation2 = await getUserLocation();
+      if (currentLocation2 == null) return;
 
       setState(() {
         currentLocation = currentLocation2;
@@ -768,9 +848,20 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     }
   }
 
-  Map<String, LatLng> sortPredefinedLocations(Map<String, LatLng> locations) {
-    final sortedEntries = locations.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
-    return Map<String, LatLng>.fromEntries(sortedEntries);
+  //-----------------------------------------------------------------------------
+
+  void showNavigationMessage(String message) {
+    if (!mounted) return;
+    navigationMessageTimer?.cancel();
+    setState(() {
+      navigationMessage = message;
+    });
+    navigationMessageTimer = Timer(const Duration(seconds: 3), () {
+      if (!mounted) return;
+      setState(() {
+        navigationMessage = null;
+      });
+    });
   }
 
   void toggleSidebar() {

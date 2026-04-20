@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:campus_app/core/injection.dart';
-import 'package:campus_app/utils/widgets/login_screen.dart';
+import 'package:campus_app/pages/email_client/email_pages/email_login_screen.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_drawer.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_view.dart';
 import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
@@ -67,21 +67,29 @@ class _EmailClientContentState extends State<_EmailClientContent> {
       },
     )..addListener(_onSelectionChanged); // Listen for selection state changes
 
-    // Check stored credentials and try to authenticate
-    final isAuthenticated = await emailAuthService.isAuthenticated();
+    try {
+      final isAuthenticated = await emailAuthService.isAuthenticated();
 
-    if (isAuthenticated) {
-      // If valid, initialize mailbox
-      await emailService.initialize();
-      setState(() {
-        _isAuthenticated = true;
-        _isLoading = false;
-      });
-    } else {
-      // Show login screen if not authenticated
-      setState(() {
-        _isLoading = false; // this should be true i believe, leading to no loading indicator after login
-      });
+      if (isAuthenticated) {
+        await emailService.initialize();
+        if (mounted) {
+          setState(() {
+            _isAuthenticated = true;
+            _isLoading = false;
+          });
+        }
+      } else {
+        if (mounted) setState(() => _isLoading = false);
+      }
+    } catch (e) {
+      debugPrint('Email init error: $e');
+      // any failure -> return to login screen
+      if (mounted) {
+        setState(() {
+          _isAuthenticated = false;
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -98,10 +106,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginScreen(
-          loginType: LoginType.email,
-          customTitle: 'RubMail Login',
-          customDescription: 'Melde dich mit deinen RUB-Daten an, um auf deine E-Mails zuzugreifen.',
+        builder: (context) => EmailLoginScreen(
           onLogin: (username, password) async {
             final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
             await emailAuthService.authenticate(username, password);
