@@ -7,6 +7,7 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
+import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
 import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_textfield.dart';
@@ -154,19 +155,21 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                       try {
                         await ticketRepository.loadTicket();
                         widget.onTicketLoaded();
+                        context.read<TicketWarningNotifier>().set(false);
                         navigator.pop();
+                      } on InvalidLoginIDAndPasswordException {
+                        setState(() {
+                          errorMessage = 'Falsche LoginID und/oder Passwort!';
+                          showErrorMessage = true;
+                        });
                       } catch (e) {
-                        if (e is InvalidLoginIDAndPasswordException) {
-                          setState(() {
-                            errorMessage = 'Falsche LoginID und/oder Passwort!';
-                            showErrorMessage = true;
-                          });
-                        } else {
-                          setState(() {
-                            errorMessage = 'Fehler beim Laden des Tickets!';
-                            showErrorMessage = true;
-                          });
-                        }
+                        final ticketLoaded = await ticketRepository.getAztecCode();
+
+                        setState(() {
+                          errorMessage = 'Fehler beim Laden des Tickets!';
+                          showErrorMessage = true;
+                          if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
+                        });
 
                         if (previousLoginId != null && previousPassword != null) {
                           await secureStorage.write(key: 'loginId', value: previousLoginId);
