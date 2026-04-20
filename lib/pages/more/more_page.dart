@@ -219,9 +219,10 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                             onTap: () => openLink(context, 'https://www.tk.de/kontakt/marc.rohde'),
                           ),
                           ExternalLinkButton(
-                            title: 'TK-TerminService',
+                            title: 'Beratungstermine an der RUB',
                             leadingIconPath: 'assets/img/icons/tk_icon.svg',
-                            onTap: () => openLink(context, 'https://www.tk.de/service/form/2028156/terminservice.form'),
+                            onTap: () =>
+                                openLink(context, 'https://online-terminvergabe-techniker.de/Portal/Event/6PNSLX'),
                           ),
                         ],
                       ),
