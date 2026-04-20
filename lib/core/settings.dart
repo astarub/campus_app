@@ -17,9 +17,12 @@ class SettingsHandler with ChangeNotifier {
   /// Holds the currently used settings
   Settings _currentSettings = Settings();
 
+  bool _hasLoadedSettings = false;
+
   /// Is used for appyling the loaded settings
   void setLoadedSettings(Settings loadedSettings) {
     _currentSettings = loadedSettings;
+    _hasLoadedSettings = true;
     notifyListeners();
   }
 
@@ -27,6 +30,7 @@ class SettingsHandler with ChangeNotifier {
   /// the new settings.
   set currentSettings(Settings newSettings) {
     _currentSettings = newSettings;
+    _hasLoadedSettings = true;
     notifyListeners();
 
     // Save new settings
@@ -43,6 +47,8 @@ class SettingsHandler with ChangeNotifier {
   }
 
   Settings get currentSettings => _currentSettings;
+
+  bool get hasLoadedSettings => _hasLoadedSettings;
 }
 
 class Settings {
@@ -68,6 +74,8 @@ class Settings {
   final double? lastMensaTransaction;
   final List<Map<String, dynamic>>? mensaRestaurantConfig;
   final bool firstTimePathfinder;
+  final String startPageId;
+  final List<String> navbarPageOrder;
 
   Settings({
     this.useSystemDarkmode = true,
@@ -92,6 +100,15 @@ class Settings {
     this.lastMensaBalance,
     this.lastMensaTransaction,
     this.firstTimePathfinder = true,
+    this.startPageId = 'feed',
+    this.navbarPageOrder = const [
+      'feed',
+      'events',
+      'mensa',
+      'navigation',
+      'wallet',
+      'more',
+    ],
   });
 
   Settings copyWith({
@@ -117,6 +134,8 @@ class Settings {
     double? lastMensaBalance,
     double? lastMensaTransaction,
     bool? firstTimePathfinder,
+    String? startPageId,
+    List<String>? navbarPageOrder,
   }) =>
       Settings(
         useSystemDarkmode: useSystemDarkmode ?? this.useSystemDarkmode,
@@ -133,14 +152,19 @@ class Settings {
         selectedStudyCourses: selectedStudyCourses ?? this.selectedStudyCourses,
         studyCourses: studyCourses ?? this.studyCourses,
         publishers: publishers ?? this.publishers,
-        savedEventsNotifications: savedEventsNotifications ?? this.savedEventsNotifications,
+        savedEventsNotifications:
+            savedEventsNotifications ?? this.savedEventsNotifications,
         backendAccount: backendAccount ?? this.backendAccount,
         latestVersion: latestVersion ?? this.latestVersion,
-        displayFullscreenTicket: displayFullscreenTicket ?? this.displayFullscreenTicket,
+        displayFullscreenTicket:
+            displayFullscreenTicket ?? this.displayFullscreenTicket,
         lastMensaBalance: lastMensaBalance ?? this.lastMensaBalance,
         lastMensaTransaction: lastMensaTransaction ?? this.lastMensaTransaction,
-        mensaRestaurantConfig: mensaRestaurantConfig ?? this.mensaRestaurantConfig,
+        mensaRestaurantConfig:
+            mensaRestaurantConfig ?? this.mensaRestaurantConfig,
         firstTimePathfinder: firstTimePathfinder ?? this.firstTimePathfinder,
+        startPageId: startPageId ?? this.startPageId,
+        navbarPageOrder: navbarPageOrder ?? this.navbarPageOrder,
       );
 
   factory Settings.fromJson(Map<String, dynamic> json) {
@@ -148,16 +172,22 @@ class Settings {
       useSystemDarkmode: json['useSystemDarkmode'] ?? true,
       useDarkmode: json['useDarkmode'] ?? false,
       feedFilter: json['newFeedFilter'] != null
-          ? List<Map<String, dynamic>>.from(json['newFeedFilter']).map((c) => Publisher.fromJson(json: c)).toList()
+          ? List<Map<String, dynamic>>.from(json['newFeedFilter'])
+              .map((c) => Publisher.fromJson(json: c))
+              .toList()
           : List<Publisher>.from([]),
       newsExplore: json['newsExplore'] ?? false,
       eventsFilter: json['eventsFilter'] != null
-          ? List<Map<String, dynamic>>.from(json['eventsFilter']).map((c) => Publisher.fromJson(json: c)).toList()
+          ? List<Map<String, dynamic>>.from(json['eventsFilter'])
+              .map((c) => Publisher.fromJson(json: c))
+              .toList()
           : List<Publisher>.from([]),
-      mensaPreferences:
-          json['mensaPreferences'] != null ? List<String>.from(json['mensaPreferences']) : List<String>.from([]),
-      mensaAllergenes:
-          json['mensaAllergenes'] != null ? List<String>.from(json['mensaAllergenes']) : List<String>.from([]),
+      mensaPreferences: json['mensaPreferences'] != null
+          ? List<String>.from(json['mensaPreferences'])
+          : List<String>.from([]),
+      mensaAllergenes: json['mensaAllergenes'] != null
+          ? List<String>.from(json['mensaAllergenes'])
+          : List<String>.from([]),
       mensaRestaurantConfig: json['mensaRestaurantConfig'] != null
           ? List<Map<String, dynamic>>.from(json['mensaRestaurantConfig'])
           : List<Map<String, dynamic>>.from([]),
@@ -176,20 +206,30 @@ class Settings {
           : List<StudyCourse>.from([]),
       // Renamed to newStudyCourses as older settings file might provide wrong data
       studyCourses: json['newStudyCourses'] != null
-          ? List<Map<String, dynamic>>.from(json['newStudyCourses']).map((c) => StudyCourse.fromJson(json: c)).toList()
+          ? List<Map<String, dynamic>>.from(json['newStudyCourses'])
+              .map((c) => StudyCourse.fromJson(json: c))
+              .toList()
           : List<StudyCourse>.from([]),
       publishers: json['publishers'] != null
-          ? List<Map<String, dynamic>>.from(json['publishers']).map((c) => Publisher.fromJson(json: c)).toList()
+          ? List<Map<String, dynamic>>.from(json['publishers'])
+              .map((c) => Publisher.fromJson(json: c))
+              .toList()
           : List<Publisher>.from([]),
       savedEventsNotifications: json['savedEventsNotifications'] ?? true,
       backendAccount: json['backendAccount'] != null
-          ? BackendAccount.fromJson(json: Map<String, dynamic>.from(json['backendAccount']))
+          ? BackendAccount.fromJson(
+              json: Map<String, dynamic>.from(json['backendAccount']),
+            )
           : const BackendAccount.empty(),
       latestVersion: json['latestVersion'] ?? '',
       displayFullscreenTicket: json['displayFullscreenTicket'] ?? false,
       lastMensaBalance: json['lastMensaBalance'],
       lastMensaTransaction: json['lastMensaTransaction'],
       firstTimePathfinder: json['firstTimePathfinder'] ?? true,
+      startPageId: json['startPageId'] ?? 'feed',
+      navbarPageOrder: json['navbarPageOrder'] != null
+          ? List<String>.from(json['navbarPageOrder'])
+          : const ['feed', 'events', 'mensa', 'navigation', 'wallet', 'more'],
     );
   }
 
@@ -211,7 +251,8 @@ class Settings {
               ? 1
               : 0,
       'studyCoursePopup': studyCoursePopup,
-      'selectedStudyCourses': selectedStudyCourses.map((p) => p.toInternalJson()).toList(),
+      'selectedStudyCourses':
+          selectedStudyCourses.map((p) => p.toInternalJson()).toList(),
       'newStudyCourses': studyCourses.map((c) => c.toInternalJson()).toList(),
       'publishers': publishers.map((p) => p.toInternalJson()).toList(),
       'savedEventsNotifications': savedEventsNotifications,
@@ -221,6 +262,8 @@ class Settings {
       'lastMensaBalance': lastMensaBalance,
       'lastMensaTransaction': lastMensaTransaction,
       'firstTimePathfinder': firstTimePathfinder,
+      'startPageId': startPageId,
+      'navbarPageOrder': navbarPageOrder,
     };
   }
 }
