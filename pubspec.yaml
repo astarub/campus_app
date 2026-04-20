@@ -1,7 +1,7 @@
 name: campus_app
 description: Simplifie, improve and facilitate everyday students life.
 publish_to: "none"
-version: 2.4.1+63
+version: 2.4.2+65
 
 environment:
   sdk: ">=3.6.0 <4.0.0"
@@ -186,6 +186,7 @@ flutter:
     - assets/img/icons/github.svg
     - assets/img/icons/help-circle.svg
     - assets/img/icons/euro.svg
+    - assets/img/icons/tk_icon.svg
     - assets/animations/nfc-light.json
     - assets/animations/nfc-dark.json
     - assets/animations/coin-flip.json

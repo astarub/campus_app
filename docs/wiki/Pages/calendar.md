@@ -1,7 +1,5 @@
 # Calendar Page
 
-> Not full implemented yet!
-
 This page is to provide a basic overview about the "Calendar" feature located inside
 `lib/pages/calendar`.
 
@@ -11,7 +9,8 @@ This page is to provide a basic overview about the "Calendar" feature located in
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<Either<Failure, List\<CalendarEventEntity>>> | getEventsList() | Return a list of `CalendarEventEntitiy` or a Failure. It wil store the returned list for further caching in a local datasource.
+| Future<Map<String, List\<dynamic>>> | updateEventsAndFailures() | Returns a map with `failures`, `events` and `saved` event lists. |
+| Map<String, List\<dynamic>> | getCachedEventsAndFailures() | Returns cached events and failures only. |
 
 ---
 
@@ -19,20 +18,25 @@ This page is to provide a basic overview about the "Calendar" feature located in
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<Either<Failure, List\<CalendarEventEntity>>> | getAStAEvents() | Return a list of `CalendarEventEntitiy` or a Failure. With the help of `CalendarEventModel` it will parse the JSON response of `CalendarRemoteDatasource` to the corresponding entity. The requested events are coming from the AStA Wordpress instance at [asta-bochum.de](asta-bochum.de)
+| Future<Either<Failure, List\<Event>>> | getAStAEvents() | Loads AStA events, parses them and caches them. |
+| Future<Either<Failure, List\<Event>>> | getAppEvents() | Loads app events, parses them and caches them. |
+| Either<Failure, List\<Event>> | getCachedEvents() | Returns cached AStA + app events. |
+| Future<Either<Failure, List\<Event>>> | updateSavedEvents({Event? event}) | Updates and returns locally saved events. |
 
 ---
 
-## CalendarRemoteDatasource
+## CalendarDatasource
 
 | Type | Name | Description |
 |------|------|-------------|
-| Future<List\<dynamic>> | getAStAEventsAsJsonArray() | Request events from tribe API at [asta-bochum.de/wp-json/tribe/v1/events](asta-bochum.de/wp-json/tribe/v1/events). Throws a server excpetion if respond code is not 200.
-| Future\<XmlDocument> | getAStAEventfeedAsXML() | Not implemented and properly unnecessary.
+| Future<List\<dynamic>> | getAStAEventsAsJsonArray() | Requests AStA events as JSON array. |
+| Future<List\<dynamic>> | getAppEventsAsJsonArray() | Requests app events as JSON array. |
+| Future<void> | writeEventsToCache(List\<Event> entities, {bool saved = false, bool app = false}) | Writes event lists to cache. |
+| List\<Event> | readEventsFromCache({bool saved = false, bool app = false}) | Reads event lists from cache. |
 
 ---
 
-## CalendarEventEntity
+## Event
 
 ### Attributes
 
@@ -52,14 +56,13 @@ This page is to provide a basic overview about the "Calendar" feature located in
 | String | timeZone | |
 | Map<String, String> | cost | JSON object of value and currency |
 | String | website | website of event |
-| List\<CalendarCategoryEntity> | categories | list can be empty |
-| List\<CalendarTagEntity> | tags | list can be empty |
-| CalendarVenueEntity | venue | |
-| List\<CalendarOrganizerEntity> | organizers | list can be empty |
+| List\<Category> | categories | list can be empty |
+| Venue | venue | |
+| List\<Organizer> | organizers | list can be empty |
 
 ---
 
-## CalendarVenueEntity
+## Venue
 
 ### Attributes
 
@@ -78,7 +81,7 @@ This page is to provide a basic overview about the "Calendar" feature located in
 
 ---
 
-## CalendarOrganizerEntity
+## Organizer
 
 ### Attributes
 
@@ -94,7 +97,7 @@ This page is to provide a basic overview about the "Calendar" feature located in
 
 ---
 
-## CalendarCategoryEntity
+## Category
 
 ### Attributes
 
@@ -108,14 +111,4 @@ This page is to provide a basic overview about the "Calendar" feature located in
 
 ---
 
-## CalendarTagEntity
 
-### Attributes
-
-| Type | Name | Description |
-|------|------|-------------|
-| int | id|  |
-| String | url|  |
-| String | name|  |
-| String | slug| url identifier |
-| String | description|  |
