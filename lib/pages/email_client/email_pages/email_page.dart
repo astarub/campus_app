@@ -11,6 +11,7 @@ import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
 import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
+import 'package:campus_app/core/themes.dart';
 
 // Main entry widget for the email client screen
 class EmailPage extends StatelessWidget {
@@ -169,9 +170,36 @@ class _EmailClientContentState extends State<_EmailClientContent> {
   Widget build(BuildContext context) {
     // Show loading spinner while initializing
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
+      return Scaffold(
+        backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: SizedBox(
+                height: MediaQuery.heightOf(context) * 0.075,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    iconSize: 30,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
+                  color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
+                  strokeWidth: 3,
+                ),
+              ),
+            ),
+          ],
         ),
       );
     }

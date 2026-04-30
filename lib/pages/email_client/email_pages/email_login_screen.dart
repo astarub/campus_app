@@ -16,10 +16,11 @@ import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_textfield.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
+import 'package:campus_app/pages/email_client/email_pages/email_auth_page.dart';
 
 class EmailLoginScreen extends StatefulWidget {
   final Future<void> Function(String username, String password) onLogin;
-  final void Function()? onLoginSuccess;
+  final Future<void> Function()? onLoginSuccess;
   const EmailLoginScreen({super.key, required this.onLoginSuccess, required this.onLogin});
 
   @override
@@ -38,9 +39,6 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   bool showErrorMessage = false;
   String errorMessage = '';
 
-  bool loading = false;
-  bool _disposed = false;
-
   Future<void> _restorePreviousCredentials(String? previousUsername, String? previousPassword) async {
     try {
       if (previousUsername != null && previousPassword != null) {
@@ -53,8 +51,6 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   }
 
   Future<void> _handleLogin() async {
-    if (_disposed) return;
-
     final navigator = Navigator.of(context);
     final userName = usernameController.text.trim();
     final password = passwordController.text.trim();
@@ -69,10 +65,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
       return;
     }
 
-    setState(() {
-      showErrorMessage = false;
-      loading = true;
-    });
+    if (mounted) setState(() => showErrorMessage = false);
 
     final previousLoginId = await secureStorage.read(key: 'loginId');
     final previousPassword = await secureStorage.read(key: 'password');
@@ -80,36 +73,42 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     await secureStorage.write(key: 'loginId', value: usernameController.text);
     await secureStorage.write(key: 'password', value: passwordController.text);
 
-    try {
-      await widget.onLogin(userName, password).timeout(const Duration(seconds: 30));
+    if (!mounted) return;
 
-      if (!_disposed) {
-        widget.onLoginSuccess?.call();
-        navigator.pop();
-      }
-    } on TimeoutException {
+    final error = await navigator.push<Object?>(
+      MaterialPageRoute(
+        builder: (_) => EmailAuthPage(
+          login: () => widget.onLogin(userName, password).timeout(
+                const Duration(seconds: 30),
+              ),
+          onLoginSuccess: widget.onLoginSuccess,
+        ),
+      ),
+    );
+
+    if (!mounted) return;
+
+    if (error != null) {
+      await _restorePreviousCredentials(previousLoginId, previousPassword);
+      _handleError(error);
+    }
+  }
+
+  void _handleError(Object error) {
+    if (error is TimeoutException) {
       _showError('Server antwortet nicht. Versuche es später erneut.');
-      await _restorePreviousCredentials(previousLoginId, previousPassword);
-    } on SocketException {
+    } else if (error is SocketException) {
       _showError('Überprüfe deine Netzwerkverbindung!');
-      await _restorePreviousCredentials(previousLoginId, previousPassword);
-    } on InvalidLoginIDAndPasswordException {
+    } else if (error is InvalidLoginIDAndPasswordException) {
       _showError('Falsche LoginID und/oder Password!');
-      await _restorePreviousCredentials(previousLoginId, previousPassword);
-    } catch (e) {
-      debugPrint('Login error type: ${e.runtimeType}, message: $e');
-      await _restorePreviousCredentials(previousLoginId, previousPassword);
-    } finally {
-      if (!_disposed) {
-        setState(() {
-          loading = false;
-        });
-      }
+    } else {
+      debugPrint('Login error type: ${error.runtimeType}, message: $error');
+      _showError('Ein unbekannter Fehler ist aufgetreten.');
     }
   }
 
   void _showError(String message) {
-    if (!_disposed) {
+    if (mounted) {
       setState(() {
         errorMessage = message;
         showErrorMessage = true;
@@ -238,13 +237,6 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                     ],
                   ),
                   const Padding(padding: EdgeInsets.only(top: 25)),
-                  if (loading) ...[
-                    CircularProgressIndicator(
-                      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-                      color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
-                      strokeWidth: 3,
-                    ),
-                  ],
                 ],
               ),
             ),
@@ -256,7 +248,6 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
 
   @override
   void dispose() {
-    _disposed = true;
     usernameController.dispose();
     passwordController.dispose();
     super.dispose();
