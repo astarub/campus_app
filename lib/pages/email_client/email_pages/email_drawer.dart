@@ -165,7 +165,7 @@ class EmailDrawer extends StatelessWidget {
             onPressed: () async {
               Navigator.pop(ctx); // Close dialog
               Navigator.pop(context); // Close drawer
-              Navigator.pop(context); //return to the settings page
+              Navigator.pop(context); //return to the more page
 
               // Call logout logic from EmailAuthService and EmailService
               final emailAuthService = context.read<EmailAuthService>();

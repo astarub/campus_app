@@ -68,10 +68,10 @@ class ImapEmailService {
     final start = math.max(1, total - (page * count) + 1);
     final end = math.min(total, total - ((page - 1) * count));
 
-    // 3) Fetch headers and body peek
+    // 3) Fetch headers
     final result = await _imapClient!.fetchMessages(
       MessageSequence.fromRange(start, end),
-      '(BODY.PEEK[HEADER] BODY.PEEK[TEXT])',
+      '(UID FLAGS BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE MESSAGE-ID)])', // only fetch the headers and additional display info
     );
 
     // 4) Convert and reverse for newest-first order
@@ -87,9 +87,9 @@ class ImapEmailService {
       throw Exception('Not connected to IMAP server');
     }
     await _imapClient!.selectMailboxByPath(mailboxName);
-    final result = await _imapClient!.uidFetchMessage(uid, 'BODY[]');
+    final result = await _imapClient!.uidFetchMessage(uid, '(FLAGS BODY[])');
     if (result.messages.isEmpty) return null;
-    return await _convertMimeMessageToEmail(result.messages.first);
+    return _convertMimeMessageToEmail(result.messages.first);
   }
 
   // Sends an email via SMTP, then appends it into the IMAP “Sent” folder.
@@ -293,10 +293,44 @@ class ImapEmailService {
     }
   }
 
+  // extracting the plain text body by MIME tree
+  String _extractPlainBody(MimeMessage msg) {
+    // try to decode a message to Plain text directly
+    final simpleMsg = msg.decodeTextPlainPart();
+    if (simpleMsg != null && simpleMsg.trim().isNotEmpty) return simpleMsg;
+
+    for (final MimePart part in msg.parts ?? []) {
+      final text = part.decodeTextPlainPart();
+      if (text != null && text.trim().isNotEmpty) return text;
+
+      for (final MimePart subPart in part.parts ?? []) {
+        final subText = subPart.decodeTextPlainPart();
+        if (subText != null && subText.trim().isNotEmpty) return subText;
+      }
+    }
+    return '';
+  }
+
+  // same procedure for html bodies
+  String? _extractHtmlBody(MimeMessage msg) {
+    final simpleHTMLMsg = msg.decodeTextHtmlPart();
+    if (simpleHTMLMsg != null && simpleHTMLMsg.trim().isNotEmpty) return simpleHTMLMsg;
+
+    for (final MimePart part in msg.parts ?? []) {
+      final html = part.decodeTextHtmlPart();
+      if (html != null && html.trim().isNotEmpty) return html;
+      for (final MimePart subPart in part.parts ?? []) {
+        final subHTML = subPart.decodeTextHtmlPart();
+        if (subHTML != null && subHTML.trim().isNotEmpty) return subHTML;
+      }
+    }
+    return null;
+  }
+
   // Converts a raw [MimeMessage] into your app’s [Email] model.
   Future<Email> _convertMimeMessageToEmail(MimeMessage msg) async {
-    final plain = msg.decodeTextPlainPart();
-    final html = msg.decodeTextHtmlPart();
+    final plain = _extractPlainBody(msg);
+    final html = _extractHtmlBody(msg);
 
     return Email(
       id: msg.uid?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),

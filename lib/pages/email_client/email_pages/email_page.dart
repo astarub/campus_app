@@ -319,15 +319,17 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                 return EmailTile(
                   email: email,
                   isSelected: _selectionController.isSelected(email),
-                  onTap: () {
+                  onTap: () async {
                     if (_selectionController.isSelecting) {
                       setState(() => _selectionController.toggleSelection(email));
                     } else {
+                      // request email body on opening
+                      final fullEmail = await emailService.fetchFullEmail(email.uid);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => EmailView(
-                            email: email,
+                            email: fullEmail ?? email,
                             onDelete: (email) {
                               emailService.moveEmailsToFolder([email], EmailFolder.trash);
                               _search();

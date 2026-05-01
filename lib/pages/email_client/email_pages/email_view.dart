@@ -159,16 +159,23 @@ class EmailView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Email body (HTML if available, fallback to plain text)
-            if (email.htmlBody != null && email.htmlBody!.isNotEmpty)
-              StyledHTML(
-                text: email.htmlBody!,
-                context: context,
-              )
-            else
+            // prefer plain text over HTML, if both fail go to empty content
+            // many HTML emails crash the StyledHTML so we prefer displaying something at all in form of plain text
+            // this will most likely get reworked to handle more HTML bodies at runtime and with prechecks
+            if (email.body.isNotEmpty)
               Text(
                 email.body,
                 style: theme.textTheme.bodyLarge,
+              )
+            else if (email.htmlBody != null && email.htmlBody!.isNotEmpty)
+              StyledHTML(
+                context: context,
+                text: email.htmlBody!,
+              )
+            else
+              Text(
+                'No content',
+                style: theme.textTheme.bodySmall,
               ),
 
             // Attachments section

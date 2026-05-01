@@ -7,7 +7,6 @@ import 'package:campus_app/core/injection.dart';
 
 // Represents a mailbox/folder returned by the mail server.
 
-
 class UserEmailFolder {
   final String mailboxName; // Real server mailbox name (IMAP path)
   final String displayName; // Friendly name shown in the UI
@@ -19,11 +18,10 @@ class UserEmailFolder {
 }
 
 class EmailService extends ChangeNotifier {
-  
   final List<Email> _allEmails = [];
 
   final List<UserEmailFolder> _userFolders = [];
-   // Stores resolved mailbox names for system folders.
+  // Stores resolved mailbox names for system folders.
   //  This starts empty and is only filled if a matching mailbox exists on the server.
   final Map<EmailFolder, String> _folderMailboxNames = {};
 
@@ -39,11 +37,9 @@ class EmailService extends ChangeNotifier {
   List<UserEmailFolder> get userFolders => List.unmodifiable(_userFolders);
   EmailSelectionController get selectionController => _selectionController;
 
-  
   EmailService(this._emailRepository) {
     _selectionController.addListener(notifyListeners);
   }
-
 
   // Called once when the email client starts.
   // Connects to the server, loads folder list, resolves system folders, then loads emails.
@@ -97,8 +93,6 @@ class EmailService extends ChangeNotifier {
     super.dispose();
   }
 
-  
-
   // Loads all mailbox names from the server.
   // We keep them for the drawer/UI and also try to detect system folders.
   Future<void> loadUserFolders() async {
@@ -116,9 +110,7 @@ class EmailService extends ChangeNotifier {
       _userFolders
         ..clear()
         ..addAll(
-          mailboxes
-              .where((mb) => mb.trim().isNotEmpty)
-              .map(
+          mailboxes.where((mb) => mb.trim().isNotEmpty).map(
                 (mb) => UserEmailFolder(
                   mailboxName: mb,
                   displayName: _extractDisplayName(mb),
@@ -134,7 +126,7 @@ class EmailService extends ChangeNotifier {
   }
 
   // Extracts a friendly display name from a mailbox path.
- 
+
   String _extractDisplayName(String mailboxName) {
     final normalized = mailboxName.replaceAll('\\', '/');
     final parts = normalized.split(RegExp(r'[/.]'));
@@ -209,8 +201,6 @@ class EmailService extends ChangeNotifier {
     if (archives != null) _folderMailboxNames[EmailFolder.archives] = archives;
   }
 
-  
-
   // Reloads emails from the server for all system folders that were actually resolved.
   Future<void> refreshEmails() async {
     if (!_isInitialized) {
@@ -252,7 +242,7 @@ class EmailService extends ChangeNotifier {
         // Not found on server → don't crash just skip.
         continue;
       }
-      await _fetchEmailsForMailbox (folder, mailbox);
+      await _fetchEmailsForMailbox(folder, mailbox);
     }
   }
 
@@ -266,18 +256,17 @@ class EmailService extends ChangeNotifier {
       );
 
       for (final email in emails) {
-         _allEmails.add(
-        email.copyWith(
-          folder: folder,
-          mailboxName: mailboxName,
-        ),
-      );
+        _allEmails.add(
+          email.copyWith(
+            folder: folder,
+            mailboxName: mailboxName,
+          ),
+        );
       }
     } catch (e) {
       debugPrint('Failed to fetch ${folder.name} from "$mailboxName": $e');
     }
   }
-
 
   Future<void> markAsRead(Email email) async {
     if (!_isInitialized || email.uid == 0) return;
@@ -330,7 +319,10 @@ class EmailService extends ChangeNotifier {
 
       final index = _allEmails.indexWhere((e) => e.id == email.id);
       if (index != -1) {
-        _allEmails[index] = email.copyWith(folder: folder, mailboxName: targetMailbox ?? email.mailboxName,);
+        _allEmails[index] = email.copyWith(
+          folder: folder,
+          mailboxName: targetMailbox ?? email.mailboxName,
+        );
       }
     }
 
@@ -454,27 +446,24 @@ class EmailService extends ChangeNotifier {
     return draft.subject.trim().isEmpty && draft.body.trim().isEmpty && draft.recipients.isEmpty;
   }
 
-  
-
   List<Email> filterEmails(String query, EmailFolder folder) {
     final filtered = _allEmails.where((e) => e.folder == folder).toList();
     if (query.isEmpty) return filtered;
 
     final q = query.toLowerCase();
     return filtered.where((email) {
-      return email.sender.toLowerCase().contains(q) ||
-          email.subject.toLowerCase().contains(q);
+      return email.sender.toLowerCase().contains(q) || email.subject.toLowerCase().contains(q);
     }).toList();
   }
- List<Email> getEmailsForMailbox(String mailboxName) {
-  final target = mailboxName.trim().toLowerCase();
 
-  return _allEmails.where((email) {
-    return (email.mailboxName ?? '')
-        .trim()
-        .toLowerCase() == target;
-  }).toList();
-}
+  List<Email> getEmailsForMailbox(String mailboxName) {
+    final target = mailboxName.trim().toLowerCase();
+
+    return _allEmails.where((email) {
+      return (email.mailboxName ?? '').trim().toLowerCase() == target;
+    }).toList();
+  }
+
   void updateEmail(Email updatedEmail) {
     final index = _allEmails.indexWhere((e) => e.id == updatedEmail.id);
     if (index != -1) {
@@ -482,14 +471,42 @@ class EmailService extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // access to fetching Emails by their UID
+  Future<Email?> fetchFullEmail(int uid) async {
+    if (!_isInitialized) return null;
+
+    // find the mailbox where the email is plus a fallback
+    final cached = _allEmails.firstWhere(
+      (e) => e.uid == uid,
+      orElse: () => Email(
+        id: '',
+        sender: '',
+        senderEmail: '',
+        recipients: [],
+        subject: '',
+        body: '',
+        date: DateTime.now(),
+      ),
+    );
+
+    final mailboxName = cached.mailboxName ?? _getMailboxNameForFolder(EmailFolder.inbox) ?? 'INBOX'; // Inbox fallback
+
+    try {
+      return await _emailRepository.fetchEmailbyUID(uid, mailboxName: mailboxName);
+    } catch (e) {
+      debugPrint('Email Service: error fetching full Email: $e');
+      return null;
+    }
+  }
+
   // unredCount dynamic
   int get unreadCount {
-  final inboxMailbox = _getMailboxNameForFolder(EmailFolder.inbox);
-  if (inboxMailbox == null) return 0;
+    final inboxMailbox = _getMailboxNameForFolder(EmailFolder.inbox);
+    if (inboxMailbox == null) return 0;
 
-  return _allEmails.where((e) {
-    return (e.mailboxName ?? '').trim() == inboxMailbox.trim() && !e.isRead;
-  }).length;
-}
- 
+    return _allEmails.where((e) {
+      return (e.mailboxName ?? '').trim() == inboxMailbox.trim() && !e.isRead;
+    }).length;
+  }
 }
