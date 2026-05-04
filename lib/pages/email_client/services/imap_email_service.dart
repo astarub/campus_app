@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math' as math;
+
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+
 import 'package:campus_app/pages/email_client/models/email.dart';
 
 class ImapEmailService {
@@ -18,6 +21,8 @@ class ImapEmailService {
   static const int _smtpPort = 587;
 
   bool get isConnected => _imapClient?.isConnected ?? false;
+
+  // -------------------------------------------------------- IMAP Server Connection Functions  ----------------------------------------------------------------- //
 
   // Connects to the IMAP server and logs in.
   Future<bool> connect(String username, String password) async {
@@ -50,46 +55,76 @@ class ImapEmailService {
     }
   }
 
+  // run a connection check and reconnect if the connection is lost
+  Future<void> _checkConnection() async {
+    // first check if we are connected
+    if (_imapClient != null && _imapClient!.isConnected) return;
+
+    // we aren't connected, re-establish connection
+    if (_username == null || _password == null) {
+      throw Exception('Could not find credentials for reconnect.');
+    }
+
+    debugPrint('IMAP: Attempting Reconnect...');
+    _imapClient = ImapClient(isLogEnabled: true);
+    await _imapClient!.connectToServer(_imapHost, _imapPort);
+    await _imapClient!.login(_username!, _password!);
+    debugPrint('IMAP: Reconnect successful.');
+  }
+
+  // Wrapper Function for Imap Client actions to ensure connection isn't lost, if it is we run a retry
+  Future<T> _ensureConnection<T>(Future<T> Function() action) async {
+    try {
+      await _checkConnection();
+      return await action();
+    } on SocketException catch (e) {
+      debugPrint('IMAP: Lost Imap Server Connection...retrying: $e');
+      _imapClient = null;
+      await _checkConnection();
+      return action();
+    }
+  }
+
+  // ---------------------------------------------------------- IMAP Email Operations/Functions ----------------------------------------------------------------------------- //
+
   // Fetches [count] messages from [mailboxName], newest-first paging.
   Future<List<Email>> fetchEmails({
     String mailboxName = 'INBOX',
     int count = 50,
     int page = 1,
   }) async {
-    if (_imapClient == null || !_imapClient!.isConnected) {
-      throw Exception('Not connected to IMAP server');
-    }
-    // 1) Select mailbox
-    final mailbox = await _imapClient!.selectMailboxByPath(mailboxName);
-    final total = mailbox.messagesExists;
-    if (total == 0) return [];
+    return _ensureConnection(() async {
+      // 1) Select mailbox
+      final mailbox = await _imapClient!.selectMailboxByPath(mailboxName);
+      final total = mailbox.messagesExists;
+      if (total == 0) return [];
 
-    // 2) Determine sequence range
-    final start = math.max(1, total - (page * count) + 1);
-    final end = math.min(total, total - ((page - 1) * count));
+      // 2) Determine sequence range
+      final start = math.max(1, total - (page * count) + 1);
+      final end = math.min(total, total - ((page - 1) * count));
 
-    // 3) Fetch headers
-    final result = await _imapClient!.fetchMessages(
-      MessageSequence.fromRange(start, end),
-      '(UID FLAGS BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE MESSAGE-ID)])', // only fetch the headers and additional display info
-    );
+      // 3) Fetch headers
+      final result = await _imapClient!.fetchMessages(
+        MessageSequence.fromRange(start, end),
+        '(UID FLAGS BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE MESSAGE-ID)])', // only fetch the headers and additional display info
+      );
 
-    // 4) Convert and reverse for newest-first order
-    final emails = await Future.wait(
-      result.messages.map(_convertMimeMessageToEmail),
-    );
-    return emails.reversed.toList();
+      // 4) Convert and reverse for newest-first order
+      final emails = await Future.wait(
+        result.messages.map(_convertMimeMessageToEmail),
+      );
+      return emails.reversed.toList();
+    });
   }
 
   // Fetches a single email by its UID.
   Future<Email?> fetchEmailByUid(int uid, {String mailboxName = 'INBOX'}) async {
-    if (_imapClient == null || !_imapClient!.isConnected) {
-      throw Exception('Not connected to IMAP server');
-    }
-    await _imapClient!.selectMailboxByPath(mailboxName);
-    final result = await _imapClient!.uidFetchMessage(uid, '(FLAGS BODY[])');
-    if (result.messages.isEmpty) return null;
-    return _convertMimeMessageToEmail(result.messages.first);
+    return _ensureConnection(() async {
+      await _imapClient!.selectMailboxByPath(mailboxName);
+      final result = await _imapClient!.uidFetchMessage(uid, '(FLAGS BODY[])');
+      if (result.messages.isEmpty) return null;
+      return _convertMimeMessageToEmail(result.messages.first);
+    });
   }
 
   // Sends an email via SMTP, then appends it into the IMAP “Sent” folder.
@@ -145,7 +180,7 @@ class ImapEmailService {
       debugPrint('SMTP: Message sent');
 
       // ─── 4) Append to IMAP “Sent” folder ──────────────────────────────────
-      if (_imapClient != null && _imapClient!.isConnected) {
+      return _ensureConnection(() async {
         try {
           await _imapClient!.selectMailboxByPath('Sent');
           await _imapClient!.appendMessage(
@@ -156,9 +191,9 @@ class ImapEmailService {
         } catch (e) {
           debugPrint('IMAP: Failed to append to Sent: $e');
         }
-      }
 
-      return true;
+        return true;
+      });
     } catch (e) {
       debugPrint('sendEmail error: $e');
       return false;
@@ -167,37 +202,35 @@ class ImapEmailService {
 
   // Appends (or updates) a draft in the IMAP “Drafts” folder.
   Future<bool> appendDraft(Email draft) async {
-    if (_imapClient == null || !_imapClient!.isConnected) {
-      throw Exception('Not connected to IMAP server');
-    }
-    // Select the Drafts mailbox
-    await _imapClient!.selectMailboxByPath('Drafts');
-    // Build draft MIME
-    final builder = MessageBuilder.prepareMultipartAlternativeMessage(plainText: draft.body)
-      ..from = [MailAddress('', _username!)]
-      ..to = draft.recipients.map((r) => MailAddress('', r)).toList()
-      ..subject = draft.subject;
-    final mime = builder.buildMimeMessage();
+    return _ensureConnection(() async {
+      // Select the Drafts mailbox
+      await _imapClient!.selectMailboxByPath('Drafts');
+      // Build draft MIME
+      final builder = MessageBuilder.prepareMultipartAlternativeMessage(plainText: draft.body)
+        ..from = [MailAddress('', _username!)]
+        ..to = draft.recipients.map((r) => MailAddress('', r)).toList()
+        ..subject = draft.subject;
+      final mime = builder.buildMimeMessage();
 
-    try {
-      await _imapClient!.appendMessage(
-        mime,
-        flags: [MessageFlags.draft],
-      );
-      return true;
-    } catch (e) {
-      debugPrint('appendDraft error: $e');
-      return false;
-    }
+      try {
+        await _imapClient!.appendMessage(
+          mime,
+          flags: [MessageFlags.draft],
+        );
+        return true;
+      } catch (e) {
+        debugPrint('appendDraft error: $e');
+        return false;
+      }
+    });
   }
 
   /// Lists all mailbox names on the server.
   Future<List<String>> getMailboxes() async {
-    if (_imapClient == null || !_imapClient!.isConnected) {
-      throw Exception('Not connected to IMAP server');
-    }
-    final boxes = await _imapClient!.listMailboxes();
-    return boxes.map((m) => m.name).toList();
+    return _ensureConnection(() async {
+      final boxes = await _imapClient!.listMailboxes();
+      return boxes.map((m) => m.name).toList();
+    });
   }
 
   /// Searches emails in [mailboxName] matching optional criteria.
@@ -209,31 +242,29 @@ class ImapEmailService {
     DateTime? since,
     bool unreadOnly = false,
   }) async {
-    if (_imapClient == null || !_imapClient!.isConnected) {
-      throw Exception('Not connected to IMAP server');
-    }
+    return _ensureConnection(() async {
+      // Build IMAP search criteria
+      final criteria = <String>[];
+      if (query?.isNotEmpty ?? false) criteria.add('TEXT "$query"');
+      if (from?.isNotEmpty ?? false) criteria.add('FROM "$from"');
+      if (subject?.isNotEmpty ?? false) criteria.add('SUBJECT "$subject"');
+      if (since != null) {
+        final formatted = DateFormat('dd-MMM-yyyy').format(since).toUpperCase();
+        criteria.add('SINCE $formatted');
+      }
+      if (unreadOnly) criteria.add('UNSEEN');
+      if (criteria.isEmpty) criteria.add('ALL');
 
-    // Build IMAP search criteria
-    final criteria = <String>[];
-    if (query?.isNotEmpty ?? false) criteria.add('TEXT "$query"');
-    if (from?.isNotEmpty ?? false) criteria.add('FROM "$from"');
-    if (subject?.isNotEmpty ?? false) criteria.add('SUBJECT "$subject"');
-    if (since != null) {
-      final formatted = DateFormat('dd-MMM-yyyy').format(since).toUpperCase();
-      criteria.add('SINCE $formatted');
-    }
-    if (unreadOnly) criteria.add('UNSEEN');
-    if (criteria.isEmpty) criteria.add('ALL');
+      // Execute search
+      final mailbox = await _imapClient!.selectMailboxByPath(mailboxName);
+      final total = mailbox.messagesExists;
+      final result = await _imapClient!.fetchRecentMessages(
+        messageCount: total,
+        criteria: criteria.join(' '),
+      );
 
-    // Execute search
-    final mailbox = await _imapClient!.selectMailboxByPath(mailboxName);
-    final total = mailbox.messagesExists;
-    final result = await _imapClient!.fetchRecentMessages(
-      messageCount: total,
-      criteria: criteria.join(' '),
-    );
-
-    return Future.wait(result.messages.map(_convertMimeMessageToEmail));
+      return Future.wait(result.messages.map(_convertMimeMessageToEmail));
+    });
   }
 
   // Internal helper to add/remove flags (e.g., Seen).
@@ -243,18 +274,20 @@ class ImapEmailService {
     bool remove = false,
     String mailboxName = 'INBOX',
   }) async {
-    try {
-      await _imapClient!.selectMailboxByPath(mailboxName);
-      await _imapClient!.uidStore(
-        MessageSequence.fromId(uid),
-        flags,
-        action: remove ? StoreAction.remove : StoreAction.add,
-      );
-      return true;
-    } catch (e) {
-      debugPrint('Error updating email flags: $e');
-      return false;
-    }
+    return _ensureConnection(() async {
+      try {
+        await _imapClient!.selectMailboxByPath(mailboxName);
+        await _imapClient!.uidStore(
+          MessageSequence.fromId(uid),
+          flags,
+          action: remove ? StoreAction.remove : StoreAction.add,
+        );
+        return true;
+      } catch (e) {
+        debugPrint('Error updating email flags: $e');
+        return false;
+      }
+    });
   }
 
   Future<bool> markAsRead(int uid, {String mailboxName = 'INBOX'}) =>
@@ -265,15 +298,17 @@ class ImapEmailService {
 
   // Deletes a message (marks \Deleted + EXPUNGE).
   Future<bool> deleteEmail(int uid, {String mailboxName = 'INBOX'}) async {
-    try {
-      await _imapClient!.selectMailboxByPath(mailboxName);
-      await _imapClient!.uidStore(MessageSequence.fromId(uid), [MessageFlags.deleted]);
-      await _imapClient!.expunge();
-      return true;
-    } catch (e) {
-      debugPrint('Error deleting email: $e');
-      return false;
-    }
+    return _ensureConnection(() async {
+      try {
+        await _imapClient!.selectMailboxByPath(mailboxName);
+        await _imapClient!.uidStore(MessageSequence.fromId(uid), [MessageFlags.deleted]);
+        await _imapClient!.expunge();
+        return true;
+      } catch (e) {
+        debugPrint('Error deleting email: $e');
+        return false;
+      }
+    });
   }
 
   // Moves a message to [targetMailbox].
@@ -282,16 +317,20 @@ class ImapEmailService {
     String targetMailbox, {
     String sourceMailbox = 'INBOX',
   }) async {
-    try {
-      await _imapClient!.selectMailboxByPath(sourceMailbox);
-      await _imapClient!.selectMailboxByPath(targetMailbox);
-      await _imapClient!.uidMove(MessageSequence.fromId(uid));
-      return true;
-    } catch (e) {
-      debugPrint('Error moving email: $e');
-      return false;
-    }
+    return _ensureConnection(() async {
+      try {
+        await _imapClient!.selectMailboxByPath(sourceMailbox);
+        await _imapClient!.selectMailboxByPath(targetMailbox);
+        await _imapClient!.uidMove(MessageSequence.fromId(uid));
+        return true;
+      } catch (e) {
+        debugPrint('Error moving email: $e');
+        return false;
+      }
+    });
   }
+
+  // ------------------------------------------------------------------------------------ MIME Helper Functions -------------------------------------------------------------------------------- //
 
   // extracting the plain text body by MIME tree
   String _extractPlainBody(MimeMessage msg) {
@@ -335,7 +374,7 @@ class ImapEmailService {
     return Email(
       id: msg.uid?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
       subject: msg.decodeSubject() ?? 'No Subject',
-      body: plain ?? html ?? '',
+      body: plain.isNotEmpty ? plain : (html ?? ''),
       htmlBody: html,
       sender: msg.from?.first.personalName ?? msg.from?.first.email ?? 'Unknown',
       senderEmail: msg.from?.first.email ?? '',
