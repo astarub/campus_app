@@ -24,6 +24,30 @@ class ImapEmailService {
 
   // -------------------------------------------------------- IMAP Server Connection Functions  ----------------------------------------------------------------- //
 
+  // we use this timer to periodically send a NOOP to the IMAP Server to prevent having to reconnect every time the connection drops (~every 10-20 mins)
+  // a NOOP command inexpensive and pretty much won't affect our performance at all
+  Timer? _imapkeepAliveTimer;
+
+  void _startKeepAliveIMAP() {
+    _imapkeepAliveTimer?.cancel();
+    _imapkeepAliveTimer = Timer.periodic(const Duration(minutes: 5), (_) async {
+      if (_imapClient != null && _imapClient!.isConnected) {
+        try {
+          await _imapClient!.noop();
+          debugPrint('IMAP: NOOP for keep alive sent.');
+        } catch (e) {
+          debugPrint('IMAP: keep alive failed: $e');
+          _imapClient = null;
+        }
+      }
+    });
+  }
+
+  void _stopKeepAliveIMAP() {
+    _imapkeepAliveTimer?.cancel();
+    _imapkeepAliveTimer = null;
+  }
+
   // Connects to the IMAP server and logs in.
   Future<bool> connect(String username, String password) async {
     _imapClient = ImapClient(isLogEnabled: true);
@@ -33,6 +57,7 @@ class ImapEmailService {
       await _imapClient!.connectToServer(_imapHost, _imapPort, isSecure: true);
       await _imapClient!.login(_username!, _password!);
       debugPrint('IMAP: Connected as $_username');
+      _startKeepAliveIMAP();
       return true;
     } catch (e) {
       debugPrint('IMAP: Connection/login failed: $e');
@@ -52,13 +77,16 @@ class ImapEmailService {
       _smtpClient = null;
       _username = null;
       _password = null;
+      _stopKeepAliveIMAP();
     }
   }
 
   // run a connection check and reconnect if the connection is lost
   Future<void> _checkConnection() async {
     // first check if we are connected
-    if (_imapClient != null && _imapClient!.isConnected) return;
+    if (_imapClient != null && _imapClient!.isConnected) {
+      return;
+    }
 
     // we aren't connected, re-establish connection
     if (_username == null || _password == null) {
@@ -70,18 +98,46 @@ class ImapEmailService {
     await _imapClient!.connectToServer(_imapHost, _imapPort);
     await _imapClient!.login(_username!, _password!);
     debugPrint('IMAP: Reconnect successful.');
+    _startKeepAliveIMAP();
+  }
+
+  // To work around the asynchronous gap with the SocketException and enough_mail's internal handling, we timeout the IMAP Operation to catch
+  // Connection drops we didn't detect
+  Future<T> _addTimeout<T>(Future<T> future) async {
+    return future.timeout(
+      const Duration(seconds: 10),
+      onTimeout: () {
+        throw TimeoutException('IMAP: OP has timed out');
+      },
+    );
   }
 
   // Wrapper Function for Imap Client actions to ensure connection isn't lost, if it is we run a retry
   Future<T> _ensureConnection<T>(Future<T> Function() action) async {
     try {
       await _checkConnection();
-      return await action();
-    } on SocketException catch (e) {
-      debugPrint('IMAP: Lost Imap Server Connection...retrying: $e');
-      _imapClient = null;
-      await _checkConnection();
-      return action();
+      return await _addTimeout(action());
+    } catch (e) {
+      debugPrint('IMAP Connection error caught: ${e.runtimeType} - $e');
+      // the on SocketException catch isn't enough so we catch all errors and differentiate
+      final isConnectionError = e is SocketException ||
+          e.toString().toLowerCase().contains('socket') ||
+          e.toString().toLowerCase().contains('connection') ||
+          e.toString().toLowerCase().contains('reset by peer') ||
+          e.toString().toLowerCase().contains('not connected') ||
+          e.toString().toLowerCase().contains('connection closed') ||
+          e is TimeoutException;
+
+      if (isConnectionError) {
+        debugPrint('Lost IMAP connection...reconnecting: $e');
+        try {
+          await _imapClient?.disconnect();
+        } catch (_) {}
+        _imapClient = null;
+        await _checkConnection();
+        return _addTimeout(action());
+      }
+      rethrow;
     }
   }
 

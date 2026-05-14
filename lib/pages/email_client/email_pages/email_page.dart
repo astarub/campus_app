@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_login_screen.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_drawer.dart';
@@ -323,13 +325,11 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                     if (_selectionController.isSelecting) {
                       setState(() => _selectionController.toggleSelection(email));
                     } else {
-                      // request email body on opening
-                      final fullEmail = await emailService.fetchFullEmail(email.uid);
-                      Navigator.push(
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => EmailView(
-                            email: fullEmail ?? email,
+                            email: email,
                             onDelete: (email) {
                               emailService.moveEmailsToFolder([email], EmailFolder.trash);
                               _search();
