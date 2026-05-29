@@ -110,9 +110,9 @@ class _EmailClientContentState extends State<_EmailClientContent> {
       context,
       MaterialPageRoute(
         builder: (context) => EmailLoginScreen(
-          onLogin: (username, password) async {
+          onLogin: (username, password, emailAddress, emailDisplayName) async {
             final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
-            await emailAuthService.authenticate(username, password);
+            await emailAuthService.authenticate(username, password, emailAddress, emailDisplayName);
           },
           onLoginSuccess: () async {
             final emailService = Provider.of<EmailService>(context, listen: false);

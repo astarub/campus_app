@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
+
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
+import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
+import 'package:campus_app/utils/widgets/bubble_message.dart';
+import 'package:campus_app/utils/widgets/bubble_service.dart';
 
 class ComposeEmailScreen extends StatefulWidget {
   final Email? draft;
@@ -26,12 +31,18 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
   final _bccController = TextEditingController();
   final _subjectController = TextEditingController();
   final _bodyController = TextEditingController();
-  bool _showCcBcc = false;
   final List<String> _attachments = [];
+  bool _showCcBcc = false;
+
+  String? _currentDraftID;
+  String? _emailAddress;
+  String? _emailDisplayName;
+  bool _hasChanged = false;
 
   @override
   void initState() {
     super.initState();
+    _loadSenderEmail();
     if (widget.draft != null) {
       _toController.text = widget.draft!.recipients.join(', ');
       _subjectController.text = widget.draft!.subject;
@@ -45,10 +56,22 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
       _subjectController.text = 'Fwd: ${widget.forwardFrom!.subject}';
       _bodyController.text = '\n\n----------\n${widget.forwardFrom!.htmlBody ?? widget.forwardFrom!.body}';
     }
+
+    // make sure the controllers only mark change when something changed
+    _toController.addListener(_markChange);
+    _subjectController.addListener(_markChange);
+    _bodyController.addListener(_markChange);
+    _ccController.addListener(_markChange);
+    _bccController.addListener(_markChange);
   }
 
   @override
   void dispose() {
+    _toController.removeListener(_markChange);
+    _subjectController.removeListener(_markChange);
+    _bodyController.removeListener(_markChange);
+    _ccController.removeListener(_markChange);
+    _bccController.removeListener(_markChange);
     _toController.dispose();
     _ccController.dispose();
     _bccController.dispose();
@@ -64,7 +87,39 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
         _attachments.isNotEmpty;
   }
 
+  //load both the user email as well as user display name from storage
+  Future<void> _loadSenderEmail() async {
+    final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
+    final emailAddress = await emailAuthService.getSenderEmail();
+    final emailDisplayName = await emailAuthService.getDisplayName();
+    if (mounted) {
+      setState(() {
+        _emailAddress = emailAddress;
+        _emailDisplayName = emailDisplayName;
+      });
+    }
+  }
+
+  void _markChange() {
+    if (!_hasChanged) setState(() => _hasChanged = true);
+  }
+
+  // helper function to use the global bubble notifications
+  void showUpdateMessages(String message, {BubbleType type = BubbleType.info}) {
+    if (!mounted) return;
+
+    BubbleService().show(
+      context,
+      message: message,
+      type: type,
+      top: 20,
+    );
+  }
+
   void _saveDraft(EmailService emailService) {
+    // if the user didn't input anything do not save the draft
+    if (!_hasChanged && widget.draft == null) return;
+
     if (!_hasContent()) {
       if (widget.draft != null) {
         emailService.removeDraft(widget.draft!.id);
@@ -72,24 +127,27 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
       return;
     }
 
+    // pass the ID to saveOrUpdateDraft, which replaces the draft
+    _currentDraftID ??= DateTime.now().millisecondsSinceEpoch.toString();
+
+    final existingDraft = emailService.allEmails.where((e) => e.id == _currentDraftID).firstOrNull;
+    //if available overwrite the default 0 UID with the existing UID, otherwise we will always create a new email
+    final currentUID = existingDraft?.uid ?? 0;
+
     final newDraft = Email(
-      id: widget.draft?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
-      sender: 'Me',
-      senderEmail: 'me@example.com',
+      id: _currentDraftID!,
+      sender: _emailDisplayName ?? 'Me',
+      senderEmail: _emailAddress ?? '',
       recipients: _toController.text.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList(),
       subject: _subjectController.text,
       body: _bodyController.text,
       date: DateTime.now(),
       attachments: List.from(_attachments),
       folder: EmailFolder.drafts,
+      uid: currentUID,
     );
     emailService.saveOrUpdateDraft(newDraft);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Draft saved'),
-        duration: Duration(seconds: 2),
-      ),
-    );
+    showUpdateMessages('Draft Saved!');
   }
 
   Future<void> _sendEmail() async {
@@ -103,10 +161,13 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
     }
 
     try {
+      final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
+      final senderEmail = await emailAuthService.getSenderEmail();
       await emailService.sendEmail(
         to: _toController.text.trim(),
         subject: _subjectController.text.trim(),
         body: _bodyController.text,
+        senderEmail: senderEmail ?? '',
         // Pass cc/bcc as String? (the service will split internally)
         cc: _ccController.text.trim().isEmpty
             ? null
@@ -114,17 +175,10 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
         bcc: _bccController.text.trim().isEmpty ? null : _bccController.text.trim(), // <<< changed here as well
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Email sent'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      showUpdateMessages('Email sent!');
       Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to send email: $e')),
-      );
+      showUpdateMessages('Failed to send email: $e');
     }
   }
 
@@ -154,6 +208,14 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                     : 'Compose',
           ),
           actions: [
+            IconButton(
+              icon: const Icon(Icons.save),
+              tooltip: 'Save Draft',
+              onPressed: () {
+                final emailService = Provider.of<EmailService>(context, listen: false);
+                _saveDraft(emailService);
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.attach_file),
               onPressed: _attachFile,

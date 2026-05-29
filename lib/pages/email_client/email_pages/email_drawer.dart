@@ -89,7 +89,7 @@ class EmailDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.pop(context);
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => FolderEmailsPage(
@@ -140,7 +140,7 @@ class EmailDrawer extends StatelessWidget {
       onTap: () {
         Navigator.pop(context); // close drawer first
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => page),
           );

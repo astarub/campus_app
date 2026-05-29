@@ -31,16 +31,16 @@ class FolderEmailsPage extends StatelessWidget {
                 return EmailTile(
                   email: email,
                   onTap: () async {
-                    // request the email body when opening an email
-                    final fullEmail = await emailService.fetchFullEmail(email.uid);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => EmailView(
-                          email: fullEmail ?? email,
+                    if (context.mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EmailView(
+                            email: email,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   },
                 );
               },

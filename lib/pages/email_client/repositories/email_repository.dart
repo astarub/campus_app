@@ -17,6 +17,7 @@ abstract class EmailRepository {
     required String to,
     required String subject,
     required String body,
+    required String senderEmail,
     List<String>? cc,
     List<String>? bcc,
   });
@@ -47,7 +48,7 @@ abstract class EmailRepository {
   bool get isConnected;
 
   // Save or update a draft email on the server
-  Future<bool> saveDraft(Email draft);
+  Future<int?> saveDraft(Email draft);
 
   // Fetch drafts from the "Drafts" mailbox
   Future<List<Email>> fetchDrafts({int count = 50});

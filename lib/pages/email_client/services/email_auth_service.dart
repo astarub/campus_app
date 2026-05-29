@@ -11,6 +11,7 @@ class EmailAuthService extends ChangeNotifier {
   static const String _emailUsernameKey = 'email_loginId';
   static const String _emailPasswordKey = 'email_password';
   static const String _isAuthenticatedKey = 'email_is_authenticated';
+  static const String _emailDisplayNameKey = 'email_display_name';
 
   // Internal state
   bool _isAuthenticated = false;
@@ -45,7 +46,7 @@ class EmailAuthService extends ChangeNotifier {
   }
 
   // Authenticate and store credentials securely
-  Future<void> authenticate(String username, String password) async {
+  Future<void> authenticate(String username, String password, String emailAddress, String emailDisplayName) async {
     try {
       if (username.isEmpty || password.isEmpty) {
         throw InvalidLoginIDAndPasswordException();
@@ -58,6 +59,8 @@ class EmailAuthService extends ChangeNotifier {
       await _secureStorage.write(key: _emailUsernameKey, value: username);
       await _secureStorage.write(key: _emailPasswordKey, value: password);
       await _secureStorage.write(key: _isAuthenticatedKey, value: 'true');
+      await _secureStorage.write(key: 'email_sender_address', value: emailAddress);
+      await _secureStorage.write(key: _emailDisplayNameKey, value: emailDisplayName);
 
       _currentUsername = username;
       _currentPassword = password;
@@ -95,12 +98,23 @@ class EmailAuthService extends ChangeNotifier {
     return null;
   }
 
+  // access point for sender email and Display Name
+  Future<String?> getSenderEmail() async {
+    return _secureStorage.read(key: 'email_sender_address');
+  }
+
+  Future<String?> getDisplayName() async {
+    return _secureStorage.read(key: _emailDisplayNameKey);
+  }
+
   // Log out and clear stored credentials
   Future<void> logout() async {
     try {
       await _secureStorage.delete(key: _emailUsernameKey);
       await _secureStorage.delete(key: _emailPasswordKey);
       await _secureStorage.delete(key: _isAuthenticatedKey);
+      await _secureStorage.delete(key: 'email_sender_address');
+      await _secureStorage.delete(key: _emailDisplayNameKey);
     } catch (e) {
       debugPrint('Error clearing credentials: $e');
     }

@@ -19,7 +19,7 @@ import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_auth_page.dart';
 
 class EmailLoginScreen extends StatefulWidget {
-  final Future<void> Function(String username, String password) onLogin;
+  final Future<void> Function(String username, String password, String emailAddress, String displayName) onLogin;
   final Future<void> Function()? onLoginSuccess;
   const EmailLoginScreen({super.key, required this.onLoginSuccess, required this.onLogin});
 
@@ -35,9 +35,54 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController submitButtonController = TextEditingController();
+  final TextEditingController emailAddressController = TextEditingController();
+  final TextEditingController emailDisplayNameController = TextEditingController();
 
+  String _suggestedDisplayName = '';
   bool showErrorMessage = false;
   String errorMessage = '';
+  bool emailIsValid = false;
+
+  @override
+  void initState() {
+    super.initState();
+    emailAddressController.addListener(_onEmailChange);
+  }
+
+  // track changes to the Email Field to generate display name and validate email format
+  void _onEmailChange() {
+    final emailAddress = emailAddressController.text.trim();
+
+    // check two attributes of the email:
+    // First: it contains an @ symbol that is Second: followed by a .de on which the email address ends, since all RUB email addresses end on ".de"
+    if (emailAddress.contains('@') && emailAddress.endsWith('.de')) {
+      setState(() {
+        emailIsValid = true;
+      });
+    } else {
+      setState(() => emailIsValid = false);
+    }
+
+    if (emailAddress.contains('@')) {
+      final precurser = emailAddress.split('@').first;
+
+      final autoDisplayName = precurser
+          .split('.')
+          .map((part) => part.isNotEmpty ? '${part[0].toUpperCase()}${part.substring(1)}' : '')
+          .join(' ');
+      setState(() {
+        _suggestedDisplayName = autoDisplayName;
+      });
+
+      if (emailDisplayNameController.text.isEmpty) {
+        emailDisplayNameController.text = autoDisplayName;
+      }
+    } else {
+      setState(() {
+        _suggestedDisplayName = '';
+      });
+    }
+  }
 
   Future<void> _restorePreviousCredentials(String? previousUsername, String? previousPassword) async {
     try {
@@ -54,9 +99,13 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     final navigator = Navigator.of(context);
     final userName = usernameController.text.trim();
     final password = passwordController.text.trim();
+    final emailAddress = emailAddressController.text.trim();
+    final emailDisplayName = emailDisplayNameController.text.trim().isNotEmpty
+        ? emailDisplayNameController.text.trim()
+        : _suggestedDisplayName;
 
-    if (userName.isEmpty || password.isEmpty) {
-      _showError('Bitte fülle beide Felder aus!');
+    if (userName.isEmpty || password.isEmpty || emailAddress.isEmpty || !emailIsValid) {
+      _showError('Bitte fülle alle Felder aus!');
       return;
     }
 
@@ -78,7 +127,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     final error = await navigator.push<Object?>(
       MaterialPageRoute(
         builder: (_) => EmailAuthPage(
-          login: () => widget.onLogin(userName, password).timeout(
+          login: () => widget.onLogin(userName, password, emailAddress, emailDisplayName).timeout(
                 const Duration(seconds: 30),
               ),
           onLoginSuccess: widget.onLoginSuccess,
@@ -175,6 +224,47 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                       });
                     },
                   ),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  CampusTextField(
+                    textFieldController: emailAddressController,
+                    textFieldText: 'RUB E-Mail Adresse',
+                    onTap: () {
+                      setState(() {
+                        showErrorMessage = false;
+                      });
+                    },
+                  ),
+                  // show a warning while Email is not in valid format
+                  if (!emailIsValid && emailAddressController.text.isNotEmpty)
+                    const Padding(
+                      padding: EdgeInsetsGeometry.only(top: 5),
+                      child: Text(
+                        'Gebe eine valide RUB Email Adresse an!',
+                        style: TextStyle(color: Colors.red, fontSize: 12),
+                      ),
+                    ),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  CampusTextField(
+                    textFieldController: emailDisplayNameController,
+                    textFieldText: 'Anzeigename (optional)',
+                    onTap: () {
+                      setState(() {
+                        showErrorMessage = false;
+                      });
+                    },
+                  ),
+                  // Reminder Preview Suggestion text
+                  if (_suggestedDisplayName.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsetsGeometry.only(top: 5),
+                      child: Text(
+                        'Automatischer Anzeigename: $_suggestedDisplayName',
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
                   const Padding(padding: EdgeInsets.only(top: 15)),
                   if (showErrorMessage) ...[
                     Row(
@@ -250,6 +340,8 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   void dispose() {
     usernameController.dispose();
     passwordController.dispose();
+    emailAddressController.dispose();
+    emailDisplayNameController.dispose();
     super.dispose();
   }
 }

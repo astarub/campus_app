@@ -334,6 +334,7 @@ class EmailService extends ChangeNotifier {
     required String to,
     required String subject,
     required String body,
+    required String senderEmail,
     String? cc,
     String? bcc,
   }) async {
@@ -343,6 +344,7 @@ class EmailService extends ChangeNotifier {
       to: to,
       subject: subject,
       body: body,
+      senderEmail: senderEmail,
       cc: cc?.split(',').map((e) => e.trim()).toList(),
       bcc: bcc?.split(',').map((e) => e.trim()).toList(),
     );
@@ -413,7 +415,14 @@ class EmailService extends ChangeNotifier {
     }
 
     try {
-      await _emailRepository.saveDraft(draft);
+      final newUID = await _emailRepository.saveDraft(updatedDraft);
+      if (newUID != null) {
+        final index = _allEmails.indexWhere((e) => e.id == updatedDraft.id);
+        if (index != -1) {
+          _allEmails[index] = _allEmails[index].copyWith(uid: newUID);
+          notifyListeners();
+        }
+      }
     } catch (e) {
       debugPrint('Failed to save draft on server: $e');
     }

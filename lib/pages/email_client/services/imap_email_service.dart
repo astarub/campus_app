@@ -188,6 +188,7 @@ class ImapEmailService {
     required String to,
     required String subject,
     required String body,
+    required String senderEmail,
     List<String>? cc,
     List<String>? bcc,
     List<String>? attachments,
@@ -209,14 +210,9 @@ class ImapEmailService {
         await _smtpClient!.authenticate(_username!, _password!, AuthMechanism.login);
       }
 
-      // ─── 2) Build the MIME message ────────────────────────────────────────
+      // build message and set email
       final builder = MessageBuilder.prepareMultipartAlternativeMessage(plainText: body)
-        ..from = [
-          MailAddress(
-            '',
-            _username!.contains('@') ? _username! : '$_username@ruhr-uni-bochum.de',
-          )
-        ]
+        ..from = [MailAddress('', senderEmail)]
         ..to = [MailAddress('', to)]
         ..subject = subject;
 
@@ -257,26 +253,44 @@ class ImapEmailService {
   }
 
   // Appends (or updates) a draft in the IMAP “Drafts” folder.
-  Future<bool> appendDraft(Email draft) async {
+  Future<int?> appendDraft(Email draft) async {
     return _ensureConnection(() async {
       // Select the Drafts mailbox
       await _imapClient!.selectMailboxByPath('Drafts');
+
+      // try to delete the outdated draft server side
+      if (draft.uid != 0) {
+        try {
+          await _imapClient!.uidStore(
+            MessageSequence.fromId(draft.uid),
+            [MessageFlags.deleted],
+          );
+          await _imapClient!.expunge();
+          debugPrint('DRAFTS: deleted old draft: UID: ${draft.uid}');
+        } catch (e) {
+          debugPrint('DRAFTS: failed to delete old draft: UID: ${draft.uid}');
+        }
+      }
+
       // Build draft MIME
       final builder = MessageBuilder.prepareMultipartAlternativeMessage(plainText: draft.body)
-        ..from = [MailAddress('', _username!)]
+        ..from = [MailAddress(draft.sender, draft.senderEmail)]
         ..to = draft.recipients.map((r) => MailAddress('', r)).toList()
         ..subject = draft.subject;
       final mime = builder.buildMimeMessage();
 
       try {
-        await _imapClient!.appendMessage(
+        final appendResult = await _imapClient!.appendMessage(
           mime,
-          flags: [MessageFlags.draft],
+          flags: [MessageFlags.draft, MessageFlags.seen],
         );
-        return true;
+        // get the UID of the newly appended Email and pass it along so we can keep track of the current UID
+        final newUID = appendResult.responseCodeAppendUid;
+        final uid = newUID?.targetSequence.toList().first;
+        return uid;
       } catch (e) {
         debugPrint('appendDraft error: $e');
-        return false;
+        return null;
       }
     });
   }
@@ -432,9 +446,13 @@ class ImapEmailService {
       subject: msg.decodeSubject() ?? 'No Subject',
       body: plain.isNotEmpty ? plain : (html ?? ''),
       htmlBody: html,
-      sender: msg.from?.first.personalName ?? msg.from?.first.email ?? 'Unknown',
-      senderEmail: msg.from?.first.email ?? '',
-      recipients: msg.to?.map((a) => a.email).toList() ?? [],
+      sender: msg.from?.isNotEmpty == true
+          ? (msg.from!.first.personalName?.isNotEmpty == true
+              ? msg.from!.first.personalName!
+              : msg.from!.first.encode() ?? 'Unknown')
+          : 'Unknown',
+      senderEmail: msg.from?.isNotEmpty == true ? (msg.from?.first.email ?? '') : '',
+      recipients: msg.to?.where((a) => a.email.isNotEmpty).map((a) => a.email).toList() ?? [],
       date: msg.decodeDate() ?? DateTime.now(),
       isUnread: !msg.isSeen,
       isStarred: msg.isFlagged,

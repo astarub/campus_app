@@ -38,6 +38,7 @@ class ImapEmailRepository implements EmailRepository {
     required String to,
     required String subject,
     required String body,
+    required String senderEmail,
     List<String>? cc,
     List<String>? bcc,
   }) {
@@ -48,6 +49,7 @@ class ImapEmailRepository implements EmailRepository {
       body: body,
       cc: cc,
       bcc: bcc,
+      senderEmail: senderEmail,
     );
   }
 
@@ -109,7 +111,7 @@ class ImapEmailRepository implements EmailRepository {
   bool get isConnected => _imapService.isConnected; // Proxy for connection state
 
   @override
-  Future<bool> saveDraft(Email draft) => _imapService.appendDraft(draft); // Save draft email
+  Future<int?> saveDraft(Email draft) => _imapService.appendDraft(draft); // Save draft email
 
   @override
   Future<List<Email>> fetchDrafts({int count = 50}) =>
