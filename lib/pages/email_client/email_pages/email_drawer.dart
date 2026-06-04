@@ -1,3 +1,4 @@
+import 'package:campus_app/pages/email_client/email_drawer/drafts.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 //import 'package:campus_app/pages/email_client/email_drawer/archives.dart';
@@ -86,20 +87,27 @@ class EmailDrawer extends StatelessWidget {
                   leading: Icon(Icons.folder, color: theme.iconTheme.color),
                   title: Text(folder.displayName, style: theme.textTheme.bodyLarge),
                   subtitle: Text(folder.mailboxName, style: theme.textTheme.bodySmall),
-                  onTap: () {
-                    Navigator.pop(context);
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => FolderEmailsPage(
-                            mailboxName: folder.mailboxName,
-                            title: folder.displayName,
-                          ),
-                        ),
-                      );
-                    });
-                  },
+                  onTap: folder.displayName == 'Drafts'
+                      ? () {
+                          Navigator.pop(context);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => const DraftsPage()));
+                          });
+                        }
+                      : () {
+                          Navigator.pop(context);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => FolderEmailsPage(
+                                  mailboxName: folder.mailboxName,
+                                  title: folder.displayName,
+                                ),
+                              ),
+                            );
+                          });
+                        },
                 );
               }),
 

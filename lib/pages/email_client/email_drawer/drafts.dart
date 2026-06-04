@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
+
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
@@ -36,7 +40,9 @@ class _DraftsPageState extends State<DraftsPage> {
                 return EmailTile(
                   email: draft,
                   isSelected: selectionController.isSelected(draft),
-                  onTap: () => _handleEmailTap(draft, selectionController), // Tap to edit
+                  onTap: () {
+                    unawaited(_handleEmailTap(draft, selectionController));
+                  }, // Tap to edit
                   onLongPress: () => _handleEmailLongPress(draft, selectionController), // Long press to select
                 );
               },
@@ -97,16 +103,21 @@ class _DraftsPageState extends State<DraftsPage> {
   }
 
   // Handles tapping a draft: open for editing or toggle selection
-  void _handleEmailTap(Email draft, selectionController) {
+  Future<void> _handleEmailTap(Email draft, selectionController) async {
     if (selectionController.isSelecting) {
       selectionController.toggleSelection(draft); // Toggle selected state
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ComposeEmailScreen(draft: draft), // Navigate to compose screen with the draft
-        ),
-      );
+      // fetch the current draft body
+      if (context.mounted) {
+        final emailService = Provider.of<EmailService>(context, listen: false);
+        final fullDraft = await emailService.fetchFullEmail(draft.uid);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ComposeEmailScreen(draft: fullDraft), // Navigate to compose screen with the draft
+          ),
+        );
+      }
     }
   }
 
@@ -133,7 +144,7 @@ class _DraftsPageState extends State<DraftsPage> {
           ),
           TextButton(
             onPressed: () {
-              emailService.deleteEmailsPermanently(selectionController.selectedEmails); // Delete selected drafts
+              emailService.deleteEmail(selectionController.selectedEmails); // Delete selected drafts
               Navigator.pop(context); // Close dialog
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),

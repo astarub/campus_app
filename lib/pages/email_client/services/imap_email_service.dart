@@ -273,10 +273,14 @@ class ImapEmailService {
       }
 
       // Build draft MIME
-      final builder = MessageBuilder.prepareMultipartAlternativeMessage(plainText: draft.body)
-        ..from = [MailAddress(draft.sender, draft.senderEmail)]
-        ..to = draft.recipients.map((r) => MailAddress('', r)).toList()
-        ..subject = draft.subject;
+      final builder = MessageBuilder();
+
+      builder.from = [MailAddress(draft.sender, draft.senderEmail)];
+      builder.to = draft.recipients.map((r) => MailAddress('', r)).toList();
+      builder.subject = draft.subject;
+      builder.addTextPlain(draft.body);
+      builder.setHeader('X-Local-Draft-ID', draft.id); // Header to keep track of our Drafts
+
       final mime = builder.buildMimeMessage();
 
       try {
@@ -441,8 +445,14 @@ class ImapEmailService {
     final plain = _extractPlainBody(msg);
     final html = _extractHtmlBody(msg);
 
+    // if we're dealing with a draft, try to use the saved header id
+    final localDraftID = msg.getHeaderValue('X-Local-Draft-ID');
+    final id = localDraftID?.isNotEmpty == true
+        ? localDraftID!
+        : msg.uid?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString();
+
     return Email(
-      id: msg.uid?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id: id,
       subject: msg.decodeSubject() ?? 'No Subject',
       body: plain.isNotEmpty ? plain : (html ?? ''),
       htmlBody: html,

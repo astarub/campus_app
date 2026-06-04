@@ -44,9 +44,11 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
     super.initState();
     _loadSenderEmail();
     if (widget.draft != null) {
+      _currentDraftID = widget.draft!.id;
       _toController.text = widget.draft!.recipients.join(', ');
       _subjectController.text = widget.draft!.subject;
-      _bodyController.text = widget.draft!.htmlBody ?? widget.draft!.body;
+      _bodyController.text =
+          widget.draft!.body.isNotEmpty ? widget.draft!.body.trim() : (widget.draft!.htmlBody ?? '').trim();
       _attachments.addAll(widget.draft!.attachments);
     } else if (widget.replyTo != null) {
       _toController.text = widget.replyTo!.senderEmail;
@@ -113,6 +115,7 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
       message: message,
       type: type,
       top: 20,
+      duration: const Duration(seconds: 1),
     );
   }
 
@@ -195,7 +198,10 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        _saveDraft(emailService);
+        // only save the draft if changes were made
+        if (_hasChanged) {
+          _saveDraft(emailService);
+        }
         return true;
       },
       child: Scaffold(

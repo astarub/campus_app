@@ -398,8 +398,10 @@ class EmailService extends ChangeNotifier {
       return;
     }
 
-    final updatedDraft = draft.copyWith(folder: EmailFolder.drafts);
+    final mailboxName = _getMailboxNameForFolder(EmailFolder.drafts);
+    final updatedDraft = draft.copyWith(folder: EmailFolder.drafts, mailboxName: mailboxName);
     final index = _allEmails.indexWhere((e) => e.id == draft.id);
+
     if (index != -1) {
       _allEmails[index] = updatedDraft;
     } else {
@@ -502,7 +504,18 @@ class EmailService extends ChangeNotifier {
     final mailboxName = cached.mailboxName ?? _getMailboxNameForFolder(EmailFolder.inbox) ?? 'INBOX'; // Inbox fallback
 
     try {
-      return await _emailRepository.fetchEmailbyUID(uid, mailboxName: mailboxName);
+      final full = await _emailRepository.fetchEmailbyUID(uid, mailboxName: mailboxName);
+      if (full != null) {
+        final index = _allEmails.indexWhere((e) => e.uid == uid);
+        if (index != -1) {
+          _allEmails[index] = _allEmails[index].copyWith(
+            body: full.body,
+            htmlBody: full.htmlBody,
+            id: full.id,
+          );
+        }
+      }
+      return full;
     } catch (e) {
       debugPrint('Email Service: error fetching full Email: $e');
       return null;
