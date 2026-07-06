@@ -21,6 +21,9 @@ import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/campus_search_bar.dart';
 import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 
+import 'package:campus_app/pages/home/widgets/app_header.dart'; //new app header import
+import 'package:campus_app/pages/profile/profile_page.dart'; // new profile page import
+
 class FeedPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
@@ -234,95 +237,83 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                   ),
                 ),
                 // Header
-                Container(
-                  padding: EdgeInsets.only(
-                    top: Platform.isAndroid ? 10 : 0,
-                    bottom: 20,
-                  ),
-                  color: headerOpacity == 1
-                      ? Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface
-                      : Colors.transparent,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Headline
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Text(
-                          'Feed',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
-                        ),
+                AppHeader(
+                  title: 'Feed',
+                  opacity: headerOpacity,
+
+                  // Opens the  profile page when the profile icon is tapped.
+                  onProfileTap: () {
+                    widget.mainNavigatorKey.currentState?.push(
+                      MaterialPageRoute(
+                        builder: (_) => const ProfilePage(),
                       ),
-                      // FeedPicker & filter
-                      AnimatedOpacity(
-                        opacity: headerOpacity,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeOut,
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 400),
-                          child: showSearchBar
-                              ? CampusSearchBar(
-                                  onChange: onSearch,
-                                  onBack: () {
-                                    setState(() {
-                                      searchNewsWidgets = parsedNewsWidgets;
-                                      showSearchBar = false;
-                                      searchWord = '';
-                                    });
-                                  },
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(top: 8.5),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      // Search button
-                                      CampusIconButton(
-                                        iconPath: 'assets/img/icons/search.svg',
-                                        onTap: () {
-                                          setState(() {
-                                            showSearchBar = true;
-                                          });
-                                        },
-                                      ),
-                                      // FeedPicker
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                                        child: CampusSegmentedControl(
-                                          leftTitle: 'Feed',
-                                          rightTitle: 'Explore',
-                                          onChanged: saveFeedExplore,
-                                          selected:
-                                              Provider.of<SettingsHandler>(context).currentSettings.newsExplore == false
-                                                  ? 0
-                                                  : 1,
-                                        ),
-                                      ),
-                                      // Filter button
-                                      CampusIconButton(
-                                        iconPath: 'assets/img/icons/filter.svg',
-                                        onTap: () {
-                                          widget.mainNavigatorKey.currentState?.push(
-                                            PageRouteBuilder(
-                                              opaque: false,
-                                              pageBuilder: (context, _, __) => FeedFilterPopup(
-                                                selectedFilters: List.from(
-                                                  Provider.of<SettingsHandler>(
-                                                    context,
-                                                  ).currentSettings.feedFilter,
-                                                ),
-                                                onClose: saveChangedFilters,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
+                    );
+                  },
+
+                  // Page-specific header content for the feed page.
+                  bottom: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 400),
+                    child: showSearchBar
+                        ? CampusSearchBar(
+                      onChange: onSearch,
+
+                      // Closes the search bar and resets the current search state.
+                      onBack: () {
+                        setState(() {
+                          searchNewsWidgets = parsedNewsWidgets;
+                          showSearchBar = false;
+                          searchWord = '';
+                        });
+                      },
+                    )
+                        : Padding(
+                      padding: const EdgeInsets.only(top: 8.5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Opens the search bar.
+                          CampusIconButton(
+                            iconPath: 'assets/img/icons/search.svg',
+                            onTap: () {
+                              setState(() {
+                                showSearchBar = true;
+                              });
+                            },
+                          ),
+
+                          // Switches between the normal feed and the explore feed.
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: CampusSegmentedControl(
+                              leftTitle: 'Feed',
+                              rightTitle: 'Explore',
+                              onChanged: saveFeedExplore,
+                              selected: Provider.of<SettingsHandler>(context).currentSettings.newsExplore == false ? 0 : 1,
+                            ),
+                          ),
+
+                          // Opens the feed filter popup.
+                          CampusIconButton(
+                            iconPath: 'assets/img/icons/filter.svg',
+                            onTap: () {
+                              widget.mainNavigatorKey.currentState?.push(
+                                PageRouteBuilder(
+                                  opaque: false,
+                                  pageBuilder: (context, _, __) => FeedFilterPopup(
+                                    selectedFilters: List.from(
+                                      Provider.of<SettingsHandler>(
+                                        context,
+                                      ).currentSettings.feedFilter,
+                                    ),
+                                    onClose: saveChangedFilters,
                                   ),
                                 ),
-                        ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],
