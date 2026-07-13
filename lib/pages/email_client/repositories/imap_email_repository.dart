@@ -39,6 +39,7 @@ class ImapEmailRepository implements EmailRepository {
     required String subject,
     required String body,
     required String senderEmail,
+    String senderName = '',
     List<String>? cc,
     List<String>? bcc,
   }) {
@@ -50,6 +51,7 @@ class ImapEmailRepository implements EmailRepository {
       cc: cc,
       bcc: bcc,
       senderEmail: senderEmail,
+      senderName: senderName,
     );
   }
 

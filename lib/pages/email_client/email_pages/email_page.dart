@@ -330,7 +330,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                         MaterialPageRoute(
                           builder: (_) => EmailView(
                             email: email,
-                            onDelete: (email) {
+                            onDelete: (email, mailboxName) {
                               emailService.moveEmailsToFolder([email], EmailFolder.trash);
                               _search();
                             },
@@ -379,10 +379,10 @@ class _EmailClientContentState extends State<_EmailClientContent> {
 /*
 NOTES:
 - some changes on the email client only appear on the app not in the actual Email. Like delete.
-- Email inbox only loads a certain number of emails, loading takes a long time needs optimization.
-- Drawer top needs to be fixed (name/Email display)
-- Some Email bodies are not shown.
-- sending emails and replying works. drafts also work.
+- Email inbox only loads a certain number of emails, loading takes a long time needs optimization. (N.D. Dev Note -> Optimized)
+- Drawer top needs to be fixed (name/Email display) 
+- Some Email bodies are not shown. (N.D. Dev Note -> fixed html bodies)
+- sending emails and replying works. drafts also work. (N.D. Dev Note -> wasn't really working, sent emails had no body, replying has skewed format and drafts didn't work right. drafts and Sending is fixed)
 - selection needs to be added to the drawer pages as well. the selection component is already implemented but
   the use of options different than the inbox is needed.
 - Setting need to be implemented

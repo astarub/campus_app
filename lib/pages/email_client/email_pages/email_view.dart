@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/utils/widgets/bubble_message.dart';
+import 'package:campus_app/utils/widgets/bubble_service.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
@@ -11,16 +13,16 @@ import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.d
 // Displays a full view of an email, including sender info, subject, body, and actions (reply, delete, restore)
 class EmailView extends StatefulWidget {
   final Email email; // The email being viewed
-  final void Function(Email)? onDelete; // Optional callback for deletion
+  final void Function(Email, String)? onDelete; // Optional callback for deletion
   final void Function(Email)? onRestore; // Optional callback for restoring from trash
-  final bool isInTrash; // Whether the email is currently in the trash folder
+  final EmailFolder folder;
 
   const EmailView({
     super.key,
     required this.email,
     this.onDelete,
     this.onRestore,
-    this.isInTrash = false,
+    this.folder = EmailFolder.inbox,
   });
 
   @override
@@ -33,12 +35,20 @@ class _EmailViewState extends State<EmailView> {
   bool _isLoadingEmailBody = true;
   bool _fetchFail = false;
   bool _imagesBlocked = true;
+  bool _isInTrash = false;
 
   InAppWebViewController? _webViewController;
 
   @override
   void initState() {
     super.initState();
+
+    // check if an email is in trash to enable permanent deletion
+    if (widget.folder == EmailFolder.trash) {
+      setState(() {
+        _isInTrash = true;
+      });
+    }
     _loadEmailBody();
   }
 
@@ -60,6 +70,19 @@ class _EmailViewState extends State<EmailView> {
         });
       }
     }
+  }
+
+  // helper function to use the global bubble notifications
+  void showUpdateMessages(String message, {BubbleType type = BubbleType.info}) {
+    if (!mounted) return;
+
+    BubbleService().show(
+      context,
+      message: message,
+      type: type,
+      top: 20,
+      duration: const Duration(seconds: 1),
+    );
   }
 
   // Opens the compose screen with the current email as a reply
@@ -85,15 +108,16 @@ class _EmailViewState extends State<EmailView> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(ctx); // Close dialog
-              if (widget.onDelete != null) {
-                widget.onDelete?.call(widget.email); // Perform delete
+
+              // perform the delete directly unlike soft delete
+              final emailService = Provider.of<EmailService>(context, listen: false);
+              await emailService.deleteEmail(widget.email);
+              if (context.mounted) {
+                Navigator.pop(context);
+                showUpdateMessages('Email permanent gelöscht.');
               }
-              Navigator.pop(context); // Close email view
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Email permanently deleted')),
-              );
             },
             child: Text(
               'Delete',
@@ -110,9 +134,7 @@ class _EmailViewState extends State<EmailView> {
     if (widget.onRestore != null) {
       widget.onRestore!(widget.email);
       Navigator.pop(context); // Close email view
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email restored from trash')),
-      );
+      showUpdateMessages('Email restored from trash.');
     }
   }
 
@@ -302,31 +324,29 @@ class _EmailViewState extends State<EmailView> {
       appBar: AppBar(
         title: const Text('RubMail'),
         actions: [
-          if (!widget.isInTrash)
+          if (!_isInTrash)
             IconButton(
               icon: const Icon(Icons.reply),
               onPressed: () => _handleReply(context), // Quick reply
               tooltip: 'Reply',
             ),
-          if (!widget.isInTrash && widget.onDelete != null)
+          if (!_isInTrash && widget.onDelete != null)
             IconButton(
               icon: const Icon(Icons.delete),
               onPressed: () {
-                widget.onDelete!(widget.email); // Soft delete (to trash)
+                widget.onDelete!(widget.email, widget.email.mailboxName ?? 'INBOX'); // Soft delete (to trash)
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Email moved to trash')),
-                );
+                showUpdateMessages('Email(s) moved to trash.');
               },
               tooltip: 'Delete',
             ),
-          if (widget.isInTrash)
+          if (_isInTrash)
             IconButton(
               icon: const Icon(Icons.restore_from_trash),
               onPressed: () => _handleRestore(context), // Restore from trash
               tooltip: 'Restore',
             ),
-          if (widget.isInTrash)
+          if (_isInTrash)
             IconButton(
               icon: const Icon(Icons.delete_forever),
               onPressed: () => _confirmPermanentDelete(context), // Permanent delete
@@ -427,7 +447,7 @@ class _EmailViewState extends State<EmailView> {
           ],
         ],
       ),
-      floatingActionButton: !widget.isInTrash
+      floatingActionButton: !_isInTrash
           ? FloatingActionButton(
               onPressed: () => _handleReply(context), // FAB for quick reply
               tooltip: 'Reply',

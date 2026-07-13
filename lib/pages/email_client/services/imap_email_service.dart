@@ -189,6 +189,7 @@ class ImapEmailService {
     required String subject,
     required String body,
     required String senderEmail,
+    String senderName = '',
     List<String>? cc,
     List<String>? bcc,
     List<String>? attachments,
@@ -210,11 +211,12 @@ class ImapEmailService {
         await _smtpClient!.authenticate(_username!, _password!, AuthMechanism.login);
       }
 
-      // build message and set email
-      final builder = MessageBuilder.prepareMultipartAlternativeMessage(plainText: body)
-        ..from = [MailAddress('', senderEmail)]
-        ..to = [MailAddress('', to)]
-        ..subject = subject;
+      // build message explicitly (works more reliably as seen in drafts)
+      final builder = MessageBuilder();
+      builder.from = [MailAddress(senderName, senderEmail)];
+      builder.to = [MailAddress('', to)];
+      builder.subject = subject;
+      builder.addTextPlain(body);
 
       if (cc?.isNotEmpty ?? false) {
         builder.cc = cc!.map((addr) => MailAddress('', addr)).toList();
@@ -375,7 +377,11 @@ class ImapEmailService {
     return _ensureConnection(() async {
       try {
         await _imapClient!.selectMailboxByPath(mailboxName);
-        await _imapClient!.uidStore(MessageSequence.fromId(uid), [MessageFlags.deleted]);
+        await _imapClient!.uidStore(
+          MessageSequence.fromId(uid),
+          [MessageFlags.deleted],
+          action: StoreAction.add,
+        );
         await _imapClient!.expunge();
         return true;
       } catch (e) {
@@ -393,9 +399,9 @@ class ImapEmailService {
   }) async {
     return _ensureConnection(() async {
       try {
+        // select the source Mailbox and pass the target directly to the move function
         await _imapClient!.selectMailboxByPath(sourceMailbox);
-        await _imapClient!.selectMailboxByPath(targetMailbox);
-        await _imapClient!.uidMove(MessageSequence.fromId(uid));
+        await _imapClient!.uidMove(MessageSequence.fromId(uid), targetMailboxPath: targetMailbox);
         return true;
       } catch (e) {
         debugPrint('Error moving email: $e');

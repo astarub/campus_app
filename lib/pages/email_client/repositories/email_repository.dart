@@ -18,6 +18,7 @@ abstract class EmailRepository {
     required String subject,
     required String body,
     required String senderEmail,
+    String senderName = '',
     List<String>? cc,
     List<String>? bcc,
   });

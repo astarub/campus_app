@@ -286,6 +286,7 @@ class EmailService extends ChangeNotifier {
     if (!_isInitialized || email.uid == 0) return;
 
     final trashMailbox = _getMailboxNameForFolder(EmailFolder.trash);
+
     if (trashMailbox == null) {
       // Server doesn't expose Trash → local fallback
       updateEmail(email.copyWith(folder: EmailFolder.trash));
@@ -294,7 +295,11 @@ class EmailService extends ChangeNotifier {
 
     // If the email is already in trash, try to delete permanently from that mailbox.
     if (email.folder == EmailFolder.trash) {
-      final success = await _emailRepository.deleteEmail(email.uid, mailboxName: trashMailbox);
+      final mailbox = email.mailboxName ?? trashMailbox ?? 'TRASH';
+      final success = await _emailRepository.deleteEmail(
+        email.uid,
+        mailboxName: mailbox,
+      );
       if (success) {
         _allEmails.removeWhere((e) => e.id == email.id);
         notifyListeners();
@@ -340,11 +345,14 @@ class EmailService extends ChangeNotifier {
   }) async {
     if (!_isInitialized) throw Exception('Email service not initialized');
 
+    final displayName = await _authService.getDisplayName() ?? '';
+
     final success = await _emailRepository.sendEmail(
       to: to,
       subject: subject,
       body: body,
       senderEmail: senderEmail,
+      senderName: displayName,
       cc: cc?.split(',').map((e) => e.trim()).toList(),
       bcc: bcc?.split(',').map((e) => e.trim()).toList(),
     );

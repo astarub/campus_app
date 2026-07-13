@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
+
+import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_view.dart';
@@ -37,6 +40,10 @@ class FolderEmailsPage extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (_) => EmailView(
                             email: email,
+                            folder: email.folder,
+                            onDelete: (email, mailboxName) {
+                              emailService.moveEmailsToFolder([email], EmailFolder.trash);
+                            },
                           ),
                         ),
                       );
