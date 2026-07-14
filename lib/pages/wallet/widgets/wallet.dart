@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campus_app/core/auth/auth_provider.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,6 +66,7 @@ class BogestraTicketState extends State<BogestraTicket>
   bool _isLoading = false;
 
   Timer? _refreshTimer;
+  AuthProvider? _authProvider;
 
   TicketRepository ticketRepository = sl<TicketRepository>();
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
@@ -101,6 +103,11 @@ class BogestraTicketState extends State<BogestraTicket>
     if (_isLoading) return;
     _isLoading = true;
 
+    // Grab these once before the async work starts.
+    // This avoids using BuildContext again after awaits.
+    final TicketWarningNotifier ticketWarningNotifier = context.read<TicketWarningNotifier>();
+    final AuthProvider authProvider = context.read<AuthProvider>();
+
     try {
       // Pre-render ticket if not already scanned
       if (!scanned) await renderTicket();
@@ -117,13 +124,13 @@ class BogestraTicketState extends State<BogestraTicket>
           await ticketRepository.loadTicket();
           debugPrint('Wallet widget: Ticket loaded successfully on retry $i');
           successfullLoad = true;
-          context.read<TicketWarningNotifier>().set(false);
+          ticketWarningNotifier.set(false);
           break; // jump out of for loop
         } on InvalidLoginIDAndPasswordException {
           // the two on error cases are "Fatal Cases" no reason to retry, only user can fix these by adding creds or entering right creds
           debugPrint('Wallet Widget: Invalid Credentials.');
           final ticketLoaded = await ticketRepository.getAztecCode();
-          if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
+          if (ticketLoaded != null) ticketWarningNotifier.set(true);
           return;
         } on MissingCredentialsException {
           debugPrint('Wallet Widget: Initializing.');
@@ -134,7 +141,7 @@ class BogestraTicketState extends State<BogestraTicket>
           if (i == retries) {
             debugPrint('Wallet widget: Retries have failed. Notify User of failure and potentially outdated ticket.');
             final ticketLoaded = await ticketRepository.getAztecCode();
-            if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
+            if (ticketLoaded != null) ticketWarningNotifier.set(true);
             return;
           }
 
@@ -154,6 +161,9 @@ class BogestraTicketState extends State<BogestraTicket>
       if (oldAztecCode != newAztecCode) {
         await renderTicket();
       }
+
+      // The ticket may contain the newest user info, so sync the global auth state too.
+      await authProvider.refreshFromStorage();
     } finally {
       _isLoading = false;
     }
@@ -183,11 +193,43 @@ class BogestraTicketState extends State<BogestraTicket>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final AuthProvider nextAuthProvider = context.read<AuthProvider>();
+
+    if (_authProvider == nextAuthProvider) return;
+
+    _authProvider?.removeListener(_handleAuthStateChanged);
+    _authProvider = nextAuthProvider;
+    _authProvider?.addListener(_handleAuthStateChanged);
+  }
+
+  @override
   void dispose() {
     //remove the observer and timer
     WidgetsBinding.instance.removeObserver(this);
     _refreshTimer?.cancel();
+    _authProvider?.removeListener(_handleAuthStateChanged);
     super.dispose();
+  }
+
+  void _handleAuthStateChanged() {
+    if (!mounted || _authProvider == null || _authProvider!.isLoading) return;
+
+    if (_authProvider!.isLoggedIn) {
+      // Example: user logs in from the profile page, wallet should react too.
+      loadAndRenderTicket();
+      return;
+    }
+
+    if (!scanned && !showAztecCode) return;
+
+    // Remove the shown ticket when the global login is gone.
+    setState(() {
+      scanned = false;
+      showAztecCode = false;
+    });
   }
 
   @override
@@ -365,7 +407,7 @@ class BogestraTicketState extends State<BogestraTicket>
 
 Future<void> setBrightness(double brightness) async {
   try {
-    await ScreenBrightness().setScreenBrightness(brightness);
+    await ScreenBrightness().setApplicationScreenBrightness(brightness);
   } catch (e) {
     debugPrint(e.toString());
   }
@@ -373,7 +415,7 @@ Future<void> setBrightness(double brightness) async {
 
 Future<void> resetBrightness() async {
   try {
-    await ScreenBrightness().resetScreenBrightness();
+    await ScreenBrightness().resetApplicationScreenBrightness();
   } catch (e) {
     debugPrint(e.toString());
   }

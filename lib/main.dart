@@ -15,6 +15,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:campus_app/l10n/l10n.dart';
 
+import 'package:campus_app/core/auth/auth_provider.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
@@ -68,6 +69,11 @@ Future<void> main() async {
             ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
             ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
             ChangeNotifierProvider<TicketWarningNotifier>(create: (_) => TicketWarningNotifier()),
+            // One global auth provider for the whole app.
+            // Profile page and wallet both listen to this same state.
+            ChangeNotifierProvider<AuthProvider>(
+              create: (_) => AuthProvider(authService: ic.sl())..initialize(),
+            ),
           ],
           child: CampusApp(
             key: campusAppKey,
@@ -83,6 +89,10 @@ Future<void> main() async {
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
           ChangeNotifierProvider<TicketWarningNotifier>(create: (_) => TicketWarningNotifier()),
+          // Same setup in debug mode.
+          ChangeNotifierProvider<AuthProvider>(
+            create: (_) => AuthProvider(authService: ic.sl())..initialize(),
+          ),
         ],
         child: CampusApp(
           key: campusAppKey,

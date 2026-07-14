@@ -14,6 +14,8 @@ class MissingCredentialsException implements Exception {}
 
 class TicketNotFoundException implements Exception {}
 
+class ServiceUnavailableException implements Exception {}
+
 /// 2FA token is not correct
 class Invalid2FATokenException implements Exception {}
 
@@ -26,7 +28,7 @@ class UnexpectedException implements Exception {}
 /// Error while authenticating to the appwrite backend
 class AuthenticationException implements Exception {}
 
-/// No connection to the backend
+/// No network connection available
 class NoConnectionException implements Exception {}
 
 /// Too many request to the backend

@@ -29,8 +29,10 @@ class TicketRepository {
         await deleteTicket();
         throw TicketNotFoundException();
       } else if (e == 'Could not open ticket page.') {
-        throw TicketNotFoundException();
+        throw ServiceUnavailableException();
       }
+
+      throw UnexpectedException();
     }
     if (ticket == null || ticket['aztec_code'].toString().isEmpty) {
       throw TicketNotFoundException();

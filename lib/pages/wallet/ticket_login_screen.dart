@@ -1,42 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/core/auth/auth_provider.dart';
+import 'package:campus_app/core/auth/auth_service.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/exceptions.dart';
-import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
-import 'package:campus_app/utils/pages/wallet_utils.dart';
+import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_textfield.dart';
-import 'package:campus_app/utils/widgets/campus_button.dart';
 
 class TicketLoginScreen extends StatefulWidget {
   final void Function() onTicketLoaded;
-  const TicketLoginScreen({super.key, required this.onTicketLoaded});
+
+  const TicketLoginScreen({
+    super.key,
+    required this.onTicketLoaded,
+  });
 
   @override
   State<TicketLoginScreen> createState() => _TicketLoginScreenState();
 }
 
 class _TicketLoginScreenState extends State<TicketLoginScreen> {
-  final TicketRepository ticketRepository = sl<TicketRepository>();
-  final FlutterSecureStorage secureStorage = sl<FlutterSecureStorage>();
-  final WalletUtils walletUtils = sl<WalletUtils>();
-
+  // We only use the service here to read the last stored login ID for prefill.
+  final AuthService authService = sl<AuthService>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController submitButtonController = TextEditingController();
 
-  bool showErrorMessage = false;
-  String errorMessage = '';
+  @override
+  void initState() {
+    super.initState();
+    // Try to prefill the username field when the screen opens.
+    _prefillLoginId();
+  }
 
-  bool loading = false;
+  Future<void> _prefillLoginId() async {
+    final String? loginId = await authService.getStoredLoginId();
+
+    if (!mounted || loginId == null || loginId.isEmpty) return;
+
+    // Nice little UX thing: show the last used login ID again.
+    usernameController.text = loginId;
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // The screen only reads UI state from the provider now.
+    final AuthProvider authProvider = context.watch<AuthProvider>();
+
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
       body: Padding(
@@ -45,7 +65,6 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Back button
             Padding(
               padding: const EdgeInsets.only(bottom: 12, left: 20, right: 20),
               child: Row(
@@ -78,24 +97,23 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                     textFieldController: usernameController,
                     textFieldText: 'RUB LoginID',
                     onTap: () {
-                      setState(() {
-                        showErrorMessage = false;
-                      });
+                      // Hide the old error once the user starts editing again.
+                      context.read<AuthProvider>().clearError();
                     },
                   ),
                   const Padding(padding: EdgeInsets.only(top: 10)),
                   CampusTextField(
                     textFieldController: passwordController,
                     obscuredInput: true,
-                    textFieldText: 'RUB Passwort',
+                    textFieldText: 'RUB Password',
                     onTap: () {
-                      setState(() {
-                        showErrorMessage = false;
-                      });
+                      // Same here for the password field.
+                      context.read<AuthProvider>().clearError();
                     },
                   ),
                   const Padding(padding: EdgeInsets.only(top: 15)),
-                  if (showErrorMessage) ...[
+                  if (authProvider.errorMessage != null) ...[
+                    // Show the current login error from the global auth state.
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -111,7 +129,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                           padding: EdgeInsets.only(left: 5),
                         ),
                         Text(
-                          errorMessage,
+                          authProvider.errorMessage!,
                           style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall!.copyWith(
                                 color: Colors.redAccent,
                               ),
@@ -121,64 +139,31 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                   ],
                   const Padding(padding: EdgeInsets.only(top: 15)),
                   CampusButton(
-                    text: 'Login',
+                    text: authProvider.isLoading ? 'Signing in...' : 'Login',
                     onTap: () async {
+                      // Block double taps while the login is already running.
+                      if (authProvider.isLoading) return;
+
+                      // We read the provider here, then ask it to start the real login flow.
                       final NavigatorState navigator = Navigator.of(context);
+                      final AuthProvider authProviderNotifier = context.read<AuthProvider>();
+                      final TicketWarningNotifier ticketWarningNotifier = context.read<TicketWarningNotifier>();
 
-                      if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
-                        setState(() {
-                          errorMessage = 'Bitte fülle beide Felder aus!';
-                          showErrorMessage = true;
-                        });
-                        return;
-                      }
+                      // The text field values are passed as login parameters to the global auth flow.
+                      final bool success = await authProviderNotifier.login(
+                            loginId: usernameController.text,
+                            password: passwordController.text,
+                          );
 
-                      if (await walletUtils.hasNetwork() == false) {
-                        setState(() {
-                          errorMessage = 'Überprüfe deine Internetverbindung!';
-                          showErrorMessage = true;
-                        });
-                        return;
-                      }
+                      // Stop here if the screen was closed while the async login was running.
+                      if (!mounted) return;
 
-                      setState(() {
-                        showErrorMessage = false;
-                        loading = true;
-                      });
-
-                      final previousLoginId = await secureStorage.read(key: 'loginId');
-                      final previousPassword = await secureStorage.read(key: 'password');
-
-                      await secureStorage.write(key: 'loginId', value: usernameController.text);
-                      await secureStorage.write(key: 'password', value: passwordController.text);
-
-                      try {
-                        await ticketRepository.loadTicket();
+                      if (success) {
+                        // Refresh the wallet right away and close the login screen.
                         widget.onTicketLoaded();
-                        context.read<TicketWarningNotifier>().set(false);
+                        ticketWarningNotifier.set(false);
                         navigator.pop();
-                      } on InvalidLoginIDAndPasswordException {
-                        setState(() {
-                          errorMessage = 'Falsche LoginID und/oder Passwort!';
-                          showErrorMessage = true;
-                        });
-                      } catch (e) {
-                        final ticketLoaded = await ticketRepository.getAztecCode();
-
-                        setState(() {
-                          errorMessage = 'Fehler beim Laden des Tickets!';
-                          showErrorMessage = true;
-                          if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
-                        });
-
-                        if (previousLoginId != null && previousPassword != null) {
-                          await secureStorage.write(key: 'loginId', value: previousLoginId);
-                          await secureStorage.write(key: 'password', value: previousPassword);
-                        }
                       }
-                      setState(() {
-                        loading = false;
-                      });
                     },
                   ),
                   const Padding(padding: EdgeInsets.only(top: 25)),
@@ -213,7 +198,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                     ],
                   ),
                   const Padding(padding: EdgeInsets.only(top: 25)),
-                  if (loading) ...[
+                  if (authProvider.isLoading) ...[
                     CircularProgressIndicator(
                       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                       color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,

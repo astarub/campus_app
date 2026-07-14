@@ -23,6 +23,7 @@ import 'package:campus_app/pages/feed/news/news_usecases.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_datasource.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
+import 'package:campus_app/core/auth/auth_service.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
@@ -109,6 +110,16 @@ Future<void> init() async {
 
   sl.registerLazySingleton(
     () => TicketUsecases(ticketRepository: sl()),
+  );
+
+  sl.registerLazySingleton(
+    // This wires up the global auth service for the new login flow.
+    // The service gets storage, ticket logic and the simple network check from here.
+    () => AuthService(
+      secureStorage: sl(),
+      ticketRepository: sl(),
+      walletUtils: sl(),
+    ),
   );
 
   //!
