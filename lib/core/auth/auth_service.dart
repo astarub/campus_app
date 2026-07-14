@@ -91,7 +91,8 @@ class AuthService {
     // Read the already saved login ID and ticket details from storage.
     // Then turn that raw data into one StudentProfile object.
     final String? loginId = await getStoredLoginId();
-    final String? ticketDetailsEncoded = await ticketRepository.getTicketDetails();
+    final String? ticketDetailsEncoded =
+        await ticketRepository.getTicketDetails();
 
     // If important data is missing, we cannot build a profile.
     if (loginId == null || loginId.isEmpty || ticketDetailsEncoded == null) {

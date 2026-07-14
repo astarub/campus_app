@@ -22,7 +22,8 @@ class TicketDataSource {
   Future<Map<String, dynamic>> getRemoteTicket() async {
     debugPrint('Loading semester ticket');
 
-    final Completer<Map<String, dynamic>> completer = Completer<Map<String, dynamic>>();
+    final Completer<Map<String, dynamic>> completer =
+        Completer<Map<String, dynamic>>();
 
     // Define empty ticket
     final Map<String, dynamic> ticket = {
@@ -59,9 +60,43 @@ class TicketDataSource {
         }
       }
 
+      void startLoginWatcher(InAppWebViewController controller) {
+        if (loginTimer != null && loginTimer!.isActive) return;
+
+        loginTimer =
+            Timer.periodic(const Duration(milliseconds: 500), (ti) async {
+          if (headlessWebView == null || !headlessWebView.isRunning()) {
+            ti.cancel();
+            return;
+          }
+
+          await controller.evaluateJavascript(
+            source: """
+            (function() {
+              const errorNodes = Array.from(document.getElementsByClassName("form-error"))
+                .concat(Array.from(document.querySelectorAll('[role="alert"], .alert, .alert-danger, .error')));
+              const hasVisibleError = errorNodes.some(function(node) {
+                const text = (node.innerText || node.textContent || "").trim();
+                return text.length > 0;
+              });
+
+              if (hasVisibleError) {
+                window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
+                return;
+              }
+
+              let btn = document.getElementById('consentbutton_2');
+              if (btn) btn.click();
+            })();
+            """,
+          );
+        });
+      }
+
       headlessWebView = HeadlessInAppWebView(
         initialUrlRequest: URLRequest(url: WebUri(rideTicketing)),
-        initialSettings: InAppWebViewSettings(cacheEnabled: false, clearCache: true),
+        initialSettings:
+            InAppWebViewSettings(cacheEnabled: false, clearCache: true),
         onWebViewCreated: (controller) {
           // Callback handler for the ticket
           controller.addJavaScriptHandler(
@@ -76,7 +111,10 @@ class TicketDataSource {
                 return;
               }
 
-              if (args.length < 2 || args.isEmpty || args[1] is! List || List.of(args[1]).isEmpty) {
+              if (args.length < 2 ||
+                  args.isEmpty ||
+                  args[1] is! List ||
+                  List.of(args[1]).isEmpty) {
                 if (!completer.isCompleted) {
                   completer.completeError('Invalid ticket details');
                   webDispose();
@@ -87,7 +125,8 @@ class TicketDataSource {
               }
 
               final List<dynamic> arguments = List.of(args)[1];
-              final String image = List<dynamic>.from(args)[0].toString().split(',')[1];
+              final String image =
+                  List<dynamic>.from(args)[0].toString().split(',')[1];
 
               ticket['aztec_code'] = image;
 
@@ -139,11 +178,27 @@ class TicketDataSource {
           final String url = uri.toString();
 
           // Click through the RUB login and extract the ticket from the ticket portal
-          if (url.startsWith('https://aai.ruhr-uni-bochum.de/idp/profile/SAML2/POST/SSO') && url.endsWith('s1')) {
+          if (url.startsWith(
+                'https://aai.ruhr-uni-bochum.de/idp/profile/SAML2/POST/SSO',
+              ) &&
+              url.endsWith('s1')) {
+            startLoginWatcher(controller);
             Timer(const Duration(milliseconds: 300), () async {
               await controller.evaluateJavascript(
                 source: """
                 (function fillCreds() {
+                  const errorNodes = Array.from(document.getElementsByClassName("form-error"))
+                    .concat(Array.from(document.querySelectorAll('[role="alert"], .alert, .alert-danger, .error')));
+                  const hasVisibleError = errorNodes.some(function(node) {
+                    const text = (node.innerText || node.textContent || "").trim();
+                    return text.length > 0;
+                  });
+
+                  if (hasVisibleError) {
+                    window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
+                    return;
+                  }
+
                   let username = document.getElementById('username');
                   let password = document.getElementById('password');
                   let btn = document.getElementById('shibbutton');
@@ -159,25 +214,11 @@ class TicketDataSource {
                 """,
               );
             });
-          } else if (url.startsWith('https://aai.ruhr-uni-bochum.de/idp/profile/SAML2/POST/SSO') &&
+          } else if (url.startsWith(
+                'https://aai.ruhr-uni-bochum.de/idp/profile/SAML2/POST/SSO',
+              ) &&
               url.endsWith('s2')) {
-            Timer.periodic(const Duration(milliseconds: 500), (ti) async {
-              loginTimer = ti;
-
-              if (headlessWebView != null && headlessWebView.isRunning()) {
-                await controller.evaluateJavascript(
-                  source: """
-                  (function(){
-                    if(document.getElementsByClassName("form-error").length == 1) {
-                    window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
-                    }
-                    let btn = document.getElementById('consentbutton_2');
-                    if (btn) btn.click();
-                })();
-                """,
-                );
-              }
-            });
+            startLoginWatcher(controller);
           } else if (url.startsWith('https://abo.ride-ticketing.de')) {
             await controller.evaluateJavascript(
               source: '''
@@ -236,7 +277,10 @@ class TicketDataSource {
           loginTimer!.cancel();
         }
         if (headlessWebView != null && headlessWebView.isRunning()) {
-          if (headlessWebView.webViewController!.getUrl().toString().startsWith('https://abo.ride-ticketing.de')) {
+          if (headlessWebView.webViewController!
+              .getUrl()
+              .toString()
+              .startsWith('https://abo.ride-ticketing.de')) {
             await headlessWebView.webViewController!.evaluateJavascript(
               source: '''
                 const cardWrappers = document.getElementsByClassName("abo-card-wrapper");
@@ -247,12 +291,16 @@ class TicketDataSource {
               ''',
             );
           }
-          if (!completer.isCompleted) completer.completeError('Could not open ticket page.');
+          if (!completer.isCompleted) {
+            completer.completeError('Could not open ticket page.');
+          }
           await webDispose();
         }
       });
     } else {
-      if (!completer.isCompleted) completer.completeError('No login credentials found.');
+      if (!completer.isCompleted) {
+        completer.completeError('No login credentials found.');
+      }
     }
 
     return completer.future;

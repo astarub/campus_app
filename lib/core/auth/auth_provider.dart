@@ -21,7 +21,8 @@ class AuthProvider with ChangeNotifier {
   StudentProfile? get currentUser => _currentUser;
   String? get errorMessage => _errorMessage;
 
-  Future<void> initialize() async { // runs on the background and async
+  Future<void> initialize() async {
+    // runs on the background and async
     // Called once when the app starts.
     await refreshFromStorage(); // wait until the data are loaded
   }
@@ -65,8 +66,10 @@ class AuthProvider with ChangeNotifier {
       _isLoggedIn = true;
       return true;
     } on InvalidLoginIDAndPasswordException {
-      // Go back to the last valid state if the entered credentials were wrong
-      await _restorePreviousState(hadStoredCredentials);
+      // Wrong credentials must not keep an older login active.
+      await authService.logout();
+      _isLoggedIn = false;
+      _currentUser = null;
       // Show a clear message for wrong login data
       _errorMessage = 'Invalid login ID and/or password.';
       return false;
