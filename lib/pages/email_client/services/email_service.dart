@@ -190,15 +190,6 @@ class EmailService extends ChangeNotifier {
       'inbox/spam',
     ]);
     if (spam != null) _folderMailboxNames[EmailFolder.spam] = spam;
-
-    final archives = findMatch([
-      'archive',
-      'archives',
-      'archiv',
-      'inbox.archive',
-      'inbox/archive',
-    ]);
-    if (archives != null) _folderMailboxNames[EmailFolder.archives] = archives;
   }
 
   // Reloads emails from the server for all system folders that were actually resolved.
@@ -233,7 +224,6 @@ class EmailService extends ChangeNotifier {
       EmailFolder.drafts,
       EmailFolder.trash,
       EmailFolder.spam,
-      EmailFolder.archives,
     ];
 
     for (final folder in foldersToLoad) {
@@ -309,29 +299,59 @@ class EmailService extends ChangeNotifier {
 
     // Otherwise move it to trash.
     final moved = await _emailRepository.moveEmail(email.uid, trashMailbox);
-    if (moved) updateEmail(email.copyWith(folder: EmailFolder.trash));
+    if (moved != null) updateEmail(email.copyWith(folder: EmailFolder.trash));
   }
 
-  // Moves multiple emails to a target folder .
-  // If the server mailbox for that folder isn't resolved, we do a local-only move.
-  void moveEmailsToFolder(Iterable<Email> emails, EmailFolder folder) {
-    final targetMailbox = _getMailboxNameForFolder(folder);
+  // wrapper for easier access to move Operation with folder names
+  Future<void> moveEmailsToFolder(
+    List<Email> emails,
+    EmailFolder folder,
+  ) async {
+    final mailbox = _folderMailboxNames[folder];
+    if (mailbox == null) return;
 
+    await moveEmailsToMailbox(emails, mailbox);
+  }
+
+  // wrapper function for moving mutliple emails
+  Future<void> moveEmailsToMailbox(List<Email> emails, String targetMailboxName) async {
     for (final email in emails) {
-      if (_isInitialized && email.uid != 0 && targetMailbox != null) {
-        _emailRepository.moveEmail(email.uid, targetMailbox).catchError((_) {});
-      }
-
-      final index = _allEmails.indexWhere((e) => e.id == email.id);
-      if (index != -1) {
-        _allEmails[index] = email.copyWith(
-          folder: folder,
-          mailboxName: targetMailbox ?? email.mailboxName,
-        );
-      }
+      await moveEmailToMailbox(email, targetMailboxName);
     }
+  }
 
-    notifyListeners();
+  // move Email to a Mailbox
+  Future<Email?> moveEmailToMailbox(Email email, String targetMailboxName) async {
+    if (!_isInitialized || email.uid == 0) return null;
+
+    debugPrint(
+      'Moving: uid=${email.uid}, '
+      'source=${email.mailboxName}, '
+      'target=$targetMailboxName',
+    );
+
+    final sourceMailbox = email.mailboxName ?? 'INBOX';
+
+    final newUID = await _emailRepository.moveEmail(
+      email.uid,
+      targetMailboxName,
+      sourceMailbox: sourceMailbox,
+    );
+
+    if (newUID != null) {
+      final targetFolder =
+          _folderMailboxNames.entries.where((e) => e.value == targetMailboxName).map((e) => e.key).firstOrNull ??
+              EmailFolder.inbox;
+
+      final updated = email.copyWith(
+        uid: newUID,
+        folder: targetFolder,
+        mailboxName: targetMailboxName,
+      );
+      updateEmail(updated);
+      return updated;
+    }
+    return null;
   }
 
   /// Sends a new email and refreshes Sent if the server has it.

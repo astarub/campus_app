@@ -30,7 +30,7 @@ class Email {
     this.isStarred = false,
     this.attachments = const [],
     this.folder = EmailFolder.inbox,
-    this.mailboxName, 
+    this.mailboxName,
     this.uid = 0, // Default to 0 for local/dummy emails
   });
 
@@ -139,6 +139,5 @@ enum EmailFolder {
   sent,
   drafts,
   trash,
-  archives,
   spam,
 }

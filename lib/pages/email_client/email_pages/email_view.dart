@@ -8,6 +8,7 @@ import 'package:campus_app/utils/widgets/bubble_message.dart';
 import 'package:campus_app/utils/widgets/bubble_service.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
+import 'package:campus_app/pages/email_client/widgets/email_bottom_panel.dart';
 import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
 
 // Displays a full view of an email, including sender info, subject, body, and actions (reply, delete, restore)
@@ -352,6 +353,24 @@ class _EmailViewState extends State<EmailView> {
               onPressed: () => _confirmPermanentDelete(context), // Permanent delete
               tooltip: 'Permanently Delete',
             ),
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () {
+              final emailService = Provider.of<EmailService>(context, listen: false);
+              showModalBottomSheet(
+                context: context,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                ),
+                builder: (_) => EmailBottomPanel(
+                  email: widget.email,
+                  emailService: emailService,
+                  onActionComplete: () => setState(() {}),
+                ),
+              );
+            },
+            tooltip: 'More',
+          ),
         ],
       ),
       body: Column(

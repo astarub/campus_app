@@ -32,8 +32,8 @@ abstract class EmailRepository {
   // Delete a specific email from a mailbox (defaults to INBOX)
   Future<bool> deleteEmail(int uid, {required String mailboxName});
 
-  // Move an email to a different mailbox (e.g., Archive, Trash)
-  Future<bool> moveEmail(int uid, String targetMailbox);
+  // Move an email to a different mailbox
+  Future<int?> moveEmail(int uid, String targetMailbox, {String sourceMailbox = 'INBOX'});
 
   // Search emails based on query params in a specific mailbox
   Future<List<Email>> searchEmails({

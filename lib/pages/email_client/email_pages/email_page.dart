@@ -57,12 +57,8 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     // Set up selection controller with callbacks
     _selectionController = EmailSelectionController(
       onDelete: (emails) async {
-        emailService.moveEmailsToFolder(emails, EmailFolder.trash); // Move to Trash
+        await emailService.moveEmailsToFolder(emails.toList(), EmailFolder.trash); // Move to Trash
         _search(); // Refresh view
-      },
-      onArchive: (emails) async {
-        emailService.moveEmailsToFolder(emails, EmailFolder.archives); // Move to Archives
-        _search();
       },
       onEmailUpdated: (email) async {
         emailService.updateEmail(email); // Update state if email is modified

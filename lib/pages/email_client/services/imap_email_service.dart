@@ -391,8 +391,8 @@ class ImapEmailService {
     });
   }
 
-  // Moves a message to [targetMailbox].
-  Future<bool> moveEmail(
+  // Moves an email and returns it's new UID
+  Future<int?> moveEmail(
     int uid,
     String targetMailbox, {
     String sourceMailbox = 'INBOX',
@@ -401,11 +401,18 @@ class ImapEmailService {
       try {
         // select the source Mailbox and pass the target directly to the move function
         await _imapClient!.selectMailboxByPath(sourceMailbox);
-        await _imapClient!.uidMove(MessageSequence.fromId(uid), targetMailboxPath: targetMailbox);
-        return true;
+        final result = await _imapClient!.uidMove(MessageSequence.fromId(uid), targetMailboxPath: targetMailbox);
+        final copyUid = result.responseCodeCopyUid;
+
+        // parse to int to keep track of the new assigned UID
+        if (copyUid != null) {
+          return int.tryParse(copyUid.targetSequence.toString());
+        }
+
+        return uid;
       } catch (e) {
         debugPrint('Error moving email: $e');
-        return false;
+        return null;
       }
     });
   }

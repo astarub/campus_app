@@ -74,9 +74,9 @@ class ImapEmailRepository implements EmailRepository {
   }
 
   @override
-  Future<bool> moveEmail(int uid, String targetMailbox) {
+  Future<int?> moveEmail(int uid, String targetMailbox, {String sourceMailbox = 'INBOX'}) {
     // Move email to another mailbox
-    return _imapService.moveEmail(uid, targetMailbox);
+    return _imapService.moveEmail(uid, targetMailbox, sourceMailbox: sourceMailbox);
   }
 
   @override
