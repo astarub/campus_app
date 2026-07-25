@@ -1,4 +1,7 @@
 import 'package:flutter/foundation.dart';
+
+import 'dart:math';
+
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
@@ -388,6 +391,11 @@ class EmailService extends ChangeNotifier {
     }
   }
 
+  List<int> _searchUIDs = [];
+  int _searchSession = 0;
+  static const int _searchBatchSize = 30; // for now see how 30 emails at a time impacts performance
+  bool _hasMoreSearchResults = false;
+
   // Searches emails in a folder (only works if that folder has a resolved mailbox).
   Future<List<Email>> searchEmails({
     String? query,
@@ -399,14 +407,9 @@ class EmailService extends ChangeNotifier {
     if (!_isInitialized) return [];
 
     final targetFolder = folder ?? EmailFolder.inbox;
-    final mailboxName = _getMailboxNameForFolder(targetFolder);
+    final mailboxName = _getMailboxNameForFolder(targetFolder) ?? 'INBOX'; // fallback
 
-    if (mailboxName == null) {
-      // Folder not available on server, return empty result
-      return [];
-    }
-
-    final results = await _emailRepository.searchEmails(
+    _searchUIDs = await _emailRepository.searchEmailUIDs(
       query: query,
       from: from,
       subject: subject,
@@ -414,7 +417,44 @@ class EmailService extends ChangeNotifier {
       mailboxName: mailboxName,
     );
 
-    return results.map((e) => e.copyWith(folder: targetFolder, mailboxName: mailboxName)).toList();
+    _searchSession = 0;
+    _hasMoreSearchResults = _searchUIDs.length > _searchBatchSize;
+
+    return _fetchSearchBatch(mailboxName, targetFolder);
+  }
+
+  // returns a batch of emails
+  Future<List<Email>> _fetchSearchBatch(
+    String mailboxName,
+    EmailFolder folder,
+  ) async {
+    final start = _searchSession * _searchBatchSize;
+    final end = min(start + _searchBatchSize, _searchUIDs.length);
+
+    if (start >= _searchUIDs.length) {
+      _hasMoreSearchResults = false;
+      return [];
+    }
+
+    _hasMoreSearchResults = end < _searchUIDs.length;
+
+    final batchUIDs = _searchUIDs.sublist(start, end);
+    final emails = await _emailRepository.fetchEmailsbyUIDs(batchUIDs, mailboxName: mailboxName);
+
+    return emails.map((email) => email.copyWith(folder: folder, mailboxName: mailboxName)).toList();
+  }
+
+  bool get hasMoreSearchResults => _hasMoreSearchResults;
+
+  // initiate loading the next session of matching Emails to a search
+  Future<List<Email>> loadMoreSearchResults({EmailFolder? folder}) async {
+    if (!_isInitialized || !_hasMoreSearchResults) return [];
+
+    final targetFolder = folder ?? EmailFolder.inbox;
+    final mailboxName = _getMailboxNameForFolder(targetFolder) ?? 'INBOX';
+
+    _searchSession++;
+    return _fetchSearchBatch(mailboxName, targetFolder);
   }
 
   // Saves or updates a draft locally and on the server .

@@ -175,11 +175,28 @@ class ImapEmailService {
 
   // Fetches a single email by its UID.
   Future<Email?> fetchEmailByUid(int uid, {String mailboxName = 'INBOX'}) async {
+    final results = await fetchEmailsbyUIDs([uid], mailboxName: mailboxName, withBody: true);
+    return results.isEmpty ? null : results.first;
+  }
+
+  // Fetch Emails by their UID, with or without their body
+  Future<List<Email>> fetchEmailsbyUIDs(
+    List<int> uids, {
+    String mailboxName = 'INBOX',
+    bool withBody = false,
+  }) {
     return _ensureConnection(() async {
+      if (uids.isEmpty) return [];
+
       await _imapClient!.selectMailboxByPath(mailboxName);
-      final result = await _imapClient!.uidFetchMessage(uid, '(FLAGS BODY[])');
-      if (result.messages.isEmpty) return null;
-      return _convertMimeMessageToEmail(result.messages.first);
+
+      final sequence = MessageSequence.fromIds(uids, isUid: true);
+      final fetchCriteria =
+          withBody ? '(FLAGS BODY[])' : '(UID FLAGS BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE MESSAGE-ID)])';
+      final result = await _imapClient!.uidFetchMessages(sequence, fetchCriteria);
+
+      final emails = await Future.wait(result.messages.map(_convertMimeMessageToEmail));
+      return emails;
     });
   }
 
@@ -310,7 +327,7 @@ class ImapEmailService {
   }
 
   /// Searches emails in [mailboxName] matching optional criteria.
-  Future<List<Email>> searchEmails({
+  Future<List<int>> searchEmailUIDs({
     String mailboxName = 'INBOX',
     String? query,
     String? from,
@@ -331,15 +348,19 @@ class ImapEmailService {
       if (unreadOnly) criteria.add('UNSEEN');
       if (criteria.isEmpty) criteria.add('ALL');
 
-      // Execute search
-      final mailbox = await _imapClient!.selectMailboxByPath(mailboxName);
-      final total = mailbox.messagesExists;
-      final result = await _imapClient!.fetchRecentMessages(
-        messageCount: total,
-        criteria: criteria.join(' '),
+      await _imapClient!.selectMailboxByPath(mailboxName);
+
+      final searchResult = await _imapClient!.uidSearchMessages(
+        searchCriteria: criteria.join(' '),
       );
 
-      return Future.wait(result.messages.map(_convertMimeMessageToEmail));
+      if (searchResult.matchingSequence == null || searchResult.matchingSequence!.isEmpty) {
+        return [];
+      }
+
+      // return only the uids of matching emails
+      final uids = searchResult.matchingSequence!.toList();
+      return uids.reversed.toList();
     });
   }
 

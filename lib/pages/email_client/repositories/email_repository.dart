@@ -36,7 +36,7 @@ abstract class EmailRepository {
   Future<int?> moveEmail(int uid, String targetMailbox, {String sourceMailbox = 'INBOX'});
 
   // Search emails based on query params in a specific mailbox
-  Future<List<Email>> searchEmails({
+  Future<List<int>> searchEmailUIDs({
     String? query,
     String? from,
     String? subject,
@@ -56,6 +56,9 @@ abstract class EmailRepository {
 
   // Fetch a single Email
   Future<Email?> fetchEmailbyUID(int uid, {String mailboxName});
+
+  // fetch a list of Emails by their UID, either only their header or with their body
+  Future<List<Email>> fetchEmailsbyUIDs(List<int> uids, {String mailboxName = 'INBOX', bool withBody = false});
 
   // list all mailboxes folders available on  the server
   Future<List<String>> listMailboxes();

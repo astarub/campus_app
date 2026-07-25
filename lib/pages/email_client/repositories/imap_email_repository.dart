@@ -34,6 +34,11 @@ class ImapEmailRepository implements EmailRepository {
   }
 
   @override
+  Future<List<Email>> fetchEmailsbyUIDs(List<int> uids, {String mailboxName = 'INBOX', bool withBody = false}) {
+    return _imapService.fetchEmailsbyUIDs(uids, mailboxName: mailboxName, withBody: withBody);
+  }
+
+  @override
   Future<bool> sendEmail({
     required String to,
     required String subject,
@@ -92,7 +97,7 @@ class ImapEmailRepository implements EmailRepository {
   }
 
   @override
-  Future<List<Email>> searchEmails({
+  Future<List<int>> searchEmailUIDs({
     String? query,
     String? from,
     String? subject,
@@ -100,7 +105,7 @@ class ImapEmailRepository implements EmailRepository {
     String mailboxName = 'INBOX',
   }) {
     // Search emails based on filters
-    return _imapService.searchEmails(
+    return _imapService.searchEmailUIDs(
       query: query,
       from: from,
       subject: subject,

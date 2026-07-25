@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -37,15 +39,22 @@ class _EmailClientContentState extends State<_EmailClientContent> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = TextEditingController();
   final FlutterSecureStorage secureStorage = sl<FlutterSecureStorage>();
+  final ScrollController _scrollController = ScrollController();
 
   bool _isSearching = false; // True when search bar is active
+  bool _isSearchLoading = false;
   bool _isLoading = true; // True while authenticating or initializing
   bool _isAuthenticated = false; // True after successful login
   late EmailSelectionController _selectionController; // Handles multi-select actions
 
+  List<Email>? _searchResults;
+  bool _hasMoreSearchResults = false;
+  Timer? _searchDelay;
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     _initializeEmailClient(); // Start setup on load
   }
 
@@ -58,11 +67,11 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     _selectionController = EmailSelectionController(
       onDelete: (emails) async {
         await emailService.moveEmailsToFolder(emails.toList(), EmailFolder.trash); // Move to Trash
-        _search(); // Refresh view
+        _rebuild(); // Refresh view
       },
       onEmailUpdated: (email) async {
         emailService.updateEmail(email); // Update state if email is modified
-        _search();
+        _rebuild();
       },
     )..addListener(_onSelectionChanged); // Listen for selection state changes
 
@@ -95,9 +104,71 @@ class _EmailClientContentState extends State<_EmailClientContent> {
   // Rebuild UI when selection changes
   void _onSelectionChanged() => setState(() {});
 
-  // Rebuilds UI when a search is performed
-  void _search() {
+  // Rebuild the UI
+  void _rebuild() {
     setState(() {});
+  }
+
+  // detect if the user has scrolled close enough to the bottom to dynamically load the next batch of emails matching the search
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      _loadMoreSearchResults();
+    }
+  }
+
+  // search for emails matching input, not filter loaded emails
+  Future<void> _search() async {
+    final input = _searchController.text.trim();
+
+    if (input.isEmpty) {
+      setState(() {
+        _searchResults = null;
+        _isSearchLoading = false;
+        _hasMoreSearchResults = false;
+      });
+      return;
+    }
+    _searchDelay?.cancel();
+
+    setState(() => _isSearchLoading = true);
+
+    // wait for the user to finish typing to initiate loading
+    _searchDelay = Timer(const Duration(milliseconds: 800), () async {
+      try {
+        final emailService = Provider.of<EmailService>(context, listen: false);
+        final results = await emailService.searchEmails(query: input);
+        if (mounted) {
+          setState(() {
+            _searchResults = results;
+            _isSearchLoading = false;
+            _hasMoreSearchResults = emailService.hasMoreSearchResults;
+          });
+        }
+      } catch (e) {
+        if (mounted) setState(() => _isSearchLoading = false);
+      }
+    });
+  }
+
+  // load the next batch of emails and add them to the already loaded emails
+  Future<void> _loadMoreSearchResults() async {
+    if (!_hasMoreSearchResults || _isSearchLoading) return;
+
+    setState(() => _isSearchLoading = true);
+
+    try {
+      final emailService = Provider.of<EmailService>(context, listen: false);
+      final moreEmails = await emailService.loadMoreSearchResults();
+      if (mounted) {
+        setState(() {
+          _searchResults = [..._searchResults!, ...moreEmails];
+          _hasMoreSearchResults = emailService.hasMoreSearchResults;
+          _isSearchLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isSearchLoading = false);
+    }
   }
 
   // Triggers the login screen and handles post-login setup
@@ -122,20 +193,6 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     );
   }
 
-/*
-  Future<void> _handleLogout() async {
-    final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
-    final emailService = Provider.of<EmailService>(context, listen: false);
-
-    await emailAuthService.logout();
-    emailService.clear();
-
-    setState(() {
-      _isAuthenticated = false;
-    });
-  } 
-  */
-
   // Handles back/gesture navigation, exits selection/search/drawer as needed
   Future<void> _handlePop(BuildContext context) async {
     if (_selectionController.isSelecting) {
@@ -156,11 +213,96 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     Navigator.of(context).maybePop();
   }
 
+  // helper function for search states (searching, found nothing, emails found)
+  Widget _buildSearchState(List<Email> emails) {
+    // display a loading screen when searching for emails
+    if (_isSearching) {
+      if (_isSearchLoading) {
+        return const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Searching for emails...'),
+            ],
+          ),
+        );
+      }
+    }
+
+    // show that no emails were found
+    if (emails.isEmpty && _isSearching && !_isSearchLoading) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.search_off),
+            SizedBox(height: 16),
+            Text(
+              'No emails found.',
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // default case, show found emails
+    return ListView.separated(
+      controller: _isSearching ? _scrollController : null,
+      itemCount: emails.length + (_hasMoreSearchResults ? 1 : 0),
+      separatorBuilder: (_, __) => Divider(height: 1, color: Theme.of(context).dividerColor),
+      itemBuilder: (_, index) {
+        if (index == emails.length) {
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            ),
+          );
+        }
+        final email = emails[index];
+        final emailService = Provider.of<EmailService>(context);
+
+        return EmailTile(
+          email: email,
+          isSelected: _selectionController.isSelected(email),
+          onTap: () async {
+            if (_selectionController.isSelecting) {
+              setState(() => _selectionController.toggleSelection(email));
+            } else {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => EmailView(
+                    email: email,
+                    onDelete: (email, mailboxName) {
+                      emailService.moveEmailsToFolder([email], EmailFolder.trash);
+                      _rebuild();
+                    },
+                  ),
+                ),
+              );
+            }
+          },
+          onLongPress: () {
+            setState(() => _selectionController.toggleSelection(email));
+          },
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     _selectionController.removeListener(_onSelectionChanged);
     _selectionController.dispose();
     _searchController.dispose();
+    _scrollController.dispose();
+    _searchDelay?.cancel();
     super.dispose();
   }
 
@@ -240,7 +382,8 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     }
 
     final emailService = Provider.of<EmailService>(context);
-    final filteredEmails = emailService.filterEmails(_searchController.text, EmailFolder.inbox); // Apply search filter
+    final List<Email> filteredEmails =
+        _isSearching ? (_searchResults ?? []) : emailService.filterEmails('', EmailFolder.inbox);
 
     return PopScope(
       onPopInvoked: (didPop) async {
@@ -250,14 +393,20 @@ class _EmailClientContentState extends State<_EmailClientContent> {
         key: _scaffoldKey,
         appBar: AppBar(
           title: _isSearching
-              ? TextField(
-                  controller: _searchController,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    hintText: 'E-Mails durchsuchen...',
-                    border: InputBorder.none,
-                  ),
-                  onChanged: (_) => _search(), // Update search results
+              ? Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _searchController,
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                          hintText: 'E-Mails durchsuchen...',
+                          border: InputBorder.none,
+                        ),
+                        onChanged: (_) => _search(), // Update search results
+                      ),
+                    ),
+                  ],
                 )
               : const Text('RubMail'),
           leading: _isSearching
@@ -267,6 +416,9 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                     setState(() {
                       _isSearching = false;
                       _searchController.clear();
+                      _searchResults = null;
+                      _hasMoreSearchResults = false;
+                      _isSearchLoading = false;
                     });
                   },
                 )
@@ -304,43 +456,9 @@ class _EmailClientContentState extends State<_EmailClientContent> {
             onRefresh: () async {
               final emailService = Provider.of<EmailService>(context, listen: false);
               await emailService.refreshEmails(); // Pull-to-refresh
-              _search(); // Re-apply search
+              _rebuild(); // Re-apply search
             },
-            child: ListView.separated(
-              itemCount: filteredEmails.length,
-              separatorBuilder: (_, __) => Divider(
-                height: 1,
-                color: Theme.of(context).dividerColor,
-              ),
-              itemBuilder: (_, index) {
-                final email = filteredEmails[index];
-                return EmailTile(
-                  email: email,
-                  isSelected: _selectionController.isSelected(email),
-                  onTap: () async {
-                    if (_selectionController.isSelecting) {
-                      setState(() => _selectionController.toggleSelection(email));
-                    } else {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EmailView(
-                            email: email,
-                            onDelete: (email, mailboxName) {
-                              emailService.moveEmailsToFolder([email], EmailFolder.trash);
-                              _search();
-                            },
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  onLongPress: () {
-                    setState(() => _selectionController.toggleSelection(email));
-                  },
-                );
-              },
-            ),
+            child: _buildSearchState(filteredEmails),
           ),
         ),
         floatingActionButton: _selectionController.isSelecting
@@ -374,7 +492,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
 
 /*
 NOTES:
-- some changes on the email client only appear on the app not in the actual Email. Like delete.
+- some changes on the email client only appear on the app not in the actual Email. Like delete. (N.D. Dev Note -> this has been fixed, applied to both Move and Delete)
 - Email inbox only loads a certain number of emails, loading takes a long time needs optimization. (N.D. Dev Note -> Optimized)
 - Drawer top needs to be fixed (name/Email display) 
 - Some Email bodies are not shown. (N.D. Dev Note -> fixed html bodies)
@@ -384,5 +502,6 @@ NOTES:
 - Setting need to be implemented
 - Attachments need implementing as well. Some UI components for that are already implemented but these are only UI
   as for the email view with attachments it needs to be further tested.
-- Searching is implemented for the inbox but it should also be implemented for the drawer pages
+- Searching is implemented for the inbox but it should also be implemented for the drawer pages (N.D. Dev Note -> searching was only local with the emails already loaded in,
+  we now search server side and load all relevant emails)
 */
