@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'dart:convert';
 
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/foundation.dart';
@@ -103,9 +104,9 @@ class ImapEmailService {
 
   // To work around the asynchronous gap with the SocketException and enough_mail's internal handling, we timeout the IMAP Operation to catch
   // Connection drops we didn't detect
-  Future<T> _addTimeout<T>(Future<T> future) async {
+  Future<T> _addTimeout<T>(Future<T> future, {Duration? timeout}) async {
     return future.timeout(
-      const Duration(seconds: 10),
+      timeout ?? const Duration(seconds: 10),
       onTimeout: () {
         throw TimeoutException('IMAP: OP has timed out');
       },
@@ -113,10 +114,10 @@ class ImapEmailService {
   }
 
   // Wrapper Function for Imap Client actions to ensure connection isn't lost, if it is we run a retry
-  Future<T> _ensureConnection<T>(Future<T> Function() action) async {
+  Future<T> _ensureConnection<T>(Future<T> Function() action, {Duration? timeout}) async {
     try {
       await _checkConnection();
-      return await _addTimeout(action());
+      return await _addTimeout(action(), timeout: timeout);
     } catch (e) {
       debugPrint('IMAP Connection error caught: ${e.runtimeType} - $e');
       // the on SocketException catch isn't enough so we catch all errors and differentiate
@@ -135,7 +136,7 @@ class ImapEmailService {
         } catch (_) {}
         _imapClient = null;
         await _checkConnection();
-        return _addTimeout(action());
+        return _addTimeout(action(), timeout: timeout);
       }
       rethrow;
     }
@@ -335,33 +336,36 @@ class ImapEmailService {
     DateTime? since,
     bool unreadOnly = false,
   }) async {
-    return _ensureConnection(() async {
-      // Build IMAP search criteria
-      final criteria = <String>[];
-      if (query?.isNotEmpty ?? false) criteria.add('TEXT "$query"');
-      if (from?.isNotEmpty ?? false) criteria.add('FROM "$from"');
-      if (subject?.isNotEmpty ?? false) criteria.add('SUBJECT "$subject"');
-      if (since != null) {
-        final formatted = DateFormat('dd-MMM-yyyy').format(since).toUpperCase();
-        criteria.add('SINCE $formatted');
-      }
-      if (unreadOnly) criteria.add('UNSEEN');
-      if (criteria.isEmpty) criteria.add('ALL');
+    return _ensureConnection(
+      () async {
+        // Build IMAP search criteria
+        final criteria = <String>[];
+        if (query?.isNotEmpty ?? false) criteria.add('TEXT "$query"');
+        if (from?.isNotEmpty ?? false) criteria.add('FROM "$from"');
+        if (subject?.isNotEmpty ?? false) criteria.add('SUBJECT "$subject"');
+        if (since != null) {
+          final formatted = DateFormat('dd-MMM-yyyy').format(since).toUpperCase();
+          criteria.add('SINCE $formatted');
+        }
+        if (unreadOnly) criteria.add('UNSEEN');
+        if (criteria.isEmpty) criteria.add('ALL');
 
-      await _imapClient!.selectMailboxByPath(mailboxName);
+        await _imapClient!.selectMailboxByPath(mailboxName);
 
-      final searchResult = await _imapClient!.uidSearchMessages(
-        searchCriteria: criteria.join(' '),
-      );
+        final searchResult = await _imapClient!.uidSearchMessages(
+          searchCriteria: criteria.join(' '),
+        );
 
-      if (searchResult.matchingSequence == null || searchResult.matchingSequence!.isEmpty) {
-        return [];
-      }
+        if (searchResult.matchingSequence == null || searchResult.matchingSequence!.isEmpty) {
+          return [];
+        }
 
-      // return only the uids of matching emails
-      final uids = searchResult.matchingSequence!.toList();
-      return uids.reversed.toList();
-    });
+        // return only the uids of matching emails
+        final uids = searchResult.matchingSequence!.toList();
+        return uids.reversed.toList();
+      },
+      timeout: const Duration(seconds: 90),
+    );
   }
 
   // Internal helper to add/remove flags (e.g., Seen).
@@ -474,16 +478,45 @@ class ImapEmailService {
     return null;
   }
 
+  // extract Inline attachments and replace their cid identifier with data so the webview can render the image
+  String _resolveCIDImages(String html, MimeMessage msg) {
+    final cidIdentifier = RegExp(r'cid:([^">\s]+)');
+
+    return html.replaceAllMapped(cidIdentifier, (match) {
+      final contentId = match.group(1)!;
+
+      // search message parts for cid beginning
+      for (final part in msg.allPartsFlat) {
+        final partContentId = part.getHeaderValue('content-id')?.replaceAll('<', '').replaceAll('>', '').trim();
+
+        if (partContentId == contentId) {
+          final bytes = part.decodeContentBinary();
+          if (bytes != null) {
+            final base64Data = base64Encode(bytes);
+            final mimeType = part.mediaType.text;
+            return 'data:$mimeType;base64,$base64Data';
+          }
+        }
+      }
+      return '';
+    });
+  }
+
   // Converts a raw [MimeMessage] into your app’s [Email] model.
   Future<Email> _convertMimeMessageToEmail(MimeMessage msg) async {
     final plain = _extractPlainBody(msg);
-    final html = _extractHtmlBody(msg);
+    String? html = _extractHtmlBody(msg);
 
     // if we're dealing with a draft, try to use the saved header id
     final localDraftID = msg.getHeaderValue('X-Local-Draft-ID');
     final id = localDraftID?.isNotEmpty == true
         ? localDraftID!
         : msg.uid?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString();
+
+    // if email contains inline attached images, try to resolve them before building the email
+    if (html != null && html.contains('cid')) {
+      html = _resolveCIDImages(html, msg);
+    }
 
     return Email(
       id: id,

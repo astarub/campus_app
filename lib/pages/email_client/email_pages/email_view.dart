@@ -3,6 +3,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:campus_app/utils/widgets/bubble_message.dart';
 import 'package:campus_app/utils/widgets/bubble_service.dart';
@@ -298,6 +299,9 @@ class _EmailViewState extends State<EmailView> {
                     blockNetworkImage: false,
                   ),
                 );
+
+                // add a delay before reloading to allow setting change to truly take effect
+                await Future.delayed(const Duration(milliseconds: 200));
                 await _webViewController!.reload();
                 setState(() {
                   _imagesBlocked = false;
@@ -426,6 +430,15 @@ class _EmailViewState extends State<EmailView> {
                   loadWithOverviewMode: false,
                   supportZoom: false,
                 ),
+                shouldOverrideUrlLoading: (controller, navigationAction) async {
+                  // try to hand the urls off to the OS
+                  final url = navigationAction.request.url;
+                  if (url != null) {
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
+                  }
+
+                  return NavigationActionPolicy.CANCEL;
+                },
               ),
             ),
           ],

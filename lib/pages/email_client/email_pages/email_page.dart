@@ -49,7 +49,6 @@ class _EmailClientContentState extends State<_EmailClientContent> {
 
   List<Email>? _searchResults;
   bool _hasMoreSearchResults = false;
-  Timer? _searchDelay;
 
   @override
   void initState() {
@@ -116,6 +115,8 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     }
   }
 
+  bool _cancelSearch = false;
+
   // search for emails matching input, not filter loaded emails
   Future<void> _search() async {
     final input = _searchController.text.trim();
@@ -128,26 +129,31 @@ class _EmailClientContentState extends State<_EmailClientContent> {
       });
       return;
     }
-    _searchDelay?.cancel();
 
+    _cancelSearch = true;
+    await Future.delayed(Duration.zero);
+    _cancelSearch = false;
     setState(() => _isSearchLoading = true);
 
-    // wait for the user to finish typing to initiate loading
-    _searchDelay = Timer(const Duration(milliseconds: 800), () async {
-      try {
-        final emailService = Provider.of<EmailService>(context, listen: false);
-        final results = await emailService.searchEmails(query: input);
-        if (mounted) {
-          setState(() {
-            _searchResults = results;
-            _isSearchLoading = false;
-            _hasMoreSearchResults = emailService.hasMoreSearchResults;
-          });
-        }
-      } catch (e) {
-        if (mounted) setState(() => _isSearchLoading = false);
+    try {
+      if (!mounted) return;
+      final emailService = Provider.of<EmailService>(context, listen: false);
+      final results = await emailService.searchEmails(query: input);
+
+      if (_cancelSearch) {
+        debugPrint('Email Search: Canceled previous Search.');
+        return;
       }
-    });
+      if (mounted) {
+        setState(() {
+          _searchResults = results;
+          _isSearchLoading = false;
+          _hasMoreSearchResults = emailService.hasMoreSearchResults;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isSearchLoading = false);
+    }
   }
 
   // load the next batch of emails and add them to the already loaded emails
@@ -302,7 +308,6 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     _selectionController.dispose();
     _searchController.dispose();
     _scrollController.dispose();
-    _searchDelay?.cancel();
     super.dispose();
   }
 
@@ -403,7 +408,8 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                           hintText: 'E-Mails durchsuchen...',
                           border: InputBorder.none,
                         ),
-                        onChanged: (_) => _search(), // Update search results
+                        textInputAction: TextInputAction.search,
+                        onSubmitted: (_) => _search(), // Update search results
                       ),
                     ),
                   ],
