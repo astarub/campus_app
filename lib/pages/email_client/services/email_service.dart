@@ -581,9 +581,14 @@ class EmailService extends ChangeNotifier {
             htmlBody: full.htmlBody,
             id: full.id,
           );
+          return _allEmails[index];
         }
+        return full.copyWith(
+          folder: cached.folder != EmailFolder.inbox ? cached.folder : full.folder,
+          mailboxName: mailboxName,
+        );
       }
-      return full;
+      return null;
     } catch (e) {
       debugPrint('Email Service: error fetching full Email: $e');
       return null;

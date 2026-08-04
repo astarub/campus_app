@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/pages/email_client/widgets/email_bottom_panel.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
@@ -229,6 +230,24 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
             IconButton(
               icon: const Icon(Icons.send),
               onPressed: _sendEmail,
+            ),
+            IconButton(
+              icon: const Icon(Icons.more_vert),
+              onPressed: () {
+                final emailService = Provider.of<EmailService>(context, listen: false);
+                showModalBottomSheet(
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                  ),
+                  builder: (_) => EmailBottomPanel(
+                    email: widget.draft!,
+                    emailService: emailService,
+                    onActionComplete: () => setState(() {}),
+                  ),
+                );
+              },
+              tooltip: 'More',
             ),
           ],
         ),

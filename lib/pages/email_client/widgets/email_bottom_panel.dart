@@ -19,6 +19,8 @@ class EmailBottomPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDraft = email.folder == EmailFolder.drafts;
+
     return SafeArea(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -33,19 +35,20 @@ class EmailBottomPanel extends StatelessWidget {
             ),
           ),
           // change read status
-          ListTile(
-            leading: Icon(email.isUnread ? Icons.mark_email_read : Icons.mark_email_unread),
-            title: Text(email.isUnread ? 'Als gelesen markieren' : 'Als ungelesen markieren'),
-            onTap: () async {
-              Navigator.pop(context);
-              if (email.isUnread) {
-                await emailService.markAsRead(email);
-              } else {
-                await emailService.markAsUnread(email);
-              }
-              onActionComplete?.call();
-            },
-          ),
+          if (!isDraft)
+            ListTile(
+              leading: Icon(email.isUnread ? Icons.mark_email_read : Icons.mark_email_unread),
+              title: Text(email.isUnread ? 'Als gelesen markieren' : 'Als ungelesen markieren'),
+              onTap: () async {
+                Navigator.pop(context);
+                if (email.isUnread) {
+                  await emailService.markAsRead(email);
+                } else {
+                  await emailService.markAsUnread(email);
+                }
+                onActionComplete?.call();
+              },
+            ),
           ListTile(
             leading: const Icon(Icons.folder_outlined),
             title: const Text('In Ordner verschieben'),
@@ -54,16 +57,17 @@ class EmailBottomPanel extends StatelessWidget {
               _showFolders(context);
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.report_outlined),
-            title: const Text('Als Spam markieren'),
-            onTap: () async {
-              Navigator.pop(context);
-              // JUST move the email temporarily, TODO: delegate to function for spam marking which will also raise Spam flag
-              await emailService.moveEmailsToFolder([email], EmailFolder.spam);
-              onActionComplete?.call();
-            },
-          ),
+          if (!isDraft)
+            ListTile(
+              leading: const Icon(Icons.report_outlined),
+              title: const Text('Als Spam markieren'),
+              onTap: () async {
+                Navigator.pop(context);
+                // JUST move the email temporarily, TODO: delegate to function for spam marking which will also raise Spam flag
+                await emailService.moveEmailsToFolder([email], EmailFolder.spam);
+                onActionComplete?.call();
+              },
+            ),
           const SizedBox(height: 8),
         ],
       ),
