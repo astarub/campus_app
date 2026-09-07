@@ -3,30 +3,16 @@ import 'package:flutter/foundation.dart';
 import 'dart:math';
 
 import 'package:campus_app/pages/email_client/models/email.dart';
+import 'package:campus_app/pages/email_client/models/user_email_folder.dart';
 import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/pages/email_client/repositories/email_repository.dart';
 import 'package:campus_app/core/injection.dart';
 
-// Represents a mailbox/folder returned by the mail server.
-
-class UserEmailFolder {
-  final String mailboxName; // Real server mailbox name (IMAP path)
-  final String displayName; // Friendly name shown in the UI
-
-  UserEmailFolder({
-    required this.mailboxName,
-    required this.displayName,
-  });
-}
-
 class EmailService extends ChangeNotifier {
   final List<Email> _allEmails = [];
 
   final List<UserEmailFolder> _userFolders = [];
-  // Stores resolved mailbox names for system folders.
-  //  This starts empty and is only filled if a matching mailbox exists on the server.
-  final Map<EmailFolder, String> _folderMailboxNames = {};
 
   final EmailSelectionController _selectionController = EmailSelectionController();
 
@@ -83,7 +69,6 @@ class EmailService extends ChangeNotifier {
   void clear() {
     _allEmails.clear();
     _userFolders.clear();
-    _folderMailboxNames.clear();
     _isInitialized = false;
     _emailRepository.disconnect();
     notifyListeners();
@@ -106,19 +91,31 @@ class EmailService extends ChangeNotifier {
     try {
       final mailboxes = await _emailRepository.listMailboxes();
 
-      // Try to resolve which mailbox is Inbox/Sent/Drafts/Trash/Spam/Archive on THIS server.
-      _resolveSystemMailboxes(mailboxes);
+      final systemFolders = [
+        UserEmailFolder.inbox,
+        UserEmailFolder.sent,
+        UserEmailFolder.drafts,
+        UserEmailFolder.trash,
+        UserEmailFolder.spam,
+      ];
 
       // Store all mailboxes for UI (including nested ones)
       _userFolders
         ..clear()
         ..addAll(
-          mailboxes.where((mb) => mb.trim().isNotEmpty).map(
-                (mb) => UserEmailFolder(
+          mailboxes.where((mb) => mb.trim().isNotEmpty).map((mb) {
+            final systemMatch = systemFolders
+                .where(
+                  (f) => f.mailboxName.toLowerCase() == mb.toLowerCase(),
+                )
+                .firstOrNull;
+
+            return systemMatch ??
+                UserEmailFolder(
                   mailboxName: mb,
-                  displayName: _extractDisplayName(mb),
-                ),
-              ),
+                  displayName: mb,
+                );
+          }),
         );
 
       notifyListeners();
@@ -126,73 +123,6 @@ class EmailService extends ChangeNotifier {
       // Folder loading should not crash the app. Worst case is  drawer stays minimal.
       debugPrint('Failed to load folders: $e');
     }
-  }
-
-  // Extracts a friendly display name from a mailbox path.
-
-  String _extractDisplayName(String mailboxName) {
-    final normalized = mailboxName.replaceAll('\\', '/');
-    final parts = normalized.split(RegExp(r'[/.]'));
-    return parts.isNotEmpty ? parts.last : mailboxName;
-  }
-
-  // Returns the resolved mailbox name for a system folder, or null if not found.
-  String? _getMailboxNameForFolder(EmailFolder folder) => _folderMailboxNames[folder];
-
-  // Helper to find a mailbox by common aliases.
-  // We match either exact name or "endsWith" (because servers often return paths like "INBOX/Sent").
-  void _resolveSystemMailboxes(List<String> mailboxes) {
-    String? findMatch(List<String> candidates) {
-      for (final mb in mailboxes) {
-        final lower = mb.toLowerCase();
-        for (final c in candidates) {
-          final cl = c.toLowerCase();
-          if (lower == cl || lower.endsWith(cl)) {
-            return mb;
-          }
-        }
-      }
-      return null;
-    }
-
-    // Inbox is special: almost every server has it.
-    final inbox = findMatch(['inbox']);
-    if (inbox != null) _folderMailboxNames[EmailFolder.inbox] = inbox;
-
-    final sent = findMatch([
-      'sent',
-      'sent messages',
-      'gesendet',
-      'inbox.sent',
-      'inbox/sent',
-    ]);
-    if (sent != null) _folderMailboxNames[EmailFolder.sent] = sent;
-
-    final drafts = findMatch([
-      'drafts',
-      'entwürfe',
-      'inbox.drafts',
-      'inbox/drafts',
-    ]);
-    if (drafts != null) _folderMailboxNames[EmailFolder.drafts] = drafts;
-
-    final trash = findMatch([
-      'trash',
-      'deleted',
-      'papierkorb',
-      'inbox.trash',
-      'inbox/trash',
-    ]);
-    if (trash != null) _folderMailboxNames[EmailFolder.trash] = trash;
-
-    final spam = findMatch([
-      'spam',
-      'junk',
-      'uce-tmp',
-      'inbox.spam',
-      'inbox/spam',
-    ]);
-    if (spam != null) _folderMailboxNames[EmailFolder.spam] = spam;
   }
 
   // Reloads emails from the server for all system folders that were actually resolved.
@@ -221,30 +151,17 @@ class EmailService extends ChangeNotifier {
   Future<void> _fetchEmailsFromServer() async {
     _allEmails.clear();
 
-    final foldersToLoad = <EmailFolder>[
-      EmailFolder.inbox,
-      EmailFolder.sent,
-      EmailFolder.drafts,
-      EmailFolder.trash,
-      EmailFolder.spam,
-    ];
-
-    for (final folder in foldersToLoad) {
-      final mailbox = _getMailboxNameForFolder(folder);
-      if (mailbox == null) {
-        // Not found on server → don't crash just skip.
-        continue;
-      }
-      await _fetchEmailsForMailbox(folder, mailbox);
+    for (final folder in _userFolders) {
+      await _fetchEmailsForMailbox(folder);
     }
   }
 
   // Fetches emails from a single mailbox and merges them into the local cache.
-  Future<void> _fetchEmailsForMailbox(EmailFolder folder, String mailboxName) async {
+  Future<void> _fetchEmailsForMailbox(UserEmailFolder folder) async {
     try {
-      final count = folder == EmailFolder.inbox ? 50 : 30;
+      final count = folder == UserEmailFolder.inbox ? 50 : 30;
       final emails = await _emailRepository.fetchEmails(
-        mailboxName: mailboxName,
+        mailboxName: folder.mailboxName,
         count: count,
       );
 
@@ -252,12 +169,12 @@ class EmailService extends ChangeNotifier {
         _allEmails.add(
           email.copyWith(
             folder: folder,
-            mailboxName: mailboxName,
+            mailboxName: folder.mailboxName,
           ),
         );
       }
     } catch (e) {
-      debugPrint('Failed to fetch ${folder.name} from "$mailboxName": $e');
+      debugPrint('Failed to fetch ${folder.displayName}: $e');
     }
   }
 
@@ -278,17 +195,11 @@ class EmailService extends ChangeNotifier {
   Future<void> deleteEmail(Email email) async {
     if (!_isInitialized || email.uid == 0) return;
 
-    final trashMailbox = _getMailboxNameForFolder(EmailFolder.trash);
-
-    if (trashMailbox == null) {
-      // Server doesn't expose Trash → local fallback
-      updateEmail(email.copyWith(folder: EmailFolder.trash));
-      return;
-    }
+    final trashMailbox = UserEmailFolder.trash.mailboxName;
 
     // If the email is already in trash, try to delete permanently from that mailbox.
-    if (email.folder == EmailFolder.trash) {
-      final mailbox = email.mailboxName ?? trashMailbox ?? 'TRASH';
+    if (email.folder == UserEmailFolder.trash) {
+      final mailbox = email.mailboxName ?? trashMailbox;
       final success = await _emailRepository.deleteEmail(
         email.uid,
         mailboxName: mailbox,
@@ -301,19 +212,17 @@ class EmailService extends ChangeNotifier {
     }
 
     // Otherwise move it to trash.
-    final moved = await _emailRepository.moveEmail(email.uid, trashMailbox);
-    if (moved != null) updateEmail(email.copyWith(folder: EmailFolder.trash));
+    final moved = await _emailRepository.moveEmail(email.uid, trashMailbox,
+        sourceMailbox: email.mailboxName ?? UserEmailFolder.inbox.mailboxName);
+    if (moved != null) updateEmail(email.copyWith(folder: UserEmailFolder.trash));
   }
 
   // wrapper for easier access to move Operation with folder names
   Future<void> moveEmailsToFolder(
     List<Email> emails,
-    EmailFolder folder,
+    UserEmailFolder folder,
   ) async {
-    final mailbox = _folderMailboxNames[folder];
-    if (mailbox == null) return;
-
-    await moveEmailsToMailbox(emails, mailbox);
+    await moveEmailsToMailbox(emails, folder.mailboxName);
   }
 
   // wrapper function for moving mutliple emails
@@ -327,12 +236,6 @@ class EmailService extends ChangeNotifier {
   Future<Email?> moveEmailToMailbox(Email email, String targetMailboxName) async {
     if (!_isInitialized || email.uid == 0) return null;
 
-    debugPrint(
-      'Moving: uid=${email.uid}, '
-      'source=${email.mailboxName}, '
-      'target=$targetMailboxName',
-    );
-
     final sourceMailbox = email.mailboxName ?? 'INBOX';
 
     final newUID = await _emailRepository.moveEmail(
@@ -342,9 +245,13 @@ class EmailService extends ChangeNotifier {
     );
 
     if (newUID != null) {
-      final targetFolder =
-          _folderMailboxNames.entries.where((e) => e.value == targetMailboxName).map((e) => e.key).firstOrNull ??
-              EmailFolder.inbox;
+      final targetFolder = _userFolders.firstWhere(
+        (f) => f.mailboxName == targetMailboxName,
+        orElse: () => UserEmailFolder(
+          mailboxName: targetMailboxName,
+          displayName: targetMailboxName,
+        ),
+      );
 
       final updated = email.copyWith(
         uid: newUID,
@@ -383,12 +290,9 @@ class EmailService extends ChangeNotifier {
     if (!success) throw Exception('Failed to send email');
 
     // Refresh Sent only if we know the mailbox name
-    final sentMailbox = _getMailboxNameForFolder(EmailFolder.sent);
-    if (sentMailbox != null) {
-      _allEmails.removeWhere((e) => e.folder == EmailFolder.sent);
-      await _fetchEmailsForMailbox(EmailFolder.sent, sentMailbox);
-      notifyListeners();
-    }
+    _allEmails.removeWhere((e) => e.folder == UserEmailFolder.sent);
+    await _fetchEmailsForMailbox(UserEmailFolder.sent);
+    notifyListeners();
   }
 
   List<int> _searchUIDs = [];
@@ -401,13 +305,13 @@ class EmailService extends ChangeNotifier {
     String? query,
     String? from,
     String? subject,
-    EmailFolder? folder,
+    UserEmailFolder? folder,
     bool unreadOnly = false,
   }) async {
     if (!_isInitialized) return [];
 
-    final targetFolder = folder ?? EmailFolder.inbox;
-    final mailboxName = _getMailboxNameForFolder(targetFolder) ?? 'INBOX'; // fallback
+    final targetFolder = folder ?? UserEmailFolder.inbox;
+    final mailboxName = targetFolder.mailboxName;
 
     _searchUIDs = await _emailRepository.searchEmailUIDs(
       query: query,
@@ -420,13 +324,12 @@ class EmailService extends ChangeNotifier {
     _searchSession = 0;
     _hasMoreSearchResults = _searchUIDs.length > _searchBatchSize;
 
-    return _fetchSearchBatch(mailboxName, targetFolder);
+    return _fetchSearchBatch(targetFolder);
   }
 
   // returns a batch of emails
   Future<List<Email>> _fetchSearchBatch(
-    String mailboxName,
-    EmailFolder folder,
+    UserEmailFolder folder,
   ) async {
     final start = _searchSession * _searchBatchSize;
     final end = min(start + _searchBatchSize, _searchUIDs.length);
@@ -439,22 +342,21 @@ class EmailService extends ChangeNotifier {
     _hasMoreSearchResults = end < _searchUIDs.length;
 
     final batchUIDs = _searchUIDs.sublist(start, end);
-    final emails = await _emailRepository.fetchEmailsbyUIDs(batchUIDs, mailboxName: mailboxName);
+    final emails = await _emailRepository.fetchEmailsbyUIDs(batchUIDs, mailboxName: folder.mailboxName);
 
-    return emails.map((email) => email.copyWith(folder: folder, mailboxName: mailboxName)).toList();
+    return emails.map((email) => email.copyWith(folder: folder, mailboxName: folder.mailboxName)).toList();
   }
 
   bool get hasMoreSearchResults => _hasMoreSearchResults;
 
   // initiate loading the next session of matching Emails to a search
-  Future<List<Email>> loadMoreSearchResults({EmailFolder? folder}) async {
+  Future<List<Email>> loadMoreSearchResults({UserEmailFolder? folder}) async {
     if (!_isInitialized || !_hasMoreSearchResults) return [];
 
-    final targetFolder = folder ?? EmailFolder.inbox;
-    final mailboxName = _getMailboxNameForFolder(targetFolder) ?? 'INBOX';
+    final targetFolder = folder ?? UserEmailFolder.inbox;
 
     _searchSession++;
-    return _fetchSearchBatch(mailboxName, targetFolder);
+    return _fetchSearchBatch(targetFolder);
   }
 
   // Saves or updates a draft locally and on the server .
@@ -466,8 +368,8 @@ class EmailService extends ChangeNotifier {
       return;
     }
 
-    final mailboxName = _getMailboxNameForFolder(EmailFolder.drafts);
-    final updatedDraft = draft.copyWith(folder: EmailFolder.drafts, mailboxName: mailboxName);
+    final mailboxName = UserEmailFolder.drafts.mailboxName;
+    final updatedDraft = draft.copyWith(folder: UserEmailFolder.drafts, mailboxName: mailboxName);
     final index = _allEmails.indexWhere((e) => e.id == draft.id);
 
     if (index != -1) {
@@ -476,13 +378,6 @@ class EmailService extends ChangeNotifier {
       _allEmails.add(updatedDraft);
     }
     notifyListeners();
-
-    // Server update (best effort)
-    final draftsMailbox = _getMailboxNameForFolder(EmailFolder.drafts);
-    if (draftsMailbox == null) {
-      // Server doesn't expose Drafts → keep local only
-      return;
-    }
 
     try {
       final newUID = await _emailRepository.saveDraft(updatedDraft);
@@ -500,7 +395,7 @@ class EmailService extends ChangeNotifier {
 
   void removeDraft(String draftId) {
     final draft = _allEmails.firstWhere(
-      (e) => e.id == draftId && e.folder == EmailFolder.drafts,
+      (e) => e.id == draftId && e.folder == UserEmailFolder.drafts,
       orElse: () => Email(
         id: '',
         sender: '',
@@ -512,12 +407,12 @@ class EmailService extends ChangeNotifier {
       ),
     );
 
-    final draftsMailbox = _getMailboxNameForFolder(EmailFolder.drafts);
-    if (_isInitialized && draft.uid != 0 && draft.id.isNotEmpty && draftsMailbox != null) {
+    final draftsMailbox = UserEmailFolder.drafts.mailboxName;
+    if (_isInitialized && draft.uid != 0 && draft.id.isNotEmpty) {
       _emailRepository.deleteEmail(draft.uid, mailboxName: draftsMailbox).catchError((_) {});
     }
 
-    _allEmails.removeWhere((e) => e.id == draftId && e.folder == EmailFolder.drafts);
+    _allEmails.removeWhere((e) => e.id == draftId && e.folder == UserEmailFolder.drafts);
     notifyListeners();
   }
 
@@ -525,7 +420,7 @@ class EmailService extends ChangeNotifier {
     return draft.subject.trim().isEmpty && draft.body.trim().isEmpty && draft.recipients.isEmpty;
   }
 
-  List<Email> filterEmails(String query, EmailFolder folder) {
+  List<Email> filterEmails(String query, UserEmailFolder folder) {
     final filtered = _allEmails.where((e) => e.folder == folder).toList();
     if (query.isEmpty) return filtered;
 
@@ -551,30 +446,16 @@ class EmailService extends ChangeNotifier {
     }
   }
 
-  // access to fetching Emails by their UID
-  Future<Email?> fetchFullEmail(int uid) async {
-    if (!_isInitialized) return null;
+  // access to fetching Emails by their UID + mailbox
+  Future<Email?> fetchFullEmail(Email email) async {
+    if (!_isInitialized || email.uid == 0) return null;
 
-    // find the mailbox where the email is plus a fallback
-    final cached = _allEmails.firstWhere(
-      (e) => e.uid == uid,
-      orElse: () => Email(
-        id: '',
-        sender: '',
-        senderEmail: '',
-        recipients: [],
-        subject: '',
-        body: '',
-        date: DateTime.now(),
-      ),
-    );
-
-    final mailboxName = cached.mailboxName ?? _getMailboxNameForFolder(EmailFolder.inbox) ?? 'INBOX'; // Inbox fallback
+    final mailboxName = email.mailboxName ?? UserEmailFolder.inbox.mailboxName; // Inbox fallback
 
     try {
-      final full = await _emailRepository.fetchEmailbyUID(uid, mailboxName: mailboxName);
+      final full = await _emailRepository.fetchEmailbyUID(email.uid, mailboxName: mailboxName);
       if (full != null) {
-        final index = _allEmails.indexWhere((e) => e.uid == uid);
+        final index = _allEmails.indexWhere((e) => e.uid == email.uid && e.mailboxName == mailboxName);
         if (index != -1) {
           _allEmails[index] = _allEmails[index].copyWith(
             body: full.body,
@@ -584,7 +465,7 @@ class EmailService extends ChangeNotifier {
           return _allEmails[index];
         }
         return full.copyWith(
-          folder: cached.folder != EmailFolder.inbox ? cached.folder : full.folder,
+          folder: email.folder,
           mailboxName: mailboxName,
         );
       }
@@ -596,12 +477,5 @@ class EmailService extends ChangeNotifier {
   }
 
   // unredCount dynamic
-  int get unreadCount {
-    final inboxMailbox = _getMailboxNameForFolder(EmailFolder.inbox);
-    if (inboxMailbox == null) return 0;
-
-    return _allEmails.where((e) {
-      return (e.mailboxName ?? '').trim() == inboxMailbox.trim() && !e.isRead;
-    }).length;
-  }
+  int get unreadCount => _allEmails.where((e) => e.folder == UserEmailFolder.inbox && !e.isRead).length;
 }

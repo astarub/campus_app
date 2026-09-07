@@ -1,14 +1,11 @@
-import 'package:campus_app/pages/email_client/email_drawer/drafts.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
-//import 'package:campus_app/pages/email_client/email_drawer/archives.dart';
-//import 'package:campus_app/pages/email_client/email_drawer/drafts.dart';
-//import 'package:campus_app/pages/email_client/email_drawer/sent.dart';
-//import 'package:campus_app/pages/email_client/email_drawer/trash.dart';
+
+import 'package:campus_app/pages/email_client/models/user_email_folder.dart';
+import 'package:campus_app/pages/email_client/email_drawer/drafts.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
-// TODO: Create this page and import it
-//import 'package:campus_app/pages/email_client/email_drawer/spam.dart';
 import 'package:campus_app/pages/email_client/email_pages/folder_emails_page.dart';
 
 class EmailDrawer extends StatelessWidget {
@@ -52,28 +49,6 @@ class EmailDrawer extends StatelessWidget {
                 ],
               ),
             ),
-
-            // === Drawer navigation options ===
-            //ListTile(
-            //leading: Icon(Icons.inbox, color: theme.iconTheme.color),
-            // title: Text('Inbox', style: theme.textTheme.bodyLarge),
-            // onTap: () => Navigator.pop(context),
-            //),
-            //_buildDrawerItem(context, icon: Icons.send, title: 'Sent', page: const SentPage()),
-            //_buildDrawerItem(context, icon: Icons.archive, title: 'Archives', page: const ArchivesPage()),
-            //_buildDrawerItem(context, icon: Icons.drafts, title: 'Drafts', page: const DraftsPage()),
-            //_buildDrawerItem(context, icon: Icons.delete, title: 'Trash', page: const TrashPage()),
-
-            // === NEW: Spam folder ===
-            //_buildDrawerItem(
-            //context,
-            //icon: Icons.report_gmailerrorred,
-            //title: 'Spam',
-            //page: const SpamPage(), // Make sure you define this page
-            //),
-
-            //const Divider(),
-
             // === Folders from server (dynamic) ===
             if (emailService.userFolders.isEmpty)
               ListTile(
@@ -87,7 +62,7 @@ class EmailDrawer extends StatelessWidget {
                   leading: Icon(Icons.folder, color: theme.iconTheme.color),
                   title: Text(folder.displayName, style: theme.textTheme.bodyLarge),
                   subtitle: Text(folder.mailboxName, style: theme.textTheme.bodySmall),
-                  onTap: folder.displayName == 'Drafts'
+                  onTap: folder == UserEmailFolder.drafts
                       ? () {
                           Navigator.pop(context);
                           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -132,28 +107,6 @@ class EmailDrawer extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  /// Helper to create drawer items with consistent styling and navigation
-  Widget _buildDrawerItem(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required Widget page,
-  }) {
-    return ListTile(
-      leading: Icon(icon, color: Theme.of(context).iconTheme.color),
-      title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
-      onTap: () {
-        Navigator.pop(context); // close drawer first
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => page),
-          );
-        });
-      },
     );
   }
 

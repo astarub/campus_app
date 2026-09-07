@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/pages/email_client/models/email.dart';
+import 'package:campus_app/pages/email_client/models/user_email_folder.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
+import 'package:campus_app/pages/email_client/widgets/email_search.dart';
 import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
 
 // UI screen to display and manage email drafts
@@ -22,7 +24,7 @@ class _DraftsPageState extends State<DraftsPage> {
   Widget build(BuildContext context) {
     final emailService = Provider.of<EmailService>(context); // Access the email service
     final selectionController = emailService.selectionController; // For managing multi-selection
-    final drafts = emailService.allEmails.where((e) => e.folder == EmailFolder.drafts).toList()
+    final drafts = emailService.allEmails.where((e) => e.folder == UserEmailFolder.drafts).toList()
       ..sort((a, b) => b.date.compareTo(a.date)); // Sort drafts by newest first
 
     return Scaffold(
@@ -75,6 +77,19 @@ class _DraftsPageState extends State<DraftsPage> {
     // Default AppBar when not selecting
     return AppBar(
       title: const Text('Drafts'),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: () => Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) => const EmailSearch(folder: UserEmailFolder.drafts),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -110,7 +125,7 @@ class _DraftsPageState extends State<DraftsPage> {
       // fetch the current draft body
       if (context.mounted) {
         final emailService = Provider.of<EmailService>(context, listen: false);
-        final fullDraft = await emailService.fetchFullEmail(draft.uid);
+        final fullDraft = await emailService.fetchFullEmail(draft);
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -129,6 +144,8 @@ class _DraftsPageState extends State<DraftsPage> {
   }
 
   // Show confirmation dialog before permanently deleting selected drafts
+  // N.D. Note - there is no reason this should be permanent, stay with the web client implementation, deleting drafts moves them to trash, only perma delete out of trash
+  // this also makes the alert dialog unnecessary, only show it in the trash page when perma deleting
   void _showDeleteConfirmation(selectionController, EmailService emailService) {
     showDialog(
       context: context,

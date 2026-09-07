@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:campus_app/utils/widgets/bubble_message.dart';
 import 'package:campus_app/utils/widgets/bubble_service.dart';
+import 'package:campus_app/pages/email_client/models/user_email_folder.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/widgets/email_bottom_panel.dart';
@@ -17,14 +18,14 @@ class EmailView extends StatefulWidget {
   final Email email; // The email being viewed
   final void Function(Email, String)? onDelete; // Optional callback for deletion
   final void Function(Email)? onRestore; // Optional callback for restoring from trash
-  final EmailFolder folder;
+  final UserEmailFolder folder;
 
   const EmailView({
     super.key,
     required this.email,
     this.onDelete,
     this.onRestore,
-    this.folder = EmailFolder.inbox,
+    this.folder = UserEmailFolder.inbox,
   });
 
   @override
@@ -46,7 +47,7 @@ class _EmailViewState extends State<EmailView> {
     super.initState();
 
     // check if an email is in trash to enable permanent deletion
-    if (widget.folder == EmailFolder.trash) {
+    if (widget.folder == UserEmailFolder.trash) {
       setState(() {
         _isInTrash = true;
       });
@@ -57,7 +58,7 @@ class _EmailViewState extends State<EmailView> {
   Future<void> _loadEmailBody() async {
     try {
       final emailService = Provider.of<EmailService>(context, listen: false);
-      final fullE = await emailService.fetchFullEmail(widget.email.uid);
+      final fullE = await emailService.fetchFullEmail(widget.email);
       if (mounted) {
         setState(() {
           _fullEmail = fullE;

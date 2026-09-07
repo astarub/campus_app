@@ -6,6 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/injection.dart';
+import 'package:campus_app/pages/email_client/models/user_email_folder.dart';
+import 'package:campus_app/pages/email_client/widgets/email_search.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_login_screen.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_drawer.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_view.dart';
@@ -41,19 +43,13 @@ class _EmailClientContentState extends State<_EmailClientContent> {
   final FlutterSecureStorage secureStorage = sl<FlutterSecureStorage>();
   final ScrollController _scrollController = ScrollController();
 
-  bool _isSearching = false; // True when search bar is active
-  bool _isSearchLoading = false;
   bool _isLoading = true; // True while authenticating or initializing
   bool _isAuthenticated = false; // True after successful login
   late EmailSelectionController _selectionController; // Handles multi-select actions
 
-  List<Email>? _searchResults;
-  bool _hasMoreSearchResults = false;
-
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
     _initializeEmailClient(); // Start setup on load
   }
 
@@ -65,7 +61,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     // Set up selection controller with callbacks
     _selectionController = EmailSelectionController(
       onDelete: (emails) async {
-        await emailService.moveEmailsToFolder(emails.toList(), EmailFolder.trash); // Move to Trash
+        await emailService.moveEmailsToFolder(emails.toList(), UserEmailFolder.trash); // Move to Trash
         _rebuild(); // Refresh view
       },
       onEmailUpdated: (email) async {
@@ -108,75 +104,6 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     setState(() {});
   }
 
-  // detect if the user has scrolled close enough to the bottom to dynamically load the next batch of emails matching the search
-  void _onScroll() {
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
-      _loadMoreSearchResults();
-    }
-  }
-
-  bool _cancelSearch = false;
-
-  // search for emails matching input, not filter loaded emails
-  Future<void> _search() async {
-    final input = _searchController.text.trim();
-
-    if (input.isEmpty) {
-      setState(() {
-        _searchResults = null;
-        _isSearchLoading = false;
-        _hasMoreSearchResults = false;
-      });
-      return;
-    }
-
-    _cancelSearch = true;
-    await Future.delayed(Duration.zero);
-    _cancelSearch = false;
-    setState(() => _isSearchLoading = true);
-
-    try {
-      if (!mounted) return;
-      final emailService = Provider.of<EmailService>(context, listen: false);
-      final results = await emailService.searchEmails(query: input);
-
-      if (_cancelSearch) {
-        debugPrint('Email Search: Canceled previous Search.');
-        return;
-      }
-      if (mounted) {
-        setState(() {
-          _searchResults = results;
-          _isSearchLoading = false;
-          _hasMoreSearchResults = emailService.hasMoreSearchResults;
-        });
-      }
-    } catch (e) {
-      if (mounted) setState(() => _isSearchLoading = false);
-    }
-  }
-
-  // load the next batch of emails and add them to the already loaded emails
-  Future<void> _loadMoreSearchResults() async {
-    if (!_hasMoreSearchResults || _isSearchLoading) return;
-
-    setState(() => _isSearchLoading = true);
-
-    try {
-      final emailService = Provider.of<EmailService>(context, listen: false);
-      final moreEmails = await emailService.loadMoreSearchResults();
-      if (mounted) {
-        setState(() {
-          _searchResults = [..._searchResults!, ...moreEmails];
-          _hasMoreSearchResults = emailService.hasMoreSearchResults;
-          _isSearchLoading = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) setState(() => _isSearchLoading = false);
-    }
-  }
-
   // Triggers the login screen and handles post-login setup
   Future<void> _handleLogin() async {
     Navigator.push(
@@ -205,101 +132,11 @@ class _EmailClientContentState extends State<_EmailClientContent> {
       _selectionController.clearSelection();
       return;
     }
-    if (_isSearching) {
-      setState(() {
-        _isSearching = false;
-        _searchController.clear();
-      });
-      return;
-    }
     if (_scaffoldKey.currentState?.isEndDrawerOpen ?? false) {
       Navigator.of(context).pop();
       return;
     }
     Navigator.of(context).maybePop();
-  }
-
-  // helper function for search states (searching, found nothing, emails found)
-  Widget _buildSearchState(List<Email> emails) {
-    // display a loading screen when searching for emails
-    if (_isSearching) {
-      if (_isSearchLoading) {
-        return const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 16),
-              Text('Searching for emails...'),
-            ],
-          ),
-        );
-      }
-    }
-
-    // show that no emails were found
-    if (emails.isEmpty && _isSearching && !_isSearchLoading) {
-      return const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.search_off),
-            SizedBox(height: 16),
-            Text(
-              'No emails found.',
-              style: TextStyle(fontSize: 16),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // default case, show found emails
-    return ListView.separated(
-      controller: _isSearching ? _scrollController : null,
-      itemCount: emails.length + (_hasMoreSearchResults ? 1 : 0),
-      separatorBuilder: (_, __) => Divider(height: 1, color: Theme.of(context).dividerColor),
-      itemBuilder: (_, index) {
-        if (index == emails.length) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-              ),
-            ),
-          );
-        }
-        final email = emails[index];
-        final emailService = Provider.of<EmailService>(context);
-
-        return EmailTile(
-          email: email,
-          isSelected: _selectionController.isSelected(email),
-          onTap: () async {
-            if (_selectionController.isSelecting) {
-              setState(() => _selectionController.toggleSelection(email));
-            } else {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => EmailView(
-                    email: email,
-                    onDelete: (email, mailboxName) {
-                      emailService.moveEmailsToFolder([email], EmailFolder.trash);
-                      _rebuild();
-                    },
-                  ),
-                ),
-              );
-            }
-          },
-          onLongPress: () {
-            setState(() => _selectionController.toggleSelection(email));
-          },
-        );
-      },
-    );
   }
 
   @override
@@ -387,8 +224,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     }
 
     final emailService = Provider.of<EmailService>(context);
-    final List<Email> filteredEmails =
-        _isSearching ? (_searchResults ?? []) : emailService.filterEmails('', EmailFolder.inbox);
+    final List<Email> filteredEmails = emailService.filterEmails('', UserEmailFolder.inbox);
 
     return PopScope(
       onPopInvoked: (didPop) async {
@@ -397,44 +233,19 @@ class _EmailClientContentState extends State<_EmailClientContent> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: _isSearching
-              ? Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        autofocus: true,
-                        decoration: const InputDecoration(
-                          hintText: 'E-Mails durchsuchen...',
-                          border: InputBorder.none,
-                        ),
-                        textInputAction: TextInputAction.search,
-                        onSubmitted: (_) => _search(), // Update search results
-                      ),
-                    ),
-                  ],
-                )
-              : const Text('RubMail'),
-          leading: _isSearching
-              ? IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = false;
-                      _searchController.clear();
-                      _searchResults = null;
-                      _hasMoreSearchResults = false;
-                      _isSearchLoading = false;
-                    });
-                  },
-                )
-              : null,
+          title: const Text('RubMail'),
           actions: [
-            if (!_isSearching && !_selectionController.isSelecting)
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () => setState(() => _isSearching = true),
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () => Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const EmailSearch(folder: UserEmailFolder.inbox),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
               ),
+            ),
             if (_selectionController.isSelecting) ...[
               IconButton(
                 icon: const Icon(Icons.select_all),
@@ -445,7 +256,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                 onPressed: _selectionController.clearSelection,
               ),
             ],
-            if (!_isSearching && !_selectionController.isSelecting)
+            if (!_selectionController.isSelecting)
               Builder(
                 builder: (context) => IconButton(
                   icon: const Icon(Icons.menu),
@@ -464,7 +275,43 @@ class _EmailClientContentState extends State<_EmailClientContent> {
               await emailService.refreshEmails(); // Pull-to-refresh
               _rebuild(); // Re-apply search
             },
-            child: _buildSearchState(filteredEmails),
+            child: ListView.separated(
+              itemCount: filteredEmails.length,
+              separatorBuilder: (_, __) => Divider(
+                height: 1,
+                color: Theme.of(context).dividerColor,
+              ),
+              itemBuilder: (_, index) {
+                final email = filteredEmails[index];
+
+                return EmailTile(
+                  email: email,
+                  isSelected: _selectionController.isSelected(email),
+                  onTap: () async {
+                    if (_selectionController.isSelecting) {
+                      setState(() => _selectionController.toggleSelection(email));
+                    } else {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EmailView(
+                            email: email,
+                            onDelete: (email, mailboxName) {
+                              emailService.moveEmailsToFolder([email], UserEmailFolder.trash);
+
+                              _rebuild();
+                            },
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  onLongPress: () {
+                    setState(() => _selectionController.toggleSelection(email));
+                  },
+                );
+              },
+            ),
           ),
         ),
         floatingActionButton: _selectionController.isSelecting

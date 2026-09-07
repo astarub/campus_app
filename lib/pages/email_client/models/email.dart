@@ -1,5 +1,7 @@
 // This file defines the data model of an email (structure)
 // by defining a data class that represents an email's properties
+import 'package:campus_app/pages/email_client/models/user_email_folder.dart';
+
 class Email {
   final String id; // Unique identifier for the email
   final String sender; // Display name of the sender
@@ -12,7 +14,7 @@ class Email {
   final bool isUnread; // Whether the email is unread
   final bool isStarred; // Whether the email is marked as important/starred
   final List<String> attachments; // Filenames of any attachments
-  final EmailFolder folder; // The folder where this email is stored
+  final UserEmailFolder folder; // The folder where this email is stored
   final String? mailboxName; // real IMAP mailbox this email came from
   // Added for IMAP operations
   final int uid; // IMAP UID for server operations (used to identify emails remotely)
@@ -29,7 +31,7 @@ class Email {
     this.isUnread = false,
     this.isStarred = false,
     this.attachments = const [],
-    this.folder = EmailFolder.inbox,
+    this.folder = UserEmailFolder.inbox,
     this.mailboxName,
     this.uid = 0, // Default to 0 for local/dummy emails
   });
@@ -64,7 +66,7 @@ class Email {
         'isRead': !isUnread, // Stored as "isRead" for clarity
         'isStarred': isStarred,
         'attachments': attachments,
-        'folder': folder.name,
+        'folder': folder.mailboxName,
         'uid': uid,
       };
 
@@ -81,7 +83,7 @@ class Email {
         isUnread: !json['isRead'],
         isStarred: json['isStarred'],
         attachments: List<String>.from(json['attachments']),
-        folder: EmailFolder.values.byName(json['folder']),
+        folder: UserEmailFolder(mailboxName: json['folder'] ?? 'Inbox', displayName: json['folder'] ?? 'inbox'),
         mailboxName: json['mailboxName'],
         uid: json['uid'] ?? 0,
       );
@@ -99,7 +101,7 @@ class Email {
     bool? isUnread,
     bool? isStarred,
     List<String>? attachments,
-    EmailFolder? folder,
+    UserEmailFolder? folder,
     String? mailboxName,
     int? uid,
     bool? isRead, // Optional override using isRead instead of isUnread
@@ -131,13 +133,4 @@ class Email {
   bool get hasAttachments => attachments.isNotEmpty;
   String get senderName => sender; // Alias for UI usage
   DateTime get timestamp => date; // Alias for sorting or displaying
-}
-
-// Enum representing standard email folders
-enum EmailFolder {
-  inbox,
-  sent,
-  drafts,
-  trash,
-  spam,
 }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:campus_app/pages/email_client/models/email.dart';
+import 'package:campus_app/pages/email_client/models/user_email_folder.dart';
+import 'package:campus_app/pages/email_client/widgets/email_search.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_view.dart';
@@ -24,7 +25,21 @@ class FolderEmailsPage extends StatelessWidget {
     final emails = emailService.getEmailsForMailbox(mailboxName);
 
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(
+        title: Text(title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () => Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) =>
+                    EmailSearch(folder: UserEmailFolder(mailboxName: mailboxName, displayName: title)),
+              ),
+            ),
+          )
+        ],
+      ),
       body: emails.isEmpty
           ? const Center(child: Text('No emails'))
           : ListView.builder(
@@ -42,7 +57,7 @@ class FolderEmailsPage extends StatelessWidget {
                             email: email,
                             folder: email.folder,
                             onDelete: (email, mailboxName) {
-                              emailService.moveEmailsToFolder([email], EmailFolder.trash);
+                              emailService.moveEmailsToFolder([email], UserEmailFolder.trash);
                             },
                           ),
                         ),

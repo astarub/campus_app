@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:campus_app/pages/email_client/models/user_email_folder.dart';
 import 'package:campus_app/pages/email_client/widgets/email_bottom_panel.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
@@ -147,7 +148,7 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
       body: _bodyController.text,
       date: DateTime.now(),
       attachments: List.from(_attachments),
-      folder: EmailFolder.drafts,
+      folder: UserEmailFolder.drafts,
       uid: currentUID,
     );
     emailService.saveOrUpdateDraft(newDraft);

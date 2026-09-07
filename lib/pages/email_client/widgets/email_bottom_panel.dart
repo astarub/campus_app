@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:campus_app/pages/email_client/models/user_email_folder.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_folder_picker.dart';
@@ -19,7 +20,7 @@ class EmailBottomPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDraft = email.folder == EmailFolder.drafts;
+    final isDraft = email.folder == UserEmailFolder.drafts;
 
     return SafeArea(
       child: Column(
@@ -64,7 +65,7 @@ class EmailBottomPanel extends StatelessWidget {
               onTap: () async {
                 Navigator.pop(context);
                 // JUST move the email temporarily, TODO: delegate to function for spam marking which will also raise Spam flag
-                await emailService.moveEmailsToFolder([email], EmailFolder.spam);
+                await emailService.moveEmailsToFolder([email], UserEmailFolder.spam);
                 onActionComplete?.call();
               },
             ),
