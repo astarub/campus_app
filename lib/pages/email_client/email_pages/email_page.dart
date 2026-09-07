@@ -278,8 +278,11 @@ class _EmailClientContentState extends State<_EmailClientContent> {
             child: ListView.separated(
               itemCount: filteredEmails.length,
               separatorBuilder: (_, __) => Divider(
-                height: 1,
-                color: Theme.of(context).dividerColor,
+                height: 0,
+                thickness: 0.5,
+                indent: 45,
+                endIndent: 10,
+                color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
               ),
               itemBuilder: (_, index) {
                 final email = filteredEmails[index];

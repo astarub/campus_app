@@ -14,7 +14,7 @@ class DynamicSearchText extends StatefulWidget {
     super.key,
     this.messages,
     this.characterTimer = const Duration(milliseconds: 75),
-    this.messageTimer = const Duration(milliseconds: 2500),
+    this.messageTimer = const Duration(milliseconds: 3000),
   });
 
   @override

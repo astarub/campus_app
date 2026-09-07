@@ -172,7 +172,9 @@ class _EmailSearchState extends State<EmailSearch> {
       itemCount: _searchResults.length + (_hasMoreSearchResults ? 1 : 0),
       separatorBuilder: (_, __) => Divider(
         height: 1,
-        color: Theme.of(context).dividerColor,
+        indent: 45,
+        endIndent: 10,
+        color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
       ),
       itemBuilder: (_, index) {
         if (index == _searchResults.length) {

@@ -64,6 +64,10 @@ class _EmailViewState extends State<EmailView> {
           _fullEmail = fullE;
           _isLoadingEmailBody = false;
         });
+
+        if (widget.email.isUnread) {
+          await emailService.markAsRead(widget.email);
+        }
       }
     } catch (e) {
       if (mounted) {

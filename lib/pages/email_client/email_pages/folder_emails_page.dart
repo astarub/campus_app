@@ -42,8 +42,15 @@ class FolderEmailsPage extends StatelessWidget {
       ),
       body: emails.isEmpty
           ? const Center(child: Text('No emails'))
-          : ListView.builder(
+          : ListView.separated(
               itemCount: emails.length,
+              separatorBuilder: (_, __) => Divider(
+                height: 0,
+                thickness: 0.5,
+                indent: 45,
+                endIndent: 10,
+                color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
+              ),
               itemBuilder: (context, index) {
                 final email = emails[index];
                 return EmailTile(

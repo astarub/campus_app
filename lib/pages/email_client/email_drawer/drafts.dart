@@ -34,8 +34,11 @@ class _DraftsPageState extends State<DraftsPage> {
           : ListView.separated(
               itemCount: drafts.length,
               separatorBuilder: (_, __) => Divider(
-                height: 1,
-                color: Theme.of(context).dividerColor,
+                height: 0,
+                thickness: 0.5,
+                indent: 45,
+                endIndent: 10,
+                color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
               ),
               itemBuilder: (_, index) {
                 final draft = drafts[index];
