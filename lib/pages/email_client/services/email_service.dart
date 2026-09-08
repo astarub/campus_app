@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import 'dart:math';
@@ -31,7 +33,7 @@ class EmailService extends ChangeNotifier {
   }
 
   // Called once when the email client starts.
-  // Connects to the server, loads folder list, resolves system folders, then loads emails.
+  // Connects to the server, loads folder list, triggers background indexing and loads emails.
   Future<void> initialize() async {
     try {
       final credentials = await _authService.getCredentials();
@@ -52,6 +54,9 @@ class EmailService extends ChangeNotifier {
 
       //  Load emails for resolved system folders
       await refreshEmails();
+
+      // start indexing of the INBOX
+      unawaited(_backgroundIndexInbox());
     } catch (e) {
       _isInitialized = false;
       notifyListeners();
@@ -63,6 +68,31 @@ class EmailService extends ChangeNotifier {
     final success = await _emailRepository.connect(username, password);
     if (!success) {
       throw Exception('Failed to connect to email server');
+    }
+  }
+
+  // keep track of the indexing for the search widget
+  bool _isIndexing = false;
+  bool get isIndexing => _isIndexing;
+
+  // try to index the INBOX before the user uses the search function for a faster search
+  Future<void> _backgroundIndexInbox() async {
+    if (!_isInitialized) return;
+
+    _isIndexing = true;
+    notifyListeners();
+
+    try {
+      debugPrint('Email Search: background indexing INBOX...');
+
+      // empty search since we don't need any results
+      await _emailRepository.searchEmailUIDs(mailboxName: UserEmailFolder.inbox.mailboxName, query: '@');
+      debugPrint('Email Search: INBOX indexing complete.');
+    } catch (e) {
+      debugPrint('Email Search: Indexing of INBOX could not complete with error: $e');
+    } finally {
+      _isIndexing = false;
+      notifyListeners();
     }
   }
 

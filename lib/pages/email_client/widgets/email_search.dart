@@ -30,6 +30,7 @@ class _EmailSearchState extends State<EmailSearch> {
   bool _hasMoreSearchResults = false;
   bool _cancelSearch = false;
   bool _hasSearched = false;
+  bool _isBGIndexing = false;
 
   @override
   void initState() {
@@ -78,6 +79,22 @@ class _EmailSearchState extends State<EmailSearch> {
 
     if (input.isEmpty) return;
 
+    final emailService = Provider.of<EmailService>(context, listen: false);
+
+    // if we are in the inbox, we could be indexing it, therefore check if it is and wait until it's done
+    if (emailService.isIndexing && widget.folder == UserEmailFolder.inbox) {
+      setState(() {
+        _isBGIndexing = true;
+        _hasSearched = true;
+      });
+
+      while (emailService.isIndexing) {
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
+      setState(() {
+        _isBGIndexing = false;
+      });
+    }
     _cancelSearch = true;
     await Future.delayed(Duration.zero);
     _cancelSearch = false;
@@ -132,6 +149,20 @@ class _EmailSearchState extends State<EmailSearch> {
   }
 
   Widget _buildBody() {
+    if (_isBGIndexing) {
+      return const Center(
+        child: Column(
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 24),
+            DynamicSearchText(
+              messages: ['Mailbox wird indiziert...', 'Bitte einen Moment warten...'],
+            )
+          ],
+        ),
+      );
+    }
+
     if (_isSearchLoading && _searchResults.isEmpty) {
       return const Center(
         child: Column(
