@@ -77,6 +77,9 @@ dependencies:
   crypto: ^3.0.3
   flutter_compass: ^0.8.1
   vector_math: ^2.1.4
+  oidc: ^0.13.0
+  oidc_default_store: ^0.5.0
+  oidc_core: ^0.15.0
 
 dev_dependencies:
   flutter_test:
