@@ -9,6 +9,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:campus_app/core/auth/keycloak_auth_repository.dart';
+import 'package:campus_app/core/auth/keycloak_auth_datasource.dart';
+import 'package:campus_app/core/auth/keycloak_auth_service.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/pages/calendar/calendar_datasource.dart';
 import 'package:campus_app/pages/calendar/calendar_repository.dart';
@@ -23,7 +26,7 @@ import 'package:campus_app/pages/feed/news/news_usecases.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_datasource.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
-import 'package:campus_app/core/auth/auth_service.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_auth_service.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/pages/feed_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
@@ -64,6 +67,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => TicketDataSource(secureStorage: sl()));
   sl.registerLazySingleton(() => NavigationDatasource(appwriteClient: sl()));
 
+  sl.registerLazySingleton(KeycloakAuthDataSource.new);
+
   //!
   //! Repositories
   //!
@@ -89,9 +94,17 @@ Future<void> init() async {
     () => TicketRepository(ticketDataSource: sl(), secureStorage: sl()),
   );
 
+  sl.registerLazySingleton(
+    () => KeycloakAuthRepository(keycloakAuthDataSource: sl()),
+  );
+
   //!
   //! Usecases
   //!
+
+  sl.registerLazySingleton(
+    () => KeycloakAuthService(keycloakAuthRepository: sl()),
+  );
 
   sl.registerSingletonWithDependencies(
     () => NewsUsecases(newsRepository: sl()),
@@ -113,9 +126,7 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton(
-    // This wires up the global auth service for the new login flow.
-    // The service gets storage, ticket logic and the simple network check from here.
-    () => AuthService(
+    () => TicketAuthService(
       secureStorage: sl(),
       ticketRepository: sl(),
       walletUtils: sl(),

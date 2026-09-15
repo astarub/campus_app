@@ -7,14 +7,14 @@ import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/utils/pages/wallet_utils.dart';
 
-class AuthService {
+class TicketAuthService {
   // This service does the real login work in the background.
   // The UI should call this service instead of talking to storage or ticket code directly.
   final FlutterSecureStorage secureStorage;
   final TicketRepository ticketRepository;
   final WalletUtils walletUtils;
 
-  AuthService({
+  TicketAuthService({
     required this.secureStorage,
     required this.ticketRepository,
     required this.walletUtils,

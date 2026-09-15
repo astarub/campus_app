@@ -15,7 +15,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:campus_app/l10n/l10n.dart';
 
-import 'package:campus_app/core/auth/auth_provider.dart';
+import 'package:campus_app/core/auth/keycloak_auth_provider.dart';
 import 'package:campus_app/core/backend/backend_repository.dart';
 import 'package:campus_app/core/injection.dart' as ic; // injection container
 import 'package:campus_app/core/settings.dart';
@@ -28,6 +28,7 @@ import 'package:campus_app/pages/calendar/entities/category_entity.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/entities/organizer_entity.dart';
 import 'package:campus_app/pages/calendar/entities/venue_entity.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_auth_provider.dart';
 import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
 import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/pages/mensa_utils.dart';
@@ -69,10 +70,11 @@ Future<void> main() async {
             ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
             ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
             ChangeNotifierProvider<TicketWarningNotifier>(create: (_) => TicketWarningNotifier()),
-            // One global auth provider for the whole app.
-            // Profile page and wallet both listen to this same state.
-            ChangeNotifierProvider<AuthProvider>(
-              create: (_) => AuthProvider(authService: ic.sl())..initialize(),
+            ChangeNotifierProvider<KeycloakAuthProvider>(
+              create: (_) => KeycloakAuthProvider(keycloakAuthService: ic.sl())..initialize(),
+            ),
+            ChangeNotifierProvider<TicketAuthProvider>(
+              create: (_) => TicketAuthProvider(ticketAuthService: ic.sl())..initialize(),
             ),
           ],
           child: CampusApp(
@@ -89,9 +91,11 @@ Future<void> main() async {
           ChangeNotifierProvider<SettingsHandler>(create: (_) => SettingsHandler()),
           ChangeNotifierProvider<ThemesNotifier>(create: (_) => ThemesNotifier()),
           ChangeNotifierProvider<TicketWarningNotifier>(create: (_) => TicketWarningNotifier()),
-          // Same setup in debug mode.
-          ChangeNotifierProvider<AuthProvider>(
-            create: (_) => AuthProvider(authService: ic.sl())..initialize(),
+          ChangeNotifierProvider<KeycloakAuthProvider>(
+            create: (_) => KeycloakAuthProvider(keycloakAuthService: ic.sl())..initialize(),
+          ),
+          ChangeNotifierProvider<TicketAuthProvider>(
+            create: (_) => TicketAuthProvider(ticketAuthService: ic.sl())..initialize(),
           ),
         ],
         child: CampusApp(

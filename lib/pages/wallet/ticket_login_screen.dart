@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-import 'package:campus_app/core/auth/auth_provider.dart';
-import 'package:campus_app/core/auth/auth_service.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_auth_provider.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_auth_service.dart';
 import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
@@ -24,24 +24,21 @@ class TicketLoginScreen extends StatefulWidget {
 }
 
 class _TicketLoginScreenState extends State<TicketLoginScreen> {
-  // We only use the service here to read the last stored login ID for prefill.
-  final AuthService authService = sl<AuthService>();
+  final TicketAuthService ticketAuthService = sl<TicketAuthService>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // Try to prefill the username field when the screen opens.
     _prefillLoginId();
   }
 
   Future<void> _prefillLoginId() async {
-    final String? loginId = await authService.getStoredLoginId();
+    final String? loginId = await ticketAuthService.getStoredLoginId();
 
     if (!mounted || loginId == null || loginId.isEmpty) return;
 
-    // Nice little UX thing: show the last used login ID again.
     usernameController.text = loginId;
   }
 
@@ -54,8 +51,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // The screen only reads UI state from the provider now.
-    final AuthProvider authProvider = context.watch<AuthProvider>();
+    final TicketAuthProvider authProvider = context.watch<TicketAuthProvider>();
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
@@ -70,6 +66,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Back button
                   CampusIconButton(
                     iconPath: 'assets/img/icons/arrow-left.svg',
                     onTap: () {
@@ -97,8 +94,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                     textFieldController: usernameController,
                     textFieldText: 'RUB LoginID',
                     onTap: () {
-                      // Hide the old error once the user starts editing again.
-                      context.read<AuthProvider>().clearError();
+                      context.read<TicketAuthProvider>().clearError();
                     },
                   ),
                   const Padding(padding: EdgeInsets.only(top: 10)),
@@ -107,13 +103,11 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                     obscuredInput: true,
                     textFieldText: 'RUB Password',
                     onTap: () {
-                      // Same here for the password field.
-                      context.read<AuthProvider>().clearError();
+                      context.read<TicketAuthProvider>().clearError();
                     },
                   ),
                   const Padding(padding: EdgeInsets.only(top: 15)),
                   if (authProvider.errorMessage != null) ...[
-                    // Show the current login error from the global auth state.
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -141,25 +135,20 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                   CampusButton(
                     text: authProvider.isLoading ? 'Signing in...' : 'Login',
                     onTap: () async {
-                      // Block double taps while the login is already running.
                       if (authProvider.isLoading) return;
 
-                      // We read the provider here, then ask it to start the real login flow.
                       final NavigatorState navigator = Navigator.of(context);
-                      final AuthProvider authProviderNotifier = context.read<AuthProvider>();
+                      final TicketAuthProvider authProviderNotifier = context.read<TicketAuthProvider>();
                       final TicketWarningNotifier ticketWarningNotifier = context.read<TicketWarningNotifier>();
 
-                      // The text field values are passed as login parameters to the global auth flow.
                       final bool success = await authProviderNotifier.login(
-                            loginId: usernameController.text,
-                            password: passwordController.text,
-                          );
+                        loginId: usernameController.text,
+                        password: passwordController.text,
+                      );
 
-                      // Stop here if the screen was closed while the async login was running.
                       if (!mounted) return;
 
                       if (success) {
-                        // Refresh the wallet right away and close the login screen.
                         widget.onTicketLoaded();
                         ticketWarningNotifier.set(false);
                         navigator.pop();
@@ -178,7 +167,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                               : const Color.fromRGBO(184, 186, 191, 1),
                           BlendMode.srcIn,
                         ),
-                        width: 18,
+                          width: 18,
                       ),
                       const Padding(
                         padding: EdgeInsets.only(left: 8),

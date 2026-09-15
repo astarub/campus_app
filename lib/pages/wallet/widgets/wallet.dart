@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:campus_app/core/auth/auth_provider.dart';
 import 'package:campus_app/core/exceptions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +10,7 @@ import 'package:screen_brightness/screen_brightness.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/wallet/ticket/ticket_auth_provider.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_usecases.dart';
 import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
@@ -66,7 +66,7 @@ class BogestraTicketState extends State<BogestraTicket>
   bool _isLoading = false;
 
   Timer? _refreshTimer;
-  AuthProvider? _authProvider;
+  TicketAuthProvider? _ticketAuthProvider;
 
   TicketRepository ticketRepository = sl<TicketRepository>();
   TicketUsecases ticketUsecases = sl<TicketUsecases>();
@@ -103,10 +103,8 @@ class BogestraTicketState extends State<BogestraTicket>
     if (_isLoading) return;
     _isLoading = true;
 
-    // Grab these once before the async work starts.
-    // This avoids using BuildContext again after awaits.
     final TicketWarningNotifier ticketWarningNotifier = context.read<TicketWarningNotifier>();
-    final AuthProvider authProvider = context.read<AuthProvider>();
+    final TicketAuthProvider ticketAuthProvider = context.read<TicketAuthProvider>();
 
     try {
       // Pre-render ticket if not already scanned
@@ -162,8 +160,7 @@ class BogestraTicketState extends State<BogestraTicket>
         await renderTicket();
       }
 
-      // The ticket may contain the newest user info, so sync the global auth state too.
-      await authProvider.refreshFromStorage();
+      await ticketAuthProvider.refreshFromStorage();
     } finally {
       _isLoading = false;
     }
@@ -196,13 +193,13 @@ class BogestraTicketState extends State<BogestraTicket>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final AuthProvider nextAuthProvider = context.read<AuthProvider>();
+    final TicketAuthProvider nextAuthProvider = context.read<TicketAuthProvider>();
 
-    if (_authProvider == nextAuthProvider) return;
+    if (_ticketAuthProvider == nextAuthProvider) return;
 
-    _authProvider?.removeListener(_handleAuthStateChanged);
-    _authProvider = nextAuthProvider;
-    _authProvider?.addListener(_handleAuthStateChanged);
+    _ticketAuthProvider?.removeListener(_handleAuthStateChanged);
+    _ticketAuthProvider = nextAuthProvider;
+    _ticketAuthProvider?.addListener(_handleAuthStateChanged);
   }
 
   @override
@@ -210,22 +207,20 @@ class BogestraTicketState extends State<BogestraTicket>
     //remove the observer and timer
     WidgetsBinding.instance.removeObserver(this);
     _refreshTimer?.cancel();
-    _authProvider?.removeListener(_handleAuthStateChanged);
+    _ticketAuthProvider?.removeListener(_handleAuthStateChanged);
     super.dispose();
   }
 
   void _handleAuthStateChanged() {
-    if (!mounted || _authProvider == null || _authProvider!.isLoading) return;
+    if (!mounted || _ticketAuthProvider == null || _ticketAuthProvider!.isLoading) return;
 
-    if (_authProvider!.isLoggedIn) {
-      // Example: user logs in from the profile page, wallet should react too.
+    if (_ticketAuthProvider!.isLoggedIn) {
       loadAndRenderTicket();
       return;
     }
 
     if (!scanned && !showAztecCode) return;
 
-    // Remove the shown ticket when the global login is gone.
     setState(() {
       scanned = false;
       showAztecCode = false;
