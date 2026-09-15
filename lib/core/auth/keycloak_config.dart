@@ -5,8 +5,10 @@ class KeycloakConfig {
   const KeycloakConfig._();
 
   // Address of our local Keycloak realm.
-  static final Uri issuer = Uri.parse(         //Uri is a Dart-Data Type for Adr.
-    'http://localhost:8080/realms/campus-app',
+  static final Uri issuer = Uri.parse(
+    Platform.isAndroid
+        ? 'http://10.0.2.2:8080/realms/campus-app'
+        : 'http://localhost:8080/realms/campus-app',
   );
 
   // Name of our app in Keycloak.
