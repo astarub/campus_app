@@ -43,6 +43,9 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 
+        manifestPlaceholders["appAuthRedirectScheme"] =
+            "de.asta.bochum.campusapp"
+
         // Add the Dart define flag for Cronet HTTP without Play Services
         applicationVariants.all { 
             mergedFlavor.manifestPlaceholders["cronetHttpNoPlay"] = "true"
