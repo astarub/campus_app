@@ -1,12 +1,14 @@
 class StudentProfile {
   final String name;
   final String loginId;
+  final String? email;
   // This can stay empty for now if we do not get a matriculation number
   final String? matriculationNumber;
 
   const StudentProfile({
     required this.name,
     required this.loginId,
+    this.email,
     this.matriculationNumber,
   });
 
@@ -30,7 +32,7 @@ class StudentProfile {
     );
   }
 
-  // This function decides what name to show. 
+  // This function decides what name to show.
   // If the real name is missing, it just uses the login name (username).
   static String _fallbackName(
     dynamic value,
@@ -48,7 +50,7 @@ class StudentProfile {
 
     // Change the value to text and remove extra spaces at the start or end.
     final String normalized = value.toString().trim();
-    
+
     // If the text is empty now, return null.
     if (normalized.isEmpty) return null;
 
