@@ -1480,7 +1480,7 @@ packages:
     source: hosted
     version: "0.8.0"
   oidc_core:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: oidc_core
       sha256: b7c6d1bb4edd2f8fd68d4a9ac85e0a48e15fefc56fc22472ba297c0df2cdcb81

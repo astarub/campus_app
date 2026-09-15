@@ -21,8 +21,8 @@ import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/campus_search_bar.dart';
 import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
 
-import 'package:campus_app/pages/home/widgets/app_header.dart'; //new app header import
-import 'package:campus_app/pages/profile/profile_page.dart'; // new profile page import
+import 'package:campus_app/pages/home/widgets/app_header.dart';
+import 'package:campus_app/pages/profile/profile_page.dart';
 
 class FeedPage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -240,8 +240,6 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                 AppHeader(
                   title: 'Feed',
                   opacity: headerOpacity,
-
-                  // Opens the  profile page when the profile icon is tapped.
                   onProfileTap: () {
                     widget.mainNavigatorKey.currentState?.push(
                       MaterialPageRoute(
@@ -249,15 +247,12 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                       ),
                     );
                   },
-
-                  // Page-specific header content for the feed page.
+                  // FeedPicker & filter
                   bottom: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 400),
                     child: showSearchBar
                         ? CampusSearchBar(
                       onChange: onSearch,
-
-                      // Closes the search bar and resets the current search state.
                       onBack: () {
                         setState(() {
                           searchNewsWidgets = parsedNewsWidgets;
@@ -271,7 +266,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Opens the search bar.
+                          // Search button
                           CampusIconButton(
                             iconPath: 'assets/img/icons/search.svg',
                             onTap: () {
@@ -280,19 +275,20 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver, Automat
                               });
                             },
                           ),
-
-                          // Switches between the normal feed and the explore feed.
+                          // FeedPicker
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: CampusSegmentedControl(
                               leftTitle: 'Feed',
                               rightTitle: 'Explore',
                               onChanged: saveFeedExplore,
-                              selected: Provider.of<SettingsHandler>(context).currentSettings.newsExplore == false ? 0 : 1,
+                              selected:
+                                  Provider.of<SettingsHandler>(context).currentSettings.newsExplore == false
+                                      ? 0
+                                      : 1,
                             ),
                           ),
-
-                          // Opens the feed filter popup.
+                          // Filter button
                           CampusIconButton(
                             iconPath: 'assets/img/icons/filter.svg',
                             onTap: () {

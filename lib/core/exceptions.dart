@@ -28,7 +28,7 @@ class UnexpectedException implements Exception {}
 /// Error while authenticating to the appwrite backend
 class AuthenticationException implements Exception {}
 
-/// No network connection available
+/// No connection to the backend
 class NoConnectionException implements Exception {}
 
 /// Too many request to the backend

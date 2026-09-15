@@ -22,8 +22,7 @@ class TicketDataSource {
   Future<Map<String, dynamic>> getRemoteTicket() async {
     debugPrint('Loading semester ticket');
 
-    final Completer<Map<String, dynamic>> completer =
-        Completer<Map<String, dynamic>>();
+    final Completer<Map<String, dynamic>> completer = Completer<Map<String, dynamic>>();
 
     // Define empty ticket
     final Map<String, dynamic> ticket = {
@@ -95,8 +94,7 @@ class TicketDataSource {
 
       headlessWebView = HeadlessInAppWebView(
         initialUrlRequest: URLRequest(url: WebUri(rideTicketing)),
-        initialSettings:
-            InAppWebViewSettings(cacheEnabled: false, clearCache: true),
+        initialSettings: InAppWebViewSettings(cacheEnabled: false, clearCache: true),
         onWebViewCreated: (controller) {
           // Callback handler for the ticket
           controller.addJavaScriptHandler(
@@ -111,10 +109,7 @@ class TicketDataSource {
                 return;
               }
 
-              if (args.length < 2 ||
-                  args.isEmpty ||
-                  args[1] is! List ||
-                  List.of(args[1]).isEmpty) {
+              if (args.length < 2 || args.isEmpty || args[1] is! List || List.of(args[1]).isEmpty) {
                 if (!completer.isCompleted) {
                   completer.completeError('Invalid ticket details');
                   webDispose();
@@ -125,8 +120,7 @@ class TicketDataSource {
               }
 
               final List<dynamic> arguments = List.of(args)[1];
-              final String image =
-                  List<dynamic>.from(args)[0].toString().split(',')[1];
+              final String image = List<dynamic>.from(args)[0].toString().split(',')[1];
 
               ticket['aztec_code'] = image;
 
@@ -178,10 +172,7 @@ class TicketDataSource {
           final String url = uri.toString();
 
           // Click through the RUB login and extract the ticket from the ticket portal
-          if (url.startsWith(
-                'https://aai.ruhr-uni-bochum.de/idp/profile/SAML2/POST/SSO',
-              ) &&
-              url.endsWith('s1')) {
+          if (url.startsWith('https://aai.ruhr-uni-bochum.de/idp/profile/SAML2/POST/SSO') && url.endsWith('s1')) {
             startLoginWatcher(controller);
             Timer(const Duration(milliseconds: 300), () async {
               await controller.evaluateJavascript(
@@ -214,9 +205,7 @@ class TicketDataSource {
                 """,
               );
             });
-          } else if (url.startsWith(
-                'https://aai.ruhr-uni-bochum.de/idp/profile/SAML2/POST/SSO',
-              ) &&
+          } else if (url.startsWith('https://aai.ruhr-uni-bochum.de/idp/profile/SAML2/POST/SSO') &&
               url.endsWith('s2')) {
             startLoginWatcher(controller);
           } else if (url.startsWith('https://abo.ride-ticketing.de')) {
@@ -277,10 +266,7 @@ class TicketDataSource {
           loginTimer!.cancel();
         }
         if (headlessWebView != null && headlessWebView.isRunning()) {
-          if (headlessWebView.webViewController!
-              .getUrl()
-              .toString()
-              .startsWith('https://abo.ride-ticketing.de')) {
+          if (headlessWebView.webViewController!.getUrl().toString().startsWith('https://abo.ride-ticketing.de')) {
             await headlessWebView.webViewController!.evaluateJavascript(
               source: '''
                 const cardWrappers = document.getElementsByClassName("abo-card-wrapper");
@@ -291,16 +277,12 @@ class TicketDataSource {
               ''',
             );
           }
-          if (!completer.isCompleted) {
-            completer.completeError('Could not open ticket page.');
-          }
+          if (!completer.isCompleted) completer.completeError('Could not open ticket page.');
           await webDispose();
         }
       });
     } else {
-      if (!completer.isCompleted) {
-        completer.completeError('No login credentials found.');
-      }
+      if (!completer.isCompleted) completer.completeError('No login credentials found.');
     }
 
     return completer.future;
