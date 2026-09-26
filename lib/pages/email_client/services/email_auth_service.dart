@@ -1,7 +1,26 @@
+import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
+import 'package:enough_mail/imap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/exceptions.dart';
+import 'package:uuid/uuid.dart';
+
+enum VerificationStatus { success, bounced, sendFailed, notAuthenticated, emptyEmail, outOfAttempts }
+
+/// Email Address Verification Results to help give better feedback to the User
+class VerificationResult {
+  final VerificationStatus status;
+
+  const VerificationResult._(this.status);
+
+  static const success = VerificationResult._(VerificationStatus.success);
+  static const sendFailed = VerificationResult._(VerificationStatus.sendFailed);
+  static const bounced = VerificationResult._(VerificationStatus.bounced);
+  static const notAuthenticed = VerificationResult._(VerificationStatus.notAuthenticated);
+  static const emptyEmail = VerificationResult._(VerificationStatus.emptyEmail);
+  static const outOfAttempts = VerificationResult._(VerificationStatus.outOfAttempts);
+}
 
 // Service to handle email-based authentication using secure storage
 class EmailAuthService extends ChangeNotifier {
@@ -58,7 +77,6 @@ class EmailAuthService extends ChangeNotifier {
       // Save credentials
       await _secureStorage.write(key: _emailUsernameKey, value: username);
       await _secureStorage.write(key: _emailPasswordKey, value: password);
-      await _secureStorage.write(key: _isAuthenticatedKey, value: 'true');
       await _secureStorage.write(key: 'email_sender_address', value: emailAddress);
       await _secureStorage.write(key: _emailDisplayNameKey, value: emailDisplayName);
 
@@ -71,6 +89,11 @@ class EmailAuthService extends ChangeNotifier {
       await logout(); // Clear state on failure
       rethrow;
     }
+  }
+
+  // confirm an authentication only after the email address clears too
+  Future<void> confirmAuthentication() async {
+    await _secureStorage.write(key: _isAuthenticatedKey, value: 'true');
   }
 
   // Simulated email credential validation
@@ -144,5 +167,110 @@ class EmailAuthService extends ChangeNotifier {
       await logout(); // Invalidate session on failure
       return false;
     }
+  }
+
+  Uuid uuid = const Uuid();
+  String code = '';
+  DateTime timestamp = DateTime.now();
+
+  // email address verification process, the user should be authenticated via credentials at this point
+  Future<VerificationResult> verifyEmailAddress() async {
+    if (!_isAuthenticated) return VerificationResult.notAuthenticed;
+
+    // take to Imap service directly, avoid conflict with emailService initialization
+    final username = _currentUsername;
+    final password = _currentPassword;
+    if (username == null || password == null) return VerificationResult.notAuthenticed;
+
+    final emailAddress = await getSenderEmail() ?? '';
+    if (emailAddress.isEmpty) return VerificationResult.emptyEmail;
+
+    final imapService = sl<ImapEmailService>();
+
+    // generate and storing the code
+    _generateCode();
+
+    try {
+      // establish connection to the server
+      final connected = await imapService.connect(username, password);
+      if (!connected) return VerificationResult.sendFailed;
+
+      timestamp = DateTime.now();
+
+      final sent = await imapService.sendEmail(
+        to: emailAddress,
+        subject: 'Email Verification',
+        body: 'ASTA Verification Email: $code',
+        senderEmail: emailAddress,
+        senderName: await getDisplayName() ?? '',
+      );
+
+      if (!sent) return VerificationResult.sendFailed;
+
+      // delay to ensure the email will be available in the inbox
+      await Future.delayed(const Duration(milliseconds: 1500));
+
+      final result = await _findVerificationEmail(imapService);
+
+      return result;
+    } on ImapException catch (e) {
+      debugPrint('Verification failed with IMAP error: $e');
+      rethrow;
+    } catch (e) {
+      debugPrint('Verification failed with error: $e');
+      return VerificationResult.sendFailed;
+    } finally {
+      await imapService.disconnect();
+    }
+  }
+
+  void _generateCode() {
+    code = uuid.v4();
+  }
+
+  // compare and search for the email in the inbox
+  Future<VerificationResult> _findVerificationEmail(ImapEmailService imapService) async {
+    // retrying variables
+    const maxAttempts = 5;
+    const retryInterval = Duration(seconds: 2);
+
+    for (int i = 0; i <= maxAttempts; i++) {
+      try {
+        // limit sample to 15 most recent emails for efficiency, search will take too long
+        final emails = await imapService.fetchEmails(
+          count: 15,
+        );
+
+        // check for an undelivered email
+        final bounce = emails.where(
+          (e) =>
+              e.senderEmail.toLowerCase().contains('mailer-daemon') &&
+              e.subject.toLowerCase().contains('undelivered') &&
+              e.date.isAfter(timestamp),
+        );
+
+        if (bounce.isNotEmpty) return VerificationResult.bounced;
+
+        final target = emails.where((e) => e.subject.contains('Email Verification'));
+
+        if (target.isNotEmpty) {
+          final full = await imapService.fetchEmailByUid(target.first.uid);
+
+          // search the body for the unique code
+          if (full != null && (full.body.contains(code) || (full.htmlBody?.contains(code) ?? false))) {
+            await confirmAuthentication(); // complete authentication
+            return VerificationResult.success;
+          }
+        }
+      } catch (e) {
+        debugPrint('Email Verification: Attempt $i failed with error: $e');
+      }
+
+      if (i <= maxAttempts) {
+        await Future.delayed(retryInterval);
+      }
+    }
+
+    return VerificationResult.outOfAttempts;
   }
 }

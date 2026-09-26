@@ -4,14 +4,16 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:enough_mail/enough_mail.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:campus_app/core/exceptions.dart';
 import 'package:campus_app/utils/pages/wallet_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/campus_textfield.dart';
@@ -148,8 +150,14 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
       _showError('Server antwortet nicht. Versuche es später erneut.');
     } else if (error is SocketException) {
       _showError('Überprüfe deine Netzwerkverbindung!');
-    } else if (error is InvalidLoginIDAndPasswordException) {
+    } else if (error is ImapException) {
       _showError('Falsche LoginID und/oder Password!');
+    } else if (error == 'bounced') {
+      _showError('E-Mail Addresse nicht gefunden. Prüfe auf Tippfehler');
+    } else if (error == 'send_failed') {
+      _showError('E-Mail konnte nicht gesendet werden. Versuche es noch einmal.');
+    } else if (error == 'out_of_attempts') {
+      _showError('Verifizierung fehlgeschlagen. Prüfe deine angegebene E-Mail Addresse.');
     } else {
       debugPrint('Login error type: ${error.runtimeType}, message: $error');
       _showError('Ein unbekannter Fehler ist aufgetreten.');
@@ -267,27 +275,42 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                     ),
                   const Padding(padding: EdgeInsets.only(top: 15)),
                   if (showErrorMessage) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/img/icons/error.svg',
-                          colorFilter: const ColorFilter.mode(
-                            Colors.redAccent,
-                            BlendMode.srcIn,
-                          ),
-                          width: 18,
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 5),
-                        ),
-                        Text(
-                          errorMessage,
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall!.copyWith(
-                                color: Colors.redAccent,
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 1),
+                              child: SvgPicture.asset(
+                                'assets/img/icons/error.svg',
+                                colorFilter: const ColorFilter.mode(
+                                  Colors.redAccent,
+                                  BlendMode.srcIn,
+                                ),
+                                width: 18,
                               ),
+                            ),
+                            const SizedBox(width: 5),
+                            Flexible(
+                              child: Text(
+                                errorMessage,
+                                textAlign: TextAlign.center,
+                                softWrap: true,
+                                style: Provider.of<ThemesNotifier>(context)
+                                    .currentThemeData
+                                    .textTheme
+                                    .labelSmall!
+                                    .copyWith(
+                                      color: Colors.redAccent,
+                                    ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ],
                   const Padding(padding: EdgeInsets.only(top: 15)),

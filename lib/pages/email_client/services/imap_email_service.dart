@@ -61,8 +61,8 @@ class ImapEmailService {
       _startKeepAliveIMAP();
       return true;
     } catch (e) {
-      debugPrint('IMAP: Connection/login failed: $e');
-      return false;
+      debugPrint('IMAP: Connection/login failed: ${e.runtimeType}');
+      rethrow;
     }
   }
 

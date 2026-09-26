@@ -117,6 +117,10 @@ class _EmailClientContentState extends State<_EmailClientContent> {
           onLoginSuccess: () async {
             final emailService = Provider.of<EmailService>(context, listen: false);
             await emailService.initialize();
+
+            final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
+            final verificationStatus = await emailAuthService.verifyEmailAddress();
+            if (verificationStatus != VerificationResult.success) return;
             setState(() {
               _isAuthenticated = true;
             });
