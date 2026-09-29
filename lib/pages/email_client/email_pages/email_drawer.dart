@@ -65,12 +65,14 @@ class EmailDrawer extends StatelessWidget {
                   onTap: folder == UserEmailFolder.drafts
                       ? () {
                           Navigator.pop(context);
+                          emailService.openFolder(UserEmailFolder.drafts);
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             Navigator.push(context, MaterialPageRoute(builder: (_) => const DraftsPage()));
                           });
                         }
                       : () {
                           Navigator.pop(context);
+                          emailService.openFolder(folder);
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             Navigator.push(
                               context,

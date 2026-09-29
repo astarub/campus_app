@@ -8,6 +8,7 @@ import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/models/user_email_folder.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
+import 'package:campus_app/pages/email_client/widgets/email_page_navigation.dart';
 import 'package:campus_app/pages/email_client/widgets/email_search.dart';
 import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
 
@@ -27,31 +28,56 @@ class _DraftsPageState extends State<DraftsPage> {
     final drafts = emailService.allEmails.where((e) => e.folder == UserEmailFolder.drafts).toList()
       ..sort((a, b) => b.date.compareTo(a.date)); // Sort drafts by newest first
 
-    return Scaffold(
-      appBar: _buildAppBar(selectionController, drafts, emailService), // Show toolbar with actions
-      body: drafts.isEmpty
-          ? _buildEmptyState() // Show message if no drafts
-          : ListView.separated(
-              itemCount: drafts.length,
-              separatorBuilder: (_, __) => Divider(
-                height: 0,
-                thickness: 0.5,
-                indent: 45,
-                endIndent: 10,
-                color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          context.read<EmailService>().openFolder(UserEmailFolder.inbox);
+        }
+      },
+      child: Scaffold(
+        appBar: _buildAppBar(selectionController, drafts, emailService), // Show toolbar with actions
+        body: drafts.isEmpty
+            ? _buildEmptyState() // Show message if no drafts
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: drafts.length,
+                      separatorBuilder: (_, __) => Divider(
+                        height: 0,
+                        thickness: 0.5,
+                        indent: 45,
+                        endIndent: 10,
+                        color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
+                      ),
+                      itemBuilder: (_, index) {
+                        final draft = drafts[index];
+                        return EmailTile(
+                          email: draft,
+                          isSelected: selectionController.isSelected(draft),
+                          onTap: () {
+                            unawaited(_handleEmailTap(draft, selectionController));
+                          }, // Tap to edit
+                          onLongPress: () => _handleEmailLongPress(draft, selectionController), // Long press to select
+                        );
+                      },
+                    ),
+                  ),
+                  EmailPageNavigation(
+                    currentPage: emailService.currentPage,
+                    totalPages: emailService.totalPages,
+                    isLoading: emailService.arePagesLoading,
+                    onPrevious: () => emailService.goToPage(UserEmailFolder.drafts, emailService.currentPage - 1),
+                    onNext: () => emailService.goToPage(UserEmailFolder.drafts, emailService.currentPage + 1),
+                    onFirst: () => emailService.goToPage(UserEmailFolder.drafts, 1),
+                    onLast: () => emailService.goToPage(UserEmailFolder.drafts, emailService.totalPages),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                ],
               ),
-              itemBuilder: (_, index) {
-                final draft = drafts[index];
-                return EmailTile(
-                  email: draft,
-                  isSelected: selectionController.isSelected(draft),
-                  onTap: () {
-                    unawaited(_handleEmailTap(draft, selectionController));
-                  }, // Tap to edit
-                  onLongPress: () => _handleEmailLongPress(draft, selectionController), // Long press to select
-                );
-              },
-            ),
+      ),
     );
   }
 

@@ -23,9 +23,9 @@ class ImapEmailRepository implements EmailRepository {
   }
 
   @override
-  Future<List<Email>> fetchEmails({required String mailboxName, int count = 50}) {
+  Future<List<Email>> fetchEmails({required String mailboxName, int count = 50, int page = 1}) {
     // Fetch emails from a specific mailbox
-    return _imapService.fetchEmails(mailboxName: mailboxName, count: count);
+    return _imapService.fetchEmails(mailboxName: mailboxName, count: count, page: page);
   }
 
   @override
@@ -119,6 +119,11 @@ class ImapEmailRepository implements EmailRepository {
 
   @override
   Future<int?> saveDraft(Email draft) => _imapService.appendDraft(draft); // Save draft email
+
+  @override
+  Future<int> getMailboxMessageCount({String mailboxName = 'INBOX'}) {
+    return _imapService.getMailboxMessageCount(mailboxName: mailboxName);
+  }
 
   @override
   Future<List<Email>> fetchDrafts({int count = 50}) =>

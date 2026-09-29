@@ -76,8 +76,6 @@ class ImapEmailService {
     } finally {
       _imapClient = null;
       _smtpClient = null;
-      _username = null;
-      _password = null;
       _stopKeepAliveIMAP();
     }
   }
@@ -171,6 +169,14 @@ class ImapEmailService {
         result.messages.map(_convertMimeMessageToEmail),
       );
       return emails.reversed.toList();
+    });
+  }
+
+  // get amount of messages in a mailbox
+  Future<int> getMailboxMessageCount({String mailboxName = 'INBOX'}) async {
+    return _ensureConnection(() async {
+      final mailbox = await _imapClient!.selectMailboxByPath(mailboxName);
+      return mailbox.messagesExists;
     });
   }
 

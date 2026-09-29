@@ -32,6 +32,19 @@ class EmailService extends ChangeNotifier {
     _selectionController.addListener(notifyListeners);
   }
 
+  // Variables needed to keep track of different email pages
+  static const int _pageSize = 50;
+
+  UserEmailFolder? _currentFolder;
+  int _currentPage = 1;
+  int _totalPages = 1;
+  bool _arePagesLoading = false;
+
+  UserEmailFolder? get currentFolder => _currentFolder;
+  int get currentPage => _currentPage;
+  int get totalPages => _totalPages;
+  bool get arePagesLoading => _arePagesLoading;
+
   // Called once when the email client starts.
   // Connects to the server, loads folder list, triggers background indexing and loads emails.
   Future<void> initialize() async {
@@ -54,6 +67,11 @@ class EmailService extends ChangeNotifier {
 
       //  Load emails for resolved system folders
       await refreshEmails();
+
+      // initialize the variables needed for the pages here, so as to not unecessarily load the inbox twice
+      _currentFolder = UserEmailFolder.inbox;
+      _currentPage = 1;
+      _totalPages = await calculateTotalPages(UserEmailFolder.inbox);
 
       // start indexing of the INBOX
       unawaited(_backgroundIndexInbox());
@@ -187,12 +205,11 @@ class EmailService extends ChangeNotifier {
   }
 
   // Fetches emails from a single mailbox and merges them into the local cache.
-  Future<void> _fetchEmailsForMailbox(UserEmailFolder folder) async {
+  Future<void> _fetchEmailsForMailbox(UserEmailFolder folder, {int page = 1}) async {
     try {
-      final count = folder == UserEmailFolder.inbox ? 50 : 30;
       final emails = await _emailRepository.fetchEmails(
         mailboxName: folder.mailboxName,
-        count: count,
+        page: page,
       );
 
       for (final email in emails) {
@@ -206,6 +223,56 @@ class EmailService extends ChangeNotifier {
     } catch (e) {
       debugPrint('Failed to fetch ${folder.displayName}: $e');
     }
+  }
+
+  // get the number of pages in a mailbox
+  Future<int> calculateTotalPages(UserEmailFolder folder) async {
+    final totalMessages = await _emailRepository.getMailboxMessageCount(mailboxName: folder.mailboxName);
+
+    // special case, no messages in a mailbox -> default to one
+    if (totalMessages == 0) return 1;
+
+    return (totalMessages / _pageSize).ceil();
+  }
+
+  // page navigation
+  Future<void> goToPage(UserEmailFolder folder, int page) async {
+    if (!_isInitialized) return;
+    if (_arePagesLoading) return;
+    if (page < 1 || page > _totalPages) return;
+
+    _arePagesLoading = true;
+    notifyListeners();
+
+    try {
+      _currentFolder = folder;
+      _currentPage = page;
+
+      // wipe currently loaded emails from the targeted mailbox
+      _allEmails.removeWhere((email) => email.folder == folder);
+
+      // fetch the relevant emails on the page
+      await _fetchEmailsForMailbox(
+        folder,
+        page: page,
+      );
+    } catch (e) {
+      debugPrint('Email Client: Failed to load page $page of ${folder.displayName}: with error: $e');
+    } finally {
+      _arePagesLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // reset pages when switching folders
+  Future<void> openFolder(UserEmailFolder folder) async {
+    if (!_isInitialized) return;
+
+    _currentFolder = folder;
+    _currentPage = 1;
+    _totalPages = await calculateTotalPages(folder);
+
+    await goToPage(folder, 1);
   }
 
   Future<void> markAsRead(Email email) async {

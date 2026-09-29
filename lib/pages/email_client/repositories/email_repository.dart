@@ -10,7 +10,7 @@ abstract class EmailRepository {
   Future<void> disconnect();
 
   // Fetch a list of emails from a specified mailbox (e.g., INBOX)
-  Future<List<Email>> fetchEmails({required String mailboxName, int count = 50});
+  Future<List<Email>> fetchEmails({required String mailboxName, int count = 50, int page = 1});
 
   // Send a new email with optional cc/bcc fields
   Future<bool> sendEmail({
@@ -62,4 +62,7 @@ abstract class EmailRepository {
 
   // list all mailboxes folders available on  the server
   Future<List<String>> listMailboxes();
+
+  // get the number of messages from a mailbox
+  Future<int> getMailboxMessageCount({String mailboxName = 'INBOX'});
 }

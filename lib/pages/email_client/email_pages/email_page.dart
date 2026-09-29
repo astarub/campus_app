@@ -15,6 +15,7 @@ import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.d
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
+import 'package:campus_app/pages/email_client/widgets/email_page_navigation.dart';
 import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/core/themes.dart';
@@ -89,7 +90,6 @@ class _EmailClientContentState extends State<_EmailClientContent> {
       // any failure -> return to login screen
       if (mounted) {
         setState(() {
-          _isAuthenticated = false;
           _isLoading = false;
         });
       }
@@ -118,9 +118,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
             final emailService = Provider.of<EmailService>(context, listen: false);
             await emailService.initialize();
 
-            final emailAuthService = Provider.of<EmailAuthService>(context, listen: false);
-            final verificationStatus = await emailAuthService.verifyEmailAddress();
-            if (verificationStatus != VerificationResult.success) return;
+            if (!mounted) return;
             setState(() {
               _isAuthenticated = true;
             });
@@ -273,52 +271,70 @@ class _EmailClientContentState extends State<_EmailClientContent> {
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: _selectionController.isSelecting ? _selectionController.clearSelection : null,
-          child: RefreshIndicator(
-            onRefresh: () async {
-              final emailService = Provider.of<EmailService>(context, listen: false);
-              await emailService.refreshEmails(); // Pull-to-refresh
-              _rebuild(); // Re-apply search
-            },
-            child: ListView.separated(
-              itemCount: filteredEmails.length,
-              separatorBuilder: (_, __) => Divider(
-                height: 0,
-                thickness: 0.5,
-                indent: 45,
-                endIndent: 10,
-                color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
-              ),
-              itemBuilder: (_, index) {
-                final email = filteredEmails[index];
+          child: Column(
+            children: [
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    final emailService = Provider.of<EmailService>(context, listen: false);
+                    await emailService.refreshEmails(); // Pull-to-refresh
+                    _rebuild(); // Re-apply search
+                  },
+                  child: ListView.separated(
+                    itemCount: filteredEmails.length,
+                    separatorBuilder: (_, __) => Divider(
+                      height: 0,
+                      thickness: 0.5,
+                      indent: 45,
+                      endIndent: 10,
+                      color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
+                    ),
+                    itemBuilder: (_, index) {
+                      final email = filteredEmails[index];
 
-                return EmailTile(
-                  email: email,
-                  isSelected: _selectionController.isSelected(email),
-                  onTap: () async {
-                    if (_selectionController.isSelecting) {
-                      setState(() => _selectionController.toggleSelection(email));
-                    } else {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EmailView(
-                            email: email,
-                            onDelete: (email, mailboxName) {
-                              emailService.moveEmailsToFolder([email], UserEmailFolder.trash);
+                      return EmailTile(
+                        email: email,
+                        isSelected: _selectionController.isSelected(email),
+                        onTap: () async {
+                          if (_selectionController.isSelecting) {
+                            setState(() => _selectionController.toggleSelection(email));
+                          } else {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => EmailView(
+                                  email: email,
+                                  onDelete: (email, mailboxName) {
+                                    emailService.moveEmailsToFolder([email], UserEmailFolder.trash);
 
-                              _rebuild();
-                            },
-                          ),
-                        ),
+                                    _rebuild();
+                                  },
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        onLongPress: () {
+                          setState(() => _selectionController.toggleSelection(email));
+                        },
                       );
-                    }
-                  },
-                  onLongPress: () {
-                    setState(() => _selectionController.toggleSelection(email));
-                  },
-                );
-              },
-            ),
+                    },
+                  ),
+                ),
+              ),
+              EmailPageNavigation(
+                currentPage: emailService.currentPage,
+                totalPages: emailService.totalPages,
+                isLoading: emailService.arePagesLoading,
+                onPrevious: () => emailService.goToPage(UserEmailFolder.inbox, emailService.currentPage - 1),
+                onNext: () => emailService.goToPage(UserEmailFolder.inbox, emailService.currentPage + 1),
+                onFirst: () => emailService.goToPage(UserEmailFolder.inbox, 1),
+                onLast: () => emailService.goToPage(UserEmailFolder.inbox, emailService.totalPages),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+            ],
           ),
         ),
         floatingActionButton: _selectionController.isSelecting
@@ -338,12 +354,16 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                   ),
                 ],
               )
-            : FloatingActionButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ComposeEmailScreen()),
+            : Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: FloatingActionButton(
+                  shape: const CircleBorder(),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ComposeEmailScreen()),
+                  ),
+                  child: Icon(Icons.edit, color: Theme.of(context).colorScheme.onPrimary),
                 ),
-                child: Icon(Icons.edit, color: Theme.of(context).colorScheme.onPrimary),
               ),
       ),
     );
