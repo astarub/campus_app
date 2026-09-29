@@ -31,6 +31,13 @@ import 'package:campus_app/utils/dio_utils.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:native_dio_adapter/native_dio_adapter.dart';
 
+// Email-related imports
+import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
+import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
+import 'package:campus_app/pages/email_client/repositories/email_repository.dart';
+import 'package:campus_app/pages/email_client/repositories/imap_email_repository.dart';
+import 'package:campus_app/pages/email_client/services/email_service.dart';
+
 final sl = GetIt.instance; // service locator
 
 Future<void> init() async {
@@ -38,7 +45,6 @@ Future<void> init() async {
   //! Datasources
   //!
 
-  //! Datasources
   sl.registerSingletonAsync(() async {
     final client = Dio();
     client.httpClientAdapter = NativeAdapter();
@@ -64,10 +70,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => NavigationDatasource(appwriteClient: sl()));
 
   //!
-  //! Repositories
+  //! Repositories (non-email)
   //!
 
-  sl.registerLazySingleton(() => BackendRepository(client: sl()));
+  sl.registerLazySingleton(() {
+    final Client client = Client().setEndpoint(appwrite).setProject('campus_app');
+    return BackendRepository(client: client);
+  });
 
   sl.registerSingletonWithDependencies(
     () => NewsRepository(newsDatasource: sl()),
@@ -89,6 +98,32 @@ Future<void> init() async {
   );
 
   //!
+  //! Email dependencies (reordered)
+  //!
+
+  // 1. FlutterSecureStorage is already registered below in “External”
+
+  // 2. EmailAuthService (needs secure storage)
+  sl.registerLazySingleton<EmailAuthService>(
+    () => EmailAuthService(),
+  );
+
+  // 3. ImapEmailService (low-level IMAP/SMTP)
+  sl.registerLazySingleton<ImapEmailService>(
+    () => ImapEmailService(),
+  );
+
+  // 4. EmailRepository (depends on ImapEmailService)
+  sl.registerLazySingleton<EmailRepository>(
+    () => ImapEmailRepository(sl<ImapEmailService>()),
+  );
+
+  // 5. EmailService (business logic, depends on EmailRepository)
+  sl.registerLazySingleton<EmailService>(
+    () => EmailService(sl<EmailRepository>()),
+  );
+
+  //!
   //! Usecases
   //!
 
@@ -96,17 +131,14 @@ Future<void> init() async {
     () => NewsUsecases(newsRepository: sl()),
     dependsOn: [NewsRepository],
   );
-
   sl.registerSingletonWithDependencies(
     () => CalendarUsecases(calendarRepository: sl()),
     dependsOn: [CalendarRepository],
   );
-
   sl.registerSingletonWithDependencies(
     () => MensaUsecases(mensaRepository: sl()),
     dependsOn: [MensaRepository],
   );
-
   sl.registerLazySingleton(
     () => TicketUsecases(ticketRepository: sl()),
   );

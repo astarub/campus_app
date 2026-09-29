@@ -71,7 +71,9 @@ class MensaUtils {
 
         if (!(['V', 'VG', 'H'].any(filteredMensaPreferences.contains) &&
                 filteredMensaPreferences.any(dish.infos.contains)) &&
-            filteredMensaPreferences.where((e) => e == 'V' || e == 'VG' || e == 'H').isNotEmpty) continue;
+            filteredMensaPreferences.where((e) => e == 'V' || e == 'VG' || e == 'H').isNotEmpty) {
+          continue;
+        }
 
         meals.add(
           MealItem(

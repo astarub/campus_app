@@ -6,6 +6,7 @@ import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/backend/entities/publisher_entity.dart';
 import 'package:campus_app/utils/widgets/campus_filter_selection.dart';
 import 'package:campus_app/utils/widgets/popup_sheet.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart' show SnappingSheet;
 
 /// This widget displays the filter options that are available for the
 /// personal news feed and is used in the [SnappingSheet] widget
