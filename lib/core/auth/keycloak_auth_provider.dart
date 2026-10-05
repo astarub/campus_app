@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:campus_app/core/auth/keycloak_auth_exception.dart';
 import 'package:campus_app/core/auth/keycloak_auth_service.dart';
 import 'package:campus_app/core/auth/student_profile.dart';
 
@@ -16,6 +17,8 @@ class KeycloakAuthProvider with ChangeNotifier {
   StudentProfile? _currentUser;
   String? _errorMessage;
   StreamSubscription<StudentProfile?>? _userSubscription;
+  StreamSubscription<KeycloakSessionExpiredException>?
+      _sessionFailureSubscription;
 
   bool get isLoading => _isLoading;
   bool get isLoggedIn => _currentUser != null;
@@ -32,6 +35,11 @@ class KeycloakAuthProvider with ChangeNotifier {
       },
     );
 
+    // Show a clear message when Keycloak can no longer refresh the session.
+    _sessionFailureSubscription ??= keycloakAuthService.sessionFailures.listen(
+      (_) => _handleExpiredSession(),
+    );
+
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -39,6 +47,10 @@ class KeycloakAuthProvider with ChangeNotifier {
     try {
       // Load an already saved Keycloak session when the app starts.
       _currentUser = await keycloakAuthService.initialize();
+    } on KeycloakSessionExpiredException {
+      // The saved tokens are no longer valid and a new login is required.
+      _currentUser = null;
+      _errorMessage = 'Your login session has expired. Please sign in again.';
     } catch (_) {
       _currentUser = null;
       _errorMessage = 'The saved login could not be loaded.';
@@ -99,9 +111,17 @@ class KeycloakAuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void _handleExpiredSession() {
+    // Remove the old profile and tell the user to log in again.
+    _currentUser = null;
+    _errorMessage = 'Your login session has expired. Please sign in again.';
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     unawaited(_userSubscription?.cancel());
+    unawaited(_sessionFailureSubscription?.cancel());
     super.dispose();
   }
 }

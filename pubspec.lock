@@ -1968,7 +1968,7 @@ packages:
     source: hosted
     version: "2.0.1"
   simple_secure_storage:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: simple_secure_storage
       sha256: ca823a355bb7bb0e9b969876508e7d3a5dc0d1fb2dcb681c85b6e315f1e876e9

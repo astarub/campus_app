@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:oidc/oidc.dart';
 
 import 'package:campus_app/core/auth/keycloak_auth_datasource.dart';
+import 'package:campus_app/core/auth/keycloak_auth_exception.dart';
 import 'package:campus_app/core/auth/student_profile.dart';
 
 class KeycloakAuthRepository {
@@ -20,6 +21,11 @@ class KeycloakAuthRepository {
   // Sends a new profile when the Keycloak login changes.
   Stream<StudentProfile?> get userChanges {
     return keycloakAuthDataSource.userChanges.map(_createProfile);
+  }
+
+  // Passes expired-session events to the service layer.
+  Stream<KeycloakSessionExpiredException> get sessionFailures {
+    return keycloakAuthDataSource.sessionFailures;
   }
 
   // Starts Keycloak and loads a saved login, if one exists.

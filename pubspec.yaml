@@ -79,6 +79,7 @@ dependencies:
   vector_math: ^2.1.4
   oidc: ^0.13.0
   oidc_default_store: ^0.5.0
+  simple_secure_storage: ^0.3.7
 
 dev_dependencies:
   flutter_test:

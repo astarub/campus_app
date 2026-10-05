@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campus_app/core/auth/keycloak_auth_exception.dart';
 import 'package:campus_app/core/auth/keycloak_auth_repository.dart';
 import 'package:campus_app/core/auth/student_profile.dart';
 
@@ -14,6 +15,11 @@ class KeycloakAuthService {
 
   Stream<StudentProfile?> get userChanges {
     return keycloakAuthRepository.userChanges;
+  }
+
+  // Makes expired-session events available to the UI provider.
+  Stream<KeycloakSessionExpiredException> get sessionFailures {
+    return keycloakAuthRepository.sessionFailures;
   }
 
   Future<StudentProfile?> initialize() {

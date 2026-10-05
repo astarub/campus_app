@@ -34,10 +34,19 @@ import 'package:campus_app/utils/pages/main_utils.dart';
 import 'package:campus_app/utils/dio_utils.dart';
 import 'package:campus_app/utils/constants.dart';
 import 'package:native_dio_adapter/native_dio_adapter.dart';
+import 'package:simple_secure_storage/simple_secure_storage.dart';
 
 final sl = GetIt.instance; // service locator
 
 Future<void> init() async {
+  // Create a separate encrypted storage area for Keycloak OIDC tokens.
+  final keycloakSecureStorage = await CachedSimpleSecureStorage.getInstance(
+    const InitializationOptions(
+      appName: 'Campus App',
+      namespace: 'campus_app_oidc',
+    ),
+  );
+
   //!
   //! Datasources
   //!
@@ -67,7 +76,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => TicketDataSource(secureStorage: sl()));
   sl.registerLazySingleton(() => NavigationDatasource(appwriteClient: sl()));
 
-  sl.registerLazySingleton(KeycloakAuthDataSource.new);
+  sl.registerLazySingleton(
+    () => KeycloakAuthDataSource(
+      // The data source uses this storage for all sensitive OIDC tokens.
+      secureStorage: keycloakSecureStorage,
+    ),
+  );
 
   //!
   //! Repositories
