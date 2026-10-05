@@ -25,3 +25,13 @@ The following keys are currently used by `lib/env/env.dart`:
 `flutter pub run build_runner build --delete-conflicting-outputs`
 
 4. Start the app.
+
+## Keycloak build configuration
+
+The Keycloak issuer and client ID can be changed at build time without editing
+the source code:
+
+`flutter run --dart-define=KEYCLOAK_ISSUER=https://login.example.org/realms/campus-app --dart-define=KEYCLOAK_CLIENT_ID=campus-app-flutter`
+
+Both values are optional. Without them, the app uses the local development
+realm and the `campus-app-flutter` client.

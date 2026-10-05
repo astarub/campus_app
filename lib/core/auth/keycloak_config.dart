@@ -4,15 +4,24 @@ class KeycloakConfig {
   // This class only stores settings and should not be created as an object.
   const KeycloakConfig._();
 
-  // Address of our local Keycloak realm.
+  static const String _configuredIssuer = String.fromEnvironment(
+    'KEYCLOAK_ISSUER',
+  );
+
+  // Uses a configured Keycloak realm or falls back to the local test server.
   static final Uri issuer = Uri.parse(
-    Platform.isAndroid
-        ? 'http://10.0.2.2:8080/realms/campus-app'
-        : 'http://localhost:8080/realms/campus-app',
+    _configuredIssuer.isNotEmpty
+        ? _configuredIssuer
+        : Platform.isAndroid
+            ? 'http://10.0.2.2:8080/realms/campus-app'
+            : 'http://localhost:8080/realms/campus-app',
   );
 
   // Name of our app in Keycloak.
-  static const String clientId = 'campus-app-flutter';
+  static const String clientId = String.fromEnvironment(
+    'KEYCLOAK_CLIENT_ID',
+    defaultValue: 'campus-app-flutter',
+  );
 
   static const String appAuthRedirectScheme = 'de.asta.bochum.campusapp';
 
