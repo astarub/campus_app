@@ -1,0 +1,19 @@
+# Runs a local Keycloak server for development without the RUB SSO.
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.3
+    # Imports the versioned realm when Keycloak starts with an empty data volume.
+    command: start-dev --import-realm
+    environment:
+      # These defaults are only intended for local development.
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+    ports:
+      - "${KEYCLOAK_PORT:-8080}:8080"
+    volumes:
+      # Keep local data between restarts and provide the realm configuration.
+      - keycloak_data:/opt/keycloak/data
+      - ./docker/keycloak/campus-app-realm.json:/opt/keycloak/data/import/campus-app-realm.json:ro
+
+volumes:
+  keycloak_data:
