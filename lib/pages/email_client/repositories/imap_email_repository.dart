@@ -1,4 +1,6 @@
 // Imports required Email model, interface, and IMAP service implementation
+import 'package:enough_mail/imap.dart';
+
 import 'package:campus_app/pages/email_client/models/email.dart';
 import 'package:campus_app/pages/email_client/repositories/email_repository.dart';
 import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
@@ -85,7 +87,7 @@ class ImapEmailRepository implements EmailRepository {
   }
 
   @override
-  Future<List<String>> listMailboxes() async {
+  Future<List<Mailbox>> listMailboxes() async {
     try {
       // Holen der Mailboxen vom IMAP-Service
       final mailboxes = await _imapService.getMailboxes();

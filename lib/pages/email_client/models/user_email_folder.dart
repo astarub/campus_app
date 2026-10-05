@@ -5,11 +5,17 @@ import 'package:flutter/material.dart';
 class UserEmailFolder {
   final String mailboxName; // Real server mailbox name (IMAP path)
   final String displayName; // Friendly name shown in the UI
+  final int depth; // the depth of a folder in relation to subfolder order, parents and no child folders are at depth 1
+  final bool hasChildren;
 
   const UserEmailFolder({
     required this.mailboxName,
     required this.displayName,
+    this.depth = 1,
+    this.hasChildren = false,
   });
+
+  static int depthOf(String mailboxName) => mailboxName.split('/').length;
 
   // set known server folders
   static const inbox = UserEmailFolder(mailboxName: 'INBOX', displayName: 'Inbox');

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:enough_mail/imap.dart';
+
 import 'package:flutter/foundation.dart';
 
 import 'dart:math';
@@ -151,18 +153,33 @@ class EmailService extends ChangeNotifier {
       _userFolders
         ..clear()
         ..addAll(
-          mailboxes.where((mb) => mb.trim().isNotEmpty).map((mb) {
+          mailboxes.where((mb) => mb.path.trim().isNotEmpty).map((mb) {
+            final mailboxName = mb.path;
+            final hasChildren = mb.flags.contains(MailboxFlag.hasChildren);
+            final separator = mb.pathSeparator;
+
             final systemMatch = systemFolders
                 .where(
-                  (f) => f.mailboxName.toLowerCase() == mb.toLowerCase(),
+                  (f) => f.mailboxName.toLowerCase() == mailboxName.toLowerCase(),
                 )
                 .firstOrNull;
 
-            return systemMatch ??
-                UserEmailFolder(
-                  mailboxName: mb,
-                  displayName: mb,
-                );
+            // add optional meta data to system folders
+            if (systemMatch != null) {
+              return UserEmailFolder(
+                mailboxName: systemMatch.mailboxName,
+                displayName: systemMatch.displayName,
+                hasChildren: hasChildren,
+                depth: mailboxName.split(separator).length,
+              );
+            }
+
+            return UserEmailFolder(
+              mailboxName: mailboxName,
+              displayName: mailboxName.split(separator).last,
+              hasChildren: hasChildren,
+              depth: mailboxName.split(separator).length,
+            );
           }),
         );
 

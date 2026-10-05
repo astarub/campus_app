@@ -326,10 +326,9 @@ class ImapEmailService {
   }
 
   /// Lists all mailbox names on the server.
-  Future<List<String>> getMailboxes() async {
+  Future<List<Mailbox>> getMailboxes() async {
     return _ensureConnection(() async {
-      final boxes = await _imapClient!.listMailboxes();
-      return boxes.map((m) => m.name).toList();
+      return _imapClient!.listMailboxes(recursive: true);
     });
   }
 

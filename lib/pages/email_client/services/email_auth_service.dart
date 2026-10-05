@@ -37,9 +37,15 @@ class EmailAuthService extends ChangeNotifier {
   String? _currentUsername;
   String? _currentPassword;
 
+  String? _senderEmail;
+  String? _displayName;
+
   // Public getters
   bool get isAuthenticatedSync => _isAuthenticated;
   String? get currentUsername => _currentUsername;
+
+  String? get senderEmail => _senderEmail;
+  String? get displayName => _displayName;
 
   // Check if user is authenticated (reads from secure storage)
   Future<bool> isAuthenticated() async {
@@ -53,6 +59,10 @@ class EmailAuthService extends ChangeNotifier {
       if (_isAuthenticated) {
         _currentUsername = username;
         _currentPassword = password;
+
+        // set email address and display name to avoid repeated storage access
+        _senderEmail = await _secureStorage.read(key: 'email_sender_address');
+        _displayName = await _secureStorage.read(key: _emailDisplayNameKey);
       }
 
       notifyListeners();
@@ -82,6 +92,8 @@ class EmailAuthService extends ChangeNotifier {
 
       _currentUsername = username;
       _currentPassword = password;
+      _senderEmail = emailAddress;
+      _displayName = emailDisplayName;
       _isAuthenticated = true;
 
       notifyListeners();
@@ -144,6 +156,8 @@ class EmailAuthService extends ChangeNotifier {
 
     _currentUsername = null;
     _currentPassword = null;
+    _senderEmail = null;
+    _displayName = null;
     _isAuthenticated = false;
 
     notifyListeners();

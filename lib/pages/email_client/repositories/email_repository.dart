@@ -1,4 +1,6 @@
 // Imports the Email model used throughout the email operations
+import 'package:enough_mail/highlevel.dart';
+
 import 'package:campus_app/pages/email_client/models/email.dart';
 
 // Abstract repository defining the interface for any email backend (e.g., IMAP)
@@ -61,7 +63,7 @@ abstract class EmailRepository {
   Future<List<Email>> fetchEmailsbyUIDs(List<int> uids, {String mailboxName = 'INBOX', bool withBody = false});
 
   // list all mailboxes folders available on  the server
-  Future<List<String>> listMailboxes();
+  Future<List<Mailbox>> listMailboxes();
 
   // get the number of messages from a mailbox
   Future<int> getMailboxMessageCount({String mailboxName = 'INBOX'});
