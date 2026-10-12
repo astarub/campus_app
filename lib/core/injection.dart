@@ -39,7 +39,7 @@ import 'package:simple_secure_storage/simple_secure_storage.dart';
 final sl = GetIt.instance; // service locator
 
 Future<void> init() async {
-  // Create a separate encrypted storage area for Keycloak OIDC tokens.
+  // Create dedicated encrypted storage for Keycloak OIDC tokens
   final keycloakSecureStorage = await CachedSimpleSecureStorage.getInstance(
     const InitializationOptions(
       appName: 'Campus App',
@@ -78,7 +78,6 @@ Future<void> init() async {
 
   sl.registerLazySingleton(
     () => KeycloakAuthDataSource(
-      // The data source uses this storage for all sensitive OIDC tokens.
       secureStorage: keycloakSecureStorage,
     ),
   );

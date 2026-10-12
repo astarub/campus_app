@@ -32,6 +32,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>app</string>
+				<string>de.asta.bochum.campusapp</string>
 			</array>
 		</dict>
 	</array>
