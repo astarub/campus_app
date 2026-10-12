@@ -266,7 +266,6 @@ class BogestraTicketState extends State<BogestraTicket>
                   }
                 }
               },
-              onLongPress: addTicket,
               child: showAztecCode
                   ? aztecCodeImage
                   : Column(
