@@ -16,7 +16,7 @@ class TicketRepository {
 
   /// Load the semester ticket
   Future<void> loadTicket() async {
-    Map<String, dynamic>? ticket;
+    Map<String, dynamic> ticket;
 
     try {
       ticket = await ticketDataSource.getRemoteTicket();
@@ -34,7 +34,7 @@ class TicketRepository {
 
       throw UnexpectedException();
     }
-    if (ticket == null || ticket['aztec_code'].toString().isEmpty) {
+    if (ticket['aztec_code'].toString().isEmpty) {
       throw TicketNotFoundException();
     }
 

@@ -72,11 +72,13 @@ class TicketDataSource {
           await controller.evaluateJavascript(
             source: """
             (function() {
-              const errorNodes = Array.from(document.getElementsByClassName("form-error"))
-                .concat(Array.from(document.querySelectorAll('[role="alert"], .alert, .alert-danger, .error')));
-              const hasVisibleError = errorNodes.some(function(node) {
+              const hasVisibleError = Array.from(document.getElementsByClassName("form-error"))
+                .some(function(node) {
                 const text = (node.innerText || node.textContent || "").trim();
-                return text.length > 0;
+                const style = window.getComputedStyle(node);
+                return text.length > 0 && node.getClientRects().length > 0 &&
+                  style.visibility !== 'hidden' && style.visibility !== 'collapse' &&
+                  style.opacity !== '0';
               });
 
               if (hasVisibleError) {
@@ -178,11 +180,13 @@ class TicketDataSource {
               await controller.evaluateJavascript(
                 source: """
                 (function fillCreds() {
-                  const errorNodes = Array.from(document.getElementsByClassName("form-error"))
-                    .concat(Array.from(document.querySelectorAll('[role="alert"], .alert, .alert-danger, .error')));
-                  const hasVisibleError = errorNodes.some(function(node) {
+                  const hasVisibleError = Array.from(document.getElementsByClassName("form-error"))
+                    .some(function(node) {
                     const text = (node.innerText || node.textContent || "").trim();
-                    return text.length > 0;
+                    const style = window.getComputedStyle(node);
+                    return text.length > 0 && node.getClientRects().length > 0 &&
+                      style.visibility !== 'hidden' && style.visibility !== 'collapse' &&
+                      style.opacity !== '0';
                   });
 
                   if (hasVisibleError) {
