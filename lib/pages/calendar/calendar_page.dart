@@ -16,6 +16,7 @@ import 'package:campus_app/pages/calendar/calendar_usecases.dart';
 import 'package:campus_app/pages/calendar/entities/event_entity.dart';
 import 'package:campus_app/pages/calendar/widgets/event_widget.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/profile/profile_page.dart';
 import 'package:campus_app/utils/pages/calendar_utils.dart';
 import 'package:campus_app/utils/widgets/campus_segmented_control.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
@@ -340,9 +341,21 @@ class _CalendarPageState extends State<CalendarPage> with AutomaticKeepAliveClie
                       // Title
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
-                        child: Text(
-                          'Events',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Text(
+                                'Events',
+                                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                              ),
+                              const Positioned(
+                                right: 16,
+                                child: ProfileButton(),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       AnimatedSwitcher(

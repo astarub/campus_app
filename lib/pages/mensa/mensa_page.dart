@@ -10,6 +10,7 @@ import 'package:campus_app/core/failures.dart';
 import 'package:campus_app/pages/mensa/dish_entity.dart';
 import 'package:campus_app/pages/mensa/mensa_usecases.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/profile/profile_page.dart';
 import 'package:campus_app/pages/mensa/widgets/day_selection.dart';
 import 'package:campus_app/pages/mensa/widgets/expandable_restaurant.dart';
 import 'package:campus_app/pages/mensa/widgets/preferences_popup.dart';
@@ -179,9 +180,21 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                       // Title
                       Padding(
                         padding: const EdgeInsets.only(bottom: 24),
-                        child: Text(
-                          'Mensa',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Text(
+                                'Mensa',
+                                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                              ),
+                              const Positioned(
+                                right: 16,
+                                child: ProfileButton(),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       // Day selection

@@ -13,6 +13,7 @@ import 'package:campus_app/pages/navigation/data/vending_machines.dart';
 import 'package:campus_app/pages/navigation/indoor_navigation_page.dart';
 import 'package:campus_app/pages/navigation/navigation_onboarding.dart';
 import 'package:campus_app/pages/navigation/widgets/error_bubble.dart';
+import 'package:campus_app/pages/profile/profile_page.dart';
 import 'package:campus_app/utils/pages/outdoor_navigation_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:flutter/foundation.dart';
@@ -175,11 +176,18 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                   ),
                   child: SizedBox(
                     width: double.infinity,
-                    child: Align(
-                      child: Text(
-                        'Navigation',
-                        style: currentThemeData.textTheme.displayMedium,
-                      ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Text(
+                          'Navigation',
+                          style: currentThemeData.textTheme.displayMedium,
+                        ),
+                        const Positioned(
+                          right: 0,
+                          child: ProfileButton(),
+                        ),
+                      ],
                     ),
                   ),
                 ),

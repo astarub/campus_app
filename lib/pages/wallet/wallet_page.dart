@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/profile/profile_page.dart';
 import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
 import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 import 'package:campus_app/pages/wallet/faq_page.dart';
@@ -50,9 +51,19 @@ class _WalletPageState extends State<WalletPage>
           // pinned Header
           Container(
             padding: EdgeInsets.only(top: Platform.isAndroid ? 14 : 0, bottom: 20),
-            child: Text(
-              'Wallet',
-              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+            width: double.infinity,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Text(
+                  'Wallet',
+                  style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                ),
+                const Positioned(
+                  right: 16,
+                  child: ProfileButton(),
+                ),
+              ],
             ),
           ),
           // Scrollable page content for Refresh

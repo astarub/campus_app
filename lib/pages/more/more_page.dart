@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
+import 'package:campus_app/pages/profile/profile_page.dart';
 import 'package:campus_app/pages/more/widgets/external_link_button.dart';
 import 'package:campus_app/pages/more/widgets/button_group.dart';
 import 'package:campus_app/pages/more/in_app_web_view_page.dart';
@@ -73,9 +74,21 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                 // Header
                 Padding(
                   padding: EdgeInsets.only(top: Platform.isAndroid ? 10 : 0, bottom: 40),
-                  child: Text(
-                    'Einstellungen & Mehr',
-                    style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Text(
+                          'Einstellungen & Mehr',
+                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
+                        ),
+                        const Positioned(
+                          right: 16,
+                          child: ProfileButton(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 // Site content

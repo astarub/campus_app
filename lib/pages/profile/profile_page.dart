@@ -8,23 +8,23 @@ import 'package:campus_app/pages/wallet/ticket_login_screen.dart';
 import 'package:campus_app/pages/wallet/ticket_warning_notifier.dart';
 import 'package:campus_app/utils/widgets/campus_button.dart';
 
+/// Shows the separate Keycloak and semester-ticket sessions
+/// The local Keycloak session does not provide a RUB ticket
+/// StatelessWidget keeps no mutable state inside this page
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  // build returns the widget tree and overrides the method from StatelessWidget
   @override
   Widget build(BuildContext context) {
-    // Profile page just reads the global auth state and shows the current user if available.
     final theme = Provider.of<ThemesNotifier>(context).currentThemeData;
-    // This connects to Keycloak to get the login status and user data.
-    // It also makes the page rebuild whenever the login state changes.
+    // watch rebuilds this page after either provider calls notifyListeners
     final KeycloakAuthProvider keycloakAuthProvider =
         context.watch<KeycloakAuthProvider>();
     final TicketAuthProvider ticketAuthProvider =
         context.watch<TicketAuthProvider>();
     final keycloakUser = keycloakAuthProvider.currentUser;
     final ticketUser = ticketAuthProvider.currentUser;
-    final bool isKeycloakLoggedIn =
-        keycloakAuthProvider.isLoggedIn && keycloakUser != null;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -53,8 +53,9 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
+            // condition ? first : second chooses the text shown to the user
             Text(
-              isKeycloakLoggedIn
+              keycloakUser != null
                   ? keycloakUser.name
                   : 'Global login not active',
               textAlign: TextAlign.center,
@@ -62,14 +63,17 @@ class ProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              isKeycloakLoggedIn
+              keycloakUser != null
                   ? 'RUB LoginID: ${keycloakUser.loginId}'
                   : 'Sign in.',
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium,
             ),
+            // if adds these widgets only when an error exists
+            // ... inserts every widget from the following list
             if (keycloakAuthProvider.errorMessage != null) ...[
               const SizedBox(height: 12),
+              // ! is safe here because the condition above already rejected null
               Text(
                 keycloakAuthProvider.errorMessage!,
                 textAlign: TextAlign.center,
@@ -84,8 +88,7 @@ class ProfilePage extends StatelessWidget {
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
-            if (isKeycloakLoggedIn) ...[
-              // Show only the profile data that really matters for this task.
+            if (keycloakUser != null) ...[
               Card(
                 color: theme.cardColor,
                 child: Column(
@@ -129,6 +132,7 @@ class ProfilePage extends StatelessWidget {
                       leading: const Icon(Icons.logout),
                       title: const Text('Logout'),
                       onTap: () async {
+                        // read accesses the provider without listening for changes here
                         await context.read<KeycloakAuthProvider>().logout();
                       },
                     ),
@@ -143,7 +147,6 @@ class ProfilePage extends StatelessWidget {
                 onTap: () async {
                   if (keycloakAuthProvider.isLoading) return;
 
-                  // Start the global Keycloak login in the browser.
                   keycloakAuthProvider.clearError();
                   await context.read<KeycloakAuthProvider>().login();
                 },
@@ -216,6 +219,31 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Opens the profile from the header of each main app section
+class ProfileButton extends StatelessWidget {
+  const ProfileButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Provider.of<ThemesNotifier>(context).currentThemeData;
+
+    return IconButton(
+      icon: Icon(
+        Icons.person_outline,
+        color: theme.colorScheme.onSurface,
+      ),
+      onPressed: () {
+        // Use the root navigator because each main section has its own navigator
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (_) => const ProfilePage(),
+          ),
+        );
+      },
     );
   }
 }
