@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -8,13 +10,14 @@ import 'package:campus_app/core/auth/keycloak_auth_exception.dart';
 import 'package:campus_app/core/auth/keycloak_auth_provider.dart';
 import 'package:campus_app/core/auth/keycloak_auth_service.dart';
 import 'package:campus_app/core/auth/keycloak_config.dart';
+import 'package:campus_app/core/auth/student_profile.dart';
 
 import 'keycloak_auth_test.mocks.dart';
 
-// Generates safe test replacements for Keycloak and the OIDC storage.
+// These tests use mocks and do not contact a real Keycloak server
+// Regenerate the Mockito file after changing the mocked classes
 @GenerateMocks([OidcUserManager, OidcStore, KeycloakAuthService])
 void main() {
-  // Verifies that deployments can replace the local Keycloak settings.
   test('uses the configured Keycloak issuer and client ID', () {
     const configuredIssuer = String.fromEnvironment('KEYCLOAK_ISSUER');
     const configuredClientId = String.fromEnvironment(
@@ -31,7 +34,6 @@ void main() {
     expect(KeycloakConfig.clientId, configuredClientId);
   });
 
-  // These tests simulate app startup without contacting a real Keycloak server.
   group('KeycloakAuthDataSource.initialize', () {
     late MockOidcUserManager userManager;
     late MockOidcStore store;
@@ -49,7 +51,6 @@ void main() {
     });
 
     test('accepts an empty saved session', () async {
-      // No stored token means that the user has not signed in yet.
       when(
         store.getAllKeys(
           OidcStoreNamespace.secureTokens,
@@ -62,7 +63,6 @@ void main() {
     });
 
     test('reports a saved session that could not be restored', () async {
-      // A stored token without a current user represents an expired session.
       when(
         store.getAllKeys(
           OidcStoreNamespace.secureTokens,
@@ -76,10 +76,25 @@ void main() {
         throwsA(isA<KeycloakSessionExpiredException>()),
       );
     });
+
+    test('logout clears local tokens when initialization fails', () async {
+      when(
+        store.getAllKeys(
+          OidcStoreNamespace.secureTokens,
+          managerId: 'campus-app',
+        ),
+      ).thenAnswer((_) async => <String>{});
+      when(userManager.init()).thenThrow(StateError('Initialization failed'));
+      when(userManager.forgetUser()).thenAnswer((_) async {});
+      final dataSource = KeycloakAuthDataSource(userManager: userManager);
+
+      await expectLater(dataSource.logout(), throwsStateError);
+
+      verify(userManager.forgetUser()).called(1);
+    });
   });
 
   test('provider shows a clear message for an expired session', () async {
-    // Simulate an expired login without starting a real Keycloak server.
     final service = MockKeycloakAuthService();
     when(service.userChanges).thenAnswer((_) => const Stream.empty());
     when(service.sessionFailures).thenAnswer((_) => const Stream.empty());
@@ -96,6 +111,47 @@ void main() {
       provider.errorMessage,
       'Your login session has expired. Please sign in again.',
     );
+    provider.dispose();
+  });
+
+  test('provider treats a cancelled login as no login', () async {
+    final service = MockKeycloakAuthService();
+    when(service.login()).thenAnswer((_) async => null);
+    final provider = KeycloakAuthProvider(keycloakAuthService: service);
+
+    final success = await provider.login();
+
+    expect(success, isFalse);
+    expect(provider.isLoggedIn, isFalse);
+    expect(provider.isLoading, isFalse);
+    expect(provider.errorMessage, isNull);
+    verify(service.login()).called(1);
+    provider.dispose();
+  });
+
+  test('provider prevents parallel login attempts', () async {
+    final service = MockKeycloakAuthService();
+    // Keep the first login pending while a second attempt starts
+    final pendingLogin = Completer<StudentProfile?>();
+    when(service.login()).thenAnswer((_) => pendingLogin.future);
+    final provider = KeycloakAuthProvider(keycloakAuthService: service);
+
+    final firstLogin = provider.login();
+    final secondLogin = await provider.login();
+
+    expect(secondLogin, isFalse);
+    expect(provider.isLoading, isTrue);
+    verify(service.login()).called(1);
+
+    const profile = StudentProfile(
+      name: 'Test User',
+      loginId: 'test-user',
+    );
+    pendingLogin.complete(profile);
+
+    expect(await firstLogin, isTrue);
+    expect(provider.currentUser, same(profile));
+    expect(provider.isLoading, isFalse);
     provider.dispose();
   });
 }

@@ -6,6 +6,8 @@ import 'package:campus_app/core/auth/keycloak_auth_datasource.dart';
 import 'package:campus_app/core/auth/keycloak_auth_exception.dart';
 import 'package:campus_app/core/auth/student_profile.dart';
 
+/// Maps OIDC users to profiles used by the app
+/// It does not connect the Keycloak and semester-ticket sessions
 class KeycloakAuthRepository {
   final KeycloakAuthDataSource keycloakAuthDataSource;
 
@@ -13,34 +15,29 @@ class KeycloakAuthRepository {
     required this.keycloakAuthDataSource,
   });
 
-  // Returns the user who is currently logged in.
   StudentProfile? get currentUser {
     return _createProfile(keycloakAuthDataSource.currentUser);
   }
 
-  // Sends a new profile when the Keycloak login changes.
   Stream<StudentProfile?> get userChanges {
+    // map converts every emitted OIDC user into a StudentProfile
     return keycloakAuthDataSource.userChanges.map(_createProfile);
   }
 
-  // Passes expired-session events to the service layer.
   Stream<KeycloakSessionExpiredException> get sessionFailures {
     return keycloakAuthDataSource.sessionFailures;
   }
 
-  // Starts Keycloak and loads a saved login, if one exists.
   Future<StudentProfile?> initialize() async {
     await keycloakAuthDataSource.initialize();
     return currentUser;
   }
 
-  // Opens the Keycloak login and returns the logged-in user.
   Future<StudentProfile?> login() async {
     final OidcUser? user = await keycloakAuthDataSource.login();
     return _createProfile(user);
   }
 
-  // Ends only the global Keycloak login.
   Future<void> logout() async {
     await keycloakAuthDataSource.logout();
   }
@@ -49,11 +46,13 @@ class KeycloakAuthRepository {
     await keycloakAuthDataSource.dispose();
   }
 
-  // Converts Keycloak data into the profile used by our app.
   StudentProfile? _createProfile(OidcUser? user) {
     if (user == null) return null;
 
     final Map<String, dynamic> claims = user.aggregatedClaims;
+    // Use email or subject only when Keycloak provides no preferred username
+    // These values are identifiers and never RUB ticket credentials
+    // ?? uses an empty string only when none of the claims contains a value
     final String loginId = _firstClaim(
           claims,
           const ['preferred_username', 'email', 'sub'],
@@ -74,11 +73,13 @@ class KeycloakAuthRepository {
 
     final String? givenName = _readClaim(claims, 'given_name');
     final String? familyName = _readClaim(claims, 'family_name');
+    // Remove missing parts before joining the remaining names with a space
     final String combinedName = [
       givenName,
       familyName,
     ].whereType<String>().join(' ');
 
+    // condition ? first : second selects one of the two values
     return combinedName.isNotEmpty ? combinedName : loginId;
   }
 
@@ -95,6 +96,7 @@ class KeycloakAuthRepository {
   }
 
   String? _readClaim(Map<String, dynamic> claims, String key) {
+    // dynamic accepts a claim value of any runtime type
     final dynamic value = claims[key];
     if (value == null) return null;
 

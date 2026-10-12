@@ -4,6 +4,7 @@ import 'package:campus_app/core/auth/keycloak_auth_exception.dart';
 import 'package:campus_app/core/auth/keycloak_auth_repository.dart';
 import 'package:campus_app/core/auth/student_profile.dart';
 
+/// Keeps the UI-facing provider independent from OIDC and token storage
 class KeycloakAuthService {
   final KeycloakAuthRepository keycloakAuthRepository;
 
@@ -11,17 +12,16 @@ class KeycloakAuthService {
     required this.keycloakAuthRepository,
   });
 
-  StudentProfile? get currentUser => keycloakAuthRepository.currentUser;
-
+  // A Stream can send multiple updates while a Future completes with one result
   Stream<StudentProfile?> get userChanges {
     return keycloakAuthRepository.userChanges;
   }
 
-  // Makes expired-session events available to the UI provider.
   Stream<KeycloakSessionExpiredException> get sessionFailures {
     return keycloakAuthRepository.sessionFailures;
   }
 
+  // A Future represents a result that becomes available later
   Future<StudentProfile?> initialize() {
     return keycloakAuthRepository.initialize();
   }
