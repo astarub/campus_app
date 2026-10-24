@@ -1,33 +1,38 @@
-import 'package:flutter/foundation.dart';
 import 'package:background_fetch/background_fetch.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:campus_app/pages/email_client/repositories/email_repository.dart';
-import 'package:campus_app/pages/email_client/repositories/imap_email_repository.dart';
-import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
+
+@pragma('vm:entry-point')
 class EmailBackgroundService {
-  static final FlutterLocalNotificationsPlugin _notifications =
-      FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
 
-      static Future<Map<String, String>?> _loadCredentials() async {
-  const storage = FlutterSecureStorage();
+  static Future<Map<String, String>?> _loadCredentials() async {
+    const storage = FlutterSecureStorage(aOptions: AndroidOptions(encryptedSharedPreferences: true));
 
-  final username = await storage.read(key: 'email_loginId');
-  final password = await storage.read(key: 'email_password');
-  final isAuth = await storage.read(key: 'email_is_authenticated');
+    final username = await storage.read(key: 'email_loginId');
+    final password = await storage.read(key: 'email_password');
+    final isAuth = await storage.read(key: 'email_is_authenticated');
 
-  if (username != null && password != null && isAuth == 'true') {
-    return {
-      'username': username,
-      'password': password,
-    };
+    if (isAuth != 'true') {
+      debugPrint('Email BG: not authenticated');
+      return null;
+    }
+
+    if (username != null && password != null && isAuth == 'true') {
+      return {
+        'username': username,
+        'password': password,
+      };
+    }
+
+    return null;
   }
-
-  return null;
-}
 
   /// Call this once at app start (main)
   static Future<void> init() async {
@@ -65,70 +70,109 @@ class EmailBackgroundService {
 
   /// Runs while app is in background (not killed)
   static Future<void> _onBackgroundFetch(String taskId) async {
+    WidgetsFlutterBinding.ensureInitialized();
+
     try {
-      await fetchEmailsAndNotify();
+      await fetchEmailsAndNotify(taskId);
     } catch (e) {
       debugPrint('Background fetch error: $e');
     } finally {
-      BackgroundFetch.finish(taskId);
+      await BackgroundFetch.finish(taskId);
     }
   }
 
   /// Runs when app is terminated (Android headless)
+  @pragma('vm:entry-point')
   static Future<void> headlessTask(HeadlessTask task) async {
+    WidgetsFlutterBinding.ensureInitialized();
+
     final taskId = task.taskId;
-    try {
-      await fetchEmailsAndNotify();
-    } catch (e) {
-      debugPrint('Headless fetch error: $e');
-    } finally {
-      BackgroundFetch.finish(taskId);
+
+    // if our operation times out, notify os to finish the task, so as to not use unnecessary resources
+    if (task.timeout) {
+      debugPrint('Email BG: task timed out');
+      await BackgroundFetch.finish(taskId);
+      return;
     }
+
+    await fetchEmailsAndNotify(taskId);
   }
 
   // fetch newest inbox mails + notify if new
-  static Future<void> fetchEmailsAndNotify() async {
-  final credentials = await _loadCredentials();
-  if (credentials == null) return;
+  static Future<void> fetchEmailsAndNotify(String taskId) async {
+    // call and store User credentials
+    final credentials = await _loadCredentials();
+    if (credentials == null) {
+      debugPrint('Email BG: no credentials loaded');
+      await BackgroundFetch.finish(taskId);
+      return;
+    }
 
-  final username = credentials['username']!;
-  final password = credentials['password']!;
+    final imapService = ImapEmailService();
 
-  final EmailRepository repo = ImapEmailRepository(ImapEmailService());
+    try {
+      // establish connection to the server
+      final ok = await imapService.connect(
+        credentials['username']!,
+        credentials['password']!,
+      );
+      if (!ok) {
+        debugPrint('Email BG: connection to server failed');
+        return;
+      }
 
-  final ok = await repo.connect(username, password);
-  if (!ok) return;
+      final prefs = await SharedPreferences.getInstance();
+      final lastSeenUid = prefs.getInt('last_seen_inbox_uid') ?? 0;
 
-  final emails = await repo.fetchEmails(mailboxName: 'INBOX', count: 10);
+      // fetch the 50 most recent emails from the inbox
+      final emails = await imapService.fetchEmails();
+      if (emails.isEmpty) {
+        debugPrint('Email BG: no emails fetched');
+      }
 
-  await repo.disconnect();
+      final highestUid = emails.map((e) => e.uid).reduce((a, b) => a > b ? a : b);
+      await prefs.setInt('last_seen_inbox_uid', highestUid);
 
-  if (emails.isEmpty) return;
+      // filter out already read emails (+ in future (TODO) filter here with notification preferences (ex. customize which senders should trigger notifications))
+      final newEmails = emails.where((e) => e.uid > lastSeenUid && e.isUnread).toList();
 
-final prefs = await SharedPreferences.getInstance();
+      debugPrint('Email BG: ${newEmails.length} new unread emails');
 
+      if (newEmails.isEmpty) return;
 
-final sorted = List.from(emails)
-  ..sort((a, b) => b.uid.compareTo(a.uid));
+      final count = newEmails.length;
+      final tooMany = count >= 10;
 
-final newest = sorted.first;
-final newestUid = newest.uid;
-
-final lastSeenUid = prefs.getInt('last_seen_inbox_uid') ?? 0;
-
-if (newestUid > lastSeenUid) {
-  await prefs.setInt('last_seen_inbox_uid', newestUid);
-
-  await _showNotification(
-    title: newest.subject.isNotEmpty ? newest.subject : 'New Email',
-    body: newest.sender.isNotEmpty
-        ? 'From: ${newest.sender}'
-        : 'You received a new email.',
-  );
-}
-}
+      // display notifications depending on how many there are
+      if (tooMany) {
+        await _showNotification(id: 0, title: 'Neue Emails', body: 'Du hast 10+ neue Emails');
+      } else if (count > 3) {
+        await _showNotification(
+          id: 0,
+          title: 'Du hast $count neue Emails ',
+          body: newEmails.map((e) => e.sender).take(3).join(', '),
+        );
+      } else {
+        for (int i = 0; i < newEmails.length; i++) {
+          final email = newEmails[i];
+          await _showNotification(
+            id: i + 1,
+            title: email.sender.isNotEmpty ? email.sender : 'Neue Email',
+            body: email.subject.isNotEmpty ? email.subject : 'Kein Betreff',
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Email BG: error in fetchEmailsAndNotifiy: $e');
+    } finally {
+      // always disconnect and finish bg task
+      await imapService.disconnect();
+      await BackgroundFetch.finish(taskId);
+    }
+  }
 
   static Future<void> _showNotification({
+    required int id,
     required String title,
     required String body,
   }) async {
@@ -143,7 +187,7 @@ if (newestUid > lastSeenUid) {
     const details = NotificationDetails(android: android);
 
     await _notifications.show(
-      DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      id,
       title,
       body,
       details,

@@ -43,7 +43,7 @@ Future<void> main() async {
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // Keeps the native splash screen onscreen until all loading is done
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  BackgroundFetch.registerHeadlessTask(EmailBackgroundService.headlessTask);
+  await BackgroundFetch.registerHeadlessTask(EmailBackgroundService.headlessTask);
   // initialize background service
   await EmailBackgroundService.init();
 
