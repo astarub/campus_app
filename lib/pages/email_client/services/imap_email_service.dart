@@ -51,7 +51,7 @@ class ImapEmailService {
 
   // Connects to the IMAP server and logs in.
   Future<bool> connect(String username, String password) async {
-    _imapClient = ImapClient(isLogEnabled: true);
+    _imapClient = ImapClient(isLogEnabled: kDebugMode);
     try {
       _username = username;
       _password = password;
@@ -93,7 +93,7 @@ class ImapEmailService {
     }
 
     debugPrint('IMAP: Attempting Reconnect...');
-    _imapClient = ImapClient(isLogEnabled: true);
+    _imapClient = ImapClient(isLogEnabled: kDebugMode);
     await _imapClient!.connectToServer(_imapHost, _imapPort);
     await _imapClient!.login(_username!, _password!);
     debugPrint('IMAP: Reconnect successful.');
@@ -221,7 +221,7 @@ class ImapEmailService {
     try {
       // ─── 1) Ensure SMTP connection + full STARTTLS handshake ─────────────
       if (_smtpClient == null || !_smtpClient!.isConnected) {
-        _smtpClient = SmtpClient('RUB-Flutter-Client', isLogEnabled: true);
+        _smtpClient = SmtpClient('RUB-Flutter-Client', isLogEnabled: kDebugMode);
 
         // Connect without TLS
         await _smtpClient!.connectToServer(_smtpHost, _smtpPort, isSecure: false);

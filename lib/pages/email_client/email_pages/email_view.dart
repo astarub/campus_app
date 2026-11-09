@@ -1,4 +1,9 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -39,6 +44,7 @@ class _EmailViewState extends State<EmailView> {
   bool _fetchFail = false;
   bool _imagesBlocked = true;
   bool _isInTrash = false;
+  bool _subjectExpanded = false;
 
   InAppWebViewController? _webViewController;
 
@@ -146,65 +152,133 @@ class _EmailViewState extends State<EmailView> {
   }
 
   // adjust the HTML for a phone screen, the default is framed for desktop screens and unsuitable for mobile screens
-  String _prepareHTMLForMobile(String html, BuildContext context) {
+  String _prepareHTMLForMobile(String html, BuildContext context, {required bool allowImages}) {
     final darkMode = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = darkMode ? '#121212' : '#ffffff';
-    final textColor = darkMode ? '#e0e0e0' : '#000000';
 
-    const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">';
+    // invert for dark mode
+    final darkCSS = darkMode
+        ? '''
+      html { background:#fff !important; filter:invert(1) hue-rotate(180deg); }
+      img, video, picture, svg { filter:invert(1) hue-rotate(180deg); }
+      '''
+        : '';
 
-    final baseStyle = '''
+    final contentSecurityPolicy = allowImages
+        ? "default-src 'none'; img-src https: data:; style-src 'unsafe-inline' https:; font-src https:"
+        : "default-src 'none'; img-src data:; style-src 'unsafe-inline'";
+
+    final extras = '''
+      <meta http-equiv="Content-Security-Policy" content="$contentSecurityPolicy">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
-        body {
-          margin: 0 !important;
-          padding: 12px 16px 50px !important;
-          width: 100% !important;
-          max-width: 100% !important;
-          font-size: 16px !important;
-          background-color: $bgColor !important;
-          color: $textColor;
-          -webkit-text-size-adjust: 100%;
-          word-wrap: break-word;
-          overflow-wrap: break-word;
-        }
-        table, td, img {
-          max-width: 100% !important;
-          height: auto !important;
-        }
-        * {
-          max-width: 100% !important;
-          box-sizing: border-box !important;
-        }
-        a {
-          color: #4a9eff;
-        }
-      </style>
-    ''';
+        html, body { margin:0 !important; padding:0 !important; overflow-x:hidden !important; }
+        body { padding:12px 16px 50px !important; font-size:16px !important;
+              word-wrap:break-word; overflow-wrap:anywhere; -webkit-text-size-adjust:100%; }
+        * { max-width:100% !important; box-sizing:border-box !important; }
+        table, tbody, tr, td, th, div { width:auto !important; min-width:0 !important; }
+        td, th { white-space:normal !important; }
+        pre { white-space:pre-wrap !important; }
+        img { height:auto !important; }
+        $darkCSS
+      </style>''';
 
-    if (html.contains('<html')) {
-      return html.replaceFirst(
-        RegExp('<html[^>]*>'),
-        '<html><head>$viewport$baseStyle</head>',
-      );
+    final head = RegExp(r'<head(\s[^>]*)?>', caseSensitive: false);
+    final htmlTag = RegExp(r'<html(\s[^>]*)?>', caseSensitive: false);
+
+    if (head.hasMatch(html)) {
+      return html.replaceFirstMapped(head, (m) => '${m[0]}$extras');
     }
 
-    return '''
-      <html>
-        <head>$viewport$baseStyle</head>
-        <body>$html</body>
-      </html>
-    ''';
+    if (htmlTag.hasMatch(html)) {
+      return html.replaceFirstMapped(htmlTag, (m) => '${m[0]}<head>$extras</head>');
+    }
+
+    return '<html><head>$extras</head><body>$html</body></html>';
   }
 
   // check if an email has images to see if we need to add the load images button
   bool _emailHasImages(String? html) {
     if (html == null || html.isEmpty) return false;
 
-    final lower = html.toLowerCase();
-    return lower.contains('<img');
+    return RegExp(
+      r'''(src|srcset|background)\s*=\s*["']?\s*(https?:)?//|url\(\s*["']?\s*(https?:)?//''',
+      caseSensitive: false,
+    ).hasMatch(html);
   }
 
-  // -------------------------------------------------------------------------- Widget builder functions to avoid redundant code ------------------------------------------------------------------------------ //
+  // show a popup dialog that asks the user to confirm opening a link on their device
+  Future<void> _confirmOpenLink(WebUri url) async {
+    if (!mounted) return;
+
+    final theme = Theme.of(context);
+    final isWeb = url.scheme == 'http' || url.scheme == 'https';
+    final shown = isWeb ? url.toString() : url.toString().replaceFirst(RegExp(r'^\w+:'), '');
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        actionsAlignment: MainAxisAlignment.center,
+        actionsOverflowAlignment: OverflowBarAlignment.center,
+        title: const Text('Link öffnen?'),
+        content: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.3),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Dieser Link führt zu:'),
+                const SizedBox(height: 5),
+                SelectableText(
+                  shown,
+                  style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                if (url.scheme == 'http') ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    'Diese Verbindung ist nicht verschlüsselt.',
+                    style: TextStyle(color: theme.colorScheme.error),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          // Cancel
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Abbrechen'),
+          ),
+
+          // Copy Link
+          TextButton(
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: url.toString()));
+              if (ctx.mounted) Navigator.pop(ctx, false);
+              showUpdateMessages('Link kopiert.');
+            },
+            child: const Text('Kopieren'),
+          ),
+
+          // Open Link
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Öffnen'),
+          ),
+        ],
+      ),
+    );
+
+    // hand off the url to the OS only if the User confirms the action
+    if (confirmed == true) {
+      try {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } catch (_) {
+        showUpdateMessages('Link konnte nicht geöffnet werden.', type: BubbleType.error);
+      }
+    }
+  }
 
   Widget _buildHeader(ThemeData theme, String timeText) {
     return Row(
@@ -241,9 +315,64 @@ class _EmailViewState extends State<EmailView> {
   }
 
   Widget _buildSubjectLine(ThemeData theme) {
-    return Text(
-      widget.email.subject,
-      style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+    final style = theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold);
+    final subject = widget.email.subject;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // check if the subject line is too long (> 2 lines)
+        final painter = TextPainter(
+          text: TextSpan(text: subject, style: style),
+          maxLines: 2,
+          textDirection: Directionality.of(context),
+          textScaler: MediaQuery.textScalerOf(context),
+        )..layout(maxWidth: constraints.maxWidth);
+        final overflows = painter.didExceedMaxLines;
+        painter.dispose();
+
+        if (!overflows) return Text(subject, style: style);
+
+        // expandable subject line design, for subject lines that are longer than two lines
+        // the subject line section is however still capped in size to avoid covering too much of the screen
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => setState(() {
+            _subjectExpanded = !_subjectExpanded;
+          }),
+          child: AnimatedSize(
+            duration: const Duration(milliseconds: 250),
+            alignment: Alignment.topCenter,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (_subjectExpanded)
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.25,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Text(subject, style: style),
+                    ),
+                  )
+                else
+                  Text(
+                    subject,
+                    style: style,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Icon(
+                    _subjectExpanded ? Icons.expand_less : Icons.expand_more,
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -277,7 +406,7 @@ class _EmailViewState extends State<EmailView> {
             const Padding(padding: EdgeInsetsGeometry.all(5)),
             SvgPicture.asset(
               'assets/img/icons/warning.svg',
-              color: Colors.grey,
+              colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
             ),
             const Padding(padding: EdgeInsetsGeometry.all(5)),
             Expanded(
@@ -297,20 +426,15 @@ class _EmailViewState extends State<EmailView> {
                 ),
               ),
               onPressed: () async {
-                if (_webViewController == null) return;
-
-                await _webViewController!.setSettings(
-                  settings: InAppWebViewSettings(
-                    blockNetworkImage: false,
-                  ),
-                );
-
-                // add a delay before reloading to allow setting change to truly take effect
-                await Future.delayed(const Duration(milliseconds: 200));
-                await _webViewController!.reload();
                 setState(() {
                   _imagesBlocked = false;
                 });
+
+                await _webViewController?.loadData(
+                  data:
+                      _prepareHTMLForMobile(_fullEmail?.htmlBody ?? widget.email.htmlBody!, context, allowImages: true),
+                  encoding: 'utf-8',
+                );
               },
             ),
             const Padding(padding: EdgeInsetsGeometry.all(5)),
@@ -402,6 +526,7 @@ class _EmailViewState extends State<EmailView> {
                 ),
               ),
             )
+
           // fixed header for webViews to help with scrolling issues
           else ...[
             Padding(
@@ -417,29 +542,39 @@ class _EmailViewState extends State<EmailView> {
                 ],
               ),
             ),
+
             // InAppView now doesn't dynamically manage it's height but uses up leftover space
             Expanded(
               child: InAppWebView(
+                // any gestures in the webView should be interpreted only by the webView to avoid gesture detection conflicts.
+                // ex. : unintentionally swiping tabs
+                gestureRecognizers: const {Factory<OneSequenceGestureRecognizer>(EagerGestureRecognizer.new)},
+
                 onWebViewCreated: (controller) {
                   _webViewController = controller;
                 },
+
                 initialData: InAppWebViewInitialData(
-                  data: _prepareHTMLForMobile(displayEmail.htmlBody!, context),
+                  data: _prepareHTMLForMobile(displayEmail.htmlBody!, context, allowImages: false),
                   encoding: 'utf-8',
                 ),
+
                 initialSettings: InAppWebViewSettings(
                   javaScriptEnabled: false,
-                  blockNetworkImage: true,
                   disableContextMenu: true,
                   useWideViewPort: false,
                   loadWithOverviewMode: false,
                   supportZoom: false,
                 ),
+
                 shouldOverrideUrlLoading: (controller, navigationAction) async {
                   // try to hand the urls off to the OS
                   final url = navigationAction.request.url;
-                  if (url != null) {
-                    await launchUrl(url, mode: LaunchMode.externalApplication);
+                  if (url == null) return NavigationActionPolicy.CANCEL;
+                  if (url.scheme == 'about' || url.scheme == 'data') return NavigationActionPolicy.ALLOW;
+
+                  if (const {'http', 'https', 'mailto', 'tel'}.contains(url.scheme)) {
+                    unawaited(_confirmOpenLink(url));
                   }
 
                   return NavigationActionPolicy.CANCEL;
@@ -447,6 +582,9 @@ class _EmailViewState extends State<EmailView> {
               ),
             ),
           ],
+
+          // ----------------------------------------------------- Attachments: TO BE IMPLEMENTED ----------------------------------------------------------- //
+
           // Attachments section
           if (widget.email.attachments.isNotEmpty) ...[
             const SizedBox(height: 24),
@@ -484,13 +622,6 @@ class _EmailViewState extends State<EmailView> {
           ],
         ],
       ),
-      floatingActionButton: !_isInTrash
-          ? FloatingActionButton(
-              onPressed: () => _handleReply(context), // FAB for quick reply
-              tooltip: 'Reply',
-              child: const Icon(Icons.reply),
-            )
-          : null,
     );
   }
 
