@@ -142,6 +142,11 @@ class EmailAuthService extends ChangeNotifier {
     return _secureStorage.read(key: _emailDisplayNameKey);
   }
 
+  // set a new display name
+  Future<void> setDisplayName(String newName) async {
+    await _secureStorage.write(key: _emailDisplayNameKey, value: newName);
+  }
+
   // Log out and clear stored credentials
   Future<void> logout() async {
     try {

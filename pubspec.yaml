@@ -80,6 +80,8 @@ dependencies:
   background_fetch: ^1.0.0 
   enough_mail: ^2.1.7
   uuid: ^4.6.0
+  permission_handler: ^11.4.0
+  flutter_md: ^0.3.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -200,6 +202,7 @@ flutter:
     - assets/videos/pathfinder_onboarding_step_2.mp4
     - assets/videos/pathfinder_onboarding_step_3.mp4
     - assets/videos/pathfinder_onboarding_step_4.mp4
+    - assets/privacy/nutzungsbedingungen.md
 
   fonts:
     - family: SF-Pro

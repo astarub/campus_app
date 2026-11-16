@@ -12,6 +12,7 @@ import 'package:campus_app/pages/email_client/email_pages/email_login_screen.dar
 import 'package:campus_app/pages/email_client/email_pages/email_drawer.dart';
 import 'package:campus_app/pages/email_client/email_pages/email_view.dart';
 import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
+import 'package:campus_app/pages/email_client/email_pages/email_set_up_screen.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
@@ -106,7 +107,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
 
   // Triggers the login screen and handles post-login setup
   Future<void> _handleLogin() async {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EmailLoginScreen(
@@ -138,7 +139,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
       Navigator.of(context).pop();
       return;
     }
-    Navigator.of(context).maybePop();
+    await Navigator.of(context).maybePop();
   }
 
   @override
@@ -190,46 +191,14 @@ class _EmailClientContentState extends State<_EmailClientContent> {
 
     // Show login prompt if not authenticated
     if (!_isAuthenticated) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('RubMail'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.email,
-                size: 64,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Willkommen bei RubMail',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Melde dich an, um auf deine E-Mails zuzugreifen',
-                style: Theme.of(context).textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: _handleLogin,
-                child: const Text('Anmelden'),
-              ),
-            ],
-          ),
-        ),
-      );
+      return EmailSetUpScreen(onAccepted: _handleLogin);
     }
 
     final emailService = Provider.of<EmailService>(context);
     final List<Email> filteredEmails = emailService.filterEmails('', UserEmailFolder.inbox);
 
     return PopScope(
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) async {
         if (!didPop) await _handlePop(context); // Custom pop behavior
       },
       child: Scaffold(
@@ -331,8 +300,9 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                 onFirst: () => emailService.goToPage(UserEmailFolder.inbox, 1),
                 onLast: () => emailService.goToPage(UserEmailFolder.inbox, emailService.totalPages),
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                // dynamically adjust the page navbar height to sit above the main navbar
+                height: MediaQuery.paddingOf(context).bottom + 10,
               ),
             ],
           ),
@@ -355,7 +325,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
                 ],
               )
             : Padding(
-                padding: const EdgeInsets.symmetric(vertical: 50),
+                padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 30),
                 child: FloatingActionButton(
                   shape: const CircleBorder(),
                   onPressed: () => Navigator.push(
@@ -374,12 +344,12 @@ class _EmailClientContentState extends State<_EmailClientContent> {
 NOTES:
 - some changes on the email client only appear on the app not in the actual Email. Like delete. (N.D. Dev Note -> this has been fixed, applied to both Move and Delete)
 - Email inbox only loads a certain number of emails, loading takes a long time needs optimization. (N.D. Dev Note -> Optimized)
-- Drawer top needs to be fixed (name/Email display) 
+- Drawer top needs to be fixed (name/Email display) (N.D. Dev Note -> now the top displays the display name and Email Address)
 - Some Email bodies are not shown. (N.D. Dev Note -> fixed html bodies)
 - sending emails and replying works. drafts also work. (N.D. Dev Note -> wasn't really working, sent emails had no body, replying has skewed format and drafts didn't work right. drafts and Sending is fixed)
 - selection needs to be added to the drawer pages as well. the selection component is already implemented but
   the use of options different than the inbox is needed.
-- Setting need to be implemented
+- Setting need to be implemented (N.D. Dev Note -> the settings are now added to the main Setttings page, there are still more settings to be added, however ther is a dedicated section for them now)
 - Attachments need implementing as well. Some UI components for that are already implemented but these are only UI
   as for the email view with attachments it needs to be further tested.
 - Searching is implemented for the inbox but it should also be implemented for the drawer pages (N.D. Dev Note -> searching was only local with the emails already loaded in,

@@ -19,10 +19,23 @@ class EmailAuthPage extends StatefulWidget {
 
 class _EmailAuthPageState extends State<EmailAuthPage> {
   bool _userHasAccepted = false;
+  String? _emailAddress;
 
   @override
   void initState() {
     super.initState();
+    _loadUserEmailAddress();
+  }
+
+  Future<void> _loadUserEmailAddress() async {
+    final authService = Provider.of<EmailAuthService>(context, listen: false);
+    final address = await authService.getSenderEmail();
+
+    if (!mounted) return;
+
+    setState(() {
+      _emailAddress = address;
+    });
   }
 
   // run the authentication and wait for the emails to load before exiting back to the email page
@@ -104,11 +117,13 @@ class _EmailAuthPageState extends State<EmailAuthPage> {
                     children: [
                       Expanded(
                         child: DecisionPopup(
-                          height: MediaQuery.sizeOf(context).height * 0.6,
+                          height: MediaQuery.sizeOf(context).height * 0.65,
                           leadingTitle: 'Erlaubnis',
                           title: 'Email Verifizierung',
+                          acceptButtonText: 'Bestätigungs-E-Mail jetzt senden',
+                          declineButtonText: 'Abbrechen',
                           content:
-                              'Um fortzufahren, müssen wir deine Email Addresse verifizieren.\n \n Dafür verschicken wir eine Email von deinem eigenen RUB Postfach an die von dir angegebenen Email. \n \n Um diesen Email Client zu benutzten, musst du diesem aus Sicherheitsgründen zustimmen. \n \n Indem du hier fortfährst, erlaubst du uns einmalig eine Email von deinem Postfach aus zu verschicken.',
+                              'Um zu prüfen, dass der Versand funktioniert und die Adresse dir gehört, senden wir einmalig eine E-Mail aus deinem Postfach an deine eigene Adresse [$_emailAddress]. Die E-Mail enthält nur einen Bestätigungscode und erscheint in deinem Ordner „Gesendet“ und im Posteingang. Du kannst sie danach löschen.',
                           onAccept: () {
                             setState(() {
                               _userHasAccepted = true;

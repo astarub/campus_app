@@ -29,10 +29,13 @@ class LeadingTextSwitch extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            text,
-            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+          Expanded(
+            child: Text(
+              text,
+              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+            ),
           ),
+          const SizedBox(width: 16),
           CampusSwitch(
             value: isActive,
             onToggle: onToggle,

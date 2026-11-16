@@ -8,6 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
 
+// store the keys for the SharedPreferences
+class EmailNotificationsPrefs {
+  static const enabled = 'email_notifications_enabled';
+  static const showDetails = 'email_notifications_show_details';
+}
+
 @pragma('vm:entry-point')
 class EmailBackgroundService {
   static final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
@@ -100,6 +106,21 @@ class EmailBackgroundService {
 
   // fetch newest inbox mails + notify if new
   static Future<void> fetchEmailsAndNotify(String taskId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
+
+    final enabled =
+        prefs.getBool(EmailNotificationsPrefs.enabled) ?? false; // default to disabled when prefs is not set
+    final showDetails = prefs.getBool(EmailNotificationsPrefs.showDetails) ?? false; // default to private
+
+    await _initNotifications();
+
+    // check preference settings
+    if (!enabled) {
+      debugPrint('Email BG: notifications disabled');
+      return;
+    }
+
     // call and store User credentials
     final credentials = await _loadCredentials();
     if (credentials == null) {
@@ -128,6 +149,7 @@ class EmailBackgroundService {
       final emails = await imapService.fetchEmails();
       if (emails.isEmpty) {
         debugPrint('Email BG: no emails fetched');
+        return;
       }
 
       final highestUid = emails.map((e) => e.uid).reduce((a, b) => a > b ? a : b);
@@ -143,13 +165,28 @@ class EmailBackgroundService {
       final count = newEmails.length;
       final tooMany = count >= 10;
 
+      // private notification mode
+      if (!showDetails) {
+        await _showNotification(
+          id: 0,
+          title: 'RUB Mail',
+          body: count == 1 ? '1 neue Email' : '$count neue Emails',
+          showDetails: false,
+        );
+        return;
+      }
+
       // display notifications depending on how many there are
       if (tooMany) {
-        await _showNotification(id: 0, title: 'Neue Emails', body: 'Du hast 10+ neue Emails');
+        await _showNotification(
+          id: 0,
+          title: 'RUB Mail',
+          body: 'Du hast 10+ neue Emails',
+        );
       } else if (count > 3) {
         await _showNotification(
           id: 0,
-          title: 'Du hast $count neue Emails ',
+          title: 'RUB Mail: Du hast $count neue Emails ',
           body: newEmails.map((e) => e.sender).take(3).join(', '),
         );
       } else {
@@ -157,7 +194,7 @@ class EmailBackgroundService {
           final email = newEmails[i];
           await _showNotification(
             id: i + 1,
-            title: email.sender.isNotEmpty ? email.sender : 'Neue Email',
+            title: email.sender.isNotEmpty ? 'RUB Mail: ${email.sender}' : 'RUB Mail: Neue Email',
             body: email.subject.isNotEmpty ? email.subject : 'Kein Betreff',
           );
         }
@@ -165,9 +202,8 @@ class EmailBackgroundService {
     } catch (e) {
       debugPrint('Email BG: error in fetchEmailsAndNotifiy: $e');
     } finally {
-      // always disconnect and finish bg task
+      // always disconnect
       await imapService.disconnect();
-      await BackgroundFetch.finish(taskId);
     }
   }
 
@@ -175,22 +211,22 @@ class EmailBackgroundService {
     required int id,
     required String title,
     required String body,
+    bool showDetails = true,
   }) async {
-    const android = AndroidNotificationDetails(
+    final android = AndroidNotificationDetails(
       'email_channel',
       'Email Updates',
       channelDescription: 'Notifications for new incoming emails',
       importance: Importance.high,
       priority: Priority.high,
+      visibility: showDetails ? NotificationVisibility.private : NotificationVisibility.public,
     );
-
-    const details = NotificationDetails(android: android);
 
     await _notifications.show(
       id,
       title,
       body,
-      details,
+      NotificationDetails(android: android),
     );
   }
 }

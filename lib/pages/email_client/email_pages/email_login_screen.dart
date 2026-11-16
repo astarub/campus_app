@@ -123,6 +123,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
 
     await secureStorage.write(key: 'loginId', value: usernameController.text);
     await secureStorage.write(key: 'password', value: passwordController.text);
+    await secureStorage.write(key: 'email_sender_address', value: emailAddress);
 
     if (!mounted) return;
 
@@ -177,183 +178,196 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Back button
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12, left: 20, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CampusIconButton(
-                    iconPath: 'assets/img/icons/arrow-left.svg',
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 10)),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/img/icons/rub-link.png',
-                    color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-                        ? const Color.fromRGBO(0, 53, 96, 1)
-                        : Colors.white,
-                    width: 80,
-                    filterQuality: FilterQuality.high,
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 30)),
-                  CampusTextField(
-                    textFieldController: usernameController,
-                    textFieldText: 'RUB LoginID',
-                    onTap: () {
-                      setState(() {
-                        showErrorMessage = false;
-                      });
-                    },
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 10)),
-                  CampusTextField(
-                    textFieldController: passwordController,
-                    obscuredInput: true,
-                    textFieldText: 'RUB Passwort',
-                    onTap: () {
-                      setState(() {
-                        showErrorMessage = false;
-                      });
-                    },
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 10)),
-                  CampusTextField(
-                    textFieldController: emailAddressController,
-                    textFieldText: 'RUB E-Mail Adresse',
-                    onTap: () {
-                      setState(() {
-                        showErrorMessage = false;
-                      });
-                    },
-                  ),
-                  // show a warning while Email is not in valid format
-                  if (!emailIsValid && emailAddressController.text.isNotEmpty)
-                    const Padding(
-                      padding: EdgeInsetsGeometry.only(top: 5),
-                      child: Text(
-                        'Gebe eine valide RUB Email Adresse an!',
-                        style: TextStyle(color: Colors.red, fontSize: 12),
-                      ),
-                    ),
-                  const Padding(padding: EdgeInsets.only(top: 10)),
-                  CampusTextField(
-                    textFieldController: emailDisplayNameController,
-                    textFieldText: 'Anzeigename (optional)',
-                    onTap: () {
-                      setState(() {
-                        showErrorMessage = false;
-                      });
-                    },
-                  ),
-                  // Reminder Preview Suggestion text
-                  if (_suggestedDisplayName.isNotEmpty)
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Back button
                     Padding(
-                      padding: const EdgeInsetsGeometry.only(top: 5),
-                      child: Text(
-                        'Automatischer Anzeigename: $_suggestedDisplayName',
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12,
-                        ),
+                      padding: const EdgeInsets.only(bottom: 12, left: 20, right: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CampusIconButton(
+                            iconPath: 'assets/img/icons/arrow-left.svg',
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
                       ),
                     ),
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  if (showErrorMessage) ...[
+                    const Padding(padding: EdgeInsets.only(top: 10)),
                     Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 1),
-                              child: SvgPicture.asset(
-                                'assets/img/icons/error.svg',
-                                colorFilter: const ColorFilter.mode(
-                                  Colors.redAccent,
-                                  BlendMode.srcIn,
-                                ),
-                                width: 18,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/img/icons/rub-link.png',
+                            color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                                ? const Color.fromRGBO(0, 53, 96, 1)
+                                : Colors.white,
+                            width: 80,
+                            filterQuality: FilterQuality.high,
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 30)),
+                          CampusTextField(
+                            textFieldController: usernameController,
+                            textFieldText: 'RUB LoginID',
+                            onTap: () {
+                              setState(() {
+                                showErrorMessage = false;
+                              });
+                            },
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 10)),
+                          CampusTextField(
+                            textFieldController: passwordController,
+                            obscuredInput: true,
+                            textFieldText: 'RUB Passwort',
+                            onTap: () {
+                              setState(() {
+                                showErrorMessage = false;
+                              });
+                            },
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 10)),
+                          CampusTextField(
+                            textFieldController: emailAddressController,
+                            textFieldText: 'RUB E-Mail Adresse',
+                            onTap: () {
+                              setState(() {
+                                showErrorMessage = false;
+                              });
+                            },
+                          ),
+                          // show a warning while Email is not in valid format
+                          if (!emailIsValid && emailAddressController.text.isNotEmpty)
+                            const Padding(
+                              padding: EdgeInsetsGeometry.only(top: 5),
+                              child: Text(
+                                'Gebe eine valide RUB Email Adresse an!',
+                                style: TextStyle(color: Colors.red, fontSize: 12),
                               ),
                             ),
-                            const SizedBox(width: 5),
-                            Flexible(
+                          const Padding(padding: EdgeInsets.only(top: 10)),
+                          CampusTextField(
+                            textFieldController: emailDisplayNameController,
+                            textFieldText: 'Anzeigename (optional)',
+                            onTap: () {
+                              setState(() {
+                                showErrorMessage = false;
+                              });
+                            },
+                          ),
+                          // Reminder Preview Suggestion text
+                          if (_suggestedDisplayName.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsetsGeometry.only(top: 5),
                               child: Text(
-                                errorMessage,
-                                textAlign: TextAlign.center,
-                                softWrap: true,
-                                style: Provider.of<ThemesNotifier>(context)
-                                    .currentThemeData
-                                    .textTheme
-                                    .labelSmall!
-                                    .copyWith(
-                                      color: Colors.redAccent,
+                                'Automatischer Anzeigename: $_suggestedDisplayName',
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          const Padding(padding: EdgeInsets.only(top: 15)),
+                          if (showErrorMessage) ...[
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 1),
+                                      child: SvgPicture.asset(
+                                        'assets/img/icons/error.svg',
+                                        colorFilter: const ColorFilter.mode(
+                                          Colors.redAccent,
+                                          BlendMode.srcIn,
+                                        ),
+                                        width: 18,
+                                      ),
                                     ),
+                                    const SizedBox(width: 5),
+                                    Flexible(
+                                      child: Text(
+                                        errorMessage,
+                                        textAlign: TextAlign.center,
+                                        softWrap: true,
+                                        style: Provider.of<ThemesNotifier>(context)
+                                            .currentThemeData
+                                            .textTheme
+                                            .labelSmall!
+                                            .copyWith(
+                                              color: Colors.redAccent,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
-                        ),
+                          const Padding(padding: EdgeInsets.only(top: 15)),
+                          CampusButton(
+                            text: 'Login',
+                            onTap: _handleLogin,
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 25)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/img/icons/info.svg',
+                                  colorFilter: ColorFilter.mode(
+                                    Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                                        ? Colors.black
+                                        : const Color.fromRGBO(184, 186, 191, 1),
+                                    BlendMode.srcIn,
+                                  ),
+                                  width: 18,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'Deine Daten werden verschlüsselt auf deinem Gerät gespeichert und nur bei der Anmeldung an die RUB gesendet.',
+                                    style: Provider.of<ThemesNotifier>(context)
+                                        .currentThemeData
+                                        .textTheme
+                                        .labelSmall!
+                                        .copyWith(
+                                          color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
+                                              ? Colors.black
+                                              : const Color.fromRGBO(184, 186, 191, 1),
+                                        ),
+                                    overflow: TextOverflow.clip,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 25)),
+                        ],
                       ),
                     ),
                   ],
-                  const Padding(padding: EdgeInsets.only(top: 15)),
-                  CampusButton(
-                    text: 'Login',
-                    onTap: _handleLogin,
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 25)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/img/icons/info.svg',
-                        colorFilter: ColorFilter.mode(
-                          Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-                              ? Colors.black
-                              : const Color.fromRGBO(184, 186, 191, 1),
-                          BlendMode.srcIn,
-                        ),
-                        width: 18,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 8),
-                      ),
-                      SizedBox(
-                        width: 320,
-                        child: Text(
-                          'Deine Daten werden verschlüsselt auf deinem Gerät gespeichert und nur bei der Anmeldung an die RUB gesendet.',
-                          style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.labelSmall!.copyWith(
-                                color: Provider.of<ThemesNotifier>(context).currentTheme == AppThemes.light
-                                    ? Colors.black
-                                    : const Color.fromRGBO(184, 186, 191, 1),
-                              ),
-                          overflow: TextOverflow.clip,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 25)),
-                ],
+                ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

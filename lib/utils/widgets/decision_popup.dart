@@ -142,7 +142,7 @@ class DecisionPopupState extends State<DecisionPopup> {
       onSheetMoved: (positionData) {
         if (positionData.relativeToSnappingPositions >= 0) {
           setState(
-            () => backgroundColor = backgroundColor.withOpacity(0.3 * positionData.relativeToSnappingPositions),
+            () => backgroundColor = backgroundColor.withValues(alpha: 0.3 * positionData.relativeToSnappingPositions),
           );
         }
       },
@@ -193,21 +193,24 @@ class DecisionPopupState extends State<DecisionPopup> {
                   style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
                 ),
                 // Content
-                Padding(
-                  padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-                  child: SingleChildScrollView(
-                    child: Text(
-                      widget.content,
-                      textAlign: TextAlign.center,
-                      style: Provider.of<ThemesNotifier>(context)
-                          .currentThemeData
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(fontSize: 15),
+
+                Expanded(
+                  child: Center(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+                      child: Text(
+                        widget.content,
+                        textAlign: TextAlign.center,
+                        style: Provider.of<ThemesNotifier>(context)
+                            .currentThemeData
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(fontSize: 15),
+                      ),
                     ),
                   ),
                 ),
-                Expanded(child: Container()),
+
                 // No button
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16),
@@ -230,6 +233,9 @@ class DecisionPopupState extends State<DecisionPopup> {
                     },
                   ),
                 ),
+
+                // account for the navbar
+                SizedBox(height: MediaQuery.paddingOf(context).bottom),
               ],
             ),
           ),

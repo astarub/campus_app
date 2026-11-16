@@ -17,6 +17,7 @@ class EmailDrawer extends StatefulWidget {
 
 class _EmailDrawerState extends State<EmailDrawer> {
   final Set<String> _expandedFolders = {}; // list of currently expanded folders
+  final ScrollController _folderScrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,32 +66,32 @@ class _EmailDrawerState extends State<EmailDrawer> {
             // === Folders from server (dynamic) ===
             // these occupy a scrollable area to prevent UI clipping
             Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  if (emailService.userFolders.isEmpty)
-                    ListTile(
-                      leading: Icon(Icons.folder, color: theme.iconTheme.color),
-                      title: Text('No folders loaded yet', style: theme.textTheme.bodyLarge),
-                      subtitle: Text('Check connection or refresh', style: theme.textTheme.bodySmall),
-                    )
-                  else
-                    ...topLevel.map((folder) => _buildFolderTile(context, folder, emailService)),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Scrollbar(
+                  controller: _folderScrollController,
+                  radius: const Radius.circular(10),
+                  thickness: 5,
+                  thumbVisibility: true,
+                  child: ListView(
+                    controller: _folderScrollController,
+                    padding: EdgeInsets.zero,
+                    children: [
+                      if (emailService.userFolders.isEmpty)
+                        ListTile(
+                          leading: Icon(Icons.folder, color: theme.iconTheme.color),
+                          title: Text('No folders loaded yet', style: theme.textTheme.bodyLarge),
+                          subtitle: Text('Check connection or refresh', style: theme.textTheme.bodySmall),
+                        )
+                      else
+                        ...topLevel.map((folder) => _buildFolderTile(context, folder, emailService)),
+                    ],
+                  ),
+                ),
               ),
             ),
 
             const Divider(),
-
-            //  Settings option (placeholder)
-            ListTile(
-              leading: Icon(Icons.settings, color: theme.iconTheme.color),
-              title: Text('Settings', style: theme.textTheme.bodyLarge),
-              onTap: () {
-                Navigator.pop(context);
-                // TODO: Add SettingsPage navigation
-              },
-            ),
 
             // === Logout with confirmation ===
             ListTile(
