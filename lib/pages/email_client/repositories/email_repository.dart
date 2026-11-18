@@ -26,10 +26,10 @@ abstract class EmailRepository {
   });
 
   // Mark a specific email as read using its UID
-  Future<bool> markAsRead(int uid);
+  Future<bool> markAsRead(int uid, {required String mailboxName});
 
   // Mark a specific email as unread
-  Future<bool> markAsUnread(int uid);
+  Future<bool> markAsUnread(int uid, {required String mailboxName});
 
   // Delete a specific email from a mailbox (defaults to INBOX)
   Future<bool> deleteEmail(int uid, {required String mailboxName});

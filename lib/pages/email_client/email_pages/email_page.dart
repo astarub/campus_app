@@ -217,17 +217,18 @@ class _EmailClientContentState extends State<_EmailClientContent> {
         appBar: AppBar(
           title: const Text('RubMail'),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () => Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const EmailSearch(folder: UserEmailFolder.inbox),
-                  transitionDuration: Duration.zero,
-                  reverseTransitionDuration: Duration.zero,
+            if (!_selectionController.isSelecting)
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () => Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => const EmailSearch(folder: UserEmailFolder.inbox),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
                 ),
               ),
-            ),
             if (_selectionController.isSelecting) ...[
               IconButton(
                 icon: const Icon(Icons.select_all),

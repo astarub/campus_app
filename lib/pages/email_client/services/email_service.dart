@@ -47,6 +47,15 @@ class EmailService extends ChangeNotifier {
   int get totalPages => _totalPages;
   bool get arePagesLoading => _arePagesLoading;
 
+  // helper functions
+  String _mailboxOf(Email e) => e.mailboxName ?? UserEmailFolder.inbox.mailboxName;
+
+  bool _sameMailbox(String a, String b) => a.trim().toLowerCase() == b.trim().toLowerCase();
+
+  bool _isSame(Email a, Email b) => a.uid == b.uid && _sameMailbox(_mailboxOf(a), _mailboxOf(b));
+
+  int _indexOfEmail(Email e) => _allEmails.indexWhere((x) => _isSame(x, e));
+
   // Called once when the email client starts.
   // Connects to the server, loads folder list, triggers background indexing and loads emails.
   Future<void> initialize() async {
@@ -230,12 +239,13 @@ class EmailService extends ChangeNotifier {
       );
 
       for (final email in emails) {
-        _allEmails.add(
-          email.copyWith(
-            folder: folder,
-            mailboxName: folder.mailboxName,
-          ),
-        );
+        final e = email.copyWith(folder: folder, mailboxName: folder.mailboxName);
+        final i = _indexOfEmail(e);
+        if (i == -1) {
+          _allEmails.add(e);
+        } else {
+          _allEmails[i] = e;
+        }
       }
     } catch (e) {
       debugPrint('Failed to fetch ${folder.displayName}: $e');
@@ -293,15 +303,27 @@ class EmailService extends ChangeNotifier {
   }
 
   Future<void> markAsRead(Email email) async {
-    if (!_isInitialized || email.uid == 0) return;
-    final success = await _emailRepository.markAsRead(email.uid);
-    if (success) updateEmail(email.copyWith(isRead: true));
+    await _setReadState(email, read: true);
   }
 
   Future<void> markAsUnread(Email email) async {
+    await _setReadState(email, read: false);
+  }
+
+  Future<void> _setReadState(Email email, {required bool read}) async {
     if (!_isInitialized || email.uid == 0) return;
-    final success = await _emailRepository.markAsUnread(email.uid);
-    if (success) updateEmail(email.copyWith(isRead: false));
+    final mailbox = _mailboxOf(email);
+
+    final success = read
+        ? await _emailRepository.markAsRead(email.uid, mailboxName: mailbox)
+        : await _emailRepository.markAsUnread(email.uid, mailboxName: mailbox);
+    if (!success) return;
+
+    final i = _indexOfEmail(email);
+    if (i != -1) {
+      _allEmails[i] = _allEmails[i].copyWith(isRead: read);
+      notifyListeners();
+    }
   }
 
   // Moves an email to trash if possible.
@@ -309,26 +331,20 @@ class EmailService extends ChangeNotifier {
   Future<void> deleteEmail(Email email) async {
     if (!_isInitialized || email.uid == 0) return;
 
-    final trashMailbox = UserEmailFolder.trash.mailboxName;
+    final mailbox = _mailboxOf(email);
 
     // If the email is already in trash, try to delete permanently from that mailbox.
-    if (email.folder == UserEmailFolder.trash) {
-      final mailbox = email.mailboxName ?? trashMailbox;
-      final success = await _emailRepository.deleteEmail(
-        email.uid,
-        mailboxName: mailbox,
-      );
+    if (_sameMailbox(mailbox, UserEmailFolder.trash.mailboxName)) {
+      final success = await _emailRepository.deleteEmail(email.uid, mailboxName: mailbox);
       if (success) {
-        _allEmails.removeWhere((e) => e.id == email.id);
+        _allEmails.removeWhere((e) => _isSame(e, email));
         notifyListeners();
       }
       return;
     }
 
-    // Otherwise move it to trash.
-    final moved = await _emailRepository.moveEmail(email.uid, trashMailbox,
-        sourceMailbox: email.mailboxName ?? UserEmailFolder.inbox.mailboxName);
-    if (moved != null) updateEmail(email.copyWith(folder: UserEmailFolder.trash));
+    // normal move to trash
+    await moveEmailToMailbox(email, UserEmailFolder.trash.mailboxName);
   }
 
   // wrapper for easier access to move Operation with folder names
@@ -350,32 +366,43 @@ class EmailService extends ChangeNotifier {
   Future<Email?> moveEmailToMailbox(Email email, String targetMailboxName) async {
     if (!_isInitialized || email.uid == 0) return null;
 
-    final sourceMailbox = email.mailboxName ?? 'INBOX';
+    final sourceMailbox = _mailboxOf(email);
+    if (_sameMailbox(sourceMailbox, targetMailboxName)) return email;
 
     final newUID = await _emailRepository.moveEmail(
       email.uid,
       targetMailboxName,
       sourceMailbox: sourceMailbox,
     );
+    if (newUID == null) return null;
 
-    if (newUID != null) {
-      final targetFolder = _userFolders.firstWhere(
-        (f) => f.mailboxName == targetMailboxName,
-        orElse: () => UserEmailFolder(
-          mailboxName: targetMailboxName,
-          displayName: targetMailboxName,
-        ),
-      );
-
-      final updated = email.copyWith(
-        uid: newUID,
-        folder: targetFolder,
+    final targetFolder = _userFolders.firstWhere(
+      (f) => _sameMailbox(f.mailboxName, targetMailboxName),
+      orElse: () => UserEmailFolder(
         mailboxName: targetMailboxName,
-      );
-      updateEmail(updated);
-      return updated;
+        displayName: targetMailboxName,
+      ),
+    );
+
+    final k = _indexOfEmail(email);
+    final base = k != -1 ? _allEmails[k] : email;
+    if (k != -1) _allEmails.removeAt(k);
+
+    final updated = base.copyWith(
+      uid: newUID,
+      folder: targetFolder,
+      mailboxName: targetMailboxName,
+    );
+
+    final i = _indexOfEmail(updated);
+    if (i != -1) {
+      _allEmails[i] = updated;
+    } else {
+      _allEmails.add(updated);
     }
-    return null;
+    notifyListeners();
+
+    return updated;
   }
 
   /// Sends a new email and refreshes Sent if the server has it.
@@ -523,7 +550,9 @@ class EmailService extends ChangeNotifier {
 
     final draftsMailbox = UserEmailFolder.drafts.mailboxName;
     if (_isInitialized && draft.uid != 0 && draft.id.isNotEmpty) {
-      _emailRepository.deleteEmail(draft.uid, mailboxName: draftsMailbox).catchError((_) {});
+      _emailRepository.deleteEmail(draft.uid, mailboxName: draftsMailbox).catchError((_) {
+        return false;
+      });
     }
 
     _allEmails.removeWhere((e) => e.id == draftId && e.folder == UserEmailFolder.drafts);
@@ -553,7 +582,7 @@ class EmailService extends ChangeNotifier {
   }
 
   void updateEmail(Email updatedEmail) {
-    final index = _allEmails.indexWhere((e) => e.id == updatedEmail.id);
+    final index = _indexOfEmail(updatedEmail);
     if (index != -1) {
       _allEmails[index] = updatedEmail;
       notifyListeners();

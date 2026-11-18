@@ -11,6 +11,7 @@ import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
 import 'package:campus_app/pages/email_client/widgets/email_page_navigation.dart';
 import 'package:campus_app/pages/email_client/widgets/email_search.dart';
 import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.dart';
+import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 
 // UI screen to display and manage email drafts
 class DraftsPage extends StatefulWidget {
@@ -72,8 +73,9 @@ class _DraftsPageState extends State<DraftsPage> {
                     onFirst: () => emailService.goToPage(UserEmailFolder.drafts, 1),
                     onLast: () => emailService.goToPage(UserEmailFolder.drafts, emailService.totalPages),
                   ),
-                  const SizedBox(
-                    height: 40,
+                  SizedBox(
+                    // dynamically adjust the page navbar height to sit above the main navbar
+                    height: MediaQuery.paddingOf(context).bottom + 10,
                   ),
                 ],
               ),
@@ -82,21 +84,25 @@ class _DraftsPageState extends State<DraftsPage> {
   }
 
   // Builds AppBar depending on whether selection mode is active
-  PreferredSizeWidget _buildAppBar(selectionController, List<Email> drafts, EmailService emailService) {
+  PreferredSizeWidget _buildAppBar(
+    EmailSelectionController selectionController,
+    List<Email> drafts,
+    EmailService emailService,
+  ) {
     if (selectionController.isSelecting) {
       return AppBar(
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => selectionController.clearSelection(), // Exit selection mode
         ),
-        title: Text('${selectionController.selectionCount} selected'),
+        title: Text('${selectionController.selectionCount} ausgewählt'),
         actions: [
           IconButton(
             icon: const Icon(Icons.select_all),
             onPressed: () => selectionController.selectAll(drafts), // Select all drafts
           ),
           IconButton(
-            icon: const Icon(Icons.delete_forever),
+            icon: const Icon(Icons.delete),
             onPressed: () => _showDeleteConfirmation(selectionController, emailService), // Confirm before deletion
           ),
         ],
@@ -147,7 +153,7 @@ class _DraftsPageState extends State<DraftsPage> {
   }
 
   // Handles tapping a draft: open for editing or toggle selection
-  Future<void> _handleEmailTap(Email draft, selectionController) async {
+  Future<void> _handleEmailTap(Email draft, EmailSelectionController selectionController) async {
     if (selectionController.isSelecting) {
       selectionController.toggleSelection(draft); // Toggle selected state
     } else {
@@ -155,7 +161,7 @@ class _DraftsPageState extends State<DraftsPage> {
       if (context.mounted) {
         final emailService = Provider.of<EmailService>(context, listen: false);
         final fullDraft = await emailService.fetchFullEmail(draft);
-        Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => ComposeEmailScreen(draft: fullDraft), // Navigate to compose screen with the draft
@@ -166,35 +172,36 @@ class _DraftsPageState extends State<DraftsPage> {
   }
 
   // Handles long press to enter selection mode
-  void _handleEmailLongPress(Email draft, selectionController) {
+  void _handleEmailLongPress(Email draft, EmailSelectionController selectionController) {
     if (!selectionController.isSelecting) {
       selectionController.toggleSelection(draft); // Start selecting
     }
   }
 
-  // Show confirmation dialog before permanently deleting selected drafts
-  // N.D. Note - there is no reason this should be permanent, stay with the web client implementation, deleting drafts moves them to trash, only perma delete out of trash
-  // this also makes the alert dialog unnecessary, only show it in the trash page when perma deleting
-  void _showDeleteConfirmation(selectionController, EmailService emailService) {
+  // Show confirmation dialog before moving emails to trash
+  void _showDeleteConfirmation(EmailSelectionController selectionController, EmailService emailService) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Drafts'),
+        title: const Text('Entwürfe Löschen'),
         content: Text(
-          'Are you sure you want to permanently delete ${selectionController.selectionCount} draft(s)?\n\nThis action cannot be undone.',
+          'Möchtest du ${selectionController.selectionCount} Email(s) löschen?',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context), // Cancel deletion
-            child: const Text('Cancel'),
+            child: const Text('Abbrechen'),
           ),
           TextButton(
             onPressed: () {
-              emailService.deleteEmail(selectionController.selectedEmails); // Delete selected drafts
+              emailService.moveEmailsToMailbox(
+                selectionController.selectedEmails.toList(),
+                UserEmailFolder.trash.mailboxName,
+              ); // Delete selected drafts
               Navigator.pop(context); // Close dialog
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Delete'),
+            child: const Text('Löschen'),
           ),
         ],
       ),

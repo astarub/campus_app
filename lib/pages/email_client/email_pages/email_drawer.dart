@@ -7,6 +7,7 @@ import 'package:campus_app/pages/email_client/email_drawer/drafts.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/email_pages/folder_emails_page.dart';
+import 'package:campus_app/pages/email_client/utils/folder_utils.dart';
 
 class EmailDrawer extends StatefulWidget {
   final VoidCallback? onLoggedOut;
@@ -32,7 +33,7 @@ class _EmailDrawerState extends State<EmailDrawer> {
 
     // get list of folders all at depth level 1
     final topLevel = emailService.userFolders.where((f) => f.depth == 1).toList()
-      ..sort((a, b) => _folderSortOrder(a).compareTo(_folderSortOrder(b)));
+      ..sort((a, b) => folderSortOrder(a).compareTo(folderSortOrder(b)));
 
     // get the display Name and Address for the Header
     final authService = context.read<EmailAuthService>();
@@ -100,7 +101,7 @@ class _EmailDrawerState extends State<EmailDrawer> {
             // === Logout with confirmation ===
             ListTile(
               leading: Icon(Icons.logout, color: theme.colorScheme.error),
-              title: Text('Logout', style: TextStyle(color: theme.colorScheme.error)),
+              title: Text('Abmelden', style: TextStyle(color: theme.colorScheme.error)),
               onTap: () => _confirmLogout(context),
             ),
 
@@ -116,12 +117,12 @@ class _EmailDrawerState extends State<EmailDrawer> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
+        title: const Text('Abmelden'),
+        content: const Text('Bist du sicher, dass du dich abmelden möchtest?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: const Text('Abbrechen'),
           ),
           TextButton(
             onPressed: () async {
@@ -138,7 +139,7 @@ class _EmailDrawerState extends State<EmailDrawer> {
               widget.onLoggedOut?.call();
             },
             child: Text(
-              'Logout',
+              'Abmelden',
               style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
           ),
@@ -154,7 +155,7 @@ class _EmailDrawerState extends State<EmailDrawer> {
     EmailService emailService,
   ) {
     // list of a folders next depth level children
-    final children = emailService.userFolders.where((f) => _isDirectChild(f.mailboxName, folder.mailboxName)).toList();
+    final children = emailService.userFolders.where((f) => isDirectChild(f.mailboxName, folder.mailboxName)).toList();
 
     final isExpanded = _expandedFolders.contains(folder.mailboxName);
 
@@ -163,7 +164,7 @@ class _EmailDrawerState extends State<EmailDrawer> {
       children: [
         ListTile(
           leading: Icon(
-            _folderIcon(folder),
+            folderIcon(folder),
             color: Theme.of(context).iconTheme.color,
           ),
           title: Text(folder.displayName),
@@ -205,29 +206,6 @@ class _EmailDrawerState extends State<EmailDrawer> {
     );
   }
 
-  // determine direct children (next depth level) using mailboxname (path)
-  bool _isDirectChild(String child, String parent) {
-    return child.startsWith('$parent/') && child.substring(parent.length + 1).split('/').length == 1;
-  }
-
-  // map Icons to system folders, custom folders get generic folder icon
-  IconData _folderIcon(UserEmailFolder folder) {
-    switch (folder) {
-      case UserEmailFolder.inbox:
-        return Icons.inbox;
-      case UserEmailFolder.drafts:
-        return Icons.drafts;
-      case UserEmailFolder.sent:
-        return Icons.send;
-      case UserEmailFolder.spam:
-        return Icons.local_fire_department;
-      case UserEmailFolder.trash:
-        return Icons.delete;
-      default:
-        return Icons.folder;
-    }
-  }
-
   // Routing for Folder Opening
   void _navigateToFolder(BuildContext context, UserEmailFolder folder, EmailService emailService) {
     Navigator.pop(context);
@@ -253,23 +231,5 @@ class _EmailDrawerState extends State<EmailDrawer> {
         );
       }
     });
-  }
-
-  // assigns an order to the folder, so that the system folders are at the top of the list, above the custom foldersr
-  int _folderSortOrder(UserEmailFolder folder) {
-    switch (folder) {
-      case UserEmailFolder.inbox:
-        return 0;
-      case UserEmailFolder.drafts:
-        return 1;
-      case UserEmailFolder.sent:
-        return 2;
-      case UserEmailFolder.spam:
-        return 3;
-      case UserEmailFolder.trash:
-        return 4;
-      default:
-        return 100;
-    }
   }
 }

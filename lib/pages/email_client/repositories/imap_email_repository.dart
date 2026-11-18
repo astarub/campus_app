@@ -63,15 +63,15 @@ class ImapEmailRepository implements EmailRepository {
   }
 
   @override
-  Future<bool> markAsRead(int uid) {
+  Future<bool> markAsRead(int uid, {required String mailboxName}) {
     // Mark an email as read
-    return _imapService.markAsRead(uid);
+    return _imapService.markAsRead(uid, mailboxName: mailboxName);
   }
 
   @override
-  Future<bool> markAsUnread(int uid) {
+  Future<bool> markAsUnread(int uid, {required String mailboxName}) {
     // Mark an email as unread
-    return _imapService.markAsUnread(uid);
+    return _imapService.markAsUnread(uid, mailboxName: mailboxName);
   }
 
   @override

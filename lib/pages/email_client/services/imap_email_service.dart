@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:synchronized/synchronized.dart';
 
 import 'package:campus_app/pages/email_client/models/email.dart';
 
@@ -29,18 +30,24 @@ class ImapEmailService {
   // a NOOP command inexpensive and pretty much won't affect our performance at all
   Timer? _imapkeepAliveTimer;
 
+  // Lock to avoid mutliple Imap operations attempting to run at once, introducing race conditions
+  final Lock _imapLock = Lock();
+
   void _startKeepAliveIMAP() {
     _imapkeepAliveTimer?.cancel();
     _imapkeepAliveTimer = Timer.periodic(const Duration(minutes: 5), (_) async {
-      if (_imapClient != null && _imapClient!.isConnected) {
-        try {
-          await _imapClient!.noop();
-          debugPrint('IMAP: NOOP for keep alive sent.');
-        } catch (e) {
-          debugPrint('IMAP: keep alive failed: $e');
-          _imapClient = null;
+      if (_imapLock.locked) return;
+      await _imapLock.synchronized(() async {
+        if (_imapClient != null && _imapClient!.isConnected) {
+          try {
+            await _imapClient!.noop();
+            debugPrint('IMAP: NOOP for keep alive sent.');
+          } catch (e) {
+            debugPrint('IMAP: keep alive failed: $e');
+            _imapClient = null;
+          }
         }
-      }
+      });
     });
   }
 
@@ -111,33 +118,38 @@ class ImapEmailService {
     );
   }
 
-  // Wrapper Function for Imap Client actions to ensure connection isn't lost, if it is we run a retry
-  Future<T> _ensureConnection<T>(Future<T> Function() action, {Duration? timeout}) async {
-    try {
+  // Wrapper Function for Imap Client actions to ensure connection isn't lost, if it is we run a retry, given the action can sensibly retry
+  Future<T> _ensureConnection<T>(Future<T> Function() action, {Duration? timeout, bool retry = true}) async {
+    return _imapLock.synchronized(() async {
       await _checkConnection();
-      return await _addTimeout(action(), timeout: timeout);
-    } catch (e) {
-      debugPrint('IMAP Connection error caught: ${e.runtimeType} - $e');
-      // the on SocketException catch isn't enough so we catch all errors and differentiate
-      final isConnectionError = e is SocketException ||
-          e.toString().toLowerCase().contains('socket') ||
-          e.toString().toLowerCase().contains('connection') ||
-          e.toString().toLowerCase().contains('reset by peer') ||
-          e.toString().toLowerCase().contains('not connected') ||
-          e.toString().toLowerCase().contains('connection closed') ||
-          e is TimeoutException;
 
-      if (isConnectionError) {
+      try {
+        return await _addTimeout(action(), timeout: timeout);
+      } catch (e) {
+        debugPrint('IMAP Connection error caught: ${e.runtimeType} - $e');
+        // the on SocketException catch isn't enough so we catch all errors and differentiate
+        final isConnectionError = e is SocketException ||
+            e.toString().toLowerCase().contains('socket') ||
+            e.toString().toLowerCase().contains('connection') ||
+            e.toString().toLowerCase().contains('reset by peer') ||
+            e.toString().toLowerCase().contains('not connected') ||
+            e.toString().toLowerCase().contains('connection closed') ||
+            e is TimeoutException;
+
+        if (!isConnectionError) rethrow;
+
         debugPrint('Lost IMAP connection...reconnecting: $e');
         try {
           await _imapClient?.disconnect();
         } catch (_) {}
         _imapClient = null;
+
+        if (!retry) rethrow;
+
         await _checkConnection();
         return _addTimeout(action(), timeout: timeout);
       }
-      rethrow;
-    }
+    });
   }
 
   // ---------------------------------------------------------- IMAP Email Operations/Functions ----------------------------------------------------------------------------- //
@@ -161,7 +173,7 @@ class ImapEmailService {
       // 3) Fetch headers
       final result = await _imapClient!.fetchMessages(
         MessageSequence.fromRange(start, end),
-        '(UID FLAGS BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE MESSAGE-ID)])', // only fetch the headers and additional display info
+        '(UID FLAGS BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE MESSAGE-ID X-LOCAL-DRAFT-ID)])', // only fetch the headers and additional display info
       );
 
       // 4) Convert and reverse for newest-first order
@@ -198,8 +210,9 @@ class ImapEmailService {
       await _imapClient!.selectMailboxByPath(mailboxName);
 
       final sequence = MessageSequence.fromIds(uids, isUid: true);
-      final fetchCriteria =
-          withBody ? '(FLAGS BODY[])' : '(UID FLAGS BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE MESSAGE-ID)])';
+      final fetchCriteria = withBody
+          ? '(FLAGS BODY[])'
+          : '(UID FLAGS BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE MESSAGE-ID X-LOCAL-DRAFT-ID)])';
       final result = await _imapClient!.uidFetchMessages(sequence, fetchCriteria);
 
       final emails = await Future.wait(result.messages.map(_convertMimeMessageToEmail));
@@ -280,49 +293,52 @@ class ImapEmailService {
 
   // Appends (or updates) a draft in the IMAP “Drafts” folder.
   Future<int?> appendDraft(Email draft) async {
-    return _ensureConnection(() async {
-      // Select the Drafts mailbox
-      await _imapClient!.selectMailboxByPath('Drafts');
+    return _ensureConnection(
+      () async {
+        // Select the Drafts mailbox
+        await _imapClient!.selectMailboxByPath('Drafts');
 
-      // try to delete the outdated draft server side
-      if (draft.uid != 0) {
-        try {
-          await _imapClient!.uidStore(
-            MessageSequence.fromId(draft.uid),
-            [MessageFlags.deleted],
-          );
-          await _imapClient!.expunge();
-          debugPrint('DRAFTS: deleted old draft: UID: ${draft.uid}');
-        } catch (e) {
-          debugPrint('DRAFTS: failed to delete old draft: UID: ${draft.uid}');
+        // try to delete the outdated draft server side
+        if (draft.uid != 0) {
+          try {
+            await _imapClient!.uidStore(
+              MessageSequence.fromId(draft.uid, isUid: true),
+              [MessageFlags.deleted],
+            );
+            await _imapClient!.uidExpunge(MessageSequence.fromId(draft.uid, isUid: true));
+            debugPrint('DRAFTS: deleted old draft: UID: ${draft.uid}');
+          } catch (e) {
+            debugPrint('DRAFTS: failed to delete old draft: UID: ${draft.uid}');
+          }
         }
-      }
 
-      // Build draft MIME
-      final builder = MessageBuilder();
+        // Build draft MIME
+        final builder = MessageBuilder();
 
-      builder.from = [MailAddress(draft.sender, draft.senderEmail)];
-      builder.to = draft.recipients.map((r) => MailAddress('', r)).toList();
-      builder.subject = draft.subject;
-      builder.addTextPlain(draft.body);
-      builder.setHeader('X-Local-Draft-ID', draft.id); // Header to keep track of our Drafts
+        builder.from = [MailAddress(draft.sender, draft.senderEmail)];
+        builder.to = draft.recipients.map((r) => MailAddress('', r)).toList();
+        builder.subject = draft.subject;
+        builder.addTextPlain(draft.body);
+        builder.setHeader('X-Local-Draft-ID', draft.id); // Header to keep track of our Drafts
 
-      final mime = builder.buildMimeMessage();
+        final mime = builder.buildMimeMessage();
 
-      try {
-        final appendResult = await _imapClient!.appendMessage(
-          mime,
-          flags: [MessageFlags.draft, MessageFlags.seen],
-        );
-        // get the UID of the newly appended Email and pass it along so we can keep track of the current UID
-        final newUID = appendResult.responseCodeAppendUid;
-        final uid = newUID?.targetSequence.toList().first;
-        return uid;
-      } catch (e) {
-        debugPrint('appendDraft error: $e');
-        return null;
-      }
-    });
+        try {
+          final appendResult = await _imapClient!.appendMessage(
+            mime,
+            flags: [MessageFlags.draft, MessageFlags.seen],
+          );
+          // get the UID of the newly appended Email and pass it along so we can keep track of the current UID
+          final newUID = appendResult.responseCodeAppendUid;
+          final uid = newUID?.targetSequence.toList().first;
+          return uid;
+        } catch (e) {
+          debugPrint('appendDraft error: $e');
+          return null;
+        }
+      },
+      retry: false,
+    );
   }
 
   /// Lists all mailbox names on the server.
@@ -378,73 +394,78 @@ class ImapEmailService {
     int uid,
     List<String> flags, {
     bool remove = false,
-    String mailboxName = 'INBOX',
+    required String mailboxName,
   }) async {
-    return _ensureConnection(() async {
-      try {
+    try {
+      return await _ensureConnection(() async {
         await _imapClient!.selectMailboxByPath(mailboxName);
         await _imapClient!.uidStore(
-          MessageSequence.fromId(uid),
+          MessageSequence.fromId(uid, isUid: true),
           flags,
           action: remove ? StoreAction.remove : StoreAction.add,
+          silent: true,
         );
         return true;
-      } catch (e) {
-        debugPrint('Error updating email flags: $e');
-        return false;
-      }
-    });
+      });
+    } catch (e) {
+      debugPrint('Error updating email flags: $e');
+      return false;
+    }
   }
 
-  Future<bool> markAsRead(int uid, {String mailboxName = 'INBOX'}) =>
+  Future<bool> markAsRead(int uid, {required String mailboxName}) =>
       _updateEmailFlags(uid, [MessageFlags.seen], mailboxName: mailboxName);
 
-  Future<bool> markAsUnread(int uid, {String mailboxName = 'INBOX'}) =>
+  Future<bool> markAsUnread(int uid, {required String mailboxName}) =>
       _updateEmailFlags(uid, [MessageFlags.seen], remove: true, mailboxName: mailboxName);
 
   // Deletes a message (marks \Deleted + EXPUNGE).
-  Future<bool> deleteEmail(int uid, {String mailboxName = 'INBOX'}) async {
-    return _ensureConnection(() async {
-      try {
-        await _imapClient!.selectMailboxByPath(mailboxName);
-        await _imapClient!.uidStore(
-          MessageSequence.fromId(uid),
-          [MessageFlags.deleted],
-          action: StoreAction.add,
-        );
-        await _imapClient!.expunge();
-        return true;
-      } catch (e) {
-        debugPrint('Error deleting email: $e');
-        return false;
-      }
-    });
+  Future<bool> deleteEmail(int uid, {required String mailboxName}) async {
+    try {
+      await _ensureConnection(
+        () async {
+          await _imapClient!.selectMailboxByPath(mailboxName);
+          final seq = MessageSequence.fromId(uid, isUid: true);
+          await _imapClient!.uidStore(seq, [MessageFlags.deleted], silent: true);
+          await _imapClient!.uidExpunge(seq);
+        },
+        retry: false,
+      );
+      return true;
+    } catch (e) {
+      debugPrint('Error deleting email: $e');
+      return false;
+    }
   }
 
   // Moves an email and returns it's new UID
+  // we explicitly execute the steps: copy by UID -> Store by UID -> Expunge by UID (important to use the UID expunge instead of previous general expunge)
   Future<int?> moveEmail(
     int uid,
     String targetMailbox, {
     String sourceMailbox = 'INBOX',
   }) async {
-    return _ensureConnection(() async {
-      try {
-        // select the source Mailbox and pass the target directly to the move function
-        await _imapClient!.selectMailboxByPath(sourceMailbox);
-        final result = await _imapClient!.uidMove(MessageSequence.fromId(uid), targetMailboxPath: targetMailbox);
-        final copyUid = result.responseCodeCopyUid;
+    try {
+      return await _ensureConnection(
+        () async {
+          await _imapClient!.selectMailboxByPath(sourceMailbox);
+          final seq = MessageSequence.fromId(uid, isUid: true);
 
-        // parse to int to keep track of the new assigned UID
-        if (copyUid != null) {
-          return int.tryParse(copyUid.targetSequence.toString());
-        }
+          final result = await _imapClient!.uidCopy(seq, targetMailboxPath: targetMailbox);
+          final newUid = result.responseCodeCopyUid?.targetSequence.toList().first;
+          if (newUid == null) throw Exception('COPYUID missing, aborting before delete');
 
-        return uid;
-      } catch (e) {
-        debugPrint('Error moving email: $e');
-        return null;
-      }
-    });
+          await _imapClient!.uidStore(seq, [MessageFlags.deleted], silent: true);
+          await _imapClient!.uidExpunge(seq);
+          return newUid;
+        },
+        timeout: const Duration(seconds: 30),
+        retry: false,
+      );
+    } catch (e) {
+      debugPrint('Error moving email: $e');
+      return null;
+    }
   }
 
   // ------------------------------------------------------------------------------------ MIME Helper Functions -------------------------------------------------------------------------------- //
@@ -531,7 +552,7 @@ class ImapEmailService {
       sender: msg.from?.isNotEmpty == true
           ? (msg.from!.first.personalName?.isNotEmpty == true
               ? msg.from!.first.personalName!
-              : msg.from!.first.encode() ?? 'Unknown')
+              : msg.from!.first.encode())
           : 'Unknown',
       senderEmail: msg.from?.isNotEmpty == true ? (msg.from?.first.email ?? '') : '',
       recipients: msg.to?.where((a) => a.email.isNotEmpty).map((a) => a.email).toList() ?? [],
