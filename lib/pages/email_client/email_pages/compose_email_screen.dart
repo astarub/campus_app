@@ -187,24 +187,16 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
     }
   }
 
-  Future<void> _attachFile() async {
-    // TODO: implement real file picker
-    setState(() {
-      _attachments.add('file_${_attachments.length + 1}.pdf');
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final emailService = Provider.of<EmailService>(context, listen: false);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
         // only save the draft if changes were made
         if (_hasChanged) {
           _saveDraft(emailService);
         }
-        return true;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -223,10 +215,6 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                 final emailService = Provider.of<EmailService>(context, listen: false);
                 _saveDraft(emailService);
               },
-            ),
-            IconButton(
-              icon: const Icon(Icons.attach_file),
-              onPressed: _attachFile,
             ),
             IconButton(
               icon: const Icon(Icons.send),
@@ -269,12 +257,12 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter recipient';
+                      return 'Gebe Bitte einen Empfänger an!';
                     }
                     final emails = value.split(',').map((e) => e.trim());
                     for (final email in emails) {
                       if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
-                        return 'Invalid email: $email';
+                        return 'Ungültige Email: $email';
                       }
                     }
                     return null;
@@ -337,7 +325,7 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                   child: TextFormField(
                     controller: _bodyController,
                     decoration: const InputDecoration(
-                      hintText: 'Compose your email...',
+                      hintText: 'Erstelle deine Email...',
                       border: InputBorder.none,
                     ),
                     maxLines: null,

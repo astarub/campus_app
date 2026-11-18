@@ -1,10 +1,13 @@
-import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
+import 'package:uuid/uuid.dart';
 import 'package:enough_mail/imap.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/exceptions.dart';
-import 'package:uuid/uuid.dart';
+import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
 
 enum VerificationStatus { success, bounced, sendFailed, notAuthenticated, emptyEmail, outOfAttempts }
 
@@ -216,10 +219,13 @@ class EmailAuthService extends ChangeNotifier {
 
       timestamp = DateTime.now();
 
+      final html = await _buildVerificationHtml(code);
+
       final sent = await imapService.sendEmail(
         to: emailAddress,
         subject: 'Email Verification',
-        body: 'ASTA Verification Email: $code',
+        body: 'Campus App Verification Email: $code',
+        htmlBody: html,
         senderEmail: emailAddress,
         senderName: await getDisplayName() ?? '',
       );
@@ -245,6 +251,12 @@ class EmailAuthService extends ChangeNotifier {
 
   void _generateCode() {
     code = uuid.v4();
+  }
+
+  // insert the code into the html email text
+  Future<String> _buildVerificationHtml(String code) async {
+    final template = await rootBundle.loadString('assets/privacy/verification_email.html');
+    return template.replaceAll('{{CODE}}', code);
   }
 
   // compare and search for the email in the inbox

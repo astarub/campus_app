@@ -227,6 +227,7 @@ class ImapEmailService {
     required String body,
     required String senderEmail,
     String senderName = '',
+    String? htmlBody,
     List<String>? cc,
     List<String>? bcc,
     List<String>? attachments,
@@ -253,7 +254,12 @@ class ImapEmailService {
       builder.from = [MailAddress(senderName, senderEmail)];
       builder.to = [MailAddress('', to)];
       builder.subject = subject;
-      builder.addTextPlain(body);
+
+      if (htmlBody != null) {
+        builder.addMultipartAlternative(plainText: body, htmlText: htmlBody);
+      } else {
+        builder.addTextPlain(body);
+      }
 
       if (cc?.isNotEmpty ?? false) {
         builder.cc = cc!.map((addr) => MailAddress('', addr)).toList();

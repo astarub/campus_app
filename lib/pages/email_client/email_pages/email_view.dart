@@ -22,14 +22,13 @@ import 'package:campus_app/pages/email_client/email_pages/compose_email_screen.d
 class EmailView extends StatefulWidget {
   final Email email; // The email being viewed
   final void Function(Email, String)? onDelete; // Optional callback for deletion
-  final void Function(Email)? onRestore; // Optional callback for restoring from trash
+
   final UserEmailFolder folder;
 
   const EmailView({
     super.key,
     required this.email,
     this.onDelete,
-    this.onRestore,
     this.folder = UserEmailFolder.inbox,
   });
 
@@ -140,15 +139,6 @@ class _EmailViewState extends State<EmailView> {
         ],
       ),
     );
-  }
-
-  // Handles restoring a trashed email
-  void _handleRestore(BuildContext context) {
-    if (widget.onRestore != null) {
-      widget.onRestore!(widget.email);
-      Navigator.pop(context); // Close email view
-      showUpdateMessages('Email restored from trash.');
-    }
   }
 
   // adjust the HTML for a phone screen, the default is framed for desktop screens and unsuitable for mobile screens
@@ -367,7 +357,7 @@ class _EmailViewState extends State<EmailView> {
                     _subjectExpanded ? Icons.expand_less : Icons.expand_more,
                     color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -473,12 +463,6 @@ class _EmailViewState extends State<EmailView> {
                 showUpdateMessages('Email(s) moved to trash.');
               },
               tooltip: 'Delete',
-            ),
-          if (_isInTrash)
-            IconButton(
-              icon: const Icon(Icons.restore_from_trash),
-              onPressed: () => _handleRestore(context), // Restore from trash
-              tooltip: 'Restore',
             ),
           if (_isInTrash)
             IconButton(

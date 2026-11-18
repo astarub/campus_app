@@ -206,6 +206,7 @@ flutter:
     - assets/videos/pathfinder_onboarding_step_3.mp4
     - assets/videos/pathfinder_onboarding_step_4.mp4
     - assets/privacy/nutzungsbedingungen.md
+    - assets/privacy/verification_email.html
 
   fonts:
     - family: SF-Pro
