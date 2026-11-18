@@ -9,7 +9,11 @@ import 'package:campus_app/pages/email_client/services/email_service.dart';
 import 'package:campus_app/pages/email_client/email_pages/folder_emails_page.dart';
 
 class EmailDrawer extends StatefulWidget {
-  const EmailDrawer({super.key});
+  final VoidCallback? onLoggedOut;
+  const EmailDrawer({
+    super.key,
+    required this.onLoggedOut,
+  });
 
   @override
   State<EmailDrawer> createState() => _EmailDrawerState();
@@ -121,16 +125,17 @@ class _EmailDrawerState extends State<EmailDrawer> {
           ),
           TextButton(
             onPressed: () async {
-              Navigator.pop(ctx); // Close dialog
-              Navigator.pop(context); // Close drawer
-              Navigator.pop(context); //return to the more page
-
               // Call logout logic from EmailAuthService and EmailService
               final emailAuthService = context.read<EmailAuthService>();
               final emailService = context.read<EmailService>();
 
+              Navigator.pop(ctx); // close dialog
+              Navigator.pop(context); // close drawer
+
               await emailAuthService.logout();
               emailService.clear();
+
+              widget.onLoggedOut?.call();
             },
             child: Text(
               'Logout',

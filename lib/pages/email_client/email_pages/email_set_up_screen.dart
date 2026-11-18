@@ -149,7 +149,7 @@ class _EmailSetUpScreenState extends State<EmailSetUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('E-Mail-Client einrichten'),
+        title: const Center(child: Text('E-Mail-Client einrichten')),
       ),
       body: SafeArea(
         child: Center(

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:campus_app/pages/feed/feed_page.dart';
 import 'package:campus_app/pages/calendar/calendar_page.dart';
+import 'package:campus_app/pages/email_client/email_pages/email_page.dart';
 import 'package:campus_app/pages/mensa/mensa_page.dart';
 import 'package:campus_app/pages/wallet/wallet_page.dart';
 import 'package:campus_app/pages/more/more_page.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/pages/navigation/outdoor_navigation_page.dart';
 
-enum PageItem { feed, events, coupons, navigation, mensa, wallet, more }
+enum PageItem { feed, events, coupons, navigation, mensa, wallet, email, more }
 
 const List<PageItem> customizablePageItems = [
   PageItem.feed,
@@ -16,6 +17,7 @@ const List<PageItem> customizablePageItems = [
   PageItem.mensa,
   PageItem.navigation,
   PageItem.wallet,
+  PageItem.email,
   PageItem.more,
 ];
 
@@ -34,6 +36,8 @@ extension PageItemConfig on PageItem {
         return 'mensa';
       case PageItem.wallet:
         return 'wallet';
+      case PageItem.email:
+        return 'email';
       case PageItem.more:
         return 'more';
     }
@@ -53,6 +57,8 @@ extension PageItemConfig on PageItem {
         return 'Mensa';
       case PageItem.wallet:
         return 'Wallet';
+      case PageItem.email:
+        return 'Email';
       case PageItem.more:
         return 'Mehr';
     }
@@ -72,6 +78,8 @@ extension PageItemConfig on PageItem {
         return 'assets/img/icons/mensa-filled.png';
       case PageItem.wallet:
         return 'assets/img/icons/wallet-filled.png';
+      case PageItem.email:
+        return 'assets/img/icons/email-filled.png';
       case PageItem.more:
         return 'assets/img/icons/more.png';
     }
@@ -91,6 +99,8 @@ extension PageItemConfig on PageItem {
         return 'assets/img/icons/mensa-outlined.png';
       case PageItem.wallet:
         return 'assets/img/icons/wallet-outlined.png';
+      case PageItem.email:
+        return 'assets/img/icons/email-outlined.png';
       case PageItem.more:
         return 'assets/img/icons/more.png';
     }
@@ -112,17 +122,26 @@ List<PageItem> sanitizeCustomizablePageOrder(List<String> pageIds) {
 
   for (final pageId in pageIds) {
     final pageItem = pageItemFromStorageId(pageId);
-    if (pageItem != null &&
-        customizablePageItems.contains(pageItem) &&
-        !orderedPages.contains(pageItem)) {
+    if (pageItem != null && customizablePageItems.contains(pageItem) && !orderedPages.contains(pageItem)) {
       orderedPages.add(pageItem);
     }
   }
 
-  for (final pageItem in customizablePageItems) {
-    if (!orderedPages.contains(pageItem)) {
-      orderedPages.add(pageItem);
+  // modified to add the new email page at the right position
+  for (int i = 0; i < customizablePageItems.length; i++) {
+    final pageItem = customizablePageItems[i];
+    if (orderedPages.contains(pageItem)) continue;
+
+    // insert before the next default page the user already has
+    int insertAt = orderedPages.length;
+    for (int j = i + 1; j < customizablePageItems.length; j++) {
+      final index = orderedPages.indexOf(customizablePageItems[j]);
+      if (index != -1) {
+        insertAt = index;
+        break;
+      }
     }
+    orderedPages.insert(insertAt, pageItem);
   }
 
   return orderedPages;
@@ -202,6 +221,12 @@ class NavBarNavigator extends StatelessWidget {
         break;
       case PageItem.wallet:
         rootPage = WalletPage(
+          pageEntryAnimationKey: pageEntryAnimationKey,
+          pageExitAnimationKey: pageExitAnimationKey,
+        );
+        break;
+      case PageItem.email:
+        rootPage = EmailPage(
           pageEntryAnimationKey: pageEntryAnimationKey,
           pageExitAnimationKey: pageExitAnimationKey,
         );

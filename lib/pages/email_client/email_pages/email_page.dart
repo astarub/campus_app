@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -19,11 +20,19 @@ import 'package:campus_app/pages/email_client/widgets/email_tile.dart';
 import 'package:campus_app/pages/email_client/widgets/email_page_navigation.dart';
 import 'package:campus_app/pages/email_client/widgets/select_email.dart';
 import 'package:campus_app/pages/email_client/models/email.dart';
+import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:campus_app/core/themes.dart';
 
 // Main entry widget for the email client screen
 class EmailPage extends StatelessWidget {
-  const EmailPage({super.key});
+  final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
+  final GlobalKey<AnimatedExitState> pageExitAnimationKey;
+
+  const EmailPage({
+    super.key,
+    required this.pageEntryAnimationKey,
+    required this.pageExitAnimationKey,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +138,17 @@ class _EmailClientContentState extends State<_EmailClientContent> {
     );
   }
 
+  // sets the authentication state and email page state when the user logs out
+  void _handleLogout() {
+    if (!mounted) return;
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    _selectionController.clearSelection();
+    setState(() {
+      _isAuthenticated = false;
+    });
+  }
+
   // Handles back/gesture navigation, exits selection/search/drawer as needed
   Future<void> _handlePop(BuildContext context) async {
     if (_selectionController.isSelecting) {
@@ -159,20 +179,11 @@ class _EmailClientContentState extends State<_EmailClientContent> {
         backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
         body: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: SizedBox(
-                height: MediaQuery.heightOf(context) * 0.075,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
+            Container(
+              padding: EdgeInsets.only(top: Platform.isAndroid ? 14 : 0, bottom: 20),
+              child: Text(
+                'Email',
+                style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.displayMedium,
               ),
             ),
             Expanded(
@@ -236,7 +247,7 @@ class _EmailClientContentState extends State<_EmailClientContent> {
               ),
           ],
         ),
-        endDrawer: const EmailDrawer(), // Folder navigation drawer
+        endDrawer: EmailDrawer(onLoggedOut: _handleLogout), // Folder navigation drawer
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: _selectionController.isSelecting ? _selectionController.clearSelection : null,

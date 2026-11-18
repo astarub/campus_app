@@ -196,6 +196,8 @@ flutter:
     - assets/animations/coin-flip.json
     - assets/img/bogestra-logo.svg
     - assets/img/icons/file-plus.svg
+    - assets/img/icons/email-filled.png
+    - assets/img/icons/email-outlined.png
     - assets/maps/
     - assets/videos/pathfinder_onboarding_cover_video.mp4
     - assets/videos/pathfinder_onboarding_step_1.mp4

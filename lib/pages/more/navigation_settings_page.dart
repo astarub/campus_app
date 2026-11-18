@@ -28,11 +28,9 @@ class _NavigationSettingsPageState extends State<NavigationSettingsPage> {
       return;
     }
 
-    final settings =
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings;
+    final settings = Provider.of<SettingsHandler>(context, listen: false).currentSettings;
     _orderedPages = sanitizeCustomizablePageOrder(settings.navbarPageOrder);
-    _startPage =
-        pageItemFromStorageId(settings.startPageId) ?? _orderedPages.first;
+    _startPage = pageItemFromStorageId(settings.startPageId) ?? _orderedPages.first;
 
     if (!_orderedPages.contains(_startPage)) {
       _startPage = _orderedPages.first;
@@ -42,8 +40,7 @@ class _NavigationSettingsPageState extends State<NavigationSettingsPage> {
   }
 
   void _saveSettings() {
-    final settingsHandler =
-        Provider.of<SettingsHandler>(context, listen: false);
+    final settingsHandler = Provider.of<SettingsHandler>(context, listen: false);
 
     settingsHandler.currentSettings = settingsHandler.currentSettings.copyWith(
       startPageId: _startPage.storageId,
@@ -82,6 +79,8 @@ class _NavigationSettingsPageState extends State<NavigationSettingsPage> {
         return 'Mensa';
       case PageItem.wallet:
         return 'Wallet';
+      case PageItem.email:
+        return 'Email-Client';
       case PageItem.more:
         return 'Mehr';
     }
@@ -92,9 +91,7 @@ class _NavigationSettingsPageState extends State<NavigationSettingsPage> {
     final themeNotifier = Provider.of<ThemesNotifier>(context);
     final theme = themeNotifier.currentThemeData;
     final isLightTheme = themeNotifier.currentTheme == AppThemes.light;
-    final tileColor = isLightTheme
-        ? const Color.fromRGBO(245, 246, 250, 1)
-        : const Color.fromRGBO(34, 40, 54, 1);
+    final tileColor = isLightTheme ? const Color.fromRGBO(245, 246, 250, 1) : const Color.fromRGBO(34, 40, 54, 1);
     final selectedTileColor = isLightTheme
         ? theme.colorScheme.secondary.withValues(alpha: 0.12)
         : theme.colorScheme.secondary.withValues(alpha: 0.16);
@@ -177,9 +174,7 @@ class _NavigationSettingsPageState extends State<NavigationSettingsPage> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: isSelected
-                                  ? theme.colorScheme.secondary
-                                  : Colors.transparent,
+                              color: isSelected ? theme.colorScheme.secondary : Colors.transparent,
                               width: 1.5,
                             ),
                           ),
@@ -192,8 +187,7 @@ class _NavigationSettingsPageState extends State<NavigationSettingsPage> {
                               _labelForPage(pageItem),
                               style: theme.textTheme.bodyMedium,
                             ),
-                            contentPadding:
-                                const EdgeInsets.only(left: 16, right: 8),
+                            contentPadding: const EdgeInsets.only(left: 16, right: 8),
                             minVerticalPadding: 12,
                             trailing: SizedBox(
                               width: 88,
@@ -201,13 +195,9 @@ class _NavigationSettingsPageState extends State<NavigationSettingsPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(
-                                    isSelected
-                                        ? Icons.circle
-                                        : Icons.circle_outlined,
+                                    isSelected ? Icons.circle : Icons.circle_outlined,
                                     size: 16,
-                                    color: isSelected
-                                        ? theme.colorScheme.secondary
-                                        : secondaryTextColor,
+                                    color: isSelected ? theme.colorScheme.secondary : secondaryTextColor,
                                   ),
                                   const SizedBox(width: 8),
                                   ReorderableDragStartListener(

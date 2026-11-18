@@ -29,6 +29,7 @@ class HomePageState extends State<HomePage> {
     PageItem.mensa: GlobalKey<NavigatorState>(),
     PageItem.navigation: GlobalKey<NavigatorState>(),
     PageItem.wallet: GlobalKey<NavigatorState>(),
+    PageItem.email: GlobalKey<NavigatorState>(),
     PageItem.more: GlobalKey<NavigatorState>(),
   };
 
@@ -40,6 +41,7 @@ class HomePageState extends State<HomePage> {
     PageItem.mensa: GlobalKey<AnimatedExitState>(),
     PageItem.navigation: GlobalKey<AnimatedExitState>(),
     PageItem.wallet: GlobalKey<AnimatedExitState>(),
+    PageItem.email: GlobalKey<AnimatedExitState>(),
     PageItem.more: GlobalKey<AnimatedExitState>(),
   };
   Map<PageItem, GlobalKey<AnimatedEntryState>> entryAnimationKeys = {
@@ -48,6 +50,7 @@ class HomePageState extends State<HomePage> {
     PageItem.mensa: GlobalKey<AnimatedEntryState>(),
     PageItem.navigation: GlobalKey<AnimatedEntryState>(),
     PageItem.wallet: GlobalKey<AnimatedEntryState>(),
+    PageItem.email: GlobalKey<AnimatedEntryState>(),
     PageItem.more: GlobalKey<AnimatedEntryState>(),
   };
 
@@ -65,16 +68,14 @@ class HomePageState extends State<HomePage> {
     systemNavigationBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
     systemNavigationBarIconBrightness: Brightness.light, // Android
   );
-  final SystemUiOverlayStyle lightTabletSystemUiStyle =
-      const SystemUiOverlayStyle(
+  final SystemUiOverlayStyle lightTabletSystemUiStyle = const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.light, // iOS
     statusBarColor: Color.fromRGBO(245, 246, 250, 1), // Android
     statusBarIconBrightness: Brightness.dark, // Android
     systemNavigationBarColor: Color.fromRGBO(245, 246, 250, 1), // Android
     systemNavigationBarIconBrightness: Brightness.dark, // Android
   );
-  final SystemUiOverlayStyle darkTabletSystemUiStyle =
-      const SystemUiOverlayStyle(
+  final SystemUiOverlayStyle darkTabletSystemUiStyle = const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.dark, // iOS
     statusBarColor: Color.fromRGBO(17, 25, 38, 1), // Android
     statusBarIconBrightness: Brightness.light, // Android
@@ -102,8 +103,7 @@ class HomePageState extends State<HomePage> {
   }
 
   List<PageItem> getOrderedPages() {
-    final settings =
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings;
+    final settings = Provider.of<SettingsHandler>(context, listen: false).currentSettings;
     return sanitizeCustomizablePageOrder(settings.navbarPageOrder);
   }
 
@@ -132,9 +132,7 @@ class HomePageState extends State<HomePage> {
         return;
       }
 
-      final roundedPagePosition =
-          (pageController.page ?? pageController.initialPage.toDouble())
-              .round();
+      final roundedPagePosition = (pageController.page ?? pageController.initialPage.toDouble()).round();
       if (roundedPagePosition != pageIndex) {
         pageController.jumpToPage(pageIndex);
       }
@@ -149,8 +147,7 @@ class HomePageState extends State<HomePage> {
     if (MediaQuery.of(context).size.shortestSide < 600) {
       // Get all pages as list and find the corresponding element
       final List<PageItem> pages = getOrderedPages();
-      final int indexNewPage =
-          pages.indexWhere((element) => element == selectedPageItem);
+      final int indexNewPage = pages.indexWhere((element) => element == selectedPageItem);
 
       // Switch to the selected page
       await pageController.animateToPage(
@@ -168,9 +165,7 @@ class HomePageState extends State<HomePage> {
       // Switch to the new page
       setState(() => currentPage = selectedPageItem);
       // Start the entry animation of the new page
-      await entryAnimationKeys[selectedPageItem]
-          ?.currentState
-          ?.startEntryAnimation();
+      await entryAnimationKeys[selectedPageItem]?.currentState?.startEntryAnimation();
     }
 
     // Enable swiping upon navigation
@@ -218,24 +213,16 @@ class HomePageState extends State<HomePage> {
       final brightness = window.platformBrightness;
 
       // Callback wird ausgeführt, sofern System-Darkmode verwendet werden soll
-      if (Provider.of<SettingsHandler>(context, listen: false)
-          .currentSettings
-          .useSystemDarkmode) {
+      if (Provider.of<SettingsHandler>(context, listen: false).currentSettings.useSystemDarkmode) {
         if (brightness == Brightness.light) {
           debugPrint('System ändert zu LightMode.');
-          if (Provider.of<ThemesNotifier>(context, listen: false)
-                  .currentTheme ==
-              AppThemes.dark) {
-            Provider.of<ThemesNotifier>(context, listen: false).currentTheme =
-                AppThemes.light;
+          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.dark) {
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.light;
           }
         } else if (brightness == Brightness.dark) {
           debugPrint('System ändert zu DarkMode.');
-          if (Provider.of<ThemesNotifier>(context, listen: false)
-                  .currentTheme ==
-              AppThemes.light) {
-            Provider.of<ThemesNotifier>(context, listen: false).currentTheme =
-                AppThemes.dark;
+          if (Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light) {
+            Provider.of<ThemesNotifier>(context, listen: false).currentTheme = AppThemes.dark;
           }
         }
       }
@@ -259,12 +246,9 @@ class HomePageState extends State<HomePage> {
       currentPage = orderedPages.first;
     }
 
-    if (settingsHandler.hasLoadedSettings &&
-        !didApplyInitialNavigationSettings) {
-      final startPage =
-          pageItemFromStorageId(settingsHandler.currentSettings.startPageId);
-      currentPage =
-          orderedPages.contains(startPage) ? startPage! : orderedPages.first;
+    if (settingsHandler.hasLoadedSettings && !didApplyInitialNavigationSettings) {
+      final startPage = pageItemFromStorageId(settingsHandler.currentSettings.startPageId);
+      currentPage = orderedPages.contains(startPage) ? startPage! : orderedPages.first;
       previousOrderedPages = List<PageItem>.from(orderedPages);
       didApplyInitialNavigationSettings = true;
       syncPageViewWithCurrentPage(orderedPages);
@@ -285,12 +269,10 @@ class HomePageState extends State<HomePage> {
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: MediaQuery.of(context).size.shortestSide < 600
-          ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-                  AppThemes.light
+          ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? lightSystemUiStyle
               : darkSystemUiStyle
-          : Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-                  AppThemes.light
+          : Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
               ? lightTabletSystemUiStyle
               : darkTabletSystemUiStyle,
       //changing WillPopScope to PopScope
@@ -303,10 +285,7 @@ class HomePageState extends State<HomePage> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Provider.of<ThemesNotifier>(context)
-              .currentThemeData
-              .colorScheme
-              .surface,
+          backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
           body: MediaQuery.of(context).size.shortestSide < 600
               // Phone layout
               ? SafeArea(
@@ -314,12 +293,9 @@ class HomePageState extends State<HomePage> {
                   child: Stack(
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
+                        padding: EdgeInsets.only(bottom: Platform.isIOS ? 80 : 60),
                         child: PageView.builder(
-                          physics: swipeDisabled
-                              ? const NeverScrollableScrollPhysics()
-                              : const ScrollPhysics(),
+                          physics: swipeDisabled ? const NeverScrollableScrollPhysics() : const ScrollPhysics(),
                           controller: pageController,
                           itemCount: orderedPages.length,
                           onPageChanged: (page) {
@@ -369,13 +345,9 @@ class HomePageState extends State<HomePage> {
               // Tablet layout
               : SafeArea(
                   child: Container(
-                    color: Provider.of<ThemesNotifier>(context, listen: false)
-                                .currentTheme ==
-                            AppThemes.light
+                    color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                         ? const Color.fromRGBO(245, 246, 250, 1)
-                        : Provider.of<ThemesNotifier>(context)
-                            .currentThemeData
-                            .cardColor,
+                        : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -387,9 +359,7 @@ class HomePageState extends State<HomePage> {
                                   ).currentTheme ==
                                   AppThemes.light
                               ? const Color.fromRGBO(245, 246, 250, 1)
-                              : Provider.of<ThemesNotifier>(context)
-                                  .currentThemeData
-                                  .cardColor,
+                              : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                         ),
                         Expanded(
                           child: Row(
@@ -404,21 +374,15 @@ class HomePageState extends State<HomePage> {
                                 child: Container(
                                   padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
-                                    color: Provider.of<ThemesNotifier>(context)
-                                        .currentThemeData
-                                        .colorScheme
-                                        .surface,
+                                    color: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   child: Center(
                                     child: SizedBox(
-                                      width: currentPage != PageItem.navigation
-                                          ? 550
-                                          : null,
+                                      width: currentPage != PageItem.navigation ? 550 : null,
                                       child: Stack(
                                         children: [
-                                          for (final page in orderedPages)
-                                            buildOffstateNavigator(page),
+                                          for (final page in orderedPages) buildOffstateNavigator(page),
                                         ],
                                       ),
                                     ),
@@ -434,9 +398,7 @@ class HomePageState extends State<HomePage> {
                                         ).currentTheme ==
                                         AppThemes.light
                                     ? const Color.fromRGBO(245, 246, 250, 1)
-                                    : Provider.of<ThemesNotifier>(context)
-                                        .currentThemeData
-                                        .cardColor,
+                                    : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                               ),
                             ],
                           ),
@@ -449,9 +411,7 @@ class HomePageState extends State<HomePage> {
                                   ).currentTheme ==
                                   AppThemes.light
                               ? const Color.fromRGBO(245, 246, 250, 1)
-                              : Provider.of<ThemesNotifier>(context)
-                                  .currentThemeData
-                                  .cardColor,
+                              : Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
                         ),
                       ],
                     ),

@@ -1,8 +1,9 @@
 import 'dart:io' show Platform;
-import 'package:campus_app/pages/email_client/email_pages/email_page.dart';
-import 'package:campus_app/pages/more/privacy_policy_page.dart';
+
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:campus_app/core/themes.dart';
@@ -13,6 +14,7 @@ import 'package:campus_app/pages/more/widgets/button_group.dart';
 import 'package:campus_app/pages/more/in_app_web_view_page.dart';
 import 'package:campus_app/pages/more/settings_page.dart';
 import 'package:campus_app/pages/more/imprint_page.dart';
+import 'package:campus_app/pages/more/privacy_policy_page.dart';
 
 class MorePage extends StatefulWidget {
   final GlobalKey<NavigatorState> mainNavigatorKey;
@@ -156,31 +158,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                           ),
                         ],
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 30),
-                        decoration: BoxDecoration(
-                          color: Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
-                              ? const Color.fromRGBO(245, 246, 250, 1)
-                              : const Color.fromRGBO(34, 40, 54, 1),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          children: [
-                            ExternalLinkButton(
-                              title: 'RubMail',
-                              leadingIconPath: 'assets/img/icons/mail-link.png',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const EmailPage(),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+
                       // RUB links
                       ButtonGroup(
                         headline: 'Nützliche Links',
@@ -314,7 +292,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                         'assets/img/asta_logo.png',
                         width: 50,
                         height: 50,
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         alignment: Alignment.bottomCenter,
                       ),
                     ],
