@@ -56,7 +56,7 @@ dependencies:
     git:
       url: https://github.com/astarub/flutter_videoplayer
       ref: v2.0
-  sentry_flutter: ^8.10.1
+  sentry_flutter: ^9.30.1
   get_thumbnail_video: ^0.7.3
   image: ^4.3.0
   dismissible_page: ^1.0.2
@@ -78,6 +78,10 @@ dependencies:
   flutter_compass: ^0.8.1
   vector_math: ^2.1.4
 
+  material_ui: any
+  cupertino_ui: any
+  sentry: any
+  path: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

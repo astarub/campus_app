@@ -1,7 +1,7 @@
 import 'package:flutter_videoplayer/flutter_videoplayer.dart';
 import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class FeedVideoPlayer extends StatefulWidget {
   /// The network URL to video

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 
@@ -125,7 +125,7 @@ class _PopupSheetState extends State<PopupSheet> {
       ],
       lockOverflowDrag: true,
       onSheetMoved: (positionData) {
-        setState(() => backgroundColor = backgroundColor.withOpacity(0.3 * positionData.relativeToSnappingPositions));
+        setState(() => backgroundColor = backgroundColor.withValues(alpha: 0.3 * positionData.relativeToSnappingPositions));
       },
       onSnapCompleted: (positionData, snappingPosition) {
         // Remove the popup from the navigation-stack when it's snapped outside the view

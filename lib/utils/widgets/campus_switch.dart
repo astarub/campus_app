@@ -1,6 +1,6 @@
 // ignore_for_file: comment_references
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// This widget shows a switch that uses the CampusApp design language
 class CampusSwitch extends StatefulWidget {

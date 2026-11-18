@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
@@ -57,7 +57,7 @@ class _SideNavBarItemState extends State<SideNavBarItem> {
       child:
           // Icon-button
           CustomButton(
-        tapHandler: () => widget.onTap(),
+        tapHandler: widget.onTap,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: widget.verticalPadding),
           child: Column(

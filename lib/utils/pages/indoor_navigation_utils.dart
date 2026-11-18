@@ -3,7 +3,7 @@
 import 'package:campus_app/pages/navigation/data/room_graph.dart';
 import 'package:campus_app/pages/navigation/models/room_label.dart';
 import 'package:dijkstra/dijkstra.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class IndoorNavigationUtils {
   Map createDijkstraMapFromGraph(Map graph) {

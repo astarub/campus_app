@@ -4,7 +4,7 @@ import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/home/widgets/animated_onboarding_entry.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
 import 'package:flutter_onboarding/flutter_onboarding.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_videoplayer/flutter_videoplayer.dart';

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_onboarding/flutter_onboarding.dart';
@@ -88,7 +88,7 @@ class OnboardingPageState extends State<OnboardingPage> {
           useFirebase: firebaseAccepted ? FirebaseStatus.permitted : FirebaseStatus.forbidden,
         );
 
-    if (firebaseAccepted) mainUtils.initializeFirebase(widget.homePageKey.currentContext!);
+    if (firebaseAccepted) mainUtils.initializeFirebase(widget.homePageKey.currentContext);
 
     debugPrint('Onboarding completed. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
 

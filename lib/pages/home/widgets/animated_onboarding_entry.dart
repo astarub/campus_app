@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_int_literals
 
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// This widget animates its child with a fade- and position-animation in.
 ///

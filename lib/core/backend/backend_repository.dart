@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:appwrite/models.dart' as models;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:slugid/slugid.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

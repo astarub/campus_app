@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
@@ -72,7 +72,7 @@ class _BottomNavBarItemState extends State<BottomNavBarItem> {
             // Icon-button wrapped so it can flex if parent is constrained
             Flexible(
               child: CustomButton(
-                tapHandler: () => widget.onTap(),
+                tapHandler: widget.onTap,
                 child: Padding(
                   padding: EdgeInsets.only(
                     top: widget.iconVerticalPadding,

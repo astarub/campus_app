@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Signature for formatting result text of [AnimatedNumberText]. Can be used to
 /// replace the default [num.toString] behavior. One example could be to use
@@ -64,7 +64,7 @@ class _AnimatedNumberTextState<T extends num> extends AnimatedWidgetBaseState<An
 
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
-    _numTween = visitor(_numTween, widget.data, (value) => _createTween(value)) as Tween<T>?;
+    _numTween = visitor(_numTween, widget.data, _createTween) as Tween<T>?;
     _styleTween = visitor(_styleTween, widget.style, (dynamic value) => TextStyleTween(begin: value as TextStyle))
         as TextStyleTween?;
   }

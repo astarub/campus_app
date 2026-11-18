@@ -8,6 +8,12 @@ analyzer:
     missing_return: error
     no_default_cases: ignore
 
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
   strong-mode:
     implicit-casts: true
     implicit-dynamic: true

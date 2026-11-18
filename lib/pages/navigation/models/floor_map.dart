@@ -1,5 +1,5 @@
 import 'package:campus_app/pages/navigation/models/room_label.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class FloorMap {
   /// The display text of the floor.

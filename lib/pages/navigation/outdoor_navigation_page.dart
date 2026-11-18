@@ -16,7 +16,7 @@ import 'package:campus_app/pages/navigation/widgets/error_bubble.dart';
 import 'package:campus_app/utils/pages/outdoor_navigation_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -132,7 +132,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
           future: tileLayerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-              return snapshot.data!;
+              return snapshot.data;
             } else {
               return const SizedBox.shrink();
             }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:provider/provider.dart';
@@ -61,7 +61,7 @@ class BubbleMessageState extends State<BubbleMessage> with SingleTickerProviderS
     _controller.forward();
   }
 
-  void exit() async {
+  Future<void> exit() async {
     await _controller.reverse();
     widget.onClose?.call();
   }

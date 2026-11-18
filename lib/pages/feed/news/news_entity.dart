@@ -53,7 +53,7 @@ class NewsEntity {
   final bool pinned;
 
   /// URL for a webview
-  @HiveField(11, defaultValue: null)
+  @HiveField(11)
   final String? webViewUrl;
 
   const NewsEntity({

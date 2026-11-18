@@ -4,7 +4,7 @@ import 'package:campus_app/core/injection.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/pages/navigation/models/room_label.dart';
 import 'package:campus_app/utils/pages/indoor_navigation_utils.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 class RoomLabelWidget extends StatelessWidget {

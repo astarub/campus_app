@@ -1,6 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:campus_app/pages/more/privacy_policy_page.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -288,7 +288,7 @@ class MorePageState extends State<MorePage> with AutomaticKeepAliveClientMixin<M
                         'assets/img/asta_logo.png',
                         width: 50,
                         height: 50,
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         alignment: Alignment.bottomCenter,
                       ),
                     ],

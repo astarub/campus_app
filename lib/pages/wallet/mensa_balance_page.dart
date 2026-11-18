@@ -1,6 +1,6 @@
 import 'dart:io' show Platform;
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
@@ -102,7 +102,6 @@ class _MensaBalancePageState extends State<MensaBalancePage> with TickerProvider
       await Fluttertoast.showToast(msg: 'Fehler beim Auslesen!', timeInSecForIosWeb: 3, gravity: ToastGravity.BOTTOM);
     }
   }
-
 
   /// Initialises the NFC session and starts scanning for a tag, if NFC is activated on the device.
   /// If a tag was scanned, it's parsed to display the current card balance.

@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/rendering.dart';
 
 enum StackedCardCarouselType { cardsStack, fadeOutStack }
@@ -64,7 +64,7 @@ class _StackedCardCarouselState extends State<StackedCardCarousel> {
 
     if (widget.applyTextScaleFactor) {
       final textScaler = MediaQuery.of(context).textScaler;
-      final double mediaQueryFactor = textScaler.scale(1.0);
+      final double mediaQueryFactor = textScaler.scale(1);
 
       if (mediaQueryFactor > 1.0) {
         textScaleFactor = mediaQueryFactor;

@@ -16,7 +16,7 @@ import 'package:campus_app/utils/pages/indoor_navigation_utils.dart';
 import 'package:campus_app/utils/widgets/campus_icon_button.dart';
 import 'package:campus_app/utils/widgets/empty_state_placeholder.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -523,7 +523,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
               final int segments = (distance / distanceThreshold).floor();
               for (int s = 1; s < segments; s++) {
                 final double t = s / segments;
-                final interpolated = Offset.lerp(lastOffset, offset, t)!;
+                final interpolated = Offset.lerp(lastOffset, offset, t);
                 pointsListTemp[i].add(interpolated);
               }
             }

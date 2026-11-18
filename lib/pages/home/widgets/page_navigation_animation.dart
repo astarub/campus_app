@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_int_literals
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'dart:async';
 
 /// Wrap a child with this widget in order to animate the child on build.

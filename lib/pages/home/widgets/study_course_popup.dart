@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:campus_app/utils/widgets/campus_search_bar.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 
@@ -142,7 +142,7 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
       onSheetMoved: (positionData) {
         if (positionData.relativeToSnappingPositions >= 0) {
           setState(
-            () => backgroundColor = backgroundColor.withOpacity(0.3 * positionData.relativeToSnappingPositions),
+            () => backgroundColor = backgroundColor.withValues(alpha: 0.3 * positionData.relativeToSnappingPositions),
           );
         }
       },

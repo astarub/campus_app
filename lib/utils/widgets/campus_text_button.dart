@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
@@ -54,7 +54,7 @@ class CampusTextButtonState extends State<CampusTextButton> {
                 .textTheme
                 .labelMedium!
                 .color!
-                .withOpacity(0.6),
+                .withValues(alpha: 0.6),
           );
         }
       },
@@ -64,7 +64,7 @@ class CampusTextButtonState extends State<CampusTextButton> {
         } else {
           setState(
             () => buttonTextColor =
-                Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.textTheme.labelMedium!.color!,
+                Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.textTheme.labelMedium!.color,
           );
         }
 

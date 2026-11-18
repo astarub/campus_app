@@ -1,5 +1,5 @@
 import 'package:campus_app/core/themes.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
@@ -15,20 +15,14 @@ class NavigationErrorBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentThemeData =
-        Provider.of<ThemesNotifier>(context).currentThemeData;
-    final bool isLightTheme =
-        Provider.of<ThemesNotifier>(context, listen: false).currentTheme ==
-            AppThemes.light;
+    final currentThemeData = Provider.of<ThemesNotifier>(context).currentThemeData;
+    final bool isLightTheme = Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light;
     final Color backgroundColor = Color.alphaBlend(
-      isLightTheme
-          ? const Color.fromARGB(100, 207, 0, 0)
-          : const Color.fromARGB(100, 255, 72, 72),
+      isLightTheme ? const Color.fromARGB(100, 207, 0, 0) : const Color.fromARGB(100, 255, 72, 72),
       currentThemeData.colorScheme.surface,
     );
-    final Color foregroundColor = isLightTheme
-        ? const Color.fromRGBO(207, 0, 0, 1)
-        : const Color.fromRGBO(255, 72, 72, 1);
+    final Color foregroundColor =
+        isLightTheme ? const Color.fromRGBO(207, 0, 0, 1) : const Color.fromRGBO(255, 72, 72, 1);
 
     return Positioned(
       top: top,
@@ -88,9 +82,7 @@ class NavigationErrorBubble extends StatelessWidget {
                             child: Text(
                               message!,
                               textAlign: TextAlign.center,
-                              style: (currentThemeData.textTheme.labelSmall ??
-                                      const TextStyle())
-                                  .copyWith(
+                              style: (currentThemeData.textTheme.labelSmall ?? const TextStyle()).copyWith(
                                 color: foregroundColor,
                               ),
                             ),

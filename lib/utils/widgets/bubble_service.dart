@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:campus_app/utils/widgets/bubble_message.dart';
 
@@ -32,7 +32,6 @@ class BubbleService {
     _entry?.remove();
 
     final overlay = Overlay.of(context);
-    if (overlay == null) return;
 
     _entry = OverlayEntry(
       builder: (context) => BubbleMessage(

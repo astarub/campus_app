@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 // This Notifier tracks the ticket warning globally, since the value is changed by processes outside of the Wallet page
 class TicketWarningNotifier extends ChangeNotifier {

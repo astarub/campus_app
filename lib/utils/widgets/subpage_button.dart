@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -71,7 +71,7 @@ class SubPageButton extends StatelessWidget {
                   SvgPicture.asset(
                     leadingIconPath,
                     colorFilter: ColorFilter.mode(
-                      disabled ? buttonContentColor.withOpacity(0.5) : buttonContentColor,
+                      disabled ? buttonContentColor.withValues(alpha: 0.5) : buttonContentColor,
                       BlendMode.srcIn,
                     ),
                     width: 22,
@@ -79,7 +79,7 @@ class SubPageButton extends StatelessWidget {
                 else
                   Image.asset(
                     leadingIconPath,
-                    color: disabled ? buttonContentColor.withOpacity(0.5) : buttonContentColor,
+                    color: disabled ? buttonContentColor.withValues(alpha: 0.5) : buttonContentColor,
                     width: 20,
                     filterQuality: FilterQuality.none,
                   ),
@@ -92,7 +92,7 @@ class SubPageButton extends StatelessWidget {
                         .currentThemeData
                         .textTheme
                         .labelMedium!
-                        .copyWith(color: disabled ? buttonContentColor.withOpacity(0.5) : buttonContentColor),
+                        .copyWith(color: disabled ? buttonContentColor.withValues(alpha: 0.5) : buttonContentColor),
                   ),
                 ),
                 // Link icon
@@ -102,7 +102,7 @@ class SubPageButton extends StatelessWidget {
                     colorFilter: ColorFilter.mode(
                       Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
                           ? disabled
-                              ? Colors.black.withOpacity(0.5)
+                              ? Colors.black.withValues(alpha: 0.5)
                               : Colors.black
                           : disabled
                               ? Provider.of<ThemesNotifier>(context)
@@ -110,7 +110,7 @@ class SubPageButton extends StatelessWidget {
                                   .textTheme
                                   .bodyMedium!
                                   .color!
-                                  .withOpacity(0.5)
+                                  .withValues(alpha: 0.5)
                               : Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium!.color!,
                       BlendMode.srcIn,
                     ),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 enum AppThemes { light, dark }
 
@@ -18,9 +18,7 @@ class ThemesNotifier with ChangeNotifier {
         onPrimary: Colors.white,
         onSecondary: Colors.black,
         error: Colors.red,
-        onError: Colors.black,
-        background: Colors.white, //mandataory add
-        onBackground: Colors.black, //mandatory add
+        onError: Colors.black, //mandatory add
         surface: Colors.white,
         onSurface: Colors.black,
       ),
@@ -85,9 +83,7 @@ class ThemesNotifier with ChangeNotifier {
         onPrimary: Colors.black,
         onSecondary: Colors.black,
         error: Colors.red,
-        onError: Colors.black,
-        background: Color.fromRGBO(14, 20, 32, 1), //mandataory add
-        onBackground: Colors.white, //mandatory add
+        onError: Colors.black, //mandatory add
         surface: Color.fromRGBO(14, 20, 32, 1),
         onSurface: Colors.white,
       ),
@@ -184,8 +180,7 @@ class ThemesNotifier with ChangeNotifier {
     _currentThemeMode = mode;
 
     if (mode == ThemeMode.system) {
-      final Brightness deviceMode =
-          WidgetsBinding.instance.platformDispatcher.platformBrightness;
+      final Brightness deviceMode = WidgetsBinding.instance.platformDispatcher.platformBrightness;
       if (deviceMode == Brightness.light) {
         debugPrint('System-Theme ist: LightMode');
         if (currentTheme == AppThemes.dark) currentTheme = AppThemes.light;

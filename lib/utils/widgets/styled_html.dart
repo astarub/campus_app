@@ -1,6 +1,6 @@
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/more/in_app_web_view_page.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';

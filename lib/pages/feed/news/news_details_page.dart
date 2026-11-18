@@ -1,7 +1,7 @@
 import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/pages/feed/widgets/video_player.dart';
 import 'package:campus_app/utils/widgets/scroll_to_top_button.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';

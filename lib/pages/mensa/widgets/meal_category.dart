@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
@@ -91,7 +91,7 @@ class MealItem extends StatelessWidget {
                             .textTheme
                             .bodyMedium!
                             .color!
-                            .withOpacity(0.4),
+                            .withValues(alpha: 0.4),
                   ),
                 ),
                 child: Text(
@@ -132,7 +132,7 @@ class MealItem extends StatelessWidget {
                                 .textTheme
                                 .bodyMedium!
                                 .color!
-                                .withOpacity(0.4),
+                                .withValues(alpha: 0.4),
                       ),
                 ),
               ),

@@ -1,5 +1,5 @@
 import 'dart:io' show Platform;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
@@ -136,10 +136,10 @@ class HomePageState extends State<HomePage> {
   Widget buildNavigator(PageItem tabItem) {
     return NavBarNavigator(
       mainNavigatorKey: widget.mainNavigatorKey,
-      navigatorKey: navigatorKeys[tabItem]!,
+      navigatorKey: navigatorKeys[tabItem],
       pageItem: tabItem,
-      pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
-      pageExitAnimationKey: exitAnimationKeys[tabItem]!,
+      pageEntryAnimationKey: entryAnimationKeys[tabItem],
+      pageExitAnimationKey: exitAnimationKeys[tabItem],
     );
   }
 
@@ -151,10 +151,10 @@ class HomePageState extends State<HomePage> {
       offstage: currentPage != tabItem,
       child: NavBarNavigator(
         mainNavigatorKey: widget.mainNavigatorKey,
-        navigatorKey: navigatorKeys[tabItem]!,
+        navigatorKey: navigatorKeys[tabItem],
         pageItem: tabItem,
-        pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
-        pageExitAnimationKey: exitAnimationKeys[tabItem]!,
+        pageEntryAnimationKey: entryAnimationKeys[tabItem],
+        pageExitAnimationKey: exitAnimationKeys[tabItem],
       ),
     );
   }
@@ -203,12 +203,11 @@ class HomePageState extends State<HomePage> {
       //changing WillPopScope to PopScope
       child: PopScope(
         canPop: false,
-        onPopInvokedWithResult: (didPop, result) async{
-          if(!didPop){
+        onPopInvokedWithResult: (didPop, result) async {
+          if (!didPop) {
             await navigatorKeys[currentPage]!.currentState!.maybePop();
           }
         },
-
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
