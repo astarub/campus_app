@@ -155,6 +155,7 @@ class _TicketLoginScreenState extends State<TicketLoginScreen> {
                       try {
                         await ticketRepository.loadTicket();
                         widget.onTicketLoaded();
+                        if (!context.mounted) return;
                         context.read<TicketWarningNotifier>().set(false);
                         navigator.pop();
                       } on InvalidLoginIDAndPasswordException {

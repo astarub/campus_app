@@ -62,7 +62,7 @@ class ImapEmailService {
     try {
       _username = username;
       _password = password;
-      await _imapClient!.connectToServer(_imapHost, _imapPort, isSecure: true);
+      await _imapClient!.connectToServer(_imapHost, _imapPort);
       await _imapClient!.login(_username!, _password!);
       debugPrint('IMAP: Connected as $_username');
       _startKeepAliveIMAP();

@@ -27,7 +27,7 @@ class EmailTile extends StatelessWidget {
     final Color bgColor = isSelected
         ? theme.colorScheme.primary.withValues(alpha: 0.1)
         : email.isUnread
-            ? theme.colorScheme.surfaceVariant
+            ? theme.colorScheme.surfaceContainerHighest
             : theme.colorScheme.surface;
 
     return InkWell(

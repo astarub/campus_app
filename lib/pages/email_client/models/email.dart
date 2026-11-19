@@ -47,10 +47,9 @@ class Email {
             'It contains multiple paragraphs of sample text.\n\n'
             'Best regards,\nSender $index',
         date: DateTime.now().subtract(Duration(hours: index)),
-        isUnread: index % 2 == 0,
+        isUnread: index.isEven,
         isStarred: index % 3 == 0,
         attachments: index % 4 == 0 ? ['document$index.pdf', 'image$index.jpg'] : [],
-        uid: 0, // Dummy emails don't have IMAP UIDs
       );
 
   // Convert Email instance to a JSON map for storage or network transmission

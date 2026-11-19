@@ -61,7 +61,7 @@ class BubbleMessageState extends State<BubbleMessage> with SingleTickerProviderS
     _controller.forward();
   }
 
-  void exit() async {
+  Future<void> exit() async {
     await _controller.reverse();
     widget.onClose?.call();
   }

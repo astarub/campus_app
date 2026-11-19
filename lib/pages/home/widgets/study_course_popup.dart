@@ -142,7 +142,7 @@ class StudyCoursePopupState extends State<StudyCoursePopup> {
       onSheetMoved: (positionData) {
         if (positionData.relativeToSnappingPositions >= 0) {
           setState(
-            () => backgroundColor = backgroundColor.withOpacity(0.3 * positionData.relativeToSnappingPositions),
+            () => backgroundColor = backgroundColor.withValues(alpha: 0.3 * positionData.relativeToSnappingPositions),
           );
         }
       },

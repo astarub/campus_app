@@ -161,6 +161,7 @@ class _DraftsPageState extends State<DraftsPage> {
       if (context.mounted) {
         final emailService = Provider.of<EmailService>(context, listen: false);
         final fullDraft = await emailService.fetchFullEmail(draft);
+        if (!mounted) return;
         await Navigator.push(
           context,
           MaterialPageRoute(

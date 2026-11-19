@@ -157,7 +157,7 @@ class _EmailSearchState extends State<EmailSearch> {
             SizedBox(height: 24),
             DynamicSearchText(
               messages: ['Mailbox wird indiziert...', 'Bitte einen Moment warten...'],
-            )
+            ),
           ],
         ),
       );

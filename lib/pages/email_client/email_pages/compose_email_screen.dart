@@ -181,6 +181,7 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
       );
 
       showUpdateMessages('Email sent!');
+      if (!mounted) return;
       Navigator.pop(context);
     } catch (e) {
       showUpdateMessages('Failed to send email: $e');
