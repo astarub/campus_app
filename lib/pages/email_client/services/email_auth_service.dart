@@ -11,6 +11,12 @@ import 'package:campus_app/pages/email_client/services/imap_email_service.dart';
 
 enum VerificationStatus { success, bounced, sendFailed, notAuthenticated, emptyEmail, outOfAttempts }
 
+class EmailProgress {
+  final double value;
+  final String status;
+  const EmailProgress(this.value, this.status);
+}
+
 /// Email Address Verification Results to help give better feedback to the User
 class VerificationResult {
   final VerificationStatus status;
@@ -28,6 +34,10 @@ class VerificationResult {
 // Service to handle email-based authentication using secure storage
 class EmailAuthService extends ChangeNotifier {
   final FlutterSecureStorage _secureStorage = sl<FlutterSecureStorage>();
+
+  final ValueNotifier<EmailProgress> verifyProgress = ValueNotifier(const EmailProgress(0, ''));
+
+  void _report(double value, String status) => verifyProgress.value = EmailProgress(value.clamp(0.0, 1.0), status);
 
   // Storage keys
   static const String _emailUsernameKey = 'email_loginId';
@@ -211,16 +221,20 @@ class EmailAuthService extends ChangeNotifier {
 
     // generate and storing the code
     _generateCode();
+    _report(0.05, 'Verifikation wird vorbereitet...');
 
     try {
+      _report(0.20, 'Verbindung zum Server wird hergestellt...');
       // establish connection to the server
       final connected = await imapService.connect(username, password);
+
       if (!connected) return VerificationResult.sendFailed;
 
       timestamp = DateTime.now();
 
       final html = await _buildVerificationHtml(code);
 
+      _report(0.35, 'Verifikations-E-Mail wird gesendet...');
       final sent = await imapService.sendEmail(
         to: emailAddress,
         subject: 'Email Verification',
@@ -266,6 +280,7 @@ class EmailAuthService extends ChangeNotifier {
     const retryInterval = Duration(seconds: 2);
 
     for (int i = 0; i <= maxAttempts; i++) {
+      _report(0.5 + 0.4 * (i / (maxAttempts + 1)), 'Warte auf E-Mail im Postfach...');
       try {
         // limit sample to 15 most recent emails for efficiency, search will take too long
         final emails = await imapService.fetchEmails(
@@ -290,6 +305,7 @@ class EmailAuthService extends ChangeNotifier {
           // search the body for the unique code
           if (full != null && (full.body.contains(code) || (full.htmlBody?.contains(code) ?? false))) {
             await confirmAuthentication(); // complete authentication
+            _report(0.95, 'Verifikation wird bestätigt...');
             return VerificationResult.success;
           }
         }

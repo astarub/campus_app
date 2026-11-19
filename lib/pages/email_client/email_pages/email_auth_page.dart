@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:campus_app/core/themes.dart';
+import 'package:campus_app/pages/email_client/widgets/progressbar_view.dart';
 import 'package:campus_app/pages/email_client/services/email_auth_service.dart';
 import 'package:campus_app/utils/widgets/decision_popup.dart';
 
@@ -41,10 +42,10 @@ class _EmailAuthPageState extends State<EmailAuthPage> {
   // run the authentication and wait for the emails to load before exiting back to the email page
   Future<void> _runLogin() async {
     try {
+      final authService = Provider.of<EmailAuthService>(context, listen: false);
+      authService.verifyProgress.value = const EmailProgress(0.02, 'Anmeldedaten werden geprüft');
       await widget.login();
       if (!mounted) return;
-
-      final authService = Provider.of<EmailAuthService>(context, listen: false);
 
       final result = await authService.verifyEmailAddress();
 
@@ -107,11 +108,8 @@ class _EmailAuthPageState extends State<EmailAuthPage> {
           Expanded(
             child: _userHasAccepted
                 ? Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-                      color: Provider.of<ThemesNotifier>(context).currentThemeData.primaryColor,
-                      strokeWidth: 3,
-                    ),
+                    child:
+                        ProgressbarView(progress: Provider.of<EmailAuthService>(context, listen: false).verifyProgress),
                   )
                 : Column(
                     children: [

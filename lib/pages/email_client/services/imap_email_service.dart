@@ -354,6 +354,15 @@ class ImapEmailService {
     });
   }
 
+  // try to make a user input string safe inside the IMAP input string
+  String _quote(String input) {
+    final cleaned = input.replaceAll(RegExp(r'[\r\n]+'), ' ').trim();
+    final escaped = cleaned.replaceAll(r'\', r'\\').replaceAll('"', r'\"');
+    return '"$escaped"';
+  }
+
+  bool _isAscii(String s) => s.codeUnits.every((c) => c < 128);
+
   /// Searches emails in [mailboxName] matching optional criteria.
   Future<List<int>> searchEmailUIDs({
     String mailboxName = 'INBOX',
@@ -367,20 +376,35 @@ class ImapEmailService {
       () async {
         // Build IMAP search criteria
         final criteria = <String>[];
-        if (query?.isNotEmpty ?? false) criteria.add('TEXT "$query"');
-        if (from?.isNotEmpty ?? false) criteria.add('FROM "$from"');
-        if (subject?.isNotEmpty ?? false) criteria.add('SUBJECT "$subject"');
+
+        // since the default IMAP search misses UTF-8 encoded messages, add a check for if the input text requires a IMAP Search with CHARSET UTF-8
+        var needsUtf8 = false;
+
+        void addTextCriteria(String keyword, String? value) {
+          final v = value?.trim();
+          if (v == null || v.isEmpty) return;
+          if (!_isAscii(v)) needsUtf8 = true;
+          criteria.add('$keyword ${_quote(v)}');
+        }
+
+        addTextCriteria('TEXT', query);
+        addTextCriteria('FROM', from);
+        addTextCriteria('SUBJECT', subject);
+
         if (since != null) {
-          final formatted = DateFormat('dd-MMM-yyyy').format(since).toUpperCase();
+          final formatted = DateFormat('dd-MMM-yyyy', 'en_US').format(since).toUpperCase();
           criteria.add('SINCE $formatted');
         }
+
         if (unreadOnly) criteria.add('UNSEEN');
         if (criteria.isEmpty) criteria.add('ALL');
+
+        final searchCriteria = '${needsUtf8 ? 'CHARSET UTF-8 ' : ''}${criteria.join(' ')}';
 
         await _imapClient!.selectMailboxByPath(mailboxName);
 
         final searchResult = await _imapClient!.uidSearchMessages(
-          searchCriteria: criteria.join(' '),
+          searchCriteria: searchCriteria,
         );
 
         if (searchResult.matchingSequence == null || searchResult.matchingSequence!.isEmpty) {
