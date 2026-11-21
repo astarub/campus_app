@@ -17,7 +17,8 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "de.asta_bochum.campus_app"
-    compileSdk = flutter.compileSdkVersion
+    // androidx.core 1.19+ (pulled in by plugins) requires compileSdk 37.
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -101,5 +102,5 @@ dependencies {
     // Note: https://github.com/dart-lang/http/blob/master/pkgs/cronet_http/android/build.gradle
     // Note: https://mvnrepository.com/artifact/org.chromium.net/cronet-embedded
     //
-    implementation("org.chromium.net:cronet-embedded:119.6045.31")
+    implementation("org.chromium.net:cronet-embedded:143.7445.0")
 }
