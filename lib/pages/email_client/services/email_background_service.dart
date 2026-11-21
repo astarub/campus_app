@@ -19,7 +19,7 @@ class EmailBackgroundService {
   static final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
 
   static Future<Map<String, String>?> _loadCredentials() async {
-    const storage = FlutterSecureStorage(aOptions: AndroidOptions(encryptedSharedPreferences: true));
+    const storage = FlutterSecureStorage();
 
     final username = await storage.read(key: 'email_loginId');
     final password = await storage.read(key: 'email_password');
@@ -50,7 +50,7 @@ class EmailBackgroundService {
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
     const settings = InitializationSettings(android: android);
 
-    await _notifications.initialize(settings);
+    await _notifications.initialize(settings: settings);
   }
 
   static Future<void> _initBackgroundFetch() async {
@@ -223,10 +223,10 @@ class EmailBackgroundService {
     );
 
     await _notifications.show(
-      id,
-      title,
-      body,
-      NotificationDetails(android: android),
+      id: id,
+      title: title,
+      body: body,
+      notificationDetails: NotificationDetails(android: android),
     );
   }
 }

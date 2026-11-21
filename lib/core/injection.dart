@@ -170,9 +170,7 @@ Future<void> init() async {
   sl.registerLazySingleton(Dio.new);
   sl.registerLazySingleton(CookieJar.new);
   sl.registerLazySingleton(
-    () => const FlutterSecureStorage(
-      aOptions: AndroidOptions(encryptedSharedPreferences: true),
-    ),
+    () => const FlutterSecureStorage(),
   );
 
   // AppWrite Client

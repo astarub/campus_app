@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:zikzak_inappwebview/zikzak_inappwebview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:campus_app/utils/constants.dart';
@@ -59,9 +59,12 @@ class TicketDataSource {
         }
       }
 
+      // zikzak_inappwebview has no `clearCache` setting, so clear the cache explicitly.
+      await InAppWebViewController.clearAllCache();
+
       headlessWebView = HeadlessInAppWebView(
         initialUrlRequest: URLRequest(url: WebUri(rideTicketing)),
-        initialSettings: InAppWebViewSettings(cacheEnabled: false, clearCache: true),
+        initialSettings: InAppWebViewSettings(cacheEnabled: false),
         onWebViewCreated: (controller) {
           // Callback handler for the ticket
           controller.addJavaScriptHandler(
@@ -169,7 +172,7 @@ class TicketDataSource {
                   source: """
                   (function(){
                     if(document.getElementsByClassName("form-error").length == 1) {
-                    window.flutter_inappwebview.callHandler('error', "Invalid credentials.");
+                    window.zikzak_inappwebview.callHandler('error', "Invalid credentials.");
                     }
                     let btn = document.getElementById('consentbutton_2');
                     if (btn) btn.click();
@@ -218,7 +221,7 @@ class TicketDataSource {
                   if(success >= 2) {
                     clearInterval(ticketInfoInterval); // stop pulling
                     clearInterval(ticketClickInterval);
-                    window.flutter_inappwebview.callHandler('ticket', document.getElementsByClassName("barcode")[0].src, arr);
+                    window.zikzak_inappwebview.callHandler('ticket', document.getElementsByClassName("barcode")[0].src, arr);
                   }
                 } 
               }, 500);
@@ -241,7 +244,7 @@ class TicketDataSource {
               source: '''
                 const cardWrappers = document.getElementsByClassName("abo-card-wrapper");
                 if(cardWrappers.length == 0) {
-                  window.flutter_inappwebview.callHandler('error', "Ticket removed.");
+                  window.zikzak_inappwebview.callHandler('error', "Ticket removed.");
                   return;
                 }
               ''',
