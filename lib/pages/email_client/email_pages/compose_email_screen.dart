@@ -221,24 +221,26 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
               icon: const Icon(Icons.send),
               onPressed: _sendEmail,
             ),
-            IconButton(
-              icon: const Icon(Icons.more_vert),
-              onPressed: () {
-                final emailService = Provider.of<EmailService>(context, listen: false);
-                showModalBottomSheet(
-                  context: context,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                  ),
-                  builder: (_) => EmailBottomPanel(
-                    email: widget.draft!,
-                    emailService: emailService,
-                    onActionComplete: () => setState(() {}),
-                  ),
-                );
-              },
-              tooltip: 'More',
-            ),
+            // The bottom panel needs an existing email, so only offer it for drafts.
+            if (widget.draft != null)
+              IconButton(
+                icon: const Icon(Icons.more_vert),
+                onPressed: () {
+                  final emailService = Provider.of<EmailService>(context, listen: false);
+                  showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                    ),
+                    builder: (_) => EmailBottomPanel(
+                      email: widget.draft!,
+                      emailService: emailService,
+                      onActionComplete: () => setState(() {}),
+                    ),
+                  );
+                },
+                tooltip: 'More',
+              ),
           ],
         ),
         body: Form(
