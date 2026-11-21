@@ -33,9 +33,11 @@ class LeadingButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            text,
-            style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+          Expanded(
+            child: Text(
+              text,
+              style: Provider.of<ThemesNotifier>(context).currentThemeData.textTheme.bodyMedium,
+            ),
           ),
           Container(
             width: width,

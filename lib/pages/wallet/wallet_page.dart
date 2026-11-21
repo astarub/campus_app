@@ -67,7 +67,7 @@ class _WalletPageState extends State<WalletPage>
                 if (state != null) {
                   await state.loadAndRenderTicket();
 
-                  if (ticketLoaded != null) {
+                  if (ticketLoaded != null && context.mounted) {
                     BubbleService().show(
                       context,
                       message: 'Ticket aktualisiert!',

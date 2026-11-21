@@ -117,13 +117,14 @@ class BogestraTicketState extends State<BogestraTicket>
           await ticketRepository.loadTicket();
           debugPrint('Wallet widget: Ticket loaded successfully on retry $i');
           successfullLoad = true;
+          if (!mounted) return;
           context.read<TicketWarningNotifier>().set(false);
           break; // jump out of for loop
         } on InvalidLoginIDAndPasswordException {
           // the two on error cases are "Fatal Cases" no reason to retry, only user can fix these by adding creds or entering right creds
           debugPrint('Wallet Widget: Invalid Credentials.');
           final ticketLoaded = await ticketRepository.getAztecCode();
-          if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
+          if (ticketLoaded != null && mounted) context.read<TicketWarningNotifier>().set(true);
           return;
         } on MissingCredentialsException {
           debugPrint('Wallet Widget: Initializing.');
@@ -134,7 +135,7 @@ class BogestraTicketState extends State<BogestraTicket>
           if (i == retries) {
             debugPrint('Wallet widget: Retries have failed. Notify User of failure and potentially outdated ticket.');
             final ticketLoaded = await ticketRepository.getAztecCode();
-            if (ticketLoaded != null) context.read<TicketWarningNotifier>().set(true);
+            if (ticketLoaded != null && mounted) context.read<TicketWarningNotifier>().set(true);
             return;
           }
 
@@ -365,7 +366,7 @@ class BogestraTicketState extends State<BogestraTicket>
 
 Future<void> setBrightness(double brightness) async {
   try {
-    await ScreenBrightness().setScreenBrightness(brightness);
+    await ScreenBrightness().setApplicationScreenBrightness(brightness);
   } catch (e) {
     debugPrint(e.toString());
   }
@@ -373,7 +374,7 @@ Future<void> setBrightness(double brightness) async {
 
 Future<void> resetBrightness() async {
   try {
-    await ScreenBrightness().resetScreenBrightness();
+    await ScreenBrightness().resetApplicationScreenBrightness();
   } catch (e) {
     debugPrint(e.toString());
   }

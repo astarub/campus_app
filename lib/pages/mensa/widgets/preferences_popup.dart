@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/utils/widgets/popup_sheet.dart';
 import 'package:campus_app/utils/widgets/campus_selection.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart' show SnappingSheet;
 
 /// This widget displays the preference options that are available for the mensa
 /// page and is used in the [SnappingSheet] widget.

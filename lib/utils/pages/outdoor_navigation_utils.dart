@@ -34,7 +34,7 @@ class OutdoorNavigationUtils {
             for (final step in steps) {
               final String geometry = step['geometry'];
               final List<LatLng> coordinates =
-                  PolylinePoints().decodePolyline(geometry).map((e) => LatLng(e.latitude, e.longitude)).toList();
+                  PolylinePoints.decodePolyline(geometry).map((e) => LatLng(e.latitude, e.longitude)).toList();
               newWaypoints.addAll(coordinates);
             }
           }

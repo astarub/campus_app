@@ -12,12 +12,15 @@ class BottomNavBar extends StatefulWidget {
   /// Needs the currently active page in order to highlight it
   final PageItem currentPage;
 
+  final List<PageItem> orderedPages;
+
   /// Calls this function when an item of the navigation bar is selected.
   final Function(PageItem) onSelectedPage;
 
   const BottomNavBar({
     super.key,
     required this.currentPage,
+    required this.orderedPages,
     required this.onSelectedPage,
   });
 
@@ -41,16 +44,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // Minimal change approach: render all items in a fixed-width row but clip to
     // show only 5 slots. Animate a horizontal translation so one end icon slides
     // off-screen depending on the active page.
-    const horizontalPadding = 10.0; // matches previous symmetric horizontal padding
-    const visibleCount = 5;
-    const items = <PageItem>[
-      PageItem.feed,
-      PageItem.events,
-      PageItem.mensa,
-      PageItem.navigation,
-      PageItem.wallet,
-      PageItem.more,
-    ];
+    const horizontalPadding =
+        10.0; // matches previous symmetric horizontal padding
+    final items = widget.orderedPages;
+    final visibleCount = items.length < 5 ? items.length : 5;
     final totalItems = items.length;
     final maxShift = (totalItems - visibleCount).clamp(0, totalItems);
     final activeIndex = items.indexOf(widget.currentPage);
@@ -98,7 +95,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
               // Determine which slice of items to show (no off-screen items)
               final startIndex = desiredShift;
-              final visibleItems = items.sublist(startIndex, startIndex + visibleCount);
+              final visibleItems =
+                  items.sublist(startIndex, startIndex + visibleCount);
 
               // Decide animation direction based on previous shift
               final animateForward = desiredShift >= _prevShift;
@@ -109,7 +107,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
               final indicatorColor = Provider.of<ThemesNotifier>(
                 context,
                 listen: false,
-              ).currentThemeData.textTheme.labelSmall?.color?.withValues(alpha: 0.55);
+              )
+                  .currentThemeData
+                  .textTheme
+                  .labelSmall
+                  ?.color
+                  ?.withValues(alpha: 0.55);
 
               return SizedBox(
                 height: navHeight,
@@ -134,7 +137,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     ).animate(curvedAnimation);
                     return FadeTransition(
                       opacity: curvedAnimation,
-                      child: SlideTransition(position: offsetAnimation, child: child),
+                      child: SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      ),
                     );
                   },
                   child: SizedBox(
@@ -149,67 +155,26 @@ class _BottomNavBarState extends State<BottomNavBar> {
                             duration: const Duration(milliseconds: 180),
                             opacity: hasHiddenLeftItems ? 1 : 0,
                             child: Center(
-                              child: Icon(Icons.chevron_left, size: 14, color: indicatorColor),
+                              child: Icon(
+                                Icons.chevron_left,
+                                size: 14,
+                                color: indicatorColor,
+                              ),
                             ),
                           ),
                         ),
                         for (final p in visibleItems)
                           SizedBox(
-                            width: (effectiveContainerWidth - (2 * indicatorWidth)) / visibleCount,
-                            child: (() {
-                              switch (p) {
-                                case PageItem.feed:
-                                  return BottomNavBarItem(
-                                    title: 'Feed',
-                                    imagePathActive: 'assets/img/icons/home-filled.png',
-                                    imagePathInactive: 'assets/img/icons/home-outlined.png',
-                                    onTap: () => widget.onSelectedPage(PageItem.feed),
-                                    isActive: widget.currentPage == PageItem.feed,
-                                  );
-                                case PageItem.events:
-                                  return BottomNavBarItem(
-                                    title: 'Events',
-                                    imagePathActive: 'assets/img/icons/calendar-filled.png',
-                                    imagePathInactive: 'assets/img/icons/calendar-outlined.png',
-                                    onTap: () => widget.onSelectedPage(PageItem.events),
-                                    isActive: widget.currentPage == PageItem.events,
-                                  );
-                                case PageItem.mensa:
-                                  return BottomNavBarItem(
-                                    title: 'Mensa',
-                                    imagePathActive: 'assets/img/icons/mensa-filled.png',
-                                    imagePathInactive: 'assets/img/icons/mensa-outlined.png',
-                                    onTap: () => widget.onSelectedPage(PageItem.mensa),
-                                    isActive: widget.currentPage == PageItem.mensa,
-                                  );
-                                case PageItem.navigation:
-                                  return BottomNavBarItem(
-                                    title: 'Navigation',
-                                    imagePathActive: 'assets/img/icons/map-filled.png',
-                                    imagePathInactive: 'assets/img/icons/map-outlined.png',
-                                    onTap: () => widget.onSelectedPage(PageItem.navigation),
-                                    isActive: widget.currentPage == PageItem.navigation,
-                                  );
-                                case PageItem.wallet:
-                                  return BottomNavBarItem(
-                                    title: 'Wallet',
-                                    imagePathActive: 'assets/img/icons/wallet-filled.png',
-                                    imagePathInactive: 'assets/img/icons/wallet-outlined.png',
-                                    onTap: () => widget.onSelectedPage(PageItem.wallet),
-                                    isActive: widget.currentPage == PageItem.wallet,
-                                  );
-                                case PageItem.more:
-                                  return BottomNavBarItem(
-                                    title: 'Mehr',
-                                    imagePathActive: 'assets/img/icons/more.png',
-                                    imagePathInactive: 'assets/img/icons/more.png',
-                                    onTap: () => widget.onSelectedPage(PageItem.more),
-                                    isActive: widget.currentPage == PageItem.more,
-                                  );
-                                default:
-                                  return const SizedBox.shrink();
-                              }
-                            })(),
+                            width: (effectiveContainerWidth -
+                                    (2 * indicatorWidth)) /
+                                visibleCount,
+                            child: BottomNavBarItem(
+                              title: p.title,
+                              imagePathActive: p.activeIconPath,
+                              imagePathInactive: p.inactiveIconPath,
+                              onTap: () => widget.onSelectedPage(p),
+                              isActive: widget.currentPage == p,
+                            ),
                           ),
                         SizedBox(
                           width: indicatorWidth,
@@ -217,7 +182,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
                             duration: const Duration(milliseconds: 180),
                             opacity: hasHiddenRightItems ? 1 : 0,
                             child: Center(
-                              child: Icon(Icons.chevron_right, size: 14, color: indicatorColor),
+                              child: Icon(
+                                Icons.chevron_right,
+                                size: 14,
+                                color: indicatorColor,
+                              ),
                             ),
                           ),
                         ),

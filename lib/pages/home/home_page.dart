@@ -29,6 +29,7 @@ class HomePageState extends State<HomePage> {
     PageItem.mensa: GlobalKey<NavigatorState>(),
     PageItem.navigation: GlobalKey<NavigatorState>(),
     PageItem.wallet: GlobalKey<NavigatorState>(),
+    PageItem.email: GlobalKey<NavigatorState>(),
     PageItem.more: GlobalKey<NavigatorState>(),
   };
 
@@ -40,6 +41,7 @@ class HomePageState extends State<HomePage> {
     PageItem.mensa: GlobalKey<AnimatedExitState>(),
     PageItem.navigation: GlobalKey<AnimatedExitState>(),
     PageItem.wallet: GlobalKey<AnimatedExitState>(),
+    PageItem.email: GlobalKey<AnimatedExitState>(),
     PageItem.more: GlobalKey<AnimatedExitState>(),
   };
   Map<PageItem, GlobalKey<AnimatedEntryState>> entryAnimationKeys = {
@@ -48,6 +50,7 @@ class HomePageState extends State<HomePage> {
     PageItem.mensa: GlobalKey<AnimatedEntryState>(),
     PageItem.navigation: GlobalKey<AnimatedEntryState>(),
     PageItem.wallet: GlobalKey<AnimatedEntryState>(),
+    PageItem.email: GlobalKey<AnimatedEntryState>(),
     PageItem.more: GlobalKey<AnimatedEntryState>(),
   };
 
@@ -84,8 +87,10 @@ class HomePageState extends State<HomePage> {
   PageItem currentPage = PageItem.feed;
 
   /// Controls the Page View
-  final PageController pageController = PageController();
+  late final PageController pageController;
   double pagePosition = 0;
+  bool didApplyInitialNavigationSettings = false;
+  List<PageItem> previousOrderedPages = customizablePageItems;
 
   /// Indicates whether swiping is disabled
   bool swipeDisabled = false;
@@ -97,6 +102,43 @@ class HomePageState extends State<HomePage> {
     });
   }
 
+  List<PageItem> getOrderedPages() {
+    final settings = Provider.of<SettingsHandler>(context, listen: false).currentSettings;
+    return sanitizeCustomizablePageOrder(settings.navbarPageOrder);
+  }
+
+  bool samePageOrder(List<PageItem> first, List<PageItem> second) {
+    if (first.length != second.length) {
+      return false;
+    }
+
+    for (int i = 0; i < first.length; i++) {
+      if (first[i] != second[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  void syncPageViewWithCurrentPage(List<PageItem> orderedPages) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !pageController.hasClients) {
+        return;
+      }
+
+      final pageIndex = orderedPages.indexOf(currentPage);
+      if (pageIndex == -1) {
+        return;
+      }
+
+      final roundedPagePosition = (pageController.page ?? pageController.initialPage.toDouble()).round();
+      if (roundedPagePosition != pageIndex) {
+        pageController.jumpToPage(pageIndex);
+      }
+    });
+  }
+
   /// Switches to another page when selected in the nav-menu on phones
   Future<bool> selectedPage(PageItem selectedPageItem) async {
     if (selectedPageItem == currentPage) return true;
@@ -104,7 +146,7 @@ class HomePageState extends State<HomePage> {
     // Phone Layout
     if (MediaQuery.of(context).size.shortestSide < 600) {
       // Get all pages as list and find the corresponding element
-      final List<PageItem> pages = navigatorKeys.keys.toList();
+      final List<PageItem> pages = getOrderedPages();
       final int indexNewPage = pages.indexWhere((element) => element == selectedPageItem);
 
       // Switch to the selected page
@@ -162,6 +204,7 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    pageController = PageController();
 
     // Theme von System auslesen & Callback erstellen
     final window = WidgetsBinding.instance.platformDispatcher;
@@ -191,7 +234,39 @@ class HomePageState extends State<HomePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final settingsHandler = Provider.of<SettingsHandler>(context);
+    final orderedPages = sanitizeCustomizablePageOrder(
+      settingsHandler.currentSettings.navbarPageOrder,
+    );
+
+    if (!orderedPages.contains(currentPage)) {
+      currentPage = orderedPages.first;
+    }
+
+    if (settingsHandler.hasLoadedSettings && !didApplyInitialNavigationSettings) {
+      final startPage = pageItemFromStorageId(settingsHandler.currentSettings.startPageId);
+      currentPage = orderedPages.contains(startPage) ? startPage! : orderedPages.first;
+      previousOrderedPages = List<PageItem>.from(orderedPages);
+      didApplyInitialNavigationSettings = true;
+      syncPageViewWithCurrentPage(orderedPages);
+      return;
+    }
+
+    if (!samePageOrder(previousOrderedPages, orderedPages)) {
+      previousOrderedPages = List<PageItem>.from(orderedPages);
+      syncPageViewWithCurrentPage(orderedPages);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final orderedPages = sanitizeCustomizablePageOrder(
+      Provider.of<SettingsHandler>(context).currentSettings.navbarPageOrder,
+    );
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: MediaQuery.of(context).size.shortestSide < 600
           ? Provider.of<ThemesNotifier>(context, listen: false).currentTheme == AppThemes.light
@@ -203,12 +278,11 @@ class HomePageState extends State<HomePage> {
       //changing WillPopScope to PopScope
       child: PopScope(
         canPop: false,
-        onPopInvokedWithResult: (didPop, result) async{
-          if(!didPop){
+        onPopInvokedWithResult: (didPop, result) async {
+          if (!didPop) {
             await navigatorKeys[currentPage]!.currentState!.maybePop();
           }
         },
-
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
@@ -223,12 +297,10 @@ class HomePageState extends State<HomePage> {
                         child: PageView.builder(
                           physics: swipeDisabled ? const NeverScrollableScrollPhysics() : const ScrollPhysics(),
                           controller: pageController,
-                          itemCount: navigatorKeys.length,
+                          itemCount: orderedPages.length,
                           onPageChanged: (page) {
-                            final List<PageItem> pages = navigatorKeys.keys.toList();
-
                             // Find new PageItem and assign newPage the old value in case no element is found
-                            final PageItem newPage = pages[page];
+                            final PageItem newPage = orderedPages[page];
 
                             // Set newPage as the currentPage
                             if (newPage != currentPage) {
@@ -252,7 +324,7 @@ class HomePageState extends State<HomePage> {
                                           : 1 - (pagePosition - index),
                               duration: const Duration(milliseconds: 100),
                               child: buildNavigator(
-                                navigatorKeys.keys.toList()[index],
+                                orderedPages[index],
                               ),
                             );
                           },
@@ -263,6 +335,7 @@ class HomePageState extends State<HomePage> {
                         alignment: Alignment.bottomCenter,
                         child: BottomNavBar(
                           currentPage: currentPage,
+                          orderedPages: orderedPages,
                           onSelectedPage: selectedPage,
                         ),
                       ),
@@ -293,6 +366,7 @@ class HomePageState extends State<HomePage> {
                             children: [
                               SideNavBar(
                                 currentPage: currentPage,
+                                orderedPages: orderedPages,
                                 onSelectedPage: selectedPage,
                               ),
                               // Pages
@@ -308,12 +382,7 @@ class HomePageState extends State<HomePage> {
                                       width: currentPage != PageItem.navigation ? 550 : null,
                                       child: Stack(
                                         children: [
-                                          buildOffstateNavigator(PageItem.feed),
-                                          buildOffstateNavigator(PageItem.events),
-                                          buildOffstateNavigator(PageItem.navigation),
-                                          buildOffstateNavigator(PageItem.mensa),
-                                          buildOffstateNavigator(PageItem.wallet),
-                                          buildOffstateNavigator(PageItem.more),
+                                          for (final page in orderedPages) buildOffstateNavigator(page),
                                         ],
                                       ),
                                     ),

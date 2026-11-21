@@ -102,7 +102,7 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
 
   Future<void> setBrightness(double brightness) async {
     try {
-      await ScreenBrightness().setScreenBrightness(brightness);
+      await ScreenBrightness().setApplicationScreenBrightness(brightness);
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -110,7 +110,7 @@ class _BogestraTicketFullScreenState extends State<BogestraTicketFullScreen> {
 
   Future<void> resetBrightness() async {
     try {
-      await ScreenBrightness().resetScreenBrightness();
+      await ScreenBrightness().resetApplicationScreenBrightness();
     } catch (e) {
       debugPrint(e.toString());
     }

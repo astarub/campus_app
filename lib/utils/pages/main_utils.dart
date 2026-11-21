@@ -207,7 +207,7 @@ class MainUtils {
     );
 
     await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
+      settings: initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) async {
         if (response.payload == null) return;
         if (homeKey.currentState == null) return;
@@ -476,10 +476,10 @@ class MainUtils {
 
       if (notification != null && message.notification?.android != null) {
         flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
+          id: notification.hashCode,
+          title: notification.title,
+          body: notification.body,
+          notificationDetails: NotificationDetails(
             android: AndroidNotificationDetails(
               notification.android!.channelId != null
                   ? androidChannels[notification.android!.channelId!]!.id

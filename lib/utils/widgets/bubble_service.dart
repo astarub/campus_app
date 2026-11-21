@@ -32,7 +32,6 @@ class BubbleService {
     _entry?.remove();
 
     final overlay = Overlay.of(context);
-    if (overlay == null) return;
 
     _entry = OverlayEntry(
       builder: (context) => BubbleMessage(
