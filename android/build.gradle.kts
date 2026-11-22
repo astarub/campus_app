@@ -19,13 +19,11 @@ subprojects {
     afterEvaluate {
         if (plugins.hasPlugin("com.android.library")) {
             extensions.findByName("android")?.withGroovyBuilder {
+                // AGP reports e.g. "android-36" or "android-37.0".
                 val current = (getProperty("compileSdkVersion") as? String)
-                    ?.removePrefix("android-")?.toIntOrNull() ?: 0
-                if (current < 36) {
+                    ?.removePrefix("android-")?.substringBefore('.')?.toIntOrNull()
+                if (current != null && current < 36) {
                     "compileSdkVersion"(36)
-                } else if (current == 37) {
-                    // AGP 8.x looks for "android-37", but the SDK installs it as "android-37.0".
-                    "compileSdkVersion"("android-37.0")
                 }
             }
         }

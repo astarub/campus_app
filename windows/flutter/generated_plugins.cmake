@@ -4,16 +4,18 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
-  cloud_firestore
   desktop_webview_window
   firebase_core
-  flutter_inappwebview_windows
+  cloud_firestore
   flutter_secure_storage_windows
   geolocator_windows
+  location
+  permission_handler_windows
   screen_brightness_windows
   sentry_flutter
-  share_plus
   url_launcher_windows
+  share_plus
+  webview_windows
   window_to_front
 )
 
