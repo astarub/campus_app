@@ -48,7 +48,14 @@ class EmailBackgroundService {
 
   static Future<void> _initNotifications() async {
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const settings = InitializationSettings(android: android);
+    // iOS settings are mandatory on iOS. Permissions are requested elsewhere
+    // (see MainUtils.initializeLocalNotifications), so don't prompt here.
+    const ios = DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
+    const settings = InitializationSettings(android: android, iOS: ios);
 
     await _notifications.initialize(settings: settings);
   }
@@ -226,7 +233,7 @@ class EmailBackgroundService {
       id: id,
       title: title,
       body: body,
-      notificationDetails: NotificationDetails(android: android),
+      notificationDetails: NotificationDetails(android: android, iOS: const DarwinNotificationDetails()),
     );
   }
 }

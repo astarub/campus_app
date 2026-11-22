@@ -99,6 +99,17 @@ dependency_overrides:
   flutter_web_auth_2: ^4.1.0
   # Override js version as flutter_inappwebview depends on flutter_inappwebview_web which uses js version ^0.6.4 but as the web package is not used, this is risk-free
   js: ^0.7.2
+  # zikzak_inappwebview_ios 5.2.0-5.3.4 does not compile on iOS
+  # ("Cannot find 'dataStoreWasSelected' in scope" in InAppWebView.swift).
+  # The platform packages must share one version, so all are pinned to 5.1.2.
+  # Remove once zikzak_inappwebview can be upgraded to 6.x.
+  zikzak_inappwebview_platform_interface: 5.1.2
+  zikzak_inappwebview_android: 5.1.2
+  zikzak_inappwebview_ios: 5.1.2
+  zikzak_inappwebview_macos: 5.1.2
+  zikzak_inappwebview_web: 5.1.2
+  zikzak_inappwebview_windows: 5.1.2
+  zikzak_inappwebview_linux: 5.1.2
 
 flutter_native_splash:
   image: "assets/img/Android-RUB_Campus_App_Logo.png"
