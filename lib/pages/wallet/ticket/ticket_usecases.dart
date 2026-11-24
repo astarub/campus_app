@@ -9,9 +9,7 @@ import 'package:campus_app/pages/wallet/ticket/ticket_repository.dart';
 class TicketUsecases {
   final TicketRepository ticketRepository;
 
-  TicketUsecases({
-    required this.ticketRepository,
-  });
+  TicketUsecases({required this.ticketRepository});
 
   /// Render the Aztec code and resize it
   Future<Image?> renderAztecCode({int width = 200, int height = 200}) async {
@@ -20,13 +18,11 @@ class TicketUsecases {
     if (aztecCode == null) return null;
 
     Uint8List resizedData = base64Decode(aztecCode);
-    final img.Image image = img.decodeImage(resizedData)!;
+    final img.Image image = img.decodeImage(resizedData);
     final img.Image resized = img.copyResize(image, width: width, height: width);
     resizedData = img.encodePng(resized);
 
-    return Image(
-      image: MemoryImage(resizedData),
-    );
+    return Image(image: MemoryImage(resizedData));
   }
 
   /// Parse the content of the ticket details file

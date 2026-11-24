@@ -33,8 +33,10 @@ class OutdoorNavigationUtils {
             final List<dynamic> steps = leg['steps'];
             for (final step in steps) {
               final String geometry = step['geometry'];
-              final List<LatLng> coordinates =
-                  PolylinePoints().decodePolyline(geometry).map((e) => LatLng(e.latitude, e.longitude)).toList();
+              final List<LatLng> coordinates = PolylinePoints()
+                  .decodePolyline(geometry)
+                  .map((e) => LatLng(e.latitude, e.longitude))
+                  .toList();
               newWaypoints.addAll(coordinates);
             }
           }
@@ -42,9 +44,7 @@ class OutdoorNavigationUtils {
 
         return newWaypoints;
       } else {
-        debugPrint(
-          'Error while finding shortest path: ${response.statusCode}. ${response.body}',
-        );
+        debugPrint('Error while finding shortest path: ${response.statusCode}. ${response.body}');
       }
     } catch (e) {
       debugPrint('Error while finding shortest path: $e');
@@ -56,9 +56,7 @@ class OutdoorNavigationUtils {
     required Map<dynamic, dynamic> graphData,
     required Map<String, LatLng> predefinedLocations,
   }) {
-    final Map<String, LatLng> mergedLocations = Map<String, LatLng>.from(
-      predefinedLocations,
-    );
+    final Map<String, LatLng> mergedLocations = Map<String, LatLng>.from(predefinedLocations);
 
     graphData.forEach((key, value) {
       final building = key.$1.toString();
@@ -67,16 +65,10 @@ class OutdoorNavigationUtils {
 
       if (!room.contains('EN_')) {
         final name = '$building $level/$room';
-        final closestMatchKey = _findClosestMatch(
-          name,
-          mergedLocations.keys.toList(),
-        );
+        final closestMatchKey = _findClosestMatch(name, mergedLocations.keys.toList());
 
         if (closestMatchKey.isNotEmpty) {
-          mergedLocations.putIfAbsent(
-            name,
-            () => mergedLocations[closestMatchKey]!,
-          );
+          mergedLocations.putIfAbsent(name, () => mergedLocations[closestMatchKey]);
         }
       }
     });
@@ -84,17 +76,13 @@ class OutdoorNavigationUtils {
     return mergedLocations;
   }
 
-  static Map<String, LatLng> addGraphEntriesToPredefinedLocationsIsolate(
-    Map<String, dynamic> params,
-  ) {
+  static Map<String, LatLng> addGraphEntriesToPredefinedLocationsIsolate(Map<String, dynamic> params) {
     final rawGraph = params['graph'] as Map<dynamic, dynamic>;
     final Map<List<String>, dynamic> normalizedGraph = {
       for (final entry in rawGraph.entries) (entry.key as List<dynamic>).map((e) => e.toString()).toList(): entry.value,
     };
 
-    final Map<String, LatLng> predefined = Map<String, LatLng>.from(
-      params['predefined'],
-    );
+    final Map<String, LatLng> predefined = Map<String, LatLng>.from(params['predefined']);
 
     for (final entry in normalizedGraph.entries) {
       final key = entry.key;
@@ -104,13 +92,10 @@ class OutdoorNavigationUtils {
 
       if (!room.contains('EN_')) {
         final name = '$building $level/$room';
-        final closestMatchKey = _findClosestMatch(
-          name,
-          predefined.keys.toList(),
-        );
+        final closestMatchKey = _findClosestMatch(name, predefined.keys.toList());
 
         if (closestMatchKey.isNotEmpty) {
-          predefined.putIfAbsent(name, () => predefined[closestMatchKey]!);
+          predefined.putIfAbsent(name, () => predefined[closestMatchKey]);
         }
       }
     }
@@ -122,9 +107,7 @@ class OutdoorNavigationUtils {
     return compute(_buildTileLayerWorker, null);
   }
 
-  static Map<String, LatLng> sortPredefinedLocations(
-    Map<String, LatLng> locations,
-  ) {
+  static Map<String, LatLng> sortPredefinedLocations(Map<String, LatLng> locations) {
     final sortedEntries = locations.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
     return Map<String, LatLng>.fromEntries(sortedEntries);
   }

@@ -15,11 +15,7 @@ class BottomNavBar extends StatefulWidget {
   /// Calls this function when an item of the navigation bar is selected.
   final Function(PageItem) onSelectedPage;
 
-  const BottomNavBar({
-    super.key,
-    required this.currentPage,
-    required this.onSelectedPage,
-  });
+  const BottomNavBar({super.key, required this.currentPage, required this.onSelectedPage});
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -51,7 +47,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       PageItem.wallet,
       PageItem.more,
     ];
-    final totalItems = items.length;
+    const totalItems = items.length;
     final maxShift = (totalItems - visibleCount).clamp(0, totalItems);
     final activeIndex = items.indexOf(widget.currentPage);
     // Aim to keep the active item roughly centered when possible; because
@@ -75,17 +71,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           : EdgeInsets.only(left: 7, bottom: bottomInset),
       decoration: BoxDecoration(
         color: Provider.of<ThemesNotifier>(context).currentThemeData.cardColor,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(15),
-          topRight: Radius.circular(15),
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 5,
-            offset: Offset(0, -1),
-          ),
-        ],
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, -1))],
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -119,15 +106,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   switchInCurve: Curves.easeOutCubic,
                   switchOutCurve: Curves.easeOutCubic,
                   layoutBuilder: (currentChild, previousChildren) {
-                    return ClipRect(
-                      child: currentChild ?? const SizedBox.shrink(),
-                    );
+                    return ClipRect(child: currentChild ?? const SizedBox.shrink());
                   },
                   transitionBuilder: (child, animation) {
-                    final curvedAnimation = CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeOutCubic,
-                    );
+                    final curvedAnimation = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
                     final offsetAnimation = Tween<Offset>(
                       begin: Offset(animateForward ? 0.22 : -0.22, 0),
                       end: Offset.zero,
@@ -148,9 +130,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           child: AnimatedOpacity(
                             duration: const Duration(milliseconds: 180),
                             opacity: hasHiddenLeftItems ? 1 : 0,
-                            child: Center(
-                              child: Icon(Icons.chevron_left, size: 14, color: indicatorColor),
-                            ),
+                            child: Center(child: Icon(Icons.chevron_left, size: 14, color: indicatorColor)),
                           ),
                         ),
                         for (final p in visibleItems)
@@ -216,9 +196,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           child: AnimatedOpacity(
                             duration: const Duration(milliseconds: 180),
                             opacity: hasHiddenRightItems ? 1 : 0,
-                            child: Center(
-                              child: Icon(Icons.chevron_right, size: 14, color: indicatorColor),
-                            ),
+                            child: Center(child: Icon(Icons.chevron_right, size: 14, color: indicatorColor)),
                           ),
                         ),
                       ],

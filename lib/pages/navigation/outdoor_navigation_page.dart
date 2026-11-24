@@ -6,10 +6,8 @@ import 'package:campus_app/core/settings.dart';
 import 'package:campus_app/core/themes.dart';
 import 'package:campus_app/main.dart';
 import 'package:campus_app/pages/home/widgets/page_navigation_animation.dart';
-import 'package:campus_app/pages/navigation/data/assembly_points.dart';
 import 'package:campus_app/pages/navigation/data/buildings.dart';
 import 'package:campus_app/pages/navigation/data/room_graph.dart';
-import 'package:campus_app/pages/navigation/data/vending_machines.dart';
 import 'package:campus_app/pages/navigation/indoor_navigation_page.dart';
 import 'package:campus_app/pages/navigation/navigation_onboarding.dart';
 import 'package:campus_app/pages/navigation/widgets/error_bubble.dart';
@@ -31,11 +29,7 @@ class NavigationPage extends StatefulWidget {
   final GlobalKey<AnimatedEntryState> pageEntryAnimationKey;
   final GlobalKey<AnimatedExitState> pageExitAnimationKey;
 
-  const NavigationPage({
-    super.key,
-    required this.pageEntryAnimationKey,
-    required this.pageExitAnimationKey,
-  });
+  const NavigationPage({super.key, required this.pageEntryAnimationKey, required this.pageExitAnimationKey});
 
   @override
   State<NavigationPage> createState() => NavigationPageState();
@@ -66,13 +60,10 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   bool get wantKeepAlive => true;
 
   Future<void> addGraphEntriesInIsolate() async {
-    final result = await compute(
-      OutdoorNavigationUtils.addGraphEntriesToPredefinedLocationsIsolate,
-      {
-        'graph': graph.map((k, v) => MapEntry([k.$1, k.$2, k.$3], v)),
-        'predefined': predefinedLocations,
-      },
-    );
+    final result = await compute(OutdoorNavigationUtils.addGraphEntriesToPredefinedLocationsIsolate, {
+      'graph': graph.map((k, v) => MapEntry([k.$1, k.$2, k.$3], v)),
+      'predefined': predefinedLocations,
+    });
 
     setState(() {
       predefinedLocations = result;
@@ -106,10 +97,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     final double homePageBottomPadding = Platform.isIOS ? 80 : 60;
     final double fabBottomOffset = isPhoneLayout ? (bottomNavHeight - homePageBottomPadding + 12) : 0;
     final Color indoorButtonBackgroundColor = isLightTheme
-        ? Color.alphaBlend(
-            const Color.fromRGBO(165, 216, 255, 0.32),
-            Colors.white,
-          )
+        ? Color.alphaBlend(const Color.fromRGBO(165, 216, 255, 0.32), Colors.white)
         : currentThemeData.colorScheme.surface;
     final Color indoorButtonTextColor =
         isLightTheme ? const Color.fromRGBO(128, 195, 255, 1) : currentThemeData.colorScheme.secondary;
@@ -167,20 +155,10 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
               children: [
                 // Header
                 Padding(
-                  padding: EdgeInsets.only(
-                    top: Platform.isAndroid ? 20 : 0,
-                    left: 20,
-                    right: 20,
-                    bottom: 20,
-                  ),
+                  padding: EdgeInsets.only(top: Platform.isAndroid ? 20 : 0, left: 20, right: 20, bottom: 20),
                   child: SizedBox(
                     width: double.infinity,
-                    child: Align(
-                      child: Text(
-                        'Navigation',
-                        style: currentThemeData.textTheme.displayMedium,
-                      ),
-                    ),
+                    child: Align(child: Text('Navigation', style: currentThemeData.textTheme.displayMedium)),
                   ),
                 ),
                 // Map
@@ -200,10 +178,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                           mapController: mapController,
                           options: MapOptions(
                             initialCenter: currentLocation != null
-                                ? LatLng(
-                                    currentLocation!.latitude!,
-                                    currentLocation!.longitude!,
-                                  )
+                                ? LatLng(currentLocation!.latitude!, currentLocation!.longitude!)
                                 : const LatLng(51.442887, 7.262413),
                             initialZoom: 15,
                           ),
@@ -224,10 +199,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                 style: LocationMarkerStyle(
                                   marker: const DefaultLocationMarker(
                                     color: Color.fromARGB(255, 255, 255, 255),
-                                    child: Icon(
-                                      Icons.person,
-                                      color: Colors.blue,
-                                    ),
+                                    child: Icon(Icons.person, color: Colors.blue),
                                   ),
                                   markerSize: const Size.square(40),
                                   accuracyCircleColor: const Color.fromARGB(255, 113, 143, 243).withValues(alpha: 0.1),
@@ -275,9 +247,8 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                     child: Autocomplete<String>(
                                       optionsBuilder: (TextEditingValue textEditingValue) {
                                         return predefinedLocations.keys.where(
-                                          (String option) => option.toLowerCase().contains(
-                                                textEditingValue.text.toLowerCase(),
-                                              ),
+                                          (String option) =>
+                                              option.toLowerCase().contains(textEditingValue.text.toLowerCase()),
                                         );
                                       },
                                       onSelected: selectDestination,
@@ -291,10 +262,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                         return Align(
                                           alignment: Alignment.topLeft,
                                           child: Container(
-                                            constraints: BoxConstraints(
-                                              maxWidth: 300,
-                                              maxHeight: containerHeight,
-                                            ),
+                                            constraints: BoxConstraints(maxWidth: 300, maxHeight: containerHeight),
                                             child: Material(
                                               elevation: 4,
                                               child: ListView(
@@ -304,9 +272,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                                         onTap: () {
                                                           onSelected(option);
                                                         },
-                                                        child: ListTile(
-                                                          title: Text(option),
-                                                        ),
+                                                        child: ListTile(title: Text(option)),
                                                       ),
                                                     )
                                                     .toList(),
@@ -341,10 +307,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                             searchController.text = value;
                                           },
                                           onSubmitted: (value) {
-                                            centerMapOnSearchInput(
-                                              query: value,
-                                              showMessageOnMiss: true,
-                                            );
+                                            centerMapOnSearchInput(query: value, showMessageOnMiss: true);
                                           },
                                         );
                                       },
@@ -368,9 +331,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                                         : const Color.fromRGBO(34, 40, 54, 1),
                                     transparent: true,
                                     onTap: () {
-                                      centerMapOnSearchInput(
-                                        showMessageOnMiss: true,
-                                      );
+                                      centerMapOnSearchInput(showMessageOnMiss: true);
                                       FocusScope.of(context).unfocus();
                                     },
                                   ),
@@ -407,9 +368,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                             ),
                           ),
                         ),
-                        NavigationErrorBubble(
-                          message: navigationMessage,
-                        ),
+                        NavigationErrorBubble(message: navigationMessage),
                         // TODO: Add data for emergencyAssemblyPoints, vendingMachines etc.
                         // AnimatedPositioned(
                         //   duration: const Duration(milliseconds: 300),
@@ -502,17 +461,12 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
               await syncMapImages();
               */
                   //------
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const IndoorNavigation()),
-                  );
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const IndoorNavigation()));
                 },
                 elevation: 9,
                 highlightElevation: 12,
                 extendedPadding: const EdgeInsets.symmetric(horizontal: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 backgroundColor: indoorButtonBackgroundColor,
                 icon: Container(
                   padding: const EdgeInsets.all(4),
@@ -522,10 +476,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
                   ),
                   child: SvgPicture.asset(
                     'assets/img/icons/door-closed.svg',
-                    colorFilter: ColorFilter.mode(
-                      indoorButtonIconColor,
-                      BlendMode.srcIn,
-                    ),
+                    colorFilter: ColorFilter.mode(indoorButtonIconColor, BlendMode.srcIn),
                     width: 22,
                   ),
                 ),
@@ -556,10 +507,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
       return;
     }
 
-    final LatLng currentPos = LatLng(
-      currentLocationData!.latitude!,
-      currentLocationData.longitude!,
-    );
+    final LatLng currentPos = LatLng(currentLocationData!.latitude!, currentLocationData.longitude!);
 
     const Distance distance = Distance();
     String? nearestKey;
@@ -573,7 +521,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     });
 
     if (nearestKey != null) {
-      final LatLng destination = locations[nearestKey]!;
+      final LatLng destination = locations[nearestKey];
       setState(() {
         symbolPosition = destination;
       });
@@ -589,10 +537,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     }
   }
 
-  Future<void> centerMapOnSearchInput({
-    String? query,
-    bool showMessageOnMiss = false,
-  }) async {
+  Future<void> centerMapOnSearchInput({String? query, bool showMessageOnMiss = false}) async {
     final String selectedOption = (query ?? searchController.text).trim();
     if (selectedOption.isEmpty) {
       return;
@@ -615,8 +560,10 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     });
 
     if (isFirstTime) {
-      Provider.of<SettingsHandler>(context, listen: false).currentSettings =
-          Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(firstTimePathfinder: false);
+      Provider.of<SettingsHandler>(context, listen: false).currentSettings = Provider.of<SettingsHandler>(
+        context,
+        listen: false,
+      ).currentSettings.copyWith(firstTimePathfinder: false);
     }
   }
 
@@ -682,11 +629,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   void focusMapToRouteOrDestination(LatLng destination) {
     if (waypoints.length >= 2) {
       mapController.fitCamera(
-        CameraFit.coordinates(
-          coordinates: waypoints,
-          padding: const EdgeInsets.fromLTRB(60, 160, 60, 80),
-          maxZoom: 18,
-        ),
+        CameraFit.coordinates(coordinates: waypoints, padding: const EdgeInsets.fromLTRB(60, 160, 60, 80), maxZoom: 18),
       );
       return;
     }
@@ -737,9 +680,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
   }
 
   Future<void> initializePage() async {
-    predefinedLocations = OutdoorNavigationUtils.sortPredefinedLocations(
-      predefinedLocations,
-    );
+    predefinedLocations = OutdoorNavigationUtils.sortPredefinedLocations(predefinedLocations);
     tileLayerFuture = OutdoorNavigationUtils.buildTileLayerInIsolate();
 
     setState(() {
@@ -781,10 +722,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
       return;
     }
 
-    final LatLng startLocation = LatLng(
-      userLocation!.latitude!,
-      userLocation.longitude!,
-    );
+    final LatLng startLocation = LatLng(userLocation!.latitude!, userLocation.longitude!);
 
     try {
       await setShortestPath(startLocation, endLocation);

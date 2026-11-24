@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' show Platform;
+
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -52,8 +53,8 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   DateTime selectedDate = DateTime.now().weekday == 6
       ? DateTime.now().subtract(const Duration(days: 1))
       : DateTime.now().weekday == 7
-          ? DateTime.now().subtract(const Duration(days: 2))
-          : DateTime.now();
+      ? DateTime.now().subtract(const Duration(days: 2))
+      : DateTime.now();
 
   StreamController<DateTime> streamController = StreamController<DateTime>.broadcast();
 
@@ -79,8 +80,10 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
 
   /// This function saves the new selected preferences with the [SettingsHandler]
   void saveChangedPreferences(List<String> newPreferences) {
-    final Settings newSettings =
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(mensaPreferences: newPreferences);
+    final Settings newSettings = Provider.of<SettingsHandler>(
+      context,
+      listen: false,
+    ).currentSettings.copyWith(mensaPreferences: newPreferences);
 
     debugPrint('Saving new mensa preferences: ${newSettings.mensaPreferences}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
@@ -88,8 +91,10 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
 
   /// This function saves the new selected preferences with the [SettingsHandler]
   void saveChangedAllergenes(List<String> newAllergenes) {
-    final Settings newSettings =
-        Provider.of<SettingsHandler>(context, listen: false).currentSettings.copyWith(mensaAllergenes: newAllergenes);
+    final Settings newSettings = Provider.of<SettingsHandler>(
+      context,
+      listen: false,
+    ).currentSettings.copyWith(mensaAllergenes: newAllergenes);
 
     debugPrint('Saving new mensa allergenes: ${newSettings.mensaAllergenes}');
     Provider.of<SettingsHandler>(context, listen: false).currentSettings = newSettings;
@@ -158,7 +163,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   Widget build(BuildContext context) {
     super.build(context);
 
-    final restaurantConfig = Provider.of<SettingsHandler>(context).currentSettings.mensaRestaurantConfig!;
+    final restaurantConfig = Provider.of<SettingsHandler>(context).currentSettings.mensaRestaurantConfig;
 
     return Scaffold(
       backgroundColor: Provider.of<ThemesNotifier>(context).currentThemeData.colorScheme.surface,
@@ -256,8 +261,9 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                                           PageRouteBuilder(
                                             opaque: false,
                                             pageBuilder: (context, _, __) => AllergenesPopup(
-                                              allergenes:
-                                                  Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
+                                              allergenes: Provider.of<SettingsHandler>(context)
+                                                  .currentSettings
+                                                  .mensaAllergenes,
                                               onClose: saveChangedAllergenes,
                                             ),
                                           ),
@@ -279,27 +285,31 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                             meals: index == 1
                                 ? mensaUtils.buildKulturCafeRestaurant(
                                     onPreferenceTap: singlePreferenceSelected,
-                                    mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
-                                        .currentSettings
-                                        .mensaAllergenes,
-                                    mensaPreferences: Provider.of<SettingsHandler>(context, listen: false)
-                                        .currentSettings
-                                        .mensaPreferences,
+                                    mensaAllergenes: Provider.of<SettingsHandler>(
+                                      context,
+                                      listen: false,
+                                    ).currentSettings.mensaAllergenes,
+                                    mensaPreferences: Provider.of<SettingsHandler>(
+                                      context,
+                                      listen: false,
+                                    ).currentSettings.mensaPreferences,
                                   )
                                 : mensaUtils.fromDishListToMealCategoryList(
                                     entities: index == 2
                                         ? mensaDishes
                                         : index == 3
-                                            ? roteBeeteDishes
-                                            : qwestDishes,
+                                        ? roteBeeteDishes
+                                        : qwestDishes,
                                     day: selectedDay,
                                     onPreferenceTap: singlePreferenceSelected,
-                                    mensaAllergenes: Provider.of<SettingsHandler>(context, listen: false)
-                                        .currentSettings
-                                        .mensaAllergenes,
-                                    mensaPreferences: Provider.of<SettingsHandler>(context, listen: false)
-                                        .currentSettings
-                                        .mensaPreferences,
+                                    mensaAllergenes: Provider.of<SettingsHandler>(
+                                      context,
+                                      listen: false,
+                                    ).currentSettings.mensaAllergenes,
+                                    mensaPreferences: Provider.of<SettingsHandler>(
+                                      context,
+                                      listen: false,
+                                    ).currentSettings.mensaPreferences,
                                   ),
                             openingHours: Map<String, String>.from(restaurantConfig[index - 1]['openingHours']),
                           );

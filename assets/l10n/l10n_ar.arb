@@ -1,0 +1,22 @@
+{
+  "@@locale": "ar",
+
+  "helloWorld": "مرحبًا بالعالم!",
+
+  "serverFailureMessage": "تعذر تحميل بيانات الخادم.",
+  "generalFailureMessage": "حدث خطأ.",
+  "errorMessage": "خطأ.",
+  "unexpectedError": "حدث خطأ غير متوقع...",
+  "invalid2FATokenFailureMessage": "رمز التحقق غير صحيح. يرجى المحاولة مرة أخرى!",
+  "invalidLoginIDAndPasswordFailureMessage": "بيانات تسجيل الدخول غير صحيحة!",
+  "welcome": "مرحبًا!",
+  "login_prompt": "يرجى تسجيل الدخول باستخدام معرف RUB وكلمة المرور.",
+  "rubid": "معرف تسجيل الدخول لحساب RUB الخاص بك",
+  "password": "كلمة المرور",
+  "login": "تسجيل الدخول",
+  "empty_input_field": "يرجى إدخال بيانات تسجيل الدخول!",
+  "login_error": "إدخال غير صالح!",
+  "login_success": "تم تسجيل الدخول بنجاح!",
+  "login_already": "أنت مسجل الدخول بالفعل.",
+  "enter_totp": "يرجى إدخال رمز التحقق."
+}
