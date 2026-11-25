@@ -48,13 +48,13 @@ class AnimatedConditionalState extends State<AnimatedConditional> with TickerPro
     );
 
     // Define the animations for fading in and the scale transformation
-    _fadeAnimation = Tween(begin: 1, end: 0).animate(
+    _fadeAnimation = Tween<double>(begin: 1, end: 0).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: widget.interval,
       ),
     );
-    _scaleAnimation = Tween(begin: 1, end: 0.98).animate(
+    _scaleAnimation = Tween<double>(begin: 1, end: 0.98).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: widget.interval,

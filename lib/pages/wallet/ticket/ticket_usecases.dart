@@ -18,7 +18,7 @@ class TicketUsecases {
     if (aztecCode == null) return null;
 
     Uint8List resizedData = base64Decode(aztecCode);
-    final img.Image image = img.decodeImage(resizedData);
+    final img.Image image = img.decodeImage(resizedData)!;
     final img.Image resized = img.copyResize(image, width: width, height: width);
     resizedData = img.encodePng(resized);
 

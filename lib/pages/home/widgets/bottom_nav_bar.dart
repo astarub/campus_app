@@ -47,7 +47,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       PageItem.wallet,
       PageItem.more,
     ];
-    const totalItems = items.length;
+    final totalItems = items.length;
     final maxShift = (totalItems - visibleCount).clamp(0, totalItems);
     final activeIndex = items.indexOf(widget.currentPage);
     // Aim to keep the active item roughly centered when possible; because

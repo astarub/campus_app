@@ -61,7 +61,7 @@ class AnimatedExpandableState extends State<AnimatedExpandable> with SingleTicke
       parent: _expandController,
       curve: widget.animationCurve,
     );
-    _animation = Tween(begin: 0, end: 1).animate(curvedAnimation);
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
 
     // Applying initial state of sectionExpanded value
     _isExpanded = widget.expandedAtStart;

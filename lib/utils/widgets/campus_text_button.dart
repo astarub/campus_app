@@ -64,7 +64,7 @@ class CampusTextButtonState extends State<CampusTextButton> {
         } else {
           setState(
             () => buttonTextColor =
-                Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.textTheme.labelMedium!.color,
+                Provider.of<ThemesNotifier>(context, listen: false).currentThemeData.textTheme.labelMedium!.color!,
           );
         }
 

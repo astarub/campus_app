@@ -53,8 +53,8 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
   DateTime selectedDate = DateTime.now().weekday == 6
       ? DateTime.now().subtract(const Duration(days: 1))
       : DateTime.now().weekday == 7
-      ? DateTime.now().subtract(const Duration(days: 2))
-      : DateTime.now();
+          ? DateTime.now().subtract(const Duration(days: 2))
+          : DateTime.now();
 
   StreamController<DateTime> streamController = StreamController<DateTime>.broadcast();
 
@@ -220,7 +220,7 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                       controller: scrollController,
-                      itemCount: restaurantConfig.length + 1,
+                      itemCount: restaurantConfig!.length + 1,
                       itemBuilder: (context, index) {
                         if (index == 0) {
                           // Filter popups
@@ -261,9 +261,8 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                                           PageRouteBuilder(
                                             opaque: false,
                                             pageBuilder: (context, _, __) => AllergenesPopup(
-                                              allergenes: Provider.of<SettingsHandler>(context)
-                                                  .currentSettings
-                                                  .mensaAllergenes,
+                                              allergenes:
+                                                  Provider.of<SettingsHandler>(context).currentSettings.mensaAllergenes,
                                               onClose: saveChangedAllergenes,
                                             ),
                                           ),
@@ -298,8 +297,8 @@ class MensaPageState extends State<MensaPage> with WidgetsBindingObserver, Autom
                                     entities: index == 2
                                         ? mensaDishes
                                         : index == 3
-                                        ? roteBeeteDishes
-                                        : qwestDishes,
+                                            ? roteBeeteDishes
+                                            : qwestDishes,
                                     day: selectedDay,
                                     onPreferenceTap: singlePreferenceSelected,
                                     mensaAllergenes: Provider.of<SettingsHandler>(

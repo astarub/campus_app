@@ -120,7 +120,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
           future: tileLayerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-              return snapshot.data;
+              return snapshot.data!;
             } else {
               return const SizedBox.shrink();
             }
@@ -521,7 +521,7 @@ class NavigationPageState extends State<NavigationPage> with AutomaticKeepAliveC
     });
 
     if (nearestKey != null) {
-      final LatLng destination = locations[nearestKey];
+      final LatLng destination = locations[nearestKey]!;
       setState(() {
         symbolPosition = destination;
       });

@@ -524,7 +524,7 @@ class _IndoorNavigationState extends State<IndoorNavigation> {
               for (int s = 1; s < segments; s++) {
                 final double t = s / segments;
                 final interpolated = Offset.lerp(lastOffset, offset, t);
-                pointsListTemp[i].add(interpolated);
+                if (interpolated != null) pointsListTemp[i].add(interpolated);
               }
             }
           }

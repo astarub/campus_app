@@ -88,7 +88,8 @@ class OnboardingPageState extends State<OnboardingPage> {
           useFirebase: firebaseAccepted ? FirebaseStatus.permitted : FirebaseStatus.forbidden,
         );
 
-    if (firebaseAccepted) mainUtils.initializeFirebase(widget.homePageKey.currentContext);
+    final ctx = widget.homePageKey.currentContext;
+    if (firebaseAccepted && ctx != null) mainUtils.initializeFirebase(ctx);
 
     debugPrint('Onboarding completed. Selected study-courses: ${newSettings.selectedStudyCourses.map((c) => c.name)}');
 

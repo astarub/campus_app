@@ -33,10 +33,8 @@ class OutdoorNavigationUtils {
             final List<dynamic> steps = leg['steps'];
             for (final step in steps) {
               final String geometry = step['geometry'];
-              final List<LatLng> coordinates = PolylinePoints()
-                  .decodePolyline(geometry)
-                  .map((e) => LatLng(e.latitude, e.longitude))
-                  .toList();
+              final List<LatLng> coordinates =
+                  PolylinePoints().decodePolyline(geometry).map((e) => LatLng(e.latitude, e.longitude)).toList();
               newWaypoints.addAll(coordinates);
             }
           }
@@ -68,7 +66,7 @@ class OutdoorNavigationUtils {
         final closestMatchKey = _findClosestMatch(name, mergedLocations.keys.toList());
 
         if (closestMatchKey.isNotEmpty) {
-          mergedLocations.putIfAbsent(name, () => mergedLocations[closestMatchKey]);
+          mergedLocations.putIfAbsent(name, () => mergedLocations[closestMatchKey]!);
         }
       }
     });
@@ -95,7 +93,7 @@ class OutdoorNavigationUtils {
         final closestMatchKey = _findClosestMatch(name, predefined.keys.toList());
 
         if (closestMatchKey.isNotEmpty) {
-          predefined.putIfAbsent(name, () => predefined[closestMatchKey]);
+          predefined.putIfAbsent(name, () => predefined[closestMatchKey]!);
         }
       }
     }

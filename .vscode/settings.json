@@ -30,7 +30,7 @@
     },
 
     "dart.lineLength": 120,
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "automatic",
     "cmake.configureOnOpen": false,
     "workbench.editor.enablePreview": false,
     "cmake.sourceDirectory": "C:/Users/unser/Documents/Uni/Semester 5/App Evolution/campus_app/windows",

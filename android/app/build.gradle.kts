@@ -65,7 +65,11 @@ android {
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = if (keystorePropertiesFile.exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
 
             isMinifyEnabled = true
             isShrinkResources = true
@@ -105,5 +109,5 @@ dependencies {
     // Note: https://github.com/dart-lang/http/blob/master/pkgs/cronet_http/android/build.gradle
     // Note: https://mvnrepository.com/artifact/org.chromium.net/cronet-embedded
     //
-    implementation("org.chromium.net:cronet-embedded:119.6045.31")
+    implementation("org.chromium.net:cronet-bundled:500.1.0")
 }

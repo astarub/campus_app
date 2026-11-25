@@ -136,10 +136,10 @@ class HomePageState extends State<HomePage> {
   Widget buildNavigator(PageItem tabItem) {
     return NavBarNavigator(
       mainNavigatorKey: widget.mainNavigatorKey,
-      navigatorKey: navigatorKeys[tabItem],
+      navigatorKey: navigatorKeys[tabItem]!,
       pageItem: tabItem,
-      pageEntryAnimationKey: entryAnimationKeys[tabItem],
-      pageExitAnimationKey: exitAnimationKeys[tabItem],
+      pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
+      pageExitAnimationKey: exitAnimationKeys[tabItem]!,
     );
   }
 
@@ -151,10 +151,10 @@ class HomePageState extends State<HomePage> {
       offstage: currentPage != tabItem,
       child: NavBarNavigator(
         mainNavigatorKey: widget.mainNavigatorKey,
-        navigatorKey: navigatorKeys[tabItem],
+        navigatorKey: navigatorKeys[tabItem]!,
         pageItem: tabItem,
-        pageEntryAnimationKey: entryAnimationKeys[tabItem],
-        pageExitAnimationKey: exitAnimationKeys[tabItem],
+        pageEntryAnimationKey: entryAnimationKeys[tabItem]!,
+        pageExitAnimationKey: exitAnimationKeys[tabItem]!,
       ),
     );
   }
